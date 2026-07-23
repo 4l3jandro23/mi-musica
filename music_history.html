@@ -1,0 +1,1728 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Atlas Música">
+<meta name="theme-color" content="#17130f" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f2ead9" media="(prefers-color-scheme: light)">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2317130f'/%3E%3Ctext x='50' y='68' font-size='58' text-anchor='middle'%3E%F0%9F%8E%BC%3C/text%3E%3C/svg%3E">
+<title>🎼 Atlas de la Música — Historia, Géneros y Discos Esenciales</title>
+<style>
+  :root {
+    color-scheme: light;
+    --ink:        #17130f;
+    --ink-card:   #211a14;
+    --ink-card-2: #2a2118;
+    --paper:      #f2ead9;
+    --paper-card: #fbf6ea;
+    --paper-card-2:#efe4cc;
+    --text:       #201a12;
+    --text-soft:  #5b4f3c;
+    --text-mute:  #8a7c63;
+    --rule:       rgba(32,26,18,0.14);
+    --brass:      #a8701e;
+    --teal:       #1f6e63;
+    --crimson:    #9c2f24;
+    --bg: var(--paper);
+    --card: var(--paper-card);
+    --card-2: var(--paper-card-2);
+    --fg: var(--text);
+    --fg-soft: var(--text-soft);
+    --fg-mute: var(--text-mute);
+    --line: var(--rule);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --bg: var(--ink); --card: var(--ink-card); --card-2: var(--ink-card-2);
+      --fg: #f3ead9; --fg-soft: #cdbfa4; --fg-mute: #8f8265;
+      --line: rgba(243,234,217,0.12);
+      --brass: #e2a63d; --teal: #4fb3a5; --crimson: #e2665a;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: var(--ink); --card: var(--ink-card); --card-2: var(--ink-card-2);
+    --fg: #f3ead9; --fg-soft: #cdbfa4; --fg-mute: #8f8265;
+    --line: rgba(243,234,217,0.12);
+    --brass: #e2a63d; --teal: #4fb3a5; --crimson: #e2665a;
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --bg: var(--paper); --card: var(--paper-card); --card-2: var(--paper-card-2);
+    --fg: var(--text); --fg-soft: var(--text-soft); --fg-mute: var(--text-mute);
+    --line: var(--rule);
+    --brass: #a8701e; --teal: #1f6e63; --crimson: #9c2f24;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body, .root { margin:0; }
+  .root {
+    background: var(--bg); color: var(--fg);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.5;
+  }
+  .display { font-family: Georgia, "Iowan Old Style", "Times New Roman", serif; }
+  .mono { font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace; }
+  .eyebrow {
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    text-transform: uppercase; letter-spacing: 0.14em; font-size: 11.5px;
+    color: var(--fg-mute);
+  }
+  a { color: inherit; }
+  h1,h2,h3,h4 { text-wrap: balance; margin: 0; }
+  ::selection { background: var(--brass); color: #17130f; }
+
+  /* ---------- shell ---------- */
+  .shell { max-width: 1180px; margin: 0 auto; padding: 0 24px 100px; }
+  .topbar {
+    position: sticky; top:0; z-index: 40;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 14px 24px; background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(8px); border-bottom: 1px solid var(--line);
+  }
+  .topbar .brand { font-family: Georgia, serif; font-weight:700; font-size:15px; letter-spacing:0.02em; }
+  .topbar .brand span { color: var(--brass); }
+  #themeToggle {
+    font-family: inherit; font-size: 12px; color: var(--fg-soft);
+    background: var(--card); border: 1px solid var(--line); border-radius: 20px;
+    padding: 6px 14px; cursor: pointer;
+  }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; padding: 72px 24px 56px; overflow:hidden; border-bottom: 1px solid var(--line); }
+  .hero .grooves {
+    position:absolute; right:-120px; top:50%; transform:translateY(-50%);
+    width:520px; height:520px; border-radius:50%;
+    background: repeating-radial-gradient(circle at center, transparent 0 10px, color-mix(in srgb, var(--brass) 18%, transparent) 11px 12px);
+    opacity:0.55; pointer-events:none;
+  }
+  .hero-inner { max-width: 1180px; margin:0 auto; position:relative; }
+  .hero h1 {
+    font-size: clamp(38px, 6vw, 68px); font-weight: 800; letter-spacing:-0.01em;
+    max-width: 820px;
+  }
+  .hero h1 em { color: var(--brass); font-style:normal; }
+  .hero .tagline { font-size: 16px; color: var(--fg-soft); max-width: 640px; margin-top:14px; }
+  .hero .stats { display:flex; gap:28px; margin-top:34px; flex-wrap:wrap; }
+  .hero .stat .n { font-family: Georgia, serif; font-size: 28px; font-weight:700; color: var(--teal); }
+  .hero .stat .l { font-size: 11.5px; color: var(--fg-mute); text-transform:uppercase; letter-spacing:0.08em; }
+
+  /* ---------- tracklist nav ---------- */
+  .tracklist {
+    display:grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); gap:0;
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    margin: 40px 0 0;
+  }
+  .tracklist a {
+    display:flex; align-items:baseline; gap:8px; text-decoration:none;
+    padding: 13px 18px; border-right:1px solid var(--line); border-bottom: 1px solid var(--line);
+    font-size:12.5px; color:var(--fg-soft);
+  }
+  .tracklist a .idx { font-family: ui-monospace, monospace; color:var(--fg-mute); font-size:11px; }
+  .tracklist a:hover { background: var(--card); color: var(--fg); }
+
+  /* ---------- chapter ---------- */
+  .chapter { padding: 56px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 70px; }
+  .chapter:last-of-type { border-bottom: none; }
+  .chapter-head { display:flex; align-items:flex-end; justify-content:space-between; gap: 20px; margin-bottom: 28px; flex-wrap:wrap; }
+  .chapter-head h2 { font-size: clamp(26px, 3.4vw, 38px); font-weight:800; }
+  .chapter-head .num { font-family: Georgia, serif; font-size: 15px; color: var(--fg-mute); }
+  .chapter-desc { max-width: 720px; color: var(--fg-soft); font-size: 14.5px; margin-bottom: 28px; }
+
+  /* ---------- genre tree ---------- */
+  .family-block { border-left: 4px solid var(--fam); padding-left: 18px; margin-bottom: 26px; }
+  .family-head { display:flex; align-items:center; gap:10px; margin-bottom:10px; flex-wrap:wrap; }
+  .family-head .fam-emoji { font-size: 20px; }
+  .family-head h3 { font-size: 17px; font-weight:750; }
+  .family-head .fam-meta { font-size: 11.5px; color: var(--fg-mute); font-family: ui-monospace, monospace; }
+  .family-desc { font-size: 13px; color: var(--fg-soft); max-width: 680px; margin-bottom: 10px; }
+  .pill-row { display:flex; flex-wrap:wrap; gap:6px; }
+  .pill {
+    font-size: 12px; padding: 4px 11px; border-radius: 999px;
+    background: color-mix(in srgb, var(--fam) 16%, var(--card));
+    border: 1px solid color-mix(in srgb, var(--fam) 45%, var(--line));
+    color: var(--fg);
+  }
+
+  /* ---------- decade spread ---------- */
+  .decade-card { display:grid; grid-template-columns: 200px 1fr; gap: 28px; margin-bottom: 40px; }
+  @media (max-width: 780px) { .decade-card { grid-template-columns: 1fr; } }
+  .decade-num { font-family: Georgia, serif; font-size: 56px; font-weight:800; color: var(--brass); line-height:1; }
+  .decade-sound { font-size: 12.5px; color: var(--fg-soft); margin-top:10px; }
+  .decade-genres { display:flex; flex-wrap:wrap; gap:5px; margin-top:12px; }
+  .decade-genres span { font-size:10.5px; background:var(--card-2); border:1px solid var(--line); border-radius:8px; padding:2px 7px; color:var(--fg-mute); }
+  .decade-body h4 { font-size: 12px; text-transform:uppercase; letter-spacing:0.08em; color: var(--teal); margin-bottom:10px; font-family: ui-monospace, monospace;}
+  .rec-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(230px,1fr)); gap:10px; margin-bottom:20px; }
+  .rec { background: var(--card); border:1px solid var(--line); border-radius:8px; padding:10px 12px; }
+  .rec .t { font-weight:650; font-size:13px; }
+  .rec .a { font-size:12px; color:var(--fg-soft); }
+  .rec .y { font-family: ui-monospace, monospace; font-size:11px; color:var(--fg-mute); }
+  .song-list { display:flex; flex-direction:column; gap:6px; }
+  .song-row { display:flex; gap:10px; font-size:12.5px; padding:6px 0; border-bottom:1px dashed var(--line); }
+  .song-row .y { font-family:ui-monospace,monospace; color:var(--fg-mute); width:34px; flex-shrink:0; }
+  .song-row .s { color:var(--fg-soft); }
+  a.spotify-mini-link, a.spotify-mini-link:visited { color: var(--teal); text-decoration:none; font-size:11.5px; white-space:nowrap; margin-left:8px; }
+  a.spotify-mini-link:hover { text-decoration:underline; }
+
+  /* ---------- year ledger ---------- */
+  .ledger-controls { display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap; }
+  .ledger-controls input { font-family: inherit; font-size:12.5px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 12px; flex:1 1 240px; color:var(--fg); }
+  .ledger-wrap { border:1px solid var(--line); border-radius:10px; overflow:auto; max-height: 620px; }
+  table.ledger { width:100%; border-collapse:collapse; font-size:12.8px; }
+  table.ledger th { position:sticky; top:0; background:var(--card); text-align:left; padding:9px 12px; font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--fg-mute); border-bottom:1px solid var(--line); font-family: ui-monospace, monospace; }
+  table.ledger td { padding: 9px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+  table.ledger td.yr { font-family: ui-monospace, monospace; color:var(--brass); font-weight:700; white-space:nowrap; }
+  table.ledger td .who { color:var(--fg-soft); font-size:11.8px; }
+  table.ledger tr:hover td { background: var(--card); }
+
+  /* ---------- important songs ---------- */
+  .theme-block { margin-bottom: 34px; }
+  .theme-title { display:flex; align-items:center; gap:8px; font-size:16px; font-weight:750; margin-bottom:14px; }
+  .song-card-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap:12px; }
+  .song-card { background: var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
+  .song-card .t { font-weight:700; font-size:14px; }
+  .song-card .a { font-size:12.5px; color:var(--fg-soft); margin-top:2px; }
+  .song-card .why { font-size:12px; color:var(--fg-mute); margin-top:8px; line-height:1.45; }
+  .song-card .yr { font-family:ui-monospace,monospace; font-size:11px; color:var(--brass); float:right; }
+
+  footer.note { padding: 40px 0 0; font-size:12px; color:var(--fg-mute); line-height:1.7; max-width:720px; }
+  ::-webkit-scrollbar { height:8px; width:8px; }
+  ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+</style>
+
+<div class="root">
+  <div class="topbar">
+    <div class="brand">🎼 <span>Atlas</span> de la Música</div>
+    <button id="themeToggle">🌙 / ☀️</button>
+  </div>
+
+  <section class="hero">
+    <div class="grooves"></div>
+    <div class="hero-inner">
+      <div class="eyebrow">📀 Historia · Géneros · Discos esenciales · Para melómanos incurables</div>
+      <h1>Todo lo que hace falta saber sobre <em>cómo sonó cada época</em>.</h1>
+      <p class="tagline">Un árbol genealógico con más de 150 géneros y subgéneros, década por década desde el jazz hasta el hyperpop, un disco y una canción por cada año desde 1950, y las canciones que de verdad cambiaron las reglas. 🎧🔥</p>
+      <div class="stats">
+        <div class="stat"><div class="n">150+</div><div class="l">Géneros y subgéneros</div></div>
+        <div class="stat"><div class="n">14</div><div class="l">Familias genealógicas</div></div>
+        <div class="stat"><div class="n">76</div><div class="l">Años, uno por uno</div></div>
+        <div class="stat"><div class="n">60+</div><div class="l">Discos esenciales</div></div>
+        <div class="stat"><div class="n">50+</div><div class="l">Canciones que cambiaron todo</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="shell">
+    <nav class="tracklist">
+      <a href="#arbol"><span class="idx">01</span> 🌳 Árbol de géneros</a>
+      <a href="#decadas"><span class="idx">02</span> 📅 Década por década</a>
+      <a href="#anios"><span class="idx">03</span> 📖 Año por año</a>
+      <a href="#himnos"><span class="idx">04</span> ⭐ Canciones clave</a>
+      <a href="#personal"><span class="idx">05</span> 🎂 Barcelona '97</a>
+      <a href="#curiosidades"><span class="idx">06</span> 💡 Curiosidades</a>
+      <a href="#milalbums"><span class="idx">07</span> 📀 1000 discos</a>
+    </nav>
+
+    <!-- ============= 01 GENRE TREE ============= -->
+    <section class="chapter" id="arbol">
+      <div class="chapter-head">
+        <h2>🌳 El árbol genealógico de los géneros</h2>
+        <span class="num">01 / 07</span>
+      </div>
+      <p class="chapter-desc">Ningún género nace de la nada: todos son ramas de algo anterior. Acá están agrupados por familia — con la mayor cantidad de subgéneros y microgéneros que entran en una sola página, desde lo más masivo hasta lo más de nicho. 🧬</p>
+      <div id="genreTree"></div>
+    </section>
+
+    <!-- ============= 02 DECADES ============= -->
+    <section class="chapter" id="decadas">
+      <div class="chapter-head">
+        <h2>📅 Historia década por década</h2>
+        <span class="num">02 / 07</span>
+      </div>
+      <p class="chapter-desc">De los orígenes pregrabados al streaming. En cada década: el sonido que la define, los géneros que nacieron ahí, y una selección de discos y canciones imprescindibles. 🎙️</p>
+      <div id="decadesWrap"></div>
+    </section>
+
+    <!-- ============= 03 YEAR BY YEAR ============= -->
+    <section class="chapter" id="anios">
+      <div class="chapter-head">
+        <h2>📖 El disco y la canción de cada año</h2>
+        <span class="num">03 / 07</span>
+      </div>
+      <p class="chapter-desc">1950–2025, uno por uno. Son elecciones curatoriales — cualquier melómano discutiría la mitad — pero cada pick es un disco o canción que definió su año. 🏆</p>
+      <div class="ledger-controls">
+        <input type="text" id="yearSearch" placeholder="Buscar año, disco, canción o artista... 🔎">
+      </div>
+      <div class="ledger-wrap">
+        <table class="ledger" id="yearLedger">
+          <thead><tr><th>Año</th><th>💿 Disco del año</th><th>🎵 Canción del año</th><th>Género en auge</th></tr></thead>
+          <tbody id="yearBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============= 04 KEY SONGS ============= -->
+    <section class="chapter" id="himnos">
+      <div class="chapter-head">
+        <h2>⭐ Las canciones que de verdad importan</h2>
+        <span class="num">04 / 07</span>
+      </div>
+      <p class="chapter-desc">No siempre las más vendidas — las que rompieron una regla, inventaron un sonido o se volvieron un himno generacional. 🔥</p>
+      <div id="importantSongs"></div>
+    </section>
+
+    <!-- ============= 05 PERSONAL: BARCELONA 1997 ============= -->
+    <section class="chapter" id="personal">
+      <div class="chapter-head">
+        <h2>🎂 Especial: Barcelona, 1997 — y las raíces andaluzas</h2>
+        <span class="num">05 / 07</span>
+      </div>
+      <p class="chapter-desc">Naciste en Barcelona en 1997, con un padre de Granada y una madre de Fuente de Andalucía (Sevilla). Casualmente, esa mezcla exacta — Cataluña + Andalucía — es literalmente la historia de uno de los géneros más importantes de la música española. 🧡💛</p>
+      <div class="rec-grid" id="personalGrid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr));"></div>
+      <h4 style="font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--teal);margin:28px 0 10px;font-family:ui-monospace,monospace;">🎧 La banda sonora de tu vida, por etapa</h4>
+      <div id="personalTimeline"></div>
+    </section>
+
+    <!-- ============= 06 CURIOSIDADES ============= -->
+    <section class="chapter" id="curiosidades">
+      <div class="chapter-head">
+        <h2>💡 Curiosidades musicales</h2>
+        <span class="num">06 / 07</span>
+      </div>
+      <p class="chapter-desc">Datos random para ganar cualquier discusión de bar sobre música. 🍻</p>
+      <div class="rec-grid" id="curiosGrid" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr));"></div>
+    </section>
+
+    <!-- ============= 07 1000 ALBUMS ============= -->
+    <section class="chapter" id="milalbums">
+      <div class="chapter-head">
+        <h2>📀 1000 discos para escuchar antes de morir</h2>
+        <span class="num">07 / 07</span>
+      </div>
+      <p class="chapter-desc">Una lista curada por importancia real en la historia de la música (no por lo que más se parece a tu librería de Spotify), cruzando canon crítico con criterio propio. Organizada por década, con género y país para filtrar, y un link directo a cada disco en Spotify. 🎯</p>
+      <div class="ledger-controls">
+        <input type="text" id="albSearch" placeholder="Buscar disco, artista, género o país... 🔎">
+        <select id="albDecadeFilter" style="font-family:inherit;font-size:12.5px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--fg);"></select>
+        <select id="albGenreFilter" style="font-family:inherit;font-size:12.5px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--fg);"></select>
+      </div>
+      <div class="lib-count" id="albCount" style="font-size:12px;color:var(--fg-mute);margin-bottom:10px;"></div>
+      <div class="ledger-wrap">
+        <table class="ledger" id="albTable">
+          <thead><tr>
+            <th data-col="0">#</th>
+            <th data-col="1">💿 Disco</th>
+            <th data-col="2">Artista</th>
+            <th data-col="3">Año</th>
+            <th data-col="4">Género</th>
+            <th data-col="5">País</th>
+            <th>Escuchar</th>
+          </tr></thead>
+          <tbody id="albBody"></tbody>
+        </table>
+      </div>
+      <div class="lib-pager" style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:12.5px;color:var(--fg-soft);">
+        <span id="albPageInfo"></span>
+        <div style="display:flex;gap:8px;">
+          <button id="albPrev" style="font-family:inherit;font-size:12.5px;color:var(--fg-soft);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:5px 12px;cursor:pointer;">‹ Anterior</button>
+          <button id="albNext" style="font-family:inherit;font-size:12.5px;color:var(--fg-soft);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:5px 12px;cursor:pointer;">Siguiente ›</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="note">
+      Atlas curado a mano, no es una fuente académica — es un mapa de referencia rápida para explorar, discutir y (sobre todo) para tener excusas para escuchar discos viejos. Los géneros se solapan, las fechas de "nacimiento" son aproximadas y cada elección de "año/década" es subjetiva por definición: así es cualquier canon musical. 🎶
+    </footer>
+  </div>
+</div>
+
+<script>
+(function() {
+  const btn = document.getElementById('themeToggle');
+  const root = document.documentElement;
+  const saved = localStorage.getItem('atlasTheme');
+  if (saved) root.setAttribute('data-theme', saved);
+  btn.addEventListener('click', () => {
+    const current = root.getAttribute('data-theme') ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const next = current === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('atlasTheme', next);
+  });
+})();
+
+function spotifySearchUrl(query) { return `https://open.spotify.com/search/${encodeURIComponent(query)}`; }
+function spotifyLinkHtml(title, artist, label) {
+  return `<a class="spotify-mini-link" href="${spotifySearchUrl(title + ' ' + artist)}" target="_blank" rel="noopener">${label || '▸ Spotify'}</a>`;
+}
+
+// ================= GENRE TREE DATA =================
+const FAMILIES = [
+  { emoji: '🌾', name: 'Raíces (pre-1900 – 1940s)', color: '#8a6a3b',
+    desc: 'Todo empieza acá: tradiciones orales, espirituales y folclores que alimentan a casi todos los géneros modernos.',
+    genres: ['Espirituales / Work songs','Blues del Delta','Blues rural','Gospel','Ragtime','Folk apalache','Klezmer','Flamenco','Fado','Tango','Son cubano','Samba tradicional','Ranchera','Mariachi','Bolero','Música clásica romántica','Impresionismo (Debussy)'] },
+  { emoji: '🎷', name: 'Jazz', color: '#c9932f',
+    desc: 'De Nueva Orleans al free jazz: la música que enseñó a improvisar al resto del siglo XX.',
+    genres: ['Dixieland / New Orleans Jazz','Swing / Big Band','Bebop','Cool Jazz','Hard Bop','Modal Jazz','Free Jazz','Latin Jazz','Jazz Fusion','Smooth Jazz','Acid Jazz','Nu Jazz','Vocal Jazz','Gypsy Jazz'] },
+  { emoji: '🎸', name: 'Rock', color: '#9c2f24',
+    desc: 'Nace del blues y el country a mediados de los 50 y se ramifica hasta el infinito.',
+    genres: ['Rock and Roll','Rockabilly','Doo-wop','Surf Rock','Garage Rock','Invasión Británica','Folk Rock','Blues Rock','Rock Psicodélico','Rock Progresivo','Glam Rock','Southern Rock','Hard Rock','Arena Rock','Yacht Rock','Krautrock','Pub Rock','Post-Punk','New Wave','Gothic Rock','Rock Alternativo','Grunge','Britpop','Indie Rock','Math Rock','Post-Rock','Shoegaze','Noise Rock','Stoner Rock','Garage Revival (2000s)'] },
+  { emoji: '🤘', name: 'Metal', color: '#5a5f68',
+    desc: 'El hard rock llevado al extremo — velocidad, distorsión y subgéneros hiperespecializados.',
+    genres: ['Heavy Metal','NWOBHM','Speed Metal','Thrash Metal','Death Metal','Black Metal','Doom Metal','Sludge Metal','Power Metal','Metal Progresivo','Metal Sinfónico','Folk Metal','Viking Metal','Glam / Hair Metal','Industrial Metal','Groove Metal','Nu Metal','Metalcore','Deathcore','Djent'] },
+  { emoji: '🧷', name: 'Punk & Hardcore', color: '#3c3c3c',
+    desc: 'Tres acordes y una actitud: la reacción cruda contra el rock que se había vuelto estadio.',
+    genres: ['Punk Rock (77)','Hardcore Punk','Anarcho-Punk','Oi!','Post-Hardcore','Screamo','Emo','Pop Punk','Riot Grrrl','Crust Punk','Horror Punk','Ska Punk'] },
+  { emoji: '🕺', name: 'R&B, Soul & Funk', color: '#a15c2b',
+    desc: 'El groove afroamericano que va del doo-wop al neo-soul pasando por Motown y P-Funk.',
+    genres: ['Doo-wop','Soul clásico','Motown Sound','Southern Soul','Northern Soul','Funk','P-Funk','Quiet Storm','New Jack Swing','Go-go','Neo-Soul','R&B Contemporáneo','Alternative R&B'] },
+  { emoji: '🎤', name: 'Hip-Hop', color: '#6a4fa0',
+    desc: 'De las fiestas de block del Bronx a la industria más grande del mundo.',
+    genres: ['Old School (70s-80s)','Golden Age Hip-Hop','Gangsta Rap','G-funk','Boom Bap','Hip-Hop Este (East Coast)','Hip-Hop Oeste (West Coast)','Dirty South','Crunk','Jazz Rap','Horrorcore','Conscious Hip-Hop','Trap','Mumble Rap','Cloud Rap','Emo Rap','Drill (Chicago / UK)','Grime','Phonk','Hip-Hop Alternativo'] },
+  { emoji: '🎛️', name: 'Electrónica / EDM', color: '#1f6e63',
+    desc: 'La familia más ramificada de todas — de la música concreta al Big Room de festival.',
+    genres: ['Música concreta','Disco','Italo Disco','Synth-pop','Electro','House','Deep House','Acid House','Tech House','G-House','Future House','Tropical House','Progressive House','Electro House','Big Room','Slap House','Techno','Techno de Detroit','Minimal Techno','Hard Techno','Acid Techno','Trance','Progressive Trance','Uplifting Trance','Psytrance','Drum & Bass','Jungle','Liquid Funk','Dubstep','Brostep','Riddim','Deathstep','Future Bass','Trap EDM','Moombahton','Hardstyle','Gabber / Hardcore','Frenchcore','IDM','Ambient','Downtempo','Chillstep','Vaporwave','Synthwave','Glitch','UK Garage','Breakbeat','Big Beat','Eurodance','Hi-NRG','Hyperpop'] },
+  { emoji: '🌴', name: 'Reggae & Caribe', color: '#3d8b4c',
+    desc: 'Jamaica y sus derivados: el offbeat que reprogramó el ritmo global.',
+    genres: ['Ska','Rocksteady','Reggae Roots','Dub','Dancehall','Ragga','Soca','Calypso','Reggae en Español'] },
+  { emoji: '💃', name: 'Latin / Urbano', color: '#d1652f',
+    desc: 'Un continente entero de ritmos — desde el son cubano hasta el trap latino de hoy.',
+    genres: ['Son Cubano','Salsa','Merengue','Bachata','Cumbia','Cumbia Villera','Vallenato','Tango','Bolero','Ranchera','Mariachi','Banda','Corrido','Corridos Tumbados','Bossa Nova','MPB','Samba','Flamenco Pop','Rock en Español','Latin Pop','Reggaetón','Trap Latino','Dembow','Moombahton Latino','Neoperreo'] },
+  { emoji: '🪕', name: 'Country & Folk', color: '#6f7d3c',
+    desc: 'La tradición rural angloamericana, desde el old-time hasta el indie folk actual.',
+    genres: ['Old-Time / Apalache','Bluegrass','Honky Tonk','Nashville Sound','Outlaw Country','Country Rock','Alt-Country','Americana','Folk Revival (60s)','Cantautor / Singer-songwriter','Folk Contemporáneo','Indie Folk'] },
+  { emoji: '✨', name: 'Pop', color: '#c65a86',
+    desc: 'El género pensado para la radio — absorbe y recicla a todos los demás constantemente.',
+    genres: ['Bubblegum Pop','Teen Pop','Dance-Pop','Europop','Power Pop','Synth-pop','Art Pop','K-pop','J-pop','Latin Pop','Bedroom Pop','Hyperpop'] },
+  { emoji: '🎻', name: 'Clásica & Vanguardia', color: '#2e5a8c',
+    desc: 'La tradición escrita europea y sus rupturas del siglo XX.',
+    genres: ['Barroco','Clasicismo','Romanticismo','Impresionismo','Serialismo / Atonalidad','Neoclasicismo','Minimalismo (Reich, Glass)','Música Electroacústica','Ópera','Música de Cámara','Bandas Sonoras / Score'] },
+  { emoji: '🌍', name: 'World / Global', color: '#9c7a4a',
+    desc: 'Escenas nacionales y regionales que se volvieron fenómenos globales.',
+    genres: ['Afrobeat','Highlife','Soukous','Amapiano','Gqom','Bhangra','Qawwali','Rebetiko','Balkan Brass','Enka','Celtic Folk','Reggaetón (cruce)'] },
+];
+
+const GENRE_TOTAL = FAMILIES.reduce((s,f)=>s+f.genres.length,0);
+
+const treeHtml = FAMILIES.map(f => `
+  <div class="family-block" style="--fam:${f.color}">
+    <div class="family-head">
+      <span class="fam-emoji">${f.emoji}</span>
+      <h3>${f.name}</h3>
+      <span class="fam-meta">${f.genres.length} subgéneros</span>
+    </div>
+    <div class="family-desc">${f.desc}</div>
+    <div class="pill-row">${f.genres.map(g => `<span class="pill">${g}</span>`).join('')}</div>
+  </div>
+`).join('');
+document.getElementById('genreTree').innerHTML = treeHtml +
+  `<p style="font-size:12px;color:var(--fg-mute);margin-top:8px;">🧮 Total de esta página: <b>${GENRE_TOTAL} subgéneros</b> en 14 familias. (Y todavía faltan cientos de microgéneros que solo existen en un subforo de Discord.) 😅</p>`;
+
+// ================= DECADES DATA =================
+const DECADES = [
+  { num:'1950s', sound:'El nacimiento del rock and roll: blues eléctrico + country + R&B a máximo volumen.',
+    genres:['Rock and Roll','Rockabilly','Doo-wop','Bebop → Hard Bop'],
+    albums:[['Elvis Presley','Elvis Presley','1956'],['Here\'s Little Richard','Little Richard','1957'],['Kind of Blue','Miles Davis','1959'],['The Genius of Ray Charles','Ray Charles','1959'],['Chuck Berry Is on Top','Chuck Berry','1959']],
+    songs:[['1954','That\'s All Right — Elvis Presley'],['1955','Rock Around the Clock — Bill Haley & His Comets'],['1957','That\'ll Be the Day — Buddy Holly'],['1958','Johnny B. Goode — Chuck Berry'],['1959','What\'d I Say — Ray Charles']] },
+  { num:'1960s', sound:'La explosión: Motown, invasión británica, folk rock, psicodelia y el nacimiento del rock como arte.',
+    genres:['Invasión Británica','Motown Sound','Folk Rock','Rock Psicodélico','Soul'],
+    albums:[['The Freewheelin\' Bob Dylan','Bob Dylan','1963'],['Pet Sounds','The Beach Boys','1966'],['Revolver','The Beatles','1966'],['Sgt. Pepper\'s Lonely Hearts Club Band','The Beatles','1967'],['The Velvet Underground & Nico','The Velvet Underground','1967'],['Abbey Road','The Beatles','1969']],
+    songs:[['1963','Surfin\' U.S.A. — The Beach Boys'],['1965','(I Can\'t Get No) Satisfaction — The Rolling Stones'],['1967','Respect — Aretha Franklin'],['1968','All Along the Watchtower — Jimi Hendrix'],['1969','Fortunate Son — Creedence Clearwater Revival']] },
+  { num:'1970s', sound:'El rock se fragmenta en mil direcciones: progresivo, glam, punk, disco y el nacimiento del hip-hop.',
+    genres:['Rock Progresivo','Glam Rock','Punk Rock','Disco','Reggae Roots','Hip-Hop (origen)'],
+    albums:[['What\'s Going On','Marvin Gaye','1971'],['The Rise and Fall of Ziggy Stardust','David Bowie','1972'],['The Dark Side of the Moon','Pink Floyd','1973'],['Born to Run','Bruce Springsteen','1975'],['Rumours','Fleetwood Mac','1977'],['The Wall','Pink Floyd','1979']],
+    songs:[['1971','Imagine — John Lennon'],['1975','Bohemian Rhapsody — Queen'],['1977','God Save the Queen — Sex Pistols'],['1978','Stayin\' Alive — Bee Gees'],['1979','Rapper\'s Delight — The Sugarhill Gang']] },
+  { num:'1980s', sound:'Sintetizadores, MTV y la consolidación del hip-hop y el metal extremo.',
+    genres:['New Wave','Synth-pop','Hip-Hop (Golden Age temprano)','Thrash Metal','Hair Metal'],
+    albums:[['Back in Black','AC/DC','1980'],['Thriller','Michael Jackson','1982'],['Purple Rain','Prince','1984'],['Brothers in Arms','Dire Straits','1985'],['Master of Puppets','Metallica','1986'],['The Joshua Tree','U2','1987'],['It Takes a Nation of Millions to Hold Us Back','Public Enemy','1988']],
+    songs:[['1983','Billie Jean — Michael Jackson'],['1984','When Doves Cry — Prince'],['1986','Walk This Way — Run-D.M.C. & Aerosmith'],['1988','Fast Car — Tracy Chapman'],['1989','Like a Prayer — Madonna']] },
+  { num:'1990s', sound:'Grunge contra el hair metal, el Golden Age del rap y el nacimiento del Britpop y el eurodance.',
+    genres:['Grunge','Golden Age Hip-Hop','Britpop','Eurodance','G-funk','Trip Hop'],
+    albums:[['Nevermind','Nirvana','1991'],['The Chronic','Dr. Dre','1992'],['Enter the Wu-Tang (36 Chambers)','Wu-Tang Clan','1993'],['Illmatic','Nas','1994'],['Jagged Little Pill','Alanis Morissette','1995'],['OK Computer','Radiohead','1997'],['Aquemini','OutKast','1998']],
+    songs:[['1991','Smells Like Teen Spirit — Nirvana'],['1993','Creep — Radiohead'],['1994','Loser — Beck'],['1995','Gangsta\'s Paradise — Coolio'],['1997','Bitter Sweet Symphony — The Verve']] },
+  { num:'2000s', sound:'El MP3 rompe la industria, el garage revival y el crunk/Dirty South dominan las radios.',
+    genres:['Garage Revival','Dirty South','Crunk','Emo / Post-Hardcore','Indie Sleaze'],
+    albums:[['Kid A','Radiohead','2000'],['Is This It','The Strokes','2001'],['The Eminem Show','Eminem','2002'],['Elephant','The White Stripes','2003'],['American Idiot','Green Day','2004'],['Late Registration','Kanye West','2005'],['In Rainbows','Radiohead','2007']],
+    songs:[['2001','Fallin\' — Alicia Keys'],['2002','Lose Yourself — Eminem'],['2003','Crazy in Love — Beyoncé'],['2006','Crazy — Gnarls Barkley'],['2008','Single Ladies (Put a Ring on It) — Beyoncé']] },
+  { num:'2010s', sound:'El streaming reordena todo: el trap se vuelve sonido dominante, EDM llena estadios y el reggaetón se globaliza.',
+    genres:['Trap','EDM de festival (Big Room)','Reggaetón global','Mumble Rap','Synth-pop revival'],
+    albums:[['My Beautiful Dark Twisted Fantasy','Kanye West','2010'],['21','Adele','2011'],['Good Kid, M.A.A.D City','Kendrick Lamar','2012'],['Random Access Memories','Daft Punk','2013'],['To Pimp a Butterfly','Kendrick Lamar','2015'],['Blonde','Frank Ocean','2016'],['DAMN.','Kendrick Lamar','2017'],['When We All Fall Asleep, Where Do We Go?','Billie Eilish','2019']],
+    songs:[['2011','Rolling in the Deep — Adele'],['2013','Get Lucky — Daft Punk'],['2015','Hotline Bling — Drake'],['2017','Shape of You — Ed Sheeran'],['2019','Old Town Road — Lil Nas X']] },
+  { num:'2020s', sound:'Pospandemia, TikTok como radio global, hyperpop, phonk, drill y el regreso del country/pop cruzado.',
+    genres:['Hyperpop','Phonk','Drill (UK/global)','Corridos Tumbados','Amapiano'],
+    albums:[['Folklore','Taylor Swift','2020'],['SOUR','Olivia Rodrigo','2021'],['Un Verano Sin Ti','Bad Bunny','2022'],['SOS','SZA','2022'],['Cowboy Carter','Beyoncé','2024']],
+    songs:[['2020','Blinding Lights — The Weeknd'],['2021','Levitating — Dua Lipa'],['2022','As It Was — Harry Styles'],['2023','Flowers — Miley Cyrus'],['2024','Espresso — Sabrina Carpenter']] },
+];
+
+document.getElementById('decadesWrap').innerHTML = DECADES.map(d => `
+  <div class="decade-card">
+    <div>
+      <div class="decade-num">${d.num}</div>
+      <div class="decade-sound">${d.sound}</div>
+      <div class="decade-genres">${d.genres.map(g=>`<span>${g}</span>`).join('')}</div>
+    </div>
+    <div class="decade-body">
+      <h4>💿 Discos esenciales</h4>
+      <div class="rec-grid">${d.albums.map(([t,a,y]) => `<div class="rec"><div class="t">${t}</div><div class="a">${a}</div><div class="y">${y} ${spotifyLinkHtml(t,a)}</div></div>`).join('')}</div>
+      <h4>🎵 Canciones esenciales</h4>
+      <div class="song-list">${d.songs.map(([y,s]) => `<div class="song-row"><span class="y">${y}</span><span class="s">${s}</span></div>`).join('')}</div>
+    </div>
+  </div>
+`).join('');
+
+// ================= YEAR BY YEAR LEDGER =================
+const YEARS = [
+  [1950,'—','Rollin\' Stone — Muddy Waters','Blues eléctrico'],
+  [1951,'—','Rocket 88 — Jackie Brenston & His Delta Cats','Primer "rock\'n\'roll"'],
+  [1952,'—','Lawdy Miss Clawdy — Lloyd Price','R&B'],
+  [1953,'—','Crazy Man, Crazy — Bill Haley & His Comets','Rock and roll'],
+  [1954,'—','That\'s All Right — Elvis Presley','Rockabilly'],
+  [1955,'—','Rock Around the Clock — Bill Haley & His Comets','Rock and roll'],
+  [1956,'Elvis Presley — Elvis Presley','Heartbreak Hotel — Elvis Presley','Rock and roll'],
+  [1957,'Here\'s Little Richard — Little Richard','That\'ll Be the Day — Buddy Holly','Rock and roll'],
+  [1958,'Moanin\' — Art Blakey','Johnny B. Goode — Chuck Berry','Hard Bop'],
+  [1959,'Kind of Blue — Miles Davis','What\'d I Say — Ray Charles','Modal Jazz'],
+  [1960,'Sketches of Spain — Miles Davis','Georgia on My Mind — Ray Charles','Jazz orquestal'],
+  [1961,'Genius + Soul = Jazz — Ray Charles','Stand By Me — Ben E. King','Soul'],
+  [1962,'Modern Sounds in Country and Western Music — Ray Charles','Twist and Shout — The Isley Brothers','Soul / Country cruzado'],
+  [1963,'The Freewheelin\' Bob Dylan — Bob Dylan','Surfin\' U.S.A. — The Beach Boys','Folk / Surf Rock'],
+  [1964,'A Hard Day\'s Night — The Beatles','You Really Got Me — The Kinks','Invasión Británica'],
+  [1965,'Highway 61 Revisited — Bob Dylan','(I Can\'t Get No) Satisfaction — The Rolling Stones','Folk Rock'],
+  [1966,'Pet Sounds — The Beach Boys','Good Vibrations — The Beach Boys','Pop sinfónico'],
+  [1967,'Sgt. Pepper\'s Lonely Hearts Club Band — The Beatles','Respect — Aretha Franklin','Rock Psicodélico'],
+  [1968,'The Beatles (White Album) — The Beatles','All Along the Watchtower — Jimi Hendrix','Rock psicodélico / Hard Rock'],
+  [1969,'Abbey Road — The Beatles','Fortunate Son — Creedence Clearwater Revival','Rock'],
+  [1970,'Bridge Over Troubled Water — Simon & Garfunkel','Bridge Over Troubled Water — Simon & Garfunkel','Folk Rock'],
+  [1971,'What\'s Going On — Marvin Gaye','Imagine — John Lennon','Soul consciente'],
+  [1972,'The Rise and Fall of Ziggy Stardust — David Bowie','Superstition — Stevie Wonder','Glam Rock / Funk'],
+  [1973,'The Dark Side of the Moon — Pink Floyd','Living for the City — Stevie Wonder','Rock Progresivo'],
+  [1974,'Court and Spark — Joni Mitchell','Band on the Run — Paul McCartney & Wings','Folk Rock'],
+  [1975,'Born to Run — Bruce Springsteen','Bohemian Rhapsody — Queen','Heartland Rock'],
+  [1976,'Hotel California — Eagles','Dancing Queen — ABBA','Soft Rock / Pop'],
+  [1977,'Rumours — Fleetwood Mac','God Save the Queen — Sex Pistols','Punk Rock'],
+  [1978,'52nd Street — Billy Joel','Stayin\' Alive — Bee Gees','Disco'],
+  [1979,'The Wall — Pink Floyd','Rapper\'s Delight — The Sugarhill Gang','Nace el Hip-Hop grabado'],
+  [1980,'Back in Black — AC/DC','Ashes to Ashes — David Bowie','Hard Rock / New Wave'],
+  [1981,'Tattoo You — The Rolling Stones','Tainted Love — Soft Cell','Synth-pop'],
+  [1982,'Thriller — Michael Jackson','Sexual Healing — Marvin Gaye','Pop / R&B'],
+  [1983,'Synchronicity — The Police','Billie Jean — Michael Jackson','Pop'],
+  [1984,'Purple Rain — Prince','When Doves Cry — Prince','Funk-Rock'],
+  [1985,'Brothers in Arms — Dire Straits','Money for Nothing — Dire Straits','Rock'],
+  [1986,'Master of Puppets — Metallica','Walk This Way — Run-D.M.C. & Aerosmith','Thrash Metal / Rap-Rock'],
+  [1987,'The Joshua Tree — U2','Sign o\' the Times — Prince','Rock'],
+  [1988,'It Takes a Nation of Millions to Hold Us Back — Public Enemy','Fast Car — Tracy Chapman','Golden Age Hip-Hop'],
+  [1989,'3 Feet High and Rising — De La Soul','Like a Prayer — Madonna','Hip-Hop alternativo'],
+  [1990,'Fear of a Black Planet — Public Enemy','Nothing Compares 2 U — Sinéad O\'Connor','Hip-Hop consciente'],
+  [1991,'Nevermind — Nirvana','Smells Like Teen Spirit — Nirvana','Grunge'],
+  [1992,'The Chronic — Dr. Dre','Jeremy — Pearl Jam','G-funk / Grunge'],
+  [1993,'Enter the Wu-Tang (36 Chambers) — Wu-Tang Clan','Creep — Radiohead','Boom Bap'],
+  [1994,'Illmatic — Nas','Loser — Beck','Golden Age Hip-Hop'],
+  [1995,'Jagged Little Pill — Alanis Morissette','Gangsta\'s Paradise — Coolio','Pop Rock / Hip-Hop'],
+  [1996,'The Score — Fugees','Ironic — Alanis Morissette','Hip-Hop / Soul'],
+  [1997,'OK Computer — Radiohead','Bitter Sweet Symphony — The Verve','Rock Alternativo'],
+  [1998,'Aquemini — OutKast','...Baby One More Time — Britney Spears','Dirty South / Teen Pop'],
+  [1999,'The Slim Shady LP — Eminem','Smooth — Santana ft. Rob Thomas','Rap'],
+  [2000,'Kid A — Radiohead','Beautiful Day — U2','Rock experimental'],
+  [2001,'Is This It — The Strokes','Fallin\' — Alicia Keys','Garage Revival / Neo-Soul'],
+  [2002,'The Eminem Show — Eminem','Lose Yourself — Eminem','Rap'],
+  [2003,'Elephant — The White Stripes','Crazy in Love — Beyoncé','Garage Rock / R&B'],
+  [2004,'American Idiot — Green Day','Since U Been Gone — Kelly Clarkson','Pop Punk'],
+  [2005,'Late Registration — Kanye West','Gold Digger — Kanye West ft. Jamie Foxx','Hip-Hop'],
+  [2006,'Whatever People Say I Am, That\'s What I\'m Not — Arctic Monkeys','Crazy — Gnarls Barkley','Indie Rock'],
+  [2007,'In Rainbows — Radiohead','Rehab — Amy Winehouse','Rock experimental / Soul'],
+  [2008,'Tha Carter III — Lil Wayne','Single Ladies (Put a Ring on It) — Beyoncé','Rap / R&B'],
+  [2009,'The Fame Monster — Lady Gaga','Poker Face — Lady Gaga','Dance-Pop'],
+  [2010,'My Beautiful Dark Twisted Fantasy — Kanye West','Dog Days Are Over — Florence + the Machine','Hip-Hop maximalista'],
+  [2011,'21 — Adele','Rolling in the Deep — Adele','Soul-Pop'],
+  [2012,'Good Kid, M.A.A.D City — Kendrick Lamar','Somebody That I Used to Know — Gotye ft. Kimbra','Hip-Hop narrativo'],
+  [2013,'Random Access Memories — Daft Punk','Get Lucky — Daft Punk ft. Pharrell','Disco revival'],
+  [2014,'1989 — Taylor Swift','Happy — Pharrell Williams','Synth-Pop'],
+  [2015,'To Pimp a Butterfly — Kendrick Lamar','Hotline Bling — Drake','Hip-Hop / Jazz'],
+  [2016,'Blonde — Frank Ocean','One Dance — Drake','R&B alternativo / Dancehall-pop'],
+  [2017,'DAMN. — Kendrick Lamar','Shape of You — Ed Sheeran','Hip-Hop / Pop'],
+  [2018,'Scorpion — Drake','God\'s Plan — Drake','Rap / Trap'],
+  [2019,'When We All Fall Asleep, Where Do We Go? — Billie Eilish','Old Town Road — Lil Nas X','Bedroom Pop / Country-Trap'],
+  [2020,'Folklore — Taylor Swift','Blinding Lights — The Weeknd','Indie Folk / Synth-pop'],
+  [2021,'SOUR — Olivia Rodrigo','Levitating — Dua Lipa','Pop Punk revival'],
+  [2022,'Un Verano Sin Ti — Bad Bunny','As It Was — Harry Styles','Reggaetón global'],
+  [2023,'SOS — SZA','Flowers — Miley Cyrus','R&B alternativo'],
+  [2024,'Cowboy Carter — Beyoncé','Espresso — Sabrina Carpenter','Country-Pop cruzado'],
+  [2025,'GNX — Kendrick Lamar','—','Hip-Hop / West Coast revival'],
+];
+
+function withYearLink(entry) {
+  if (!entry || entry === '—') return entry;
+  const parts = entry.split(' — ');
+  if (parts.length < 2) return entry;
+  const artist = parts.pop();
+  const title = parts.join(' — ');
+  return `${entry} ${spotifyLinkHtml(title, artist)}`;
+}
+function renderYearLedger(filter) {
+  const q = (filter||'').trim().toLowerCase();
+  const rows = YEARS.filter(([y,al,so,g]) => !q ||
+    String(y).includes(q) || al.toLowerCase().includes(q) || so.toLowerCase().includes(q) || g.toLowerCase().includes(q));
+  document.getElementById('yearBody').innerHTML = rows.map(([y,al,so,g]) =>
+    `<tr><td class="yr">${y}</td><td>${withYearLink(al)}</td><td>${withYearLink(so)}</td><td class="who">${g}</td></tr>`
+  ).join('') || `<tr><td colspan="4" style="color:var(--fg-mute);">Sin resultados para "${filter}" 🤷</td></tr>`;
+}
+renderYearLedger('');
+let yearSearchTimer;
+document.getElementById('yearSearch').addEventListener('input', (e) => {
+  clearTimeout(yearSearchTimer);
+  yearSearchTimer = setTimeout(() => renderYearLedger(e.target.value), 120);
+});
+
+// ================= IMPORTANT SONGS (thematic) =================
+const THEMES = [
+  { title: '🧨 Las que inventaron un género', songs: [
+      ['Rocket 88','Jackie Brenston & His Delta Cats','1951','A menudo señalada como el primer disco de rock and roll grabado.'],
+      ['Rapper\'s Delight','The Sugarhill Gang','1979','El primer hit de hip-hop en llegar a las radios masivas.'],
+      ['Good Vibrations','The Beach Boys','1966','Llevó el estudio de grabación a un instrumento en sí mismo, sentando las bases del pop sinfónico.'],
+      ['Strings of Life','Rhythm Is Rhythm (Derrick May)','1987','Uno de los himnos fundacionales del techno de Detroit.'],
+      ['Trans-Europe Express','Kraftwerk','1977','La semilla directa del electro, el hip-hop temprano y el techno.'],
+  ]},
+  { title: '🏟️ Himnos generacionales', songs: [
+      ['My Generation','The Who','1965','El grito adolescente que definió al rock como rebeldía juvenil.'],
+      ['Smells Like Teen Spirit','Nirvana','1991','Enterró al hair metal de un solo riff y le dio el trono al grunge.'],
+      ['Fight the Power','Public Enemy','1989','El himno del hip-hop consciente y politizado.'],
+      ['Bohemian Rhapsody','Queen','1975','Demostró que un single de radio podía ser una ópera de seis minutos.'],
+      ['Where Is the Love?','Black Eyed Peas','2003','Un llamado a la unidad global que definió el pop-rap de los 2000.'],
+  ]},
+  { title: '💻 Las que cambiaron cómo se produce música', songs: [
+      ['Sandstorm','Darude','2000','Uno de los tracks que llevó el trance a la cultura mainstream global vía internet.'],
+      ['Blue Monday','New Order','1983','El single de 12" que fusionó synth-pop y música de baile como ningún otro antes.'],
+      ['Scary Monsters and Nice Sprites','Skrillex','2010','El track que popularizó masivamente el dubstep/brostep norteamericano.'],
+      ['Harder, Better, Faster, Stronger','Daft Punk','2001','Uso pionero del vocoder y el sampleo hiperprocesado en la música de baile.'],
+      ['My Heart Will Go On','Céline Dion','1997','Ejemplo masivo de balada orquestada con producción digital de punta para su época.'],
+  ]},
+  { title: '🌎 Las que globalizaron un sonido regional', songs: [
+      ['Gasolina','Daddy Yankee','2004','El track que llevó el reggaetón de Puerto Rico al mundo entero.'],
+      ['Waka Waka (This Time for Africa)','Shakira ft. Freshlyground','2010','Fusionó pop latino y ritmos africanos para un público masivo global.'],
+      ['Gangnam Style','PSY','2012','El primer fenómeno viral de K-pop a escala mundial, antes del K-pop moderno.'],
+      ['Despacito','Luis Fonsi ft. Daddy Yankee','2017','Volvió a poner una canción en español en el número 1 global tras décadas.'],
+      ['Jerusalema','Master KG ft. Nomcebo Zikode','2020','Llevó el amapiano y el gospel house sudafricano a challenges virales globales.'],
+  ]},
+  { title: '🎚️ Las que rompieron récords', songs: [
+      ['Old Town Road','Lil Nas X ft. Billy Ray Cyrus','2019','El single más semanas en el #1 del Billboard Hot 100 en la historia.'],
+      ['Shape of You','Ed Sheeran','2017','Una de las canciones más streameadas de la década de 2010.'],
+      ['Thriller','Michael Jackson','1982','El álbum más vendido de la historia, con un video que redefinió el formato.'],
+      ['Blinding Lights','The Weeknd','2020','Récord histórico de semanas en el Hot 100 y revival masivo del synth-pop ochentoso.'],
+  ]},
+];
+
+document.getElementById('importantSongs').innerHTML = THEMES.map(t => `
+  <div class="theme-block">
+    <div class="theme-title">${t.title}</div>
+    <div class="song-card-grid">
+      ${t.songs.map(([name,artist,year,why]) => `
+        <div class="song-card">
+          <span class="yr">${year}</span>
+          <div class="t">${name}</div>
+          <div class="a">${artist} ${spotifyLinkHtml(name, artist)}</div>
+          <div class="why">${why}</div>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+`).join('');
+
+// ================= PERSONAL SECTION =================
+const PERSONAL_CARDS = [
+  ['🎂','1997, el año en que naciste','En España, "Más" de Alejandro Sanz arrasaba en ventas; en el mundo sonaban "Wannabe" de las Spice Girls y "MMMBop" de Hanson, y Radiohead publicaba "OK Computer" — el disco que abre el capítulo 90s de este atlas.'],
+  ['🎸','Barcelona, cuna de la rumba catalana','En los 60, familias gitanas andaluzas emigradas a barrios como Gràcia y el Somorrostro mezclaron el compás flamenco con la guaracha cubana. Nació la rumba catalana: Peret la llevó a la fama con "Una lágrima" y "Borriquito". Décadas después, Estopa y Ojos de Brujo siguieron esa línea, a un par de kilómetros de donde naciste.'],
+  ['🏔️','Granada, la tierra de tu padre','Cuna de Enrique Morente, uno de los cantaores más revolucionarios del flamenco: en 1996, un año antes de que nacieras, grabó "Omega" junto a Lagartija Nick, fusionando flamenco con rock y poemas de otro granadino ilustre, Federico García Lorca.'],
+  ['🌻','Sevilla, la tierra de tu madre','Fuente de Andalucía está en la provincia de Sevilla, una de las cunas históricas del cante flamenco junto a Cádiz y Jerez. Al otro lado del Guadalquivir, el barrio de Triana es considerado uno de los orígenes del flamenco urbano y gitano.'],
+  ['🎪','Primavera Sound, 4 años más joven que vos','Se fundó en Barcelona en 2001, cuando tenías 4 años. Hoy es uno de los festivales más importantes del planeta — básicamente creciste con él.'],
+];
+document.getElementById('personalGrid').innerHTML = PERSONAL_CARDS.map(([emoji,title,text]) => `
+  <div class="rec" style="padding:16px 18px;">
+    <div style="font-size:22px;margin-bottom:8px;">${emoji}</div>
+    <div class="t" style="font-size:14.5px;margin-bottom:6px;">${title}</div>
+    <div style="font-size:12.5px;color:var(--fg-soft);line-height:1.55;">${text}</div>
+  </div>
+`).join('');
+
+const PERSONAL_TIMELINE = [
+  ['1997 – 2009 · Infancia', 'Estopa, David Bisbal y "Operación Triunfo" (2001) sonaban en casa; en el mundo, Spice Girls, Britney Spears y el nu-metal de Linkin Park.'],
+  ['2009 – 2016 · Adolescencia', 'El boom del EDM y el Big Room que domina tu propia librería de Spotify (Guetta, Avicii, Hardwell), junto al indie español de Vetusta Morla y Love of Lesbian.'],
+  ['2016 – hoy · Adultez', 'La explosión del trap y el reguetón en español — Rosalía (catalana también) fusionando flamenco con trap en "El Mal Querer" (2018), y Bad Bunny dominando el streaming global.'],
+];
+document.getElementById('personalTimeline').innerHTML = `<div class="song-list">${PERSONAL_TIMELINE.map(([era,text]) =>
+  `<div class="song-row" style="flex-direction:column;gap:2px;"><span class="y" style="width:auto;font-size:12px;">${era}</span><span class="s">${text}</span></div>`
+).join('')}</div>`;
+
+// ================= CURIOSITIES =================
+const CURIOSITIES = [
+  ['🎹','"Bohemian Rhapsody" (1975) necesitó unas tres semanas solo para la sección coral, con hasta 180 pistas vocales superpuestas usando cinta analógica multipista.'],
+  ['💿','El disco más vendido de la historia es "Thriller" de Michael Jackson (1982), con más de 70 millones de copias.'],
+  ['🕺','La palabra "disco" viene de "discothèque", clubes franceses de los años 40 donde se pinchaban discos en vez de tocar una banda en vivo.'],
+  ['🎤','El Auto-Tune lo creó Antares en 1997 como corrector de afinación discreto — Cher lo hizo sonar a propósito, muy audible, en "Believe" ese mismo año.'],
+  ['🌴','El reguetón nació en Panamá y Puerto Rico en los 90, mezclando dancehall jamaicano cantado en español con hip-hop.'],
+  ['🎸','Jimi Hendrix era zurdo pero tocaba guitarras de diestro invertidas, sin reencordarlas al revés.'],
+  ['🎼','El vinilo de 33⅓ RPM lo diseñó Columbia Records en 1948 específicamente para poder meter una sinfonía completa en un solo disco.'],
+  ['🥁','El "boom bap" del hip-hop de los 90 debe su nombre a la onomatopeya del bombo (boom) y la caja (bap) de cajas de ritmos como la Akai MPC.'],
+  ['🤖','Kraftwerk actuaba con trajes idénticos y a veces mandaban maniquíes suyos a hacer entrevistas, cuestionando la idea de "estrella de rock".'],
+  ['🎺','El jazz nació en Nueva Orleans a principios del siglo XX en los barrios de Storyville, mezclando ragtime, blues, marchas militares francesas y ritmos africanos.'],
+  ['🪖','Daft Punk no se quitaron los cascos en público durante casi 20 años de carrera.'],
+  ['🎻','Beethoven compuso su Novena Sinfonía estando completamente sordo.'],
+  ['🎧','El "Amen Break", el sample de batería más usado de la historia (jungle, drum & bass, hip-hop), viene de "Amen, Brother" de The Winstons — de 1969.'],
+  ['🎤','Whitney Houston grabó "I Will Always Love You" en una sola toma para la película "El Guardaespaldas" (1992).'],
+  ['🔥','El riff de "Smoke on the Water" de Deep Purple está basado en un incendio real durante un concierto de Frank Zappa en Montreux, Suiza, en 1971.'],
+  ['🇸🇪','Spotify nació en Suecia en 2006, fundado por Daniel Ek, en parte como respuesta a la piratería masiva de la era Napster/Pirate Bay.'],
+  ['🎹','El Moog, uno de los primeros sintetizadores comerciales masivos, popularizó el sonido electrónico en discos pop desde finales de los 60.'],
+  ['🐐','El nombre "heavy metal" como género se popularizó a partir de una frase de "Born to Be Wild" de Steppenwolf (1968): "heavy metal thunder".'],
+  ['🎙️','El "cante jondo" (canto hondo) es la forma más antigua y seria del flamenco — la que se canta sin apenas acompañamiento, puro lamento.'],
+  ['🌀','El término "psicodélico" en música se popularizó a partir de "psychedelic" acuñado por el psiquiatra Humphry Osmond en 1957, antes de aplicarse al rock de los 60.'],
+];
+document.getElementById('curiosGrid').innerHTML = CURIOSITIES.map(([emoji,text]) => `
+  <div class="rec" style="padding:14px 16px;">
+    <div style="font-size:20px;margin-bottom:8px;">${emoji}</div>
+    <div style="font-size:12.5px;color:var(--fg-soft);line-height:1.55;">${text}</div>
+  </div>
+`).join('');
+
+// ================= 1000 ALBUMS =================
+// [title, artist, year, genre, country]
+const ALBUMS_50S = [
+["Kind of Blue","Miles Davis",1959,"Jazz","EEUU"],
+["Time Out","The Dave Brubeck Quartet",1959,"Jazz","EEUU"],
+["Ellington at Newport","Duke Ellington",1956,"Jazz","EEUU"],
+["Saxophone Colossus","Sonny Rollins",1956,"Jazz","EEUU"],
+["Blue Train","John Coltrane",1957,"Jazz","EEUU"],
+["Somethin' Else","Cannonball Adderley",1958,"Jazz","EEUU"],
+["Moanin'","Art Blakey & The Jazz Messengers",1958,"Jazz","EEUU"],
+["The Shape of Jazz to Come","Ornette Coleman",1959,"Jazz","EEUU"],
+["Ella and Louis","Ella Fitzgerald & Louis Armstrong",1956,"Jazz","EEUU"],
+["Songs for Swingin' Lovers!","Frank Sinatra",1956,"Vocal Pop","EEUU"],
+["In the Wee Small Hours","Frank Sinatra",1955,"Vocal Pop","EEUU"],
+["Chet Baker Sings","Chet Baker",1954,"Jazz","EEUU"],
+["Sarah Vaughan","Sarah Vaughan",1954,"Jazz","EEUU"],
+["The Amazing Bud Powell","Bud Powell",1951,"Jazz","EEUU"],
+["Mingus Ah Um","Charles Mingus",1959,"Jazz","EEUU"],
+["Milestones","Miles Davis",1958,"Jazz","EEUU"],
+["Elvis Presley","Elvis Presley",1956,"Rock and Roll","EEUU"],
+["Here's Little Richard","Little Richard",1957,"Rock and Roll","EEUU"],
+["Chuck Berry Is on Top","Chuck Berry",1959,"Rock and Roll","EEUU"],
+["The \"Chirping\" Crickets","Buddy Holly & The Crickets",1957,"Rock and Roll","EEUU"],
+["The Best of Muddy Waters","Muddy Waters",1958,"Blues","EEUU"],
+["Moanin' in the Moonlight","Howlin' Wolf",1959,"Blues","EEUU"],
+["Bless This House","Mahalia Jackson",1956,"Gospel","EEUU"],
+["The Genius of Ray Charles","Ray Charles",1959,"Soul","EEUU"],
+["Clifford Brown and Max Roach","Clifford Brown & Max Roach",1954,"Jazz","EEUU"],
+["Jazz at Massey Hall","Charlie Parker / Dizzy Gillespie",1953,"Jazz","EEUU"],
+["Relaxin' with the Miles Davis Quintet","Miles Davis",1958,"Jazz","EEUU"],
+["The Cry! The Swing!","Betty Carter",1958,"Jazz","EEUU"],
+["Way Out West","Sonny Rollins",1957,"Jazz","EEUU"],
+["A Night at Birdland","Art Blakey Quintet",1954,"Jazz","EEUU"],
+["Ella Fitzgerald Sings the Cole Porter Songbook","Ella Fitzgerald",1956,"Jazz","EEUU"],
+["Lady in Satin","Billie Holiday",1958,"Jazz","EEUU"],
+["Ray Charles","Ray Charles",1957,"Soul","EEUU"],
+["Cry! Cry! Cry!","Johnny Cash",1957,"Country","EEUU"],
+["Hank Williams Sings","Hank Williams",1952,"Country","EEUU"],
+["Modern Sounds Vol. 1","Bill Haley & His Comets",1955,"Rock and Roll","EEUU"],
+["Loving You","Elvis Presley",1957,"Rock and Roll","EEUU"],
+["King Creole","Elvis Presley",1958,"Rock and Roll","EEUU"],
+["That'll Be the Day","Buddy Holly",1958,"Rock and Roll","EEUU"],
+["The Blues of Otis Spann","Otis Spann",1959,"Blues","EEUU"],
+["A String of Pearls","Glenn Miller Orchestra",1950,"Big Band","EEUU"],
+["Ellington Uptown","Duke Ellington",1953,"Jazz","EEUU"],
+["The Genius of Charlie Parker","Charlie Parker",1956,"Jazz","EEUU"],
+["Gerry Mulligan Quartet","Gerry Mulligan",1952,"Jazz","EEUU"],
+["Brilliant Corners","Thelonious Monk",1957,"Jazz","EEUU"],
+["Thelonious Himself","Thelonious Monk",1957,"Jazz","EEUU"],
+["Jazz Samba","Stan Getz (precursor sesiones)",1958,"Jazz","EEUU"],
+["The Sound of Sonny","Sonny Rollins",1957,"Jazz","EEUU"],
+["Gunslinging Bird","Charlie Parker",1950,"Jazz","EEUU"],
+["Piano Starts Here","Art Tatum",1955,"Jazz","EEUU"],
+["Sinatra's Swingin' Session!!!","Frank Sinatra",1961,"Vocal Pop","EEUU"],
+["Come Fly with Me","Frank Sinatra",1958,"Vocal Pop","EEUU"],
+];
+const ALBUMS_60S = [
+["Sketches of Spain","Miles Davis",1960,"Jazz","EEUU"],
+["The Freewheelin' Bob Dylan","Bob Dylan",1963,"Folk","EEUU"],
+["The Times They Are a-Changin'","Bob Dylan",1964,"Folk","EEUU"],
+["Bringing It All Back Home","Bob Dylan",1965,"Folk Rock","EEUU"],
+["Highway 61 Revisited","Bob Dylan",1965,"Folk Rock","EEUU"],
+["Blonde on Blonde","Bob Dylan",1966,"Folk Rock","EEUU"],
+["Meet the Beatles!","The Beatles",1964,"Rock","Reino Unido"],
+["A Hard Day's Night","The Beatles",1964,"Rock","Reino Unido"],
+["Rubber Soul","The Beatles",1965,"Rock","Reino Unido"],
+["Revolver","The Beatles",1966,"Rock","Reino Unido"],
+["Sgt. Pepper's Lonely Hearts Club Band","The Beatles",1967,"Rock Psicodélico","Reino Unido"],
+["Magical Mystery Tour","The Beatles",1967,"Rock Psicodélico","Reino Unido"],
+["The Beatles (White Album)","The Beatles",1968,"Rock","Reino Unido"],
+["Abbey Road","The Beatles",1969,"Rock","Reino Unido"],
+["Let It Bleed","The Rolling Stones",1969,"Rock","Reino Unido"],
+["Beggars Banquet","The Rolling Stones",1968,"Rock","Reino Unido"],
+["Aftermath","The Rolling Stones",1966,"Rock","Reino Unido"],
+["Pet Sounds","The Beach Boys",1966,"Pop Sinfónico","EEUU"],
+["The Velvet Underground & Nico","The Velvet Underground",1967,"Rock Alternativo","EEUU"],
+["White Light/White Heat","The Velvet Underground",1968,"Rock Experimental","EEUU"],
+["Are You Experienced","The Jimi Hendrix Experience",1967,"Rock Psicodélico","Reino Unido"],
+["Axis: Bold as Love","The Jimi Hendrix Experience",1967,"Rock Psicodélico","Reino Unido"],
+["Electric Ladyland","The Jimi Hendrix Experience",1968,"Rock Psicodélico","EEUU"],
+["Fresh Cream","Cream",1966,"Blues Rock","Reino Unido"],
+["Disraeli Gears","Cream",1967,"Blues Rock","Reino Unido"],
+["The Who Sell Out","The Who",1967,"Rock","Reino Unido"],
+["Tommy","The Who",1969,"Rock Ópera","Reino Unido"],
+["Led Zeppelin","Led Zeppelin",1969,"Hard Rock","Reino Unido"],
+["Led Zeppelin II","Led Zeppelin",1969,"Hard Rock","Reino Unido"],
+["Their Satanic Majesties Request","The Rolling Stones",1967,"Rock Psicodélico","Reino Unido"],
+["Forever Changes","Love",1967,"Rock Psicodélico","EEUU"],
+["The Doors","The Doors",1967,"Rock Psicodélico","EEUU"],
+["Strange Days","The Doors",1967,"Rock Psicodélico","EEUU"],
+["Surrealistic Pillow","Jefferson Airplane",1967,"Rock Psicodélico","EEUU"],
+["The Piper at the Gates of Dawn","Pink Floyd",1967,"Rock Psicodélico","Reino Unido"],
+["A Saucerful of Secrets","Pink Floyd",1968,"Rock Psicodélico","Reino Unido"],
+["In the Court of the Crimson King","King Crimson",1969,"Rock Progresivo","Reino Unido"],
+["Music from Big Pink","The Band",1968,"Rock / Americana","Canadá/EEUU"],
+["The Band","The Band",1969,"Rock / Americana","Canadá/EEUU"],
+["Sweetheart of the Rodeo","The Byrds","1968","Country Rock","EEUU"],
+["Astral Weeks","Van Morrison",1968,"Folk Rock","Irlanda"],
+["Songs of Leonard Cohen","Leonard Cohen",1967,"Folk","Canadá"],
+["Otis Blue","Otis Redding",1965,"Soul","EEUU"],
+["The Soul Album","Otis Redding",1966,"Soul","EEUU"],
+["I Never Loved a Man the Way I Love You","Aretha Franklin",1967,"Soul","EEUU"],
+["Lady Soul","Aretha Franklin",1968,"Soul","EEUU"],
+["What's Going On","Marvin Gaye",1971,"Soul","EEUU"],
+["In the Midnight Hour","Wilson Pickett",1965,"Soul","EEUU"],
+["Live at the Apollo","James Brown",1963,"Soul / Funk","EEUU"],
+["Cold Sweat","James Brown",1967,"Funk","EEUU"],
+["Hot Buttered Soul","Isaac Hayes",1969,"Soul","EEUU"],
+["Getz/Gilberto","Stan Getz & João Gilberto",1964,"Bossa Nova","EEUU/Brasil"],
+["Chega de Saudade","João Gilberto",1959,"Bossa Nova","Brasil"],
+["Elis & Tom","Elis Regina & Tom Jobim",1974,"Bossa Nova","Brasil"],
+["Tropicália: ou Panis et Circencis","Varios (Gil, Veloso, Gal Costa)",1968,"Tropicália","Brasil"],
+["A Love Supreme","John Coltrane",1965,"Jazz","EEUU"],
+["Giant Steps","John Coltrane",1960,"Jazz","EEUU"],
+["My Favorite Things","John Coltrane",1961,"Jazz","EEUU"],
+["Out to Lunch!","Eric Dolphy",1964,"Jazz","EEUU"],
+["Maiden Voyage","Herbie Hancock",1965,"Jazz","EEUU"],
+["Speak No Evil","Wayne Shorter",1966,"Jazz","EEUU"],
+["Head Hunters","Herbie Hancock",1973,"Jazz Fusion","EEUU"],
+["Bitches Brew","Miles Davis",1970,"Jazz Fusion","EEUU"],
+["In a Silent Way","Miles Davis",1969,"Jazz Fusion","EEUU"],
+["The Köln Concert","Keith Jarrett",1975,"Jazz","EEUU"],
+["Court and Spark","Joni Mitchell",1974,"Folk Rock","Canadá"],
+["Blue","Joni Mitchell",1971,"Folk","Canadá"],
+["Bookends","Simon & Garfunkel",1968,"Folk Rock","EEUU"],
+["Bridge Over Troubled Water","Simon & Garfunkel",1970,"Folk Rock","EEUU"],
+["Music in a Doll's House","Family",1968,"Rock Progresivo","Reino Unido"],
+["Days of Future Passed","The Moody Blues",1967,"Rock Progresivo","Reino Unido"],
+["Ogdens' Nut Gone Flake","Small Faces",1968,"Rock Psicodélico","Reino Unido"],
+["The Kinks Are the Village Green Preservation Society","The Kinks",1968,"Rock","Reino Unido"],
+["Something Else by The Kinks","The Kinks",1967,"Rock","Reino Unido"],
+["Aoxomoxoa","Grateful Dead",1969,"Rock Psicodélico","EEUU"],
+["Anthem of the Sun","Grateful Dead",1968,"Rock Psicodélico","EEUU"],
+["Trout Mask Replica","Captain Beefheart",1969,"Rock Experimental","EEUU"],
+["Safe as Milk","Captain Beefheart",1967,"Blues Rock","EEUU"],
+["Fun House","The Stooges",1970,"Proto-Punk","EEUU"],
+["The Stooges","The Stooges",1969,"Proto-Punk","EEUU"],
+];
+const ALBUMS_70S = [
+["The Rise and Fall of Ziggy Stardust and the Spiders from Mars","David Bowie",1972,"Glam Rock","Reino Unido"],
+["Hunky Dory","David Bowie",1971,"Glam Rock","Reino Unido"],
+["Aladdin Sane","David Bowie",1973,"Glam Rock","Reino Unido"],
+["Station to Station","David Bowie",1976,"Rock","Reino Unido"],
+["Low","David Bowie",1977,"Art Rock","Reino Unido"],
+["Heroes","David Bowie",1977,"Art Rock","Reino Unido"],
+["Transformer","Lou Reed",1972,"Glam Rock","EEUU"],
+["Berlin","Lou Reed",1973,"Rock","EEUU"],
+["Raw Power","Iggy and The Stooges",1973,"Proto-Punk","EEUU"],
+["The Dark Side of the Moon","Pink Floyd",1973,"Rock Progresivo","Reino Unido"],
+["Wish You Were Here","Pink Floyd",1975,"Rock Progresivo","Reino Unido"],
+["Animals","Pink Floyd",1977,"Rock Progresivo","Reino Unido"],
+["The Wall","Pink Floyd",1979,"Rock Progresivo","Reino Unido"],
+["Led Zeppelin IV","Led Zeppelin",1971,"Hard Rock","Reino Unido"],
+["Houses of the Holy","Led Zeppelin",1973,"Hard Rock","Reino Unido"],
+["Physical Graffiti","Led Zeppelin",1975,"Hard Rock","Reino Unido"],
+["Who's Next","The Who",1971,"Rock","Reino Unido"],
+["Exile on Main St.","The Rolling Stones",1972,"Rock","Reino Unido"],
+["Sticky Fingers","The Rolling Stones",1971,"Rock","Reino Unido"],
+["Goats Head Soup","The Rolling Stones",1973,"Rock","Reino Unido"],
+["Rumours","Fleetwood Mac",1977,"Rock","Reino Unido/EEUU"],
+["Tusk","Fleetwood Mac",1979,"Rock","Reino Unido/EEUU"],
+["Hotel California","Eagles",1976,"Rock","EEUU"],
+["Born to Run","Bruce Springsteen",1975,"Rock","EEUU"],
+["Darkness on the Edge of Town","Bruce Springsteen",1978,"Rock","EEUU"],
+["Court and Spark","Joni Mitchell",1974,"Folk Rock","Canadá"],
+["Hejira","Joni Mitchell",1976,"Folk Rock","Canadá"],
+["Tapestry","Carole King",1971,"Pop","EEUU"],
+["Harvest","Neil Young",1972,"Folk Rock","Canadá"],
+["After the Gold Rush","Neil Young",1970,"Folk Rock","Canadá"],
+["Tonight's the Night","Neil Young",1975,"Rock","Canadá"],
+["Innervisions","Stevie Wonder",1973,"Soul","EEUU"],
+["Talking Book","Stevie Wonder",1972,"Soul","EEUU"],
+["Songs in the Key of Life","Stevie Wonder",1976,"Soul","EEUU"],
+["What's Going On","Marvin Gaye",1971,"Soul","EEUU"],
+["Let's Get It On","Marvin Gaye",1973,"Soul","EEUU"],
+["Superfly","Curtis Mayfield",1972,"Soul / Funk","EEUU"],
+["There's a Riot Goin' On","Sly and the Family Stone",1971,"Funk","EEUU"],
+["Maggot Brain","Funkadelic",1971,"Funk","EEUU"],
+["One Nation Under a Groove","Funkadelic",1978,"Funk","EEUU"],
+["Off the Wall","Michael Jackson",1979,"Pop / Funk","EEUU"],
+["Off the Wall Sessions","Rufus & Chaka Khan","1974","Funk","EEUU"],
+["Saturday Night Fever (BSO)","Bee Gees / Varios",1977,"Disco","EEUU"],
+["Off the Floor","Chic",1978,"Disco","EEUU"],
+["Risqué","Chic",1979,"Disco","EEUU"],
+["I Feel Love (single→álbum From Here to Eternity)","Donna Summer",1977,"Disco","EEUU"],
+["Bad Girls","Donna Summer",1979,"Disco","EEUU"],
+["Autobahn","Kraftwerk",1974,"Electrónica","Alemania"],
+["Trans-Europe Express","Kraftwerk",1977,"Electrónica","Alemania"],
+["The Man-Machine","Kraftwerk",1978,"Electrónica","Alemania"],
+["Oxygène","Jean-Michel Jarre",1976,"Electrónica","Francia"],
+["Tubular Bells","Mike Oldfield",1973,"Rock Progresivo/Electrónica","Reino Unido"],
+["Tago Mago","Can",1971,"Krautrock","Alemania"],
+["Future Days","Can",1973,"Krautrock","Alemania"],
+["Faust IV","Faust",1973,"Krautrock","Alemania"],
+["Paranoid","Black Sabbath",1970,"Heavy Metal","Reino Unido"],
+["Master of Reality","Black Sabbath",1971,"Heavy Metal","Reino Unido"],
+["Sabbath Bloody Sabbath","Black Sabbath",1973,"Heavy Metal","Reino Unido"],
+["Deep Purple in Rock","Deep Purple",1970,"Hard Rock","Reino Unido"],
+["Machine Head","Deep Purple",1972,"Hard Rock","Reino Unido"],
+["Aqualung","Jethro Tull",1971,"Rock Progresivo","Reino Unido"],
+["Close to the Edge","Yes",1972,"Rock Progresivo","Reino Unido"],
+["Fragile","Yes",1971,"Rock Progresivo","Reino Unido"],
+["Selling England by the Pound","Genesis",1973,"Rock Progresivo","Reino Unido"],
+["The Lamb Lies Down on Broadway","Genesis",1974,"Rock Progresivo","Reino Unido"],
+["In the Court of the Crimson King","King Crimson",1969,"Rock Progresivo","Reino Unido"],
+["Larks' Tongues in Aspic","King Crimson",1973,"Rock Progresivo","Reino Unido"],
+["Ramones","Ramones",1976,"Punk Rock","EEUU"],
+["Never Mind the Bollocks, Here's the Sex Pistols","Sex Pistols",1977,"Punk Rock","Reino Unido"],
+["London Calling","The Clash",1979,"Punk Rock","Reino Unido"],
+["The Clash","The Clash",1977,"Punk Rock","Reino Unido"],
+["Horses","Patti Smith",1975,"Punk / Arte Rock","EEUU"],
+["Marquee Moon","Television",1977,"Punk / Arte Rock","EEUU"],
+["This Year's Model","Elvis Costello",1978,"New Wave","Reino Unido"],
+["Talking Heads: 77","Talking Heads",1977,"New Wave","EEUU"],
+["More Songs About Buildings and Food","Talking Heads",1978,"New Wave","EEUU"],
+["Unknown Pleasures","Joy Division",1979,"Post-Punk","Reino Unido"],
+["Metal Box","Public Image Ltd.",1979,"Post-Punk","Reino Unido"],
+["Modern Lovers","The Modern Lovers",1976,"Proto-Punk","EEUU"],
+["The Catch a Fire","Bob Marley and The Wailers",1973,"Reggae","Jamaica"],
+["Natty Dread","Bob Marley and The Wailers",1974,"Reggae","Jamaica"],
+["Rastaman Vibration","Bob Marley and The Wailers",1976,"Reggae","Jamaica"],
+["Exodus","Bob Marley and The Wailers",1977,"Reggae","Jamaica"],
+["Kaya","Bob Marley and The Wailers",1978,"Reggae","Jamaica"],
+["Blackheart Man","Bunny Wailer",1976,"Reggae","Jamaica"],
+["War Ina Babylon","Max Romeo",1976,"Reggae","Jamaica"],
+["Super Ape","Lee \"Scratch\" Perry & The Upsetters",1976,"Dub","Jamaica"],
+["Blackboard Jungle Dub","Lee \"Scratch\" Perry",1973,"Dub","Jamaica"],
+["Fuente y Caudal","Paco de Lucía",1973,"Flamenco","España"],
+["Almoraima","Paco de Lucía",1976,"Flamenco","España"],
+["Al Verte las Flores Lloran","Camarón de la Isla",1969,"Flamenco","España"],
+["Al Verte las Flores Lloran (Con la colaboración de Paco de Lucía)","Camarón de la Isla",1969,"Flamenco","España"],
+["Rosa María","Camarón de la Isla",1975,"Flamenco","España"],
+["La Leyenda del Tiempo","Camarón de la Isla",1979,"Flamenco","España"],
+["Veneno","Veneno",1977,"Rock Andaluz / Flamenco","España"],
+["Mucho Ruido","Tequila",1978,"Rock","España"],
+["Aire","Triana",1977,"Rock Andaluz","España"],
+["El Patio","Triana",1975,"Rock Andaluz","España"],
+["Sur o no Sur","Triana",1979,"Rock Andaluz","España"],
+["A Bailar del Agua Clara","Smash",1970,"Rock Andaluz","España"],
+["Symphonic Rock","Alameda",1978,"Rock Andaluz","España"],
+["Mediterráneo","Joan Manuel Serrat",1971,"Canción de autor","España"],
+["La Paloma de Marsella","Joan Manuel Serrat",1969,"Canción de autor","España"],
+["Miel","Joan Manuel Serrat",1979,"Canción de autor","España"],
+];
+const ALBUMS_80S = [
+["Back in Black","AC/DC",1980,"Hard Rock","Australia"],
+["Highway to Hell","AC/DC",1979,"Hard Rock","Australia"],
+["British Steel","Judas Priest",1980,"Heavy Metal","Reino Unido"],
+["The Number of the Beast","Iron Maiden",1982,"Heavy Metal","Reino Unido"],
+["Powerslave","Iron Maiden",1984,"Heavy Metal","Reino Unido"],
+["Ride the Lightning","Metallica",1984,"Thrash Metal","EEUU"],
+["Master of Puppets","Metallica",1986,"Thrash Metal","EEUU"],
+["...And Justice for All","Metallica",1988,"Thrash Metal","EEUU"],
+["Reign in Blood","Slayer",1986,"Thrash Metal","EEUU"],
+["Peace Sells... but Who's Buying?","Megadeth",1986,"Thrash Metal","EEUU"],
+["Appetite for Destruction","Guns N' Roses",1987,"Hard Rock","EEUU"],
+["1984","Van Halen",1984,"Hard Rock","EEUU"],
+["Thriller","Michael Jackson",1982,"Pop","EEUU"],
+["Bad","Michael Jackson",1987,"Pop","EEUU"],
+["Purple Rain","Prince and The Revolution",1984,"Funk-Rock","EEUU"],
+["1999","Prince",1982,"Funk-Rock","EEUU"],
+["Sign o' the Times","Prince",1987,"Funk-Rock","EEUU"],
+["Like a Virgin","Madonna",1984,"Pop","EEUU"],
+["True Blue","Madonna",1986,"Pop","EEUU"],
+["Like a Prayer","Madonna",1989,"Pop","EEUU"],
+["Whitney Houston","Whitney Houston",1985,"Pop / R&B","EEUU"],
+["Control","Janet Jackson",1986,"R&B","EEUU"],
+["The Joshua Tree","U2",1987,"Rock","Irlanda"],
+["War","U2",1983,"Rock","Irlanda"],
+["Achtung Baby","U2",1991,"Rock","Irlanda"],
+["Brothers in Arms","Dire Straits",1985,"Rock","Reino Unido"],
+["Making Movies","Dire Straits",1980,"Rock","Reino Unido"],
+["The Queen Is Dead","The Smiths",1986,"Indie Rock","Reino Unido"],
+["Meat Is Murder","The Smiths",1985,"Indie Rock","Reino Unido"],
+["Disintegration","The Cure",1989,"Gothic Rock","Reino Unido"],
+["Pornography","The Cure",1982,"Gothic Rock","Reino Unido"],
+["Closer","Joy Division",1980,"Post-Punk","Reino Unido"],
+["Power, Corruption and Lies","New Order",1983,"New Wave","Reino Unido"],
+["Technique","New Order",1989,"New Wave","Reino Unido"],
+["Violator","Depeche Mode",1990,"Synth-pop","Reino Unido"],
+["Music for the Masses","Depeche Mode",1987,"Synth-pop","Reino Unido"],
+["Speak & Spell","Depeche Mode",1981,"Synth-pop","Reino Unido"],
+["Dare","The Human League",1981,"Synth-pop","Reino Unido"],
+["Rio","Duran Duran",1982,"New Wave","Reino Unido"],
+["Colour by Numbers","Culture Club",1983,"Pop","Reino Unido"],
+["Songs from the Big Chair","Tears for Fears",1985,"Synth-pop","Reino Unido"],
+["Scary Monsters (and Super Creeps)","David Bowie",1980,"Art Rock","Reino Unido"],
+["Let's Dance","David Bowie",1983,"Pop Rock","Reino Unido"],
+["Graceland","Paul Simon",1986,"World / Pop","EEUU"],
+["So","Peter Gabriel",1986,"Art Pop","Reino Unido"],
+["Hounds of Love","Kate Bush",1985,"Art Pop","Reino Unido"],
+["The Dreaming","Kate Bush",1982,"Art Pop","Reino Unido"],
+["Substance","New Order",1987,"New Wave","Reino Unido"],
+["It Takes a Nation of Millions to Hold Us Back","Public Enemy",1988,"Hip-Hop","EEUU"],
+["Fear of a Black Planet","Public Enemy",1990,"Hip-Hop","EEUU"],
+["Paid in Full","Eric B. & Rakim",1987,"Hip-Hop","EEUU"],
+["Criminal Minded","Boogie Down Productions",1987,"Hip-Hop","EEUU"],
+["Raising Hell","Run-D.M.C.",1986,"Hip-Hop","EEUU"],
+["License to Ill","Beastie Boys",1986,"Hip-Hop","EEUU"],
+["Paul's Boutique","Beastie Boys",1989,"Hip-Hop","EEUU"],
+["Straight Outta Compton","N.W.A",1988,"Gangsta Rap","EEUU"],
+["3 Feet High and Rising","De La Soul",1989,"Hip-Hop","EEUU"],
+["Yo! Bum Rush the Show","Public Enemy",1987,"Hip-Hop","EEUU"],
+["The Great Adventures of Slick Rick","Slick Rick",1988,"Hip-Hop","EEUU"],
+["Radio","LL Cool J",1985,"Hip-Hop","EEUU"],
+["Music for the Jilted Generation","The Prodigy",1994,"Electrónica","Reino Unido"],
+["Substance: 1987","New Order",1987,"New Wave","Reino Unido"],
+["1987 (What the Fuck Is Going On?)","The Justified Ancients of Mu Mu",1987,"Electrónica","Reino Unido"],
+["Automanikk","A Guy Called Gerald",1990,"Acid House","Reino Unido"],
+["Foundation","Ten City",1989,"House","EEUU"],
+["Blue Monday 88 (New Order)","New Order",1988,"Synth-pop / Dance","Reino Unido"],
+["Apollo: Atmospheres and Soundtracks","Brian Eno, Daniel Lanois & Roger Eno",1983,"Ambient","Reino Unido"],
+["Low-Life","New Order",1985,"New Wave","Reino Unido"],
+["The Head on the Door","The Cure",1985,"Gothic Rock","Reino Unido"],
+["Reckoning","R.E.M.",1984,"Rock Alternativo","EEUU"],
+["Murmur","R.E.M.",1983,"Rock Alternativo","EEUU"],
+["Document","R.E.M.",1987,"Rock Alternativo","EEUU"],
+["Green","R.E.M.",1988,"Rock Alternativo","EEUU"],
+["Double Nickels on the Dime","Minutemen",1984,"Post-Hardcore","EEUU"],
+["Zen Arcade","Hüsker Dü",1984,"Post-Hardcore","EEUU"],
+["Damaged","Black Flag",1981,"Hardcore Punk","EEUU"],
+["Legacy of Brutality","Misfits",1986,"Horror Punk","EEUU"],
+["Combat Rock","The Clash",1982,"Punk Rock","Reino Unido"],
+["Metal Box","Public Image Ltd.",1979,"Post-Punk","Reino Unido"],
+["Learning to Crawl","The Pretenders",1984,"Rock","Reino Unido"],
+["Little Creatures","Talking Heads",1985,"New Wave","EEUU"],
+["Remain in Light","Talking Heads",1980,"New Wave / Afrobeat","EEUU"],
+["Speaking in Tongues","Talking Heads",1983,"New Wave","EEUU"],
+["Legend","Bob Marley and The Wailers",1984,"Reggae","Jamaica"],
+["Uprising","Bob Marley and The Wailers",1980,"Reggae","Jamaica"],
+["Red","Black Uhuru",1981,"Reggae","Jamaica"],
+["Slow Train Coming","Bob Dylan",1979,"Rock / Gospel","EEUU"],
+["Infidels","Bob Dylan",1983,"Rock","EEUU"],
+["Nebraska","Bruce Springsteen",1982,"Folk Rock","EEUU"],
+["Born in the U.S.A.","Bruce Springsteen",1984,"Rock","EEUU"],
+["Tunnel of Love","Bruce Springsteen",1987,"Rock","EEUU"],
+["Grace","Jeff Buckley",1994,"Rock Alternativo","EEUU"],
+["Doolittle","Pixies",1989,"Alternative Rock","EEUU"],
+["Surfer Rosa","Pixies",1988,"Alternative Rock","EEUU"],
+["Daydream Nation","Sonic Youth",1988,"Noise Rock","EEUU"],
+["Bug","Dinosaur Jr.",1988,"Alternative Rock","EEUU"],
+["Louder Than Bombs","The Smiths",1987,"Indie Rock","Reino Unido"],
+["Substance","Joy Division",1988,"Post-Punk","Reino Unido"],
+["Automatic for the People","R.E.M.",1992,"Rock Alternativo","EEUU"],
+["Blues de la Frontera","Pata Negra",1987,"Flamenco / Blues","España"],
+["Guitarras del Fuego","Ketama",1985,"Nuevo Flamenco","España"],
+["Ketama","Ketama",1984,"Nuevo Flamenco","España"],
+["Como el Agua","Camarón de la Isla",1981,"Flamenco","España"],
+["Calle Real","Camarón de la Isla",1983,"Flamenco","España"],
+["Viviré","Camarón de la Isla",1984,"Flamenco","España"],
+["Zyriab","Paco de Lucía",1990,"Flamenco Jazz","España"],
+["Siroco","Paco de Lucía",1987,"Flamenco","España"],
+["Songhai","Ketama, Toumani Diabaté, Danny Thompson",1988,"Fusión / World","España/Mali"],
+["Devocionario","Golpes Bajos",1983,"Pop / Movida","España"],
+["Camino Soria","Gabinete Caligari",1986,"Rock / Movida","España"],
+["¿Por Qué No Es Fácil?","Radio Futura",1984,"Rock / Movida","España"],
+["De un País en Llamas","Radio Futura",1985,"Rock","España"],
+["La Canción de Juan Perro","Radio Futura",1987,"Rock","España"],
+["No Puedo Comprender Cómo Te Puedo Querer Tanto","Mecano",1988,"Pop","España"],
+["Descanso Dominical","Mecano",1988,"Pop","España"],
+["Entre el Cielo y el Suelo","Mecano",1986,"Pop","España"],
+["Grandes Éxitos","Mecano",1988,"Pop","España"],
+["Agua","Alaska y Dinarama",1984,"Synth-pop / Movida","España"],
+["Deseo Carnal","Alaska y Dinarama",1984,"Synth-pop / Movida","España"],
+["¿Y Qué?","Alaska y los Pegamoides",1982,"Punk / Movida","España"],
+["Nacha Pop","Nacha Pop",1980,"Pop / Movida","España"],
+["Loquillo y los Trogloditas: Feo, Fuerte y Formal","Loquillo y los Trogloditas",1980,"Rock","España"],
+];
+
+const ALBUMS_90S = [
+["Nevermind","Nirvana",1991,"Grunge","EEUU"],
+["In Utero","Nirvana",1993,"Grunge","EEUU"],
+["Bleach","Nirvana",1989,"Grunge","EEUU"],
+["Ten","Pearl Jam",1991,"Grunge","EEUU"],
+["Vs.","Pearl Jam",1993,"Grunge","EEUU"],
+["Superunknown","Soundgarden",1994,"Grunge","EEUU"],
+["Badmotorfinger","Soundgarden",1991,"Grunge","EEUU"],
+["Dirt","Alice in Chains",1992,"Grunge","EEUU"],
+["Core","Stone Temple Pilots",1992,"Grunge / Alternative","EEUU"],
+["Siamese Dream","The Smashing Pumpkins",1993,"Alternative Rock","EEUU"],
+["Mellon Collie and the Infinite Sadness","The Smashing Pumpkins",1995,"Alternative Rock","EEUU"],
+["OK Computer","Radiohead",1997,"Rock Alternativo","Reino Unido"],
+["The Bends","Radiohead",1995,"Rock Alternativo","Reino Unido"],
+["Pablo Honey","Radiohead",1993,"Rock Alternativo","Reino Unido"],
+["Definitely Maybe","Oasis",1994,"Britpop","Reino Unido"],
+["(What's the Story) Morning Glory?","Oasis",1995,"Britpop","Reino Unido"],
+["Parklife","Blur",1994,"Britpop","Reino Unido"],
+["The Great Escape","Blur",1995,"Britpop","Reino Unido"],
+["Blur","Blur",1997,"Britpop / Indie Rock","Reino Unido"],
+["Different Class","Pulp",1995,"Britpop","Reino Unido"],
+["Elastica","Elastica",1995,"Britpop","Reino Unido"],
+["Dog Man Star","Suede",1994,"Britpop","Reino Unido"],
+["I Should Coco","Supergrass",1995,"Britpop","Reino Unido"],
+["Urban Hymns","The Verve",1997,"Rock Alternativo","Reino Unido"],
+["Automatic for the People","R.E.M.",1992,"Rock Alternativo","EEUU"],
+["Ágil","Los Rodríguez",1993,"Rock","España/Argentina"],
+["Sin Documentos","Los Rodríguez",1993,"Rock","España/Argentina"],
+["El Salmón","Andrés Calamaro",2000,"Rock","Argentina"],
+["Avalancha de Éxitos","Héroes del Silencio",1997,"Rock","España"],
+["Senderos de Traición","Héroes del Silencio",1990,"Rock","España"],
+["El Mar No Cesa","Héroes del Silencio",1988,"Rock","España"],
+["Deltoya","Extremoduro",1992,"Rock","España"],
+["Agila","Extremoduro",1996,"Rock","España"],
+["¿Dónde Están Mis Amigos?","Extremoduro",1993,"Rock","España"],
+["Radical Sonora","Extremoduro",1997,"Rock","España"],
+["Omega","Enrique Morente & Lagartija Nick",1996,"Flamenco Rock","España"],
+["Doble Vida","Miguel Ríos",1994,"Rock","España"],
+["El Amor Después del Amor","Fito Páez",1992,"Rock","Argentina"],
+["Dynamo","Soda Stereo",1992,"Rock Alternativo","Argentina"],
+["Sueño Stereo","Soda Stereo",1995,"Rock Alternativo","Argentina"],
+["Canción Animal","Soda Stereo",1990,"Rock","Argentina"],
+["Re","Café Tacvba",1994,"Rock Alternativo","México"],
+["Avalancha de Éxitos (Café Tacvba)","Café Tacvba",1996,"Rock Alternativo","México"],
+["Dónde Jugarán los Niños?","Maná",1992,"Rock Pop","México"],
+["Sueños Líquidos","Maná",1997,"Rock Pop","México"],
+["Horno para Calentar los Sesos","Illya Kuryaki and the Valderramas",1993,"Hip-Hop / Funk","Argentina"],
+["Clandestino","Manu Chao",1998,"Fusión","Francia/España"],
+["Casa Babylon","Mano Negra",1994,"Fusión / Ska","Francia"],
+["King of Bongo","Mano Negra",1991,"Fusión / Ska","Francia"],
+["The Chronic","Dr. Dre",1992,"G-funk","EEUU"],
+["Doggystyle","Snoop Doggy Dogg",1993,"G-funk","EEUU"],
+["Enter the Wu-Tang (36 Chambers)","Wu-Tang Clan",1993,"Boom Bap","EEUU"],
+["Illmatic","Nas",1994,"Boom Bap","EEUU"],
+["It Was Written","Nas",1996,"Hip-Hop","EEUU"],
+["Ready to Die","The Notorious B.I.G.",1994,"Hip-Hop","EEUU"],
+["Life After Death","The Notorious B.I.G.",1997,"Hip-Hop","EEUU"],
+["All Eyez on Me","2Pac",1996,"Hip-Hop","EEUU"],
+["Me Against the World","2Pac",1995,"Hip-Hop","EEUU"],
+["Reasonable Doubt","Jay-Z",1996,"Hip-Hop","EEUU"],
+["The Infamous","Mobb Deep",1995,"Hip-Hop","EEUU"],
+["Liquid Swords","GZA",1995,"Hip-Hop","EEUU"],
+["Only Built 4 Cuban Linx...","Raekwon",1995,"Hip-Hop","EEUU"],
+["Midnight Marauders","A Tribe Called Quest",1993,"Hip-Hop","EEUU"],
+["The Low End Theory","A Tribe Called Quest",1991,"Jazz Rap","EEUU"],
+["De La Soul Is Dead","De La Soul",1991,"Hip-Hop","EEUU"],
+["Black Sunday","Cypress Hill",1993,"Hip-Hop","EEUU"],
+["Aquemini","OutKast",1998,"Hip-Hop","EEUU"],
+["ATLiens","OutKast",1996,"Hip-Hop","EEUU"],
+["Southernplayalisticadillacmuzik","OutKast",1994,"Dirty South","EEUU"],
+["The Score","Fugees",1996,"Hip-Hop","EEUU/Haití"],
+["The Miseducation of Lauryn Hill","Lauryn Hill",1998,"Neo-Soul / Hip-Hop","EEUU"],
+["Baduizm","Erykah Badu",1997,"Neo-Soul","EEUU"],
+["Brown Sugar","D'Angelo",1995,"Neo-Soul","EEUU"],
+["My Life","Mary J. Blige",1994,"R&B","EEUU"],
+["CrazySexyCool","TLC",1994,"R&B","EEUU"],
+["The Writing's on the Wall","Destiny's Child",1999,"R&B","EEUU"],
+["Toni Braxton","Toni Braxton",1993,"R&B","EEUU"],
+["Jagged Little Pill","Alanis Morissette",1995,"Pop Rock","Canadá"],
+["Tidal","Fiona Apple",1996,"Pop Alternativo","EEUU"],
+["Exile in Guyville","Liz Phair",1993,"Indie Rock","EEUU"],
+["Little Earthquakes","Tori Amos",1992,"Art Pop","EEUU"],
+["Ray of Light","Madonna",1998,"Electronic Pop","EEUU"],
+["...Baby One More Time","Britney Spears",1999,"Teen Pop","EEUU"],
+["Millennium","Backstreet Boys",1999,"Teen Pop","EEUU"],
+["Spice","Spice Girls",1996,"Pop","Reino Unido"],
+["Music Box","Mariah Carey",1993,"Pop / R&B","EEUU"],
+["Homework","Daft Punk",1997,"House / Electrónica","Francia"],
+["Dig Your Own Hole","The Chemical Brothers",1997,"Big Beat","Reino Unido"],
+["Exit Planet Dust","The Chemical Brothers",1995,"Big Beat","Reino Unido"],
+["The Fat of the Land","The Prodigy",1997,"Big Beat / Electrónica","Reino Unido"],
+["Music for the Jilted Generation","The Prodigy",1994,"Electrónica","Reino Unido"],
+["Mezzanine","Massive Attack",1998,"Trip Hop","Reino Unido"],
+["Blue Lines","Massive Attack",1991,"Trip Hop","Reino Unido"],
+["Protection","Massive Attack",1994,"Trip Hop","Reino Unido"],
+["Dummy","Portishead",1994,"Trip Hop","Reino Unido"],
+["Portishead","Portishead",1997,"Trip Hop","Reino Unido"],
+["Maxinquaye","Tricky",1995,"Trip Hop","Reino Unido"],
+["Moon Safari","Air",1998,"Downtempo / Electrónica","Francia"],
+["Selected Ambient Works 85-92","Aphex Twin",1992,"IDM","Reino Unido"],
+["Selected Ambient Works Volume II","Aphex Twin",1994,"IDM / Ambient","Reino Unido"],
+["Music Has the Right to Children","Boards of Canada",1998,"IDM","Reino Unido"],
+["Endtroducing.....","DJ Shadow",1996,"Trip Hop / Instrumental","EEUU"],
+["Timeless","Goldie",1995,"Drum and Bass","Reino Unido"],
+["New Forms","Roni Size / Reprazent",1997,"Drum and Bass","Reino Unido"],
+["Screamadelica","Primal Scream",1991,"Rock / Dance","Reino Unido"],
+["Second Toughest in the Infants","Underworld",1996,"Electrónica","Reino Unido"],
+["Dubnobasswithmyheadman","Underworld",1994,"Electrónica","Reino Unido"],
+["Play","Moby",1999,"Electrónica","EEUU"],
+["Significant Other","Limp Bizkit",1999,"Nu Metal","EEUU"],
+["Three Dollar Bill, Y'all","Limp Bizkit",1997,"Nu Metal","EEUU"],
+["Korn","Korn",1994,"Nu Metal","EEUU"],
+["Follow the Leader","Korn",1998,"Nu Metal","EEUU"],
+["Around the Fur","Deftones",1997,"Alternative Metal","EEUU"],
+["White Pony","Deftones",2000,"Alternative Metal","EEUU"],
+["Antichrist Superstar","Marilyn Manson",1996,"Industrial Rock","EEUU"],
+["The Downward Spiral","Nine Inch Nails",1994,"Industrial Rock","EEUU"],
+["Pretty Hate Machine","Nine Inch Nails",1989,"Industrial Rock","EEUU"],
+["Angel Dust","Faith No More",1992,"Alternative Metal","EEUU"],
+["The Real Thing","Faith No More",1989,"Alternative Metal","EEUU"],
+["Californication","Red Hot Chili Peppers",1999,"Funk Rock","EEUU"],
+["Blood Sugar Sex Magik","Red Hot Chili Peppers",1991,"Funk Rock","EEUU"],
+["Dookie","Green Day",1994,"Pop Punk","EEUU"],
+["Smash","The Offspring",1994,"Pop Punk","EEUU"],
+["First Band on the Moon","The Cardigans",1996,"Pop Rock","Suecia"],
+["Loveless","My Bloody Valentine",1991,"Shoegaze","Irlanda"],
+["Nowhere","Ride",1990,"Shoegaze","Reino Unido"],
+["Souvlaki","Slowdive",1993,"Shoegaze","Reino Unido"],
+["Spiderland","Slint",1991,"Post-Rock / Math Rock","EEUU"],
+["Slanted and Enchanted","Pavement",1992,"Indie Rock","EEUU"],
+["Crooked Rain, Crooked Rain","Pavement",1994,"Indie Rock","EEUU"],
+["Bee Thousand","Guided by Voices",1994,"Indie Rock","EEUU"],
+["In on the Kill Taker","Fugazi",1993,"Post-Hardcore","EEUU"],
+["Repeater","Fugazi",1990,"Post-Hardcore","EEUU"],
+["Dirty","Sonic Youth",1992,"Alternative Rock","EEUU"],
+["Grace","Jeff Buckley",1994,"Rock Alternativo","EEUU"],
+["Either/Or","Elliott Smith",1997,"Indie Folk","EEUU"],
+];
+const ALBUMS_2000S = [
+["Kid A","Radiohead",2000,"Rock Experimental","Reino Unido"],
+["Amnesiac","Radiohead",2001,"Rock Experimental","Reino Unido"],
+["Hail to the Thief","Radiohead",2003,"Rock Alternativo","Reino Unido"],
+["In Rainbows","Radiohead",2007,"Rock Experimental","Reino Unido"],
+["Is This It","The Strokes",2001,"Garage Revival","EEUU"],
+["Room on Fire","The Strokes",2003,"Garage Revival","EEUU"],
+["Elephant","The White Stripes",2003,"Garage Rock","EEUU"],
+["White Blood Cells","The White Stripes",2001,"Garage Rock","EEUU"],
+["Fever to Tell","Yeah Yeah Yeahs",2003,"Garage Revival","EEUU"],
+["Turn On the Bright Lights","Interpol",2002,"Post-Punk Revival","EEUU"],
+["Antics","Interpol",2004,"Post-Punk Revival","EEUU"],
+["Franz Ferdinand","Franz Ferdinand",2004,"Post-Punk Revival","Reino Unido"],
+["Whatever People Say I Am, That's What I'm Not","Arctic Monkeys",2006,"Indie Rock","Reino Unido"],
+["Favourite Worst Nightmare","Arctic Monkeys",2007,"Indie Rock","Reino Unido"],
+["Funeral","Arcade Fire",2004,"Indie Rock","Canadá"],
+["Neon Bible","Arcade Fire",2007,"Indie Rock","Canadá"],
+["Silent Alarm","Bloc Party",2005,"Indie Rock","Reino Unido"],
+["American Idiot","Green Day",2004,"Pop Punk / Rock Ópera","EEUU"],
+["Toxicity","System of a Down",2001,"Alternative Metal","EEUU"],
+["Meteora","Linkin Park",2003,"Nu Metal","EEUU"],
+["Hybrid Theory","Linkin Park",2000,"Nu Metal","EEUU"],
+["The Eminem Show","Eminem",2002,"Hip-Hop","EEUU"],
+["The Marshall Mathers LP","Eminem",2000,"Hip-Hop","EEUU"],
+["Get Rich or Die Tryin'","50 Cent",2003,"Hip-Hop","EEUU"],
+["The Blueprint","Jay-Z",2001,"Hip-Hop","EEUU"],
+["The Black Album","Jay-Z",2003,"Hip-Hop","EEUU"],
+["The College Dropout","Kanye West",2004,"Hip-Hop","EEUU"],
+["Late Registration","Kanye West",2005,"Hip-Hop","EEUU"],
+["Graduation","Kanye West",2007,"Hip-Hop","EEUU"],
+["808s & Heartbreak","Kanye West",2008,"Hip-Hop / Art Pop","EEUU"],
+["Stankonia","OutKast",2000,"Hip-Hop","EEUU"],
+["Speakerboxxx/The Love Below","OutKast",2003,"Hip-Hop","EEUU"],
+["Madvillainy","Madvillain",2004,"Hip-Hop Alternativo","EEUU"],
+["The Cool","Lupe Fiasco",2007,"Hip-Hop","EEUU"],
+["Be","Common",2005,"Hip-Hop","EEUU"],
+["Food & Liquor","Lupe Fiasco",2006,"Hip-Hop","EEUU"],
+["Tha Carter II","Lil Wayne",2005,"Hip-Hop","EEUU"],
+["Tha Carter III","Lil Wayne",2008,"Hip-Hop","EEUU"],
+["Fishscale","Ghostface Killah",2006,"Hip-Hop","EEUU"],
+["Voodoo","D'Angelo",2000,"Neo-Soul","EEUU"],
+["Confessions","Usher",2004,"R&B","EEUU"],
+["Songs in A Minor","Alicia Keys",2001,"R&B","EEUU"],
+["The Diary of Alicia Keys","Alicia Keys",2003,"R&B","EEUU"],
+["Back to Black","Amy Winehouse",2006,"Soul","Reino Unido"],
+["Frank","Amy Winehouse",2003,"Soul","Reino Unido"],
+["Come Away with Me","Norah Jones",2002,"Jazz Pop","EEUU"],
+["Illinois","Sufjan Stevens",2005,"Indie Folk","EEUU"],
+["For Emma, Forever Ago","Bon Iver",2007,"Indie Folk","EEUU"],
+["Z","My Morning Jacket",2005,"Rock Alternativo","EEUU"],
+["Time (The Revelator)","Gillian Welch",2001,"Americana","EEUU"],
+["O Brother, Where Art Thou? (BSO)","Varios artistas",2000,"Americana / Bluegrass","EEUU"],
+["Fleet Foxes","Fleet Foxes",2008,"Indie Folk","EEUU"],
+["Person Pitch","Panda Bear",2007,"Indie Experimental","EEUU"],
+["Merriweather Post Pavilion","Animal Collective",2009,"Indie Experimental","EEUU"],
+["Feels","Animal Collective",2005,"Indie Experimental","EEUU"],
+["Kala","M.I.A.",2007,"Fusión / Hip-Hop","Reino Unido/Sri Lanka"],
+["Arular","M.I.A.",2005,"Fusión / Hip-Hop","Reino Unido/Sri Lanka"],
+["The Fame","Lady Gaga",2008,"Dance-Pop","EEUU"],
+["Confessions on a Dance Floor","Madonna",2005,"Dance-Pop","EEUU"],
+["Discovery","Daft Punk",2001,"House / Electrónica","Francia"],
+["Human After All","Daft Punk",2005,"Electro","Francia"],
+["Since I Left You","The Avalanches",2000,"Plunderphonics / Electrónica","Australia"],
+["Original Pirate Material","The Streets",2002,"Garage / UK Hip-Hop","Reino Unido"],
+["A Grand Don't Come for Free","The Streets",2004,"Garage / UK Hip-Hop","Reino Unido"],
+["Boy in da Corner","Dizzee Rascal",2003,"Grime","Reino Unido"],
+["Run the Road","Varios artistas",2005,"Grime","Reino Unido"],
+["Untrue","Burial",2007,"Dubstep","Reino Unido"],
+["Burial","Burial",2006,"Dubstep","Reino Unido"],
+["Night Falls Over Kortedala","Jens Lekman",2007,"Indie Pop","Suecia"],
+["Silent Shout","The Knife",2006,"Electro-Pop","Suecia"],
+["Cross","Justice",2007,"Electro House","Francia"],
+["We Are the Night","The Chemical Brothers",2007,"Big Beat","Reino Unido"],
+["Push the Button","The Chemical Brothers",2005,"Big Beat","Reino Unido"],
+["18 Months","Calvin Harris",2012,"Electro House","Reino Unido"],
+["I Created Disco","Calvin Harris",2007,"Electro House","Reino Unido"],
+["Guero","Beck",2005,"Alternative Rock","EEUU"],
+["Sea Change","Beck",2002,"Folk / Alternative","EEUU"],
+["The Information","Beck",2006,"Alternative Rock","EEUU"],
+["A Rush of Blood to the Head","Coldplay",2002,"Rock Alternativo","Reino Unido"],
+["Parachutes","Coldplay",2000,"Rock Alternativo","Reino Unido"],
+["X&Y","Coldplay",2005,"Rock Alternativo","Reino Unido"],
+["Viva la Vida or Death and All His Friends","Coldplay",2008,"Rock Alternativo","Reino Unido"],
+["Elephunk","Black Eyed Peas",2003,"Hip-Hop Pop","EEUU"],
+["Monkey Business","Black Eyed Peas",2005,"Hip-Hop Pop","EEUU"],
+["Justified","Justin Timberlake",2002,"Pop / R&B","EEUU"],
+["FutureSex/LoveSounds","Justin Timberlake",2006,"Pop / R&B","EEUU"],
+["In Our Nature","José González",2007,"Indie Folk","Suecia/Argentina"],
+["Veneer","José González",2003,"Indie Folk","Suecia/Argentina"],
+["A Ghost Is Born","Wilco",2004,"Alt-Country / Rock Experimental","EEUU"],
+["Yankee Hotel Foxtrot","Wilco",2002,"Alt-Country / Rock Experimental","EEUU"],
+["MTV Unplugged","Shakira",2000,"Pop Rock","Colombia"],
+["Fijación Oral, Vol. 1","Shakira",2005,"Pop","Colombia"],
+["Laundry Service","Shakira",2001,"Pop Rock","Colombia"],
+["Vuelve","Ricky Martin",1998,"Pop","Puerto Rico"],
+["Mi Sangre","Juanes",2004,"Rock / Pop Latino","Colombia"],
+["Fíjate Bien","Juanes",2000,"Rock Latino","Colombia"],
+["Un Día Normal","Juanes",2002,"Rock / Pop Latino","Colombia"],
+["Barrio Fino","Daddy Yankee",2004,"Reggaetón","Puerto Rico"],
+["Los Vaqueros","Wisin & Yandel",2007,"Reggaetón","Puerto Rico"],
+["Talento de Barrio (BSO)","Daddy Yankee",2008,"Reggaetón","Puerto Rico"],
+["Bari","Ojos de Brujo",2002,"Rumba / Flamenco Fusión","España"],
+["Techarí","Ojos de Brujo",2006,"Rumba / Flamenco Fusión","España"],
+["Poeta","Bunbury",2001,"Rock","España"],
+["Pequeño","Bunbury",2003,"Rock","España"],
+["Lo Cortés No Quita lo Caliente","Estopa",1999,"Rumba / Rock","España"],
+["Destrangis","Estopa",2001,"Rumba / Rock","España"],
+["Voces de Ultrarumba","Estopa",2003,"Rumba / Rock","España"],
+["Motivos","Rosana",2001,"Pop / Cantautor","España"],
+["Lunas Rotas","Rosana",1997,"Pop / Cantautor","España"],
+];
+const ALBUMS_2010S = [
+["My Beautiful Dark Twisted Fantasy","Kanye West",2010,"Hip-Hop","EEUU"],
+["Yeezus","Kanye West",2013,"Hip-Hop Experimental","EEUU"],
+["The Life of Pablo","Kanye West",2016,"Hip-Hop","EEUU"],
+["good kid, m.A.A.d city","Kendrick Lamar",2012,"Hip-Hop","EEUU"],
+["To Pimp a Butterfly","Kendrick Lamar",2015,"Hip-Hop / Jazz","EEUU"],
+["DAMN.","Kendrick Lamar",2017,"Hip-Hop","EEUU"],
+["Section.80","Kendrick Lamar",2011,"Hip-Hop","EEUU"],
+["Take Care","Drake",2011,"Hip-Hop / R&B","Canadá"],
+["Nothing Was the Same","Drake",2013,"Hip-Hop / R&B","Canadá"],
+["Scorpion","Drake",2018,"Hip-Hop / R&B","Canadá"],
+["Channel Orange","Frank Ocean",2012,"R&B Alternativo","EEUU"],
+["Blonde","Frank Ocean",2016,"R&B Alternativo","EEUU"],
+["My Krazy Life","YG",2014,"Hip-Hop","EEUU"],
+["Acid Rap","Chance the Rapper",2013,"Hip-Hop","EEUU"],
+["Coloring Book","Chance the Rapper",2016,"Hip-Hop / Gospel","EEUU"],
+["Igor","Tyler, The Creator",2019,"Hip-Hop Alternativo","EEUU"],
+["Flower Boy","Tyler, The Creator",2017,"Hip-Hop Alternativo","EEUU"],
+["Goblin","Tyler, The Creator",2011,"Hip-Hop Alternativo","EEUU"],
+["4:44","Jay-Z",2017,"Hip-Hop","EEUU"],
+["Magna Carta Holy Grail","Jay-Z",2013,"Hip-Hop","EEUU"],
+["Watch the Throne","Jay-Z & Kanye West",2011,"Hip-Hop","EEUU"],
+["Beauty Behind the Madness","The Weeknd",2015,"R&B Alternativo","Canadá"],
+["House of Balloons","The Weeknd",2011,"R&B Alternativo","Canadá"],
+["Starboy","The Weeknd",2016,"R&B / Pop","Canadá"],
+["Lemonade","Beyoncé",2016,"R&B / Pop","EEUU"],
+["Beyoncé","Beyoncé",2013,"R&B / Pop","EEUU"],
+["1989","Taylor Swift",2014,"Synth-Pop","EEUU"],
+["Red","Taylor Swift",2012,"Country Pop","EEUU"],
+["Reputation","Taylor Swift",2017,"Pop","EEUU"],
+["Lover","Taylor Swift",2019,"Pop","EEUU"],
+["21","Adele",2011,"Soul-Pop","Reino Unido"],
+["25","Adele",2015,"Soul-Pop","Reino Unido"],
+["19","Adele",2008,"Soul-Pop","Reino Unido"],
+["When We All Fall Asleep, Where Do We Go?","Billie Eilish",2019,"Bedroom Pop","EEUU"],
+["Random Access Memories","Daft Punk",2013,"Disco / Electrónica","Francia"],
+["In Colour","Jamie xx",2015,"Electrónica","Reino Unido"],
+["xx","The xx",2009,"Indie Electrónica","Reino Unido"],
+["Coexist","The xx",2012,"Indie Electrónica","Reino Unido"],
+["I See You","The xx",2017,"Indie Electrónica","Reino Unido"],
+["Settle","Disclosure",2013,"House / UK Garage","Reino Unido"],
+["Overgrown","James Blake",2013,"Electrónica / Soul","Reino Unido"],
+["James Blake","James Blake",2011,"Electrónica","Reino Unido"],
+["Immunity","Jon Hopkins",2013,"Electrónica","Reino Unido"],
+["Currents","Tame Impala",2015,"Psych Pop / Electrónica","Australia"],
+["Lonerism","Tame Impala",2012,"Rock Psicodélico","Australia"],
+["Innerspeaker","Tame Impala",2010,"Rock Psicodélico","Australia"],
+["The Slow Rush","Tame Impala",2020,"Psych Pop","Australia"],
+["AM","Arctic Monkeys",2013,"Rock","Reino Unido"],
+["Wolfgang Amadeus Phoenix","Phoenix",2009,"Indie Pop","Francia"],
+["Bankrupt!","Phoenix",2013,"Indie Pop","Francia"],
+["Vampire Weekend","Vampire Weekend",2008,"Indie Pop","EEUU"],
+["Modern Vampires of the City","Vampire Weekend",2013,"Indie Pop","EEUU"],
+["Father, Son, Holy Ghost","Girls",2011,"Indie Rock","EEUU"],
+["Sound & Color","Alabama Shakes",2015,"Soul Rock","EEUU"],
+["El Camino","The Black Keys",2011,"Blues Rock","EEUU"],
+["Brothers","The Black Keys",2010,"Blues Rock","EEUU"],
+["Wasting Light","Foo Fighters",2011,"Rock","EEUU"],
+["The Suburbs","Arcade Fire",2010,"Indie Rock","Canadá"],
+["Reflektor","Arcade Fire",2013,"Indie Rock","Canadá"],
+["Bloom","Beach House",2012,"Dream Pop","EEUU"],
+["Teen Dream","Beach House",2010,"Dream Pop","EEUU"],
+["Depression Cherry","Beach House",2015,"Dream Pop","EEUU"],
+["Halcyon Digest","Deerhunter",2010,"Indie Rock","EEUU"],
+["Because the Internet","Childish Gambino",2013,"Hip-Hop","EEUU"],
+["Awaken, My Love!","Childish Gambino",2016,"Funk / Soul","EEUU"],
+["Some Rap Songs","Earl Sweatshirt",2018,"Hip-Hop Experimental","EEUU"],
+["Blackstar","David Bowie",2016,"Art Rock","Reino Unido"],
+["The Next Day","David Bowie",2013,"Art Rock","Reino Unido"],
+["Golden Hour","Kacey Musgraves",2018,"Country Pop","EEUU"],
+["Historian","Lucy Dacus",2018,"Indie Rock","EEUU"],
+["Punisher","Phoebe Bridgers",2020,"Indie Folk","EEUU"],
+["Stranger in the Alps","Phoebe Bridgers",2017,"Indie Folk","EEUU"],
+["Masseduction","St. Vincent",2017,"Art Pop","EEUU"],
+["Strange Mercy","St. Vincent",2011,"Art Pop","EEUU"],
+["Titanic Rising","Weyes Blood",2019,"Art Pop","EEUU"],
+["Norman Fucking Rockwell!","Lana Del Rey",2019,"Pop Alternativo","EEUU"],
+["Born to Die","Lana Del Rey",2012,"Pop Alternativo","EEUU"],
+["Melodrama","Lorde",2017,"Pop Alternativo","Nueva Zelanda"],
+["Pure Heroine","Lorde",2013,"Pop Alternativo","Nueva Zelanda"],
+["X 100pre","Bad Bunny",2018,"Trap Latino / Reggaetón","Puerto Rico"],
+["Vibras","J Balvin",2018,"Reggaetón","Colombia"],
+["Energía","J Balvin",2016,"Reggaetón","Colombia"],
+["El Mal Querer","Rosalía",2018,"Flamenco / Trap","España"],
+["Los Ángeles","Rosalía",2017,"Flamenco","España"],
+["Odisea","C. Tangana",2017,"Trap / Hip-Hop","España"],
+["Mira Lo Que Fue","Vetusta Morla",2011,"Rock Alternativo","España"],
+["Un Día en el Mundo","Vetusta Morla",2008,"Rock Alternativo","España"],
+["La Deriva","Vetusta Morla",2014,"Rock Alternativo","España"],
+["1984","Love of Lesbian",2012,"Indie Pop","España"],
+["La Noche Eterna","Love of Lesbian",2009,"Indie Pop","España"],
+["El Poeta Halley","Love of Lesbian",2016,"Indie Pop","España"],
+["Nadie Vive Aquí","Lori Meyers",2010,"Indie Rock","España"],
+["Croce de Molino","Lori Meyers",2015,"Indie Rock","España"],
+["Ambar","Miss Caffeina",2016,"Indie Pop","España"],
+["Segunda Personalidad","Izal",2016,"Indie Rock","España"],
+["Copacabana","Izal",2018,"Indie Rock","España"],
+["18 Months","Calvin Harris",2012,"Electro House","Reino Unido"],
+["Funk Wav Bounces Vol. 1","Calvin Harris",2017,"Funk / Pop","Reino Unido"],
+["True","Avicii",2013,"EDM / Folktronica","Suecia"],
+["Nothing but the Beat","David Guetta",2011,"EDM","Francia"],
+["Recess","Skrillex",2014,"Dubstep / EDM","EEUU"],
+["Scary Monsters and Nice Sprites","Skrillex",2010,"Dubstep","EEUU"],
+["Bangarang","Skrillex",2011,"Dubstep","EEUU"],
+["Skin","Flume",2016,"Future Bass / Electrónica","Australia"],
+["Flume","Flume",2012,"Future Bass / Electrónica","Australia"],
+];
+const ALBUMS_2020S = [
+["Folklore","Taylor Swift",2020,"Indie Folk","EEUU"],
+["Evermore","Taylor Swift",2020,"Indie Folk","EEUU"],
+["Midnights","Taylor Swift",2022,"Synth-Pop","EEUU"],
+["The Tortured Poets Department","Taylor Swift",2024,"Pop","EEUU"],
+["SOUR","Olivia Rodrigo",2021,"Pop Punk / Pop","EEUU"],
+["GUTS","Olivia Rodrigo",2023,"Pop Rock","EEUU"],
+["Un Verano Sin Ti","Bad Bunny",2022,"Reggaetón / Trap Latino","Puerto Rico"],
+["YHLQMDLG","Bad Bunny",2020,"Trap Latino / Reggaetón","Puerto Rico"],
+["El Último Tour del Mundo","Bad Bunny",2020,"Trap Latino","Puerto Rico"],
+["Nadie Sabe Lo Que Va a Pasar Mañana","Bad Bunny",2023,"Trap Latino","Puerto Rico"],
+["Motomami","Rosalía",2022,"Fusión Experimental","España"],
+["SOS","SZA",2022,"R&B Alternativo","EEUU"],
+["Ctrl","SZA",2017,"R&B Alternativo","EEUU"],
+["Happier Than Ever","Billie Eilish",2021,"Pop Alternativo","EEUU"],
+["Hit Me Hard and Soft","Billie Eilish",2024,"Pop Alternativo","EEUU"],
+["Renaissance","Beyoncé",2022,"House / Dance-Pop","EEUU"],
+["Cowboy Carter","Beyoncé",2024,"Country Pop","EEUU"],
+["Donda","Kanye West",2021,"Hip-Hop / Gospel","EEUU"],
+["Mr. Morale & The Big Steppers","Kendrick Lamar",2022,"Hip-Hop","EEUU"],
+["GNX","Kendrick Lamar",2024,"Hip-Hop","EEUU"],
+["Certified Lover Boy","Drake",2021,"Hip-Hop","Canadá"],
+["For All the Dogs","Drake",2023,"Hip-Hop","Canadá"],
+["Whole Lotta Red","Playboi Carti",2020,"Trap Experimental","EEUU"],
+["Music to Be Murdered By","Eminem",2020,"Hip-Hop","EEUU"],
+["Call Me If You Get Lost","Tyler, The Creator",2021,"Hip-Hop","EEUU"],
+["CHROMAKOPIA","Tyler, The Creator",2024,"Hip-Hop","EEUU"],
+["An Evening with Silk Sonic","Silk Sonic (Bruno Mars & Anderson .Paak)",2021,"Funk / Soul","EEUU"],
+["Justice","Justin Bieber",2021,"Pop","Canadá"],
+["Positions","Ariana Grande",2020,"Pop / R&B","EEUU"],
+["Eternal Sunshine","Ariana Grande",2024,"Pop","EEUU"],
+["Future Nostalgia","Dua Lipa",2020,"Dance-Pop","Reino Unido"],
+["Radical Optimism","Dua Lipa",2024,"Dance-Pop","Reino Unido"],
+["Harry's House","Harry Styles",2022,"Pop Rock","Reino Unido"],
+["Fine Line","Harry Styles",2019,"Pop Rock","Reino Unido"],
+["Short n' Sweet","Sabrina Carpenter",2024,"Pop","EEUU"],
+["Brat","Charli XCX",2024,"Hyperpop / Dance-Pop","Reino Unido"],
+["An Overview on Phenomenal Nature","Cassandra Jenkins",2021,"Indie Folk","EEUU"],
+["Sling","Clairo",2021,"Indie Pop","EEUU"],
+["Immunity","Clairo",2019,"Bedroom Pop","EEUU"],
+["Charm","Clairo",2024,"Indie Pop","EEUU"],
+["Fetch the Bolt Cutters","Fiona Apple",2020,"Art Pop","EEUU"],
+["Blue Banisters","Lana Del Rey",2021,"Pop Alternativo","EEUU"],
+["Chemtrails over the Country Club","Lana Del Rey",2021,"Pop Alternativo","EEUU"],
+["Did You Know That There's a Tunnel Under Ocean Blvd","Lana Del Rey",2023,"Pop Alternativo","EEUU"],
+["Hey What","Low",2021,"Slowcore / Experimental","EEUU"],
+["Jubilee","Japanese Breakfast",2021,"Indie Pop","EEUU"],
+["A Light for Attracting Attention","The Smile (Thom Yorke, Jonny Greenwood)",2022,"Rock Experimental","Reino Unido"],
+["Everything Was Beautiful","Spiritualized",2022,"Rock Experimental","Reino Unido"],
+["Big Time","Angel Olsen",2022,"Indie Folk","EEUU"],
+["Gemini Rights","Steve Lacy",2022,"R&B Alternativo","EEUU"],
+["It's Almost Dry","Pusha T",2022,"Hip-Hop","EEUU"],
+["Her Loss","Drake & 21 Savage",2022,"Hip-Hop","Canadá/EEUU"],
+["Utopia","Travis Scott",2023,"Trap / Hip-Hop","EEUU"],
+["Astroworld","Travis Scott",2018,"Trap / Hip-Hop","EEUU"],
+["Vultures 1","Kanye West & Ty Dolla $ign",2024,"Hip-Hop","EEUU"],
+["World Music Radio","Jon Batiste",2023,"Soul / Jazz","EEUU"],
+["The Melodic Blue","Baby Keem",2021,"Hip-Hop","EEUU"],
+["King's Disease","Nas",2020,"Hip-Hop","EEUU"],
+["Alfredo","Freddie Gibbs & The Alchemist",2020,"Hip-Hop","EEUU"],
+["We're All Alone in This Together","Dave",2021,"UK Rap","Reino Unido"],
+["Psychodrama","Dave",2019,"UK Rap","Reino Unido"],
+["Donde Quiero Estar","Quevedo",2023,"Trap Latino","España"],
+["11 Razones","Aitana",2020,"Pop","España"],
+["Alpha","Aitana",2023,"Pop","España"],
+["Este Vicio","Guitarricadelafuente",2023,"Flamenco Pop","España"],
+["La Cantera","Guitarricadelafuente",2021,"Flamenco Pop","España"],
+["LR-B","Rels B",2020,"Trap / R&B","España"],
+["Second Nature","Rels B",2022,"Trap / R&B","España"],
+["Prisma","Beret",2019,"Pop",  "España"],
+["Jerusalema","Master KG feat. Nomcebo Zikode",2020,"Amapiano / Gospel House","Sudáfrica"],
+];
+const ALBUMS_EXTRA = [
+["A Love Supreme","John Coltrane",1965,"Jazz","EEUU"],
+["Speak No Evil","Wayne Shorter",1966,"Jazz","EEUU"],
+["Head Hunters","Herbie Hancock",1973,"Jazz Fusion","EEUU"],
+["The Köln Concert","Keith Jarrett",1975,"Jazz","EEUU"],
+["Birth of the Cool","Miles Davis",1957,"Jazz","EEUU"],
+["Money Jungle","Duke Ellington, Charles Mingus & Max Roach",1962,"Jazz","EEUU"],
+["Empyrean Isles","Herbie Hancock",1964,"Jazz","EEUU"],
+["Djangologie","Django Reinhardt",1953,"Gypsy Jazz","Francia"],
+["Djangology","Django Reinhardt",1961,"Gypsy Jazz","Francia/Bélgica"],
+["Heavy Weather","Weather Report",1977,"Jazz Fusion","EEUU"],
+["Romantic Warrior","Return to Forever",1976,"Jazz Fusion","EEUU"],
+["The Inner Mounting Flame","Mahavishnu Orchestra",1971,"Jazz Fusion","Reino Unido"],
+["Breezin'","George Benson",1976,"Smooth Jazz","EEUU"],
+["Winelight","Grover Washington Jr.",1980,"Smooth Jazz","EEUU"],
+["Straight, No Chaser","Thelonious Monk",1967,"Jazz","EEUU"],
+["Underground","Thelonious Monk",1968,"Jazz","EEUU"],
+["Free Jazz","Ornette Coleman",1961,"Free Jazz","EEUU"],
+["Ascension","John Coltrane",1966,"Free Jazz","EEUU"],
+["Interstellar Space","John Coltrane",1974,"Free Jazz","EEUU"],
+["The Black Saint and the Sinner Lady","Charles Mingus",1963,"Jazz","EEUU"],
+["Out There","Eric Dolphy",1960,"Jazz","EEUU"],
+["Song X","Ornette Coleman & Pat Metheny",1986,"Jazz Fusion","EEUU"],
+["Bright Size Life","Pat Metheny",1976,"Jazz","EEUU"],
+["Timeless","John Abercrombie",1975,"Jazz Fusion","EEUU"],
+["The Rite of Spring","Igor Stravinsky",1913,"Clásica Moderna","Rusia/Francia"],
+["Symphony No. 9","Ludwig van Beethoven",1824,"Clásica Romántica","Alemania"],
+["Clair de Lune (Suite Bergamasque)","Claude Debussy",1905,"Impresionismo","Francia"],
+["Boléro","Maurice Ravel",1928,"Clásica Moderna","Francia"],
+["Music for 18 Musicians","Steve Reich",1978,"Minimalismo","EEUU"],
+["Einstein on the Beach","Philip Glass",1976,"Minimalismo / Ópera","EEUU"],
+["Glassworks","Philip Glass",1982,"Minimalismo","EEUU"],
+["In C","Terry Riley",1968,"Minimalismo","EEUU"],
+["Tabula Rasa","Arvo Pärt",1984,"Minimalismo / Sacra","Estonia"],
+["Spiegel im Spiegel","Arvo Pärt",1978,"Minimalismo","Estonia"],
+["West Side Story (BSO)","Leonard Bernstein",1957,"Musical / Score","EEUU"],
+["The Good, the Bad and the Ugly (BSO)","Ennio Morricone",1966,"Score","Italia"],
+["Once Upon a Time in the West (BSO)","Ennio Morricone",1968,"Score","Italia"],
+["Star Wars: A New Hope (BSO)","John Williams",1977,"Score","EEUU"],
+["Jaws (BSO)","John Williams",1975,"Score","EEUU"],
+["The Godfather (BSO)","Nino Rota",1972,"Score","Italia"],
+["Blade Runner (BSO)","Vangelis",1982,"Score / Electrónica","Grecia"],
+["Halloween (BSO)","John Carpenter",1978,"Score / Electrónica","EEUU"],
+["Paris, Texas (BSO)","Ry Cooder",1984,"Score / Blues","EEUU"],
+["Twin Peaks: Fire Walk with Me (BSO)","Angelo Badalamenti",1992,"Score","EEUU"],
+["British Steel","Judas Priest",1980,"Heavy Metal","Reino Unido"],
+["Painkiller","Judas Priest",1990,"Heavy Metal","Reino Unido"],
+["Rust in Peace","Megadeth",1990,"Thrash Metal","EEUU"],
+["Among the Living","Anthrax",1987,"Thrash Metal","EEUU"],
+["Bonded by Blood","Exodus",1985,"Thrash Metal","EEUU"],
+["Seasons in the Abyss","Slayer",1990,"Thrash Metal","EEUU"],
+["Blackwater Park","Opeth",2001,"Metal Progresivo","Suecia"],
+["Ghost Reveries","Opeth",2005,"Metal Progresivo","Suecia"],
+["Images and Words","Dream Theater",1992,"Metal Progresivo","EEUU"],
+["Metropolis Pt. 2: Scenes from a Memory","Dream Theater",1999,"Metal Progresivo","EEUU"],
+["De Mysteriis Dom Sathanas","Mayhem",1994,"Black Metal","Noruega"],
+["A Blaze in the Northern Sky","Darkthrone",1992,"Black Metal","Noruega"],
+["In the Nightside Eclipse","Emperor",1994,"Black Metal Sinfónico","Noruega"],
+["Left Hand Path","Entombed",1990,"Death Metal","Suecia"],
+["Like an Everflowing Stream","Dismember",1991,"Death Metal","Suecia"],
+["Human","Death",1991,"Death Metal Progresivo","EEUU"],
+["Symbolic","Death",1995,"Death Metal Progresivo","EEUU"],
+["Scream Bloody Gore","Death",1987,"Death Metal","EEUU"],
+["Blessed Are the Sick","Morbid Angel",1991,"Death Metal","EEUU"],
+["Altars of Madness","Morbid Angel",1989,"Death Metal","EEUU"],
+["Heartwork","Carcass",1993,"Death Metal Melódico","Reino Unido"],
+["The Number of the Beast","Iron Maiden",1982,"Heavy Metal","Reino Unido"],
+["Piece of Mind","Iron Maiden",1983,"Heavy Metal","Reino Unido"],
+["Powerslave","Iron Maiden",1984,"Heavy Metal","Reino Unido"],
+["Seventh Son of a Seventh Son","Iron Maiden",1988,"Heavy Metal","Reino Unido"],
+["Vulgar Display of Power","Pantera",1992,"Groove Metal","EEUU"],
+["Cowboys from Hell","Pantera",1990,"Groove Metal","EEUU"],
+["Far Beyond Driven","Pantera",1994,"Groove Metal","EEUU"],
+["Ace of Spades","Motörhead",1980,"Speed Metal","Reino Unido"],
+["Nevermind the Bollocks","Sex Pistols",1977,"Punk Rock","Reino Unido"],
+["Damaged","Black Flag",1981,"Hardcore Punk","EEUU"],
+["Milo Goes to College","Descendents",1982,"Pop Punk / Hardcore","EEUU"],
+["Group Sex","Circle Jerks",1980,"Hardcore Punk","EEUU"],
+["Fresh Fruit for Rotting Vegetables","Dead Kennedys",1980,"Hardcore Punk","EEUU"],
+["Plastic Surgery Disasters","Dead Kennedys",1982,"Hardcore Punk","EEUU"],
+["Minor Threat","Minor Threat",1984,"Hardcore Punk","EEUU"],
+["Dookie","Green Day",1994,"Pop Punk","EEUU"],
+["Enema of the State","Blink-182",1999,"Pop Punk","EEUU"],
+["Take Off Your Pants and Jacket","Blink-182",2001,"Pop Punk","EEUU"],
+["From Under the Cork Tree","Fall Out Boy",2005,"Pop Punk / Emo","EEUU"],
+["Three Cheers for Sweet Revenge","My Chemical Romance",2004,"Emo / Post-Hardcore","EEUU"],
+["The Black Parade","My Chemical Romance",2006,"Rock Ópera / Emo","EEUU"],
+["Deja Entendu","Brand New",2003,"Emo / Post-Hardcore","EEUU"],
+["Diary","Sunny Day Real Estate",1994,"Emo","EEUU"],
+["Clarity","Jimmy Eat World",1999,"Emo","EEUU"],
+["Bleed American","Jimmy Eat World",2001,"Emo / Rock Alternativo","EEUU"],
+["Live/Dead","Grateful Dead",1969,"Rock Psicodélico","EEUU"],
+["Wheels of Fire","Cream",1968,"Blues Rock","Reino Unido"],
+["Boy","U2",1980,"Rock Post-Punk","Irlanda"],
+["October","U2",1981,"Rock","Irlanda"],
+["All That You Can't Leave Behind","U2",2000,"Rock","Irlanda"],
+["Songs from a Room","Leonard Cohen",1969,"Folk","Canadá"],
+["New Skin for the Old Ceremony","Leonard Cohen",1974,"Folk","Canadá"],
+["I'm Your Man","Leonard Cohen",1988,"Pop Alternativo","Canadá"],
+["Blood on the Tracks","Bob Dylan",1975,"Folk Rock","EEUU"],
+["Desire","Bob Dylan",1976,"Folk Rock","EEUU"],
+["John Wesley Harding","Bob Dylan",1967,"Folk Rock","EEUU"],
+["Nashville Skyline","Bob Dylan",1969,"Country Rock","EEUU"],
+["Sweetheart of the Rodeo","The Byrds",1968,"Country Rock","EEUU"],
+["Music from Big Pink","The Band",1968,"Americana","Canadá/EEUU"],
+["Red Headed Stranger","Willie Nelson",1975,"Country","EEUU"],
+["Shotgun Willie","Willie Nelson",1973,"Country","EEUU"],
+["Wanted! The Outlaws","Waylon Jennings, Willie Nelson & otros",1976,"Country","EEUU"],
+["At Folsom Prison","Johnny Cash",1968,"Country","EEUU"],
+["At San Quentin","Johnny Cash",1969,"Country","EEUU"],
+["American IV: The Man Comes Around","Johnny Cash",2002,"Country / Americana","EEUU"],
+["Coat of Many Colors","Dolly Parton",1971,"Country","EEUU"],
+["Trio","Dolly Parton, Emmylou Harris & Linda Ronstadt",1987,"Country","EEUU"],
+["Come On Over","Shania Twain",1997,"Country Pop","Canadá"],
+["Wildflowers","Tom Petty",1994,"Rock / Americana","EEUU"],
+["Damn the Torpedoes","Tom Petty and the Heartbreakers",1979,"Rock","EEUU"],
+["Rain Dogs","Tom Waits",1985,"Rock Experimental / Blues","EEUU"],
+["Swordfishtrombones","Tom Waits",1983,"Rock Experimental","EEUU"],
+["Closing Time","Tom Waits",1973,"Folk / Jazz","EEUU"],
+["Buena Vista Social Club","Buena Vista Social Club",1997,"Son Cubano","Cuba"],
+["Sublime","Ibrahim Ferrer",1999,"Son Cubano","Cuba"],
+["Dos Gardenias","Ibrahim Ferrer",1998,"Son Cubano","Cuba"],
+["Introducing... Rubén González","Rubén González",1997,"Son Cubano","Cuba"],
+["Wild Fire","Toots and the Maytals",1980,"Reggae / Ska","Jamaica"],
+["Funky Kingston","Toots and the Maytals",1973,"Reggae","Jamaica"],
+["Marcus Garvey","Burning Spear",1975,"Reggae Roots","Jamaica"],
+["Heart of the Congos","The Congos",1977,"Reggae Roots","Jamaica"],
+["Two Sevens Clash","Culture",1977,"Reggae Roots","Jamaica"],
+["Police & Thieves","Junior Murvin",1976,"Reggae","Jamaica"],
+["Afrodisiac","Fela Kuti",1973,"Afrobeat","Nigeria"],
+["Zombie","Fela Kuti",1976,"Afrobeat","Nigeria"],
+["Expensive Shit","Fela Kuti",1975,"Afrobeat","Nigeria"],
+["Gentleman","Fela Kuti",1973,"Afrobeat","Nigeria"],
+["Graceland","Paul Simon",1986,"World / Pop","EEUU"],
+["Talking Timbuktu","Ali Farka Touré & Ry Cooder",1994,"World / Blues","Mali"],
+["Nusrat Fateh Ali Khan: Shahen-Shah","Nusrat Fateh Ali Khan",1989,"Qawwali","Pakistán"],
+["Devotional Songs","Nusrat Fateh Ali Khan",1988,"Qawwali","Pakistán"],
+["Nightbirds","Labelle",1974,"Funk / Soul","EEUU"],
+["Aja","Steely Dan",1977,"Jazz Rock","EEUU"],
+["Can't Buy a Thrill","Steely Dan",1972,"Rock","EEUU"],
+["The Royal Scam","Steely Dan",1976,"Jazz Rock","EEUU"],
+["Boston","Boston",1976,"Arena Rock","EEUU"],
+["Toys in the Attic","Aerosmith",1975,"Hard Rock","EEUU"],
+["Rocks","Aerosmith",1976,"Hard Rock","EEUU"],
+["Highway to Hell","AC/DC",1979,"Hard Rock","Australia"],
+["Foreigner","Foreigner",1977,"Arena Rock","EEUU/Reino Unido"],
+["Frampton Comes Alive!","Peter Frampton",1976,"Rock","Reino Unido"],
+["No Fences","Garth Brooks",1990,"Country","EEUU"],
+["Ropin' the Wind","Garth Brooks",1991,"Country","EEUU"],
+["Genius Loves Company","Ray Charles",2004,"Soul / Colaboraciones","EEUU"],
+["Djesse Vol. 1","Jacob Collier",2018,"Jazz Fusion / Pop","Reino Unido"],
+["To Bring You My Love","PJ Harvey",1995,"Rock Alternativo","Reino Unido"],
+["Rid of Me","PJ Harvey",1993,"Rock Alternativo","Reino Unido"],
+["Stories from the City, Stories from the Sea","PJ Harvey",2000,"Rock Alternativo","Reino Unido"],
+["Tender Prey","Nick Cave and the Bad Seeds",1988,"Rock Gótico / Post-Punk","Australia"],
+["Murder Ballads","Nick Cave and the Bad Seeds",1996,"Rock Gótico","Australia"],
+["The Boatman's Call","Nick Cave and the Bad Seeds",1997,"Rock / Balada","Australia"],
+];
+// ---- combine + dedupe all decades ----
+const ALL_ALBUMS_RAW = [].concat(
+  ALBUMS_50S, ALBUMS_60S, ALBUMS_70S, ALBUMS_80S,
+  ALBUMS_90S, ALBUMS_2000S, ALBUMS_2010S, ALBUMS_2020S, ALBUMS_EXTRA
+);
+const seen = new Set();
+const ALL_ALBUMS = [];
+ALL_ALBUMS_RAW.forEach(row => {
+  const key = (row[0] + '|' + row[1]).toLowerCase();
+  if (seen.has(key)) return;
+  seen.add(key);
+  ALL_ALBUMS.push(row);
+});
+ALL_ALBUMS.sort((a, b) => a[2] - b[2]);
+ALL_ALBUMS.forEach((row, i) => { row.push(i + 1); }); // push rank as 6th field [title,artist,year,genre,country,rank]
+
+document.querySelector('.hero .stats').insertAdjacentHTML('beforeend',
+  `<div class="stat"><div class="n">${ALL_ALBUMS.length}</div><div class="l">Discos reales en la lista</div></div>`);
+
+(function() {
+  const decadeSelect = document.getElementById('albDecadeFilter');
+  const genreSelect = document.getElementById('albGenreFilter');
+
+  function decadeOf(y) { return Math.floor(y / 10) * 10; }
+  const decades = Array.from(new Set(ALL_ALBUMS.map(r => decadeOf(r[2])))).sort((a,b)=>a-b);
+  decadeSelect.innerHTML = `<option value="all">Todas las décadas</option>` +
+    decades.map(d => `<option value="${d}">${d}s</option>`).join('');
+
+  const genres = Array.from(new Set(ALL_ALBUMS.map(r => r[3]))).sort();
+  genreSelect.innerHTML = `<option value="all">Todos los géneros</option>` +
+    genres.map(g => `<option value="${g}">${g}</option>`).join('');
+
+  let state = { q: '', decade: 'all', genre: 'all', page: 1, pageSize: 60 };
+
+  function getFiltered() {
+    const q = state.q.trim().toLowerCase();
+    return ALL_ALBUMS.filter(r => {
+      if (state.decade !== 'all' && decadeOf(r[2]) !== +state.decade) return false;
+      if (state.genre !== 'all' && r[3] !== state.genre) return false;
+      if (q) {
+        const hay = (r[0] + ' ' + r[1] + ' ' + r[3] + ' ' + r[4]).toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+  }
+
+  function render() {
+    const rows = getFiltered();
+    const totalPages = Math.max(1, Math.ceil(rows.length / state.pageSize));
+    if (state.page > totalPages) state.page = totalPages;
+    const start = (state.page - 1) * state.pageSize;
+    const pageRows = rows.slice(start, start + state.pageSize);
+
+    document.getElementById('albCount').textContent =
+      `Mostrando ${rows.length ? (start+1) : 0}–${Math.min(start+state.pageSize, rows.length)} de ${rows.length} discos (de ${ALL_ALBUMS.length} en total)`;
+
+    document.getElementById('albBody').innerHTML = pageRows.map(([title, artist, year, genre, country, rank]) => `
+      <tr>
+        <td class="yr">#${rank}</td>
+        <td>${title}</td>
+        <td class="who">${artist}</td>
+        <td class="yr">${year}</td>
+        <td class="who">${genre}</td>
+        <td class="who">${country}</td>
+        <td>${spotifyLinkHtml(title, artist, '▸ Escuchar')}</td>
+      </tr>
+    `).join('') || `<tr><td colspan="7" style="color:var(--fg-mute);">Sin resultados 🤷</td></tr>`;
+
+    document.getElementById('albPageInfo').textContent = `Página ${state.page} de ${totalPages} · ${rows.length} discos filtrados`;
+    document.getElementById('albPrev').disabled = state.page <= 1;
+    document.getElementById('albNext').disabled = state.page >= totalPages;
+  }
+
+  let searchTimer;
+  document.getElementById('albSearch').addEventListener('input', (e) => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => { state.q = e.target.value; state.page = 1; render(); }, 150);
+  });
+  decadeSelect.addEventListener('change', (e) => { state.decade = e.target.value; state.page = 1; render(); });
+  genreSelect.addEventListener('change', (e) => { state.genre = e.target.value; state.page = 1; render(); });
+  document.getElementById('albPrev').addEventListener('click', () => { state.page = Math.max(1, state.page - 1); render(); });
+  document.getElementById('albNext').addEventListener('click', () => { state.page += 1; render(); });
+
+  render();
+})();
+</script>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#17130f">
+<title>Mi Música</title>
+<style>
+  body {
+    margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: #17130f; color: #f3ead9;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    padding: 24px; box-sizing: border-box;
+  }
+  .wrap { max-width: 480px; width: 100%; }
+  h1 { font-size: 22px; margin: 0 0 24px; }
+  a.card {
+    display: block; text-decoration: none; color: inherit;
+    background: #211a14; border: 1px solid rgba(243,234,217,0.12); border-radius: 14px;
+    padding: 18px 20px; margin-bottom: 14px;
+  }
+  a.card:active { background: #2a2118; }
+  a.card .t { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  a.card .d { font-size: 13px; color: #cdbfa4; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>🎧 Mi Música</h1>
+    <a class="card" href="music_history.html">
+      <div class="t">🎼 Atlas de la Música</div>
+      <div class="d">Historia, géneros, discos esenciales y tu especial Barcelona '97</div>
+    </a>
+    <a class="card" href="music_library.html">
+      <div class="t">📀 Tu Biblioteca de Spotify</div>
+      <div class="d">Las 15.627 canciones de tus "me gusta", analizadas</div>
+    </a>
+  </div>
+</body>
+</html>
