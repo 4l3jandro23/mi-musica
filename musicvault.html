@@ -294,7 +294,17 @@ async function spotifySearch(query, type) {
   const token = await getSpotifyToken();
   const url = `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=${type}&limit=15`;
   const res = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
-  if (!res.ok) throw new Error('SEARCH_FAILED');
+  if (!res.ok) throw new Error('SEARCH_FAILED:' + res.status);
+  return res.json();
+}
+
+// Detecta links de open.spotify.com (con o sin prefijo de idioma, ej. /intl-es/) pegados en el buscador.
+const SPOTIFY_URL_RE = /open\.spotify\.com\/(?:intl-[a-z-]+\/)?(album|track|artist)\/([a-zA-Z0-9]+)/i;
+
+async function fetchSpotifyItemById(type, id) {
+  const token = await getSpotifyToken();
+  const res = await fetch(`https://api.spotify.com/v1/${type}s/${id}`, { headers: { 'Authorization': `Bearer ${token}` } });
+  if (!res.ok) throw new Error('LOOKUP_FAILED:' + res.status);
   return res.json();
 }
 
@@ -439,20 +449,31 @@ async function runSearch() {
   }
 
   resultsEl.innerHTML = `<div class="empty-state" style="padding:24px 0;"><p>Buscando...</p></div>`;
+  const urlMatch = q.match(SPOTIFY_URL_RE);
   try {
-    const data = await spotifySearch(q, currentSearchType);
-    const key = currentSearchType + 's';
-    const raw = (data[key] && data[key].items) || [];
-    lastResults = raw.map(r => normalizeSpotifyResult(r, currentSearchType));
+    if (urlMatch) {
+      // Pegaste un link de Spotify: lo traemos directo por ID en vez de "buscarlo" como texto.
+      const [, linkType, linkId] = urlMatch;
+      const raw = await fetchSpotifyItemById(linkType, linkId);
+      lastResults = [normalizeSpotifyResult(raw, linkType)];
+    } else {
+      const data = await spotifySearch(q, currentSearchType);
+      const key = currentSearchType + 's';
+      const raw = (data[key] && data[key].items) || [];
+      lastResults = raw.map(r => normalizeSpotifyResult(r, currentSearchType));
+    }
     if (lastResults.length === 0) {
       resultsEl.innerHTML = `<div class="empty-state" style="padding:24px 0;"><p>Sin resultados.</p></div>`;
       return;
     }
     resultsEl.innerHTML = lastResults.map((r, i) => resultRowHtml(r, i)).join('');
   } catch (err) {
-    resultsEl.innerHTML = `<div class="empty-state" style="padding:24px 0;">
-      <p>${err.message === 'AUTH_FAILED' ? 'Credenciales inválidas. Revisalas en Ajustes.' : 'No se pudo buscar. Probá de nuevo.'}</p>
-    </div>`;
+    const msg = err.message || '';
+    let text = `No se pudo buscar (${msg || 'error desconocido'}). Probá de nuevo.`;
+    if (msg === 'AUTH_FAILED') text = 'Credenciales inválidas. Revisalas en Ajustes.';
+    else if (msg.startsWith('LOOKUP_FAILED')) text = `No se encontró ese link de Spotify (código ${msg.split(':')[1]}).`;
+    else if (msg.startsWith('SEARCH_FAILED')) text = `Spotify devolvió un error al buscar (código ${msg.split(':')[1]}).`;
+    resultsEl.innerHTML = `<div class="empty-state" style="padding:24px 0;"><p>${text}</p></div>`;
   }
 }
 
