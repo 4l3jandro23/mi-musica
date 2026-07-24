@@ -1,0 +1,647 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MusicVault">
+<meta name="theme-color" content="#17130f" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f2ead9" media="(prefers-color-scheme: light)">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2317130f'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle'%3E%F0%9F%97%84%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<title>🗄️ MusicVault</title>
+<style>
+  :root {
+    color-scheme: light;
+    --ink: #17130f; --ink-card: #211a14; --ink-card-2: #2a2118;
+    --paper: #f2ead9; --paper-card: #fbf6ea; --paper-card-2: #efe4cc;
+    --text: #201a12; --text-soft: #5b4f3c; --text-mute: #8a7c63;
+    --rule: rgba(32,26,18,0.14);
+    --brass: #a8701e; --teal: #1f6e63; --crimson: #9c2f24;
+    --bg: var(--paper); --card: var(--paper-card); --card-2: var(--paper-card-2);
+    --fg: var(--text); --fg-soft: var(--text-soft); --fg-mute: var(--text-mute); --line: var(--rule);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --bg: var(--ink); --card: var(--ink-card); --card-2: var(--ink-card-2);
+      --fg: #f3ead9; --fg-soft: #cdbfa4; --fg-mute: #8f8265;
+      --line: rgba(243,234,217,0.12);
+      --brass: #e2a63d; --teal: #4fb3a5; --crimson: #e2665a;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: var(--ink); --card: var(--ink-card); --card-2: var(--ink-card-2);
+    --fg: #f3ead9; --fg-soft: #cdbfa4; --fg-mute: #8f8265;
+    --line: rgba(243,234,217,0.12);
+    --brass: #e2a63d; --teal: #4fb3a5; --crimson: #e2665a;
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --bg: var(--paper); --card: var(--paper-card); --card-2: var(--paper-card-2);
+    --fg: var(--text); --fg-soft: var(--text-soft); --fg-mute: var(--text-mute); --line: var(--rule);
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  .root {
+    background: var(--bg); color: var(--fg);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.4; min-height: 100vh; padding-bottom: 40px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+  .topbar {
+    position: sticky; top:0; z-index: 30;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 14px 16px; background: color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
+  }
+  .topbar .brand { font-family: Georgia, serif; font-weight:700; font-size:17px; }
+  .icon-btn {
+    display:flex; align-items:center; justify-content:center;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--card); border: 1px solid var(--line); color: var(--fg);
+    font-size: 16px; cursor: pointer;
+  }
+  .topbar-actions { display:flex; gap:8px; }
+
+  .filter-row { display:flex; gap:8px; padding: 14px 0 4px; flex-wrap:wrap; align-items:center; }
+  .filter-row input[type="text"], .filter-row select {
+    font-family: inherit; font-size: 13.5px; color: var(--fg);
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: 9px 12px;
+  }
+  .filter-row input[type="text"] { flex: 1 1 140px; }
+  .fab {
+    position: fixed; bottom: 24px; right: 20px; z-index: 25;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--brass); color: #17130f; border: none;
+    font-size: 24px; box-shadow: 0 8px 20px rgba(0,0,0,0.25); cursor: pointer;
+  }
+
+  .grid { display:grid; grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 14px 0 30px; }
+  @media (min-width: 520px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  .card {
+    background: var(--card); border-radius: 16px; overflow:hidden; cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08); border: 1px solid var(--line);
+  }
+  .card .cover {
+    width: 100%; aspect-ratio: 1; background: var(--card-2);
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+  }
+  .card .cover img { width:100%; height:100%; object-fit: cover; display:block; }
+  .card .cover .fallback { font-size: 28px; color: var(--fg-mute); }
+  .card .body { padding: 9px 11px 11px; }
+  .card .t { font-size: 13px; font-weight: 650; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .card .a { font-size: 11.5px; color: var(--fg-mute); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px; }
+  .card .meta-row { display:flex; align-items:center; gap:6px; margin-top:6px; }
+  .type-badge {
+    font-size: 9.5px; text-transform:uppercase; letter-spacing:0.04em;
+    padding: 2px 6px; border-radius: 6px; background: var(--card-2); color: var(--fg-mute);
+  }
+  .stars-mini { font-size: 10px; color: var(--brass); }
+
+  .empty-state { text-align:center; padding: 70px 20px; color: var(--fg-mute); }
+  .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-state h2 { font-size: 16px; color: var(--fg); margin: 0 0 6px; }
+  .empty-state p { font-size: 13px; margin: 0; }
+  .empty-state button {
+    margin-top: 16px; font-family: inherit; font-size: 13px; color: #17130f;
+    background: var(--brass); border: none; border-radius: 20px; padding: 10px 18px; cursor: pointer;
+  }
+
+  /* modal system */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 50;
+    display:flex; align-items:flex-end; justify-content:center;
+  }
+  @media (min-width: 640px) { .overlay { align-items:center; } }
+  .sheet {
+    background: var(--bg); width: 100%; max-width: 560px; max-height: 92vh; overflow-y: auto;
+    border-radius: 20px 20px 0 0; padding: 18px 18px 30px;
+  }
+  @media (min-width: 640px) { .sheet { border-radius: 20px; max-height: 85vh; } }
+  .sheet-head { display:flex; align-items:center; justify-content:space-between; margin-bottom: 14px; }
+  .sheet-head h2 { font-size: 17px; margin:0; }
+
+  .tab-row { display:flex; gap:6px; margin-bottom: 12px; }
+  .tab-btn {
+    font-family: inherit; font-size: 12.5px; color: var(--fg-soft);
+    background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 6px 14px; cursor: pointer;
+  }
+  .tab-btn.active { background: var(--brass); color: #17130f; border-color: transparent; font-weight:600; }
+
+  .search-input {
+    width:100%; font-family: inherit; font-size: 15px; color: var(--fg);
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 12px 14px; margin-bottom: 12px;
+  }
+  .result-row {
+    display:flex; gap:12px; align-items:center; padding: 9px 4px; border-bottom: 1px solid var(--line);
+  }
+  .result-row .cover-sm { width: 46px; height: 46px; border-radius: 8px; background: var(--card-2); flex-shrink:0; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+  .result-row .cover-sm img { width:100%; height:100%; object-fit:cover; }
+  .result-row .info { flex:1; min-width:0; }
+  .result-row .t { font-size: 13.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .result-row .a { font-size: 12px; color: var(--fg-mute); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .save-btn {
+    width: 32px; height: 32px; border-radius: 50%; flex-shrink:0;
+    background: var(--card-2); border: 1px solid var(--line); color: var(--fg);
+    font-size: 16px; cursor: pointer;
+  }
+  .save-btn.saved { background: var(--teal); color: #fff; border-color: transparent; }
+
+  .detail-cover { width: 100%; aspect-ratio:1; border-radius: 14px; overflow:hidden; background: var(--card-2); margin-bottom: 14px; }
+  .detail-cover img { width:100%; height:100%; object-fit:cover; }
+  .detail-title { font-size: 19px; font-weight:700; margin: 0 0 2px; }
+  .detail-artist { font-size: 14px; color: var(--fg-soft); margin: 0 0 10px; }
+  .star-row { display:flex; gap:6px; margin: 10px 0; }
+  .star-row button { background:none; border:none; font-size: 24px; cursor:pointer; color: var(--line); padding:0; }
+  .star-row button.filled { color: var(--brass); }
+  textarea.notes {
+    width:100%; min-height: 80px; font-family: inherit; font-size: 13.5px; color: var(--fg);
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; resize: vertical;
+  }
+  .tag-chip-row { display:flex; flex-wrap:wrap; gap:6px; margin: 10px 0; }
+  .tag-chip {
+    display:flex; align-items:center; gap:5px; font-size: 12px; padding: 5px 11px 5px 8px;
+    border-radius: 14px; cursor:pointer; border: 1px solid var(--line);
+  }
+  .tag-chip .dot { width:8px; height:8px; border-radius:50%; }
+  .tag-chip.inactive { opacity: 0.4; }
+  .field-label { font-size: 11px; text-transform:uppercase; letter-spacing:0.06em; color: var(--fg-mute); margin: 14px 0 6px; font-family: ui-monospace, monospace; }
+  .action-row { display:flex; gap:10px; margin-top: 18px; }
+  .btn {
+    flex:1; font-family: inherit; font-size: 13.5px; text-align:center; text-decoration:none;
+    padding: 11px; border-radius: 12px; cursor:pointer; border: 1px solid var(--line);
+    background: var(--card); color: var(--fg);
+  }
+  .btn.primary { background: var(--teal); color: #fff; border-color: transparent; }
+  .btn.danger { background: transparent; color: var(--crimson); border-color: var(--crimson); }
+
+  .settings-field { margin-bottom: 14px; }
+  .settings-field label { display:block; font-size: 12px; color: var(--fg-mute); margin-bottom: 5px; }
+  .settings-field input {
+    width:100%; font-family: ui-monospace, monospace; font-size: 13px; color: var(--fg);
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px;
+  }
+  .status-pill { display:inline-flex; align-items:center; gap:6px; font-size: 12px; padding: 5px 10px; border-radius: 12px; margin-bottom: 14px; }
+  .status-pill.ok { background: color-mix(in srgb, var(--teal) 18%, var(--card)); color: var(--teal); }
+  .status-pill.no { background: color-mix(in srgb, var(--crimson) 15%, var(--card)); color: var(--crimson); }
+
+  .swatch-row { display:flex; gap:8px; flex-wrap:wrap; margin: 8px 0 14px; }
+  .swatch { width: 28px; height: 28px; border-radius: 50%; cursor:pointer; border: 2px solid transparent; }
+  .swatch.selected { border-color: var(--fg); }
+  .tag-manage-row { display:flex; align-items:center; justify-content:space-between; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .tag-manage-row .left { display:flex; align-items:center; gap:8px; font-size: 13.5px; }
+  .tag-manage-row .dot { width:12px; height:12px; border-radius:50%; }
+  .del-x { background:none; border:none; color: var(--fg-mute); font-size: 15px; cursor:pointer; }
+
+  ::-webkit-scrollbar { width:8px; }
+  ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+</style>
+
+<div class="root">
+  <div class="topbar">
+    <div class="brand">🗄️ MusicVault</div>
+    <div class="topbar-actions">
+      <button class="icon-btn" id="themeToggle">🌙</button>
+      <button class="icon-btn" id="settingsBtn">⚙️</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="filter-row">
+      <input type="text" id="filterSearch" placeholder="Filtrar tu colección...">
+      <select id="filterType">
+        <option value="all">Todo</option>
+        <option value="album">Álbumes</option>
+        <option value="track">Canciones</option>
+        <option value="artist">Artistas</option>
+      </select>
+      <select id="filterTag"><option value="all">Todas las etiquetas</option></select>
+    </div>
+
+    <div id="gridContainer"></div>
+  </div>
+
+  <button class="fab" id="openSearchBtn">+</button>
+</div>
+
+<div id="modalRoot"></div>
+
+<script>
+// ================= storage =================
+const STORE_KEY = 'musicvault_items_v1';
+const TAGS_KEY = 'musicvault_tags_v1';
+const CREDS_KEY = 'musicvault_spotify_creds_v1';
+const THEME_KEY = 'musicvaultTheme';
+
+function loadItems() { try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; } catch { return []; } }
+function saveItems(items) { localStorage.setItem(STORE_KEY, JSON.stringify(items)); }
+function loadTags() { try { return JSON.parse(localStorage.getItem(TAGS_KEY)) || []; } catch { return []; } }
+function saveTags(tags) { localStorage.setItem(TAGS_KEY, JSON.stringify(tags)); }
+function loadCreds() { try { return JSON.parse(localStorage.getItem(CREDS_KEY)) || null; } catch { return null; } }
+function saveCreds(creds) { localStorage.setItem(CREDS_KEY, JSON.stringify(creds)); }
+
+let ITEMS = loadItems();
+let TAGS = loadTags();
+
+const TAG_COLORS = ['#2a78d6','#1baf7a','#eda100','#008300','#4a3aa7','#e34948','#e87ba4','#eb6834'];
+
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+
+// ================= theme =================
+(function() {
+  const btn = document.getElementById('themeToggle');
+  const root = document.documentElement;
+  const saved = localStorage.getItem(THEME_KEY);
+  if (saved) root.setAttribute('data-theme', saved);
+  btn.addEventListener('click', () => {
+    const current = root.getAttribute('data-theme') ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const next = current === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem(THEME_KEY, next);
+  });
+})();
+
+// ================= spotify client =================
+let tokenCache = { token: null, expiresAt: 0 };
+
+async function getSpotifyToken() {
+  const creds = loadCreds();
+  if (!creds || !creds.clientId || !creds.clientSecret) {
+    throw new Error('NO_CREDS');
+  }
+  if (tokenCache.token && tokenCache.expiresAt > Date.now()) {
+    return tokenCache.token;
+  }
+  const basic = btoa(`${creds.clientId}:${creds.clientSecret}`);
+  const res = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': `Basic ${basic}`
+    },
+    body: 'grant_type=client_credentials'
+  });
+  if (!res.ok) throw new Error('AUTH_FAILED');
+  const data = await res.json();
+  tokenCache = { token: data.access_token, expiresAt: Date.now() + (data.expires_in - 60) * 1000 };
+  return tokenCache.token;
+}
+
+async function spotifySearch(query, type) {
+  const token = await getSpotifyToken();
+  const url = `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=${type}&limit=15`;
+  const res = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+  if (!res.ok) throw new Error('SEARCH_FAILED');
+  return res.json();
+}
+
+function normalizeSpotifyResult(raw, type) {
+  if (type === 'album') {
+    return {
+      spotifyId: raw.id, type: 'album', title: raw.name,
+      artists: raw.artists.map(a => a.name),
+      coverUrl: raw.images && raw.images[0] ? raw.images[0].url : null,
+      spotifyUrl: raw.external_urls.spotify,
+      releaseDate: raw.release_date || null
+    };
+  }
+  if (type === 'track') {
+    return {
+      spotifyId: raw.id, type: 'track', title: raw.name,
+      artists: raw.artists.map(a => a.name),
+      coverUrl: raw.album && raw.album.images && raw.album.images[0] ? raw.album.images[0].url : null,
+      spotifyUrl: raw.external_urls.spotify,
+      releaseDate: raw.album ? raw.album.release_date : null
+    };
+  }
+  return {
+    spotifyId: raw.id, type: 'artist', title: raw.name, artists: [raw.name],
+    coverUrl: raw.images && raw.images[0] ? raw.images[0].url : null,
+    spotifyUrl: raw.external_urls.spotify, releaseDate: null
+  };
+}
+
+// ================= grid render =================
+function typeLabel(t) { return { album: 'Álbum', track: 'Canción', artist: 'Artista' }[t] || t; }
+function typeIcon(t) { return { album: '💿', track: '🎵', artist: '🎤' }[t] || '🎧'; }
+
+function renderTagFilterOptions() {
+  const sel = document.getElementById('filterTag');
+  sel.innerHTML = `<option value="all">Todas las etiquetas</option>` +
+    TAGS.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+}
+
+function getFilteredItems() {
+  const q = document.getElementById('filterSearch').value.trim().toLowerCase();
+  const type = document.getElementById('filterType').value;
+  const tagId = document.getElementById('filterTag').value;
+  return ITEMS
+    .filter(i => type === 'all' || i.type === type)
+    .filter(i => tagId === 'all' || (i.tagIds || []).includes(tagId))
+    .filter(i => !q || (i.title + ' ' + i.artists.join(' ')).toLowerCase().includes(q))
+    .sort((a, b) => b.dateAdded - a.dateAdded);
+}
+
+function renderGrid() {
+  const container = document.getElementById('gridContainer');
+  const items = getFilteredItems();
+  if (ITEMS.length === 0) {
+    container.innerHTML = `<div class="empty-state">
+      <div class="icon">🗄️</div>
+      <h2>Tu vault está vacío</h2>
+      <p>Guardá álbumes, canciones o artistas de Spotify para escuchar más tarde.</p>
+      <button onclick="openSearchModal()">+ Buscar en Spotify</button>
+    </div>`;
+    return;
+  }
+  if (items.length === 0) {
+    container.innerHTML = `<div class="empty-state"><div class="icon">🔍</div><h2>Sin resultados</h2><p>Probá con otro filtro.</p></div>`;
+    return;
+  }
+  container.innerHTML = `<div class="grid">${items.map(cardHtml).join('')}</div>`;
+}
+
+function cardHtml(item) {
+  const stars = '★'.repeat(item.rating || 0);
+  return `<div class="card" onclick="openDetailModal('${item.id}')">
+    <div class="cover">
+      ${item.coverUrl ? `<img src="${item.coverUrl}" loading="lazy" alt="">` : `<span class="fallback">${typeIcon(item.type)}</span>`}
+    </div>
+    <div class="body">
+      <div class="t">${item.title}</div>
+      <div class="a">${item.artists.join(', ')}</div>
+      <div class="meta-row">
+        <span class="type-badge">${typeLabel(item.type)}</span>
+        ${stars ? `<span class="stars-mini">${stars}</span>` : ''}
+      </div>
+    </div>
+  </div>`;
+}
+
+['filterSearch', 'filterType', 'filterTag'].forEach(id => {
+  document.getElementById(id).addEventListener('input', renderGrid);
+  document.getElementById(id).addEventListener('change', renderGrid);
+});
+
+// ================= modal helpers =================
+function closeModal() { document.getElementById('modalRoot').innerHTML = ''; }
+function showModal(html) {
+  document.getElementById('modalRoot').innerHTML = `<div class="overlay" onclick="if(event.target===this) closeModal()"><div class="sheet">${html}</div></div>`;
+}
+
+// ================= search modal =================
+let currentSearchType = 'album';
+let lastResults = [];
+
+function openSearchModal() {
+  currentSearchType = 'album';
+  showModal(`
+    <div class="sheet-head"><h2>Buscar en Spotify</h2><button class="icon-btn" onclick="closeModal()">✕</button></div>
+    <div class="tab-row" id="searchTabs">
+      <button class="tab-btn active" data-t="album">💿 Álbumes</button>
+      <button class="tab-btn" data-t="track">🎵 Canciones</button>
+      <button class="tab-btn" data-t="artist">🎤 Artistas</button>
+    </div>
+    <input type="text" class="search-input" id="searchInput" placeholder="Título, artista...">
+    <div id="searchResults"></div>
+  `);
+  document.querySelectorAll('#searchTabs .tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#searchTabs .tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentSearchType = btn.dataset.t;
+      runSearch();
+    });
+  });
+  let timer;
+  document.getElementById('searchInput').addEventListener('input', () => {
+    clearTimeout(timer);
+    timer = setTimeout(runSearch, 350);
+  });
+  document.getElementById('searchInput').focus();
+}
+
+async function runSearch() {
+  const q = document.getElementById('searchInput').value.trim();
+  const resultsEl = document.getElementById('searchResults');
+  if (!q) { resultsEl.innerHTML = ''; return; }
+
+  const creds = loadCreds();
+  if (!creds || !creds.clientId || !creds.clientSecret) {
+    resultsEl.innerHTML = `<div class="empty-state" style="padding:30px 10px;">
+      <p>Todavía no configuraste tus credenciales de Spotify.</p>
+      <button onclick="closeModal(); openSettingsModal();">⚙️ Ir a Ajustes</button>
+    </div>`;
+    return;
+  }
+
+  resultsEl.innerHTML = `<div class="empty-state" style="padding:24px 0;"><p>Buscando...</p></div>`;
+  try {
+    const data = await spotifySearch(q, currentSearchType);
+    const key = currentSearchType + 's';
+    const raw = (data[key] && data[key].items) || [];
+    lastResults = raw.map(r => normalizeSpotifyResult(r, currentSearchType));
+    if (lastResults.length === 0) {
+      resultsEl.innerHTML = `<div class="empty-state" style="padding:24px 0;"><p>Sin resultados.</p></div>`;
+      return;
+    }
+    resultsEl.innerHTML = lastResults.map((r, i) => resultRowHtml(r, i)).join('');
+  } catch (err) {
+    resultsEl.innerHTML = `<div class="empty-state" style="padding:24px 0;">
+      <p>${err.message === 'AUTH_FAILED' ? 'Credenciales inválidas. Revisalas en Ajustes.' : 'No se pudo buscar. Probá de nuevo.'}</p>
+    </div>`;
+  }
+}
+
+function resultRowHtml(r, i) {
+  const isSaved = ITEMS.some(it => it.spotifyId === r.spotifyId);
+  return `<div class="result-row">
+    <div class="cover-sm">${r.coverUrl ? `<img src="${r.coverUrl}" alt="">` : typeIcon(r.type)}</div>
+    <div class="info">
+      <div class="t">${r.title}</div>
+      <div class="a">${r.artists.join(', ')}</div>
+    </div>
+    <button class="save-btn ${isSaved ? 'saved' : ''}" onclick="saveResult(${i}, this)">${isSaved ? '✓' : '+'}</button>
+  </div>`;
+}
+
+function saveResult(i, btn) {
+  const r = lastResults[i];
+  if (ITEMS.some(it => it.spotifyId === r.spotifyId)) return;
+  const item = {
+    id: uid(), spotifyId: r.spotifyId, type: r.type, title: r.title, artists: r.artists,
+    coverUrl: r.coverUrl, spotifyUrl: r.spotifyUrl, releaseDate: r.releaseDate,
+    dateAdded: Date.now(), notes: '', rating: 0, tagIds: []
+  };
+  ITEMS.push(item);
+  saveItems(ITEMS);
+  btn.classList.add('saved');
+  btn.textContent = '✓';
+  renderGrid();
+}
+
+// ================= detail modal =================
+function openDetailModal(id) {
+  const item = ITEMS.find(i => i.id === id);
+  if (!item) return;
+  showModal(`
+    <div class="sheet-head"><h2>${typeIcon(item.type)} ${typeLabel(item.type)}</h2><button class="icon-btn" onclick="closeModal()">✕</button></div>
+    <div class="detail-cover">${item.coverUrl ? `<img src="${item.coverUrl}" alt="">` : ''}</div>
+    <div class="detail-title">${item.title}</div>
+    <div class="detail-artist">${item.artists.join(', ')}${item.releaseDate ? ' · ' + item.releaseDate.slice(0,4) : ''}</div>
+
+    <div class="field-label">Tu valoración</div>
+    <div class="star-row" id="starRow">
+      ${[1,2,3,4,5].map(n => `<button data-n="${n}" class="${n <= (item.rating||0) ? 'filled' : ''}">★</button>`).join('')}
+    </div>
+
+    <div class="field-label">Notas</div>
+    <textarea class="notes" id="notesInput" placeholder="¿Por qué lo guardaste?">${item.notes || ''}</textarea>
+
+    <div class="field-label">Etiquetas</div>
+    <div class="tag-chip-row" id="detailTagRow">
+      ${TAGS.length === 0 ? '<span style="font-size:12.5px;color:var(--fg-mute);">Creá etiquetas desde Ajustes.</span>' :
+        TAGS.map(t => `<span class="tag-chip ${((item.tagIds||[]).includes(t.id)) ? '' : 'inactive'}" data-tag="${t.id}">
+          <span class="dot" style="background:${t.colorHex}"></span>${t.name}
+        </span>`).join('')}
+    </div>
+
+    <div class="action-row">
+      <a class="btn primary" href="${item.spotifyUrl}" target="_blank" rel="noopener">▸ Abrir en Spotify</a>
+    </div>
+    <div class="action-row">
+      <button class="btn danger" id="deleteBtn">Eliminar de la colección</button>
+    </div>
+  `);
+
+  document.querySelectorAll('#starRow button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const n = +btn.dataset.n;
+      item.rating = item.rating === n ? 0 : n;
+      saveItems(ITEMS);
+      openDetailModal(id);
+    });
+  });
+  document.getElementById('notesInput').addEventListener('blur', (e) => {
+    item.notes = e.target.value;
+    saveItems(ITEMS);
+  });
+  document.querySelectorAll('#detailTagRow .tag-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const tagId = chip.dataset.tag;
+      item.tagIds = item.tagIds || [];
+      if (item.tagIds.includes(tagId)) {
+        item.tagIds = item.tagIds.filter(t => t !== tagId);
+      } else {
+        item.tagIds.push(tagId);
+      }
+      saveItems(ITEMS);
+      openDetailModal(id);
+    });
+  });
+  document.getElementById('deleteBtn').addEventListener('click', () => {
+    ITEMS = ITEMS.filter(i => i.id !== id);
+    saveItems(ITEMS);
+    closeModal();
+    renderGrid();
+  });
+}
+
+// ================= settings modal =================
+function openSettingsModal() {
+  const creds = loadCreds();
+  const hasCreds = !!(creds && creds.clientId && creds.clientSecret);
+  showModal(`
+    <div class="sheet-head"><h2>⚙️ Ajustes</h2><button class="icon-btn" onclick="closeModal()">✕</button></div>
+
+    <div class="field-label">Credenciales de Spotify</div>
+    <div class="status-pill ${hasCreds ? 'ok' : 'no'}">${hasCreds ? '✓ Configurado' : '✕ Sin configurar'}</div>
+    <p style="font-size:12px;color:var(--fg-mute);margin:0 0 12px;">
+      Se guardan solo en este dispositivo (localStorage), nunca se suben a ningún lado.
+      Sacalas de <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noopener" style="color:var(--teal);">developer.spotify.com/dashboard</a>.
+    </p>
+    <div class="settings-field">
+      <label>Client ID</label>
+      <input type="text" id="clientIdInput" value="${creds ? creds.clientId : ''}" placeholder="Client ID">
+    </div>
+    <div class="settings-field">
+      <label>Client Secret</label>
+      <input type="password" id="clientSecretInput" value="${creds ? creds.clientSecret : ''}" placeholder="Client Secret">
+    </div>
+    <div class="action-row">
+      <button class="btn primary" id="saveCredsBtn">Guardar credenciales</button>
+    </div>
+
+    <div class="field-label" style="margin-top:26px;">Etiquetas</div>
+    <div id="tagManageList">${tagManageListHtml()}</div>
+    <div class="settings-field" style="margin-top:10px;">
+      <label>Nueva etiqueta</label>
+      <input type="text" id="newTagName" placeholder="Nombre de la etiqueta">
+    </div>
+    <div class="swatch-row" id="colorSwatches">
+      ${TAG_COLORS.map((c, i) => `<span class="swatch ${i===0 ? 'selected':''}" data-color="${c}" style="background:${c}"></span>`).join('')}
+    </div>
+    <div class="action-row">
+      <button class="btn primary" id="addTagBtn">+ Crear etiqueta</button>
+    </div>
+  `);
+
+  document.getElementById('saveCredsBtn').addEventListener('click', () => {
+    const clientId = document.getElementById('clientIdInput').value.trim();
+    const clientSecret = document.getElementById('clientSecretInput').value.trim();
+    saveCreds({ clientId, clientSecret });
+    tokenCache = { token: null, expiresAt: 0 };
+    openSettingsModal();
+  });
+
+  let selectedColor = TAG_COLORS[0];
+  document.querySelectorAll('#colorSwatches .swatch').forEach(sw => {
+    sw.addEventListener('click', () => {
+      document.querySelectorAll('#colorSwatches .swatch').forEach(s => s.classList.remove('selected'));
+      sw.classList.add('selected');
+      selectedColor = sw.dataset.color;
+    });
+  });
+  document.getElementById('addTagBtn').addEventListener('click', () => {
+    const name = document.getElementById('newTagName').value.trim();
+    if (!name) return;
+    TAGS.push({ id: uid(), name, colorHex: selectedColor });
+    saveTags(TAGS);
+    renderTagFilterOptions();
+    openSettingsModal();
+  });
+  wireTagDeletes();
+}
+
+function tagManageListHtml() {
+  if (TAGS.length === 0) return `<p style="font-size:12.5px;color:var(--fg-mute);">Todavía no creaste ninguna.</p>`;
+  return TAGS.map(t => `<div class="tag-manage-row">
+    <span class="left"><span class="dot" style="background:${t.colorHex}"></span>${t.name}</span>
+    <button class="del-x" data-del="${t.id}">✕</button>
+  </div>`).join('');
+}
+
+function wireTagDeletes() {
+  document.querySelectorAll('[data-del]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.del;
+      TAGS = TAGS.filter(t => t.id !== id);
+      saveTags(TAGS);
+      ITEMS.forEach(it => { it.tagIds = (it.tagIds || []).filter(tid => tid !== id); });
+      saveItems(ITEMS);
+      renderTagFilterOptions();
+      openSettingsModal();
+    });
+  });
+}
+
+document.getElementById('settingsBtn').addEventListener('click', openSettingsModal);
+document.getElementById('openSearchBtn').addEventListener('click', openSearchModal);
+
+// ================= init =================
+renderTagFilterOptions();
+renderGrid();
+</script>
