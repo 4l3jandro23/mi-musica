@@ -1,0 +1,874 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Radio Infinita">
+<meta name="theme-color" content="#17130f" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f2ead9" media="(prefers-color-scheme: light)">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2317130f'/%3E%3Ctext x='50' y='68' font-size='58' text-anchor='middle'%3E%F0%9F%8C%88%3C/text%3E%3C/svg%3E">
+<title>🌈 Radio Infinita — Una playlist para cada vibra</title>
+<style>
+  :root {
+    color-scheme: light;
+    --ink: #17130f; --ink-card: #211a14; --ink-card-2: #2a2118;
+    --paper: #f2ead9; --paper-card: #fbf6ea; --paper-card-2: #efe4cc;
+    --text: #201a12; --text-soft: #5b4f3c; --text-mute: #8a7c63;
+    --rule: rgba(32,26,18,0.14);
+    --brass: #a8701e; --teal: #1f6e63; --crimson: #9c2f24;
+    --bg: var(--paper); --card: var(--paper-card); --card-2: var(--paper-card-2);
+    --fg: var(--text); --fg-soft: var(--text-soft); --fg-mute: var(--text-mute); --line: var(--rule);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --bg: var(--ink); --card: var(--ink-card); --card-2: var(--ink-card-2);
+      --fg: #f3ead9; --fg-soft: #cdbfa4; --fg-mute: #8f8265;
+      --line: rgba(243,234,217,0.12);
+      --brass: #e2a63d; --teal: #4fb3a5; --crimson: #e2665a;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: var(--ink); --card: var(--ink-card); --card-2: var(--ink-card-2);
+    --fg: #f3ead9; --fg-soft: #cdbfa4; --fg-mute: #8f8265;
+    --line: rgba(243,234,217,0.12);
+    --brass: #e2a63d; --teal: #4fb3a5; --crimson: #e2665a;
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --bg: var(--paper); --card: var(--paper-card); --card-2: var(--paper-card-2);
+    --fg: var(--text); --fg-soft: var(--text-soft); --fg-mute: var(--text-mute); --line: var(--rule);
+  }
+
+  * { box-sizing: border-box; }
+  .root {
+    background: var(--bg); color: var(--fg);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.5; min-height: 100vh;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px 90px; }
+  .topbar {
+    position: sticky; top:0; z-index: 40;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 14px 20px; background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(8px); border-bottom: 1px solid var(--line);
+  }
+  .topbar .brand { font-family: Georgia, serif; font-weight:700; font-size:15px; }
+  .topbar .brand span { color: var(--brass); }
+  #themeToggle { font-family: inherit; font-size: 12px; color: var(--fg-soft); background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 6px 14px; cursor: pointer; }
+
+  .hero { padding: 50px 20px 34px; }
+  .hero h1 { font-family: Georgia, serif; font-size: clamp(30px,5vw,50px); font-weight:800; margin:0 0 12px; max-width: 780px; }
+  .hero h1 em { color: var(--brass); font-style: normal; }
+  .hero p { font-size: 15px; color: var(--fg-soft); max-width: 640px; margin: 0; }
+  .hero .stats { display:flex; gap:26px; margin-top:26px; flex-wrap:wrap; }
+  .hero .stat .n { font-family: Georgia, serif; font-size: 26px; font-weight:700; color: var(--teal); }
+  .hero .stat .l { font-size: 11px; color: var(--fg-mute); text-transform:uppercase; letter-spacing:0.07em; }
+
+  .picker-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 12px; margin: 30px 0 40px; }
+  .picker-card {
+    text-align: left; cursor: pointer; border: 1px solid var(--pcolor, var(--line));
+    background: color-mix(in srgb, var(--pcolor, var(--card)) 10%, var(--card));
+    border-radius: 12px; padding: 14px 16px; font-family: inherit; color: var(--fg);
+  }
+  .picker-card:hover { background: color-mix(in srgb, var(--pcolor, var(--card)) 20%, var(--card)); }
+  .picker-card.active { outline: 2px solid var(--pcolor); }
+  .picker-card .pe { font-size: 20px; margin-bottom: 6px; }
+  .picker-card .pn { font-weight: 700; font-size: 13.5px; margin-bottom: 4px; }
+  .picker-card .pd { font-size: 11.5px; color: var(--fg-mute); line-height: 1.4; }
+  .picker-card .pc { font-size: 10.5px; color: var(--pcolor); margin-top: 8px; font-family: ui-monospace, monospace; }
+
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; margin-bottom: 20px; scroll-margin-top: 70px; }
+  .card h2 { font-size: 18px; font-weight: 750; margin: 0 0 2px; }
+  .card .desc { font-size: 12.5px; color: var(--fg-mute); margin: 0 0 16px; }
+
+  .ledger-controls { display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+  .ledger-controls input, .ledger-controls select {
+    font-family: inherit; font-size:12.5px; background:var(--card-2); border:1px solid var(--line);
+    border-radius:8px; padding:8px 12px; color:var(--fg);
+  }
+  .ledger-controls input { flex: 1 1 220px; }
+  .ledger-controls button { font-family: inherit; font-size:12.5px; color: var(--fg-soft); background: var(--card-2); border: 1px solid var(--line); border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+  .lib-count { font-size: 12px; color: var(--fg-mute); margin-bottom: 10px; }
+  .ledger-wrap { border: 1px solid var(--line); border-radius: 10px; overflow: auto; max-height: 640px; }
+  table.ledger { width:100%; border-collapse:collapse; font-size:12.8px; }
+  table.ledger th { position:sticky; top:0; background:var(--card); text-align:left; padding:9px 12px; font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--fg-mute); border-bottom:1px solid var(--line); font-family: ui-monospace, monospace; }
+  table.ledger td { padding: 8px 12px; border-bottom:1px solid var(--line); }
+  table.ledger td.num { font-family: ui-monospace, monospace; color:var(--fg-mute); white-space:nowrap; }
+  table.ledger tr:hover td { background: var(--card-2); }
+  a.spotify-mini-link, a.spotify-mini-link:visited { color: var(--teal); text-decoration:none; font-size:11.5px; white-space:nowrap; }
+  a.spotify-mini-link:hover { text-decoration:underline; }
+  .badge { display:inline-flex; align-items:center; gap:5px; font-size:10.5px; padding: 2px 8px; border-radius: 10px; background: var(--card-2); color: var(--fg-soft); }
+
+  .lib-pager { display:flex; justify-content:space-between; align-items:center; margin-top:12px; font-size:12.5px; color: var(--fg-soft); flex-wrap:wrap; gap:10px; }
+  .lib-pager button { font-family: inherit; font-size: 12.5px; color: var(--fg-soft); background: var(--card-2); border: 1px solid var(--line); border-radius: 8px; padding: 5px 12px; cursor: pointer; }
+  .lib-pager button:disabled { opacity: 0.4; cursor: default; }
+
+  footer.note { font-size: 12px; color: var(--fg-mute); margin-top: 24px; line-height:1.6; max-width: 720px; }
+  ::-webkit-scrollbar { height:8px; width:8px; }
+  ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+</style>
+
+<div class="root">
+  <div class="topbar">
+    <div class="brand">🌈 <span>Radio</span> Infinita</div>
+    <button id="themeToggle">🌙 / ☀️</button>
+  </div>
+
+  <section class="hero">
+    <h1>Una playlist para <em>cada vibra</em>, cada género, cada estado de ánimo.</h1>
+    <p>Desde el rock and roll de los 50 hasta el hard techno, pasando por flamenco, jungle, bachata, IDM y canciones que te hacen sentir que levitas. Cada tema con su link directo a Spotify. 🎧</p>
+    <div class="stats" id="heroStats"></div>
+  </section>
+
+  <div class="wrap">
+    <div class="picker-grid" id="pickerGrid"></div>
+
+    <div class="card" id="playlistCard">
+      <h2 id="plTitle">Todas las canciones</h2>
+      <p class="desc" id="plDesc">Elegí una playlist arriba, o buscá directamente lo que quieras escuchar.</p>
+      <div class="ledger-controls">
+        <input type="text" id="songSearch" placeholder="Buscar canción, artista o playlist... 🔎">
+        <button id="clearFilter">Ver todas</button>
+      </div>
+      <div class="lib-count" id="songCount"></div>
+      <div class="ledger-wrap">
+        <table class="ledger" id="songTable">
+          <thead><tr>
+            <th>Canción</th>
+            <th>Artista</th>
+            <th class="num">Año</th>
+            <th>Playlist</th>
+            <th>Escuchar</th>
+          </tr></thead>
+          <tbody id="songBody"></tbody>
+        </table>
+      </div>
+      <div class="lib-pager">
+        <span id="pageInfo"></span>
+        <div style="display:flex;gap:8px;">
+          <button id="prevPage">‹ Anterior</button>
+          <button id="nextPage">Siguiente ›</button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="note">
+      Curada a mano, no generada por playlist algorítmica. Cada link es una búsqueda directa en Spotify por título + artista (no un ID inventado), así que siempre te lleva a la canción real. Si te falta alguna vibra, es porque esto sigue creciendo. 🌱
+    </footer>
+  </div>
+</div>
+
+<script>
+(function() {
+  const btn = document.getElementById('themeToggle');
+  const root = document.documentElement;
+  const saved = localStorage.getItem('radioTheme');
+  if (saved) root.setAttribute('data-theme', saved);
+  btn.addEventListener('click', () => {
+    const current = root.getAttribute('data-theme') ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const next = current === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('radioTheme', next);
+  });
+})();
+
+function spotifySearchUrl(query) { return `https://open.spotify.com/search/${encodeURIComponent(query)}`; }
+function spotifyLinkHtml(title, artist, label) {
+  return `<a class="spotify-mini-link" href="${spotifySearchUrl(title + ' ' + artist)}" target="_blank" rel="noopener">${label || '▸ Escuchar'}</a>`;
+}
+
+const PLAYLISTS_META = [
+  { key: "rock50s", emoji: "🎸", name: "Rock and Roll de los 50", color: "#9c2f24", desc: "Donde todo empezó: blues eléctrico + country a máximo volumen." },
+  { key: "jazz50s", emoji: "🎷", name: "Jazz de los 50", color: "#c9932f", desc: "Bebop, cool jazz y hard bop en su época dorada." },
+  { key: "rapOrigenes", emoji: "🎤", name: "Orígenes del Rap", color: "#6a4fa0", desc: "Del Bronx a la Golden Age: los cimientos del hip-hop." },
+  { key: "electronicaOrigenes", emoji: "🔌", name: "Orígenes de la Electrónica", color: "#1f6e63", desc: "De Kraftwerk al primer house y techno." },
+  { key: "discoFunk70s", emoji: "🕺", name: "Disco y Funk de los 70", color: "#d1652f", desc: "El groove que llenó las pistas antes del house." },
+  { key: "psicodelia60s", emoji: "🌀", name: "Rock Psicodélico", color: "#4a3aa7", desc: "Guitarras dando vueltas, letras dando vueltas." },
+  { key: "grunge90s", emoji: "🕳️", name: "Grunge", color: "#5a5f68", desc: "Seattle, distorsión y desencanto generacional." },
+  { key: "metal90s", emoji: "🤘", name: "Metal de los 90", color: "#3c3c3c", desc: "Groove metal, nu metal temprano e industrial." },
+  { key: "technoClasico", emoji: "🎛️", name: "Techno Clásico", color: "#1f6e63", desc: "Detroit y Chicago: las raíces del techno y el house." },
+  { key: "hardTechno", emoji: "⚙️", name: "Hard Techno", color: "#e34948", desc: "Rápido, industrial, sin piedad." },
+  { key: "jungle", emoji: "🌴", name: "Jungle / D&B clásico", color: "#3d8b4c", desc: "Breaks acelerados y bajos que rompen el suelo." },
+  { key: "ukGarage", emoji: "🇬🇧", name: "UK Garage", color: "#2a78d6", desc: "El sonido de Londres a finales de los 90." },
+  { key: "dubstep", emoji: "💥", name: "Dubstep & Brostep", color: "#9c2f24", desc: "De la sub-bass londinense al brostep de festival." },
+  { key: "idm", emoji: "🧠", name: "IDM", color: "#4a3aa7", desc: "Electrónica para escuchar con la cabeza, no solo bailar." },
+  { key: "edm", emoji: "⚡", name: "EDM de Festival", color: "#e34948", desc: "Los himnos que llenaron main stages en la década pasada." },
+  { key: "futureHouse", emoji: "🏠", name: "Future House", color: "#1baf7a", desc: "El house pulido y brillante de mediados de 2010s." },
+  { key: "flamenco", emoji: "🔥", name: "Flamenco", color: "#eb6834", desc: "Cante jondo, guitarra y compás — de raíz." },
+  { key: "rumba", emoji: "💃", name: "Rumba", color: "#d1652f", desc: "Catalana y gitana: el compás que baila solo." },
+  { key: "salsa", emoji: "🎺", name: "Salsa", color: "#eda100", desc: "Nueva York, Cali y La Habana en clave." },
+  { key: "bachata", emoji: "🌹", name: "Bachata", color: "#e87ba4", desc: "Guitarra dominicana y despecho bien cantado." },
+  { key: "reggae", emoji: "☀️", name: "Reggae", color: "#3d8b4c", desc: "Roots, dub y el offbeat que viene de Jamaica." },
+  { key: "clasica", emoji: "🎻", name: "Música Clásica Esencial", color: "#2e5a8c", desc: "De Bach a Stravinsky, lo imprescindible." },
+  { key: "romanticismo", emoji: "🖋️", name: "Romanticismo", color: "#2e5a8c", desc: "Chopin, Tchaikovsky y la emoción hecha orquesta." },
+  { key: "noise", emoji: "📡", name: "Noise", color: "#5a5f68", desc: "Ruido como forma de arte, sin disculparse." },
+  { key: "liminal", emoji: "🌫️", name: "Espacios Liminales", color: "#8a7c63", desc: "Esa sensación de mall vacío a las 3am, en formato canción." },
+  { key: "levitar", emoji: "🕊️", name: "Para Sentir que Levitás", color: "#1baf7a", desc: "Euforia suave, ingravidez, esas canciones que te sacan del cuerpo." },
+  { key: "tristes", emoji: "😢", name: "Canciones Tristes", color: "#2e5a8c", desc: "Para llorar con gusto." },
+  { key: "bandasSonoras", emoji: "🎬", name: "Bandas Sonoras", color: "#a15c2b", desc: "Música de cine que funciona perfecto fuera de la pantalla." },
+];
+const SONGS_BATCH1 = [
+["Rock Around the Clock","Bill Haley & His Comets",1954,"rock50s"],
+["That's All Right","Elvis Presley",1954,"rock50s"],
+["Heartbreak Hotel","Elvis Presley",1956,"rock50s"],
+["Hound Dog","Elvis Presley",1956,"rock50s"],
+["Jailhouse Rock","Elvis Presley",1957,"rock50s"],
+["Johnny B. Goode","Chuck Berry",1958,"rock50s"],
+["Maybellene","Chuck Berry",1955,"rock50s"],
+["Roll Over Beethoven","Chuck Berry",1956,"rock50s"],
+["Tutti Frutti","Little Richard",1955,"rock50s"],
+["Long Tall Sally","Little Richard",1956,"rock50s"],
+["Good Golly, Miss Molly","Little Richard",1958,"rock50s"],
+["That'll Be the Day","Buddy Holly",1957,"rock50s"],
+["Peggy Sue","Buddy Holly",1957,"rock50s"],
+["Great Balls of Fire","Jerry Lee Lewis",1957,"rock50s"],
+["Whole Lotta Shakin' Going On","Jerry Lee Lewis",1957,"rock50s"],
+["Blue Suede Shoes","Carl Perkins",1956,"rock50s"],
+["Summertime Blues","Eddie Cochran",1958,"rock50s"],
+["C'mon Everybody","Eddie Cochran",1958,"rock50s"],
+["Rumble","Link Wray",1958,"rock50s"],
+["Sh-Boom","The Chords",1954,"rock50s"],
+["Earth Angel","The Penguins",1954,"rock50s"],
+["In the Still of the Night","The Five Satins",1956,"rock50s"],
+["Why Do Fools Fall in Love","Frankie Lymon and the Teenagers",1956,"rock50s"],
+["La Bamba","Ritchie Valens",1958,"rock50s"],
+["Splish Splash","Bobby Darin",1958,"rock50s"],
+["At the Hop","Danny & the Juniors",1957,"rock50s"],
+["Rock and Roll Music","Chuck Berry",1957,"rock50s"],
+["Kind of Blue: So What","Miles Davis",1959,"jazz50s"],
+["Blue Rondo à la Turk","Dave Brubeck Quartet",1959,"jazz50s"],
+["Take Five","The Dave Brubeck Quartet",1959,"jazz50s"],
+["Moanin'","Art Blakey & The Jazz Messengers",1958,"jazz50s"],
+["Blue Train","John Coltrane",1957,"jazz50s"],
+["Blue Monk","Thelonious Monk",1954,"jazz50s"],
+["'Round Midnight","Thelonious Monk",1957,"jazz50s"],
+["Straight, No Chaser","Thelonious Monk",1951,"jazz50s"],
+["St. Thomas","Sonny Rollins",1956,"jazz50s"],
+["Airegin","Sonny Rollins",1954,"jazz50s"],
+["Now's the Time","Charlie Parker",1953,"jazz50s"],
+["Confirmation","Charlie Parker",1953,"jazz50s"],
+["Waltz for Debby","Bill Evans",1956,"jazz50s"],
+["My Funny Valentine","Chet Baker",1954,"jazz50s"],
+["A Night in Tunisia","Dizzy Gillespie",1957,"jazz50s"],
+["Manteca","Dizzy Gillespie",1954,"jazz50s"],
+["Goodbye Pork Pie Hat","Charles Mingus",1959,"jazz50s"],
+["Boplicity","Miles Davis",1957,"jazz50s"],
+["Milestones","Miles Davis",1958,"jazz50s"],
+["Freddie Freeloader","Miles Davis",1959,"jazz50s"],
+["Song for My Father","Horace Silver",1959,"jazz50s"],
+["Fever","Peggy Lee",1958,"jazz50s"],
+["Fly Me to the Moon","Kaye Ballard",1954,"jazz50s"],
+["Someday My Prince Will Come","Miles Davis",1961,"jazz50s"],
+["Rapper's Delight","The Sugarhill Gang",1979,"rapOrigenes"],
+["The Message","Grandmaster Flash and the Furious Five",1982,"rapOrigenes"],
+["Planet Rock","Afrika Bambaataa and the Soulsonic Force",1982,"rapOrigenes"],
+["It's Like That","Run-D.M.C.",1983,"rapOrigenes"],
+["Sucker M.C.'s","Run-D.M.C.",1983,"rapOrigenes"],
+["Rock Box","Run-D.M.C.",1984,"rapOrigenes"],
+["Walk This Way","Run-D.M.C. & Aerosmith",1986,"rapOrigenes"],
+["The Breaks","Kurtis Blow",1980,"rapOrigenes"],
+["Rock the Bells","LL Cool J",1985,"rapOrigenes"],
+["I Can't Live Without My Radio","LL Cool J",1985,"rapOrigenes"],
+["La Di Da Di","Doug E. Fresh & Slick Rick",1985,"rapOrigenes"],
+["The Show","Doug E. Fresh & Slick Rick",1985,"rapOrigenes"],
+["Paid in Full","Eric B. & Rakim",1987,"rapOrigenes"],
+["Criminal Minded","Boogie Down Productions",1987,"rapOrigenes"],
+["My Philosophy","Boogie Down Productions",1988,"rapOrigenes"],
+["Straight Outta Compton","N.W.A",1988,"rapOrigenes"],
+["Fight the Power","Public Enemy",1989,"rapOrigenes"],
+["Don't Believe the Hype","Public Enemy",1988,"rapOrigenes"],
+["Rebel Without a Pause","Public Enemy",1987,"rapOrigenes"],
+["Trans-Europe Express","Kraftwerk",1977,"electronicaOrigenes"],
+["Autobahn","Kraftwerk",1974,"electronicaOrigenes"],
+["The Robots","Kraftwerk",1978,"electronicaOrigenes"],
+["Numbers","Kraftwerk",1981,"electronicaOrigenes"],
+["Popcorn","Hot Butter",1972,"electronicaOrigenes"],
+["Oxygène, Pt. IV","Jean-Michel Jarre",1976,"electronicaOrigenes"],
+["I Feel Love","Donna Summer",1977,"electronicaOrigenes"],
+["On and On","Jesse Saunders",1984,"electronicaOrigenes"],
+["Your Love","Frankie Knuckles",1986,"electronicaOrigenes"],
+["No Way Back","Adonis",1986,"electronicaOrigenes"],
+["Strings of Life","Rhythm Is Rhythm",1987,"electronicaOrigenes"],
+["Big Fun","Inner City",1988,"electronicaOrigenes"],
+["Good Life","Inner City",1988,"electronicaOrigenes"],
+["Techno City","Juan Atkins",1984,"electronicaOrigenes"],
+["Alleys of Your Mind","Cybotron",1981,"electronicaOrigenes"],
+["Sharevari","A Number of Names",1981,"electronicaOrigenes"],
+["Voodoo Ray","A Guy Called Gerald",1988,"electronicaOrigenes"],
+["Pump Up the Volume","M|A|R|R|S",1987,"electronicaOrigenes"],
+["Get Down Saturday Night","Oliver Cheatham",1983,"discoFunk70s"],
+["Le Freak","Chic",1978,"discoFunk70s"],
+["Good Times","Chic",1979,"discoFunk70s"],
+["I Want Your Love","Chic",1978,"discoFunk70s"],
+["Stayin' Alive","Bee Gees",1977,"discoFunk70s"],
+["Night Fever","Bee Gees",1977,"discoFunk70s"],
+["I Will Survive","Gloria Gaynor",1978,"discoFunk70s"],
+["Boogie Wonderland","Earth, Wind & Fire",1979,"discoFunk70s"],
+["September","Earth, Wind & Fire",1978,"discoFunk70s"],
+["Give Up the Funk (Tear the Roof off the Sucker)","Parliament",1976,"discoFunk70s"],
+["Flash Light","Parliament",1977,"discoFunk70s"],
+["One Nation Under a Groove","Funkadelic",1978,"discoFunk70s"],
+["Super Freak","Rick James",1981,"discoFunk70s"],
+["Play That Funky Music","Wild Cherry",1976,"discoFunk70s"],
+["Get Up (I Feel Like Being a) Sex Machine","James Brown",1970,"discoFunk70s"],
+["Papa's Got a Brand New Bag","James Brown",1965,"discoFunk70s"],
+["Love Rollercoaster","Ohio Players",1975,"discoFunk70s"],
+["Disco Inferno","The Trammps",1976,"discoFunk70s"],
+["YMCA","Village People",1978,"discoFunk70s"],
+["Funkytown","Lipps Inc.",1979,"discoFunk70s"],
+["Purple Haze","The Jimi Hendrix Experience",1967,"psicodelia60s"],
+["White Rabbit","Jefferson Airplane",1967,"psicodelia60s"],
+["Somebody to Love","Jefferson Airplane",1967,"psicodelia60s"],
+["A Whiter Shade of Pale","Procol Harum",1967,"psicodelia60s"],
+["Lucy in the Sky with Diamonds","The Beatles",1967,"psicodelia60s"],
+["Strawberry Fields Forever","The Beatles",1967,"psicodelia60s"],
+["Tomorrow Never Knows","The Beatles",1966,"psicodelia60s"],
+["Good Vibrations","The Beach Boys",1966,"psicodelia60s"],
+["The End","The Doors",1967,"psicodelia60s"],
+["Light My Fire","The Doors",1967,"psicodelia60s"],
+["People Are Strange","The Doors",1967,"psicodelia60s"],
+["Interstellar Overdrive","Pink Floyd",1967,"psicodelia60s"],
+["Astronomy Domine","Pink Floyd",1967,"psicodelia60s"],
+["See Emily Play","Pink Floyd",1967,"psicodelia60s"],
+["Season of the Witch","Donovan",1966,"psicodelia60s"],
+["Incense and Peppermints","Strawberry Alarm Clock",1967,"psicodelia60s"],
+["Are You Experienced","The Jimi Hendrix Experience",1967,"psicodelia60s"],
+["Voodoo Child (Slight Return)","The Jimi Hendrix Experience",1968,"psicodelia60s"],
+["Time of the Season","The Zombies",1968,"psicodelia60s"],
+["Eight Miles High","The Byrds",1966,"psicodelia60s"],
+];
+const SONGS_BATCH2 = [
+["Smells Like Teen Spirit","Nirvana",1991,"grunge90s"],
+["Come as You Are","Nirvana",1991,"grunge90s"],
+["Lithium","Nirvana",1991,"grunge90s"],
+["Heart-Shaped Box","Nirvana",1993,"grunge90s"],
+["In Bloom","Nirvana",1991,"grunge90s"],
+["Black Hole Sun","Soundgarden",1994,"grunge90s"],
+["Spoonman","Soundgarden",1994,"grunge90s"],
+["Rusty Cage","Soundgarden",1991,"grunge90s"],
+["Alive","Pearl Jam",1991,"grunge90s"],
+["Jeremy","Pearl Jam",1991,"grunge90s"],
+["Even Flow","Pearl Jam",1991,"grunge90s"],
+["Man in the Box","Alice in Chains",1990,"grunge90s"],
+["Would?","Alice in Chains",1992,"grunge90s"],
+["Rooster","Alice in Chains",1992,"grunge90s"],
+["Plush","Stone Temple Pilots",1992,"grunge90s"],
+["Interstate Love Song","Stone Temple Pilots",1994,"grunge90s"],
+["Cherub Rock","The Smashing Pumpkins",1993,"grunge90s"],
+["Today","The Smashing Pumpkins",1993,"grunge90s"],
+["1979","The Smashing Pumpkins",1995,"grunge90s"],
+["Chloe Dancer/Crown of Thorns","Mother Love Bone",1990,"grunge90s"],
+["Outshined","Soundgarden",1991,"grunge90s"],
+["Sex Type Thing","Stone Temple Pilots",1992,"grunge90s"],
+["No Excuses","Alice in Chains",1994,"grunge90s"],
+["Vulgar Display of Power: Walk","Pantera",1992,"metal90s"],
+["Cowboys from Hell","Pantera",1990,"metal90s"],
+["Mouth for War","Pantera",1992,"metal90s"],
+["Toxicity","System of a Down",2001,"metal90s"],
+["Chop Suey!","System of a Down",2001,"metal90s"],
+["Duality","Slipknot",2004,"metal90s"],
+["Wait and Bleed","Slipknot",1999,"metal90s"],
+["Bodies","Drowning Pool",2001,"metal90s"],
+["Down with the Sickness","Disturbed",2000,"metal90s"],
+["Freak on a Leash","Korn",1998,"metal90s"],
+["Got the Life","Korn",1998,"metal90s"],
+["Blind","Korn",1994,"metal90s"],
+["Break Stuff","Limp Bizkit",1999,"metal90s"],
+["Nookie","Limp Bizkit",1999,"metal90s"],
+["Rollin'","Limp Bizkit",2000,"metal90s"],
+["Head Like a Hole","Nine Inch Nails",1989,"metal90s"],
+["Closer","Nine Inch Nails",1994,"metal90s"],
+["Hurt","Nine Inch Nails",1994,"metal90s"],
+["The Beautiful People","Marilyn Manson",1996,"metal90s"],
+["Epic","Faith No More",1989,"metal90s"],
+["Killing in the Name","Rage Against the Machine",1992,"metal90s"],
+["Bulls on Parade","Rage Against the Machine",1996,"metal90s"],
+["Strings of Life","Rhythm Is Rhythm",1987,"technoClasico"],
+["No UFO's","Model 500",1985,"technoClasico"],
+["Nude Photo","Model 500",1987,"technoClasico"],
+["Big Fun","Inner City",1988,"technoClasico"],
+["Good Life","Inner City",1988,"technoClasico"],
+["Jack Your Body","Steve 'Silk' Hurley",1986,"technoClasico"],
+["Move Your Body","Marshall Jefferson",1986,"technoClasico"],
+["Can You Feel It","Mr. Fingers",1986,"technoClasico"],
+["Washing Machine","Mr. Fingers",1986,"technoClasico"],
+["Percolator","Cajmere",1992,"technoClasico"],
+["Acperience 1","Hardfloor",1992,"technoClasico"],
+["The Bells","Jeff Mills",1996,"technoClasico"],
+["Spastik","Plastikman",1993,"technoClasico"],
+["String","Plastikman",1994,"technoClasico"],
+["Acid Trax","Phuture",1987,"technoClasico"],
+["Energy Flash","Joey Beltram",1990,"technoClasico"],
+["Mentasm","Second Phase",1991,"technoClasico"],
+["Rob's Theme","Speedy J",1993,"hardTechno"],
+["Hard to the Core","Chris Liberator",1995,"hardTechno"],
+["Rotator","Surgeon",1997,"hardTechno"],
+["Force","Regis",1996,"hardTechno"],
+["Warlock","DJ Rush",1998,"hardTechno"],
+["Metatron","Perc",2011,"hardTechno"],
+["Take Weapon","Perc",2014,"hardTechno"],
+["Reptiles","Ansome",2017,"hardTechno"],
+["Torture Chamber","Amelie Lens",2018,"hardTechno"],
+["In My Mind","Charlotte de Witte",2018,"hardTechno"],
+["Reeperbahn","Charlotte de Witte",2019,"hardTechno"],
+["Sativa","Charlotte de Witte",2020,"hardTechno"],
+["Renegade Snares","Omni Trio",1993,"jungle"],
+["Original Nuttah","UK Apachi with Shy FX",1994,"jungle"],
+["Terrorist","Shy FX & UK Apachi",1994,"jungle"],
+["Timeless","Goldie",1995,"jungle"],
+["Inner City Life","Goldie",1995,"jungle"],
+["Angel","Goldie",1995,"jungle"],
+["Circles","LTJ Bukem",1995,"jungle"],
+["Music","LTJ Bukem",1996,"jungle"],
+["Valley of the Shadows","Origin Unknown",1993,"jungle"],
+["The Nine","Roni Size",1996,"jungle"],
+["Brown Paper Bag","Roni Size / Reprazent",1997,"jungle"],
+["Incredible","M-Beat ft. General Levy",1994,"jungle"],
+["Champion Sound","Ganja Kru",1997,"jungle"],
+["Warhead","Kenny Ken",1994,"jungle"],
+["Ghost Town","Adam F",1995,"jungle"],
+["Circles (Dillinja Remix)","LTJ Bukem",1996,"jungle"],
+["Movin' Too Fast","Artful Dodger ft. Melanie Blatt",1999,"ukGarage"],
+["Re-Rewind","Artful Dodger ft. Craig David",1999,"ukGarage"],
+["Fill Me In","Craig David",2000,"ukGarage"],
+["7 Days","Craig David",2000,"ukGarage"],
+["Sweet Like Chocolate","Shanks & Bigfoot",1999,"ukGarage"],
+["Sound Bwoy Burial","Groove Chronicles",1997,"ukGarage"],
+["Flowers","Sweet Female Attitude",2000,"ukGarage"],
+["21 Seconds","So Solid Crew",2001,"ukGarage"],
+["Booo!","So Solid Crew",2001,"ukGarage"],
+["Standing Alone","MJ Cole",2000,"ukGarage"],
+["Sincere","MJ Cole",1998,"ukGarage"],
+["Do You Really Like It?","DJ Pied Piper and the Masters of Ceremonies",2001,"ukGarage"],
+["Heartbroken","T2 ft. Jodie Aysha",2007,"ukGarage"],
+["Never Felt Like This","Ramsey & Fen ft. Ricalo",2003,"ukGarage"],
+];
+const SONGS_BATCH3 = [
+["Midnight Request Line","Skream",2005,"dubstep"],
+["Night","Benga & Coki",2007,"dubstep"],
+["Cockney Thug","Rusko",2008,"dubstep"],
+["Woo Boost","Rusko",2009,"dubstep"],
+["Anti War Dub","Digital Mystikz",2006,"dubstep"],
+["Haunted","Digital Mystikz",2006,"dubstep"],
+["Archangel","Burial",2007,"dubstep"],
+["Ghost Hardware","Burial",2007,"dubstep"],
+["Scary Monsters and Nice Sprites","Skrillex",2010,"dubstep"],
+["Kyoto","Skrillex",2011,"dubstep"],
+["First of the Year (Equinox)","Skrillex",2011,"dubstep"],
+["Bangarang","Skrillex ft. Sirah",2011,"dubstep"],
+["Promises","Nero",2011,"dubstep"],
+["Me & You","Nero",2011,"dubstep"],
+["Centipede","Knife Party",2012,"dubstep"],
+["Internet Friends","Knife Party",2012,"dubstep"],
+["Levels (Skrillex Remix)","Avicii",2011,"dubstep"],
+["Bass Cannon","Flux Pavilion",2011,"dubstep"],
+["I Can't Stop","Flux Pavilion",2011,"dubstep"],
+["Kill Everybody","Skrillex",2014,"dubstep"],
+["Windowlicker","Aphex Twin",1999,"idm"],
+["Come to Daddy","Aphex Twin",1997,"idm"],
+["Xtal","Aphex Twin",1992,"idm"],
+["Avril 14th","Aphex Twin",2001,"idm"],
+["Flim","Aphex Twin",1997,"idm"],
+["Roygbiv","Boards of Canada",1998,"idm"],
+["Dayvan Cowboy","Boards of Canada",2005,"idm"],
+["Aquarius","Boards of Canada",1998,"idm"],
+["An Eagle in Your Mind","Boards of Canada",1998,"idm"],
+["Rez","Underworld",1993,"idm"],
+["Cliff","Autechre",1993,"idm"],
+["Bike","Autechre",1993,"idm"],
+["Gantz Graf","Autechre",2002,"idm"],
+["Flutter","Autechre",1994,"idm"],
+["Frame 4061/2","Squarepusher",1998,"idm"],
+["Come On My Selector","Squarepusher",1997,"idm"],
+["My Red Hot Car","Squarepusher",2001,"idm"],
+["Silence","Four Tet",2003,"idm"],
+["Angel Echoes","Four Tet",2010,"idm"],
+["Petrol","Four Tet",2001,"idm"],
+["Steppa's Delight","Amon Tobin",1997,"idm"],
+["Levels","Avicii",2011,"edm"],
+["Wake Me Up","Avicii",2013,"edm"],
+["Hey Brother","Avicii",2013,"edm"],
+["Titanium","David Guetta ft. Sia",2011,"edm"],
+["Turn Me On","David Guetta ft. Nicki Minaj",2011,"edm"],
+["Sexy Bitch","David Guetta ft. Akon",2009,"edm"],
+["Animals","Martin Garrix",2013,"edm"],
+["Tremor","Martin Garrix & Dimitri Vegas & Like Mike",2014,"edm"],
+["Clarity","Zedd ft. Foxes",2012,"edm"],
+["Stay the Night","Zedd ft. Hayley Williams",2013,"edm"],
+["Spectrum","Zedd ft. Matthew Koma",2012,"edm"],
+["This Is What It Feels Like","Armin van Buuren ft. Trevor Guthrie",2013,"edm"],
+["In and Out of Love","Armin van Buuren ft. Sharon den Adel",2007,"edm"],
+["Reload","Sebastian Ingrosso & Tommy Trash",2013,"edm"],
+["Don't You Worry Child","Swedish House Mafia ft. John Martin",2012,"edm"],
+["Save the World","Swedish House Mafia",2011,"edm"],
+["Greyhound","Swedish House Mafia",2012,"edm"],
+["One (Your Name)","Swedish House Mafia ft. Pharrell",2010,"edm"],
+["Get Low","Zedd & Liam Payne",2017,"edm"],
+["Summer","Calvin Harris",2014,"edm"],
+["Feel So Close","Calvin Harris",2011,"edm"],
+["Sweet Nothing","Calvin Harris ft. Florence Welch",2012,"edm"],
+["Praise You","Fatboy Slim",1998,"edm"],
+["Right Here, Right Now","Fatboy Slim",1999,"edm"],
+["Sandstorm","Darude",2000,"edm"],
+["Losing It","FISHER",2018,"futureHouse"],
+["You Little Beauty","FISHER",2018,"futureHouse"],
+["Ain't Nothin' Wrong","FISHER x Chris Lake",2020,"futureHouse"],
+["Turn Off the Lights","Tchami",2015,"futureHouse"],
+["Adieu","Tchami",2013,"futureHouse"],
+["Prophecy","Tchami",2015,"futureHouse"],
+["Bird Machine","Malaa",2016,"futureHouse"],
+["Notorious","Malaa",2018,"futureHouse"],
+["My Love","Route 94",2013,"futureHouse"],
+["Overtime","Mesto",2016,"futureHouse"],
+["Bongo","Riva Starr & Mihalis Safras",2015,"futureHouse"],
+["Hey Now","CamelPhat & Elderbrook",2017,"futureHouse"],
+["Cola","CamelPhat & Elderbrook",2017,"futureHouse"],
+["Losing It (Extended)","FISHER",2018,"futureHouse"],
+["Ubuntu","Marc Benjamin & Nala",2019,"futureHouse"],
+["Entre Dos Aguas","Paco de Lucía",1976,"flamenco"],
+["Río Ancho","Paco de Lucía",1976,"flamenco"],
+["Volare","Paco de Lucía",1981,"flamenco"],
+["La Leyenda del Tiempo","Camarón de la Isla",1979,"flamenco"],
+["Como el Agua","Camarón de la Isla",1981,"flamenco"],
+["Volando Voy","Camarón de la Isla",1979,"flamenco"],
+["Nana del Caballo Grande","Camarón de la Isla",1971,"flamenco"],
+["Soy Gitano","Camarón de la Isla",1989,"flamenco"],
+["Tangos de la Repompa","Enrique Morente",1996,"flamenco"],
+["Omega","Enrique Morente & Lagartija Nick",1996,"flamenco"],
+["Silencio","Enrique Morente",1996,"flamenco"],
+["Vamos a Contar Mentiras","Lole y Manuel",1975,"flamenco"],
+["Todo Es de Color","Lole y Manuel",1975,"flamenco"],
+["Bambino Bonito","Bambino",1970,"flamenco"],
+["Como Camarón","Ketama",1995,"flamenco"],
+["Vente Pa' Marbella","Ketama",1992,"flamenco"],
+["Se Fue","Ketama",1992,"flamenco"],
+["Frontera","Pata Negra",1987,"flamenco"],
+["Bodas de Sangre","Pata Negra",1987,"flamenco"],
+["Malamente","Rosalía",2018,"flamenco"],
+["Reniego","Rosalía",2017,"flamenco"],
+["Catalina","Rosalía",2017,"flamenco"],
+["Borriquito","Peret",1971,"rumba"],
+["Una Lágrima","Peret",1968,"rumba"],
+["Gitana Hechicera","Peret",1974,"rumba"],
+["Ay No Digas Eso","Peret",1974,"rumba"],
+["El Muerto Vivo","Gato Pérez",1978,"rumba"],
+["Achilipú","Gato Pérez",1981,"rumba"],
+["Vine, Vine","Gato Pérez",1980,"rumba"],
+["Lo Cortés No Quita lo Caliente","Estopa",1999,"rumba"],
+["Vino Tinto","Estopa",1999,"rumba"],
+["Fiesta","Ojos de Brujo",2002,"rumba"],
+["Todo Tiende","Ojos de Brujo",2002,"rumba"],
+["Bandolero","Los Chichos",1976,"rumba"],
+["Ni Se Compra Ni Se Vende","Los Chunguitos",1979,"rumba"],
+["Me Quedo Contigo","Los Chunguitos",1980,"rumba"],
+["Djobi Djoba","Gipsy Kings",1988,"rumba"],
+["Bamboléo","Gipsy Kings",1987,"rumba"],
+["Volare (Gipsy Kings)","Gipsy Kings",1989,"rumba"],
+];
+const SONGS_BATCH4 = [
+["Pedro Navaja","Rubén Blades & Willie Colón",1978,"salsa"],
+["Plástico","Rubén Blades & Willie Colón",1978,"salsa"],
+["El Cantante","Héctor Lavoe",1978,"salsa"],
+["Periódico de Ayer","Héctor Lavoe",1976,"salsa"],
+["Aguanile","Héctor Lavoe",1978,"salsa"],
+["Idilio","Willie Colón & Héctor Lavoe",1972,"salsa"],
+["Anacaona","Cheo Feliciano",1971,"salsa"],
+["El Ratón","Cheo Feliciano",1965,"salsa"],
+["Quítate Tú","Fania All-Stars",1971,"salsa"],
+["Mi Gente","Héctor Lavoe",1975,"salsa"],
+["Bilongo","Eddie Palmieri",1971,"salsa"],
+["Vámonos Pa'l Monte","Eddie Palmieri",1971,"salsa"],
+["Llorarás","Oscar D'León",1975,"salsa"],
+["La Rebelión","Joe Arroyo",1986,"salsa"],
+["En Barranquilla Me Quedo","Joe Arroyo",1993,"salsa"],
+["Vivir Mi Vida","Marc Anthony",2013,"salsa"],
+["Valió la Pena","Marc Anthony",2004,"salsa"],
+["Aguanile (Marc Anthony)","Marc Anthony",1995,"salsa"],
+["La Vida Es un Carnaval","Celia Cruz",1998,"salsa"],
+["Quimbara","Celia Cruz",1974,"salsa"],
+["La Negra Tiene Tumbao","Celia Cruz",2001,"salsa"],
+["Rie y Llora","Celia Cruz",2002,"salsa"],
+["Isadora","Grupo Niche",1990,"salsa"],
+["Cali Pachanguero","Grupo Niche",1984,"salsa"],
+["Tu Amor Me Hace Bien","Marc Anthony",2013,"salsa"],
+["Obsesión","Aventura",2002,"bachata"],
+["Un Beso","Aventura",2005,"bachata"],
+["Su Veneno","Aventura",2005,"bachata"],
+["Cuando Volveras","Aventura",1999,"bachata"],
+["El Perdedor","Aventura",2005,"bachata"],
+["Propuesta Indecente","Romeo Santos",2013,"bachata"],
+["Odio","Romeo Santos ft. Drake",2014,"bachata"],
+["Eres Mía","Romeo Santos",2011,"bachata"],
+["Promise","Romeo Santos ft. Usher",2011,"bachata"],
+["Amor de Media Noche","Elvis Martinez",2010,"bachata"],
+["Volví","Aventura",2002,"bachata"],
+["Frio Frio","Juan Luis Guerra",1990,"bachata"],
+["Bachata Rosa","Juan Luis Guerra",1990,"bachata"],
+["Burbujas de Amor","Juan Luis Guerra",1990,"bachata"],
+["Darle un Beso","Prince Royce",2010,"bachata"],
+["Corazón Sin Cara","Prince Royce",2010,"bachata"],
+["Stand by Me","Prince Royce",2010,"bachata"],
+["No Woman, No Cry","Bob Marley and The Wailers",1975,"reggae"],
+["Redemption Song","Bob Marley and The Wailers",1980,"reggae"],
+["One Love","Bob Marley and The Wailers",1977,"reggae"],
+["Three Little Birds","Bob Marley and The Wailers",1977,"reggae"],
+["Get Up, Stand Up","Bob Marley and The Wailers",1973,"reggae"],
+["Jamming","Bob Marley and The Wailers",1977,"reggae"],
+["Buffalo Soldier","Bob Marley and The Wailers",1983,"reggae"],
+["Israelites","Desmond Dekker",1968,"reggae"],
+["The Harder They Come","Jimmy Cliff",1972,"reggae"],
+["Many Rivers to Cross","Jimmy Cliff",1969,"reggae"],
+["Pressure Drop","Toots and the Maytals",1969,"reggae"],
+["54-46 Was My Number","Toots and the Maytals",1968,"reggae"],
+["Rivers of Babylon","The Melodians",1970,"reggae"],
+["Rockers","Augustus Pablo",1975,"reggae"],
+["King Tubby Meets the Rockers Uptown","Augustus Pablo",1976,"reggae"],
+["Marcus Garvey","Burning Spear",1975,"reggae"],
+["Two Sevens Clash","Culture",1977,"reggae"],
+["Legalize It","Peter Tosh",1976,"reggae"],
+["Equal Rights","Peter Tosh",1977,"reggae"],
+["Murder She Wrote","Chaka Demus & Pliers",1992,"reggae"],
+["Toccata and Fugue in D Minor, BWV 565","Johann Sebastian Bach",1704,"clasica"],
+["Brandenburg Concerto No. 3","Johann Sebastian Bach",1721,"clasica"],
+["Air on the G String","Johann Sebastian Bach",1730,"clasica"],
+["The Four Seasons: Spring","Antonio Vivaldi",1725,"clasica"],
+["Eine kleine Nachtmusik","Wolfgang Amadeus Mozart",1787,"clasica"],
+["Symphony No. 40 in G Minor","Wolfgang Amadeus Mozart",1788,"clasica"],
+["Requiem in D Minor: Lacrimosa","Wolfgang Amadeus Mozart",1791,"clasica"],
+["The Marriage of Figaro: Overture","Wolfgang Amadeus Mozart",1786,"clasica"],
+["Symphony No. 5 in C Minor","Ludwig van Beethoven",1808,"clasica"],
+["Symphony No. 9 (Ode to Joy)","Ludwig van Beethoven",1824,"clasica"],
+["Moonlight Sonata","Ludwig van Beethoven",1801,"clasica"],
+["Für Elise","Ludwig van Beethoven",1810,"clasica"],
+["Canon in D","Johann Pachelbel",1680,"clasica"],
+["The Rite of Spring","Igor Stravinsky",1913,"clasica"],
+["Clair de Lune","Claude Debussy",1905,"clasica"],
+["Boléro","Maurice Ravel",1928,"clasica"],
+["Carmina Burana: O Fortuna","Carl Orff",1937,"clasica"],
+["The Nutcracker: Dance of the Sugar Plum Fairy","Pyotr Ilyich Tchaikovsky",1892,"romanticismo"],
+["Swan Lake: Scene","Pyotr Ilyich Tchaikovsky",1876,"romanticismo"],
+["1812 Overture","Pyotr Ilyich Tchaikovsky",1880,"romanticismo"],
+["Piano Concerto No. 1","Pyotr Ilyich Tchaikovsky",1875,"romanticismo"],
+["Nocturne in E-flat Major, Op. 9 No. 2","Frédéric Chopin",1832,"romanticismo"],
+["Fantaisie-Impromptu","Frédéric Chopin",1834,"romanticismo"],
+["Ballade No. 1 in G Minor","Frédéric Chopin",1836,"romanticismo"],
+["Piano Concerto No. 2","Sergei Rachmaninoff",1901,"romanticismo"],
+["Rhapsody on a Theme of Paganini","Sergei Rachmaninoff",1934,"romanticismo"],
+["Hungarian Rhapsody No. 2","Franz Liszt",1847,"romanticismo"],
+["Liebestraum No. 3","Franz Liszt",1850,"romanticismo"],
+["Symphony No. 3 (Eroica)","Ludwig van Beethoven",1804,"romanticismo"],
+["Symphony No. 9 (New World)","Antonín Dvořák",1893,"romanticismo"],
+["Finlandia","Jean Sibelius",1899,"romanticismo"],
+["The Planets: Mars","Gustav Holst",1916,"romanticismo"],
+["Adagio for Strings","Samuel Barber",1936,"romanticismo"],
+];
+const SONGS_BATCH5 = [
+["Metal Machine Music, Pt. I","Lou Reed",1975,"noise"],
+["Sister Ray","The Velvet Underground",1968,"noise"],
+["Death Valley '69","Sonic Youth",1985,"noise"],
+["Confusion Is Sex","Sonic Youth",1983,"noise"],
+["Silver Rocket","Sonic Youth",1988,"noise"],
+["Youth Against Fascism","Sonic Youth",1992,"noise"],
+["Halber Mensch","Einstürzende Neubauten",1985,"noise"],
+["Yü-Gung","Einstürzende Neubauten",1985,"noise"],
+["Head On","Jesus and Mary Chain",1989,"noise"],
+["Just Like Honey","The Jesus and Mary Chain",1985,"noise"],
+["I Am the Fly","Wire",1978,"noise"],
+["Damage","My Bloody Valentine",1991,"noise"],
+["You Made Me Realise","My Bloody Valentine",1988,"noise"],
+["Total Sound of the Uncontrollable Wave","Merzbow",1998,"noise"],
+["Woodpecker No. 1","Merzbow",1996,"noise"],
+["Hymn to the Immortal Wind","Mono",2009,"noise"],
+["Marble House","Wolf Eyes",2004,"noise"],
+["Stabbed in the Face","Whitehouse",1982,"noise"],
+["リサフランク420 / 現代のコンピュー","Macintosh Plus",2011,"liminal"],
+["Angel","Macintosh Plus",2011,"liminal"],
+["Blank Banshee 0: Intro","Blank Banshee",2012,"liminal"],
+["Enterprise Soundscapes","Chuck Person",2011,"liminal"],
+["Music For Malls","Hotel Pools",2016,"liminal"],
+["Sundown Kissable","Hotel Pools",2017,"liminal"],
+["It's Just a Burning Memory","The Caretaker",2011,"liminal"],
+["Everywhere at the End of Time - Stage 1","The Caretaker",2016,"liminal"],
+["An Empty Bliss Beyond This World","The Caretaker",2011,"liminal"],
+["Music Has the Right to Children: Telephasic Workshop","Boards of Canada",1998,"liminal"],
+["Reach for the Dead","Boards of Canada",2013,"liminal"],
+["Home","Disasterpeace",2012,"liminal"],
+["Elevator Music","Oneohtrix Point Never",2010,"liminal"],
+["Chrome Country","Oneohtrix Point Never",2011,"liminal"],
+["Weightless","Marconi Union",2011,"levitar"],
+["Watermark","Enya",1988,"levitar"],
+["Orinoco Flow","Enya",1988,"levitar"],
+["Porcelain","Moby",1999,"levitar"],
+["Why Does My Heart Feel So Bad?","Moby",1999,"levitar"],
+["Teardrop","Massive Attack",1998,"levitar"],
+["Unfinished Sympathy","Massive Attack",1991,"levitar"],
+["Angel","Massive Attack",1998,"levitar"],
+["Pyramid Song","Radiohead",2001,"levitar"],
+["Weird Fishes/Arpeggi","Radiohead",2007,"levitar"],
+["Holocene","Bon Iver",2011,"levitar"],
+["Re: Stacks","Bon Iver",2007,"levitar"],
+["Intro","The xx",2009,"levitar"],
+["Midnight City","M83",2011,"levitar"],
+["Wait","M83",2011,"levitar"],
+["Breathe (In the Air)","Pink Floyd",1973,"levitar"],
+["Us and Them","Pink Floyd",1973,"levitar"],
+["The Great Gig in the Sky","Pink Floyd",1973,"levitar"],
+["La Vie en Rose","Édith Piaf",1947,"levitar"],
+["Clair de Lune","Claude Debussy",1905,"levitar"],
+["Spiegel im Spiegel","Arvo Pärt",1978,"levitar"],
+["Hallelujah","Jeff Buckley",1994,"tristes"],
+["Mad World","Gary Jules",2001,"tristes"],
+["The Sound of Silence","Simon & Garfunkel",1964,"tristes"],
+["Everybody Hurts","R.E.M.",1992,"tristes"],
+["Tears in Heaven","Eric Clapton",1992,"tristes"],
+["Hurt","Johnny Cash",2002,"tristes"],
+["Fix You","Coldplay",2005,"tristes"],
+["Skinny Love","Bon Iver",2007,"tristes"],
+["Someone Like You","Adele",2011,"tristes"],
+["Nothing Compares 2 U","Sinéad O'Connor",1990,"tristes"],
+["Yesterday","The Beatles",1965,"tristes"],
+["Black","Pearl Jam",1991,"tristes"],
+["I Will Always Love You","Whitney Houston",1992,"tristes"],
+["Creep","Radiohead",1992,"tristes"],
+["How to Disappear Completely","Radiohead",2000,"tristes"],
+["Motion Sickness","Phoebe Bridgers",2017,"tristes"],
+["Liability","Lorde",2017,"tristes"],
+["Cry Me a River","Julie London",1955,"tristes"],
+["Historia de un Amor","Luis Miguel",1991,"tristes"],
+["Como Yo Te Amé","José José",1980,"tristes"],
+["El Triste","José José",1970,"tristes"],
+["Main Title (Star Wars)","John Williams",1977,"bandasSonoras"],
+["The Imperial March","John Williams",1980,"bandasSonoras"],
+["Duel of the Fates","John Williams",1999,"bandasSonoras"],
+["Concerning Hobbits","Howard Shore",2001,"bandasSonoras"],
+["The Shire","Howard Shore",2001,"bandasSonoras"],
+["Time","Hans Zimmer",2010,"bandasSonoras"],
+["Cornfield Chase","Hans Zimmer",2014,"bandasSonoras"],
+["Mountains","Hans Zimmer",2010,"bandasSonoras"],
+["Now We Are Free","Hans Zimmer & Lisa Gerrard",2000,"bandasSonoras"],
+["He's a Pirate","Klaus Badelt",2003,"bandasSonoras"],
+["The Good, the Bad and the Ugly","Ennio Morricone",1966,"bandasSonoras"],
+["Once Upon a Time in the West","Ennio Morricone",1968,"bandasSonoras"],
+["Cinema Paradiso","Ennio Morricone",1988,"bandasSonoras"],
+["Comptine d'un autre été","Yann Tiersen",2001,"bandasSonoras"],
+["A Comme Amélie","Yann Tiersen",2001,"bandasSonoras"],
+["Vertigo (Scene d'Amour)","Bernard Herrmann",1958,"bandasSonoras"],
+["Psycho: The Murder","Bernard Herrmann",1960,"bandasSonoras"],
+["The Godfather Waltz","Nino Rota",1972,"bandasSonoras"],
+["Chariots of Fire","Vangelis",1981,"bandasSonoras"],
+["Blade Runner Blues","Vangelis",1982,"bandasSonoras"],
+["Married Life","Michael Giacchino",2009,"bandasSonoras"],
+["He Mele No Lilo","Mark Keali'i Ho'omalu",2002,"bandasSonoras"],
+["A Real Hero","College & Electric Youth",2011,"bandasSonoras"],
+];
+// ---- combine + dedupe ----
+const ALL_SONGS_RAW = [].concat(SONGS_BATCH1, SONGS_BATCH2, SONGS_BATCH3, SONGS_BATCH4, SONGS_BATCH5);
+const seenSongs = new Set();
+const ALL_SONGS = [];
+ALL_SONGS_RAW.forEach(row => {
+  const key = (row[0] + '|' + row[1] + '|' + row[3]).toLowerCase();
+  if (seenSongs.has(key)) return;
+  seenSongs.add(key);
+  ALL_SONGS.push(row);
+});
+
+const PLAYLIST_BY_KEY = {};
+PLAYLISTS_META.forEach(p => { PLAYLIST_BY_KEY[p.key] = p; });
+const PLAYLIST_COUNTS = {};
+ALL_SONGS.forEach(([,, , key]) => { PLAYLIST_COUNTS[key] = (PLAYLIST_COUNTS[key] || 0) + 1; });
+
+document.getElementById('heroStats').innerHTML = `
+  <div class="stat"><div class="n">${ALL_SONGS.length}</div><div class="l">Canciones</div></div>
+  <div class="stat"><div class="n">${PLAYLISTS_META.length}</div><div class="l">Playlists / vibras</div></div>
+`;
+
+document.getElementById('pickerGrid').innerHTML = PLAYLISTS_META.map(p => `
+  <button class="picker-card" style="--pcolor:${p.color}" data-key="${p.key}">
+    <div class="pe">${p.emoji}</div>
+    <div class="pn">${p.name}</div>
+    <div class="pd">${p.desc}</div>
+    <div class="pc">${PLAYLIST_COUNTS[p.key] || 0} canciones</div>
+  </button>
+`).join('');
+
+let state = { q: '', playlist: 'all', page: 1, pageSize: 60 };
+
+function getFiltered() {
+  const q = state.q.trim().toLowerCase();
+  return ALL_SONGS.filter(([title, artist, year, key]) => {
+    if (state.playlist !== 'all' && key !== state.playlist) return false;
+    if (q) {
+      const meta = PLAYLIST_BY_KEY[key];
+      const hay = (title + ' ' + artist + ' ' + (meta ? meta.name : key)).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+function render() {
+  const rows = getFiltered();
+  const totalPages = Math.max(1, Math.ceil(rows.length / state.pageSize));
+  if (state.page > totalPages) state.page = totalPages;
+  const start = (state.page - 1) * state.pageSize;
+  const pageRows = rows.slice(start, start + state.pageSize);
+
+  document.getElementById('songCount').textContent =
+    `Mostrando ${rows.length ? (start+1) : 0}–${Math.min(start+state.pageSize, rows.length)} de ${rows.length} canciones (de ${ALL_SONGS.length} en total)`;
+
+  document.getElementById('songBody').innerHTML = pageRows.map(([title, artist, year, key]) => {
+    const meta = PLAYLIST_BY_KEY[key] || { name: key, emoji: '🎵', color: 'var(--fg-mute)' };
+    return `<tr>
+      <td>${title}</td>
+      <td>${artist}</td>
+      <td class="num">${year || '—'}</td>
+      <td><span class="badge">${meta.emoji} ${meta.name}</span></td>
+      <td>${spotifyLinkHtml(title, artist)}</td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="5" style="color:var(--fg-mute);">Sin resultados 🤷</td></tr>`;
+
+  document.getElementById('pageInfo').textContent = `Página ${state.page} de ${totalPages} · ${rows.length} canciones filtradas`;
+  document.getElementById('prevPage').disabled = state.page <= 1;
+  document.getElementById('nextPage').disabled = state.page >= totalPages;
+
+  document.querySelectorAll('.picker-card').forEach(card => {
+    card.classList.toggle('active', card.dataset.key === state.playlist);
+  });
+
+  if (state.playlist === 'all') {
+    document.getElementById('plTitle').textContent = 'Todas las canciones';
+    document.getElementById('plDesc').textContent = 'Elegí una playlist arriba, o buscá directamente lo que quieras escuchar.';
+  } else {
+    const meta = PLAYLIST_BY_KEY[state.playlist];
+    document.getElementById('plTitle').textContent = `${meta.emoji} ${meta.name}`;
+    document.getElementById('plDesc').textContent = meta.desc;
+  }
+}
+
+document.getElementById('pickerGrid').addEventListener('click', (e) => {
+  const card = e.target.closest('.picker-card');
+  if (!card) return;
+  state.playlist = state.playlist === card.dataset.key ? 'all' : card.dataset.key;
+  state.page = 1;
+  render();
+  document.getElementById('playlistCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+let songSearchTimer;
+document.getElementById('songSearch').addEventListener('input', (e) => {
+  clearTimeout(songSearchTimer);
+  songSearchTimer = setTimeout(() => { state.q = e.target.value; state.page = 1; render(); }, 150);
+});
+document.getElementById('clearFilter').addEventListener('click', () => {
+  state = { q: '', playlist: 'all', page: 1, pageSize: 60 };
+  document.getElementById('songSearch').value = '';
+  render();
+});
+document.getElementById('prevPage').addEventListener('click', () => { state.page = Math.max(1, state.page - 1); render(); });
+document.getElementById('nextPage').addEventListener('click', () => { state.page += 1; render(); });
+
+render();
+</script>
