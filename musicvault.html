@@ -1,4 +1,7 @@
 <meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -97,6 +100,12 @@
     font-size: 9.5px; text-transform:uppercase; letter-spacing:0.04em;
     padding: 2px 6px; border-radius: 6px; background: var(--card-2); color: var(--fg-mute);
   }
+  .listened-toggle {
+    position:absolute; top:7px; left:7px; width:22px; height:22px; border-radius:50%;
+    background: rgba(0,0,0,0.35); border: 1.5px solid rgba(255,255,255,0.7);
+    color:#fff; font-size:12px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  }
+  .listened-toggle.on { background: var(--teal); border-color: var(--teal); }
   .stars-mini { font-size: 10px; color: var(--brass); }
 
   .empty-state { text-align:center; padding: 70px 20px; color: var(--fg-mute); }
@@ -204,6 +213,7 @@
     <div class="brand">🗄️ MusicVault</div>
     <div class="topbar-actions">
       <button class="icon-btn" id="themeToggle">🌙</button>
+      <button class="icon-btn" id="bulkAddBtn" title="Añadir en bloque">📋</button>
       <button class="icon-btn" id="settingsBtn">⚙️</button>
     </div>
   </div>
@@ -216,6 +226,11 @@
         <option value="album">Álbumes</option>
         <option value="track">Canciones</option>
         <option value="artist">Artistas</option>
+      </select>
+      <select id="filterStatus">
+        <option value="all">Pendiente y escuchado</option>
+        <option value="pending">🔵 Pendientes</option>
+        <option value="listened">✅ Escuchados</option>
       </select>
       <select id="filterTag"><option value="all">Todas las etiquetas</option></select>
     </div>
@@ -348,9 +363,11 @@ function getFilteredItems() {
   const q = document.getElementById('filterSearch').value.trim().toLowerCase();
   const type = document.getElementById('filterType').value;
   const tagId = document.getElementById('filterTag').value;
+  const status = document.getElementById('filterStatus').value;
   return ITEMS
     .filter(i => type === 'all' || i.type === type)
     .filter(i => tagId === 'all' || (i.tagIds || []).includes(tagId))
+    .filter(i => status === 'all' || (status === 'listened' ? !!i.listened : !i.listened))
     .filter(i => !q || (i.title + ' ' + i.artists.join(' ')).toLowerCase().includes(q))
     .sort((a, b) => b.dateAdded - a.dateAdded);
 }
@@ -376,9 +393,11 @@ function renderGrid() {
 
 function cardHtml(item) {
   const stars = '★'.repeat(item.rating || 0);
+  const listened = !!item.listened;
   return `<div class="card" onclick="openDetailModal('${item.id}')">
-    <div class="cover">
+    <div class="cover" style="position:relative;">
       ${item.coverUrl ? `<img src="${item.coverUrl}" loading="lazy" alt="">` : `<span class="fallback">${typeIcon(item.type)}</span>`}
+      <button class="listened-toggle ${listened ? 'on' : ''}" onclick="event.stopPropagation(); toggleListened('${item.id}')" title="${listened ? 'Marcar como pendiente' : 'Marcar como escuchado'}">${listened ? '✓' : ''}</button>
     </div>
     <div class="body">
       <div class="t">${item.title}</div>
@@ -391,7 +410,15 @@ function cardHtml(item) {
   </div>`;
 }
 
-['filterSearch', 'filterType', 'filterTag'].forEach(id => {
+function toggleListened(id) {
+  const item = ITEMS.find(i => i.id === id);
+  if (!item) return;
+  item.listened = !item.listened;
+  saveItems(ITEMS);
+  renderGrid();
+}
+
+['filterSearch', 'filterType', 'filterTag', 'filterStatus'].forEach(id => {
   document.getElementById(id).addEventListener('input', renderGrid);
   document.getElementById(id).addEventListener('change', renderGrid);
 });
@@ -495,7 +522,7 @@ function saveResult(i, btn) {
   const item = {
     id: uid(), spotifyId: r.spotifyId, type: r.type, title: r.title, artists: r.artists,
     coverUrl: r.coverUrl, spotifyUrl: r.spotifyUrl, releaseDate: r.releaseDate,
-    dateAdded: Date.now(), notes: '', rating: 0, tagIds: []
+    dateAdded: Date.now(), notes: '', rating: 0, tagIds: [], listened: false
   };
   ITEMS.push(item);
   saveItems(ITEMS);
@@ -513,6 +540,10 @@ function openDetailModal(id) {
     <div class="detail-cover">${item.coverUrl ? `<img src="${item.coverUrl}" alt="">` : ''}</div>
     <div class="detail-title">${item.title}</div>
     <div class="detail-artist">${item.artists.join(', ')}${item.releaseDate ? ' · ' + item.releaseDate.slice(0,4) : ''}</div>
+
+    <div class="action-row" style="margin-top:0;">
+      <button class="btn ${item.listened ? 'primary' : ''}" id="listenedBtn">${item.listened ? '✓ Escuchado' : '🔵 Marcar como escuchado'}</button>
+    </div>
 
     <div class="field-label">Tu valoración</div>
     <div class="star-row" id="starRow">
@@ -538,6 +569,11 @@ function openDetailModal(id) {
     </div>
   `);
 
+  document.getElementById('listenedBtn').addEventListener('click', () => {
+    item.listened = !item.listened;
+    saveItems(ITEMS);
+    openDetailModal(id);
+  });
   document.querySelectorAll('#starRow button').forEach(btn => {
     btn.addEventListener('click', () => {
       const n = +btn.dataset.n;
@@ -661,6 +697,78 @@ function wireTagDeletes() {
 
 document.getElementById('settingsBtn').addEventListener('click', openSettingsModal);
 document.getElementById('openSearchBtn').addEventListener('click', openSearchModal);
+document.getElementById('bulkAddBtn').addEventListener('click', openBulkModal);
+
+// ================= bulk add =================
+// Detecta TODOS los links de Spotify en el texto pegado, sin importar el formato (uno por línea, separados por espacios, mezclados con otro texto, etc.)
+const SPOTIFY_URL_RE_GLOBAL = /open\.spotify\.com\/(?:intl-[a-z-]+\/)?(album|track|artist)\/([a-zA-Z0-9]+)/gi;
+
+function openBulkModal() {
+  showModal(`
+    <div class="sheet-head"><h2>📋 Añadir en bloque</h2><button class="icon-btn" onclick="closeModal()">✕</button></div>
+    <p style="font-size:12.5px;color:var(--fg-mute);margin:0 0 10px;">
+      Pegá varios links de Spotify (álbumes, canciones o artistas) — uno por línea, todos juntos, como sea. Los detecto todos.
+    </p>
+    <textarea class="notes" id="bulkInput" style="min-height:150px;" placeholder="https://open.spotify.com/album/...&#10;https://open.spotify.com/artist/...&#10;https://open.spotify.com/track/..."></textarea>
+    <div class="action-row"><button class="btn primary" id="bulkProcessBtn">Procesar y guardar</button></div>
+    <div id="bulkStatus" style="margin-top:14px;font-size:13px;color:var(--fg-soft);"></div>
+  `);
+  document.getElementById('bulkProcessBtn').addEventListener('click', runBulkAdd);
+  document.getElementById('bulkInput').focus();
+}
+
+async function runBulkAdd() {
+  const statusEl = document.getElementById('bulkStatus');
+  const creds = loadCreds();
+  if (!creds || !creds.clientId || !creds.clientSecret) {
+    statusEl.innerHTML = `<p>Configurá tus credenciales en ⚙️ Ajustes primero.</p>`;
+    return;
+  }
+
+  const text = document.getElementById('bulkInput').value;
+  const found = new Map(); // id -> type, dedupe automático
+  let m;
+  SPOTIFY_URL_RE_GLOBAL.lastIndex = 0;
+  while ((m = SPOTIFY_URL_RE_GLOBAL.exec(text)) !== null) {
+    found.set(m[2], m[1]);
+  }
+
+  if (found.size === 0) {
+    statusEl.innerHTML = `<p>No encontré ningún link de Spotify válido en ese texto.</p>`;
+    return;
+  }
+
+  document.getElementById('bulkProcessBtn').disabled = true;
+  let added = 0, skipped = 0, failed = 0, done = 0;
+  const total = found.size;
+  statusEl.innerHTML = `<p>Procesando 0 / ${total}...</p>`;
+
+  for (const [id, type] of found) {
+    done++;
+    statusEl.innerHTML = `<p>Procesando ${done} / ${total}... (${added} añadidos)</p>`;
+    if (ITEMS.some(it => it.spotifyId === id)) { skipped++; continue; }
+    try {
+      const raw = await fetchSpotifyItemById(type, id);
+      const r = normalizeSpotifyResult(raw, type);
+      ITEMS.push({
+        id: uid(), spotifyId: r.spotifyId, type: r.type, title: r.title, artists: r.artists,
+        coverUrl: r.coverUrl, spotifyUrl: r.spotifyUrl, releaseDate: r.releaseDate,
+        dateAdded: Date.now(), notes: '', rating: 0, tagIds: [], listened: false
+      });
+      added++;
+    } catch (err) {
+      failed++;
+    }
+  }
+
+  saveItems(ITEMS);
+  renderGrid();
+  const parts = [`✅ ${added} añadidos`];
+  if (skipped) parts.push(`${skipped} ya estaban en tu colección`);
+  if (failed) parts.push(`${failed} fallaron`);
+  statusEl.innerHTML = `<p>${parts.join(' · ')}.</p>`;
+  document.getElementById('bulkProcessBtn').disabled = false;
+}
 
 // ================= init =================
 renderTagFilterOptions();
