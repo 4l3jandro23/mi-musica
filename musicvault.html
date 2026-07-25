@@ -276,6 +276,7 @@
   .btn.primary { background: var(--amber); color: var(--on-amber); border-color: transparent; font-weight: 650; }
   .btn.jade { background: var(--jade); color: #fff; border-color: transparent; font-weight: 650; }
   .btn.danger { color: var(--rust); border-color: color-mix(in srgb, var(--rust) 45%, transparent); background: transparent; }
+  .btn.vermas { display: block; width: 100%; margin: 18px 0 4px; padding: 14px; }
   .btn.wide { width: 100%; }
   .btn:disabled { opacity: .45; cursor: default; }
   .btnrow { display:flex; gap: 9px; margin-top: 12px; }
@@ -515,14 +516,72 @@ const K_THEME = 'musicvaultTheme';
 const read = (k, fb) => { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? fb; } catch { return fb; } };
 const write = (k, v) => localStorage.setItem(k, JSON.stringify(v));
 
-let ITEMS = read(K_ITEMS, []);
-let TAGS  = read(K_TAGS, []);
+/* El vault vive en IndexedDB: localStorage se queda en ~5 MB (y cuenta UTF-16),
+   que con miles de álbumes se agota enseguida. Ajustes/tema/credenciales siguen
+   en localStorage porque son cuatro claves y conviene leerlas de forma síncrona. */
+const DB_NAME = 'musicvault', DB_STORE = 'kv';
+let _db = null, _sinIDB = false;
+
+function idb() {
+  if (_db) return Promise.resolve(_db);
+  return new Promise((res, rej) => {
+    if (!self.indexedDB) return rej(new Error('sin indexedDB'));
+    const r = indexedDB.open(DB_NAME, 1);
+    r.onupgradeneeded = () => {
+      if (!r.result.objectStoreNames.contains(DB_STORE)) r.result.createObjectStore(DB_STORE);
+    };
+    r.onsuccess = () => { _db = r.result; res(_db); };
+    r.onerror = () => rej(r.error);
+  });
+}
+const idbGet = k => idb().then(db => new Promise((res, rej) => {
+  const q = db.transaction(DB_STORE, 'readonly').objectStore(DB_STORE).get(k);
+  q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error);
+}));
+const idbSet = (k, v) => idb().then(db => new Promise((res, rej) => {
+  const t = db.transaction(DB_STORE, 'readwrite');
+  t.objectStore(DB_STORE).put(v, k);
+  t.oncomplete = () => res(); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error);
+}));
+
+let ITEMS = [];
+let TAGS  = [];
 let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', status: 'all', tag: 'all' }, read(K_PREFS, {}));
 
-const saveItems = () => write(K_ITEMS, ITEMS);
-const saveTags  = () => write(K_TAGS, TAGS);
+/* Escrituras agrupadas: al importar miles de elementos no queremos una
+   transacción por cada uno. */
+let _pend = null;
+function _flush(k, get) {
+  if (_sinIDB) { try { write(k, get()); } catch (e) { toast('No cabe en el almacenamiento del navegador'); } return; }
+  idbSet(k, get()).catch(() => toast('No se ha podido guardar'));
+}
+function saveItems() {
+  clearTimeout(_pend);
+  _pend = setTimeout(() => _flush(K_ITEMS, () => ITEMS), 120);
+}
+const saveTags  = () => _flush(K_TAGS, () => TAGS);
 const savePrefs = () => write(K_PREFS, PREFS);
 const loadCreds = () => read(K_CREDS, null);
+
+/* Carga inicial + migración desde localStorage la primera vez. */
+async function bootStorage() {
+  try {
+    const [i, t] = await Promise.all([idbGet(K_ITEMS), idbGet(K_TAGS)]);
+    if (Array.isArray(i)) ITEMS = i;
+    if (Array.isArray(t)) TAGS = t;
+    if (!Array.isArray(i)) {
+      const li = read(K_ITEMS, []), lt = read(K_TAGS, []);
+      if (li.length || lt.length) {
+        ITEMS = li; TAGS = lt;
+        await idbSet(K_ITEMS, ITEMS); await idbSet(K_TAGS, TAGS);
+      }
+    }
+  } catch {
+    _sinIDB = true;
+    ITEMS = read(K_ITEMS, []);
+    TAGS  = read(K_TAGS, []);
+  }
+}
 
 /* ============ helpers ============ */
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -827,7 +886,16 @@ function lrow(it) {
   </article>`;
 }
 
+/* Tanda visible. Se reinicia sola cuando cambian filtros, orden o búsqueda:
+   así no hay que acordarse de resetearla en cada sitio que llama a render(). */
+const TANDA = 120;
+let VISTAS = TANDA, _firma = null;
+
 function render() {
+  const firma = [PREFS.type, PREFS.status, PREFS.tag, PREFS.sort,
+                 document.getElementById('q').value.trim()].join('');
+  if (firma !== _firma) { _firma = firma; VISTAS = TANDA; }
+
   renderStats();
   renderChips();
   renderSelBar();
@@ -865,14 +933,21 @@ function render() {
     return;
   }
 
-  const groups = groupsFor(rows);
+  /* Con un vault de miles de elementos, pintarlos todos de golpe bloquea el
+     móvil varios segundos. Dibujamos por tandas. */
+  const visibles = rows.slice(0, VISTAS);
+  const restan = rows.length - visibles.length;
+  const groups = groupsFor(visibles);
   const draw = list => PREFS.view === 'grid'
     ? `<div class="grid">${list.map(gcard).join('')}</div>`
     : `<div class="list">${list.map(lrow).join('')}</div>`;
 
-  box.innerHTML = groups
+  box.innerHTML = (groups
     ? groups.map(g => `<section class="group"><h3 class="ghead">${esc(g.key)}<span class="gcount">${g.items.length}</span></h3>${draw(g.items)}</section>`).join('')
-    : draw(rows);
+    : draw(visibles))
+    + (restan > 0
+      ? `<button class="btn vermas" data-more="1">Ver más — quedan ${restan.toLocaleString('es-ES')}</button>`
+      : '');
 }
 
 /* Agrupa solo cuando el orden lo hace significativo: por artista, por inicial o por década. */
@@ -1315,6 +1390,96 @@ function openTagPicker(ids) {
 /* ---- settings ---- */
 let swatch = TAG_COLORS[0];
 
+/* Carga el volcado que va junto a la app. En el iPhone bajarse un .json y
+   luego buscarlo en Archivos es un incordio; así es un toque. */
+async function cargarBiblioteca() {
+  const btn = document.getElementById('loadLib');
+  const out = document.getElementById('libOut');
+  btn.disabled = true; out.textContent = 'Descargando…';
+  try {
+    const res = await fetch('biblioteca-albumes-artistas.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const d = await res.json();
+    if (!Array.isArray(d.items)) throw new Error('archivo con formato raro');
+
+    const known = new Set(ITEMS.map(i => i.spotifyId));
+    const nuevos = d.items.filter(i => i && i.spotifyId && !known.has(i.spotifyId));
+    const nombres = new Set(TAGS.map(t => t.name.toLowerCase()));
+    (d.tags || []).forEach(t => { if (t && t.name && !nombres.has(t.name.toLowerCase())) TAGS.push(t); });
+
+    ITEMS = ITEMS.concat(nuevos);
+    saveItems(); saveTags(); render();
+    out.textContent = nuevos.length
+      ? `Añadidos ${nuevos.length.toLocaleString('es-ES')}. Ya tienes ${ITEMS.length.toLocaleString('es-ES')} en el vault.`
+      : 'Ya los tenías todos, no he añadido nada.';
+    toast(`${nuevos.length.toLocaleString('es-ES')} añadidos`);
+  } catch (e) {
+    out.textContent = 'No he podido cargarla: ' + (e && e.message ? e.message : 'error de red');
+  }
+  btn.disabled = false;
+}
+
+const sinPortada = () => ITEMS.filter(i => !i.coverUrl).length;
+
+/* Pide a Spotify los objetos completos en lotes (20 álbumes / 50 artistas o
+   canciones por llamada) y rellena solo lo que falte, sin tocar tus ediciones. */
+const LOTE = { album: 20, artist: 50, track: 50 };
+let _parar = false;
+
+async function completarPortadas() {
+  const btn = document.getElementById('fillCovers');
+  const est = document.getElementById('coverStat');
+  if (btn.dataset.run === '1') { _parar = true; return; }
+  _parar = false;
+  btn.dataset.run = '1'; btn.textContent = 'Detener';
+
+  const faltan = ITEMS.filter(i => !i.coverUrl && i.spotifyId);
+  let hechos = 0, fallos = 0;
+
+  try {
+    for (const tipo of ['album', 'artist', 'track']) {
+      const grupo = faltan.filter(i => i.type === tipo);
+      for (let i = 0; i < grupo.length; i += LOTE[tipo]) {
+        if (_parar) break;
+        const trozo = grupo.slice(i, i + LOTE[tipo]);
+        const t = await spotifyToken();
+        const res = await fetch(
+          `https://api.spotify.com/v1/${tipo}s?ids=${trozo.map(x => x.spotifyId).join(',')}`,
+          { headers: { Authorization: 'Bearer ' + t } });
+        if (res.status === 429) {                       // límite de peticiones
+          await new Promise(r => setTimeout(r, (+res.headers.get('Retry-After') || 2) * 1000));
+          i -= LOTE[tipo];
+          continue;
+        }
+        if (!res.ok) { fallos += trozo.length; continue; }
+        const datos = await res.json();
+        (datos[tipo + 's'] || []).forEach((raw, n) => {
+          const it = trozo[n];
+          if (!raw || !it) { fallos++; return; }
+          const fresco = normalize(raw, tipo);
+          Object.keys(fresco).forEach(k => {
+            if (fresco[k] != null && fresco[k] !== '' &&
+                (it[k] == null || it[k] === '' ||
+                 (Array.isArray(it[k]) && !it[k].length))) it[k] = fresco[k];
+          });
+          hechos++;
+        });
+        est.textContent = `● ${hechos.toLocaleString('es-ES')} de ${faltan.length.toLocaleString('es-ES')} completadas`;
+        saveItems();
+      }
+      if (_parar) break;
+    }
+  } catch (e) {
+    toast('Spotify ha fallado: ' + (e && e.message ? e.message : 'error de red'));
+  }
+
+  saveItems(); render();
+  btn.dataset.run = '0';
+  toast(_parar ? `Detenido — ${hechos} completadas`
+               : `${hechos} completadas${fallos ? ` · ${fallos} sin datos` : ''}`);
+  openSettings();
+}
+
 function openSettings() {
   const c = loadCreds();
   const ok = !!(c && c.clientId && c.clientSecret);
@@ -1334,6 +1499,17 @@ function openSettings() {
     <div class="swatches" id="sw">${TAG_COLORS.map((col, i) => `<span class="sw ${i === 0 ? 'on' : ''}" data-c="${col}" style="background:${col}"></span>`).join('')}</div>
     <div class="btnrow"><button class="btn wide" id="addTag">Crear etiqueta</button></div>
 
+    <div class="flabel">Tu biblioteca</div>
+    <p class="lede">Los 10.555 álbumes y 3.851 artistas sacados de tus exports de Skiley, con año, sello y géneros ya puestos. Se añaden solo los que aún no tengas.</p>
+    <div class="btnrow"><button class="btn wide" id="loadLib">Cargar álbumes y artistas</button></div>
+    <div class="lede" id="libOut" style="margin-top:6px;"></div>
+
+    <div class="flabel">Carátulas</div>
+    <p class="lede">Los elementos importados desde un archivo llegan sin carátula. Esto las pide a Spotify en bloque y de paso rellena sello, géneros y popularidad.</p>
+    <div class="statusline ${sinPortada() ? 'no' : 'ok'}" id="coverStat">${
+      sinPortada() ? `● ${sinPortada().toLocaleString('es-ES')} sin carátula` : '● Todas tienen carátula'}</div>
+    <div class="btnrow"><button class="btn wide" id="fillCovers" ${sinPortada() && ok ? '' : 'disabled'}>Completar carátulas</button></div>
+
     <div class="flabel">Copia de seguridad</div>
     <p class="lede">Tu vault vive solo en este navegador. Si borras los datos del navegador, se pierde. Descarga una copia de vez en cuando.</p>
     <div class="btnrow">
@@ -1342,6 +1518,9 @@ function openSettings() {
     </div>
     <input type="file" id="impFile" accept="application/json,.json" class="hidden">
   `);
+
+  document.getElementById('fillCovers').addEventListener('click', completarPortadas);
+  document.getElementById('loadLib').addEventListener('click', cargarBiblioteca);
 
   swatch = TAG_COLORS[0];
   document.getElementById('saveCreds').addEventListener('click', () => {
@@ -1543,6 +1722,8 @@ contentEl.addEventListener('click', e => {
   if (open) { open.dataset.open === 'search' ? openSearch() : openBulk(); return; }
   const tg = e.target.closest('[data-toggle]');
   if (tg) { e.stopPropagation(); toggleListened(tg.dataset.toggle); return; }
+  const more = e.target.closest('[data-more]');
+  if (more) { VISTAS += TANDA * 3; render(); return; }
   const card = e.target.closest('[data-id]');
   if (!card) return;
   if (selMode) toggleSel(card.dataset.id);
@@ -1598,5 +1779,5 @@ document.addEventListener('keydown', e => {
 });
 
 /* ============ init ============ */
-render();
+bootStorage().then(render);
 </script>
