@@ -7,770 +7,1181 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="MusicVault">
-<meta name="theme-color" content="#17130f" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#f2ead9" media="(prefers-color-scheme: light)">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2317130f'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle'%3E%F0%9F%97%84%EF%B8%8F%3C/text%3E%3C/svg%3E">
-<title>🗄️ MusicVault</title>
+<meta name="theme-color" content="#14100d" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f2e9" media="(prefers-color-scheme: light)">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2314100d'/%3E%3Ccircle cx='50' cy='50' r='27' fill='none' stroke='%23e0a03a' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='7' fill='%23e0a03a'/%3E%3C/svg%3E">
+<title>MusicVault</title>
 <style>
   :root {
     color-scheme: light;
-    --ink: #17130f; --ink-card: #211a14; --ink-card-2: #2a2118;
-    --paper: #f2ead9; --paper-card: #fbf6ea; --paper-card-2: #efe4cc;
-    --text: #201a12; --text-soft: #5b4f3c; --text-mute: #8a7c63;
-    --rule: rgba(32,26,18,0.14);
-    --brass: #a8701e; --teal: #1f6e63; --crimson: #9c2f24;
-    --bg: var(--paper); --card: var(--paper-card); --card-2: var(--paper-card-2);
-    --fg: var(--text); --fg-soft: var(--text-soft); --fg-mute: var(--text-mute); --line: var(--rule);
+    /* neutrales con sesgo cálido, no gris puro */
+    --bg:        #f7f2e9;
+    --surface:   #fffdf8;
+    --surface-2: #efe8db;
+    --line:      rgba(26,20,14,0.11);
+    --line-firm: rgba(26,20,14,0.20);
+    --fg:        #1a140e;
+    --fg-soft:   #5d5346;
+    --fg-mute:   #726858;
+    --amber:     #a3690f;
+    --amber-soft:#f0e0c2;
+    --on-amber:  #fffdf8;
+    --jade:      #14795c;
+    --jade-soft: #d5e9e0;
+    --rust:      #b03f30;
+    --shadow-sm: 0 1px 2px rgba(26,20,14,0.06), 0 4px 12px rgba(26,20,14,0.06);
+    --shadow-md: 0 2px 6px rgba(26,20,14,0.10), 0 12px 28px rgba(26,20,14,0.12);
+    --shadow-lg: 0 -4px 40px rgba(26,20,14,0.18);
   }
   @media (prefers-color-scheme: dark) {
     :root:where(:not([data-theme="light"])) {
       color-scheme: dark;
-      --bg: var(--ink); --card: var(--ink-card); --card-2: var(--ink-card-2);
-      --fg: #f3ead9; --fg-soft: #cdbfa4; --fg-mute: #8f8265;
-      --line: rgba(243,234,217,0.12);
-      --brass: #e2a63d; --teal: #4fb3a5; --crimson: #e2665a;
+      --bg:        #14100d;
+      --surface:   #1e1915;
+      --surface-2: #2a231d;
+      --line:      rgba(247,242,233,0.10);
+      --line-firm: rgba(247,242,233,0.20);
+      --fg:        #f5efe4;
+      --fg-soft:   #b8ab99;
+      --fg-mute:   #948877;
+      --amber:     #e0a03a;
+      --amber-soft:#3a2c15;
+      --on-amber:  #1a140e;
+      --jade:      #46b491;
+      --jade-soft: #14312a;
+      --rust:      #e0705e;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+      --shadow-lg: 0 -4px 40px rgba(0,0,0,0.6);
     }
   }
   :root[data-theme="dark"] {
     color-scheme: dark;
-    --bg: var(--ink); --card: var(--ink-card); --card-2: var(--ink-card-2);
-    --fg: #f3ead9; --fg-soft: #cdbfa4; --fg-mute: #8f8265;
-    --line: rgba(243,234,217,0.12);
-    --brass: #e2a63d; --teal: #4fb3a5; --crimson: #e2665a;
-  }
-  :root[data-theme="light"] {
-    color-scheme: light;
-    --bg: var(--paper); --card: var(--paper-card); --card-2: var(--paper-card-2);
-    --fg: var(--text); --fg-soft: var(--text-soft); --fg-mute: var(--text-mute); --line: var(--rule);
+    --bg:        #14100d;
+    --surface:   #1e1915;
+    --surface-2: #2a231d;
+    --line:      rgba(247,242,233,0.10);
+    --line-firm: rgba(247,242,233,0.20);
+    --fg:        #f5efe4;
+    --fg-soft:   #b8ab99;
+    --fg-mute:   #948877;
+    --amber:     #e0a03a;
+    --amber-soft:#3a2c15;
+    --on-amber:  #1a140e;
+    --jade:      #46b491;
+    --jade-soft: #14312a;
+    --rust:      #e0705e;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+    --shadow-lg: 0 -4px 40px rgba(0,0,0,0.6);
   }
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  .root {
+  html, body { margin:0; padding:0; }
+  body {
     background: var(--bg); color: var(--fg);
     font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-    line-height: 1.4; min-height: 100vh; padding-bottom: 40px;
+    font-size: 15px; line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: env(safe-area-inset-bottom);
   }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
-  .topbar {
-    position: sticky; top:0; z-index: 30;
-    display:flex; align-items:center; justify-content:space-between;
-    padding: 14px 16px; background: color-mix(in srgb, var(--bg) 90%, transparent);
-    backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
   }
-  .topbar .brand { font-family: Georgia, serif; font-weight:700; font-size:17px; }
-  .icon-btn {
+  :focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; border-radius: 4px; }
+  .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* ---------- command bar ---------- */
+  .cmdbar {
+    position: sticky; top: 0; z-index: 40;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 10px 14px; padding-top: calc(10px + env(safe-area-inset-top));
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    backdrop-filter: saturate(1.6) blur(14px);
+    -webkit-backdrop-filter: saturate(1.6) blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  .wordmark { display:flex; align-items:center; gap:9px; font-family: Georgia, "Times New Roman", serif; font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+  .wordmark .disc { width:19px; height:19px; flex-shrink:0; }
+  .cmd-actions { display:flex; gap: 7px; }
+  .iconbtn {
     display:flex; align-items:center; justify-content:center;
-    width: 36px; height: 36px; border-radius: 50%;
-    background: var(--card); border: 1px solid var(--line); color: var(--fg);
-    font-size: 16px; cursor: pointer;
+    width: 38px; height: 38px; border-radius: 11px; flex-shrink:0;
+    background: var(--surface); border: 1px solid var(--line); color: var(--fg);
+    font-size: 16px; cursor: pointer; transition: background .15s, transform .1s;
   }
-  .topbar-actions { display:flex; gap:8px; }
+  .iconbtn:hover { background: var(--surface-2); }
+  .iconbtn:active { transform: scale(0.94); }
+  .iconbtn.accent { background: var(--amber); border-color: transparent; color: var(--on-amber); }
 
-  .filter-row { display:flex; gap:8px; padding: 14px 0 4px; flex-wrap:wrap; align-items:center; }
-  .filter-row input[type="text"], .filter-row select {
-    font-family: inherit; font-size: 13.5px; color: var(--fg);
-    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
-    padding: 9px 12px;
+  .shell { max-width: 1080px; margin: 0 auto; padding: 0 14px; }
+
+  /* ---------- vault state strip ---------- */
+  .state-strip { display:grid; grid-template-columns: repeat(3, 1fr); gap: 9px; padding: 16px 0 4px; }
+  .stat {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+    padding: 11px 13px; cursor: pointer; text-align:left; font-family: inherit; color: inherit;
+    transition: border-color .15s, background .15s;
   }
-  .filter-row input[type="text"] { flex: 1 1 140px; }
+  .stat:hover { background: var(--surface-2); }
+  .stat.active { border-color: var(--amber); background: var(--amber-soft); }
+  .stat .n { font-family: Georgia, serif; font-size: 25px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+  .stat.pending .n { color: var(--amber); }
+  .stat.done .n { color: var(--jade); }
+  .stat .l { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--fg-mute); margin-top: 5px; font-family: ui-monospace, monospace; }
+
+  /* ---------- toolbar ---------- */
+  .toolbar {
+    position: sticky; top: calc(58px + env(safe-area-inset-top)); z-index: 30;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    padding: 10px 0 9px; margin-top: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .toolbar-row { display:flex; gap: 8px; align-items:center; }
+  .searchwrap { position: relative; flex: 1 1 auto; min-width: 0; }
+  .searchwrap .mag { position:absolute; left: 11px; top: 50%; transform: translateY(-50%); font-size: 13px; color: var(--fg-mute); pointer-events:none; }
+  .searchwrap input {
+    width: 100%; font-family: inherit; font-size: 14.5px; color: var(--fg);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 11px;
+    padding: 9px 12px 9px 31px;
+  }
+  .searchwrap input::placeholder { color: var(--fg-mute); }
+  select.ctl {
+    font-family: inherit; font-size: 13px; color: var(--fg);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 11px;
+    padding: 9px 8px; max-width: 45vw;
+  }
+  .chiprow { display:flex; gap: 6px; margin-top: 9px; overflow-x: auto; scrollbar-width: none; padding-bottom: 1px; }
+  .chiprow::-webkit-scrollbar { display: none; }
+  .chip {
+    display:flex; align-items:center; gap:5px; flex-shrink: 0;
+    font-family: inherit; font-size: 12.5px; color: var(--fg-soft);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
+    padding: 6px 12px; cursor: pointer; white-space: nowrap;
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .chip:hover { background: var(--surface-2); }
+  .chip.on { background: var(--fg); color: var(--bg); border-color: transparent; font-weight: 600; }
+  .chip .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink:0; }
+  .chip .ct { font-size: 10.5px; opacity: .65; font-variant-numeric: tabular-nums; }
+
+  /* ---------- content ---------- */
+  .content { padding: 16px 0 110px; }
+  .resultline { font-size: 11.5px; color: var(--fg-mute); font-family: ui-monospace, monospace; margin-bottom: 11px; display:flex; justify-content:space-between; align-items:center; gap:10px; }
+  .linkbtn { background:none; border:none; font-family: ui-monospace, monospace; font-size: 11.5px; color: var(--amber); cursor:pointer; padding:0; text-decoration: underline; text-underline-offset: 2px; }
+
+  .grid { display:grid; grid-template-columns: repeat(2, 1fr); gap: 13px; }
+  @media (min-width: 560px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 820px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+
+  .gcard {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 15px;
+    overflow: hidden; cursor: pointer; position: relative;
+    box-shadow: var(--shadow-sm); transition: transform .12s, box-shadow .15s, border-color .15s;
+  }
+  .gcard:active { transform: scale(0.975); }
+  @media (hover: hover) { .gcard:hover { box-shadow: var(--shadow-md); } }
+  .gcard.sel { border-color: var(--amber); box-shadow: 0 0 0 2px var(--amber); }
+  .gcard .art { position: relative; aspect-ratio: 1; background: var(--surface-2); display:flex; align-items:center; justify-content:center; }
+  .gcard .art img { width:100%; height:100%; object-fit: cover; display:block; transition: opacity .2s, filter .2s; }
+  .gcard.done .art img { opacity: .5; filter: saturate(.55); }
+  .gcard .art .ph { font-size: 30px; opacity: .3; }
+  .gcard .gbody { padding: 9px 11px 11px; }
+  .gcard .gt { font-size: 13px; font-weight: 650; line-height: 1.25; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .gcard .ga { font-size: 11.5px; color: var(--fg-mute); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top: 2px; }
+  .gcard .gmeta { display:flex; align-items:center; gap: 5px; margin-top: 7px; min-height: 15px; }
+
+  .statusdot {
+    position:absolute; top: 8px; left: 8px; width: 24px; height: 24px; border-radius: 50%;
+    display:flex; align-items:center; justify-content:center; cursor: pointer; z-index: 2;
+    font-size: 12px; font-weight: 800; line-height: 1;
+    background: rgba(20,16,13,0.55); border: 1.5px solid rgba(255,255,255,0.75); color: #fff;
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    transition: transform .12s;
+  }
+  .statusdot:active { transform: scale(0.88); }
+  .statusdot.on { background: var(--jade); border-color: var(--jade); }
+  /* el círculo se ve de 24px pero se toca en 44px */
+  .statusdot::after { content:''; position:absolute; inset:-10px; border-radius: 50%; }
+  .typetag {
+    position:absolute; top: 8px; right: 8px; z-index: 2;
+    font-size: 9.5px; font-family: ui-monospace, monospace; letter-spacing: 0.04em;
+    padding: 3px 7px; border-radius: 6px; color: #fff;
+    background: rgba(20,16,13,0.55); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  }
+  .stars { font-size: 10.5px; color: var(--amber); letter-spacing: -0.5px; }
+  .tagpip { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+  /* list view */
+  .list { display:flex; flex-direction: column; gap: 7px; }
+  .lrow {
+    display:flex; align-items:center; gap: 11px; cursor: pointer; position: relative;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+    padding: 8px 12px 8px 8px; overflow: hidden;
+    transition: background .13s, border-color .15s;
+  }
+  .lrow::before { content:''; position:absolute; left:0; top:0; bottom:0; width: 3px; background: var(--amber); }
+  .lrow.done::before { background: var(--jade); }
+  .lrow:hover { background: var(--surface-2); }
+  .lrow.sel { border-color: var(--amber); box-shadow: inset 0 0 0 1px var(--amber); }
+  .lrow .lart { width: 46px; height: 46px; border-radius: 8px; flex-shrink:0; overflow:hidden; background: var(--surface-2); display:flex; align-items:center; justify-content:center; margin-left: 4px; }
+  .lrow .lart img { width:100%; height:100%; object-fit:cover; }
+  .lrow.done .lart img { opacity:.5; filter: saturate(.55); }
+  .lrow .linfo { flex: 1; min-width: 0; }
+  .lrow .lt { font-size: 14px; font-weight: 600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .lrow .la { font-size: 12px; color: var(--fg-mute); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .lrow .lmeta { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+  .lrow .lyear { font-size: 11px; color: var(--fg-mute); font-variant-numeric: tabular-nums; font-family: ui-monospace, monospace; }
+  .lcheck {
+    width: 26px; height: 26px; border-radius: 50%; flex-shrink:0; cursor:pointer; position: relative;
+    display:flex; align-items:center; justify-content:center; font-size: 12px; font-weight: 800;
+    background: transparent; border: 1.5px solid var(--line-firm); color: transparent;
+  }
+  .lcheck::after { content:''; position:absolute; inset:-9px; border-radius: 50%; }
+  .lcheck.on { background: var(--jade); border-color: var(--jade); color: #fff; }
+
+  /* ---------- empty ---------- */
+  .empty { text-align:center; padding: 64px 22px; }
+  .empty .ico { font-size: 34px; opacity: .4; margin-bottom: 14px; }
+  .empty h2 { font-size: 16.5px; margin: 0 0 6px; font-weight: 650; }
+  .empty p { font-size: 13.5px; color: var(--fg-mute); margin: 0 auto; max-width: 34ch; line-height: 1.5; }
+  .empty .acts { display:flex; gap: 9px; justify-content:center; margin-top: 18px; flex-wrap: wrap; }
+
+  /* ---------- buttons ---------- */
+  .btn {
+    font-family: inherit; font-size: 14px; font-weight: 550; text-align:center; text-decoration:none;
+    padding: 11px 16px; border-radius: 12px; cursor:pointer; border: 1px solid var(--line);
+    background: var(--surface); color: var(--fg); display:inline-flex; align-items:center; justify-content:center; gap: 7px;
+    transition: transform .1s, background .15s;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn.primary { background: var(--amber); color: var(--on-amber); border-color: transparent; font-weight: 650; }
+  .btn.jade { background: var(--jade); color: #fff; border-color: transparent; font-weight: 650; }
+  .btn.danger { color: var(--rust); border-color: color-mix(in srgb, var(--rust) 45%, transparent); background: transparent; }
+  .btn.wide { width: 100%; }
+  .btn:disabled { opacity: .45; cursor: default; }
+  .btnrow { display:flex; gap: 9px; margin-top: 12px; }
+
+  /* ---------- FAB ---------- */
   .fab {
-    position: fixed; bottom: 24px; right: 20px; z-index: 25;
-    width: 56px; height: 56px; border-radius: 50%;
-    background: var(--brass); color: #17130f; border: none;
-    font-size: 24px; box-shadow: 0 8px 20px rgba(0,0,0,0.25); cursor: pointer;
+    position: fixed; right: 18px; bottom: calc(20px + env(safe-area-inset-bottom)); z-index: 35;
+    height: 54px; padding: 0 20px; border-radius: 27px; border:none; cursor:pointer;
+    background: var(--amber); color: var(--on-amber);
+    font-family: inherit; font-size: 15px; font-weight: 650;
+    display:flex; align-items:center; gap: 8px;
+    box-shadow: 0 6px 20px color-mix(in srgb, var(--amber) 45%, transparent);
+    transition: transform .12s;
   }
+  .fab:active { transform: scale(0.94); }
 
-  .grid { display:grid; grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 14px 0 30px; }
-  @media (min-width: 520px) { .grid { grid-template-columns: repeat(3, 1fr); } }
-  .card {
-    background: var(--card); border-radius: 16px; overflow:hidden; cursor: pointer;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.08); border: 1px solid var(--line);
+  /* ---------- selection action bar ---------- */
+  .selbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 45;
+    padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid var(--line); box-shadow: var(--shadow-lg);
+    display:flex; align-items:center; gap: 8px;
   }
-  .card .cover {
-    width: 100%; aspect-ratio: 1; background: var(--card-2);
-    display:flex; align-items:center; justify-content:center; overflow:hidden;
-  }
-  .card .cover img { width:100%; height:100%; object-fit: cover; display:block; }
-  .card .cover .fallback { font-size: 28px; color: var(--fg-mute); }
-  .card .body { padding: 9px 11px 11px; }
-  .card .t { font-size: 13px; font-weight: 650; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .card .a { font-size: 11.5px; color: var(--fg-mute); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px; }
-  .card .meta-row { display:flex; align-items:center; gap:6px; margin-top:6px; }
-  .type-badge {
-    font-size: 9.5px; text-transform:uppercase; letter-spacing:0.04em;
-    padding: 2px 6px; border-radius: 6px; background: var(--card-2); color: var(--fg-mute);
-  }
-  .listened-toggle {
-    position:absolute; top:7px; left:7px; width:22px; height:22px; border-radius:50%;
-    background: rgba(0,0,0,0.35); border: 1.5px solid rgba(255,255,255,0.7);
-    color:#fff; font-size:12px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center;
-  }
-  .listened-toggle.on { background: var(--teal); border-color: var(--teal); }
-  .stars-mini { font-size: 10px; color: var(--brass); }
+  .selbar .cnt { font-size: 13px; font-weight: 650; margin-right: auto; font-variant-numeric: tabular-nums; }
+  .selbar .btn { padding: 9px 13px; font-size: 13px; }
 
-  .empty-state { text-align:center; padding: 70px 20px; color: var(--fg-mute); }
-  .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
-  .empty-state h2 { font-size: 16px; color: var(--fg); margin: 0 0 6px; }
-  .empty-state p { font-size: 13px; margin: 0; }
-  .empty-state button {
-    margin-top: 16px; font-family: inherit; font-size: 13px; color: #17130f;
-    background: var(--brass); border: none; border-radius: 20px; padding: 10px 18px; cursor: pointer;
-  }
-
-  /* modal system */
+  /* ---------- sheets / modals ---------- */
   .overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 50;
+    position: fixed; inset: 0; z-index: 60; background: rgba(10,7,5,0.55);
     display:flex; align-items:flex-end; justify-content:center;
+    backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+    animation: fade .18s ease;
   }
+  @keyframes fade { from { opacity: 0 } to { opacity: 1 } }
+  @keyframes rise { from { transform: translateY(18px); opacity: .6 } to { transform: none; opacity: 1 } }
   @media (min-width: 640px) { .overlay { align-items:center; } }
   .sheet {
-    background: var(--bg); width: 100%; max-width: 560px; max-height: 92vh; overflow-y: auto;
-    border-radius: 20px 20px 0 0; padding: 18px 18px 30px;
+    background: var(--bg); width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto;
+    border-radius: 22px 22px 0 0; padding: 18px 18px calc(26px + env(safe-area-inset-bottom));
+    border: 1px solid var(--line); border-bottom: none;
+    animation: rise .2s cubic-bezier(.2,.8,.3,1);
   }
-  @media (min-width: 640px) { .sheet { border-radius: 20px; max-height: 85vh; } }
-  .sheet-head { display:flex; align-items:center; justify-content:space-between; margin-bottom: 14px; }
-  .sheet-head h2 { font-size: 17px; margin:0; }
+  @media (min-width: 640px) { .sheet { border-radius: 20px; max-height: 86vh; border-bottom: 1px solid var(--line); } }
+  .sheethead { display:flex; align-items:center; justify-content:space-between; gap: 12px; margin-bottom: 14px; }
+  .sheethead h2 { font-size: 17px; margin:0; font-weight: 680; }
+  .lede { font-size: 13px; color: var(--fg-mute); margin: 0 0 13px; line-height: 1.5; }
+  .lede a { color: var(--amber); }
+  .flabel { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-mute); font-family: ui-monospace, monospace; margin: 18px 0 7px; }
+  .flabel:first-child { margin-top: 0; }
 
-  .tab-row { display:flex; gap:6px; margin-bottom: 12px; }
-  .tab-btn {
-    font-family: inherit; font-size: 12.5px; color: var(--fg-soft);
-    background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 6px 14px; cursor: pointer;
+  .field {
+    width: 100%; font-family: inherit; font-size: 14.5px; color: var(--fg);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 11px; padding: 11px 13px;
   }
-  .tab-btn.active { background: var(--brass); color: #17130f; border-color: transparent; font-weight:600; }
+  textarea.field { min-height: 76px; resize: vertical; line-height: 1.5; }
+  textarea.field.tall { min-height: 150px; font-family: ui-monospace, monospace; font-size: 12.5px; }
+  .field.mono { font-family: ui-monospace, monospace; font-size: 12.5px; }
 
-  .search-input {
-    width:100%; font-family: inherit; font-size: 15px; color: var(--fg);
-    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
-    padding: 12px 14px; margin-bottom: 12px;
+  .segrow { display:flex; gap: 6px; margin-bottom: 13px; }
+  .seg {
+    flex: 1; font-family: inherit; font-size: 13px; color: var(--fg-soft);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 8px 6px; cursor:pointer;
+    transition: background .15s, color .15s;
   }
-  .result-row {
-    display:flex; gap:12px; align-items:center; padding: 9px 4px; border-bottom: 1px solid var(--line);
-  }
-  .result-row .cover-sm { width: 46px; height: 46px; border-radius: 8px; background: var(--card-2); flex-shrink:0; overflow:hidden; display:flex; align-items:center; justify-content:center; }
-  .result-row .cover-sm img { width:100%; height:100%; object-fit:cover; }
-  .result-row .info { flex:1; min-width:0; }
-  .result-row .t { font-size: 13.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .result-row .a { font-size: 12px; color: var(--fg-mute); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .save-btn {
-    width: 32px; height: 32px; border-radius: 50%; flex-shrink:0;
-    background: var(--card-2); border: 1px solid var(--line); color: var(--fg);
-    font-size: 16px; cursor: pointer;
-  }
-  .save-btn.saved { background: var(--teal); color: #fff; border-color: transparent; }
+  .seg.on { background: var(--fg); color: var(--bg); border-color: transparent; font-weight: 600; }
 
-  .detail-cover { width: 100%; aspect-ratio:1; border-radius: 14px; overflow:hidden; background: var(--card-2); margin-bottom: 14px; }
-  .detail-cover img { width:100%; height:100%; object-fit:cover; }
-  .detail-title { font-size: 19px; font-weight:700; margin: 0 0 2px; }
-  .detail-artist { font-size: 14px; color: var(--fg-soft); margin: 0 0 10px; }
-  .star-row { display:flex; gap:6px; margin: 10px 0; }
-  .star-row button { background:none; border:none; font-size: 24px; cursor:pointer; color: var(--line); padding:0; }
-  .star-row button.filled { color: var(--brass); }
-  textarea.notes {
-    width:100%; min-height: 80px; font-family: inherit; font-size: 13.5px; color: var(--fg);
-    background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; resize: vertical;
+  /* search results */
+  .rrow { display:flex; gap: 11px; align-items:center; padding: 9px 2px; border-bottom: 1px solid var(--line); }
+  .rrow:last-child { border-bottom: none; }
+  .rrow .rart { width: 48px; height: 48px; border-radius: 8px; background: var(--surface-2); flex-shrink:0; overflow:hidden; display:flex; align-items:center; justify-content:center; font-size: 17px; }
+  .rrow .rart img { width:100%; height:100%; object-fit:cover; }
+  .rrow .rinfo { flex:1; min-width:0; }
+  .rrow .rt { font-size: 13.5px; font-weight: 600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .rrow .ra { font-size: 12px; color: var(--fg-mute); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .addbtn {
+    width: 34px; height: 34px; border-radius: 50%; flex-shrink:0; cursor:pointer;
+    background: var(--surface-2); border: 1px solid var(--line); color: var(--fg);
+    font-size: 17px; font-weight: 500; display:flex; align-items:center; justify-content:center;
+    transition: transform .1s;
   }
-  .tag-chip-row { display:flex; flex-wrap:wrap; gap:6px; margin: 10px 0; }
-  .tag-chip {
-    display:flex; align-items:center; gap:5px; font-size: 12px; padding: 5px 11px 5px 8px;
-    border-radius: 14px; cursor:pointer; border: 1px solid var(--line);
-  }
-  .tag-chip .dot { width:8px; height:8px; border-radius:50%; }
-  .tag-chip.inactive { opacity: 0.4; }
-  .field-label { font-size: 11px; text-transform:uppercase; letter-spacing:0.06em; color: var(--fg-mute); margin: 14px 0 6px; font-family: ui-monospace, monospace; }
-  .action-row { display:flex; gap:10px; margin-top: 18px; }
-  .btn {
-    flex:1; font-family: inherit; font-size: 13.5px; text-align:center; text-decoration:none;
-    padding: 11px; border-radius: 12px; cursor:pointer; border: 1px solid var(--line);
-    background: var(--card); color: var(--fg);
-  }
-  .btn.primary { background: var(--teal); color: #fff; border-color: transparent; }
-  .btn.danger { background: transparent; color: var(--crimson); border-color: var(--crimson); }
+  .addbtn:active { transform: scale(0.9); }
+  .addbtn.done { background: var(--jade); color: #fff; border-color: transparent; }
+  .skel { height: 66px; border-radius: 10px; background: linear-gradient(90deg, var(--surface) 25%, var(--surface-2) 50%, var(--surface) 75%); background-size: 200% 100%; animation: sweep 1.2s infinite; margin-bottom: 7px; }
+  @keyframes sweep { from { background-position: 200% 0 } to { background-position: -200% 0 } }
 
-  .settings-field { margin-bottom: 14px; }
-  .settings-field label { display:block; font-size: 12px; color: var(--fg-mute); margin-bottom: 5px; }
-  .settings-field input {
-    width:100%; font-family: ui-monospace, monospace; font-size: 13px; color: var(--fg);
-    background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px;
+  /* detail */
+  .dart { width: 100%; aspect-ratio: 1; border-radius: 16px; overflow:hidden; background: var(--surface-2); box-shadow: var(--shadow-md); display:flex; align-items:center; justify-content:center; font-size: 44px; }
+  .dart img { width:100%; height:100%; object-fit:cover; }
+  .dwrap { display:grid; grid-template-columns: 1fr; gap: 16px; }
+  @media (min-width: 460px) { .dwrap { grid-template-columns: 168px 1fr; align-items: start; } }
+  .dtitle { font-size: 20px; font-weight: 700; line-height: 1.2; margin: 0 0 3px; text-wrap: balance; }
+  .dartist { font-size: 14.5px; color: var(--fg-soft); margin: 0; }
+  .dfacts { display:flex; flex-wrap:wrap; gap:6px; margin-top: 10px; }
+  .fact { font-size: 11px; font-family: ui-monospace, monospace; color: var(--fg-mute); background: var(--surface); border: 1px solid var(--line); border-radius: 7px; padding: 3px 8px; }
+  /* gap 0 a propósito: el espaciado lo da el padding, que además crea la zona táctil de 44px */
+  .starpick { display:flex; gap: 0; margin-left: -6px; }
+  .starpick button { background:none; border:none; font-size: 27px; line-height: 1; cursor:pointer; color: var(--line-firm); padding: 9px 6px; transition: transform .1s, color .12s; }
+  .starpick button.on { color: var(--amber); }
+  .starpick button:active { transform: scale(1.2); }
+  .tagpick { display:flex; flex-wrap:wrap; gap: 6px; }
+  .tagsel {
+    display:flex; align-items:center; gap:6px; font-size: 12.5px; padding: 6px 12px;
+    border-radius: 999px; cursor:pointer; border: 1px solid var(--line); background: var(--surface);
+    color: var(--fg-soft); transition: opacity .15s, border-color .15s;
   }
-  .status-pill { display:inline-flex; align-items:center; gap:6px; font-size: 12px; padding: 5px 10px; border-radius: 12px; margin-bottom: 14px; }
-  .status-pill.ok { background: color-mix(in srgb, var(--teal) 18%, var(--card)); color: var(--teal); }
-  .status-pill.no { background: color-mix(in srgb, var(--crimson) 15%, var(--card)); color: var(--crimson); }
+  .tagsel.off { opacity: .42; }
+  .tagsel .dot { width: 9px; height: 9px; border-radius: 50%; }
 
-  .swatch-row { display:flex; gap:8px; flex-wrap:wrap; margin: 8px 0 14px; }
-  .swatch { width: 28px; height: 28px; border-radius: 50%; cursor:pointer; border: 2px solid transparent; }
-  .swatch.selected { border-color: var(--fg); }
-  .tag-manage-row { display:flex; align-items:center; justify-content:space-between; padding: 8px 0; border-bottom: 1px solid var(--line); }
-  .tag-manage-row .left { display:flex; align-items:center; gap:8px; font-size: 13.5px; }
-  .tag-manage-row .dot { width:12px; height:12px; border-radius:50%; }
-  .del-x { background:none; border:none; color: var(--fg-mute); font-size: 15px; cursor:pointer; }
+  /* settings */
+  .statusline { display:inline-flex; align-items:center; gap: 7px; font-size: 12.5px; padding: 6px 12px; border-radius: 999px; margin-bottom: 12px; font-weight: 550; }
+  .statusline.ok { background: var(--jade-soft); color: var(--jade); }
+  .statusline.no { background: color-mix(in srgb, var(--rust) 15%, transparent); color: var(--rust); }
+  .swatches { display:flex; gap: 8px; flex-wrap:wrap; margin: 9px 0 4px; }
+  .sw { width: 30px; height: 30px; border-radius: 50%; cursor:pointer; border: 2.5px solid transparent; transition: transform .1s; }
+  .sw.on { border-color: var(--fg); transform: scale(1.1); }
+  .tagline { display:flex; align-items:center; justify-content:space-between; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+  .tagline .lf { display:flex; align-items:center; gap: 9px; font-size: 13.5px; min-width:0; }
+  .tagline .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink:0; }
+  .tagline .ct { font-size: 11px; color: var(--fg-mute); font-family: ui-monospace, monospace; }
+  .xbtn { background:none; border:none; color: var(--fg-mute); font-size: 16px; cursor:pointer; padding: 4px 6px; line-height:1; }
+  .xbtn:hover { color: var(--rust); }
 
-  ::-webkit-scrollbar { width:8px; }
-  ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+  /* toast */
+  .toastwrap { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(88px + env(safe-area-inset-bottom)); z-index: 70; display:flex; flex-direction:column; gap: 8px; align-items:center; width: calc(100% - 28px); max-width: 420px; pointer-events:none; }
+  .toast {
+    pointer-events: auto; display:flex; align-items:center; gap: 12px; width: 100%;
+    background: var(--fg); color: var(--bg); border-radius: 13px; padding: 11px 14px;
+    font-size: 13.5px; box-shadow: var(--shadow-md); animation: rise .2s cubic-bezier(.2,.8,.3,1);
+  }
+  .toast .tmsg { flex:1; }
+  .toast button { background:none; border:none; color: var(--amber); font-family: inherit; font-size: 13.5px; font-weight: 700; cursor:pointer; padding: 0; }
+
+  .hidden { display:none !important; }
+  ::-webkit-scrollbar { width: 9px; height: 9px; }
+  ::-webkit-scrollbar-thumb { background: var(--line-firm); border-radius: 5px; }
 </style>
 
-<div class="root">
-  <div class="topbar">
-    <div class="brand">🗄️ MusicVault</div>
-    <div class="topbar-actions">
-      <button class="icon-btn" id="themeToggle">🌙</button>
-      <button class="icon-btn" id="bulkAddBtn" title="Añadir en bloque">📋</button>
-      <button class="icon-btn" id="settingsBtn">⚙️</button>
-    </div>
+<header class="cmdbar">
+  <div class="wordmark">
+    <svg class="disc" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="var(--amber)" stroke-width="2.2"/><circle cx="12" cy="12" r="2.6" fill="var(--amber)"/></svg>
+    MusicVault
+  </div>
+  <div class="cmd-actions">
+    <button class="iconbtn" id="shuffleBtn" title="¿Qué escucho?" aria-label="Elegir algo al azar">🎲</button>
+    <button class="iconbtn" id="bulkBtn" title="Pegar varios enlaces" aria-label="Añadir en bloque">📋</button>
+    <button class="iconbtn" id="themeBtn" title="Cambiar tema" aria-label="Cambiar tema">◐</button>
+    <button class="iconbtn" id="setBtn" title="Ajustes" aria-label="Ajustes">⚙</button>
+  </div>
+</header>
+
+<div class="shell">
+  <div class="state-strip">
+    <button class="stat" data-status="all"><div class="n num" id="statAll">0</div><div class="l">En el vault</div></button>
+    <button class="stat pending" data-status="pending"><div class="n num" id="statPending">0</div><div class="l">Pendientes</div></button>
+    <button class="stat done" data-status="listened"><div class="n num" id="statDone">0</div><div class="l">Escuchados</div></button>
   </div>
 
-  <div class="wrap">
-    <div class="filter-row">
-      <input type="text" id="filterSearch" placeholder="Filtrar tu colección...">
-      <select id="filterType">
-        <option value="all">Todo</option>
-        <option value="album">Álbumes</option>
-        <option value="track">Canciones</option>
-        <option value="artist">Artistas</option>
+  <div class="toolbar">
+    <div class="toolbar-row">
+      <div class="searchwrap">
+        <span class="mag">🔍</span>
+        <input type="text" id="q" placeholder="Buscar en tu vault..." autocomplete="off">
+      </div>
+      <select class="ctl" id="sortSel" aria-label="Ordenar por">
+        <option value="added_desc">Añadido ↓</option>
+        <option value="added_asc">Añadido ↑</option>
+        <option value="title_asc">Título A–Z</option>
+        <option value="title_desc">Título Z–A</option>
+        <option value="artist_asc">Artista A–Z</option>
+        <option value="artist_desc">Artista Z–A</option>
+        <option value="rating_desc">Mejor valorado</option>
+        <option value="year_desc">Más nuevo</option>
+        <option value="year_asc">Más antiguo</option>
       </select>
-      <select id="filterStatus">
-        <option value="all">Pendiente y escuchado</option>
-        <option value="pending">🔵 Pendientes</option>
-        <option value="listened">✅ Escuchados</option>
-      </select>
-      <select id="filterTag"><option value="all">Todas las etiquetas</option></select>
+      <button class="iconbtn" id="viewBtn" title="Cambiar vista" aria-label="Cambiar vista">▦</button>
     </div>
-
-    <div id="gridContainer"></div>
+    <div class="chiprow" id="chips"></div>
   </div>
 
-  <button class="fab" id="openSearchBtn">+</button>
+  <main class="content">
+    <div class="resultline" id="resultline"></div>
+    <div id="results"></div>
+  </main>
 </div>
 
+<button class="fab" id="addFab">＋ Añadir</button>
+<div id="selbarRoot"></div>
 <div id="modalRoot"></div>
+<div class="toastwrap" id="toasts"></div>
 
 <script>
-// ================= storage =================
-const STORE_KEY = 'musicvault_items_v1';
-const TAGS_KEY = 'musicvault_tags_v1';
-const CREDS_KEY = 'musicvault_spotify_creds_v1';
-const THEME_KEY = 'musicvaultTheme';
+'use strict';
 
-function loadItems() { try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; } catch { return []; } }
-function saveItems(items) { localStorage.setItem(STORE_KEY, JSON.stringify(items)); }
-function loadTags() { try { return JSON.parse(localStorage.getItem(TAGS_KEY)) || []; } catch { return []; } }
-function saveTags(tags) { localStorage.setItem(TAGS_KEY, JSON.stringify(tags)); }
-function loadCreds() { try { return JSON.parse(localStorage.getItem(CREDS_KEY)) || null; } catch { return null; } }
-function saveCreds(creds) { localStorage.setItem(CREDS_KEY, JSON.stringify(creds)); }
+/* ============ storage ============ */
+const K_ITEMS = 'musicvault_items_v1';
+const K_TAGS  = 'musicvault_tags_v1';
+const K_CREDS = 'musicvault_spotify_creds_v1';
+const K_PREFS = 'musicvault_prefs_v1';
+const K_THEME = 'musicvaultTheme';
 
-let ITEMS = loadItems();
-let TAGS = loadTags();
+const read = (k, fb) => { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? fb; } catch { return fb; } };
+const write = (k, v) => localStorage.setItem(k, JSON.stringify(v));
 
-const TAG_COLORS = ['#2a78d6','#1baf7a','#eda100','#008300','#4a3aa7','#e34948','#e87ba4','#eb6834'];
+let ITEMS = read(K_ITEMS, []);
+let TAGS  = read(K_TAGS, []);
+let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', status: 'all', tag: 'all' }, read(K_PREFS, {}));
 
-function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+const saveItems = () => write(K_ITEMS, ITEMS);
+const saveTags  = () => write(K_TAGS, TAGS);
+const savePrefs = () => write(K_PREFS, PREFS);
+const loadCreds = () => read(K_CREDS, null);
 
-// ================= theme =================
-(function() {
-  const btn = document.getElementById('themeToggle');
+/* ============ helpers ============ */
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const TYPE_LABEL = { album: 'Álbum', track: 'Canción', artist: 'Artista' };
+const TYPE_ICON  = { album: '💿', track: '🎵', artist: '🎤' };
+const TAG_COLORS = ['#2a78d6','#1baf7a','#eda100','#3f9c35','#7a5cd6','#e34948','#e87ba4','#eb6834'];
+const artistsOf = it => (it.artists || []).join(', ');
+// Buscar "camaron" tiene que encontrar "Camarón".
+const fold = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+const yearOf = it => (it.releaseDate ? parseInt(String(it.releaseDate).slice(0, 4), 10) : 0) || 0;
+// Para ordenar como una discoteca de verdad: "The Beatles" va por la B.
+const sortKey = s => String(s || '').toLowerCase().replace(/^(the|los|las|el|la|a|an)\s+/, '').replace(/^[^\p{L}\p{N}]+/u, '').trim();
+const cmp = (a, b) => a.localeCompare(b, 'es', { sensitivity: 'base' });
+const tagById = id => TAGS.find(t => t.id === id);
+
+/* ============ theme ============ */
+(() => {
   const root = document.documentElement;
-  const saved = localStorage.getItem(THEME_KEY);
+  const saved = localStorage.getItem(K_THEME);
   if (saved) root.setAttribute('data-theme', saved);
-  btn.addEventListener('click', () => {
-    const current = root.getAttribute('data-theme') ||
-      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    const next = current === 'dark' ? 'light' : 'dark';
+  document.getElementById('themeBtn').addEventListener('click', () => {
+    const cur = root.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const next = cur === 'dark' ? 'light' : 'dark';
     root.setAttribute('data-theme', next);
-    localStorage.setItem(THEME_KEY, next);
+    localStorage.setItem(K_THEME, next);
   });
 })();
 
-// ================= spotify client =================
-let tokenCache = { token: null, expiresAt: 0 };
+/* ============ toasts ============ */
+function toast(msg, actionLabel, actionFn, ms = 5000) {
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.innerHTML = `<span class="tmsg">${esc(msg)}</span>`;
+  if (actionLabel) {
+    const b = document.createElement('button');
+    b.textContent = actionLabel;
+    b.addEventListener('click', () => { actionFn(); el.remove(); });
+    el.appendChild(b);
+  }
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(() => el.remove(), ms);
+}
 
-async function getSpotifyToken() {
-  const creds = loadCreds();
-  if (!creds || !creds.clientId || !creds.clientSecret) {
-    throw new Error('NO_CREDS');
-  }
-  if (tokenCache.token && tokenCache.expiresAt > Date.now()) {
-    return tokenCache.token;
-  }
-  const basic = btoa(`${creds.clientId}:${creds.clientSecret}`);
+/* ============ spotify ============ */
+let tok = { v: null, exp: 0 };
+
+async function spotifyToken() {
+  const c = loadCreds();
+  if (!c || !c.clientId || !c.clientSecret) throw new Error('NO_CREDS');
+  if (tok.v && tok.exp > Date.now()) return tok.v;
   const res = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': `Basic ${basic}`
-    },
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Basic ' + btoa(c.clientId + ':' + c.clientSecret) },
     body: 'grant_type=client_credentials'
   });
   if (!res.ok) throw new Error('AUTH_FAILED');
-  const data = await res.json();
-  tokenCache = { token: data.access_token, expiresAt: Date.now() + (data.expires_in - 60) * 1000 };
-  return tokenCache.token;
+  const d = await res.json();
+  tok = { v: d.access_token, exp: Date.now() + (d.expires_in - 60) * 1000 };
+  return tok.v;
 }
 
-async function spotifySearch(query, type) {
-  const token = await getSpotifyToken();
-  const url = `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=${type}&limit=15`;
-  const res = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+async function spotifySearch(q, type) {
+  const t = await spotifyToken();
+  const res = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=${type}&limit=20`, { headers: { Authorization: 'Bearer ' + t } });
   if (!res.ok) throw new Error('SEARCH_FAILED:' + res.status);
   return res.json();
 }
 
-// Detecta links de open.spotify.com (con o sin prefijo de idioma, ej. /intl-es/) pegados en el buscador.
-const SPOTIFY_URL_RE = /open\.spotify\.com\/(?:intl-[a-z-]+\/)?(album|track|artist)\/([a-zA-Z0-9]+)/i;
-
-async function fetchSpotifyItemById(type, id) {
-  const token = await getSpotifyToken();
-  const res = await fetch(`https://api.spotify.com/v1/${type}s/${id}`, { headers: { 'Authorization': `Bearer ${token}` } });
+async function spotifyLookup(type, id) {
+  const t = await spotifyToken();
+  const res = await fetch(`https://api.spotify.com/v1/${type}s/${id}`, { headers: { Authorization: 'Bearer ' + t } });
   if (!res.ok) throw new Error('LOOKUP_FAILED:' + res.status);
   return res.json();
 }
 
-function normalizeSpotifyResult(raw, type) {
-  if (type === 'album') {
-    return {
-      spotifyId: raw.id, type: 'album', title: raw.name,
-      artists: raw.artists.map(a => a.name),
-      coverUrl: raw.images && raw.images[0] ? raw.images[0].url : null,
-      spotifyUrl: raw.external_urls.spotify,
-      releaseDate: raw.release_date || null
-    };
-  }
-  if (type === 'track') {
-    return {
-      spotifyId: raw.id, type: 'track', title: raw.name,
-      artists: raw.artists.map(a => a.name),
-      coverUrl: raw.album && raw.album.images && raw.album.images[0] ? raw.album.images[0].url : null,
-      spotifyUrl: raw.external_urls.spotify,
-      releaseDate: raw.album ? raw.album.release_date : null
-    };
-  }
+const URL_ONE = /open\.spotify\.com\/(?:intl-[a-z-]+\/)?(album|track|artist)\/([a-zA-Z0-9]+)/i;
+const URL_ALL = /open\.spotify\.com\/(?:intl-[a-z-]+\/)?(album|track|artist)\/([a-zA-Z0-9]+)/gi;
+
+function normalize(raw, type) {
+  if (type === 'album') return {
+    spotifyId: raw.id, type: 'album', title: raw.name, artists: (raw.artists || []).map(a => a.name),
+    coverUrl: raw.images?.[0]?.url || null, spotifyUrl: raw.external_urls.spotify, releaseDate: raw.release_date || null,
+    extra: raw.total_tracks ? raw.total_tracks + ' pistas' : null
+  };
+  if (type === 'track') return {
+    spotifyId: raw.id, type: 'track', title: raw.name, artists: (raw.artists || []).map(a => a.name),
+    coverUrl: raw.album?.images?.[0]?.url || null, spotifyUrl: raw.external_urls.spotify,
+    releaseDate: raw.album?.release_date || null,
+    extra: raw.duration_ms ? Math.floor(raw.duration_ms / 60000) + ':' + String(Math.floor(raw.duration_ms % 60000 / 1000)).padStart(2, '0') : null
+  };
   return {
     spotifyId: raw.id, type: 'artist', title: raw.name, artists: [raw.name],
-    coverUrl: raw.images && raw.images[0] ? raw.images[0].url : null,
-    spotifyUrl: raw.external_urls.spotify, releaseDate: null
+    coverUrl: raw.images?.[0]?.url || null, spotifyUrl: raw.external_urls.spotify, releaseDate: null,
+    extra: raw.genres?.length ? raw.genres.slice(0, 2).join(', ') : null
   };
 }
 
-// ================= grid render =================
-function typeLabel(t) { return { album: 'Álbum', track: 'Canción', artist: 'Artista' }[t] || t; }
-function typeIcon(t) { return { album: '💿', track: '🎵', artist: '🎤' }[t] || '🎧'; }
-
-function renderTagFilterOptions() {
-  const sel = document.getElementById('filterTag');
-  sel.innerHTML = `<option value="all">Todas las etiquetas</option>` +
-    TAGS.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+function makeItem(r) {
+  return {
+    id: uid(), spotifyId: r.spotifyId, type: r.type, title: r.title, artists: r.artists,
+    coverUrl: r.coverUrl, spotifyUrl: r.spotifyUrl, releaseDate: r.releaseDate, extra: r.extra || null,
+    dateAdded: Date.now(), notes: '', rating: 0, tagIds: [], listened: false
+  };
 }
 
-function getFilteredItems() {
-  const q = document.getElementById('filterSearch').value.trim().toLowerCase();
-  const type = document.getElementById('filterType').value;
-  const tagId = document.getElementById('filterTag').value;
-  const status = document.getElementById('filterStatus').value;
-  return ITEMS
-    .filter(i => type === 'all' || i.type === type)
-    .filter(i => tagId === 'all' || (i.tagIds || []).includes(tagId))
-    .filter(i => status === 'all' || (status === 'listened' ? !!i.listened : !i.listened))
-    .filter(i => !q || (i.title + ' ' + i.artists.join(' ')).toLowerCase().includes(q))
-    .sort((a, b) => b.dateAdded - a.dateAdded);
+/* ============ filtering & sorting ============ */
+function filtered() {
+  const q = fold(document.getElementById('q').value.trim());
+  let out = ITEMS.filter(it => {
+    if (PREFS.type !== 'all' && it.type !== PREFS.type) return false;
+    if (PREFS.status === 'pending' && it.listened) return false;
+    if (PREFS.status === 'listened' && !it.listened) return false;
+    if (PREFS.tag !== 'all' && !(it.tagIds || []).includes(PREFS.tag)) return false;
+    if (q && !fold(it.title + ' ' + artistsOf(it) + ' ' + (it.notes || '')).includes(q)) return false;
+    return true;
+  });
+  const s = PREFS.sort;
+  out.sort((a, b) => {
+    switch (s) {
+      case 'title_asc':   return cmp(sortKey(a.title), sortKey(b.title));
+      case 'title_desc':  return cmp(sortKey(b.title), sortKey(a.title));
+      case 'artist_asc':  return cmp(sortKey(artistsOf(a)), sortKey(artistsOf(b))) || cmp(sortKey(a.title), sortKey(b.title));
+      case 'artist_desc': return cmp(sortKey(artistsOf(b)), sortKey(artistsOf(a))) || cmp(sortKey(a.title), sortKey(b.title));
+      case 'rating_desc': return (b.rating || 0) - (a.rating || 0) || cmp(sortKey(a.title), sortKey(b.title));
+      case 'year_desc':   return yearOf(b) - yearOf(a);
+      case 'year_asc':    return yearOf(a) - yearOf(b);
+      case 'added_asc':   return a.dateAdded - b.dateAdded;
+      default:            return b.dateAdded - a.dateAdded;
+    }
+  });
+  return out;
 }
 
-function renderGrid() {
-  const container = document.getElementById('gridContainer');
-  const items = getFilteredItems();
-  if (ITEMS.length === 0) {
-    container.innerHTML = `<div class="empty-state">
-      <div class="icon">🗄️</div>
-      <h2>Tu vault está vacío</h2>
-      <p>Guardá álbumes, canciones o artistas de Spotify para escuchar más tarde.</p>
-      <button onclick="openSearchModal()">+ Buscar en Spotify</button>
-    </div>`;
-    return;
-  }
-  if (items.length === 0) {
-    container.innerHTML = `<div class="empty-state"><div class="icon">🔍</div><h2>Sin resultados</h2><p>Probá con otro filtro.</p></div>`;
-    return;
-  }
-  container.innerHTML = `<div class="grid">${items.map(cardHtml).join('')}</div>`;
+/* ============ selection ============ */
+let selMode = false;
+let selected = new Set();
+
+function setSelMode(on) {
+  selMode = on;
+  if (!on) selected.clear();
+  render();
 }
 
-function cardHtml(item) {
-  const stars = '★'.repeat(item.rating || 0);
-  const listened = !!item.listened;
-  return `<div class="card" onclick="openDetailModal('${item.id}')">
-    <div class="cover" style="position:relative;">
-      ${item.coverUrl ? `<img src="${item.coverUrl}" loading="lazy" alt="">` : `<span class="fallback">${typeIcon(item.type)}</span>`}
-      <button class="listened-toggle ${listened ? 'on' : ''}" onclick="event.stopPropagation(); toggleListened('${item.id}')" title="${listened ? 'Marcar como pendiente' : 'Marcar como escuchado'}">${listened ? '✓' : ''}</button>
-    </div>
-    <div class="body">
-      <div class="t">${item.title}</div>
-      <div class="a">${item.artists.join(', ')}</div>
-      <div class="meta-row">
-        <span class="type-badge">${typeLabel(item.type)}</span>
-        ${stars ? `<span class="stars-mini">${stars}</span>` : ''}
-      </div>
-    </div>
+function toggleSel(id) {
+  selected.has(id) ? selected.delete(id) : selected.add(id);
+  if (selected.size === 0) selMode = false;
+  render();
+}
+
+function renderSelBar() {
+  const root = document.getElementById('selbarRoot');
+  if (!selMode) { root.innerHTML = ''; document.getElementById('addFab').classList.remove('hidden'); return; }
+  document.getElementById('addFab').classList.add('hidden');
+  root.innerHTML = `<div class="selbar">
+    <span class="cnt">${selected.size} seleccionado${selected.size === 1 ? '' : 's'}</span>
+    <button class="btn" data-sel="listen">✓ Escuchado</button>
+    <button class="btn" data-sel="tag">Etiquetar</button>
+    <button class="btn danger" data-sel="del">Eliminar</button>
+    <button class="btn" data-sel="cancel">✕</button>
   </div>`;
 }
 
-function toggleListened(id) {
-  const item = ITEMS.find(i => i.id === id);
-  if (!item) return;
-  item.listened = !item.listened;
-  saveItems(ITEMS);
-  renderGrid();
+/* ============ render ============ */
+function renderStats() {
+  const done = ITEMS.filter(i => i.listened).length;
+  document.getElementById('statAll').textContent = ITEMS.length;
+  document.getElementById('statPending').textContent = ITEMS.length - done;
+  document.getElementById('statDone').textContent = done;
+  document.querySelectorAll('.stat').forEach(b => b.classList.toggle('active', b.dataset.status === PREFS.status));
 }
 
-['filterSearch', 'filterType', 'filterTag', 'filterStatus'].forEach(id => {
-  document.getElementById(id).addEventListener('input', renderGrid);
-  document.getElementById(id).addEventListener('change', renderGrid);
+function renderChips() {
+  const countType = t => t === 'all' ? ITEMS.length : ITEMS.filter(i => i.type === t).length;
+  const parts = [
+    `<button class="chip ${PREFS.type === 'all' ? 'on' : ''}" data-type="all">Todo <span class="ct">${ITEMS.length}</span></button>`,
+    ...['album', 'track', 'artist'].map(t =>
+      `<button class="chip ${PREFS.type === t ? 'on' : ''}" data-type="${t}">${TYPE_ICON[t]} ${TYPE_LABEL[t]}s <span class="ct">${countType(t)}</span></button>`),
+    ...TAGS.map(t => {
+      const n = ITEMS.filter(i => (i.tagIds || []).includes(t.id)).length;
+      return `<button class="chip ${PREFS.tag === t.id ? 'on' : ''}" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)} <span class="ct">${n}</span></button>`;
+    })
+  ];
+  document.getElementById('chips').innerHTML = parts.join('');
+}
+
+function gcard(it) {
+  const tags = (it.tagIds || []).map(tagById).filter(Boolean).slice(0, 4);
+  return `<article class="gcard ${it.listened ? 'done' : ''} ${selected.has(it.id) ? 'sel' : ''}" data-id="${it.id}">
+    <div class="art">
+      ${it.coverUrl ? `<img src="${esc(it.coverUrl)}" loading="lazy" alt="">` : `<span class="ph">${TYPE_ICON[it.type]}</span>`}
+      <button class="statusdot ${it.listened ? 'on' : ''}" data-toggle="${it.id}" aria-label="${it.listened ? 'Marcar pendiente' : 'Marcar escuchado'}">${it.listened ? '✓' : ''}</button>
+      <span class="typetag">${TYPE_LABEL[it.type]}</span>
+    </div>
+    <div class="gbody">
+      <div class="gt">${esc(it.title)}</div>
+      <div class="ga">${esc(artistsOf(it))}</div>
+      <div class="gmeta">
+        ${it.rating ? `<span class="stars">${'★'.repeat(it.rating)}</span>` : ''}
+        ${tags.map(t => `<span class="tagpip" style="background:${esc(t.colorHex)}" title="${esc(t.name)}"></span>`).join('')}
+      </div>
+    </div>
+  </article>`;
+}
+
+function lrow(it) {
+  const tags = (it.tagIds || []).map(tagById).filter(Boolean).slice(0, 4);
+  const y = yearOf(it);
+  return `<article class="lrow ${it.listened ? 'done' : ''} ${selected.has(it.id) ? 'sel' : ''}" data-id="${it.id}">
+    <div class="lart">${it.coverUrl ? `<img src="${esc(it.coverUrl)}" loading="lazy" alt="">` : TYPE_ICON[it.type]}</div>
+    <div class="linfo">
+      <div class="lt">${esc(it.title)}</div>
+      <div class="la">${esc(artistsOf(it))}</div>
+    </div>
+    <div class="lmeta">
+      ${tags.map(t => `<span class="tagpip" style="background:${esc(t.colorHex)}" title="${esc(t.name)}"></span>`).join('')}
+      ${it.rating ? `<span class="stars">${'★'.repeat(it.rating)}</span>` : ''}
+      ${y ? `<span class="lyear">${y}</span>` : ''}
+      <button class="lcheck ${it.listened ? 'on' : ''}" data-toggle="${it.id}" aria-label="${it.listened ? 'Marcar pendiente' : 'Marcar escuchado'}">✓</button>
+    </div>
+  </article>`;
+}
+
+function render() {
+  renderStats();
+  renderChips();
+  renderSelBar();
+  document.getElementById('sortSel').value = PREFS.sort;
+  document.getElementById('viewBtn').textContent = PREFS.view === 'grid' ? '▦' : '☰';
+
+  const box = document.getElementById('results');
+  const line = document.getElementById('resultline');
+
+  if (ITEMS.length === 0) {
+    line.innerHTML = '';
+    box.innerHTML = `<div class="empty">
+      <div class="ico">🗄️</div>
+      <h2>Tu vault está vacío</h2>
+      <p>Guarda álbumes, canciones y artistas de Spotify para no perderlos de vista. Nada se reproduce aquí: esto es tu lista de lo que quieres escuchar.</p>
+      <div class="acts">
+        <button class="btn primary" data-open="search">Buscar en Spotify</button>
+        <button class="btn" data-open="bulk">Pegar enlaces</button>
+      </div>
+    </div>`;
+    return;
+  }
+
+  const rows = filtered();
+  const anyFilter = PREFS.type !== 'all' || PREFS.status !== 'all' || PREFS.tag !== 'all' || document.getElementById('q').value.trim();
+  line.innerHTML = `<span>${rows.length} de ${ITEMS.length}</span>${anyFilter ? `<button class="linkbtn" data-clear="1">Quitar filtros</button>` : ''}`;
+
+  if (rows.length === 0) {
+    box.innerHTML = `<div class="empty">
+      <div class="ico">🔍</div>
+      <h2>Nada coincide</h2>
+      <p>Prueba a quitar algún filtro o a buscar otra cosa.</p>
+      <div class="acts"><button class="btn" data-clear="1">Quitar filtros</button></div>
+    </div>`;
+    return;
+  }
+
+  box.innerHTML = PREFS.view === 'grid'
+    ? `<div class="grid">${rows.map(gcard).join('')}</div>`
+    : `<div class="list">${rows.map(lrow).join('')}</div>`;
+}
+
+/* ============ item actions ============ */
+function toggleListened(id) {
+  const it = ITEMS.find(i => i.id === id);
+  if (!it) return;
+  it.listened = !it.listened;
+  saveItems();
+  render();
+}
+
+function deleteItems(ids) {
+  const removed = ITEMS.filter(i => ids.includes(i.id));
+  ITEMS = ITEMS.filter(i => !ids.includes(i.id));
+  saveItems();
+  render();
+  toast(`${removed.length} eliminado${removed.length === 1 ? '' : 's'}`, 'Deshacer', () => {
+    ITEMS = ITEMS.concat(removed);
+    saveItems();
+    render();
+  });
+}
+
+/* ============ modals ============ */
+const modalRoot = document.getElementById('modalRoot');
+const closeModal = () => { modalRoot.innerHTML = ''; };
+function showSheet(html) {
+  modalRoot.innerHTML = `<div class="overlay" data-overlay="1"><div class="sheet" role="dialog" aria-modal="true">${html}</div></div>`;
+}
+modalRoot.addEventListener('click', e => { if (e.target.dataset.overlay) closeModal(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { if (modalRoot.innerHTML) closeModal(); else if (selMode) setSelMode(false); }
 });
 
-// ================= modal helpers =================
-function closeModal() { document.getElementById('modalRoot').innerHTML = ''; }
-function showModal(html) {
-  document.getElementById('modalRoot').innerHTML = `<div class="overlay" onclick="if(event.target===this) closeModal()"><div class="sheet">${html}</div></div>`;
-}
-
-// ================= search modal =================
-let currentSearchType = 'album';
+/* ---- search ---- */
+let searchType = 'album';
 let lastResults = [];
+let searchTimer;
 
-function openSearchModal() {
-  currentSearchType = 'album';
-  showModal(`
-    <div class="sheet-head"><h2>Buscar en Spotify</h2><button class="icon-btn" onclick="closeModal()">✕</button></div>
-    <div class="tab-row" id="searchTabs">
-      <button class="tab-btn active" data-t="album">💿 Álbumes</button>
-      <button class="tab-btn" data-t="track">🎵 Canciones</button>
-      <button class="tab-btn" data-t="artist">🎤 Artistas</button>
+function openSearch() {
+  searchType = 'album';
+  showSheet(`
+    <div class="sheethead"><h2>Buscar en Spotify</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="segrow" id="segs">
+      <button class="seg on" data-t="album">💿 Álbumes</button>
+      <button class="seg" data-t="track">🎵 Canciones</button>
+      <button class="seg" data-t="artist">🎤 Artistas</button>
     </div>
-    <input type="text" class="search-input" id="searchInput" placeholder="Título, artista...">
-    <div id="searchResults"></div>
+    <input type="text" class="field" id="sq" placeholder="Título, artista, o pega un enlace" autocomplete="off">
+    <div id="sres" style="margin-top:12px;"></div>
   `);
-  document.querySelectorAll('#searchTabs .tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('#searchTabs .tab-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentSearchType = btn.dataset.t;
-      runSearch();
-    });
+  const sq = document.getElementById('sq');
+  document.getElementById('segs').addEventListener('click', e => {
+    const b = e.target.closest('.seg'); if (!b) return;
+    document.querySelectorAll('#segs .seg').forEach(x => x.classList.toggle('on', x === b));
+    searchType = b.dataset.t;
+    runSearch();
   });
-  let timer;
-  document.getElementById('searchInput').addEventListener('input', () => {
-    clearTimeout(timer);
-    timer = setTimeout(runSearch, 350);
-  });
-  document.getElementById('searchInput').focus();
+  sq.addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(runSearch, 330); });
+  sq.focus();
 }
 
 async function runSearch() {
-  const q = document.getElementById('searchInput').value.trim();
-  const resultsEl = document.getElementById('searchResults');
-  if (!q) { resultsEl.innerHTML = ''; return; }
-
-  const creds = loadCreds();
-  if (!creds || !creds.clientId || !creds.clientSecret) {
-    resultsEl.innerHTML = `<div class="empty-state" style="padding:30px 10px;">
-      <p>Todavía no configuraste tus credenciales de Spotify.</p>
-      <button onclick="closeModal(); openSettingsModal();">⚙️ Ir a Ajustes</button>
-    </div>`;
+  const q = document.getElementById('sq').value.trim();
+  const box = document.getElementById('sres');
+  if (!q) { box.innerHTML = ''; return; }
+  const c = loadCreds();
+  if (!c || !c.clientId || !c.clientSecret) {
+    box.innerHTML = `<div class="empty" style="padding:26px 8px;"><p>Necesitas conectar tu cuenta de Spotify Developer para buscar.</p><div class="acts"><button class="btn primary" data-open="settings">Ir a Ajustes</button></div></div>`;
     return;
   }
-
-  resultsEl.innerHTML = `<div class="empty-state" style="padding:24px 0;"><p>Buscando...</p></div>`;
-  const urlMatch = q.match(SPOTIFY_URL_RE);
+  box.innerHTML = `<div class="skel"></div><div class="skel"></div><div class="skel"></div>`;
+  const m = q.match(URL_ONE);
   try {
-    if (urlMatch) {
-      // Pegaste un link de Spotify: lo traemos directo por ID en vez de "buscarlo" como texto.
-      const [, linkType, linkId] = urlMatch;
-      const raw = await fetchSpotifyItemById(linkType, linkId);
-      lastResults = [normalizeSpotifyResult(raw, linkType)];
+    if (m) {
+      lastResults = [normalize(await spotifyLookup(m[1], m[2]), m[1])];
     } else {
-      const data = await spotifySearch(q, currentSearchType);
-      const key = currentSearchType + 's';
-      const raw = (data[key] && data[key].items) || [];
-      lastResults = raw.map(r => normalizeSpotifyResult(r, currentSearchType));
+      const d = await spotifySearch(q, searchType);
+      lastResults = (d[searchType + 's']?.items || []).map(r => normalize(r, searchType));
     }
-    if (lastResults.length === 0) {
-      resultsEl.innerHTML = `<div class="empty-state" style="padding:24px 0;"><p>Sin resultados.</p></div>`;
-      return;
-    }
-    resultsEl.innerHTML = lastResults.map((r, i) => resultRowHtml(r, i)).join('');
+    if (!lastResults.length) { box.innerHTML = `<div class="empty" style="padding:26px 8px;"><p>Sin resultados para “${esc(q)}”.</p></div>`; return; }
+    box.innerHTML = lastResults.map(rrow).join('');
   } catch (err) {
     const msg = err.message || '';
-    let text = `No se pudo buscar (${msg || 'error desconocido'}). Probá de nuevo.`;
-    if (msg === 'AUTH_FAILED') text = 'Credenciales inválidas. Revisalas en Ajustes.';
-    else if (msg.startsWith('LOOKUP_FAILED')) text = `No se encontró ese link de Spotify (código ${msg.split(':')[1]}).`;
-    else if (msg.startsWith('SEARCH_FAILED')) text = `Spotify devolvió un error al buscar (código ${msg.split(':')[1]}).`;
-    resultsEl.innerHTML = `<div class="empty-state" style="padding:24px 0;"><p>${text}</p></div>`;
+    let text = 'No se pudo conectar con Spotify. Revisa tu conexión.';
+    if (msg === 'AUTH_FAILED' || msg === 'NO_CREDS') text = 'Tus credenciales no son válidas. Revísalas en Ajustes.';
+    else if (msg.startsWith('LOOKUP_FAILED')) text = `Ese enlace no existe o es privado (error ${msg.split(':')[1]}).`;
+    else if (msg.startsWith('SEARCH_FAILED')) text = `Spotify devolvió un error ${msg.split(':')[1]}.`;
+    box.innerHTML = `<div class="empty" style="padding:26px 8px;"><p>${esc(text)}</p></div>`;
   }
 }
 
-function resultRowHtml(r, i) {
-  const isSaved = ITEMS.some(it => it.spotifyId === r.spotifyId);
-  return `<div class="result-row">
-    <div class="cover-sm">${r.coverUrl ? `<img src="${r.coverUrl}" alt="">` : typeIcon(r.type)}</div>
-    <div class="info">
-      <div class="t">${r.title}</div>
-      <div class="a">${r.artists.join(', ')}</div>
+function rrow(r, i) {
+  const saved = ITEMS.some(x => x.spotifyId === r.spotifyId);
+  return `<div class="rrow">
+    <div class="rart">${r.coverUrl ? `<img src="${esc(r.coverUrl)}" loading="lazy" alt="">` : TYPE_ICON[r.type]}</div>
+    <div class="rinfo">
+      <div class="rt">${esc(r.title)}</div>
+      <div class="ra">${esc(r.artists.join(', '))}${r.releaseDate ? ' · ' + esc(String(r.releaseDate).slice(0, 4)) : ''}</div>
     </div>
-    <button class="save-btn ${isSaved ? 'saved' : ''}" onclick="saveResult(${i}, this)">${isSaved ? '✓' : '+'}</button>
+    <button class="addbtn ${saved ? 'done' : ''}" data-add="${i}" aria-label="${saved ? 'Ya guardado' : 'Guardar'}">${saved ? '✓' : '＋'}</button>
   </div>`;
 }
 
-function saveResult(i, btn) {
-  const r = lastResults[i];
-  if (ITEMS.some(it => it.spotifyId === r.spotifyId)) return;
-  const item = {
-    id: uid(), spotifyId: r.spotifyId, type: r.type, title: r.title, artists: r.artists,
-    coverUrl: r.coverUrl, spotifyUrl: r.spotifyUrl, releaseDate: r.releaseDate,
-    dateAdded: Date.now(), notes: '', rating: 0, tagIds: [], listened: false
-  };
-  ITEMS.push(item);
-  saveItems(ITEMS);
-  btn.classList.add('saved');
-  btn.textContent = '✓';
-  renderGrid();
-}
-
-// ================= detail modal =================
-function openDetailModal(id) {
-  const item = ITEMS.find(i => i.id === id);
-  if (!item) return;
-  showModal(`
-    <div class="sheet-head"><h2>${typeIcon(item.type)} ${typeLabel(item.type)}</h2><button class="icon-btn" onclick="closeModal()">✕</button></div>
-    <div class="detail-cover">${item.coverUrl ? `<img src="${item.coverUrl}" alt="">` : ''}</div>
-    <div class="detail-title">${item.title}</div>
-    <div class="detail-artist">${item.artists.join(', ')}${item.releaseDate ? ' · ' + item.releaseDate.slice(0,4) : ''}</div>
-
-    <div class="action-row" style="margin-top:0;">
-      <button class="btn ${item.listened ? 'primary' : ''}" id="listenedBtn">${item.listened ? '✓ Escuchado' : '🔵 Marcar como escuchado'}</button>
-    </div>
-
-    <div class="field-label">Tu valoración</div>
-    <div class="star-row" id="starRow">
-      ${[1,2,3,4,5].map(n => `<button data-n="${n}" class="${n <= (item.rating||0) ? 'filled' : ''}">★</button>`).join('')}
-    </div>
-
-    <div class="field-label">Notas</div>
-    <textarea class="notes" id="notesInput" placeholder="¿Por qué lo guardaste?">${item.notes || ''}</textarea>
-
-    <div class="field-label">Etiquetas</div>
-    <div class="tag-chip-row" id="detailTagRow">
-      ${TAGS.length === 0 ? '<span style="font-size:12.5px;color:var(--fg-mute);">Creá etiquetas desde Ajustes.</span>' :
-        TAGS.map(t => `<span class="tag-chip ${((item.tagIds||[]).includes(t.id)) ? '' : 'inactive'}" data-tag="${t.id}">
-          <span class="dot" style="background:${t.colorHex}"></span>${t.name}
-        </span>`).join('')}
-    </div>
-
-    <div class="action-row">
-      <a class="btn primary" href="${item.spotifyUrl}" target="_blank" rel="noopener">▸ Abrir en Spotify</a>
-    </div>
-    <div class="action-row">
-      <button class="btn danger" id="deleteBtn">Eliminar de la colección</button>
-    </div>
+/* ---- bulk ---- */
+function openBulk() {
+  showSheet(`
+    <div class="sheethead"><h2>Pegar varios enlaces</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <p class="lede">Pega tantos enlaces de Spotify como quieras — separados por líneas, espacios o mezclados con texto. Los encuentro todos y me salto los que ya tienes.</p>
+    <textarea class="field tall" id="bulkIn" placeholder="https://open.spotify.com/album/...
+https://open.spotify.com/artist/...
+https://open.spotify.com/track/..."></textarea>
+    <div class="btnrow"><button class="btn primary wide" id="bulkGo">Añadir al vault</button></div>
+    <div id="bulkOut" style="margin-top:14px;font-size:13.5px;color:var(--fg-soft);"></div>
   `);
-
-  document.getElementById('listenedBtn').addEventListener('click', () => {
-    item.listened = !item.listened;
-    saveItems(ITEMS);
-    openDetailModal(id);
-  });
-  document.querySelectorAll('#starRow button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const n = +btn.dataset.n;
-      item.rating = item.rating === n ? 0 : n;
-      saveItems(ITEMS);
-      openDetailModal(id);
-    });
-  });
-  document.getElementById('notesInput').addEventListener('blur', (e) => {
-    item.notes = e.target.value;
-    saveItems(ITEMS);
-  });
-  document.querySelectorAll('#detailTagRow .tag-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      const tagId = chip.dataset.tag;
-      item.tagIds = item.tagIds || [];
-      if (item.tagIds.includes(tagId)) {
-        item.tagIds = item.tagIds.filter(t => t !== tagId);
-      } else {
-        item.tagIds.push(tagId);
-      }
-      saveItems(ITEMS);
-      openDetailModal(id);
-    });
-  });
-  document.getElementById('deleteBtn').addEventListener('click', () => {
-    ITEMS = ITEMS.filter(i => i.id !== id);
-    saveItems(ITEMS);
-    closeModal();
-    renderGrid();
-  });
+  document.getElementById('bulkGo').addEventListener('click', runBulk);
+  document.getElementById('bulkIn').focus();
 }
 
-// ================= settings modal =================
-function openSettingsModal() {
-  const creds = loadCreds();
-  const hasCreds = !!(creds && creds.clientId && creds.clientSecret);
-  showModal(`
-    <div class="sheet-head"><h2>⚙️ Ajustes</h2><button class="icon-btn" onclick="closeModal()">✕</button></div>
-
-    <div class="field-label">Credenciales de Spotify</div>
-    <div class="status-pill ${hasCreds ? 'ok' : 'no'}">${hasCreds ? '✓ Configurado' : '✕ Sin configurar'}</div>
-    <p style="font-size:12px;color:var(--fg-mute);margin:0 0 12px;">
-      Se guardan solo en este dispositivo (localStorage), nunca se suben a ningún lado.
-      Sacalas de <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noopener" style="color:var(--teal);">developer.spotify.com/dashboard</a>.
-    </p>
-    <div class="settings-field">
-      <label>Client ID</label>
-      <input type="text" id="clientIdInput" value="${creds ? creds.clientId : ''}" placeholder="Client ID">
-    </div>
-    <div class="settings-field">
-      <label>Client Secret</label>
-      <input type="password" id="clientSecretInput" value="${creds ? creds.clientSecret : ''}" placeholder="Client Secret">
-    </div>
-    <div class="action-row">
-      <button class="btn primary" id="saveCredsBtn">Guardar credenciales</button>
-    </div>
-
-    <div class="field-label" style="margin-top:26px;">Etiquetas</div>
-    <div id="tagManageList">${tagManageListHtml()}</div>
-    <div class="settings-field" style="margin-top:10px;">
-      <label>Nueva etiqueta</label>
-      <input type="text" id="newTagName" placeholder="Nombre de la etiqueta">
-    </div>
-    <div class="swatch-row" id="colorSwatches">
-      ${TAG_COLORS.map((c, i) => `<span class="swatch ${i===0 ? 'selected':''}" data-color="${c}" style="background:${c}"></span>`).join('')}
-    </div>
-    <div class="action-row">
-      <button class="btn primary" id="addTagBtn">+ Crear etiqueta</button>
-    </div>
-  `);
-
-  document.getElementById('saveCredsBtn').addEventListener('click', () => {
-    const clientId = document.getElementById('clientIdInput').value.trim();
-    const clientSecret = document.getElementById('clientSecretInput').value.trim();
-    saveCreds({ clientId, clientSecret });
-    tokenCache = { token: null, expiresAt: 0 };
-    openSettingsModal();
-  });
-
-  let selectedColor = TAG_COLORS[0];
-  document.querySelectorAll('#colorSwatches .swatch').forEach(sw => {
-    sw.addEventListener('click', () => {
-      document.querySelectorAll('#colorSwatches .swatch').forEach(s => s.classList.remove('selected'));
-      sw.classList.add('selected');
-      selectedColor = sw.dataset.color;
-    });
-  });
-  document.getElementById('addTagBtn').addEventListener('click', () => {
-    const name = document.getElementById('newTagName').value.trim();
-    if (!name) return;
-    TAGS.push({ id: uid(), name, colorHex: selectedColor });
-    saveTags(TAGS);
-    renderTagFilterOptions();
-    openSettingsModal();
-  });
-  wireTagDeletes();
-}
-
-function tagManageListHtml() {
-  if (TAGS.length === 0) return `<p style="font-size:12.5px;color:var(--fg-mute);">Todavía no creaste ninguna.</p>`;
-  return TAGS.map(t => `<div class="tag-manage-row">
-    <span class="left"><span class="dot" style="background:${t.colorHex}"></span>${t.name}</span>
-    <button class="del-x" data-del="${t.id}">✕</button>
-  </div>`).join('');
-}
-
-function wireTagDeletes() {
-  document.querySelectorAll('[data-del]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.del;
-      TAGS = TAGS.filter(t => t.id !== id);
-      saveTags(TAGS);
-      ITEMS.forEach(it => { it.tagIds = (it.tagIds || []).filter(tid => tid !== id); });
-      saveItems(ITEMS);
-      renderTagFilterOptions();
-      openSettingsModal();
-    });
-  });
-}
-
-document.getElementById('settingsBtn').addEventListener('click', openSettingsModal);
-document.getElementById('openSearchBtn').addEventListener('click', openSearchModal);
-document.getElementById('bulkAddBtn').addEventListener('click', openBulkModal);
-
-// ================= bulk add =================
-// Detecta TODOS los links de Spotify en el texto pegado, sin importar el formato (uno por línea, separados por espacios, mezclados con otro texto, etc.)
-const SPOTIFY_URL_RE_GLOBAL = /open\.spotify\.com\/(?:intl-[a-z-]+\/)?(album|track|artist)\/([a-zA-Z0-9]+)/gi;
-
-function openBulkModal() {
-  showModal(`
-    <div class="sheet-head"><h2>📋 Añadir en bloque</h2><button class="icon-btn" onclick="closeModal()">✕</button></div>
-    <p style="font-size:12.5px;color:var(--fg-mute);margin:0 0 10px;">
-      Pegá varios links de Spotify (álbumes, canciones o artistas) — uno por línea, todos juntos, como sea. Los detecto todos.
-    </p>
-    <textarea class="notes" id="bulkInput" style="min-height:150px;" placeholder="https://open.spotify.com/album/...&#10;https://open.spotify.com/artist/...&#10;https://open.spotify.com/track/..."></textarea>
-    <div class="action-row"><button class="btn primary" id="bulkProcessBtn">Procesar y guardar</button></div>
-    <div id="bulkStatus" style="margin-top:14px;font-size:13px;color:var(--fg-soft);"></div>
-  `);
-  document.getElementById('bulkProcessBtn').addEventListener('click', runBulkAdd);
-  document.getElementById('bulkInput').focus();
-}
-
-async function runBulkAdd() {
-  const statusEl = document.getElementById('bulkStatus');
-  const creds = loadCreds();
-  if (!creds || !creds.clientId || !creds.clientSecret) {
-    statusEl.innerHTML = `<p>Configurá tus credenciales en ⚙️ Ajustes primero.</p>`;
+async function runBulk() {
+  const out = document.getElementById('bulkOut');
+  const go = document.getElementById('bulkGo');
+  const c = loadCreds();
+  if (!c || !c.clientId || !c.clientSecret) {
+    out.innerHTML = `Conecta tu cuenta de Spotify en Ajustes antes de añadir.`;
     return;
   }
+  const found = new Map();
+  let m; URL_ALL.lastIndex = 0;
+  const text = document.getElementById('bulkIn').value;
+  while ((m = URL_ALL.exec(text)) !== null) found.set(m[2], m[1]);
+  if (!found.size) { out.innerHTML = 'No he encontrado ningún enlace de Spotify en ese texto.'; return; }
 
-  const text = document.getElementById('bulkInput').value;
-  const found = new Map(); // id -> type, dedupe automático
-  let m;
-  SPOTIFY_URL_RE_GLOBAL.lastIndex = 0;
-  while ((m = SPOTIFY_URL_RE_GLOBAL.exec(text)) !== null) {
-    found.set(m[2], m[1]);
-  }
-
-  if (found.size === 0) {
-    statusEl.innerHTML = `<p>No encontré ningún link de Spotify válido en ese texto.</p>`;
-    return;
-  }
-
-  document.getElementById('bulkProcessBtn').disabled = true;
-  let added = 0, skipped = 0, failed = 0, done = 0;
+  go.disabled = true;
+  let added = 0, dup = 0, fail = 0, n = 0;
   const total = found.size;
-  statusEl.innerHTML = `<p>Procesando 0 / ${total}...</p>`;
-
   for (const [id, type] of found) {
-    done++;
-    statusEl.innerHTML = `<p>Procesando ${done} / ${total}... (${added} añadidos)</p>`;
-    if (ITEMS.some(it => it.spotifyId === id)) { skipped++; continue; }
+    n++;
+    out.innerHTML = `Procesando ${n} de ${total}… <strong>${added}</strong> añadidos`;
+    if (ITEMS.some(x => x.spotifyId === id)) { dup++; continue; }
     try {
-      const raw = await fetchSpotifyItemById(type, id);
-      const r = normalizeSpotifyResult(raw, type);
-      ITEMS.push({
-        id: uid(), spotifyId: r.spotifyId, type: r.type, title: r.title, artists: r.artists,
-        coverUrl: r.coverUrl, spotifyUrl: r.spotifyUrl, releaseDate: r.releaseDate,
-        dateAdded: Date.now(), notes: '', rating: 0, tagIds: [], listened: false
-      });
+      ITEMS.push(makeItem(normalize(await spotifyLookup(type, id), type)));
       added++;
-    } catch (err) {
-      failed++;
-    }
+    } catch { fail++; }
   }
-
-  saveItems(ITEMS);
-  renderGrid();
-  const parts = [`✅ ${added} añadidos`];
-  if (skipped) parts.push(`${skipped} ya estaban en tu colección`);
-  if (failed) parts.push(`${failed} fallaron`);
-  statusEl.innerHTML = `<p>${parts.join(' · ')}.</p>`;
-  document.getElementById('bulkProcessBtn').disabled = false;
+  saveItems(); render();
+  const bits = [`<strong>${added}</strong> añadidos`];
+  if (dup) bits.push(`${dup} ya estaban`);
+  if (fail) bits.push(`${fail} fallaron`);
+  out.innerHTML = bits.join(' · ');
+  go.disabled = false;
+  if (added) toast(`${added} añadido${added === 1 ? '' : 's'} al vault`);
 }
 
-// ================= init =================
-renderTagFilterOptions();
-renderGrid();
+/* ---- detail ---- */
+function openDetail(id) {
+  const it = ITEMS.find(x => x.id === id);
+  if (!it) return;
+  const y = yearOf(it);
+  showSheet(`
+    <div class="sheethead"><h2>${TYPE_ICON[it.type]} ${TYPE_LABEL[it.type]}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="dwrap">
+      <div class="dart">${it.coverUrl ? `<img src="${esc(it.coverUrl)}" alt="">` : TYPE_ICON[it.type]}</div>
+      <div>
+        <h3 class="dtitle">${esc(it.title)}</h3>
+        <p class="dartist">${esc(artistsOf(it))}</p>
+        <div class="dfacts">
+          ${y ? `<span class="fact">${y}</span>` : ''}
+          ${it.extra ? `<span class="fact">${esc(it.extra)}</span>` : ''}
+          <span class="fact">Añadido ${new Date(it.dateAdded).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+        </div>
+        <div class="btnrow">
+          <button class="btn ${it.listened ? 'jade' : ''} wide" id="dListen">${it.listened ? '✓ Ya escuchado' : 'Marcar como escuchado'}</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flabel">Valoración</div>
+    <div class="starpick" id="dStars">
+      ${[1,2,3,4,5].map(n => `<button data-n="${n}" class="${n <= (it.rating || 0) ? 'on' : ''}" aria-label="${n} estrellas">★</button>`).join('')}
+    </div>
+
+    <div class="flabel">Notas</div>
+    <textarea class="field" id="dNotes" placeholder="¿Por qué lo guardaste? ¿Quién te lo recomendó?">${esc(it.notes || '')}</textarea>
+
+    <div class="flabel">Etiquetas</div>
+    <div class="tagpick" id="dTags">
+      ${TAGS.length ? TAGS.map(t => `<button class="tagsel ${(it.tagIds || []).includes(t.id) ? '' : 'off'}" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)}</button>`).join('')
+        : `<p class="lede" style="margin:0;">Todavía no has creado ninguna etiqueta. <button class="linkbtn" data-open="settings">Crear una</button></p>`}
+    </div>
+
+    <div class="btnrow">
+      <a class="btn primary wide" href="${esc(it.spotifyUrl)}" target="_blank" rel="noopener">Abrir en Spotify ↗</a>
+    </div>
+    <div class="btnrow">
+      <button class="btn danger wide" id="dDel">Eliminar del vault</button>
+    </div>
+  `);
+
+  document.getElementById('dListen').addEventListener('click', () => { it.listened = !it.listened; saveItems(); render(); openDetail(id); });
+  document.getElementById('dStars').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    const n = +b.dataset.n;
+    it.rating = it.rating === n ? 0 : n;
+    saveItems(); render(); openDetail(id);
+  });
+  const notes = document.getElementById('dNotes');
+  notes.addEventListener('input', () => { it.notes = notes.value; saveItems(); });
+  document.getElementById('dTags').addEventListener('click', e => {
+    const b = e.target.closest('.tagsel'); if (!b) return;
+    it.tagIds = it.tagIds || [];
+    const tid = b.dataset.tag;
+    it.tagIds = it.tagIds.includes(tid) ? it.tagIds.filter(x => x !== tid) : it.tagIds.concat(tid);
+    saveItems(); render(); openDetail(id);
+  });
+  document.getElementById('dDel').addEventListener('click', () => { closeModal(); deleteItems([id]); });
+}
+
+/* ---- tag picker (bulk) ---- */
+function openTagPicker(ids) {
+  if (!TAGS.length) { closeModal(); toast('Crea una etiqueta primero en Ajustes'); return; }
+  showSheet(`
+    <div class="sheethead"><h2>Etiquetar ${ids.length} elemento${ids.length === 1 ? '' : 's'}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <p class="lede">Toca una etiqueta para añadirla a todo lo seleccionado.</p>
+    <div class="tagpick" id="bulkTags">
+      ${TAGS.map(t => `<button class="tagsel" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)}</button>`).join('')}
+    </div>
+  `);
+  document.getElementById('bulkTags').addEventListener('click', e => {
+    const b = e.target.closest('.tagsel'); if (!b) return;
+    const tid = b.dataset.tag;
+    ids.forEach(id => {
+      const it = ITEMS.find(x => x.id === id);
+      if (it) { it.tagIds = it.tagIds || []; if (!it.tagIds.includes(tid)) it.tagIds.push(tid); }
+    });
+    saveItems(); closeModal(); setSelMode(false);
+    toast(`Etiqueta añadida a ${ids.length} elemento${ids.length === 1 ? '' : 's'}`);
+  });
+}
+
+/* ---- settings ---- */
+let swatch = TAG_COLORS[0];
+
+function openSettings() {
+  const c = loadCreds();
+  const ok = !!(c && c.clientId && c.clientSecret);
+  showSheet(`
+    <div class="sheethead"><h2>Ajustes</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+
+    <div class="flabel">Conexión con Spotify</div>
+    <div class="statusline ${ok ? 'ok' : 'no'}">${ok ? '● Conectado' : '● Sin conectar'}</div>
+    <p class="lede">Se guardan solo en este dispositivo y nunca salen de él. Créalas gratis en <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noopener">developer.spotify.com</a> → Create app → Settings.</p>
+    <input class="field mono" id="cid" placeholder="Client ID" value="${esc(c?.clientId || '')}" autocomplete="off" spellcheck="false" style="margin-bottom:8px;">
+    <input class="field mono" id="csec" type="password" placeholder="Client Secret" value="${esc(c?.clientSecret || '')}" autocomplete="off" spellcheck="false">
+    <div class="btnrow"><button class="btn primary wide" id="saveCreds">Guardar credenciales</button></div>
+
+    <div class="flabel">Etiquetas</div>
+    <div id="tagList">${tagListHtml()}</div>
+    <input class="field" id="newTag" placeholder="Nombre de la etiqueta" style="margin-top:10px;">
+    <div class="swatches" id="sw">${TAG_COLORS.map((col, i) => `<span class="sw ${i === 0 ? 'on' : ''}" data-c="${col}" style="background:${col}"></span>`).join('')}</div>
+    <div class="btnrow"><button class="btn wide" id="addTag">Crear etiqueta</button></div>
+
+    <div class="flabel">Copia de seguridad</div>
+    <p class="lede">Tu vault vive solo en este navegador. Si borras los datos del navegador, se pierde. Descarga una copia de vez en cuando.</p>
+    <div class="btnrow">
+      <button class="btn wide" id="expBtn">Descargar copia</button>
+      <button class="btn wide" id="impBtn">Restaurar copia</button>
+    </div>
+    <input type="file" id="impFile" accept="application/json,.json" class="hidden">
+  `);
+
+  swatch = TAG_COLORS[0];
+  document.getElementById('saveCreds').addEventListener('click', () => {
+    write(K_CREDS, { clientId: document.getElementById('cid').value.trim(), clientSecret: document.getElementById('csec').value.trim() });
+    tok = { v: null, exp: 0 };
+    toast('Credenciales guardadas');
+    openSettings();
+  });
+  document.getElementById('sw').addEventListener('click', e => {
+    const s = e.target.closest('.sw'); if (!s) return;
+    document.querySelectorAll('#sw .sw').forEach(x => x.classList.toggle('on', x === s));
+    swatch = s.dataset.c;
+  });
+  document.getElementById('addTag').addEventListener('click', () => {
+    const name = document.getElementById('newTag').value.trim();
+    if (!name) return;
+    if (TAGS.some(t => t.name.toLowerCase() === name.toLowerCase())) { toast('Ya tienes una etiqueta con ese nombre'); return; }
+    TAGS.push({ id: uid(), name, colorHex: swatch });
+    saveTags(); render(); openSettings();
+  });
+  document.getElementById('tagList').addEventListener('click', e => {
+    const b = e.target.closest('[data-del]'); if (!b) return;
+    const id = b.dataset.del;
+    TAGS = TAGS.filter(t => t.id !== id);
+    ITEMS.forEach(it => { it.tagIds = (it.tagIds || []).filter(x => x !== id); });
+    if (PREFS.tag === id) PREFS.tag = 'all';
+    saveTags(); saveItems(); savePrefs(); render(); openSettings();
+  });
+  document.getElementById('expBtn').addEventListener('click', exportBackup);
+  document.getElementById('impBtn').addEventListener('click', () => document.getElementById('impFile').click());
+  document.getElementById('impFile').addEventListener('change', importBackup);
+}
+
+function tagListHtml() {
+  if (!TAGS.length) return `<p class="lede" style="margin:0;">Aún no hay etiquetas. Crea una abajo para organizar tu vault.</p>`;
+  return TAGS.map(t => {
+    const n = ITEMS.filter(i => (i.tagIds || []).includes(t.id)).length;
+    return `<div class="tagline">
+      <span class="lf"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)}<span class="ct">${n}</span></span>
+      <button class="xbtn" data-del="${esc(t.id)}" aria-label="Eliminar etiqueta">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function exportBackup() {
+  const blob = new Blob([JSON.stringify({ app: 'MusicVault', version: 1, exportedAt: new Date().toISOString(), items: ITEMS, tags: TAGS }, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `musicvault-${new Date().toISOString().slice(0, 10)}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('Copia descargada');
+}
+
+function importBackup(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const fr = new FileReader();
+  fr.onload = () => {
+    try {
+      const d = JSON.parse(fr.result);
+      if (!Array.isArray(d.items)) throw new Error('bad');
+      const known = new Set(ITEMS.map(i => i.spotifyId));
+      const fresh = d.items.filter(i => i && i.spotifyId && !known.has(i.spotifyId));
+      const tagNames = new Set(TAGS.map(t => t.name.toLowerCase()));
+      (d.tags || []).forEach(t => { if (t && t.name && !tagNames.has(t.name.toLowerCase())) TAGS.push(t); });
+      ITEMS = ITEMS.concat(fresh);
+      saveItems(); saveTags(); render(); closeModal();
+      toast(`${fresh.length} elemento${fresh.length === 1 ? '' : 's'} restaurado${fresh.length === 1 ? '' : 's'}`);
+    } catch {
+      toast('Ese archivo no es una copia válida de MusicVault');
+    }
+  };
+  fr.readAsText(file);
+  e.target.value = '';
+}
+
+/* ---- shuffle ---- */
+function shuffle() {
+  const pool = ITEMS.filter(i => !i.listened);
+  if (!pool.length) {
+    toast(ITEMS.length ? '¡No te queda nada pendiente!' : 'Tu vault está vacío');
+    return;
+  }
+  openDetail(pool[Math.floor(Math.random() * pool.length)].id);
+}
+
+/* ============ events ============ */
+document.getElementById('shuffleBtn').addEventListener('click', shuffle);
+document.getElementById('bulkBtn').addEventListener('click', openBulk);
+document.getElementById('setBtn').addEventListener('click', openSettings);
+document.getElementById('addFab').addEventListener('click', openSearch);
+
+document.getElementById('q').addEventListener('input', render);
+document.getElementById('sortSel').addEventListener('change', e => { PREFS.sort = e.target.value; savePrefs(); render(); });
+document.getElementById('viewBtn').addEventListener('click', () => { PREFS.view = PREFS.view === 'grid' ? 'list' : 'grid'; savePrefs(); render(); });
+
+document.querySelector('.state-strip').addEventListener('click', e => {
+  const b = e.target.closest('.stat'); if (!b) return;
+  PREFS.status = PREFS.status === b.dataset.status ? 'all' : b.dataset.status;
+  savePrefs(); render();
+});
+
+document.getElementById('chips').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return;
+  if (b.dataset.type) PREFS.type = b.dataset.type;
+  if (b.dataset.tag) PREFS.tag = PREFS.tag === b.dataset.tag ? 'all' : b.dataset.tag;
+  savePrefs(); render();
+});
+
+/* content delegation: open detail, toggle listened, selection, empty-state buttons */
+let pressTimer = null;
+const contentEl = document.getElementById('results');
+
+contentEl.addEventListener('click', e => {
+  const clear = e.target.closest('[data-clear]');
+  if (clear) { PREFS.type = 'all'; PREFS.status = 'all'; PREFS.tag = 'all'; document.getElementById('q').value = ''; savePrefs(); render(); return; }
+  const open = e.target.closest('[data-open]');
+  if (open) { open.dataset.open === 'search' ? openSearch() : openBulk(); return; }
+  const tg = e.target.closest('[data-toggle]');
+  if (tg) { e.stopPropagation(); toggleListened(tg.dataset.toggle); return; }
+  const card = e.target.closest('[data-id]');
+  if (!card) return;
+  if (selMode) toggleSel(card.dataset.id);
+  else openDetail(card.dataset.id);
+});
+
+/* long-press enters selection mode (mobile) */
+contentEl.addEventListener('pointerdown', e => {
+  const card = e.target.closest('[data-id]');
+  if (!card || e.target.closest('[data-toggle]')) return;
+  pressTimer = setTimeout(() => {
+    if (!selMode) { selMode = true; selected.add(card.dataset.id); render(); if (navigator.vibrate) navigator.vibrate(12); }
+  }, 480);
+});
+['pointerup', 'pointercancel', 'pointerleave', 'scroll'].forEach(ev =>
+  contentEl.addEventListener(ev, () => clearTimeout(pressTimer), { passive: true }));
+window.addEventListener('scroll', () => clearTimeout(pressTimer), { passive: true });
+
+document.getElementById('selbarRoot').addEventListener('click', e => {
+  const b = e.target.closest('[data-sel]'); if (!b) return;
+  const ids = [...selected];
+  if (b.dataset.sel === 'cancel') return setSelMode(false);
+  if (b.dataset.sel === 'listen') {
+    ids.forEach(id => { const it = ITEMS.find(x => x.id === id); if (it) it.listened = true; });
+    saveItems(); setSelMode(false); toast(`${ids.length} marcado${ids.length === 1 ? '' : 's'} como escuchado${ids.length === 1 ? '' : 's'}`);
+  }
+  if (b.dataset.sel === 'tag') openTagPicker(ids);
+  if (b.dataset.sel === 'del') { setSelMode(false); deleteItems(ids); }
+});
+
+/* modal delegation */
+modalRoot.addEventListener('click', e => {
+  if (e.target.closest('[data-close]')) return closeModal();
+  const add = e.target.closest('[data-add]');
+  if (add) {
+    const r = lastResults[+add.dataset.add];
+    if (!r || ITEMS.some(x => x.spotifyId === r.spotifyId)) return;
+    ITEMS.push(makeItem(r));
+    saveItems(); render();
+    add.classList.add('done'); add.textContent = '✓';
+    return;
+  }
+  const open = e.target.closest('[data-open]');
+  if (open && open.dataset.open === 'settings') { closeModal(); openSettings(); }
+});
+
+/* desktop shortcuts */
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input, textarea, select')) return;
+  if (e.key === '/') { e.preventDefault(); document.getElementById('q').focus(); }
+  if (e.key === 'n' || e.key === 'N') openSearch();
+  if (e.key === 'v' || e.key === 'V') { PREFS.view = PREFS.view === 'grid' ? 'list' : 'grid'; savePrefs(); render(); }
+});
+
+/* ============ init ============ */
+render();
 </script>
