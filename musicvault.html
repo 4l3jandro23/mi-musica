@@ -9,7 +9,10 @@
 <meta name="apple-mobile-web-app-title" content="MusicVault">
 <meta name="theme-color" content="#14100d" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f7f2e9" media="(prefers-color-scheme: light)">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2314100d'/%3E%3Ccircle cx='50' cy='50' r='27' fill='none' stroke='%23e0a03a' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='7' fill='%23e0a03a'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="manifest" href="musicvault.webmanifest">
 <title>MusicVault</title>
 <style>
   :root {
@@ -104,6 +107,8 @@
   }
   .wordmark { display:flex; align-items:center; gap:9px; font-family: Georgia, "Times New Roman", serif; font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
   .wordmark .disc { width:19px; height:19px; flex-shrink:0; }
+  /* en pantallas estrechas el disco basta como identidad; el espacio va a los controles */
+  @media (max-width: 419px) { .wordmark .wm-text { display: none; } }
   .cmd-actions { display:flex; gap: 7px; }
   .iconbtn {
     display:flex; align-items:center; justify-content:center;
@@ -171,6 +176,17 @@
   .content { padding: 16px 0 110px; }
   .resultline { font-size: 11.5px; color: var(--fg-mute); font-family: ui-monospace, monospace; margin-bottom: 11px; display:flex; justify-content:space-between; align-items:center; gap:10px; }
   .linkbtn { background:none; border:none; font-family: ui-monospace, monospace; font-size: 11.5px; color: var(--amber); cursor:pointer; padding:0; text-decoration: underline; text-underline-offset: 2px; }
+
+  .group + .group { margin-top: 22px; }
+  .ghead {
+    display:flex; align-items:baseline; gap: 9px; margin: 0 0 10px;
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em;
+    color: var(--fg-soft); font-family: ui-monospace, monospace;
+    padding-bottom: 6px; border-bottom: 1px solid var(--line);
+    position: sticky; top: calc(158px + env(safe-area-inset-top)); z-index: 10;
+    background: var(--bg);
+  }
+  .ghead .gcount { font-size: 10.5px; color: var(--fg-mute); font-weight: 500; }
 
   .grid { display:grid; grid-template-columns: repeat(2, 1fr); gap: 13px; }
   @media (min-width: 560px) { .grid { grid-template-columns: repeat(3, 1fr); } }
@@ -384,6 +400,39 @@
   .xbtn { background:none; border:none; color: var(--fg-mute); font-size: 16px; cursor:pointer; padding: 4px 6px; line-height:1; }
   .xbtn:hover { color: var(--rust); }
 
+  /* metadatos */
+  .metalist { margin: 0; display:flex; flex-direction:column; }
+  .metarow { display:flex; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--line); align-items:baseline; }
+  .metarow:last-child { border-bottom: none; }
+  .metarow dt { flex: 0 0 40%; font-size: 11.5px; color: var(--fg-mute); font-family: ui-monospace, monospace; }
+  .metarow dd { margin: 0; flex: 1; font-size: 13px; overflow-wrap: anywhere; }
+  .metaform { display:flex; flex-direction:column; gap: 10px; }
+  .mfield { display:flex; flex-direction:column; gap: 5px; }
+  .mfield span { font-size: 11.5px; color: var(--fg-mute); font-family: ui-monospace, monospace; }
+
+  /* estadísticas */
+  .bigstat { display:flex; align-items:center; gap: 14px; margin-bottom: 10px; }
+  .bignum { font-family: Georgia, serif; font-size: 46px; font-weight: 700; line-height: 1; color: var(--jade); font-variant-numeric: tabular-nums; }
+  .bignum .pctsign { font-size: 22px; margin-left: 2px; }
+  .progtrack { height: 8px; border-radius: 4px; background: var(--surface-2); overflow: hidden; }
+  .progfill { display:block; height: 100%; background: var(--jade); border-radius: 4px; }
+  .barlist { display:flex; flex-direction: column; gap: 7px; }
+  .barrow { display:flex; align-items:center; gap: 10px; }
+  .blabel { font-size: 12.5px; width: 34%; flex-shrink:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color: var(--fg-soft); }
+  .btrack { flex:1; height: 9px; background: var(--surface-2); border-radius: 5px; overflow:hidden; }
+  .bfill { display:block; height:100%; border-radius: 5px; }
+  .bnum { font-size: 11.5px; color: var(--fg-mute); width: 26px; text-align:right; font-variant-numeric: tabular-nums; font-family: ui-monospace, monospace; }
+  .oldcard {
+    display:flex; align-items:center; gap: 11px; width:100%; text-align:left; cursor:pointer;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 9px; font-family: inherit; color: inherit;
+  }
+  .oldcard:hover { background: var(--surface-2); }
+  .oldart { width: 46px; height: 46px; border-radius: 8px; overflow:hidden; background: var(--surface-2); flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .oldart img { width:100%; height:100%; object-fit:cover; }
+  .oldinfo { min-width:0; display:flex; flex-direction:column; }
+  .oldt { font-size: 13.5px; font-weight: 600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .olda { font-size: 12px; color: var(--fg-mute); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
   /* toast */
   .toastwrap { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(88px + env(safe-area-inset-bottom)); z-index: 70; display:flex; flex-direction:column; gap: 8px; align-items:center; width: calc(100% - 28px); max-width: 420px; pointer-events:none; }
   .toast {
@@ -402,11 +451,12 @@
 <header class="cmdbar">
   <div class="wordmark">
     <svg class="disc" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="var(--amber)" stroke-width="2.2"/><circle cx="12" cy="12" r="2.6" fill="var(--amber)"/></svg>
-    MusicVault
+    <span class="wm-text">MusicVault</span>
   </div>
   <div class="cmd-actions">
     <button class="iconbtn" id="shuffleBtn" title="¿Qué escucho?" aria-label="Elegir algo al azar">🎲</button>
-    <button class="iconbtn" id="bulkBtn" title="Pegar varios enlaces" aria-label="Añadir en bloque">📋</button>
+    <button class="iconbtn" id="statsBtn" title="Estadísticas" aria-label="Estadísticas">📊</button>
+    <button class="iconbtn" id="bulkBtn" title="Pegar enlaces" aria-label="Añadir en bloque">📋</button>
     <button class="iconbtn" id="themeBtn" title="Cambiar tema" aria-label="Cambiar tema">◐</button>
     <button class="iconbtn" id="setBtn" title="Ajustes" aria-label="Ajustes">⚙</button>
   </div>
@@ -478,6 +528,7 @@ const loadCreds = () => read(K_CREDS, null);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 const TYPE_LABEL = { album: 'Álbum', track: 'Canción', artist: 'Artista' };
+const TYPE_PLURAL = { album: 'Álbumes', track: 'Canciones', artist: 'Artistas' };
 const TYPE_ICON  = { album: '💿', track: '🎵', artist: '🎤' };
 const TAG_COLORS = ['#2a78d6','#1baf7a','#eda100','#3f9c35','#7a5cd6','#e34948','#e87ba4','#eb6834'];
 const artistsOf = it => (it.artists || []).join(', ');
@@ -551,32 +602,111 @@ async function spotifyLookup(type, id) {
 
 const URL_ONE = /open\.spotify\.com\/(?:intl-[a-z-]+\/)?(album|track|artist)\/([a-zA-Z0-9]+)/i;
 const URL_ALL = /open\.spotify\.com\/(?:intl-[a-z-]+\/)?(album|track|artist)\/([a-zA-Z0-9]+)/gi;
+const URL_PLAYLIST = /open\.spotify\.com\/(?:intl-[a-z-]+\/)?playlist\/([a-zA-Z0-9]+)/gi;
 
+/* Trae hasta 500 canciones de una playlist pública, paginando de 100 en 100. */
+async function fetchPlaylist(id, onProgress) {
+  const t = await spotifyToken();
+  const fields = 'items(track(id,name,external_urls,artists(name),duration_ms,album(id,name,images,release_date,external_urls,artists(name),total_tracks))),total';
+  let out = [], offset = 0, total = null;
+  while (offset < 500) {
+    const res = await fetch(`https://api.spotify.com/v1/playlists/${id}/tracks?limit=100&offset=${offset}&fields=${encodeURIComponent(fields)}`, { headers: { Authorization: 'Bearer ' + t } });
+    if (!res.ok) throw new Error('PLAYLIST_FAILED:' + res.status);
+    const d = await res.json();
+    if (total === null) total = d.total;
+    const batch = (d.items || []).map(i => i && i.track).filter(x => x && x.id);
+    out = out.concat(batch);
+    onProgress?.(out.length, Math.min(total, 500));
+    offset += 100;
+    if (offset >= total || !batch.length) break;
+  }
+  return out;
+}
+
+/* Captura todos los metadatos que venga trayendo el objeto de Spotify.
+   Los endpoints de búsqueda devuelven objetos simplificados; "Actualizar desde
+   Spotify" en la ficha vuelve a pedir el objeto completo (sello, popularidad, géneros…). */
 function normalize(raw, type) {
-  if (type === 'album') return {
-    spotifyId: raw.id, type: 'album', title: raw.name, artists: (raw.artists || []).map(a => a.name),
-    coverUrl: raw.images?.[0]?.url || null, spotifyUrl: raw.external_urls.spotify, releaseDate: raw.release_date || null,
-    extra: raw.total_tracks ? raw.total_tracks + ' pistas' : null
+  const base = {
+    spotifyId: raw.id, type, title: raw.name,
+    coverUrl: null, spotifyUrl: raw.external_urls?.spotify || '', releaseDate: null,
+    albumName: null, albumId: null, durationMs: null, totalTracks: null, label: null,
+    popularity: typeof raw.popularity === 'number' ? raw.popularity : null,
+    genres: raw.genres?.length ? raw.genres : null,
+    followers: raw.followers?.total ?? null,
+    explicit: null, trackNumber: null, discNumber: null, albumType: null, isrc: null
   };
-  if (type === 'track') return {
-    spotifyId: raw.id, type: 'track', title: raw.name, artists: (raw.artists || []).map(a => a.name),
-    coverUrl: raw.album?.images?.[0]?.url || null, spotifyUrl: raw.external_urls.spotify,
+
+  if (type === 'album') return Object.assign(base, {
+    artists: (raw.artists || []).map(a => a.name),
+    coverUrl: raw.images?.[0]?.url || null,
+    releaseDate: raw.release_date || null,
+    totalTracks: raw.total_tracks ?? null,
+    label: raw.label || null,
+    albumType: raw.album_type || null
+  });
+
+  if (type === 'track') return Object.assign(base, {
+    artists: (raw.artists || []).map(a => a.name),
+    coverUrl: raw.album?.images?.[0]?.url || null,
     releaseDate: raw.album?.release_date || null,
-    extra: raw.duration_ms ? Math.floor(raw.duration_ms / 60000) + ':' + String(Math.floor(raw.duration_ms % 60000 / 1000)).padStart(2, '0') : null
-  };
-  return {
-    spotifyId: raw.id, type: 'artist', title: raw.name, artists: [raw.name],
-    coverUrl: raw.images?.[0]?.url || null, spotifyUrl: raw.external_urls.spotify, releaseDate: null,
-    extra: raw.genres?.length ? raw.genres.slice(0, 2).join(', ') : null
-  };
+    albumName: raw.album?.name || null,
+    albumId: raw.album?.id || null,
+    albumType: raw.album?.album_type || null,
+    totalTracks: raw.album?.total_tracks ?? null,
+    durationMs: raw.duration_ms ?? null,
+    explicit: typeof raw.explicit === 'boolean' ? raw.explicit : null,
+    trackNumber: raw.track_number ?? null,
+    discNumber: raw.disc_number ?? null,
+    isrc: raw.external_ids?.isrc || null
+  });
+
+  return Object.assign(base, {
+    artists: [raw.name],
+    coverUrl: raw.images?.[0]?.url || null
+  });
 }
 
 function makeItem(r) {
-  return {
-    id: uid(), spotifyId: r.spotifyId, type: r.type, title: r.title, artists: r.artists,
-    coverUrl: r.coverUrl, spotifyUrl: r.spotifyUrl, releaseDate: r.releaseDate, extra: r.extra || null,
-    dateAdded: Date.now(), notes: '', rating: 0, tagIds: [], listened: false
-  };
+  return Object.assign({}, r, {
+    id: uid(), dateAdded: Date.now(), notes: '', rating: 0, tagIds: [], listened: false
+  });
+}
+
+/* ---- formateo de metadatos ---- */
+const fmtDur = ms => ms ? Math.floor(ms / 60000) + ':' + String(Math.round(ms % 60000 / 1000)).padStart(2, '0') : null;
+function fmtDate(d) {
+  if (!d) return null;
+  const p = String(d).split('-');
+  if (p.length === 1) return p[0];
+  const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  return p.length === 2 ? `${meses[+p[1] - 1]} ${p[0]}` : `${+p[2]} ${meses[+p[1] - 1]} ${p[0]}`;
+}
+const ALBUM_TYPE_ES = { album: 'Álbum', single: 'Single', compilation: 'Recopilatorio' };
+
+/* Lista completa de metadatos de una ficha, en pares etiqueta/valor. */
+function metaPairs(it) {
+  const p = [];
+  const add = (k, v) => { if (v !== null && v !== undefined && v !== '') p.push([k, v]); };
+  add('Tipo', TYPE_LABEL[it.type]);
+  add('Artista', artistsOf(it));
+  if (it.type === 'track') add('Álbum', it.albumName);
+  add(it.type === 'track' ? 'Lanzamiento del álbum' : 'Lanzamiento', fmtDate(it.releaseDate));
+  if (it.type !== 'artist' && yearOf(it)) add('Año', yearOf(it));
+  add('Formato', ALBUM_TYPE_ES[it.albumType] || it.albumType);
+  add('Duración', fmtDur(it.durationMs));
+  add('Nº de pista', it.trackNumber ? (it.totalTracks ? `${it.trackNumber} de ${it.totalTracks}` : it.trackNumber) : null);
+  if (it.type === 'album') add('Pistas', it.totalTracks);
+  add('Disco', it.discNumber && it.discNumber > 1 ? it.discNumber : null);
+  add('Explícito', it.explicit === true ? 'Sí' : it.explicit === false ? 'No' : null);
+  add('Sello', it.label);
+  add('Géneros', it.genres?.length ? it.genres.join(', ') : null);
+  add('Oyentes (seguidores)', it.followers ? it.followers.toLocaleString('es-ES') : null);
+  add('Popularidad en Spotify', it.popularity !== null && it.popularity !== undefined ? `${it.popularity}/100` : null);
+  add('ISRC', it.isrc);
+  add('Guardado', `${new Date(it.dateAdded).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })} (${relDate(it.dateAdded)})`);
+  add('ID de Spotify', it.spotifyId);
+  return p;
 }
 
 /* ============ filtering & sorting ============ */
@@ -650,7 +780,7 @@ function renderChips() {
   const parts = [
     `<button class="chip ${PREFS.type === 'all' ? 'on' : ''}" data-type="all">Todo <span class="ct">${ITEMS.length}</span></button>`,
     ...['album', 'track', 'artist'].map(t =>
-      `<button class="chip ${PREFS.type === t ? 'on' : ''}" data-type="${t}">${TYPE_ICON[t]} ${TYPE_LABEL[t]}s <span class="ct">${countType(t)}</span></button>`),
+      `<button class="chip ${PREFS.type === t ? 'on' : ''}" data-type="${t}">${TYPE_ICON[t]} ${TYPE_PLURAL[t]} <span class="ct">${countType(t)}</span></button>`),
     ...TAGS.map(t => {
       const n = ITEMS.filter(i => (i.tagIds || []).includes(t.id)).length;
       return `<button class="chip ${PREFS.tag === t.id ? 'on' : ''}" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)} <span class="ct">${n}</span></button>`;
@@ -671,6 +801,7 @@ function gcard(it) {
       <div class="gt">${esc(it.title)}</div>
       <div class="ga">${esc(artistsOf(it))}</div>
       <div class="gmeta">
+        ${yearOf(it) ? `<span class="lyear">${yearOf(it)}</span>` : ''}
         ${it.rating ? `<span class="stars">${'★'.repeat(it.rating)}</span>` : ''}
         ${tags.map(t => `<span class="tagpip" style="background:${esc(t.colorHex)}" title="${esc(t.name)}"></span>`).join('')}
       </div>
@@ -734,9 +865,33 @@ function render() {
     return;
   }
 
-  box.innerHTML = PREFS.view === 'grid'
-    ? `<div class="grid">${rows.map(gcard).join('')}</div>`
-    : `<div class="list">${rows.map(lrow).join('')}</div>`;
+  const groups = groupsFor(rows);
+  const draw = list => PREFS.view === 'grid'
+    ? `<div class="grid">${list.map(gcard).join('')}</div>`
+    : `<div class="list">${list.map(lrow).join('')}</div>`;
+
+  box.innerHTML = groups
+    ? groups.map(g => `<section class="group"><h3 class="ghead">${esc(g.key)}<span class="gcount">${g.items.length}</span></h3>${draw(g.items)}</section>`).join('')
+    : draw(rows);
+}
+
+/* Agrupa solo cuando el orden lo hace significativo: por artista, por inicial o por década. */
+function groupsFor(rows) {
+  const s = PREFS.sort;
+  let keyOf = null;
+  if (s.startsWith('artist')) keyOf = it => artistsOf(it) || 'Sin artista';
+  else if (s.startsWith('title')) keyOf = it => { const c = (sortKey(it.title)[0] || '#').toUpperCase(); return /\p{L}/u.test(c) ? c : '#'; };
+  else if (s.startsWith('year')) keyOf = it => { const y = yearOf(it); return y ? Math.floor(y / 10) * 10 + 's' : 'Sin año'; };
+  if (!keyOf) return null;
+
+  const out = [];
+  let cur = null;
+  for (const it of rows) {
+    const k = keyOf(it);
+    if (!cur || cur.key !== k) { cur = { key: k, items: [] }; out.push(cur); }
+    cur.items.push(it);
+  }
+  return out;
 }
 
 /* ============ item actions ============ */
@@ -842,16 +997,47 @@ function rrow(r, i) {
 }
 
 /* ---- bulk ---- */
+let playlistMode = 'tracks';
+
 function openBulk() {
   showSheet(`
-    <div class="sheethead"><h2>Pegar varios enlaces</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
-    <p class="lede">Pega tantos enlaces de Spotify como quieras — separados por líneas, espacios o mezclados con texto. Los encuentro todos y me salto los que ya tienes.</p>
-    <textarea class="field tall" id="bulkIn" placeholder="https://open.spotify.com/album/...
-https://open.spotify.com/artist/...
-https://open.spotify.com/track/..."></textarea>
-    <div class="btnrow"><button class="btn primary wide" id="bulkGo">Añadir al vault</button></div>
-    <div id="bulkOut" style="margin-top:14px;font-size:13.5px;color:var(--fg-soft);"></div>
+    <div class="sheethead"><h2>Pegar enlaces</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <p class="lede">Pega álbumes, canciones, artistas o <strong>playlists enteras</strong> — separados por líneas, espacios o mezclados con texto. Los encuentro todos y me salto los que ya tienes.</p>
+    <textarea class="field tall" id="bulkIn" placeholder="https://open.spotify.com/playlist/...
+https://open.spotify.com/album/...
+https://open.spotify.com/artist/..."></textarea>
+
+    <div class="flabel">De las playlists, guardar…</div>
+    <div class="segrow" id="plMode">
+      <button class="seg ${playlistMode === 'tracks' ? 'on' : ''}" data-m="tracks">🎵 Sus canciones</button>
+      <button class="seg ${playlistMode === 'albums' ? 'on' : ''}" data-m="albums">💿 Sus álbumes</button>
+    </div>
+
+    <div class="btnrow">
+      <button class="btn primary wide" id="bulkGo">Añadir al vault</button>
+      <button class="btn" id="bulkFileBtn" title="Cargar una lista de enlaces desde un archivo">📄 Archivo</button>
+    </div>
+    <input type="file" id="bulkFile" accept=".txt,.json,.csv,text/plain,application/json" class="hidden">
+    <div id="bulkOut" style="margin-top:14px;font-size:13.5px;color:var(--fg-soft);line-height:1.6;"></div>
   `);
+  document.getElementById('bulkFileBtn').addEventListener('click', () => document.getElementById('bulkFile').click());
+  document.getElementById('bulkFile').addEventListener('change', e => {
+    const f = e.target.files[0]; if (!f) return;
+    const fr = new FileReader();
+    fr.onload = () => {
+      const box = document.getElementById('bulkIn');
+      box.value = (box.value ? box.value + '\n' : '') + fr.result;
+      const n = (String(fr.result).match(/open\.spotify\.com\//g) || []).length;
+      document.getElementById('bulkOut').innerHTML = `Archivo cargado: <strong>${n}</strong> enlaces detectados. Pulsa “Añadir al vault”.`;
+    };
+    fr.readAsText(f);
+    e.target.value = '';
+  });
+  document.getElementById('plMode').addEventListener('click', e => {
+    const b = e.target.closest('.seg'); if (!b) return;
+    playlistMode = b.dataset.m;
+    document.querySelectorAll('#plMode .seg').forEach(x => x.classList.toggle('on', x === b));
+  });
   document.getElementById('bulkGo').addEventListener('click', runBulk);
   document.getElementById('bulkIn').focus();
 }
@@ -861,32 +1047,69 @@ async function runBulk() {
   const go = document.getElementById('bulkGo');
   const c = loadCreds();
   if (!c || !c.clientId || !c.clientSecret) {
-    out.innerHTML = `Conecta tu cuenta de Spotify en Ajustes antes de añadir.`;
+    out.innerHTML = 'Conecta tu cuenta de Spotify en Ajustes antes de añadir.';
     return;
   }
-  const found = new Map();
-  let m; URL_ALL.lastIndex = 0;
   const text = document.getElementById('bulkIn').value;
-  while ((m = URL_ALL.exec(text)) !== null) found.set(m[2], m[1]);
-  if (!found.size) { out.innerHTML = 'No he encontrado ningún enlace de Spotify en ese texto.'; return; }
+
+  const playlists = [];
+  let m; URL_PLAYLIST.lastIndex = 0;
+  while ((m = URL_PLAYLIST.exec(text)) !== null) if (!playlists.includes(m[1])) playlists.push(m[1]);
+
+  const singles = new Map();
+  URL_ALL.lastIndex = 0;
+  while ((m = URL_ALL.exec(text)) !== null) singles.set(m[2], m[1]);
+
+  if (!playlists.length && !singles.size) { out.innerHTML = 'No he encontrado ningún enlace de Spotify en ese texto.'; return; }
 
   go.disabled = true;
-  let added = 0, dup = 0, fail = 0, n = 0;
-  const total = found.size;
-  for (const [id, type] of found) {
-    n++;
-    out.innerHTML = `Procesando ${n} de ${total}… <strong>${added}</strong> añadidos`;
-    if (ITEMS.some(x => x.spotifyId === id)) { dup++; continue; }
+  let added = 0, dup = 0, fail = 0;
+  const notes = [];
+
+  // 1) playlists
+  for (const pid of playlists) {
     try {
-      ITEMS.push(makeItem(normalize(await spotifyLookup(type, id), type)));
-      added++;
-    } catch { fail++; }
+      const tracks = await fetchPlaylist(pid, (got, tot) => { out.innerHTML = `Leyendo playlist… ${got} de ${tot} canciones`; });
+      const wanted = new Map();
+      for (const t of tracks) {
+        if (playlistMode === 'albums') {
+          if (t.album?.id) wanted.set(t.album.id, normalize(t.album, 'album'));
+        } else {
+          wanted.set(t.id, normalize(t, 'track'));
+        }
+      }
+      let i = 0;
+      for (const [sid, r] of wanted) {
+        i++;
+        if (i % 10 === 0) out.innerHTML = `Guardando ${i} de ${wanted.size}… <strong>${added}</strong> añadidos`;
+        if (ITEMS.some(x => x.spotifyId === sid)) { dup++; continue; }
+        ITEMS.push(makeItem(r)); added++;
+      }
+      notes.push(`Playlist: ${wanted.size} ${playlistMode === 'albums' ? 'álbumes' : 'canciones'} encontrad${playlistMode === 'albums' ? 'os' : 'as'}`);
+    } catch (err) {
+      const code = (err.message || '').split(':')[1];
+      notes.push(code === '404'
+        ? 'Una playlist no es accesible (privada, o de las que genera Spotify — solo funcionan las públicas de usuario).'
+        : `Una playlist falló (error ${code || '?'}).`);
+      fail++;
+    }
   }
+
+  // 2) enlaces sueltos
+  let n = 0;
+  for (const [id, type] of singles) {
+    n++;
+    out.innerHTML = `Procesando ${n} de ${singles.size}… <strong>${added}</strong> añadidos`;
+    if (ITEMS.some(x => x.spotifyId === id)) { dup++; continue; }
+    try { ITEMS.push(makeItem(normalize(await spotifyLookup(type, id), type))); added++; }
+    catch { fail++; }
+  }
+
   saveItems(); render();
   const bits = [`<strong>${added}</strong> añadidos`];
   if (dup) bits.push(`${dup} ya estaban`);
   if (fail) bits.push(`${fail} fallaron`);
-  out.innerHTML = bits.join(' · ');
+  out.innerHTML = bits.join(' · ') + (notes.length ? `<br><span style="color:var(--fg-mute);font-size:12.5px;">${notes.map(esc).join('<br>')}</span>` : '');
   go.disabled = false;
   if (added) toast(`${added} añadido${added === 1 ? '' : 's'} al vault`);
 }
@@ -905,8 +1128,9 @@ function openDetail(id) {
         <p class="dartist">${esc(artistsOf(it))}</p>
         <div class="dfacts">
           ${y ? `<span class="fact">${y}</span>` : ''}
-          ${it.extra ? `<span class="fact">${esc(it.extra)}</span>` : ''}
-          <span class="fact">Añadido ${new Date(it.dateAdded).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+          ${fmtDur(it.durationMs) ? `<span class="fact">${fmtDur(it.durationMs)}</span>` : ''}
+          ${it.albumType ? `<span class="fact">${esc(ALBUM_TYPE_ES[it.albumType] || it.albumType)}</span>` : ''}
+          ${it.explicit ? `<span class="fact">Explícito</span>` : ''}
         </div>
         <div class="btnrow">
           <button class="btn ${it.listened ? 'jade' : ''} wide" id="dListen">${it.listened ? '✓ Ya escuchado' : 'Marcar como escuchado'}</button>
@@ -919,6 +1143,15 @@ function openDetail(id) {
       ${[1,2,3,4,5].map(n => `<button data-n="${n}" class="${n <= (it.rating || 0) ? 'on' : ''}" aria-label="${n} estrellas">★</button>`).join('')}
     </div>
 
+    <div class="flabel" style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+      <span>Metadatos</span>
+      <span style="display:flex;gap:10px;">
+        <button class="linkbtn" id="dEdit">Editar</button>
+        <button class="linkbtn" id="dRefresh">Actualizar</button>
+      </span>
+    </div>
+    <div id="dMeta">${metaTableHtml(it)}</div>
+
     <div class="flabel">Notas</div>
     <textarea class="field" id="dNotes" placeholder="¿Por qué lo guardaste? ¿Quién te lo recomendó?">${esc(it.notes || '')}</textarea>
 
@@ -928,6 +1161,7 @@ function openDetail(id) {
         : `<p class="lede" style="margin:0;">Todavía no has creado ninguna etiqueta. <button class="linkbtn" data-open="settings">Crear una</button></p>`}
     </div>
 
+    ${it.type === 'artist' ? `<div class="btnrow"><button class="btn wide" id="dDisco">Ver su discografía</button></div>` : ''}
     <div class="btnrow">
       <a class="btn primary wide" href="${esc(it.spotifyUrl)}" target="_blank" rel="noopener">Abrir en Spotify ↗</a>
     </div>
@@ -935,6 +1169,9 @@ function openDetail(id) {
       <button class="btn danger wide" id="dDel">Eliminar del vault</button>
     </div>
   `);
+
+  document.getElementById('dDisco')?.addEventListener('click', () => openDiscography(it));
+  wireMeta(it, id);
 
   document.getElementById('dListen').addEventListener('click', () => { it.listened = !it.listened; saveItems(); render(); openDetail(id); });
   document.getElementById('dStars').addEventListener('click', e => {
@@ -953,6 +1190,104 @@ function openDetail(id) {
     saveItems(); render(); openDetail(id);
   });
   document.getElementById('dDel').addEventListener('click', () => { closeModal(); deleteItems([id]); });
+}
+
+/* ---- metadatos: ver / editar / refrescar ---- */
+function metaTableHtml(it) {
+  const rows = metaPairs(it);
+  return `<dl class="metalist">${rows.map(([k, v]) =>
+    `<div class="metarow"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>`;
+}
+
+// Campos que tiene sentido que corrijas a mano.
+const EDITABLE = [
+  ['title', 'Título', 'text'],
+  ['artistsStr', 'Artista(s), separados por comas', 'text'],
+  ['albumName', 'Álbum', 'text'],
+  ['releaseDate', 'Fecha de lanzamiento (AAAA o AAAA-MM-DD)', 'text'],
+  ['label', 'Sello discográfico', 'text'],
+  ['genresStr', 'Géneros, separados por comas', 'text'],
+  ['coverUrl', 'URL de la carátula', 'text']
+];
+
+function metaFormHtml(it) {
+  const val = f => f === 'artistsStr' ? artistsOf(it)
+    : f === 'genresStr' ? (it.genres || []).join(', ')
+    : (it[f] ?? '');
+  return `<div class="metaform">
+    ${EDITABLE.map(([f, label]) => `
+      <label class="mfield">
+        <span>${esc(label)}</span>
+        <input class="field" data-f="${f}" value="${esc(val(f))}">
+      </label>`).join('')}
+    <div class="btnrow">
+      <button class="btn primary wide" id="mSave">Guardar cambios</button>
+      <button class="btn wide" id="mCancel">Cancelar</button>
+    </div>
+  </div>`;
+}
+
+function wireMeta(it, id) {
+  document.getElementById('dEdit')?.addEventListener('click', () => {
+    document.getElementById('dMeta').innerHTML = metaFormHtml(it);
+    document.getElementById('mCancel').addEventListener('click', () => { document.getElementById('dMeta').innerHTML = metaTableHtml(it); wireMeta(it, id); });
+    document.getElementById('mSave').addEventListener('click', () => {
+      document.querySelectorAll('.metaform [data-f]').forEach(inp => {
+        const f = inp.dataset.f, v = inp.value.trim();
+        if (f === 'artistsStr') it.artists = v ? v.split(',').map(s => s.trim()).filter(Boolean) : [];
+        else if (f === 'genresStr') it.genres = v ? v.split(',').map(s => s.trim()).filter(Boolean) : null;
+        else it[f] = v || null;
+      });
+      it.editedByUser = true;
+      saveItems(); render(); openDetail(id);
+      toast('Metadatos actualizados');
+    });
+  });
+
+  document.getElementById('dRefresh')?.addEventListener('click', async () => {
+    const btn = document.getElementById('dRefresh');
+    const c = loadCreds();
+    if (!c?.clientId) { toast('Conecta Spotify en Ajustes primero'); return; }
+    if (it.editedByUser && !confirm('Editaste estos datos a mano. Actualizar desde Spotify los sobrescribirá. ¿Continuar?')) return;
+    btn.textContent = 'Actualizando…';
+    try {
+      const fresh = normalize(await spotifyLookup(it.type, it.spotifyId), it.type);
+      // conservo lo que es tuyo: notas, valoración, etiquetas, estado y fecha de guardado
+      Object.assign(it, fresh, {
+        id: it.id, dateAdded: it.dateAdded, notes: it.notes, rating: it.rating,
+        tagIds: it.tagIds, listened: it.listened, editedByUser: false
+      });
+      saveItems(); render(); openDetail(id);
+      toast('Metadatos recargados desde Spotify');
+    } catch (err) {
+      btn.textContent = 'Actualizar';
+      toast('No se pudo actualizar (' + ((err.message || '').split(':')[1] || 'error') + ')');
+    }
+  });
+}
+
+/* ---- discografía de un artista ---- */
+async function openDiscography(artist) {
+  showSheet(`
+    <div class="sheethead"><h2>Discografía</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <p class="lede">Álbumes y EPs de <strong>${esc(artist.title)}</strong>. Toca ＋ para guardarlos en tu vault.</p>
+    <div id="discoOut"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+  `);
+  const box = document.getElementById('discoOut');
+  try {
+    const t = await spotifyToken();
+    const res = await fetch(`https://api.spotify.com/v1/artists/${artist.spotifyId}/albums?include_groups=album,single&limit=50&market=ES`, { headers: { Authorization: 'Bearer ' + t } });
+    if (!res.ok) throw new Error('DISCO_FAILED:' + res.status);
+    const d = await res.json();
+    // Spotify repite el mismo disco en varias ediciones; me quedo con uno por título.
+    const seen = new Set();
+    lastResults = (d.items || []).map(a => normalize(a, 'album'))
+      .filter(r => { const k = fold(r.title); if (seen.has(k)) return false; seen.add(k); return true; })
+      .sort((a, b) => (parseInt(String(b.releaseDate || '0').slice(0, 4)) || 0) - (parseInt(String(a.releaseDate || '0').slice(0, 4)) || 0));
+    box.innerHTML = lastResults.length ? lastResults.map(rrow).join('') : `<div class="empty" style="padding:24px 8px;"><p>Spotify no devuelve álbumes para este artista.</p></div>`;
+  } catch (err) {
+    box.innerHTML = `<div class="empty" style="padding:24px 8px;"><p>No se pudo cargar la discografía (${esc((err.message || '').split(':')[1] || 'error')}).</p></div>`;
+  }
 }
 
 /* ---- tag picker (bulk) ---- */
@@ -1084,6 +1419,85 @@ function importBackup(e) {
   e.target.value = '';
 }
 
+/* ---- estadísticas ---- */
+function relDate(ts) {
+  const days = Math.floor((Date.now() - ts) / 86400000);
+  if (days <= 0) return 'hoy';
+  if (days === 1) return 'ayer';
+  if (days < 30) return `hace ${days} días`;
+  const months = Math.floor(days / 30);
+  if (months < 12) return `hace ${months} ${months === 1 ? 'mes' : 'meses'}`;
+  const years = Math.floor(days / 365);
+  return `hace ${years} ${years === 1 ? 'año' : 'años'}`;
+}
+
+function bars(rows, color) {
+  if (!rows.length) return '<p class="lede" style="margin:0;">Sin datos todavía.</p>';
+  const max = Math.max(...rows.map(r => r[1]));
+  return `<div class="barlist">${rows.map(([label, n]) => `
+    <div class="barrow">
+      <span class="blabel">${esc(label)}</span>
+      <span class="btrack"><span class="bfill" style="width:${Math.max(4, n / max * 100)}%;background:${color}"></span></span>
+      <span class="bnum">${n}</span>
+    </div>`).join('')}</div>`;
+}
+
+function openStats() {
+  if (!ITEMS.length) { toast('Tu vault está vacío'); return; }
+  const done = ITEMS.filter(i => i.listened);
+  const pending = ITEMS.filter(i => !i.listened);
+
+  const byArtist = {};
+  ITEMS.forEach(i => (i.artists || []).forEach(a => { byArtist[a] = (byArtist[a] || 0) + 1; }));
+  const topArtists = Object.entries(byArtist).sort((a, b) => b[1] - a[1] || cmp(a[0], b[0])).slice(0, 8);
+
+  const byDecade = {};
+  ITEMS.forEach(i => { const y = yearOf(i); if (y) { const d = Math.floor(y / 10) * 10 + 's'; byDecade[d] = (byDecade[d] || 0) + 1; } });
+  const decades = Object.entries(byDecade).sort((a, b) => parseInt(a[0]) - parseInt(b[0]));
+
+  const byType = ['album', 'track', 'artist'].map(t => [TYPE_PLURAL[t], ITEMS.filter(i => i.type === t).length]).filter(r => r[1]);
+  const rated = ITEMS.filter(i => i.rating > 0);
+  const avg = rated.length ? (rated.reduce((s, i) => s + i.rating, 0) / rated.length).toFixed(1) : null;
+  const oldest = pending.slice().sort((a, b) => a.dateAdded - b.dateAdded)[0];
+  const pct = Math.round(done.length / ITEMS.length * 100);
+
+  showSheet(`
+    <div class="sheethead"><h2>Tu vault en números</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+
+    <div class="bigstat">
+      <div class="bignum">${pct}<span class="pctsign">%</span></div>
+      <div>
+        <div style="font-weight:650;">escuchado</div>
+        <div class="lede" style="margin:0;">${done.length} de ${ITEMS.length} · te quedan ${pending.length} por escuchar</div>
+      </div>
+    </div>
+    <div class="progtrack"><span class="progfill" style="width:${pct}%"></span></div>
+
+    ${oldest ? `<div class="flabel">Lo que más tiempo lleva esperando</div>
+    <button class="oldcard" data-goto="${oldest.id}">
+      <span class="oldart">${oldest.coverUrl ? `<img src="${esc(oldest.coverUrl)}" alt="">` : TYPE_ICON[oldest.type]}</span>
+      <span class="oldinfo">
+        <span class="oldt">${esc(oldest.title)}</span>
+        <span class="olda">${esc(artistsOf(oldest))} · guardado ${relDate(oldest.dateAdded)}</span>
+      </span>
+    </button>` : ''}
+
+    <div class="flabel">Qué guardas</div>
+    ${bars(byType, 'var(--amber)')}
+
+    <div class="flabel">Artistas con más cosas guardadas</div>
+    ${bars(topArtists, 'var(--jade)')}
+
+    <div class="flabel">Por década de lanzamiento</div>
+    ${bars(decades, 'var(--amber)')}
+
+    <div class="flabel">Valoraciones</div>
+    <p class="lede" style="margin:0;">${rated.length ? `Has valorado ${rated.length} de ${ITEMS.length}. Media: <strong>${avg}</strong> ★` : 'Todavía no has valorado nada. Abre cualquier ficha y toca las estrellas.'}</p>
+  `);
+
+  document.querySelector('[data-goto]')?.addEventListener('click', e => openDetail(e.currentTarget.dataset.goto));
+}
+
 /* ---- shuffle ---- */
 function shuffle() {
   const pool = ITEMS.filter(i => !i.listened);
@@ -1096,6 +1510,7 @@ function shuffle() {
 
 /* ============ events ============ */
 document.getElementById('shuffleBtn').addEventListener('click', shuffle);
+document.getElementById('statsBtn').addEventListener('click', openStats);
 document.getElementById('bulkBtn').addEventListener('click', openBulk);
 document.getElementById('setBtn').addEventListener('click', openSettings);
 document.getElementById('addFab').addEventListener('click', openSearch);
