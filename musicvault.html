@@ -512,6 +512,9 @@ const K_TAGS  = 'musicvault_tags_v1';
 const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_PREFS = 'musicvault_prefs_v1';
 const K_THEME = 'musicvaultTheme';
+const K_GH    = 'musicvault_github_v1';   // token + repo de sincronización
+const K_TOMB  = 'musicvault_tomb_v1';     // borrados pendientes de propagar
+const K_META  = 'musicvault_meta_v1';     // marca de tiempo del vault local
 
 const read = (k, fb) => { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? fb; } catch { return fb; } };
 const write = (k, v) => localStorage.setItem(k, JSON.stringify(v));
@@ -546,7 +549,24 @@ const idbSet = (k, v) => idb().then(db => new Promise((res, rej) => {
 
 let ITEMS = [];
 let TAGS  = [];
-let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', status: 'all', tag: 'all' }, read(K_PREFS, {}));
+let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', status: 'all', tag: 'all', covers: false }, read(K_PREFS, {}));
+
+/* Al borrar algo hay que dejar constancia: si no, el otro dispositivo lo
+   vuelve a subir en la siguiente sincronización y el borrado "revive". */
+let TOMB = read(K_TOMB, []);
+let META = Object.assign({ updatedAt: 0 }, read(K_META, {}));
+const saveTomb = () => write(K_TOMB, TOMB.slice(-4000));
+const saveMeta = () => write(K_META, META);
+function tombstone(items) {
+  const at = Date.now();
+  items.forEach(it => { if (it && it.spotifyId) TOMB.push({ sid: it.spotifyId, at }); });
+  saveTomb();
+}
+function untombstone(items) {   // al deshacer un borrado
+  const sids = new Set(items.map(i => i && i.spotifyId).filter(Boolean));
+  TOMB = TOMB.filter(t => !sids.has(t.sid));
+  saveTomb();
+}
 
 /* Escrituras agrupadas: al importar miles de elementos no queremos una
    transacción por cada uno. */
@@ -556,8 +576,10 @@ function _flush(k, get) {
   idbSet(k, get()).catch(() => toast('No se ha podido guardar'));
 }
 function saveItems() {
+  META.updatedAt = Date.now(); saveMeta();
   clearTimeout(_pend);
   _pend = setTimeout(() => _flush(K_ITEMS, () => ITEMS), 120);
+  programarSync();
 }
 const saveTags  = () => _flush(K_TAGS, () => TAGS);
 const savePrefs = () => write(K_PREFS, PREFS);
@@ -591,6 +613,11 @@ const TYPE_PLURAL = { album: 'Álbumes', track: 'Canciones', artist: 'Artistas' 
 const TYPE_ICON  = { album: '💿', track: '🎵', artist: '🎤' };
 const TAG_COLORS = ['#2a78d6','#1baf7a','#eda100','#3f9c35','#7a5cd6','#e34948','#e87ba4','#eb6834'];
 const artistsOf = it => (it.artists || []).join(', ');
+/* Con las carátulas desactivadas el vault se lee como una lista, no como una
+   pared de discos. Es una preferencia, no un borrado: se vuelve a activar en Ajustes. */
+const verPortada = () => PREFS.covers !== false;
+const portada = (url, icono, lazy) =>
+  (verPortada() && url) ? `<img src="${esc(url)}" ${lazy ? 'loading="lazy" ' : ''}alt="">` : icono;
 // Buscar "camaron" tiene que encontrar "Camarón".
 const fold = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 const yearOf = it => (it.releaseDate ? parseInt(String(it.releaseDate).slice(0, 4), 10) : 0) || 0;
@@ -852,7 +879,7 @@ function gcard(it) {
   const tags = (it.tagIds || []).map(tagById).filter(Boolean).slice(0, 4);
   return `<article class="gcard ${it.listened ? 'done' : ''} ${selected.has(it.id) ? 'sel' : ''}" data-id="${it.id}">
     <div class="art">
-      ${it.coverUrl ? `<img src="${esc(it.coverUrl)}" loading="lazy" alt="">` : `<span class="ph">${TYPE_ICON[it.type]}</span>`}
+      ${portada(it.coverUrl, `<span class="ph">${TYPE_ICON[it.type]}</span>`, true)}
       <button class="statusdot ${it.listened ? 'on' : ''}" data-toggle="${it.id}" aria-label="${it.listened ? 'Marcar pendiente' : 'Marcar escuchado'}">${it.listened ? '✓' : ''}</button>
       <span class="typetag">${TYPE_LABEL[it.type]}</span>
     </div>
@@ -872,7 +899,7 @@ function lrow(it) {
   const tags = (it.tagIds || []).map(tagById).filter(Boolean).slice(0, 4);
   const y = yearOf(it);
   return `<article class="lrow ${it.listened ? 'done' : ''} ${selected.has(it.id) ? 'sel' : ''}" data-id="${it.id}">
-    <div class="lart">${it.coverUrl ? `<img src="${esc(it.coverUrl)}" loading="lazy" alt="">` : TYPE_ICON[it.type]}</div>
+    <div class="lart">${portada(it.coverUrl, TYPE_ICON[it.type], true)}</div>
     <div class="linfo">
       <div class="lt">${esc(it.title)}</div>
       <div class="la">${esc(artistsOf(it))}</div>
@@ -981,10 +1008,12 @@ function toggleListened(id) {
 function deleteItems(ids) {
   const removed = ITEMS.filter(i => ids.includes(i.id));
   ITEMS = ITEMS.filter(i => !ids.includes(i.id));
+  tombstone(removed);
   saveItems();
   render();
   toast(`${removed.length} eliminado${removed.length === 1 ? '' : 's'}`, 'Deshacer', () => {
     ITEMS = ITEMS.concat(removed);
+    untombstone(removed);
     saveItems();
     render();
   });
@@ -1014,6 +1043,7 @@ function openSearch() {
       <button class="seg on" data-t="album">💿 Álbumes</button>
       <button class="seg" data-t="track">🎵 Canciones</button>
       <button class="seg" data-t="artist">🎤 Artistas</button>
+      <button class="seg" data-t="bulk">📋 En bloque</button>
     </div>
     <input type="text" class="field" id="sq" placeholder="Título, artista, o pega un enlace" autocomplete="off">
     <div id="sres" style="margin-top:12px;"></div>
@@ -1021,6 +1051,7 @@ function openSearch() {
   const sq = document.getElementById('sq');
   document.getElementById('segs').addEventListener('click', e => {
     const b = e.target.closest('.seg'); if (!b) return;
+    if (b.dataset.t === 'bulk') { openBulk(); return; }   // misma hoja, panel de pegado
     document.querySelectorAll('#segs .seg').forEach(x => x.classList.toggle('on', x === b));
     searchType = b.dataset.t;
     runSearch();
@@ -1062,7 +1093,7 @@ async function runSearch() {
 function rrow(r, i) {
   const saved = ITEMS.some(x => x.spotifyId === r.spotifyId);
   return `<div class="rrow">
-    <div class="rart">${r.coverUrl ? `<img src="${esc(r.coverUrl)}" loading="lazy" alt="">` : TYPE_ICON[r.type]}</div>
+    <div class="rart">${portada(r.coverUrl, TYPE_ICON[r.type], true)}</div>
     <div class="rinfo">
       <div class="rt">${esc(r.title)}</div>
       <div class="ra">${esc(r.artists.join(', '))}${r.releaseDate ? ' · ' + esc(String(r.releaseDate).slice(0, 4)) : ''}</div>
@@ -1077,7 +1108,11 @@ let playlistMode = 'tracks';
 function openBulk() {
   showSheet(`
     <div class="sheethead"><h2>Pegar enlaces</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
-    <p class="lede">Pega álbumes, canciones, artistas o <strong>playlists enteras</strong> — separados por líneas, espacios o mezclados con texto. Los encuentro todos y me salto los que ya tienes.</p>
+    <div class="segrow" id="bulkSegs">
+      <button class="seg" data-t="back">🔎 Buscar</button>
+      <button class="seg on" data-t="bulk">📋 En bloque</button>
+    </div>
+    <p class="lede">Pega álbumes, canciones, artistas o <strong>playlists enteras</strong> — separados por líneas, espacios o mezclados con texto. Los encuentro todos y me salto los que ya tienes. No hay límite: si pegas miles, los va subiendo por lotes.</p>
     <textarea class="field tall" id="bulkIn" placeholder="https://open.spotify.com/playlist/...
 https://open.spotify.com/album/...
 https://open.spotify.com/artist/..."></textarea>
@@ -1095,6 +1130,10 @@ https://open.spotify.com/artist/..."></textarea>
     <input type="file" id="bulkFile" accept=".txt,.json,.csv,text/plain,application/json" class="hidden">
     <div id="bulkOut" style="margin-top:14px;font-size:13.5px;color:var(--fg-soft);line-height:1.6;"></div>
   `);
+  document.getElementById('bulkSegs').addEventListener('click', e => {
+    const b = e.target.closest('.seg'); if (!b) return;
+    if (b.dataset.t === 'back') openSearch();
+  });
   document.getElementById('bulkFileBtn').addEventListener('click', () => document.getElementById('bulkFile').click());
   document.getElementById('bulkFile').addEventListener('change', e => {
     const f = e.target.files[0]; if (!f) return;
@@ -1170,14 +1209,45 @@ async function runBulk() {
     }
   }
 
-  // 2) enlaces sueltos
-  let n = 0;
+  // 2) enlaces sueltos, por lotes (20 álbumes / 50 canciones o artistas por llamada)
+  const yaTengo = new Set(ITEMS.map(x => x.spotifyId));
+  const porTipo = { album: [], track: [], artist: [] };
   for (const [id, type] of singles) {
-    n++;
-    out.innerHTML = `Procesando ${n} de ${singles.size}… <strong>${added}</strong> añadidos`;
-    if (ITEMS.some(x => x.spotifyId === id)) { dup++; continue; }
-    try { ITEMS.push(makeItem(normalize(await spotifyLookup(type, id), type))); added++; }
-    catch { fail++; }
+    if (yaTengo.has(id)) { dup++; continue; }
+    if (porTipo[type]) porTipo[type].push(id);
+  }
+  const pendientes = porTipo.album.length + porTipo.track.length + porTipo.artist.length;
+  let hechos = 0;
+
+  for (const tipo of ['album', 'track', 'artist']) {
+    const ids = porTipo[tipo];
+    for (let i = 0; i < ids.length; i += LOTE[tipo]) {
+      const trozo = ids.slice(i, i + LOTE[tipo]);
+      let res;
+      try {
+        const t = await spotifyToken();
+        res = await fetch(`https://api.spotify.com/v1/${tipo}s?ids=${trozo.join(',')}`,
+                          { headers: { Authorization: 'Bearer ' + t } });
+      } catch { fail += trozo.length; hechos += trozo.length; continue; }
+      if (res.status === 429) {                       // límite de peticiones: esperar y repetir
+        const esperar = (+res.headers.get('Retry-After') || 2);
+        out.innerHTML = `Spotify pide una pausa de ${esperar}s… <strong>${added}</strong> añadidos de ${pendientes}`;
+        await new Promise(r => setTimeout(r, esperar * 1000));
+        i -= LOTE[tipo];
+        continue;
+      }
+      if (!res.ok) { fail += trozo.length; hechos += trozo.length; continue; }
+      const datos = await res.json().catch(() => null);
+      (datos && datos[tipo + 's'] || []).forEach(raw => {
+        if (!raw || !raw.id || yaTengo.has(raw.id)) { if (!raw) fail++; return; }
+        ITEMS.push(makeItem(normalize(raw, tipo)));
+        yaTengo.add(raw.id);
+        added++;
+      });
+      hechos += trozo.length;
+      out.innerHTML = `Procesando ${Math.min(hechos, pendientes)} de ${pendientes}… <strong>${added}</strong> añadidos`;
+      if (added && added % 500 < LOTE[tipo]) { saveItems(); }   // guardado parcial por si acaso
+    }
   }
 
   saveItems(); render();
@@ -1197,7 +1267,7 @@ function openDetail(id) {
   showSheet(`
     <div class="sheethead"><h2>${TYPE_ICON[it.type]} ${TYPE_LABEL[it.type]}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
     <div class="dwrap">
-      <div class="dart">${it.coverUrl ? `<img src="${esc(it.coverUrl)}" alt="">` : TYPE_ICON[it.type]}</div>
+      <div class="dart">${portada(it.coverUrl, TYPE_ICON[it.type], false)}</div>
       <div>
         <h3 class="dtitle">${esc(it.title)}</h3>
         <p class="dartist">${esc(artistsOf(it))}</p>
@@ -1390,33 +1460,143 @@ function openTagPicker(ids) {
 /* ---- settings ---- */
 let swatch = TAG_COLORS[0];
 
-/* Carga el volcado que va junto a la app. En el iPhone bajarse un .json y
-   luego buscarlo en Archivos es un incordio; así es un toque. */
-async function cargarBiblioteca() {
-  const btn = document.getElementById('loadLib');
-  const out = document.getElementById('libOut');
-  btn.disabled = true; out.textContent = 'Descargando…';
+/* ============ sincronización vía GitHub ============
+   El vault se guarda como un JSON en tu repo. Cada dispositivo se baja el
+   remoto, lo funde con lo suyo y vuelve a subir el resultado.
+   Reglas de la fusión:
+     · unión por spotifyId — nadie pierde lo que ha añadido
+     · si el mismo elemento está en los dos, gana el del documento más reciente
+     · un borrado deja una "tumba" con su hora: si la tumba es posterior a la
+       última edición del elemento, el borrado manda y no revive. */
+const GH_PATH = 'musicvault-sync.json';
+let _syncEstado = { at: 0, msg: '', err: false };
+let _syncTimer = null, _syncCorriendo = false;
+
+const ghCfg = () => { const g = read(K_GH, null); return (g && g.token && g.repo) ? g : null; };
+
+function syncEstadoTexto() {
+  if (!ghCfg()) return 'Ahora mismo este dispositivo guarda solo en local.';
+  if (!_syncEstado.at) return 'Sin sincronizar todavía en esta sesión.';
+  return _syncEstado.msg;
+}
+
+const b64enc = s => btoa(String.fromCharCode(...new TextEncoder().encode(s)));
+const b64dec = s => new TextDecoder().decode(Uint8Array.from(atob(s), c => c.charCodeAt(0)));
+
+async function ghFetch(url, opts) {
+  const g = ghCfg();
+  return fetch(url, Object.assign({}, opts, {
+    headers: Object.assign({
+      Authorization: 'Bearer ' + g.token,
+      Accept: 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28'
+    }, (opts && opts.headers) || {})
+  }));
+}
+
+function fundir(remoto) {
+  const tombLocal = TOMB.slice();
+  (remoto.tombstones || []).forEach(t => { if (t && t.sid) tombLocal.push(t); });
+  const ultimaTumba = new Map();
+  tombLocal.forEach(t => {
+    if (!ultimaTumba.has(t.sid) || t.at > ultimaTumba.get(t.sid)) ultimaTumba.set(t.sid, t.at);
+  });
+
+  const remotoGana = (remoto.updatedAt || 0) > (META.updatedAt || 0);
+  const porId = new Map();
+  const meter = (arr, prioritario) => (arr || []).forEach(it => {
+    if (!it || !it.spotifyId) return;
+    if (!porId.has(it.spotifyId) || prioritario) porId.set(it.spotifyId, it);
+  });
+  meter(remotoGana ? ITEMS : remoto.items, false);
+  meter(remotoGana ? remoto.items : ITEMS, true);
+
+  const vivos = [];
+  porId.forEach((it, sid) => {
+    const muerto = ultimaTumba.get(sid);
+    // el elemento sobrevive si se guardó después de que lo borraran
+    if (muerto && !(it.dateAdded && it.dateAdded > muerto)) return;
+    vivos.push(it);
+  });
+
+  const nombres = new Set(TAGS.map(t => t.name.toLowerCase()));
+  (remoto.tags || []).forEach(t => {
+    if (t && t.name && !nombres.has(t.name.toLowerCase())) { TAGS.push(t); nombres.add(t.name.toLowerCase()); }
+  });
+
+  const cambia = vivos.length !== ITEMS.length;
+  ITEMS = vivos;
+  TOMB = tombLocal.slice(-4000);
+  saveTomb();
+  return cambia;
+}
+
+async function sincronizar(manual) {
+  const g = ghCfg();
+  if (!g) return 'Ahora mismo este dispositivo guarda solo en local.';
+  if (_syncCorriendo) return 'Ya hay una sincronización en marcha.';
+  _syncCorriendo = true;
+  const api = `https://api.github.com/repos/${g.repo}/contents/${GH_PATH}`;
   try {
-    const res = await fetch('biblioteca-albumes-artistas.json', { cache: 'no-store' });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const d = await res.json();
-    if (!Array.isArray(d.items)) throw new Error('archivo con formato raro');
+    // 1) bajar el remoto
+    let sha = null, remoto = null;
+    const res = await ghFetch(api + '?ref=main&t=' + Date.now());
+    if (res.status === 401 || res.status === 403) throw new Error('El token no tiene permiso sobre ese repo.');
+    if (res.status === 404 && !res.headers.get('x-ratelimit-remaining')) throw new Error('No encuentro ese repo. Revisa usuario/repo.');
+    if (res.ok) {
+      const d = await res.json();
+      sha = d.sha;
+      try { remoto = JSON.parse(b64dec(d.content.replace(/\n/g, ''))); } catch { remoto = null; }
+    } else if (res.status !== 404) {
+      throw new Error('GitHub respondió ' + res.status + '.');
+    }
 
-    const known = new Set(ITEMS.map(i => i.spotifyId));
-    const nuevos = d.items.filter(i => i && i.spotifyId && !known.has(i.spotifyId));
-    const nombres = new Set(TAGS.map(t => t.name.toLowerCase()));
-    (d.tags || []).forEach(t => { if (t && t.name && !nombres.has(t.name.toLowerCase())) TAGS.push(t); });
+    // 2) fundir
+    const antes = ITEMS.length;
+    if (remoto && Array.isArray(remoto.items)) {
+      fundir(remoto);
+      _flush(K_ITEMS, () => ITEMS); saveTags();
+    }
+    const traidos = ITEMS.length - antes;
 
-    ITEMS = ITEMS.concat(nuevos);
-    saveItems(); saveTags(); render();
-    out.textContent = nuevos.length
-      ? `Añadidos ${nuevos.length.toLocaleString('es-ES')}. Ya tienes ${ITEMS.length.toLocaleString('es-ES')} en el vault.`
-      : 'Ya los tenías todos, no he añadido nada.';
-    toast(`${nuevos.length.toLocaleString('es-ES')} añadidos`);
+    // 3) subir el resultado
+    const cuerpo = JSON.stringify({
+      app: 'MusicVault', version: 2, updatedAt: Date.now(),
+      items: ITEMS, tags: TAGS, tombstones: TOMB
+    });
+    const put = await ghFetch(api, {
+      method: 'PUT',
+      body: JSON.stringify({
+        message: `vault: ${ITEMS.length} elementos`,
+        content: b64enc(cuerpo), branch: 'main',
+        sha: sha || undefined
+      })
+    });
+    if (put.status === 409) throw new Error('Otro dispositivo estaba escribiendo. Prueba otra vez.');
+    if (!put.ok) throw new Error('No he podido subirlo (' + put.status + ').');
+
+    META.updatedAt = Date.now(); saveMeta();
+    if (traidos) render();
+    const hora = new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+    _syncEstado = { at: Date.now(), err: false,
+      msg: `Sincronizado a las ${hora} · ${ITEMS.length.toLocaleString('es-ES')} elementos` +
+           (traidos > 0 ? ` · ${traidos.toLocaleString('es-ES')} traídos del otro dispositivo` : '') };
+    if (manual) toast(traidos > 0 ? `${traidos} traídos del otro dispositivo` : 'Sincronizado');
+    return _syncEstado.msg;
   } catch (e) {
-    out.textContent = 'No he podido cargarla: ' + (e && e.message ? e.message : 'error de red');
+    _syncEstado = { at: Date.now(), err: true, msg: 'Error: ' + (e && e.message ? e.message : 'de red') };
+    if (manual) toast(_syncEstado.msg);
+    return _syncEstado.msg;
+  } finally {
+    _syncCorriendo = false;
   }
-  btn.disabled = false;
+}
+
+/* Cualquier cambio en el vault programa una subida, agrupando ráfagas. */
+function programarSync() {
+  if (!ghCfg()) return;
+  clearTimeout(_syncTimer);
+  _syncTimer = setTimeout(() => sincronizar(false), 4000);
 }
 
 const sinPortada = () => ITEMS.filter(i => !i.coverUrl).length;
@@ -1480,9 +1660,12 @@ async function completarPortadas() {
   openSettings();
 }
 
+const cuenta = tipo => ITEMS.filter(i => i.type === tipo).length;
+
 function openSettings() {
   const c = loadCreds();
   const ok = !!(c && c.clientId && c.clientSecret);
+  const gh = read(K_GH, null);
   showSheet(`
     <div class="sheethead"><h2>Ajustes</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
 
@@ -1499,16 +1682,33 @@ function openSettings() {
     <div class="swatches" id="sw">${TAG_COLORS.map((col, i) => `<span class="sw ${i === 0 ? 'on' : ''}" data-c="${col}" style="background:${col}"></span>`).join('')}</div>
     <div class="btnrow"><button class="btn wide" id="addTag">Crear etiqueta</button></div>
 
-    <div class="flabel">Tu biblioteca</div>
-    <p class="lede">Los 10.555 álbumes y 3.851 artistas sacados de tus exports de Skiley, con año, sello y géneros ya puestos. Se añaden solo los que aún no tengas.</p>
-    <div class="btnrow"><button class="btn wide" id="loadLib">Cargar álbumes y artistas</button></div>
-    <div class="lede" id="libOut" style="margin-top:6px;"></div>
+    <div class="flabel">Sincronizar entre dispositivos</div>
+    <div class="statusline ${gh && gh.token ? 'ok' : 'no'}">${gh && gh.token ? '● Activada' : '● Desactivada'}</div>
+    <p class="lede">Guarda el vault en tu repo de GitHub para que el PC y el iPhone vean lo mismo. Crea un token en <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com → Fine-grained tokens</a>, dale acceso <strong>solo</strong> al repo <code>mi-musica</code> y permiso <strong>Contents: Read and write</strong>. Se guarda únicamente en este dispositivo.</p>
+    <input class="field mono" id="ghRepo" placeholder="usuario/repo" value="${esc((gh && gh.repo) || 'mi-musica')}" autocomplete="off" spellcheck="false" style="margin-bottom:8px;">
+    <input class="field mono" id="ghTok" type="password" placeholder="github_pat_..." value="${esc((gh && gh.token) || '')}" autocomplete="off" spellcheck="false">
+    <div class="btnrow">
+      <button class="btn primary wide" id="ghSave">Guardar y sincronizar</button>
+      <button class="btn" id="ghNow" ${gh && gh.token ? '' : 'disabled'} title="Sincronizar ahora">⟳</button>
+    </div>
+    <div class="lede" id="ghOut" style="margin-top:6px;">${esc(syncEstadoTexto())}</div>
 
-    <div class="flabel">Carátulas</div>
-    <p class="lede">Los elementos importados desde un archivo llegan sin carátula. Esto las pide a Spotify en bloque y de paso rellena sello, géneros y popularidad.</p>
-    <div class="statusline ${sinPortada() ? 'no' : 'ok'}" id="coverStat">${
-      sinPortada() ? `● ${sinPortada().toLocaleString('es-ES')} sin carátula` : '● Todas tienen carátula'}</div>
-    <div class="btnrow"><button class="btn wide" id="fillCovers" ${sinPortada() && ok ? '' : 'disabled'}>Completar carátulas</button></div>
+    <div class="flabel">Apariencia</div>
+    <p class="lede">Sin carátulas el vault se lee como una lista de texto, mucho más rápido con miles de elementos. No borra nada.</p>
+    <div class="btnrow">
+      <button class="btn wide ${verPortada() ? 'jade' : ''}" id="togCovers">${verPortada() ? '✓ Carátulas visibles' : 'Carátulas ocultas'}</button>
+    </div>
+    ${verPortada() ? `
+      <div class="statusline ${sinPortada() ? 'no' : 'ok'}" id="coverStat" style="margin-top:10px;">${
+        sinPortada() ? `● ${sinPortada().toLocaleString('es-ES')} sin carátula` : '● Todas tienen carátula'}</div>
+      <div class="btnrow"><button class="btn wide" id="fillCovers" ${sinPortada() && ok ? '' : 'disabled'}>Completar carátulas</button></div>` : ''}
+
+    <div class="flabel">Limpiar el vault</div>
+    <p class="lede">Borra de golpe todo un tipo de elemento. Se puede deshacer desde el aviso que sale justo después, pero solo en ese momento.</p>
+    <div class="btnrow">
+      <button class="btn wide" id="purgeAlbum" ${cuenta('album') ? '' : 'disabled'}>Borrar ${cuenta('album').toLocaleString('es-ES')} álbumes</button>
+      <button class="btn wide" id="purgeArtist" ${cuenta('artist') ? '' : 'disabled'}>Borrar ${cuenta('artist').toLocaleString('es-ES')} artistas</button>
+    </div>
 
     <div class="flabel">Copia de seguridad</div>
     <p class="lede">Tu vault vive solo en este navegador. Si borras los datos del navegador, se pierde. Descarga una copia de vez en cuando.</p>
@@ -1519,8 +1719,40 @@ function openSettings() {
     <input type="file" id="impFile" accept="application/json,.json" class="hidden">
   `);
 
-  document.getElementById('fillCovers').addEventListener('click', completarPortadas);
-  document.getElementById('loadLib').addEventListener('click', cargarBiblioteca);
+  const fc = document.getElementById('fillCovers');
+  if (fc) fc.addEventListener('click', completarPortadas);
+
+  document.getElementById('togCovers').addEventListener('click', () => {
+    PREFS.covers = !verPortada();
+    savePrefs(); render(); openSettings();
+    toast(verPortada() ? 'Carátulas visibles' : 'Carátulas ocultas');
+  });
+
+  const purgar = (tipo, etiqueta) => {
+    const victimas = ITEMS.filter(i => i.type === tipo);
+    if (!victimas.length) return;
+    if (!confirm(`¿Borrar ${victimas.length.toLocaleString('es-ES')} ${etiqueta} del vault?\n\nPodrás deshacerlo desde el aviso que sale a continuación, pero solo en ese momento.`)) return;
+    deleteItems(victimas.map(i => i.id));
+    openSettings();
+  };
+  document.getElementById('purgeAlbum').addEventListener('click', () => purgar('album', 'álbumes'));
+  document.getElementById('purgeArtist').addEventListener('click', () => purgar('artist', 'artistas'));
+
+  document.getElementById('ghSave').addEventListener('click', async () => {
+    const repo = document.getElementById('ghRepo').value.trim().replace(/^https?:\/\/github\.com\//, '').replace(/\.git$/, '');
+    const token = document.getElementById('ghTok').value.trim();
+    if (!repo.includes('/')) { toast('El repo va en formato usuario/repo'); return; }
+    write(K_GH, { repo, token });
+    document.getElementById('ghOut').textContent = 'Comprobando…';
+    const r = await sincronizar(true);
+    document.getElementById('ghOut').textContent = r;
+    openSettings();
+  });
+  const ghNow = document.getElementById('ghNow');
+  if (ghNow) ghNow.addEventListener('click', async () => {
+    document.getElementById('ghOut').textContent = 'Sincronizando…';
+    document.getElementById('ghOut').textContent = await sincronizar(true);
+  });
 
   swatch = TAG_COLORS[0];
   document.getElementById('saveCreds').addEventListener('click', () => {
@@ -1654,7 +1886,7 @@ function openStats() {
 
     ${oldest ? `<div class="flabel">Lo que más tiempo lleva esperando</div>
     <button class="oldcard" data-goto="${oldest.id}">
-      <span class="oldart">${oldest.coverUrl ? `<img src="${esc(oldest.coverUrl)}" alt="">` : TYPE_ICON[oldest.type]}</span>
+      <span class="oldart">${portada(oldest.coverUrl, TYPE_ICON[oldest.type], false)}</span>
       <span class="oldinfo">
         <span class="oldt">${esc(oldest.title)}</span>
         <span class="olda">${esc(artistsOf(oldest))} · guardado ${relDate(oldest.dateAdded)}</span>
@@ -1779,5 +2011,18 @@ document.addEventListener('keydown', e => {
 });
 
 /* ============ init ============ */
-bootStorage().then(render);
+bootStorage().then(() => {
+  render();
+  if (ghCfg()) sincronizar(false);
+});
+
+/* Al volver a la app (cambiar de pestaña, desbloquear el móvil) se comprueba
+   si el otro dispositivo ha añadido algo, pero como mucho una vez por minuto. */
+let _ultimoVistazo = 0;
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState !== 'visible' || !ghCfg()) return;
+  if (Date.now() - _ultimoVistazo < 60000) return;
+  _ultimoVistazo = Date.now();
+  sincronizar(false);
+});
 </script>
