@@ -1685,7 +1685,7 @@ function openSettings() {
     <div class="flabel">Sincronizar entre dispositivos</div>
     <div class="statusline ${gh && gh.token ? 'ok' : 'no'}">${gh && gh.token ? '● Activada' : '● Desactivada'}</div>
     <p class="lede">Guarda el vault en tu repo de GitHub para que el PC y el iPhone vean lo mismo. Crea un token en <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com → Fine-grained tokens</a>, dale acceso <strong>solo</strong> al repo <code>mi-musica</code> y permiso <strong>Contents: Read and write</strong>. Se guarda únicamente en este dispositivo.</p>
-    <input class="field mono" id="ghRepo" placeholder="usuario/repo" value="${esc((gh && gh.repo) || 'mi-musica')}" autocomplete="off" spellcheck="false" style="margin-bottom:8px;">
+    <input class="field mono" id="ghRepo" placeholder="usuario/repo" value="${esc((gh && gh.repo) || '4l3jandro23/mi-musica')}" autocomplete="off" spellcheck="false" style="margin-bottom:8px;">
     <input class="field mono" id="ghTok" type="password" placeholder="github_pat_..." value="${esc((gh && gh.token) || '')}" autocomplete="off" spellcheck="false">
     <div class="btnrow">
       <button class="btn primary wide" id="ghSave">Guardar y sincronizar</button>
