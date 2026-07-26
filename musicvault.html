@@ -1059,6 +1059,14 @@ function deleteItems(ids) {
   saveItems();
   render();
   toast(`${removed.length} eliminado${removed.length === 1 ? '' : 's'}`, 'Deshacer', () => {
+    /* Si el borrado ya llegó a sincronizarse antes de pulsar Deshacer, el otro
+       dispositivo (o incluso este, en la próxima sincronización) sigue trayendo
+       esa tumba del remoto. dateAdded no cambia al deshacer, así que sin esto
+       la tumba vieja seguiría siendo "más nueva" que el ítem y lo volvería a
+       matar en cuanto se sincronizase otra vez. touchedAt es la fecha que
+       cuenta para decidir contra las tumbas; dateAdded se queda intacto para
+       no romper el orden "añadido el" ni las estadísticas. */
+    removed.forEach(it => { it.touchedAt = Date.now(); });
     ITEMS = ITEMS.concat(removed);
     untombstone(removed);
     saveItems();
@@ -1107,7 +1115,14 @@ function openSearch() {
   sq.focus();
 }
 
+/* Si se teclea rápido, una búsqueda vieja puede tardar más en responder que la
+   que se lanzó después (red lenta, resultado más pesado…). Sin esto, la vieja
+   llega tarde y pisa los resultados correctos con otros ya obsoletos. Cada
+   llamada se numera y, al volver, se descarta si ya no es la más reciente. */
+let _searchSeq = 0;
+
 async function runSearch() {
+  const miTurno = ++_searchSeq;
   const q = document.getElementById('sq').value.trim();
   const box = document.getElementById('sres');
   if (!q) { box.innerHTML = ''; return; }
@@ -1119,15 +1134,19 @@ async function runSearch() {
   box.innerHTML = `<div class="skel"></div><div class="skel"></div><div class="skel"></div>`;
   const m = q.match(URL_ONE);
   try {
+    let resultados;
     if (m) {
-      lastResults = [normalize(await spotifyLookup(m[1], m[2]), m[1])];
+      resultados = [normalize(await spotifyLookup(m[1], m[2]), m[1])];
     } else {
       const d = await spotifySearch(q, searchType);
-      lastResults = (d[searchType + 's']?.items || []).map(r => normalize(r, searchType));
+      resultados = (d[searchType + 's']?.items || []).map(r => normalize(r, searchType));
     }
+    if (miTurno !== _searchSeq) return;   // ya hay una búsqueda más nueva en curso
+    lastResults = resultados;
     if (!lastResults.length) { box.innerHTML = `<div class="empty" style="padding:26px 8px;"><p>Sin resultados para “${esc(q)}”.</p></div>`; return; }
     box.innerHTML = lastResults.map(rrow).join('');
   } catch (err) {
+    if (miTurno !== _searchSeq) return;
     const msg = err.message || '';
     let text = 'No se pudo conectar con Spotify. Revisa tu conexión.';
     if (msg === 'AUTH_FAILED' || msg === 'NO_CREDS') text = 'Tus credenciales no son válidas. Revísalas en Ajustes.';
@@ -1151,6 +1170,11 @@ function rrow(r, i) {
 
 /* ---- bulk ---- */
 let playlistMode = 'tracks';
+/* Cerrar el panel de "En bloque" mientras sube y volver a pulsar Añadir lanzaba
+   un segundo runBulk en paralelo: cada uno calcula "ya lo tengo" contra su
+   propia foto de ITEMS, así que ninguno ve lo que está subiendo el otro y el
+   mismo álbum/canción acababa guardado dos veces. */
+let _bulkCorriendo = false;
 
 function openBulk() {
   showSheet(`
@@ -1171,11 +1195,11 @@ https://open.spotify.com/artist/..."></textarea>
     </div>
 
     <div class="btnrow">
-      <button class="btn primary wide" id="bulkGo">Añadir al vault</button>
+      <button class="btn primary wide" id="bulkGo" ${_bulkCorriendo ? 'disabled' : ''}>${_bulkCorriendo ? 'Subiendo…' : 'Añadir al vault'}</button>
       <button class="btn" id="bulkFileBtn" title="Cargar una lista de enlaces desde un archivo">📄 Archivo</button>
     </div>
     <input type="file" id="bulkFile" accept=".txt,.json,.csv,text/plain,application/json" class="hidden">
-    <div id="bulkOut" style="margin-top:14px;font-size:13.5px;color:var(--fg-soft);line-height:1.6;"></div>
+    <div id="bulkOut" style="margin-top:14px;font-size:13.5px;color:var(--fg-soft);line-height:1.6;">${_bulkCorriendo ? 'Sigue subiendo lo que pegaste antes de cerrar este panel…' : ''}</div>
   `);
   document.getElementById('bulkSegs').addEventListener('click', e => {
     const b = e.target.closest('.seg'); if (!b) return;
@@ -1206,6 +1230,7 @@ https://open.spotify.com/artist/..."></textarea>
 async function runBulk() {
   const out = document.getElementById('bulkOut');
   const go = document.getElementById('bulkGo');
+  if (_bulkCorriendo) { out.innerHTML = 'Ya hay una subida en marcha (la empezaste antes de cerrar este panel). Espera a que termine.'; return; }
   const c = loadCreds();
   if (!c || !c.clientId || !c.clientSecret) {
     out.innerHTML = 'Este dispositivo aún no tiene las credenciales de Spotify. Son por dispositivo (no se sincronizan, porque el secreto no debe acabar en un repo público). Ve a ⚙ Ajustes y pégalas también aquí.';
@@ -1223,10 +1248,12 @@ async function runBulk() {
 
   if (!playlists.length && !singles.size) { out.innerHTML = 'No he encontrado ningún enlace de Spotify en ese texto.'; return; }
 
+  _bulkCorriendo = true;
   go.disabled = true;
   let added = 0, dup = 0, fail = 0;
   const notes = [];
 
+  try {
   // 1) playlists
   for (const pid of playlists) {
     try {
@@ -1302,8 +1329,11 @@ async function runBulk() {
   if (dup) bits.push(`${dup} ya estaban`);
   if (fail) bits.push(`${fail} fallaron`);
   out.innerHTML = bits.join(' · ') + (notes.length ? `<br><span style="color:var(--fg-mute);font-size:12.5px;">${notes.map(esc).join('<br>')}</span>` : '');
-  go.disabled = false;
   if (added) toast(`${added} añadido${added === 1 ? '' : 's'} al vault`);
+  } finally {
+    _bulkCorriendo = false;
+    go.disabled = false;
+  }
 }
 
 /* ---- detail ---- */
@@ -1431,6 +1461,7 @@ function wireMeta(it, id) {
         else it[f] = v || null;
       });
       it.editedByUser = true;
+      it.touchedAt = Date.now();   // una edición manual también debe ganarle a una tumba vieja
       saveItems(); render(); openDetail(id);
       toast('Metadatos actualizados');
     });
@@ -1447,7 +1478,7 @@ function wireMeta(it, id) {
       // conservo lo que es tuyo: notas, valoración, etiquetas, estado y fecha de guardado
       Object.assign(it, fresh, {
         id: it.id, dateAdded: it.dateAdded, notes: it.notes, rating: it.rating,
-        tagIds: it.tagIds, listened: it.listened, editedByUser: false
+        tagIds: it.tagIds, listened: it.listened, editedByUser: false, touchedAt: Date.now()
       });
       saveItems(); render(); openDetail(id);
       toast('Metadatos recargados desde Spotify');
@@ -1571,8 +1602,9 @@ function fundir(remoto) {
   const vivos = [];
   porId.forEach((it, sid) => {
     const muerto = ultimaTumba.get(sid);
-    // el elemento sobrevive si se guardó después de que lo borraran
-    if (muerto && !(it.dateAdded && it.dateAdded > muerto)) return;
+    // el elemento sobrevive si se tocó (deshacer, edición) después de que lo borraran
+    const marca = it.touchedAt || it.dateAdded;
+    if (muerto && !(marca && marca > muerto)) return;
     vivos.push(it);
   });
 
@@ -1674,12 +1706,20 @@ const sinPortada = () => ITEMS.filter(i => !i.coverUrl).length;
 const LOTE = { album: 20, artist: 50, track: 50 };
 let _parar = false;
 
+/* El botón "Detener" vivía como dataset del propio <button>, pero si se cierra
+   Ajustes mientras el bucle corre, el nodo se destruye y al reabrir aparece uno
+   nuevo con el dataset a cero: pulsar "Completar" otra vez lanzaba un SEGUNDO
+   bucle en paralelo sobre las mismas peticiones. El estado de "está corriendo"
+   tiene que vivir fuera del DOM. */
+let _completandoPortadas = false;
+
 async function completarPortadas() {
   const btn = document.getElementById('fillCovers');
   const est = document.getElementById('coverStat');
-  if (btn.dataset.run === '1') { _parar = true; return; }
+  if (_completandoPortadas) { _parar = true; return; }
+  _completandoPortadas = true;
   _parar = false;
-  btn.dataset.run = '1'; btn.textContent = 'Detener';
+  if (btn) btn.textContent = 'Detener';
 
   const faltan = ITEMS.filter(i => !i.coverUrl && i.spotifyId);
   let hechos = 0, fallos = 0;
@@ -1712,7 +1752,10 @@ async function completarPortadas() {
           });
           hechos++;
         });
-        est.textContent = `● ${hechos.toLocaleString('es-ES')} de ${faltan.length.toLocaleString('es-ES')} completadas`;
+        // la hoja de Ajustes puede haberse cerrado o reabierto: comprobar que
+        // el nodo sigue siendo el que hay en pantalla antes de tocarlo
+        const estAhora = document.getElementById('coverStat');
+        if (estAhora) estAhora.textContent = `● ${hechos.toLocaleString('es-ES')} de ${faltan.length.toLocaleString('es-ES')} completadas`;
         saveItems();
       }
       if (_parar) break;
@@ -1722,10 +1765,10 @@ async function completarPortadas() {
   }
 
   saveItems(); render();
-  btn.dataset.run = '0';
+  _completandoPortadas = false;
   toast(_parar ? `Detenido — ${hechos} completadas`
                : `${hechos} completadas${fallos ? ` · ${fallos} sin datos` : ''}`);
-  openSettings();
+  if (document.getElementById('fillCovers')) openSettings();
 }
 
 const cuenta = tipo => ITEMS.filter(i => i.type === tipo).length;
@@ -1769,7 +1812,7 @@ function openSettings() {
     ${verPortada() ? `
       <div class="statusline ${sinPortada() ? 'no' : 'ok'}" id="coverStat" style="margin-top:10px;">${
         sinPortada() ? `● ${sinPortada().toLocaleString('es-ES')} sin carátula` : '● Todas tienen carátula'}</div>
-      <div class="btnrow"><button class="btn wide" id="fillCovers" ${sinPortada() && ok ? '' : 'disabled'}>Completar carátulas</button></div>` : ''}
+      <div class="btnrow"><button class="btn wide" id="fillCovers" ${(sinPortada() && ok) || _completandoPortadas ? '' : 'disabled'}>${_completandoPortadas ? 'Detener' : 'Completar carátulas'}</button></div>` : ''}
 
     <div class="flabel">Limpiar el vault</div>
     <p class="lede">Borra de golpe todo un tipo de elemento. Se puede deshacer desde el aviso que sale justo después, pero solo en ese momento.</p>
@@ -1885,6 +1928,11 @@ function importBackup(e) {
       if (!Array.isArray(d.items)) throw new Error('bad');
       const known = new Set(ITEMS.map(i => i.spotifyId));
       const fresh = d.items.filter(i => i && i.spotifyId && !known.has(i.spotifyId));
+      // si alguno estaba borrado (con tumba) desde después de esta copia, que la
+      // restauración gane: si no, la próxima sincronización lo borraría otra vez
+      // sin avisar, justo después de decirte que se había restaurado
+      fresh.forEach(i => { i.touchedAt = Date.now(); });
+      untombstone(fresh);
       const tagNames = new Set(TAGS.map(t => t.name.toLowerCase()));
       (d.tags || []).forEach(t => { if (t && t.name && !tagNames.has(t.name.toLowerCase())) TAGS.push(t); });
       ITEMS = ITEMS.concat(fresh);
