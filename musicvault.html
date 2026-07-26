@@ -173,6 +173,10 @@
     padding: 6px 12px; cursor: pointer; white-space: nowrap;
     transition: background .15s, color .15s, border-color .15s;
   }
+  /* el chip mide 30px de alto: se ve bien pero se falla mucho con el dedo.
+     El pseudoelemento amplía la zona sensible sin cambiar el aspecto. */
+  .chip { position: relative; }
+  .chip::after { content:""; position:absolute; inset:-7px -2px; border-radius:999px; }
   .chip:hover { background: var(--surface-2); }
   .chip.on { background: var(--fg); color: var(--bg); border-color: transparent; font-weight: 600; }
   .chip .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink:0; }
@@ -229,11 +233,11 @@
   .statusdot::after { content:''; position:absolute; inset:-10px; border-radius: 50%; }
   .typetag {
     position:absolute; top: 8px; right: 8px; z-index: 2;
-    font-size: 9.5px; font-family: ui-monospace, monospace; letter-spacing: 0.04em;
+    font-size: 11px; font-family: ui-monospace, monospace; letter-spacing: 0.04em;
     padding: 3px 7px; border-radius: 6px; color: #fff;
     background: rgba(20,16,13,0.55); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
   }
-  .stars { font-size: 10.5px; color: var(--amber); letter-spacing: -0.5px; }
+  .stars { font-size: 12px; color: var(--amber); letter-spacing: -0.5px; }
   .tagpip { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 
   /* list view */
@@ -453,6 +457,25 @@
   .hidden { display:none !important; }
   ::-webkit-scrollbar { width: 9px; height: 9px; }
   ::-webkit-scrollbar-thumb { background: var(--line-firm); border-radius: 5px; }
+  /* ---- ajustes para el móvil ----
+     En el iPhone todo se maneja con el pulgar: los controles de la barra suben
+     a 44px, que es el mínimo que Apple recomienda para acertar sin mirar. */
+  @media (max-width: 560px) {
+    .searchwrap input { padding-top: 12px; padding-bottom: 12px; font-size: 16px; }
+    /* 16px además evita que Safari haga zoom automático al enfocar el campo */
+    select.ctl, #viewBtn { min-height: 44px; }
+    .iconbtn { width: 42px; height: 42px; }
+    /* la barra de chips tiene scroll horizontal y recorta el pseudoelemento,
+       así que aquí la zona táctil tiene que ser altura real */
+    .chip { min-height: 44px; padding: 0 14px; font-size: 13px; }
+    /* El punto de "escuchado" va pegado a la esquina y la tarjeta recorta lo que
+       sobresale, así que crece un poco y su zona sensible se extiende hacia
+       DENTRO de la tarjeta, que es donde queda sitio. No llega a 44 a propósito:
+       ampliarlo más haría que al intentar abrir la ficha se marcase por error. */
+    .statusdot { width: 30px; height: 30px; top: 10px; left: 10px; font-size: 14px; }
+    .statusdot::after { inset: -2px -9px -9px -2px; border-radius: 14px; }
+    .sheet { padding-bottom: calc(18px + env(safe-area-inset-bottom)); }
+  }
 </style>
 
 <header class="cmdbar">
@@ -1090,7 +1113,7 @@ async function runSearch() {
   if (!q) { box.innerHTML = ''; return; }
   const c = loadCreds();
   if (!c || !c.clientId || !c.clientSecret) {
-    box.innerHTML = `<div class="empty" style="padding:26px 8px;"><p>Necesitas conectar tu cuenta de Spotify Developer para buscar.</p><div class="acts"><button class="btn primary" data-open="settings">Ir a Ajustes</button></div></div>`;
+    box.innerHTML = `<div class="empty" style="padding:26px 8px;"><p>Este dispositivo todavía no tiene tus credenciales de Spotify. Son por dispositivo: no se sincronizan a propósito, para que el secreto no acabe en un repo público.</p><div class="acts"><button class="btn primary" data-open="settings">Ir a Ajustes</button></div></div>`;
     return;
   }
   box.innerHTML = `<div class="skel"></div><div class="skel"></div><div class="skel"></div>`;
@@ -1185,7 +1208,7 @@ async function runBulk() {
   const go = document.getElementById('bulkGo');
   const c = loadCreds();
   if (!c || !c.clientId || !c.clientSecret) {
-    out.innerHTML = 'Conecta tu cuenta de Spotify en Ajustes antes de añadir.';
+    out.innerHTML = 'Este dispositivo aún no tiene las credenciales de Spotify. Son por dispositivo (no se sincronizan, porque el secreto no debe acabar en un repo público). Ve a ⚙ Ajustes y pégalas también aquí.';
     return;
   }
   const text = document.getElementById('bulkIn').value;
