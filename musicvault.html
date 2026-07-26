@@ -115,10 +115,16 @@
     width: 38px; height: 38px; border-radius: 11px; flex-shrink:0;
     background: var(--surface); border: 1px solid var(--line); color: var(--fg);
     font-size: 16px; cursor: pointer; transition: background .15s, transform .1s;
+    position: relative;
   }
+  /* 38px se ve bien pero se falla al pulsar; esto lleva la zona táctil a 44 */
+  .iconbtn::after { content:""; position:absolute; inset:-3px; border-radius:14px; }
   .iconbtn:hover { background: var(--surface-2); }
   .iconbtn:active { transform: scale(0.94); }
   .iconbtn.accent { background: var(--amber); border-color: transparent; color: var(--on-amber); }
+  /* el enlace de vuelta al índice: mismo botón, sin subrayado ni color de enlace */
+  .backbtn { text-decoration: none; font-size: 18px; line-height: 1; }
+  .backbtn:visited { color: var(--fg); }
 
   .shell { max-width: 1080px; margin: 0 auto; padding: 0 14px; }
 
@@ -451,6 +457,7 @@
 
 <header class="cmdbar">
   <div class="wordmark">
+    <a class="iconbtn backbtn" href="index.html" title="Volver a Mi Música" aria-label="Volver a la página de inicio">←</a>
     <svg class="disc" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="var(--amber)" stroke-width="2.2"/><circle cx="12" cy="12" r="2.6" fill="var(--amber)"/></svg>
     <span class="wm-text">MusicVault</span>
   </div>

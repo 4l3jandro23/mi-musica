@@ -1898,3 +1898,24 @@ document.getElementById('nextPage').addEventListener('click', () => { state.page
 
 render();
 </script>
+
+<style>
+/* botón de vuelta al índice — clases con prefijo propio para no chocar con la página */
+.mm-volver{
+  position:fixed; left:14px; bottom:calc(14px + env(safe-area-inset-bottom)); z-index:9999;
+  display:inline-flex; align-items:center; gap:7px; padding:11px 15px;
+  font:600 13.5px/1 system-ui,-apple-system,"Segoe UI",sans-serif; text-decoration:none;
+  border-radius:999px; border:1px solid rgba(128,128,128,.34);
+  background:#241d16; color:#f3ead9;
+  box-shadow:0 2px 6px rgba(0,0,0,.28), 0 8px 22px rgba(0,0,0,.22);
+  -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+}
+.mm-volver:hover{background:#2f261d}
+.mm-volver:active{transform:scale(.96)}
+@media (prefers-color-scheme:light){
+  .mm-volver{background:#fffdf8; color:#241d16; border-color:rgba(36,29,22,.16)}
+  .mm-volver:hover{background:#f3ecdf}
+}
+@media print{.mm-volver{display:none}}
+</style>
+<a class="mm-volver" href="index.html" aria-label="Volver a Mi Música">← Mi Música</a>
