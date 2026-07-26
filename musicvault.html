@@ -562,7 +562,24 @@ let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', statu
    vuelve a subir en la siguiente sincronización y el borrado "revive". */
 let TOMB = read(K_TOMB, []);
 let META = Object.assign({ updatedAt: 0 }, read(K_META, {}));
-const saveTomb = () => write(K_TOMB, TOMB.slice(-4000));
+/* Un borrado masivo genera decenas de miles de tumbas. Si se recortan demasiado
+   pronto, el otro dispositivo no se entera de esos borrados y los resucita en la
+   siguiente sincronización. Se deduplica por id (vale la más reciente) y el tope
+   se deja alto: 30.000 tumbas ocupan ~1,5 MB, que GitHub asume sin problema. */
+const TOPE_TUMBAS = 30000;
+function podarTumbas() {
+  const ultima = new Map();
+  for (const t of TOMB) {
+    if (!t || !t.sid) continue;
+    const prev = ultima.get(t.sid);
+    if (prev === undefined || t.at > prev) ultima.set(t.sid, t.at);
+  }
+  TOMB = [...ultima].map(([sid, at]) => ({ sid, at }))
+                    .sort((a, b) => a.at - b.at)
+                    .slice(-TOPE_TUMBAS);
+  return TOMB;
+}
+const saveTomb = () => write(K_TOMB, podarTumbas());
 const saveMeta = () => write(K_META, META);
 function tombstone(items) {
   const at = Date.now();
@@ -1543,8 +1560,8 @@ function fundir(remoto) {
 
   const cambia = vivos.length !== ITEMS.length;
   ITEMS = vivos;
-  TOMB = tombLocal.slice(-4000);
-  saveTomb();
+  TOMB = tombLocal;
+  saveTomb();          // deduplica y poda
   return cambia;
 }
 
