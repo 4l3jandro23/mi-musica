@@ -1480,7 +1480,17 @@ function syncEstadoTexto() {
   return _syncEstado.msg;
 }
 
-const b64enc = s => btoa(String.fromCharCode(...new TextEncoder().encode(s)));
+/* Nada de String.fromCharCode(...bytes): con un vault de miles de elementos son
+   millones de argumentos y se desborda la pila de llamadas. Va por trozos. */
+function b64enc(s) {
+  const bytes = new TextEncoder().encode(s);
+  const TROZO = 0x8000;
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += TROZO) {
+    bin += String.fromCharCode.apply(null, bytes.subarray(i, i + TROZO));
+  }
+  return btoa(bin);
+}
 const b64dec = s => new TextDecoder().decode(Uint8Array.from(atob(s), c => c.charCodeAt(0)));
 
 async function ghFetch(url, opts) {
@@ -1546,7 +1556,15 @@ async function sincronizar(manual) {
     if (res.ok) {
       const d = await res.json();
       sha = d.sha;
-      try { remoto = JSON.parse(b64dec(d.content.replace(/\n/g, ''))); } catch { remoto = null; }
+      if (d.content) {
+        try { remoto = JSON.parse(b64dec(d.content.replace(/\n/g, ''))); } catch { remoto = null; }
+      } else {
+        /* Por encima de 1 MB la API no incluye el contenido: hay que pedirlo en
+           crudo. Devuelve el archivo tal cual, sin límite práctico de tamaño. */
+        const crudo = await ghFetch(api + '?ref=main&t=' + Date.now(),
+                                    { headers: { Accept: 'application/vnd.github.raw' } });
+        if (crudo.ok) { try { remoto = JSON.parse(await crudo.text()); } catch { remoto = null; } }
+      }
     } else if (res.status !== 404) {
       throw new Error('GitHub respondió ' + res.status + '.');
     }
@@ -1564,6 +1582,9 @@ async function sincronizar(manual) {
       app: 'MusicVault', version: 2, updatedAt: Date.now(),
       items: ITEMS, tags: TAGS, tombstones: TOMB
     });
+    if (cuerpo.length > 60e6) {
+      throw new Error(`el vault ocupa ${(cuerpo.length / 1e6).toFixed(0)} MB y no cabe en GitHub. Borra lo que no uses.`);
+    }
     const put = await ghFetch(api, {
       method: 'PUT',
       body: JSON.stringify({
