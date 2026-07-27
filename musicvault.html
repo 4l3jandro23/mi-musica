@@ -721,36 +721,123 @@ function toast(msg, actionLabel, actionFn, ms = 5000) {
   setTimeout(() => el.remove(), ms);
 }
 
-/* ============ spotify ============ */
-let tok = { v: null, exp: 0 };
+/* ============ spotify ============
+   Desde febrero de 2026 Spotify cerró el acceso de Client Credentials (app
+   sola, sin usuario) a los datos de catálogo para apps en modo desarrollo:
+   https://developer.spotify.com/documentation/web-api/references/changes/february-2026
+   La única vía que sigue funcionando es Authorization Code con PKCE: el
+   usuario inicia sesión de verdad en Spotify y la app actúa en su nombre.
+   PKCE no usa Client Secret — es un flujo pensado para apps sin servidor
+   propio, así que sigue siendo seguro pegar solo el Client ID aquí. */
+const REDIRECT_URI = location.origin + location.pathname;
+const K_PKCE = 'musicvault_pkce_v1';   // verifier+state durante la ida y vuelta a Spotify
+
+function b64url(bytes) {
+  let bin = '';
+  const arr = new Uint8Array(bytes);
+  for (let i = 0; i < arr.length; i++) bin += String.fromCharCode(arr[i]);
+  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+function randomToken(nBytes) {
+  const arr = new Uint8Array(nBytes);
+  crypto.getRandomValues(arr);
+  return b64url(arr);
+}
+async function pkceChallenge(verifier) {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier));
+  return b64url(digest);
+}
+
+function isConnected() { const c = loadCreds(); return !!(c && c.refreshToken); }
+
+/* Manda al usuario a la pantalla de login real de Spotify. Al volver, Spotify
+   añade ?code=...&state=... a esta misma URL (por eso hace falta registrar
+   esta página exacta como Redirect URI en el Developer Dashboard). */
+async function beginSpotifyLogin() {
+  const c = loadCreds();
+  if (!c || !c.clientId) { toast('Pon primero el Client ID en Ajustes'); return; }
+  const verifier = randomToken(64);
+  const state = randomToken(16);
+  sessionStorage.setItem(K_PKCE, JSON.stringify({ verifier, state }));
+  const challenge = await pkceChallenge(verifier);
+  const params = new URLSearchParams({
+    client_id: c.clientId, response_type: 'code', redirect_uri: REDIRECT_URI,
+    code_challenge_method: 'S256', code_challenge: challenge, state, scope: ''
+  });
+  location.href = 'https://accounts.spotify.com/authorize?' + params.toString();
+}
+
+/* Se llama al arrancar la página. Si venimos de vuelta del login de Spotify,
+   la URL trae ?code=... (o ?error=...): hay que completarlo antes de pintar
+   nada, y limpiar la URL en cualquier caso para no dejar el code a la vista
+   ni reprocesarlo si se recarga la página. */
+async function handleSpotifyRedirect() {
+  const qs = new URLSearchParams(location.search);
+  const code = qs.get('code'), state = qs.get('state'), err = qs.get('error');
+  if (!code && !err) return;
+  history.replaceState({}, '', location.pathname);
+  if (err) { toast('Spotify: ' + err); return; }
+
+  let guardado = null;
+  try { guardado = JSON.parse(sessionStorage.getItem(K_PKCE) || 'null'); } catch {}
+  sessionStorage.removeItem(K_PKCE);
+  if (!guardado || state !== guardado.state) {
+    toast('La conexión con Spotify no se pudo verificar. Vuelve a intentarlo.');
+    return;
+  }
+  const c = loadCreds();
+  if (!c || !c.clientId) { toast('Falta el Client ID en Ajustes.'); return; }
+  try {
+    const res = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        grant_type: 'authorization_code', code, redirect_uri: REDIRECT_URI,
+        client_id: c.clientId, code_verifier: guardado.verifier
+      })
+    });
+    if (!res.ok) throw new Error('' + res.status);
+    const d = await res.json();
+    write(K_CREDS, {
+      clientId: c.clientId, accessToken: d.access_token,
+      refreshToken: d.refresh_token, expiresAt: Date.now() + (d.expires_in - 60) * 1000
+    });
+    toast('Conectado con Spotify');
+  } catch (e) {
+    toast('No se pudo completar la conexión con Spotify (' + (e.message || 'error') + ').');
+  }
+}
+
+function disconnectSpotify() {
+  const c = loadCreds();
+  if (c) write(K_CREDS, { clientId: c.clientId });   // conserva el Client ID, olvida la sesión
+  toast('Desconectado de Spotify');
+}
 
 async function spotifyToken() {
   const c = loadCreds();
-  if (!c || !c.clientId || !c.clientSecret) throw new Error('NO_CREDS');
-  if (tok.v && tok.exp > Date.now()) return tok.v;
-  let auth;
-  try {
-    // btoa revienta si el Client ID/Secret trae algún carácter fuera de Latin-1
-    // (p. ej. una comilla curva que el teclado del móvil mete sola). Sin este
-    // try, el error salía como "InvalidCharacterError" en vez de decir la causa.
-    auth = btoa(c.clientId + ':' + c.clientSecret);
-  } catch {
-    throw new Error('BAD_CREDS_CHARS');
-  }
+  if (!c || !c.refreshToken) throw new Error('NO_CREDS');
+  if (c.accessToken && c.expiresAt > Date.now()) return c.accessToken;
   const res = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Basic ' + auth },
-    body: 'grant_type=client_credentials'
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ grant_type: 'refresh_token', refresh_token: c.refreshToken, client_id: c.clientId })
   });
   if (!res.ok) throw new Error('AUTH_FAILED');
   const d = await res.json();
-  tok = { v: d.access_token, exp: Date.now() + (d.expires_in - 60) * 1000 };
-  return tok.v;
+  const fresco = {
+    clientId: c.clientId, accessToken: d.access_token,
+    refreshToken: d.refresh_token || c.refreshToken,   // Spotify no siempre rota el refresh token
+    expiresAt: Date.now() + (d.expires_in - 60) * 1000
+  };
+  write(K_CREDS, fresco);
+  return fresco.accessToken;
 }
 
 async function spotifySearch(q, type) {
   const t = await spotifyToken();
-  const res = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=${type}&limit=20`, { headers: { Authorization: 'Bearer ' + t } });
+  // el límite máximo bajó de 50 a 10 en el cambio de febrero de 2026
+  const res = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=${type}&limit=10`, { headers: { Authorization: 'Bearer ' + t } });
   if (!res.ok) throw new Error('SEARCH_FAILED:' + res.status);
   return res.json();
 }
@@ -760,6 +847,46 @@ async function spotifyLookup(type, id) {
   const res = await fetch(`https://api.spotify.com/v1/${type}s/${id}`, { headers: { Authorization: 'Bearer ' + t } });
   if (!res.ok) throw new Error('LOOKUP_FAILED:' + res.status);
   return res.json();
+}
+
+/* Las llamadas "varias a la vez" (GET /albums?ids=, /tracks?ids=, /artists?ids=)
+   se eliminaron en el cambio de febrero de 2026 — solo queda pedir uno a uno:
+   https://developer.spotify.com/documentation/web-api/tutorials/february-2026-migration-guide
+   Esto los pide con una concurrencia pequeña (5 a la vez) para no tardar una
+   eternidad con listas largas. Si falla por credenciales, PARA TODO en vez de
+   contarlo como fallos sueltos (si el token no vale, el siguiente tampoco). */
+async function fetchItemsIndividually(tipo, ids, onProgress, shouldStop) {
+  const CONCURRENCIA = 5;
+  const resultados = new Array(ids.length).fill(null);
+  let hechos = 0, i = 0, pararTodo = null;
+
+  async function trabajador() {
+    while (i < ids.length && !pararTodo) {
+      if (shouldStop && shouldStop()) return;
+      const mio = i++;
+      for (let intento = 0; intento < 4; intento++) {
+        let t;
+        try { t = await spotifyToken(); }
+        catch (e) { pararTodo = e; return; }
+        let res;
+        try {
+          res = await fetch(`https://api.spotify.com/v1/${tipo}s/${ids[mio]}`, { headers: { Authorization: 'Bearer ' + t } });
+        } catch { break; }   // fallo de red puntual: cuenta como fallo de este elemento, no para todo
+        if (res.status === 429 && intento < 3) {
+          await new Promise(r => setTimeout(r, (+res.headers.get('Retry-After') || 2) * 1000));
+          continue;
+        }
+        if (res.status === 401 || res.status === 403) { pararTodo = new Error('AUTH_FAILED'); return; }
+        if (res.ok) resultados[mio] = await res.json();
+        break;
+      }
+      hechos++;
+      if (onProgress) onProgress(hechos, ids.length);
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(CONCURRENCIA, ids.length) }, trabajador));
+  if (pararTodo) throw pararTodo;
+  return resultados;
 }
 
 const URL_ONE = /open\.spotify\.com\/(?:intl-[a-z-]+\/)?(album|track|artist)\/([a-zA-Z0-9]+)/i;
@@ -1159,9 +1286,8 @@ async function runSearch() {
   const q = document.getElementById('sq').value.trim();
   const box = document.getElementById('sres');
   if (!q) { box.innerHTML = ''; return; }
-  const c = loadCreds();
-  if (!c || !c.clientId || !c.clientSecret) {
-    box.innerHTML = `<div class="empty" style="padding:26px 8px;"><p>Este dispositivo todavía no tiene tus credenciales de Spotify. Son por dispositivo: no se sincronizan a propósito, para que el secreto no acabe en un repo público.</p><div class="acts"><button class="btn primary" data-open="settings">Ir a Ajustes</button></div></div>`;
+  if (!isConnected()) {
+    box.innerHTML = `<div class="empty" style="padding:26px 8px;"><p>Este dispositivo todavía no está conectado con Spotify. La conexión es por dispositivo: inicia sesión aquí también.</p><div class="acts"><button class="btn primary" data-open="settings">Ir a Ajustes</button></div></div>`;
     return;
   }
   box.innerHTML = `<div class="skel"></div><div class="skel"></div><div class="skel"></div>`;
@@ -1183,8 +1309,7 @@ async function runSearch() {
     if (miTurno !== _searchSeq) return;
     const msg = err.message || '';
     let text = 'No se pudo conectar con Spotify. Revisa tu conexión.';
-    if (msg === 'AUTH_FAILED' || msg === 'NO_CREDS') text = 'Tus credenciales no son válidas. Revísalas en Ajustes.';
-    else if (msg === 'BAD_CREDS_CHARS') text = 'El Client ID o el Secret de este dispositivo tienen algún carácter raro (a veces el teclado cambia las comillas o mete un espacio). Bórralos en Ajustes y vuelve a pegarlos.';
+    if (msg === 'AUTH_FAILED' || msg === 'NO_CREDS') text = 'Tu conexión con Spotify ha caducado o no es válida. Vuelve a conectarte en Ajustes.';
     else if (msg.startsWith('LOOKUP_FAILED')) text = `Ese enlace no existe o es privado (error ${msg.split(':')[1]}).`;
     else if (msg.startsWith('SEARCH_FAILED')) text = `Spotify devolvió un error ${msg.split(':')[1]}.`;
     box.innerHTML = `<div class="empty" style="padding:26px 8px;"><p>${esc(text)}</p></div>`;
@@ -1322,9 +1447,8 @@ async function runBulk() {
   const out = document.getElementById('bulkOut');
   const go = document.getElementById('bulkGo');
   if (_bulkCorriendo) { out.innerHTML = 'Ya hay una subida en marcha (la empezaste antes de cerrar este panel). Espera a que termine.'; return; }
-  const c = loadCreds();
-  if (!c || !c.clientId || !c.clientSecret) {
-    out.innerHTML = 'Este dispositivo aún no tiene las credenciales de Spotify. Son por dispositivo (no se sincronizan, porque el secreto no debe acabar en un repo público). Ve a ⚙ Ajustes y pégalas también aquí.';
+  if (!isConnected()) {
+    out.innerHTML = 'Este dispositivo aún no está conectado con Spotify. La conexión es por dispositivo: ve a ⚙ Ajustes y conéctate también aquí.';
     return;
   }
   const text = document.getElementById('bulkIn').value;
@@ -1374,7 +1498,7 @@ async function runBulk() {
     }
   }
 
-  // 2) enlaces sueltos, por lotes (20 álbumes / 50 canciones o artistas por llamada)
+  // 2) enlaces sueltos, uno a uno (con 5 en paralelo — ver fetchItemsIndividually)
   const yaTengo = new Set(ITEMS.map(x => x.spotifyId));
   const porTipo = { album: [], track: [], artist: [] };
   for (const [id, type] of singles) {
@@ -1382,51 +1506,32 @@ async function runBulk() {
     if (porTipo[type]) porTipo[type].push(id);
   }
   const pendientes = porTipo.album.length + porTipo.track.length + porTipo.artist.length;
-  let hechos = 0;
+  let hechosTotal = 0;
 
   for (const tipo of ['album', 'track', 'artist']) {
     const ids = porTipo[tipo];
-    for (let i = 0; i < ids.length; i += LOTE[tipo]) {
-      const trozo = ids.slice(i, i + LOTE[tipo]);
-      let res;
-      try {
-        const t = await spotifyToken();
-        res = await fetch(`https://api.spotify.com/v1/${tipo}s?ids=${trozo.join(',')}`,
-                          { headers: { Authorization: 'Bearer ' + t } });
-      } catch (e) {
-        /* Si el fallo es de credenciales, va a fallar exactamente igual en
-           cada lote que quede: antes seguía intentando todos en silencio y
-           al final solo decía "N fallaron", sin explicar por qué. Ahora para
-           en el primero y lo dice. */
-        const msg = (e && e.message) || '';
-        if (msg === 'NO_CREDS' || msg === 'AUTH_FAILED' || msg === 'BAD_CREDS_CHARS') {
-          const explica = msg === 'BAD_CREDS_CHARS'
-            ? 'el Client ID o el Secret de este dispositivo tienen algún carácter raro (a veces el teclado cambia las comillas). Bórralos en Ajustes y vuelve a pegarlos.'
-            : 'las credenciales de Spotify de este dispositivo no son válidas. Revísalas en Ajustes.';
-          out.innerHTML = `Parado: ${explica}<br><span style="color:var(--fg-mute);font-size:12.5px;">${added} añadidos antes de fallar.</span>`;
-          return;   // el finally de más abajo repone _bulkCorriendo y el botón
-        }
-        fail += trozo.length; hechos += trozo.length; continue;
-      }
-      if (res.status === 429) {                       // límite de peticiones: esperar y repetir
-        const esperar = (+res.headers.get('Retry-After') || 2);
-        out.innerHTML = `Spotify pide una pausa de ${esperar}s… <strong>${added}</strong> añadidos de ${pendientes}`;
-        await new Promise(r => setTimeout(r, esperar * 1000));
-        i -= LOTE[tipo];
-        continue;
-      }
-      if (!res.ok) { fail += trozo.length; hechos += trozo.length; continue; }
-      const datos = await res.json().catch(() => null);
-      (datos && datos[tipo + 's'] || []).forEach(raw => {
-        if (!raw || !raw.id || yaTengo.has(raw.id)) { if (!raw) fail++; return; }
-        ITEMS.push(makeItem(normalize(raw, tipo)));
-        yaTengo.add(raw.id);
-        added++;
+    if (!ids.length) continue;
+    let datos;
+    try {
+      datos = await fetchItemsIndividually(tipo, ids, (n) => {
+        out.innerHTML = `Procesando ${hechosTotal + n} de ${pendientes}… <strong>${added}</strong> añadidos`;
       });
-      hechos += trozo.length;
-      out.innerHTML = `Procesando ${Math.min(hechos, pendientes)} de ${pendientes}… <strong>${added}</strong> añadidos`;
-      if (added && added % 500 < LOTE[tipo]) { saveItems(); }   // guardado parcial por si acaso
+    } catch (e) {
+      /* Si el fallo es de credenciales, va a fallar exactamente igual con
+         cada elemento que quede: antes seguía intentando todos en silencio y
+         al final solo decía "N fallaron", sin explicar por qué. Ahora para
+         en el primero y lo dice. */
+      out.innerHTML = `Parado: tu conexión con Spotify en este dispositivo no es válida o ha caducado. Vuelve a conectarte en Ajustes.<br><span style="color:var(--fg-mute);font-size:12.5px;">${added} añadidos antes de fallar.</span>`;
+      return;   // el finally de más abajo repone _bulkCorriendo y el botón
     }
+    datos.forEach(raw => {
+      if (!raw || !raw.id || yaTengo.has(raw.id)) { if (!raw) fail++; return; }
+      ITEMS.push(makeItem(normalize(raw, tipo)));
+      yaTengo.add(raw.id);
+      added++;
+    });
+    hechosTotal += ids.length;
+    saveItems();   // guardado parcial por si el usuario cierra a mitad
   }
 
   saveItems(); render();
@@ -1574,8 +1679,7 @@ function wireMeta(it, id) {
 
   document.getElementById('dRefresh')?.addEventListener('click', async () => {
     const btn = document.getElementById('dRefresh');
-    const c = loadCreds();
-    if (!c?.clientId) { toast('Conecta Spotify en Ajustes primero'); return; }
+    if (!isConnected()) { toast('Conecta Spotify en Ajustes primero'); return; }
     if (it.editedByUser && !confirm('Editaste estos datos a mano. Actualizar desde Spotify los sobrescribirá. ¿Continuar?')) return;
     btn.textContent = 'Actualizando…';
     try {
@@ -1806,9 +1910,8 @@ function programarSync() {
 
 const sinPortada = () => ITEMS.filter(i => !i.coverUrl).length;
 
-/* Pide a Spotify los objetos completos en lotes (20 álbumes / 50 artistas o
-   canciones por llamada) y rellena solo lo que falte, sin tocar tus ediciones. */
-const LOTE = { album: 20, artist: 50, track: 50 };
+/* Pide a Spotify los objetos completos uno a uno y rellena solo lo que falte,
+   sin tocar tus ediciones (ver fetchItemsIndividually). */
 let _parar = false;
 
 /* El botón "Detener" vivía como dataset del propio <button>, pero si se cierra
@@ -1832,41 +1935,35 @@ async function completarPortadas() {
   try {
     for (const tipo of ['album', 'artist', 'track']) {
       const grupo = faltan.filter(i => i.type === tipo);
-      for (let i = 0; i < grupo.length; i += LOTE[tipo]) {
-        if (_parar) break;
-        const trozo = grupo.slice(i, i + LOTE[tipo]);
-        const t = await spotifyToken();
-        const res = await fetch(
-          `https://api.spotify.com/v1/${tipo}s?ids=${trozo.map(x => x.spotifyId).join(',')}`,
-          { headers: { Authorization: 'Bearer ' + t } });
-        if (res.status === 429) {                       // límite de peticiones
-          await new Promise(r => setTimeout(r, (+res.headers.get('Retry-After') || 2) * 1000));
-          i -= LOTE[tipo];
-          continue;
-        }
-        if (!res.ok) { fallos += trozo.length; continue; }
-        const datos = await res.json();
-        (datos[tipo + 's'] || []).forEach((raw, n) => {
-          const it = trozo[n];
-          if (!raw || !it) { fallos++; return; }
-          const fresco = normalize(raw, tipo);
-          Object.keys(fresco).forEach(k => {
-            if (fresco[k] != null && fresco[k] !== '' &&
-                (it[k] == null || it[k] === '' ||
-                 (Array.isArray(it[k]) && !it[k].length))) it[k] = fresco[k];
-          });
-          hechos++;
+      if (!grupo.length || _parar) continue;
+      const datos = await fetchItemsIndividually(
+        tipo, grupo.map(x => x.spotifyId),
+        () => {
+          const estAhora = document.getElementById('coverStat');
+          // la hoja de Ajustes puede haberse cerrado o reabierto: comprobar
+          // que el nodo sigue siendo el que hay en pantalla antes de tocarlo
+          if (estAhora) estAhora.textContent = `● ${hechos.toLocaleString('es-ES')} de ${faltan.length.toLocaleString('es-ES')} completadas`;
+        },
+        () => _parar
+      );
+      datos.forEach((raw, n) => {
+        const it = grupo[n];
+        if (!raw || !it) { fallos++; return; }
+        const fresco = normalize(raw, tipo);
+        Object.keys(fresco).forEach(k => {
+          if (fresco[k] != null && fresco[k] !== '' &&
+              (it[k] == null || it[k] === '' ||
+               (Array.isArray(it[k]) && !it[k].length))) it[k] = fresco[k];
         });
-        // la hoja de Ajustes puede haberse cerrado o reabierto: comprobar que
-        // el nodo sigue siendo el que hay en pantalla antes de tocarlo
-        const estAhora = document.getElementById('coverStat');
-        if (estAhora) estAhora.textContent = `● ${hechos.toLocaleString('es-ES')} de ${faltan.length.toLocaleString('es-ES')} completadas`;
-        saveItems();
-      }
-      if (_parar) break;
+        hechos++;
+      });
+      saveItems();
     }
   } catch (e) {
-    toast('Spotify ha fallado: ' + (e && e.message ? e.message : 'error de red'));
+    const msg = (e && e.message) || '';
+    toast(msg === 'NO_CREDS' || msg === 'AUTH_FAILED'
+      ? 'Tu conexión con Spotify no es válida o ha caducado. Vuelve a conectarte en Ajustes.'
+      : 'Spotify ha fallado: ' + (msg || 'error de red'));
   }
 
   saveItems(); render();
@@ -1880,17 +1977,22 @@ const cuenta = tipo => ITEMS.filter(i => i.type === tipo).length;
 
 function openSettings() {
   const c = loadCreds();
-  const ok = !!(c && c.clientId && c.clientSecret);
+  const ok = isConnected();
   const gh = read(K_GH, null);
   showSheet(`
     <div class="sheethead"><h2>Ajustes</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
 
     <div class="flabel">Conexión con Spotify</div>
     <div class="statusline ${ok ? 'ok' : 'no'}">${ok ? '● Conectado' : '● Sin conectar'}</div>
-    <p class="lede">Se guardan solo en este dispositivo y nunca salen de él. Créalas gratis en <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noopener">developer.spotify.com</a> → Create app → Settings.</p>
-    <input class="field mono" id="cid" placeholder="Client ID" value="${esc(c?.clientId || '')}" autocomplete="off" spellcheck="false" style="margin-bottom:8px;">
-    <input class="field mono" id="csec" type="password" placeholder="Client Secret" value="${esc(c?.clientSecret || '')}" autocomplete="off" spellcheck="false">
-    <div class="btnrow"><button class="btn primary wide" id="saveCreds">Guardar credenciales</button></div>
+    <p class="lede">Desde febrero de 2026 Spotify exige iniciar sesión de verdad (ya no vale solo Client ID + Secret). La sesión es por dispositivo, como antes. Créate una app gratis en <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noopener">developer.spotify.com</a> → Create app.</p>
+    <input class="field mono" id="cid" placeholder="Client ID" value="${esc(c?.clientId || '')}" autocomplete="off" spellcheck="false" style="margin-bottom:8px;" ${ok ? 'disabled' : ''}>
+    <p class="lede">En los ajustes de esa app, en <strong>Redirect URIs</strong>, añade exactamente esta URL y guarda:</p>
+    <input class="field mono" id="redirectUri" value="${esc(REDIRECT_URI)}" readonly style="margin-bottom:8px;" onclick="this.select()">
+    <div class="btnrow">
+      ${ok
+        ? `<button class="btn wide" id="disconnectSpotify">Desconectar</button>`
+        : `<button class="btn primary wide" id="saveCreds">Guardar y conectar con Spotify</button>`}
+    </div>
 
     <div class="flabel">Etiquetas</div>
     <div id="tagList">${tagListHtml()}</div>
@@ -1971,10 +2073,14 @@ function openSettings() {
   });
 
   swatch = TAG_COLORS[0];
-  document.getElementById('saveCreds').addEventListener('click', () => {
-    write(K_CREDS, { clientId: document.getElementById('cid').value.trim(), clientSecret: document.getElementById('csec').value.trim() });
-    tok = { v: null, exp: 0 };
-    toast('Credenciales guardadas');
+  document.getElementById('saveCreds')?.addEventListener('click', () => {
+    const clientId = document.getElementById('cid').value.trim();
+    if (!clientId) { toast('Falta el Client ID'); return; }
+    write(K_CREDS, { clientId });
+    beginSpotifyLogin();   // sale de la app hacia la pantalla de login de Spotify
+  });
+  document.getElementById('disconnectSpotify')?.addEventListener('click', () => {
+    disconnectSpotify();
     openSettings();
   });
   document.getElementById('sw').addEventListener('click', e => {
@@ -2264,7 +2370,7 @@ document.addEventListener('keydown', e => {
 });
 
 /* ============ init ============ */
-bootStorage().then(() => {
+handleSpotifyRedirect().then(() => bootStorage()).then(() => {
   render();
   if (ghCfg()) sincronizar(false);
 });
