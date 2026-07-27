@@ -371,6 +371,21 @@
   }
   .addbtn:active { transform: scale(0.9); }
   .addbtn.done { background: var(--jade); color: #fff; border-color: transparent; }
+
+  /* ---- selección múltiple en resultados de búsqueda ---- */
+  .restools { display:flex; gap:14px; align-items:center; padding: 2px 2px 12px; font-size: 13px; }
+  .restools button { color: var(--accent, var(--jade)); font-weight: 600; }
+  .restools .n { color: var(--fg-mute); font-weight: 400; margin-left: 2px; }
+  .rrow.selectable { cursor: pointer; }
+  .rrow.selectable:active { background: var(--surface-2); }
+  .rchk {
+    width: 26px; height: 26px; border-radius: 50%; flex-shrink:0;
+    border: 1.5px solid var(--line); display:flex; align-items:center; justify-content:center;
+    font-size: 14px; color: transparent; position: relative;
+  }
+  .rchk::after { content:""; position:absolute; inset:-10px; }  /* zona táctil real de 46px */
+  .rchk.on { background: var(--jade); border-color: transparent; color: #fff; }
+  .rchk.saved { border-style: dashed; opacity: .55; }
   .skel { height: 66px; border-radius: 10px; background: linear-gradient(90deg, var(--surface) 25%, var(--surface-2) 50%, var(--surface) 75%); background-size: 200% 100%; animation: sweep 1.2s infinite; margin-bottom: 7px; }
   @keyframes sweep { from { background-position: 200% 0 } to { background-position: -200% 0 } }
 
@@ -462,7 +477,12 @@
      a 44px, que es el mínimo que Apple recomienda para acertar sin mirar. */
   @media (max-width: 560px) {
     .searchwrap input { padding-top: 12px; padding-bottom: 12px; font-size: 16px; }
-    /* 16px además evita que Safari haga zoom automático al enfocar el campo */
+    /* 16px además evita que Safari haga zoom automático al enfocar el campo.
+       El buscador de "Añadir" (.field) se quedaba en 14,5px: por eso al tocar
+       ＋ Añadir y enfocar el campo, Safari hacía zoom solo. Mismo motivo para
+       las credenciales y el textarea de pegado en bloque. */
+    .field { font-size: 16px; padding-top: 12px; padding-bottom: 12px; }
+    .field.mono, textarea.field.tall { font-size: 16px; }
     select.ctl, #viewBtn { min-height: 44px; }
     .iconbtn { width: 42px; height: 42px; }
     /* la barra de chips tiene scroll horizontal y recorta el pseudoelemento,
@@ -708,9 +728,18 @@ async function spotifyToken() {
   const c = loadCreds();
   if (!c || !c.clientId || !c.clientSecret) throw new Error('NO_CREDS');
   if (tok.v && tok.exp > Date.now()) return tok.v;
+  let auth;
+  try {
+    // btoa revienta si el Client ID/Secret trae algún carácter fuera de Latin-1
+    // (p. ej. una comilla curva que el teclado del móvil mete sola). Sin este
+    // try, el error salía como "InvalidCharacterError" en vez de decir la causa.
+    auth = btoa(c.clientId + ':' + c.clientSecret);
+  } catch {
+    throw new Error('BAD_CREDS_CHARS');
+  }
   const res = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Basic ' + btoa(c.clientId + ':' + c.clientSecret) },
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Basic ' + auth },
     body: 'grant_type=client_credentials'
   });
   if (!res.ok) throw new Error('AUTH_FAILED');
@@ -1089,9 +1118,12 @@ document.addEventListener('keydown', e => {
 let searchType = 'album';
 let lastResults = [];
 let searchTimer;
+let searchSelMode = false;
+let searchSel = new Set();   // índices de lastResults marcados en modo selección
 
 function openSearch() {
   searchType = 'album';
+  searchSelMode = false; searchSel = new Set();
   showSheet(`
     <div class="sheethead"><h2>Buscar en Spotify</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
     <div class="segrow" id="segs">
@@ -1109,6 +1141,7 @@ function openSearch() {
     if (b.dataset.t === 'bulk') { openBulk(); return; }   // misma hoja, panel de pegado
     document.querySelectorAll('#segs .seg').forEach(x => x.classList.toggle('on', x === b));
     searchType = b.dataset.t;
+    searchSelMode = false; searchSel = new Set(); document.getElementById('searchSelBar')?.remove();
     runSearch();
   });
   sq.addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(runSearch, 330); });
@@ -1143,29 +1176,87 @@ async function runSearch() {
     }
     if (miTurno !== _searchSeq) return;   // ya hay una búsqueda más nueva en curso
     lastResults = resultados;
-    if (!lastResults.length) { box.innerHTML = `<div class="empty" style="padding:26px 8px;"><p>Sin resultados para “${esc(q)}”.</p></div>`; return; }
-    box.innerHTML = lastResults.map(rrow).join('');
+    searchSelMode = false; searchSel = new Set();   // resultados nuevos: cualquier selección previa ya no aplica
+    if (!lastResults.length) { box.innerHTML = `<div class="empty" style="padding:26px 8px;"><p>Sin resultados para “${esc(q)}”.</p></div>`; document.getElementById('searchSelBar')?.remove(); return; }
+    pintarResultados();
   } catch (err) {
     if (miTurno !== _searchSeq) return;
     const msg = err.message || '';
     let text = 'No se pudo conectar con Spotify. Revisa tu conexión.';
     if (msg === 'AUTH_FAILED' || msg === 'NO_CREDS') text = 'Tus credenciales no son válidas. Revísalas en Ajustes.';
+    else if (msg === 'BAD_CREDS_CHARS') text = 'El Client ID o el Secret de este dispositivo tienen algún carácter raro (a veces el teclado cambia las comillas o mete un espacio). Bórralos en Ajustes y vuelve a pegarlos.';
     else if (msg.startsWith('LOOKUP_FAILED')) text = `Ese enlace no existe o es privado (error ${msg.split(':')[1]}).`;
     else if (msg.startsWith('SEARCH_FAILED')) text = `Spotify devolvió un error ${msg.split(':')[1]}.`;
     box.innerHTML = `<div class="empty" style="padding:26px 8px;"><p>${esc(text)}</p></div>`;
+    document.getElementById('searchSelBar')?.remove();
   }
 }
 
 function rrow(r, i) {
   const saved = ITEMS.some(x => x.spotifyId === r.spotifyId);
-  return `<div class="rrow">
-    <div class="rart">${portada(r.coverUrl, TYPE_ICON[r.type], true)}</div>
+  const info = `<div class="rart">${portada(r.coverUrl, TYPE_ICON[r.type], true)}</div>
     <div class="rinfo">
       <div class="rt">${esc(r.title)}</div>
       <div class="ra">${esc(r.artists.join(', '))}${r.releaseDate ? ' · ' + esc(String(r.releaseDate).slice(0, 4)) : ''}</div>
-    </div>
+    </div>`;
+
+  if (searchSelMode) {
+    const marcado = searchSel.has(i);
+    return `<div class="rrow${saved ? '' : ' selectable'}" ${saved ? '' : `data-rchk="${i}"`}>
+      ${info}
+      <span class="rchk ${marcado ? 'on' : ''} ${saved ? 'saved' : ''}" aria-label="${saved ? 'Ya guardado' : (marcado ? 'Quitar de la selección' : 'Seleccionar')}">✓</span>
+    </div>`;
+  }
+  return `<div class="rrow">
+    ${info}
     <button class="addbtn ${saved ? 'done' : ''}" data-add="${i}" aria-label="${saved ? 'Ya guardado' : 'Guardar'}">${saved ? '✓' : '＋'}</button>
   </div>`;
+}
+
+/* Vuelve a pintar la lista de resultados: la barra de herramientas (Seleccionar
+   varios / Añadir todos), las filas, y si hay selección activa, la barra de
+   confirmación abajo. Se llama tras cada búsqueda y tras cada toque en modo
+   selección, para que el recuento y las marcas siempre reflejen el estado real. */
+function pintarResultados() {
+  const box = document.getElementById('sres');
+  if (!box) return;
+  const pendientes = lastResults.filter(r => !ITEMS.some(x => x.spotifyId === r.spotifyId)).length;
+
+  let tools = '';
+  if (lastResults.length > 1) {
+    tools = searchSelMode
+      ? `<div class="restools"><button data-restool="cancel">Cancelar</button></div>`
+      : `<div class="restools">
+           <button data-restool="selmode">Seleccionar varios</button>
+           ${pendientes ? `<button data-restool="addall">Añadir todos<span class="n">(${pendientes})</span></button>` : ''}
+         </div>`;
+  }
+
+  box.innerHTML = tools + lastResults.map(rrow).join('');
+
+  const barra = document.getElementById('searchSelBar');
+  if (barra) barra.remove();
+  if (searchSelMode && searchSel.size) {
+    document.querySelector('.sheet')?.insertAdjacentHTML('beforeend', `
+      <div class="selbar" id="searchSelBar">
+        <span class="cnt">${searchSel.size} seleccionado${searchSel.size === 1 ? '' : 's'}</span>
+        <button class="btn" data-selbar="cancel">Cancelar</button>
+        <button class="btn primary" data-selbar="add">Añadir</button>
+      </div>`);
+  }
+}
+
+/* Añade a la vez todo lo que no esté ya guardado, de un array de resultados
+   de Spotify (normalizados). Usado tanto por "Añadir todos" como por
+   confirmar una selección múltiple. */
+function addManyResults(items) {
+  let added = 0;
+  items.forEach(r => {
+    if (!r || ITEMS.some(x => x.spotifyId === r.spotifyId)) return;
+    ITEMS.push(makeItem(r)); added++;
+  });
+  if (added) { saveItems(); render(); }
+  return added;
 }
 
 /* ---- bulk ---- */
@@ -1302,7 +1393,21 @@ async function runBulk() {
         const t = await spotifyToken();
         res = await fetch(`https://api.spotify.com/v1/${tipo}s?ids=${trozo.join(',')}`,
                           { headers: { Authorization: 'Bearer ' + t } });
-      } catch { fail += trozo.length; hechos += trozo.length; continue; }
+      } catch (e) {
+        /* Si el fallo es de credenciales, va a fallar exactamente igual en
+           cada lote que quede: antes seguía intentando todos en silencio y
+           al final solo decía "N fallaron", sin explicar por qué. Ahora para
+           en el primero y lo dice. */
+        const msg = (e && e.message) || '';
+        if (msg === 'NO_CREDS' || msg === 'AUTH_FAILED' || msg === 'BAD_CREDS_CHARS') {
+          const explica = msg === 'BAD_CREDS_CHARS'
+            ? 'el Client ID o el Secret de este dispositivo tienen algún carácter raro (a veces el teclado cambia las comillas). Bórralos en Ajustes y vuelve a pegarlos.'
+            : 'las credenciales de Spotify de este dispositivo no son válidas. Revísalas en Ajustes.';
+          out.innerHTML = `Parado: ${explica}<br><span style="color:var(--fg-mute);font-size:12.5px;">${added} añadidos antes de fallar.</span>`;
+          return;   // el finally de más abajo repone _bulkCorriendo y el botón
+        }
+        fail += trozo.length; hechos += trozo.length; continue;
+      }
       if (res.status === 429) {                       // límite de peticiones: esperar y repetir
         const esperar = (+res.headers.get('Retry-After') || 2);
         out.innerHTML = `Spotify pide una pausa de ${esperar}s… <strong>${added}</strong> añadidos de ${pendientes}`;
@@ -2114,6 +2219,38 @@ modalRoot.addEventListener('click', e => {
     add.classList.add('done'); add.textContent = '✓';
     return;
   }
+
+  // ---- selección múltiple en resultados de búsqueda ----
+  const restool = e.target.closest('[data-restool]');
+  if (restool) {
+    if (restool.dataset.restool === 'selmode') searchSelMode = true;
+    else if (restool.dataset.restool === 'cancel') { searchSelMode = false; searchSel = new Set(); }
+    else if (restool.dataset.restool === 'addall') {
+      const n = addManyResults(lastResults);
+      toast(n ? `${n} añadido${n === 1 ? '' : 's'} al vault` : 'Ya tenías todo esto guardado');
+    }
+    pintarResultados();
+    return;
+  }
+  const chk = e.target.closest('[data-rchk]');
+  if (chk) {
+    const i = +chk.dataset.rchk;
+    if (searchSel.has(i)) searchSel.delete(i); else searchSel.add(i);
+    pintarResultados();
+    return;
+  }
+  const selbar = e.target.closest('[data-selbar]');
+  if (selbar) {
+    if (selbar.dataset.selbar === 'add') {
+      const elegidos = [...searchSel].map(i => lastResults[i]).filter(Boolean);
+      const n = addManyResults(elegidos);
+      toast(`${n} añadido${n === 1 ? '' : 's'} al vault`);
+    }
+    searchSelMode = false; searchSel = new Set();
+    pintarResultados();
+    return;
+  }
+
   const open = e.target.closest('[data-open]');
   if (open && open.dataset.open === 'settings') { closeModal(); openSettings(); }
 });
