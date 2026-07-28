@@ -834,10 +834,11 @@ async function spotifyToken() {
   return fresco.accessToken;
 }
 
-async function spotifySearch(q, type) {
+async function spotifySearch(q, type, offset = 0) {
   const t = await spotifyToken();
-  // el límite máximo bajó de 50 a 10 en el cambio de febrero de 2026
-  const res = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=${type}&limit=10`, { headers: { Authorization: 'Bearer ' + t } });
+  // el límite máximo bajó de 50 a 10 en el cambio de febrero de 2026; para ver
+  // más de 10 hay que pedir páginas sucesivas con offset (ver cargarMasResultados)
+  const res = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=${type}&limit=10&offset=${offset}`, { headers: { Authorization: 'Bearer ' + t } });
   if (!res.ok) throw new Error('SEARCH_FAILED:' + res.status);
   return res.json();
 }
@@ -1227,7 +1228,7 @@ function deleteItems(ids) {
     untombstone(removed);
     saveItems();
     render();
-  });
+  }, 9000);   // borrar es fácil de tocar sin querer: más margen que el resto de avisos
 }
 
 /* ============ modals ============ */
@@ -1247,6 +1248,17 @@ let lastResults = [];
 let searchTimer;
 let searchSelMode = false;
 let searchSel = new Set();   // índices de lastResults marcados en modo selección
+
+/* Spotify solo da 10 resultados por página desde el cambio de febrero de 2026.
+   Para poder elegir entre más de 10, "Ver más resultados" pide la siguiente
+   página con offset y la añade al final de lastResults (nunca se reordena, así
+   que los índices ya marcados en searchSel siguen siendo válidos). */
+let searchOffset = 0;
+let searchAgotado = true;
+let searchQueryActual = '';
+let searchTypeActual = '';
+let _cargandoMasResultados = false;
+const TOPE_OFFSET_BUSQUEDA = 100;   // 10 páginas; de sobra para elegir a mano
 
 function openSearch() {
   searchType = 'album';
@@ -1292,13 +1304,17 @@ async function runSearch() {
   }
   box.innerHTML = `<div class="skel"></div><div class="skel"></div><div class="skel"></div>`;
   const m = q.match(URL_ONE);
+  searchOffset = 0; searchAgotado = true;
+  searchQueryActual = q; searchTypeActual = searchType;
   try {
     let resultados;
     if (m) {
       resultados = [normalize(await spotifyLookup(m[1], m[2]), m[1])];
     } else {
-      const d = await spotifySearch(q, searchType);
+      const d = await spotifySearch(q, searchType, 0);
       resultados = (d[searchType + 's']?.items || []).map(r => normalize(r, searchType));
+      searchOffset = resultados.length;
+      searchAgotado = resultados.length < 10;   // menos de una página llena: no hay más
     }
     if (miTurno !== _searchSeq) return;   // ya hay una búsqueda más nueva en curso
     lastResults = resultados;
@@ -1357,7 +1373,11 @@ function pintarResultados() {
          </div>`;
   }
 
-  box.innerHTML = tools + lastResults.map(rrow).join('');
+  const masBtn = (!searchAgotado && searchOffset < TOPE_OFFSET_BUSQUEDA)
+    ? `<button class="btn vermas" data-moreres="1" ${_cargandoMasResultados ? 'disabled' : ''}>${_cargandoMasResultados ? 'Cargando…' : 'Ver más resultados'}</button>`
+    : '';
+
+  box.innerHTML = tools + lastResults.map(rrow).join('') + masBtn;
 
   const barra = document.getElementById('searchSelBar');
   if (barra) barra.remove();
@@ -1368,6 +1388,28 @@ function pintarResultados() {
         <button class="btn" data-selbar="cancel">Cancelar</button>
         <button class="btn primary" data-selbar="add">Añadir</button>
       </div>`);
+  }
+}
+
+/* Pide la siguiente página de 10 resultados y la añade al final de lastResults
+   sin perder la selección ni las filas ya pintadas. */
+async function cargarMasResultados() {
+  if (_cargandoMasResultados || searchAgotado) return;
+  _cargandoMasResultados = true;
+  pintarResultados();
+  try {
+    const d = await spotifySearch(searchQueryActual, searchTypeActual, searchOffset);
+    const nuevos = (d[searchTypeActual + 's']?.items || []).map(r => normalize(r, searchTypeActual));
+    const yaIds = new Set(lastResults.map(r => r.spotifyId));
+    const frescos = nuevos.filter(r => !yaIds.has(r.spotifyId));
+    lastResults = lastResults.concat(frescos);
+    searchOffset += nuevos.length;
+    searchAgotado = nuevos.length < 10;
+  } catch (e) {
+    toast('No se pudieron cargar más resultados');   // offset no cambia: el botón deja reintentar
+  } finally {
+    _cargandoMasResultados = false;
+    pintarResultados();
   }
 }
 
@@ -2029,7 +2071,10 @@ function openSettings() {
     </div>
 
     <div class="flabel">Copia de seguridad</div>
-    <p class="lede">Tu vault vive solo en este navegador. Si borras los datos del navegador, se pierde. Descarga una copia de vez en cuando.</p>
+    ${gh && gh.token
+      ? `<p class="lede">Con la sincronización activada, cada cambio queda también guardado en tu repo de GitHub — no depende solo de este navegador. Y como cada subida es un commit, GitHub guarda el historial completo: si algo se borra por error, siempre puedes recuperar una versión anterior desde ahí.</p>
+         <div class="btnrow"><a class="btn wide" href="${esc(`https://github.com/${gh.repo}/commits/main/${GH_PATH}`)}" target="_blank" rel="noopener">Ver historial en GitHub ↗</a></div>`
+      : `<p class="lede">Tu vault vive solo en este navegador. Si borras los datos del navegador, se pierde. Activa la sincronización de arriba para tener también una copia en GitHub, o descarga una copia de vez en cuando.</p>`}
     <div class="btnrow">
       <button class="btn wide" id="expBtn">Descargar copia</button>
       <button class="btn wide" id="impBtn">Restaurar copia</button>
@@ -2270,9 +2315,12 @@ document.getElementById('chips').addEventListener('click', e => {
   savePrefs(); render();
 });
 
-/* content delegation: open detail, toggle listened, selection, empty-state buttons */
+/* content delegation: open detail, toggle listened, selection, empty-state buttons.
+   Va en el <main> completo (no solo #results): el botón "Quitar filtros" de la
+   cabecera de resultados vive en #resultline, un hermano de #results, y con el
+   listener solo en #results ese clic no llegaba a ningún sitio. */
 let pressTimer = null;
-const contentEl = document.getElementById('results');
+const contentEl = document.querySelector('main.content');
 
 contentEl.addEventListener('click', e => {
   const clear = e.target.closest('[data-clear]');
@@ -2345,6 +2393,7 @@ modalRoot.addEventListener('click', e => {
     pintarResultados();
     return;
   }
+  if (e.target.closest('[data-moreres]')) { cargarMasResultados(); return; }
   const selbar = e.target.closest('[data-selbar]');
   if (selbar) {
     if (selbar.dataset.selbar === 'add') {
