@@ -776,6 +776,14 @@ async function pkceChallenge(verifier) {
 
 function isConnected() { const c = loadCreds(); return !!(c && c.refreshToken); }
 
+/* Con permiso vacío, Spotify solo deja ver catálogo público: un álbum, un
+   artista o una playlist marcada como pública. Una playlist personal que no
+   hayas puesto en público (la mayoría, por defecto) daba 403 al leerla o
+   guardarla. Estos dos permisos son de solo lectura y piden exactamente eso,
+   nada de escritura ni datos que no sean playlists:
+   https://developer.spotify.com/documentation/web-api/concepts/scopes */
+const SPOTIFY_SCOPE = 'playlist-read-private playlist-read-collaborative';
+
 /* Manda al usuario a la pantalla de login real de Spotify. Al volver, Spotify
    añade ?code=...&state=... a esta misma URL (por eso hace falta registrar
    esta página exacta como Redirect URI en el Developer Dashboard). */
@@ -788,7 +796,7 @@ async function beginSpotifyLogin() {
   const challenge = await pkceChallenge(verifier);
   const params = new URLSearchParams({
     client_id: c.clientId, response_type: 'code', redirect_uri: REDIRECT_URI,
-    code_challenge_method: 'S256', code_challenge: challenge, state, scope: ''
+    code_challenge_method: 'S256', code_challenge: challenge, state, scope: SPOTIFY_SCOPE
   });
   location.href = 'https://accounts.spotify.com/authorize?' + params.toString();
 }
@@ -826,7 +834,8 @@ async function handleSpotifyRedirect() {
     const d = await res.json();
     write(K_CREDS, {
       clientId: c.clientId, accessToken: d.access_token,
-      refreshToken: d.refresh_token, expiresAt: Date.now() + (d.expires_in - 60) * 1000
+      refreshToken: d.refresh_token, expiresAt: Date.now() + (d.expires_in - 60) * 1000,
+      scope: d.scope || ''   // permisos que Spotify concedió de verdad, para saber si faltan
     });
     toast('Conectado con Spotify');
   } catch (e) {
@@ -854,10 +863,23 @@ async function spotifyToken() {
   const fresco = {
     clientId: c.clientId, accessToken: d.access_token,
     refreshToken: d.refresh_token || c.refreshToken,   // Spotify no siempre rota el refresh token
-    expiresAt: Date.now() + (d.expires_in - 60) * 1000
+    expiresAt: Date.now() + (d.expires_in - 60) * 1000,
+    scope: d.scope || c.scope || ''   // al refrescar no siempre viene: se conserva el que ya había
   };
   write(K_CREDS, fresco);
   return fresco.accessToken;
+}
+
+/* Un token pedido antes de añadir un permiso nuevo (por ejemplo, leer
+   playlists privadas) sigue teniendo SOLO los permisos con los que se pidió
+   la primera vez — cambiar el código no se lo da con carácter retroactivo.
+   Esto detecta esa situación para avisar de que hay que reconectar, en vez
+   de dejar que Spotify devuelva un 403 sin explicación. */
+function tieneScopePlaylists() {
+  const c = loadCreds();
+  if (!c || !c.scope) return false;
+  const got = new Set(c.scope.split(' ').filter(Boolean));
+  return SPOTIFY_SCOPE.split(' ').every(s => got.has(s));
 }
 
 /* Búsquedas de sobra en poco tiempo (escribir rápido, o un rato largo de uso
@@ -1417,7 +1439,9 @@ async function runSearch() {
       const code = msg.split(':')[1];
       text = code === '404'
         ? 'Esa playlist no es accesible (privada, o de las que genera Spotify — solo funcionan las públicas de usuario).'
-        : `No se pudo leer la playlist (error ${code}).`;
+        : code === '403' && !tieneScopePlaylists()
+          ? 'Para leer esta playlist (sobre todo si es tuya y no la has puesto en público) hace falta reconectar con Spotify: en Ajustes, desconecta y vuelve a "Conectar con Spotify".'
+          : `No se pudo leer la playlist (error ${code}).`;
     }
     box.innerHTML = `<div class="empty" style="padding:26px 8px;"><p>${esc(text)}</p></div>`;
     document.getElementById('searchSelBar')?.remove();
@@ -1608,6 +1632,14 @@ async function runBulk() {
   // 1) playlists
   for (const pid of playlists) {
     try {
+      // la playlist en sí, como marcador con enlace directo (si falla solo esto,
+      // seguimos igualmente con sus canciones/álbumes más abajo)
+      try {
+        const marcador = normalize(await fetchPlaylistMeta(pid), 'playlist');
+        if (ITEMS.some(x => x.spotifyId === marcador.spotifyId)) dup++;
+        else { ITEMS.push(makeItem(marcador)); added++; }
+      } catch {}
+
       const tracks = await fetchPlaylist(pid, (got, tot) => { out.innerHTML = `Leyendo playlist… ${got} de ${tot} canciones`; });
       const wanted = new Map();
       for (const t of tracks) {
@@ -1629,7 +1661,9 @@ async function runBulk() {
       const code = (err.message || '').split(':')[1];
       notes.push(code === '404'
         ? 'Una playlist no es accesible (privada, o de las que genera Spotify — solo funcionan las públicas de usuario).'
-        : `Una playlist falló (error ${code || '?'}).`);
+        : code === '403' && !tieneScopePlaylists()
+          ? 'Una playlist dio error 403 — para leer playlists privadas hace falta reconectar con Spotify en Ajustes (desconecta y vuelve a "Conectar con Spotify").'
+          : `Una playlist falló (error ${code || '?'}).`);
       fail++;
     }
   }
@@ -1897,6 +1931,27 @@ function wireMeta(it, id) {
   });
 }
 
+/* Traía limit=50 de golpe, pero este endpoint (a diferencia de /search) siempre
+   ha tenido el máximo en 10 — con más, Spotify responde 400 (parámetro
+   inválido), no un fallo de red. Pagina de 10 en 10 hasta agotar el catálogo
+   del artista o llegar a un tope razonable. */
+async function fetchArtistAlbums(artistId, onProgress) {
+  let out = [], offset = 0, total = null;
+  while (offset < 200) {
+    const t = await spotifyToken();
+    const res = await fetchConReintento429(`https://api.spotify.com/v1/artists/${artistId}/albums?include_groups=album,single&limit=10&offset=${offset}&market=ES`, t);
+    if (res.status === 429) throw new Error('RATE_LIMIT');
+    if (!res.ok) throw new Error('DISCO_FAILED:' + res.status);
+    const d = await res.json();
+    if (total === null) total = d.total;
+    out = out.concat(d.items || []);
+    onProgress?.(out.length, Math.min(total, 200));
+    offset += 10;
+    if (offset >= total || !(d.items || []).length) break;
+  }
+  return out;
+}
+
 /* ---- discografía de un artista ---- */
 async function openDiscography(artist) {
   showSheet(`
@@ -1912,14 +1967,12 @@ async function openDiscography(artist) {
     return;
   }
   try {
-    const t = await spotifyToken();
-    const res = await fetchConReintento429(`https://api.spotify.com/v1/artists/${artist.spotifyId}/albums?include_groups=album,single&limit=50&market=ES`, t);
-    if (res.status === 429) throw new Error('RATE_LIMIT');
-    if (!res.ok) throw new Error('DISCO_FAILED:' + res.status);
-    const d = await res.json();
+    const items = await fetchArtistAlbums(artist.spotifyId, (got, tot) => {
+      if (tot > 10) box.innerHTML = `<p class="lede" style="text-align:center;padding:20px 4px;">Leyendo discografía… ${got} de ${tot}</p>`;
+    });
     // Spotify repite el mismo disco en varias ediciones; me quedo con uno por título.
     const seen = new Set();
-    lastResults = (d.items || []).map(a => normalize(a, 'album'))
+    lastResults = items.map(a => normalize(a, 'album'))
       .filter(r => { const k = fold(r.title); if (seen.has(k)) return false; seen.add(k); return true; })
       .sort((a, b) => (parseInt(String(b.releaseDate || '0').slice(0, 4)) || 0) - (parseInt(String(a.releaseDate || '0').slice(0, 4)) || 0));
     box.innerHTML = lastResults.length ? lastResults.map(rrow).join('') : `<div class="empty" style="padding:24px 8px;"><p>Spotify no devuelve álbumes para este artista.</p></div>`;
@@ -2197,6 +2250,8 @@ function openSettings() {
     <input class="field mono" id="cid" placeholder="Client ID" value="${esc(c?.clientId || '')}" autocomplete="off" spellcheck="false" style="margin-bottom:8px;" ${ok ? 'disabled' : ''}>
     <p class="lede">En los ajustes de esa app, en <strong>Redirect URIs</strong>, añade exactamente esta URL y guarda:</p>
     <input class="field mono" id="redirectUri" value="${esc(REDIRECT_URI)}" readonly style="margin-bottom:8px;" onclick="this.select()">
+    ${ok && !tieneScopePlaylists() ? `
+    <p class="lede" style="color:var(--rust);">Esta conexión es de antes de añadir soporte de playlists y no tiene permiso para leerlas (sobre todo las tuyas, que suelen ser privadas). Desconecta y vuelve a conectar para darle ese permiso — el resto (álbumes, canciones, artistas) sigue funcionando igual mientras tanto.</p>` : ''}
     <div class="btnrow">
       ${ok
         ? `<button class="btn wide" id="disconnectSpotify">Desconectar</button>`
