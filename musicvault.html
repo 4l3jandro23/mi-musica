@@ -683,9 +683,9 @@ async function bootStorage() {
 /* ============ helpers ============ */
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-const TYPE_LABEL = { album: 'Álbum', track: 'Canción', artist: 'Artista' };
-const TYPE_PLURAL = { album: 'Álbumes', track: 'Canciones', artist: 'Artistas' };
-const TYPE_ICON  = { album: '💿', track: '🎵', artist: '🎤' };
+const TYPE_LABEL = { album: 'Álbum', track: 'Canción', artist: 'Artista', playlist: 'Playlist' };
+const TYPE_PLURAL = { album: 'Álbumes', track: 'Canciones', artist: 'Artistas', playlist: 'Playlists' };
+const TYPE_ICON  = { album: '💿', track: '🎵', artist: '🎤', playlist: '📑' };
 const TAG_COLORS = ['#2a78d6','#1baf7a','#eda100','#3f9c35','#7a5cd6','#e34948','#e87ba4','#eb6834'];
 const artistsOf = it => (it.artists || []).join(', ');
 /* Con las carátulas desactivadas el vault se lee como una lista, no como una
@@ -959,6 +959,17 @@ async function fetchPlaylist(id, onProgress) {
   return out;
 }
 
+/* Datos ligeros de la playlist en sí (nombre, portada, dueño, nº de canciones),
+   para poder guardarla como un marcador — sin traer sus canciones. */
+async function fetchPlaylistMeta(id) {
+  const t = await spotifyToken();
+  const fields = 'id,name,images,owner(display_name),external_urls,tracks.total';
+  const res = await fetchConReintento429(`https://api.spotify.com/v1/playlists/${id}?fields=${encodeURIComponent(fields)}`, t);
+  if (res.status === 429) throw new Error('RATE_LIMIT');
+  if (!res.ok) throw new Error('PLAYLIST_FAILED:' + res.status);
+  return res.json();
+}
+
 /* Captura todos los metadatos que venga trayendo el objeto de Spotify.
    Los endpoints de búsqueda devuelven objetos simplificados; "Actualizar desde
    Spotify" en la ficha vuelve a pedir el objeto completo (sello, popularidad, géneros…). */
@@ -997,6 +1008,12 @@ function normalize(raw, type) {
     isrc: raw.external_ids?.isrc || null
   });
 
+  if (type === 'playlist') return Object.assign(base, {
+    artists: raw.owner?.display_name ? [raw.owner.display_name] : [],
+    coverUrl: raw.images?.[0]?.url || null,
+    totalTracks: raw.tracks?.total ?? null
+  });
+
   return Object.assign(base, {
     artists: [raw.name],
     coverUrl: raw.images?.[0]?.url || null
@@ -1025,14 +1042,15 @@ function metaPairs(it) {
   const p = [];
   const add = (k, v) => { if (v !== null && v !== undefined && v !== '') p.push([k, v]); };
   add('Tipo', TYPE_LABEL[it.type]);
-  add('Artista', artistsOf(it));
+  add(it.type === 'playlist' ? 'Creador' : 'Artista', artistsOf(it));
   if (it.type === 'track') add('Álbum', it.albumName);
   add(it.type === 'track' ? 'Lanzamiento del álbum' : 'Lanzamiento', fmtDate(it.releaseDate));
-  if (it.type !== 'artist' && yearOf(it)) add('Año', yearOf(it));
+  if (it.type !== 'artist' && it.type !== 'playlist' && yearOf(it)) add('Año', yearOf(it));
   add('Formato', ALBUM_TYPE_ES[it.albumType] || it.albumType);
   add('Duración', fmtDur(it.durationMs));
   add('Nº de pista', it.trackNumber ? (it.totalTracks ? `${it.trackNumber} de ${it.totalTracks}` : it.trackNumber) : null);
   if (it.type === 'album') add('Pistas', it.totalTracks);
+  if (it.type === 'playlist') add('Canciones', it.totalTracks);
   add('Disco', it.discNumber && it.discNumber > 1 ? it.discNumber : null);
   add('Explícito', it.explicit === true ? 'Sí' : it.explicit === false ? 'No' : null);
   add('Sello', it.label);
@@ -1120,6 +1138,9 @@ function renderChips() {
     `<button class="chip ${PREFS.type === 'all' ? 'on' : ''}" data-type="all">Todo <span class="ct">${ITEMS.length}</span></button>`,
     ...['album', 'track', 'artist'].map(t =>
       `<button class="chip ${PREFS.type === t ? 'on' : ''}" data-type="${t}">${TYPE_ICON[t]} ${TYPE_PLURAL[t]} <span class="ct">${countType(t)}</span></button>`),
+    // el chip de playlists solo aparece si tienes alguna guardada: es un tipo poco
+    // frecuente y mostrarlo siempre a cero sería ruido en la barra de filtros
+    ...(countType('playlist') ? [`<button class="chip ${PREFS.type === 'playlist' ? 'on' : ''}" data-type="playlist">${TYPE_ICON.playlist} ${TYPE_PLURAL.playlist} <span class="ct">${countType('playlist')}</span></button>`] : []),
     ...TAGS.map(t => {
       const n = ITEMS.filter(i => (i.tagIds || []).includes(t.id)).length;
       return `<button class="chip ${PREFS.tag === t.id ? 'on' : ''}" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)} <span class="ct">${n}</span></button>`;
@@ -1361,10 +1382,16 @@ async function runSearch() {
   try {
     let resultados;
     if (mPl) {
-      const tracks = await fetchPlaylist(mPl[1], (got, tot) => {
-        if (miTurno === _searchSeq) box.innerHTML = `<p class="lede" style="text-align:center;padding:20px 4px;">Leyendo la playlist… ${got} de ${tot}</p>`;
-      });
-      resultados = tracks.map(t => normalize(t, 'track'));
+      // la propia playlist como marcador (rápido) va primero; sus canciones sueltas
+      // detrás, por si quieres quedarte solo con algunas en vez de la playlist entera
+      const [meta, tracks] = await Promise.all([
+        fetchPlaylistMeta(mPl[1]).catch(() => null),
+        fetchPlaylist(mPl[1], (got, tot) => {
+          if (miTurno === _searchSeq) box.innerHTML = `<p class="lede" style="text-align:center;padding:20px 4px;">Leyendo la playlist… ${got} de ${tot}</p>`;
+        })
+      ]);
+      const marcador = meta ? [normalize(meta, 'playlist')] : [];
+      resultados = marcador.concat(tracks.map(t => normalize(t, 'track')));
     } else if (m) {
       resultados = [normalize(await spotifyLookup(m[1], m[2]), m[1])];
     } else {
@@ -1399,10 +1426,13 @@ async function runSearch() {
 
 function rrow(r, i) {
   const saved = ITEMS.some(x => x.spotifyId === r.spotifyId);
+  const sub = r.type === 'playlist'
+    ? [r.artists[0] ? `de ${r.artists[0]}` : null, r.totalTracks != null ? `${r.totalTracks} canciones` : null].filter(Boolean).join(' · ')
+    : `${r.artists.join(', ')}${r.releaseDate ? ' · ' + String(r.releaseDate).slice(0, 4) : ''}`;
   const info = `<div class="rart">${portada(r.coverUrl, TYPE_ICON[r.type], true)}</div>
     <div class="rinfo">
       <div class="rt">${esc(r.title)}</div>
-      <div class="ra">${esc(r.artists.join(', '))}${r.releaseDate ? ' · ' + esc(String(r.releaseDate).slice(0, 4)) : ''}</div>
+      <div class="ra">${esc(sub)}</div>
     </div>`;
 
   if (searchSelMode) {
@@ -1875,9 +1905,16 @@ async function openDiscography(artist) {
     <div id="discoOut"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
   `);
   const box = document.getElementById('discoOut');
+  // un artista de "enlace externo" no tiene un id real de catálogo: pedir su
+  // discografía a Spotify daría un 400 (id inválido), no un fallo de red
+  if (artist.manual || !artist.spotifyId || String(artist.spotifyId).startsWith('manual:')) {
+    box.innerHTML = `<div class="empty" style="padding:24px 8px;"><p>Este artista es un enlace externo, no tiene ficha ni discografía en Spotify.</p></div>`;
+    return;
+  }
   try {
     const t = await spotifyToken();
-    const res = await fetch(`https://api.spotify.com/v1/artists/${artist.spotifyId}/albums?include_groups=album,single&limit=50&market=ES`, { headers: { Authorization: 'Bearer ' + t } });
+    const res = await fetchConReintento429(`https://api.spotify.com/v1/artists/${artist.spotifyId}/albums?include_groups=album,single&limit=50&market=ES`, t);
+    if (res.status === 429) throw new Error('RATE_LIMIT');
     if (!res.ok) throw new Error('DISCO_FAILED:' + res.status);
     const d = await res.json();
     // Spotify repite el mismo disco en varias ediciones; me quedo con uno por título.
@@ -1887,7 +1924,10 @@ async function openDiscography(artist) {
       .sort((a, b) => (parseInt(String(b.releaseDate || '0').slice(0, 4)) || 0) - (parseInt(String(a.releaseDate || '0').slice(0, 4)) || 0));
     box.innerHTML = lastResults.length ? lastResults.map(rrow).join('') : `<div class="empty" style="padding:24px 8px;"><p>Spotify no devuelve álbumes para este artista.</p></div>`;
   } catch (err) {
-    box.innerHTML = `<div class="empty" style="padding:24px 8px;"><p>No se pudo cargar la discografía (${esc((err.message || '').split(':')[1] || 'error')}).</p></div>`;
+    const text = err.message === 'RATE_LIMIT'
+      ? 'Demasiadas peticiones seguidas — espera unos segundos y vuelve a intentarlo.'
+      : `No se pudo cargar la discografía (${esc((err.message || '').split(':')[1] || 'error')}).`;
+    box.innerHTML = `<div class="empty" style="padding:24px 8px;"><p>${text}</p></div>`;
   }
 }
 
@@ -2077,7 +2117,7 @@ function programarSync() {
   _syncTimer = setTimeout(() => sincronizar(false), 4000);
 }
 
-const sinPortada = () => ITEMS.filter(i => !i.coverUrl && !i.manual).length;
+const sinPortada = () => ITEMS.filter(i => !i.coverUrl && !i.manual && i.type !== 'playlist').length;
 
 /* Pide a Spotify los objetos completos uno a uno y rellena solo lo que falte,
    sin tocar tus ediciones (ver fetchItemsIndividually). */
@@ -2098,7 +2138,7 @@ async function completarPortadas() {
   _parar = false;
   if (btn) btn.textContent = 'Detener';
 
-  const faltan = ITEMS.filter(i => !i.coverUrl && i.spotifyId && !i.manual);
+  const faltan = ITEMS.filter(i => !i.coverUrl && i.spotifyId && !i.manual && i.type !== 'playlist');
   let hechos = 0, fallos = 0;
 
   try {
@@ -2367,7 +2407,7 @@ function openStats() {
   ITEMS.forEach(i => { const y = yearOf(i); if (y) { const d = Math.floor(y / 10) * 10 + 's'; byDecade[d] = (byDecade[d] || 0) + 1; } });
   const decades = Object.entries(byDecade).sort((a, b) => parseInt(a[0]) - parseInt(b[0]));
 
-  const byType = ['album', 'track', 'artist'].map(t => [TYPE_PLURAL[t], ITEMS.filter(i => i.type === t).length]).filter(r => r[1]);
+  const byType = ['album', 'track', 'artist', 'playlist'].map(t => [TYPE_PLURAL[t], ITEMS.filter(i => i.type === t).length]).filter(r => r[1]);
   const rated = ITEMS.filter(i => i.rating > 0);
   const avg = rated.length ? (rated.reduce((s, i) => s + i.rating, 0) / rated.length).toFixed(1) : null;
   const oldest = pending.slice().sort((a, b) => a.dateAdded - b.dateAdded)[0];
