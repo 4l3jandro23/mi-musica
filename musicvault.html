@@ -614,7 +614,7 @@ const idbSet = (k, v) => idb().then(db => new Promise((res, rej) => {
 
 let ITEMS = [];
 let TAGS  = [];
-let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', status: 'all', tag: 'all', genre: 'all', covers: false }, read(K_PREFS, {}));
+let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', status: 'all', tag: 'all', genre: 'all', decade: 'all', covers: false }, read(K_PREFS, {}));
 
 /* Al borrar algo hay que dejar constancia: si no, el otro dispositivo lo
    vuelve a subir en la siguiente sincronización y el borrado "revive". */
@@ -1106,6 +1106,7 @@ function filtered() {
     if (PREFS.status === 'listened' && (!it.listened || it.type === 'artist')) return false;
     if (PREFS.tag !== 'all' && !(it.tagIds || []).includes(PREFS.tag)) return false;
     if (PREFS.genre !== 'all' && !(it.genres || []).some(g => fold(g) === PREFS.genre)) return false;
+    if (PREFS.decade !== 'all') { const y = yearOf(it); if (!y || Math.floor(y / 10) * 10 !== +PREFS.decade) return false; }
     if (q && !fold(it.title + ' ' + artistsOf(it) + ' ' + (it.notes || '')).includes(q)) return false;
     return true;
   });
@@ -1177,10 +1178,17 @@ function renderChips() {
   const visibles = ITEMS.filter(i => enArchivo ? i.archived : !i.archived);
   const countType = t => t === 'all' ? visibles.length : visibles.filter(i => i.type === t).length;
 
-  // Spotify casi nunca pone géneros en canciones sueltas (solo en álbumes y
-  // sobre todo artistas), y desde hace tiempo también los deja vacíos a menudo
-  // en muchos álbumes — así que esto será más completo cuantos más artistas
-  // tengas guardados, y puede no aparecer para nada si no hay datos.
+  // Por década: dato fiable (releaseDate llega para la mayoría de álbumes y
+  // canciones), así que estos chips sí van a verse casi siempre.
+  const decadeCounts = {};
+  visibles.forEach(i => { const y = yearOf(i); if (y) { const dec = Math.floor(y / 10) * 10; decadeCounts[dec] = (decadeCounts[dec] || 0) + 1; } });
+  const decades = Object.entries(decadeCounts).sort((a, b) => +a[0] - +b[0]);   // cronológico, no por frecuencia
+
+  // Género: Spotify prácticamente ha dejado de rellenar este campo desde
+  // finales de 2024 (es un cambio suyo, documentado por otros desarrolladores,
+  // no algo que dependa de esta app) — así que estos chips solo aparecerán si
+  // alguno de tus artistas todavía conserva géneros, o si editas alguno a mano
+  // desde su ficha (Editar → Géneros).
   const genreFreq = {}, genreLabel = {};
   visibles.forEach(i => (i.genres || []).forEach(g => {
     const k = fold(g);
@@ -1197,6 +1205,8 @@ function renderChips() {
     // el chip de playlists solo aparece si tienes alguna guardada: es un tipo poco
     // frecuente y mostrarlo siempre a cero sería ruido en la barra de filtros
     ...(countType('playlist') ? [`<button class="chip ${PREFS.type === 'playlist' ? 'on' : ''}" data-type="playlist">${TYPE_ICON.playlist} ${TYPE_PLURAL.playlist} <span class="ct">${countType('playlist')}</span></button>`] : []),
+    ...decades.map(([dec, n]) =>
+      `<button class="chip decade ${PREFS.decade === dec ? 'on' : ''}" data-decade="${dec}">${dec}s <span class="ct">${n}</span></button>`),
     ...TAGS.map(t => {
       const n = visibles.filter(i => (i.tagIds || []).includes(t.id)).length;
       return `<button class="chip ${PREFS.tag === t.id ? 'on' : ''}" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)} <span class="ct">${n}</span></button>`;
@@ -1279,7 +1289,7 @@ function render() {
   }
 
   const rows = filtered();
-  const anyFilter = PREFS.type !== 'all' || PREFS.status !== 'all' || PREFS.tag !== 'all' || PREFS.genre !== 'all' || document.getElementById('q').value.trim();
+  const anyFilter = PREFS.type !== 'all' || PREFS.status !== 'all' || PREFS.tag !== 'all' || PREFS.genre !== 'all' || PREFS.decade !== 'all' || document.getElementById('q').value.trim();
   line.innerHTML = `<span>${rows.length} de ${ITEMS.length}</span>${anyFilter ? `<button class="linkbtn" data-clear="1">Quitar filtros</button>` : ''}`;
 
   if (rows.length === 0) {
@@ -2751,6 +2761,7 @@ document.getElementById('chips').addEventListener('click', e => {
   if (b.dataset.type) PREFS.type = b.dataset.type;
   if (b.dataset.tag) PREFS.tag = PREFS.tag === b.dataset.tag ? 'all' : b.dataset.tag;
   if (b.dataset.genre) PREFS.genre = PREFS.genre === b.dataset.genre ? 'all' : b.dataset.genre;
+  if (b.dataset.decade) PREFS.decade = PREFS.decade === b.dataset.decade ? 'all' : b.dataset.decade;
   savePrefs(); render();
 });
 
@@ -2763,7 +2774,7 @@ const contentEl = document.querySelector('main.content');
 
 contentEl.addEventListener('click', e => {
   const clear = e.target.closest('[data-clear]');
-  if (clear) { PREFS.type = 'all'; PREFS.status = 'all'; PREFS.tag = 'all'; PREFS.genre = 'all'; document.getElementById('q').value = ''; savePrefs(); render(); return; }
+  if (clear) { PREFS.type = 'all'; PREFS.status = 'all'; PREFS.tag = 'all'; PREFS.genre = 'all'; PREFS.decade = 'all'; document.getElementById('q').value = ''; savePrefs(); render(); return; }
   const open = e.target.closest('[data-open]');
   if (open) { open.dataset.open === 'search' ? openSearch() : openBulk(); return; }
   const tg = e.target.closest('[data-toggle]');
