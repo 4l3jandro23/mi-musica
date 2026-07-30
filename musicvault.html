@@ -930,7 +930,7 @@ async function spotifyLookup(type, id) {
    Esto los pide con una concurrencia pequeña (5 a la vez) para no tardar una
    eternidad con listas largas. Si falla por credenciales, PARA TODO en vez de
    contarlo como fallos sueltos (si el token no vale, el siguiente tampoco). */
-async function fetchItemsIndividually(tipo, ids, onProgress, shouldStop) {
+async function fetchItemsIndividually(tipo, ids, onProgress, shouldStop, onItem) {
   const CONCURRENCIA = 5;
   const resultados = new Array(ids.length).fill(null);
   let hechos = 0, i = 0, pararTodo = null;
@@ -952,7 +952,13 @@ async function fetchItemsIndividually(tipo, ids, onProgress, shouldStop) {
           continue;
         }
         if (res.status === 401 || res.status === 403) { pararTodo = new Error('AUTH_FAILED'); return; }
-        if (res.ok) resultados[mio] = await res.json();
+        if (res.ok) {
+          const raw = await res.json();
+          resultados[mio] = raw;
+          // con listas largas esto permite guardar sobre la marcha en vez de
+          // perderlo todo si se cierra la pestaña a mitad (ver onItem en runBulk/completarPortadas)
+          if (onItem) onItem(raw);
+        }
         break;
       }
       hechos++;
@@ -1807,27 +1813,33 @@ async function runBulk() {
   for (const tipo of ['album', 'track', 'artist']) {
     const ids = porTipo[tipo];
     if (!ids.length) continue;
+    let sinGuardar = 0;
     let datos;
     try {
       datos = await fetchItemsIndividually(tipo, ids, (n) => {
         out.innerHTML = `Procesando ${hechosTotal + n} de ${pendientes}… <strong>${added}</strong> añadidos`;
+      }, null, raw => {
+        // se añade y se cuenta al momento — con listas de miles, esperar a que
+        // termine TODO el tipo para guardar significaba perderlo todo si se
+        // cerraba la pestaña a mitad
+        if (!raw.id || yaTengo.has(raw.id)) return;
+        ITEMS.push(makeItem(normalize(raw, tipo)));
+        yaTengo.add(raw.id);
+        added++;
+        if (++sinGuardar >= 25) { saveItems(); sinGuardar = 0; }
       });
     } catch (e) {
       /* Si el fallo es de credenciales, va a fallar exactamente igual con
          cada elemento que quede: antes seguía intentando todos en silencio y
          al final solo decía "N fallaron", sin explicar por qué. Ahora para
-         en el primero y lo dice. */
+         en el primero y lo dice. Lo ya añadido (vía onItem, arriba) no se pierde. */
+      saveItems();
       out.innerHTML = `Parado: tu conexión con Spotify en este dispositivo no es válida o ha caducado. Vuelve a conectarte en Ajustes.<br><span style="color:var(--fg-mute);font-size:12.5px;">${added} añadidos antes de fallar.</span>`;
       return;   // el finally de más abajo repone _bulkCorriendo y el botón
     }
-    datos.forEach(raw => {
-      if (!raw || !raw.id || yaTengo.has(raw.id)) { if (!raw) fail++; return; }
-      ITEMS.push(makeItem(normalize(raw, tipo)));
-      yaTengo.add(raw.id);
-      added++;
-    });
+    fail += datos.filter(d => !d).length;
     hechosTotal += ids.length;
-    saveItems();   // guardado parcial por si el usuario cierra a mitad
+    saveItems();
   }
 
   saveItems(); render();
@@ -2406,27 +2418,35 @@ async function completarPortadas() {
     for (const tipo of ['album', 'artist', 'track']) {
       const grupo = faltan.filter(i => i.type === tipo);
       if (!grupo.length || _parar) continue;
+      const porId = new Map(grupo.map(it => [it.spotifyId, it]));
+      const hechosAntes = hechos;
+      let sinGuardar = 0;
       const datos = await fetchItemsIndividually(
         tipo, grupo.map(x => x.spotifyId),
-        () => {
+        (n) => {
           const estAhora = document.getElementById('coverStat');
           // la hoja de Ajustes puede haberse cerrado o reabierto: comprobar
           // que el nodo sigue siendo el que hay en pantalla antes de tocarlo
-          if (estAhora) estAhora.textContent = `● ${hechos.toLocaleString('es-ES')} de ${faltan.length.toLocaleString('es-ES')} completadas`;
+          if (estAhora) estAhora.textContent = `● ${(hechosAntes + n).toLocaleString('es-ES')} de ${faltan.length.toLocaleString('es-ES')} completadas`;
         },
-        () => _parar
+        () => _parar,
+        raw => {
+          // guarda sobre la marcha: con miles de elementos pendientes, esperar
+          // a que termine TODO el tipo antes de guardar significaba perder
+          // horas de trabajo si se cerraba la pestaña a mitad
+          const it = porId.get(raw.id);
+          if (!it) return;   // no debería pasar — defensivo
+          const fresco = normalize(raw, tipo);
+          Object.keys(fresco).forEach(k => {
+            if (fresco[k] != null && fresco[k] !== '' &&
+                (it[k] == null || it[k] === '' ||
+                 (Array.isArray(it[k]) && !it[k].length))) it[k] = fresco[k];
+          });
+          hechos++;
+          if (++sinGuardar >= 25) { saveItems(); sinGuardar = 0; }
+        }
       );
-      datos.forEach((raw, n) => {
-        const it = grupo[n];
-        if (!raw || !it) { fallos++; return; }
-        const fresco = normalize(raw, tipo);
-        Object.keys(fresco).forEach(k => {
-          if (fresco[k] != null && fresco[k] !== '' &&
-              (it[k] == null || it[k] === '' ||
-               (Array.isArray(it[k]) && !it[k].length))) it[k] = fresco[k];
-        });
-        hechos++;
-      });
+      fallos += datos.filter(d => !d).length;
       saveItems();
     }
   } catch (e) {
@@ -2517,7 +2537,7 @@ async function completarGeneros() {
     porArtista.get(k).items.push(it);
   });
   const grupos = [...porArtista.values()];
-  let hechos = 0, conEtiquetas = 0, clavemal = false;
+  let hechos = 0, conEtiquetas = 0, clavemal = false, sinGuardar = 0;
 
   try {
     const CONCURRENCIA = 2;   // Last.fm no publica un límite claro: mejor ir con calma
@@ -2531,6 +2551,9 @@ async function completarGeneros() {
           if (tags.length) {
             items.forEach(it => { it.genres = tags; it.touchedAt = Date.now(); });
             conEtiquetas++;
+            // con miles de artistas por mirar, guardar solo al final significaría
+            // perder horas de trabajo si se cierra la pestaña a mitad
+            if (++sinGuardar >= 25) { saveItems(); sinGuardar = 0; }
           }
         } catch (e) {
           if (e.message === 'LASTFM_ERR:10') clavemal = true;   // clave inválida: no seguir gastando peticiones
