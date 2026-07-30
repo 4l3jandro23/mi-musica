@@ -580,6 +580,7 @@ const K_THEME = 'musicvaultTheme';
 const K_GH    = 'musicvault_github_v1';   // token + repo de sincronización
 const K_TOMB  = 'musicvault_tomb_v1';     // borrados pendientes de propagar
 const K_META  = 'musicvault_meta_v1';     // marca de tiempo del vault local
+const K_LASTFM = 'musicvault_lastfm_v1';  // clave de API de Last.fm, para géneros
 
 const read = (k, fb) => { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? fb; } catch { return fb; } };
 const write = (k, v) => localStorage.setItem(k, JSON.stringify(v));
@@ -2442,12 +2443,122 @@ async function completarPortadas() {
   if (document.getElementById('fillCovers')) openSettings();
 }
 
+/* ============ géneros vía Last.fm ============
+   Spotify dejó de rellenar el campo de géneros para casi todos los artistas
+   desde finales de 2024 (verificado: 0 de los artistas de este vault lo
+   tienen). Last.fm sí mantiene esta información — no es un catálogo oficial,
+   son etiquetas que pone la gente, pero para esto basta y de sobra. No hace
+   falta iniciar sesión, solo una clave de API gratuita. */
+const lastfmCfg = () => { const l = read(K_LASTFM, null); return (l && l.apiKey) ? l : null; };
+
+async function lastfmToptags(nombreArtista, apiKey, intentos = 3) {
+  const url = `https://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&artist=${encodeURIComponent(nombreArtista)}&autocorrect=1&api_key=${encodeURIComponent(apiKey)}&format=json`;
+  for (let i = 0; i < intentos; i++) {
+    let res;
+    try { res = await fetch(url); } catch { if (i === intentos - 1) throw new Error('LASTFM_RED'); await new Promise(r => setTimeout(r, 1500)); continue; }
+    if (!res.ok) { if (i === intentos - 1) throw new Error('LASTFM_HTTP:' + res.status); await new Promise(r => setTimeout(r, 1500)); continue; }
+    const d = await res.json();
+    if (d.error) {
+      if (d.error === 29 && i < intentos - 1) { await new Promise(r => setTimeout(r, 2500)); continue; }   // límite de peticiones: esperar y reintentar
+      if (d.error === 6) return [];   // artista sin coincidencia en Last.fm — no es un fallo, simplemente no hay etiquetas
+      throw new Error('LASTFM_ERR:' + d.error);
+    }
+    // el JSON de Last.fm viene de XML: con una sola etiqueta, "tag" es un objeto
+    // suelto en vez de un array de un elemento — hay que contemplar los dos casos
+    const raw = d.toptags?.tag;
+    const lista = Array.isArray(raw) ? raw : (raw ? [raw] : []);
+    return lista.map(t => t && t.name).filter(Boolean);
+  }
+  return [];
+}
+
+// Las etiquetas de Last.fm son libres: mucha gente etiqueta "seen live", el
+// nombre del propio artista, o el año/década sueltos. Se filtra lo obvio.
+const LASTFM_RUIDO = new Set(['seen live', 'favorite', 'favorites', 'favourite', 'favourites', 'spotify', 'albums i own', 'vinyl', 'cd', 'under 2000 listeners']);
+function limpiarEtiquetasLastfm(tags, nombreArtista) {
+  const artistaFold = fold(nombreArtista);
+  return tags
+    .filter(t => t && !/^\d{2,4}s?$/.test(t.trim()))
+    .filter(t => !LASTFM_RUIDO.has(fold(t)))
+    .filter(t => fold(t) !== artistaFold)
+    .slice(0, 5);
+}
+
+const sinGenero = () => ITEMS.filter(i => (!i.genres || !i.genres.length) && !i.manual && i.type !== 'playlist' && (i.artists || []).length).length;
+// cuántas peticiones a Last.fm haría falta como mucho (agrupando por artista principal)
+function porArtistaUnicos() {
+  const set = new Set();
+  ITEMS.forEach(i => {
+    if ((!i.genres || !i.genres.length) && !i.manual && i.type !== 'playlist' && i.artists && i.artists[0]) set.add(fold(i.artists[0]));
+  });
+  return set.size;
+}
+
+let _completandoGeneros = false;
+let _pararGeneros = false;
+
+async function completarGeneros() {
+  const lf = lastfmCfg();
+  if (!lf) { toast('Pon primero tu clave de Last.fm en Ajustes'); return; }
+  if (_completandoGeneros) { _pararGeneros = true; return; }
+  _completandoGeneros = true;
+  _pararGeneros = false;
+  const btn = document.getElementById('fillGenres');
+  if (btn) btn.textContent = 'Detener';
+
+  // agrupa por artista principal: si tienes 40 canciones del mismo artista,
+  // se le pregunta a Last.fm una sola vez, no 40
+  const faltan = ITEMS.filter(i => (!i.genres || !i.genres.length) && !i.manual && i.type !== 'playlist' && (i.artists || []).length);
+  const porArtista = new Map();
+  faltan.forEach(it => {
+    const nombre = it.artists[0];
+    const k = fold(nombre);
+    if (!porArtista.has(k)) porArtista.set(k, { nombre, items: [] });
+    porArtista.get(k).items.push(it);
+  });
+  const grupos = [...porArtista.values()];
+  let hechos = 0, conEtiquetas = 0, clavemal = false;
+
+  try {
+    const CONCURRENCIA = 2;   // Last.fm no publica un límite claro: mejor ir con calma
+    let i = 0;
+    async function trabajador() {
+      while (i < grupos.length && !_pararGeneros && !clavemal) {
+        const mio = i++;
+        const { nombre, items } = grupos[mio];
+        try {
+          const tags = limpiarEtiquetasLastfm(await lastfmToptags(nombre, lf.apiKey), nombre);
+          if (tags.length) {
+            items.forEach(it => { it.genres = tags; it.touchedAt = Date.now(); });
+            conEtiquetas++;
+          }
+        } catch (e) {
+          if (e.message === 'LASTFM_ERR:10') clavemal = true;   // clave inválida: no seguir gastando peticiones
+        }
+        hechos++;
+        const est = document.getElementById('genreStat');
+        if (est) est.textContent = `● ${hechos.toLocaleString('es-ES')} de ${grupos.length.toLocaleString('es-ES')} artistas mirados`;
+      }
+    }
+    await Promise.all(Array.from({ length: Math.min(CONCURRENCIA, grupos.length) }, trabajador));
+  } finally {
+    saveItems(); render();
+    _completandoGeneros = false;
+    if (clavemal) toast('Esa clave de Last.fm no es válida. Revísala en Ajustes.');
+    else toast(_pararGeneros
+      ? `Detenido — ${conEtiquetas} de ${hechos} artistas con género nuevo`
+      : `${conEtiquetas} de ${grupos.length} artistas tenían etiquetas en Last.fm`);
+    if (document.getElementById('fillGenres')) openSettings();
+  }
+}
+
 const cuenta = tipo => ITEMS.filter(i => i.type === tipo).length;
 
 function openSettings() {
   const c = loadCreds();
   const ok = isConnected();
   const gh = read(K_GH, null);
+  const lf = lastfmCfg();
   showSheet(`
     <div class="sheethead"><h2>Ajustes</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
 
@@ -2495,6 +2606,16 @@ function openSettings() {
         sinPortada() ? `● ${sinPortada().toLocaleString('es-ES')} sin carátula` : '● Todas tienen carátula'}</div>
       <div class="btnrow"><button class="btn wide" id="fillCovers" ${(sinPortada() && ok) || _completandoPortadas ? '' : 'disabled'}>${_completandoPortadas ? 'Detener' : 'Completar carátulas'}</button></div>` : ''}
 
+    <div class="flabel">Géneros (vía Last.fm)</div>
+    <p class="lede">Spotify ya casi no da géneros — confirmado, 0 de tus artistas los tienen ahora mismo desde su API. Last.fm sí mantiene esta información de forma abierta y gratuita (son etiquetas que pone la gente, no un catálogo oficial, pero para filtrar basta). Consigue una clave gratis en <a href="https://www.last.fm/api/account/create" target="_blank" rel="noopener">last.fm/api/account/create</a> y pégala aquí.</p>
+    <input class="field mono" id="lastfmKey" placeholder="Clave de API de Last.fm" value="${esc(lf?.apiKey || '')}" autocomplete="off" spellcheck="false" style="margin-bottom:8px;">
+    <div class="btnrow"><button class="btn wide" id="saveLastfm">Guardar clave</button></div>
+    ${lf ? `
+      <div class="statusline ${sinGenero() ? 'no' : 'ok'}" id="genreStat" style="margin-top:10px;">${
+        sinGenero() ? `● ${sinGenero().toLocaleString('es-ES')} sin género` : '● Todo lo que puede tener género, lo tiene'}</div>
+      <div class="btnrow"><button class="btn wide" id="fillGenres" ${sinGenero() || _completandoGeneros ? '' : 'disabled'}>${_completandoGeneros ? 'Detener' : 'Completar géneros'}</button></div>
+      <p class="lede" style="margin-top:8px;font-size:12px;">Con ${porArtistaUnicos().toLocaleString('es-ES')} artistas distintos por mirar, puede tardar un rato — se puede parar y seguir luego. No hace falta iniciar sesión en Last.fm.</p>` : ''}
+
     <div class="flabel">Limpiar el vault</div>
     <p class="lede">Borra de golpe todo un tipo de elemento. Se puede deshacer desde el aviso que sale justo después, pero solo en ese momento.</p>
     <div class="btnrow">
@@ -2516,6 +2637,15 @@ function openSettings() {
 
   const fc = document.getElementById('fillCovers');
   if (fc) fc.addEventListener('click', completarPortadas);
+
+  document.getElementById('saveLastfm').addEventListener('click', () => {
+    const apiKey = document.getElementById('lastfmKey').value.trim();
+    if (!apiKey) { toast('Pon una clave'); return; }
+    write(K_LASTFM, { apiKey });
+    toast('Clave guardada');
+    openSettings();
+  });
+  document.getElementById('fillGenres')?.addEventListener('click', completarGeneros);
 
   document.getElementById('togCovers').addEventListener('click', () => {
     PREFS.covers = !verPortada();
