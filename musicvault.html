@@ -133,18 +133,19 @@
   .shell { max-width: 1080px; margin: 0 auto; padding: 0 14px; }
 
   /* ---------- vault state strip ---------- */
-  .state-strip { display:grid; grid-template-columns: repeat(3, 1fr); gap: 9px; padding: 16px 0 4px; }
+  .state-strip { display:grid; grid-template-columns: repeat(4, 1fr); gap: 9px; padding: 16px 0 4px; }
   .stat {
     background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
-    padding: 11px 13px; cursor: pointer; text-align:left; font-family: inherit; color: inherit;
+    padding: 11px 10px; cursor: pointer; text-align:left; font-family: inherit; color: inherit;
     transition: border-color .15s, background .15s;
   }
   .stat:hover { background: var(--surface-2); }
   .stat.active { border-color: var(--amber); background: var(--amber-soft); }
-  .stat .n { font-family: Georgia, serif; font-size: 25px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+  .stat .n { font-family: Georgia, serif; font-size: 23px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
   .stat.pending .n { color: var(--amber); }
   .stat.done .n { color: var(--jade); }
-  .stat .l { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--fg-mute); margin-top: 5px; font-family: ui-monospace, monospace; }
+  .stat.archived .n { color: var(--fg-mute); }
+  .stat .l { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg-mute); margin-top: 5px; font-family: ui-monospace, monospace; line-height: 1.25; }
 
   /* ---------- toolbar ---------- */
   .toolbar {
@@ -315,9 +316,14 @@
     backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
     border-top: 1px solid var(--line); box-shadow: var(--shadow-lg);
     display:flex; align-items:center; gap: 8px;
+    /* con 5 botones (contador + escuchado + etiquetar + archivar + eliminar +
+       cancelar) puede no caber entero en un iPhone pequeño: mejor que se
+       deslice a que se aplaste o se salga de la pantalla */
+    overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
   }
-  .selbar .cnt { font-size: 13px; font-weight: 650; margin-right: auto; font-variant-numeric: tabular-nums; }
-  .selbar .btn { padding: 9px 13px; font-size: 13px; }
+  .selbar::-webkit-scrollbar { display: none; }
+  .selbar .cnt { font-size: 13px; font-weight: 650; margin-right: auto; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+  .selbar .btn { padding: 9px 13px; font-size: 13px; flex-shrink: 0; white-space: nowrap; }
 
   /* ---------- sheets / modals ---------- */
   .overlay {
@@ -526,6 +532,7 @@
     <button class="stat" data-status="all"><div class="n num" id="statAll">0</div><div class="l">En el vault</div></button>
     <button class="stat pending" data-status="pending"><div class="n num" id="statPending">0</div><div class="l">Pendientes</div></button>
     <button class="stat done" data-status="listened"><div class="n num" id="statDone">0</div><div class="l">Escuchados</div></button>
+    <button class="stat archived" data-status="archived"><div class="n num" id="statArchived">0</div><div class="l">Archivado</div></button>
   </div>
 
   <div class="toolbar">
@@ -607,7 +614,7 @@ const idbSet = (k, v) => idb().then(db => new Promise((res, rej) => {
 
 let ITEMS = [];
 let TAGS  = [];
-let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', status: 'all', tag: 'all', covers: false }, read(K_PREFS, {}));
+let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', status: 'all', tag: 'all', genre: 'all', covers: false }, read(K_PREFS, {}));
 
 /* Al borrar algo hay que dejar constancia: si no, el otro dispositivo lo
    vuelve a subir en la siguiente sincronización y el borrado "revive". */
@@ -1089,11 +1096,16 @@ function metaPairs(it) {
 function filtered() {
   const q = fold(document.getElementById('q').value.trim());
   let out = ITEMS.filter(it => {
+    // archivar no es borrar: se queda en el vault (cuenta en "En el vault"),
+    // pero se aparta de todas las listas normales — solo aparece bajo "Archivado"
+    if (PREFS.status === 'archived') { if (!it.archived) return false; }
+    else if (it.archived) return false;
     if (PREFS.type !== 'all' && it.type !== PREFS.type) return false;
     // un artista no se "escucha" de golpe: no participa en pendiente/escuchado
     if (PREFS.status === 'pending' && (it.listened || it.type === 'artist')) return false;
     if (PREFS.status === 'listened' && (!it.listened || it.type === 'artist')) return false;
     if (PREFS.tag !== 'all' && !(it.tagIds || []).includes(PREFS.tag)) return false;
+    if (PREFS.genre !== 'all' && !(it.genres || []).some(g => fold(g) === PREFS.genre)) return false;
     if (q && !fold(it.title + ' ' + artistsOf(it) + ' ' + (it.notes || '')).includes(q)) return false;
     return true;
   });
@@ -1134,10 +1146,12 @@ function renderSelBar() {
   const root = document.getElementById('selbarRoot');
   if (!selMode) { root.innerHTML = ''; document.getElementById('addFab').classList.remove('hidden'); return; }
   document.getElementById('addFab').classList.add('hidden');
+  const enArchivo = PREFS.status === 'archived';
   root.innerHTML = `<div class="selbar">
     <span class="cnt">${selected.size} seleccionado${selected.size === 1 ? '' : 's'}</span>
     <button class="btn" data-sel="listen">✓ Escuchado</button>
     <button class="btn" data-sel="tag">Etiquetar</button>
+    <button class="btn" data-sel="archive">${enArchivo ? '📤 Desarchivar' : '📦 Archivar'}</button>
     <button class="btn danger" data-sel="del">Eliminar</button>
     <button class="btn" data-sel="cancel">✕</button>
   </div>`;
@@ -1145,28 +1159,50 @@ function renderSelBar() {
 
 /* ============ render ============ */
 function renderStats() {
-  // los artistas cuentan en "En el vault" pero no en pendiente/escuchado (ver filtered())
-  const contables = ITEMS.filter(i => i.type !== 'artist');
+  // los artistas y lo archivado no cuentan en pendiente/escuchado (ver filtered())
+  const contables = ITEMS.filter(i => i.type !== 'artist' && !i.archived);
   const done = contables.filter(i => i.listened).length;
   document.getElementById('statAll').textContent = ITEMS.length;
   document.getElementById('statPending').textContent = contables.length - done;
   document.getElementById('statDone').textContent = done;
+  document.getElementById('statArchived').textContent = ITEMS.filter(i => i.archived).length;
   document.querySelectorAll('.stat').forEach(b => b.classList.toggle('active', b.dataset.status === PREFS.status));
 }
 
 function renderChips() {
-  const countType = t => t === 'all' ? ITEMS.length : ITEMS.filter(i => i.type === t).length;
+  // los números de los chips reflejan el mismo universo que ve filtered():
+  // lo archivado normalmente no cuenta, pero si estás viendo "Archivado" sí
+  // tiene sentido que los chips describan lo archivado, no el resto del vault
+  const enArchivo = PREFS.status === 'archived';
+  const visibles = ITEMS.filter(i => enArchivo ? i.archived : !i.archived);
+  const countType = t => t === 'all' ? visibles.length : visibles.filter(i => i.type === t).length;
+
+  // Spotify casi nunca pone géneros en canciones sueltas (solo en álbumes y
+  // sobre todo artistas), y desde hace tiempo también los deja vacíos a menudo
+  // en muchos álbumes — así que esto será más completo cuantos más artistas
+  // tengas guardados, y puede no aparecer para nada si no hay datos.
+  const genreFreq = {}, genreLabel = {};
+  visibles.forEach(i => (i.genres || []).forEach(g => {
+    const k = fold(g);
+    if (!k) return;
+    genreFreq[k] = (genreFreq[k] || 0) + 1;
+    if (!genreLabel[k]) genreLabel[k] = g;
+  }));
+  const topGenres = Object.entries(genreFreq).sort((a, b) => b[1] - a[1]).slice(0, 12);
+
   const parts = [
-    `<button class="chip ${PREFS.type === 'all' ? 'on' : ''}" data-type="all">Todo <span class="ct">${ITEMS.length}</span></button>`,
+    `<button class="chip ${PREFS.type === 'all' ? 'on' : ''}" data-type="all">Todo <span class="ct">${visibles.length}</span></button>`,
     ...['album', 'track', 'artist'].map(t =>
       `<button class="chip ${PREFS.type === t ? 'on' : ''}" data-type="${t}">${TYPE_ICON[t]} ${TYPE_PLURAL[t]} <span class="ct">${countType(t)}</span></button>`),
     // el chip de playlists solo aparece si tienes alguna guardada: es un tipo poco
     // frecuente y mostrarlo siempre a cero sería ruido en la barra de filtros
     ...(countType('playlist') ? [`<button class="chip ${PREFS.type === 'playlist' ? 'on' : ''}" data-type="playlist">${TYPE_ICON.playlist} ${TYPE_PLURAL.playlist} <span class="ct">${countType('playlist')}</span></button>`] : []),
     ...TAGS.map(t => {
-      const n = ITEMS.filter(i => (i.tagIds || []).includes(t.id)).length;
+      const n = visibles.filter(i => (i.tagIds || []).includes(t.id)).length;
       return `<button class="chip ${PREFS.tag === t.id ? 'on' : ''}" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)} <span class="ct">${n}</span></button>`;
-    })
+    }),
+    ...topGenres.map(([k, n]) =>
+      `<button class="chip genre ${PREFS.genre === k ? 'on' : ''}" data-genre="${esc(k)}">🎧 ${esc(genreLabel[k])} <span class="ct">${n}</span></button>`)
   ];
   document.getElementById('chips').innerHTML = parts.join('');
 }
@@ -1243,16 +1279,23 @@ function render() {
   }
 
   const rows = filtered();
-  const anyFilter = PREFS.type !== 'all' || PREFS.status !== 'all' || PREFS.tag !== 'all' || document.getElementById('q').value.trim();
+  const anyFilter = PREFS.type !== 'all' || PREFS.status !== 'all' || PREFS.tag !== 'all' || PREFS.genre !== 'all' || document.getElementById('q').value.trim();
   line.innerHTML = `<span>${rows.length} de ${ITEMS.length}</span>${anyFilter ? `<button class="linkbtn" data-clear="1">Quitar filtros</button>` : ''}`;
 
   if (rows.length === 0) {
-    box.innerHTML = `<div class="empty">
-      <div class="ico">🔍</div>
-      <h2>Nada coincide</h2>
-      <p>Prueba a quitar algún filtro o a buscar otra cosa.</p>
-      <div class="acts"><button class="btn" data-clear="1">Quitar filtros</button></div>
-    </div>`;
+    box.innerHTML = PREFS.status === 'archived'
+      ? `<div class="empty">
+          <div class="ico">📦</div>
+          <h2>Nada archivado por aquí</h2>
+          <p>No has archivado nada todavía, o nada archivado coincide con estos filtros. Archivar algo (desde su ficha, o seleccionando varios) lo saca de tus listas normales sin borrarlo.</p>
+          <div class="acts"><button class="btn" data-clear="1">Quitar filtros</button></div>
+        </div>`
+      : `<div class="empty">
+          <div class="ico">🔍</div>
+          <h2>Nada coincide</h2>
+          <p>Prueba a quitar algún filtro o a buscar otra cosa.</p>
+          <div class="acts"><button class="btn" data-clear="1">Quitar filtros</button></div>
+        </div>`;
     return;
   }
 
@@ -1370,7 +1413,7 @@ function openSearch() {
   const sq = document.getElementById('sq');
   document.getElementById('segs').addEventListener('click', e => {
     const b = e.target.closest('.seg'); if (!b) return;
-    if (b.dataset.t === 'bulk') { openBulk(); return; }   // misma hoja, panel de pegado
+    if (b.dataset.t === 'bulk') { bulkInputMode = 'links'; openBulk(); return; }   // misma hoja, panel de pegado
     document.querySelectorAll('#segs .seg').forEach(x => x.classList.toggle('on', x === b));
     searchType = b.dataset.t;
     searchSelMode = false; searchSel = new Set(); document.getElementById('searchSelBar')?.remove();
@@ -1431,19 +1474,20 @@ async function runSearch() {
     if (miTurno !== _searchSeq) return;
     const msg = err.message || '';
     let text = 'No se pudo conectar con Spotify. Revisa tu conexión.';
+    let mostrarReconectar = false;
     if (msg === 'AUTH_FAILED' || msg === 'NO_CREDS') text = 'Tu conexión con Spotify ha caducado o no es válida. Vuelve a conectarte en Ajustes.';
     else if (msg === 'RATE_LIMIT') text = 'Demasiadas búsquedas seguidas — Spotify ha puesto un límite temporal. Espera unos segundos y vuelve a intentarlo.';
     else if (msg.startsWith('LOOKUP_FAILED')) text = `Ese enlace no existe o es privado (error ${msg.split(':')[1]}).`;
     else if (msg.startsWith('SEARCH_FAILED')) text = `Spotify devolvió un error ${msg.split(':')[1]}.`;
     else if (msg.startsWith('PLAYLIST_FAILED')) {
       const code = msg.split(':')[1];
-      text = code === '404'
-        ? 'Esa playlist no es accesible (privada, o de las que genera Spotify — solo funcionan las públicas de usuario).'
-        : code === '403' && !tieneScopePlaylists()
-          ? 'Para leer esta playlist (sobre todo si es tuya y no la has puesto en público) hace falta reconectar con Spotify: en Ajustes, desconecta y vuelve a "Conectar con Spotify".'
-          : `No se pudo leer la playlist (error ${code}).`;
+      if (code === '404') text = 'Esa playlist no es accesible (privada, o de las que genera Spotify — solo funcionan las públicas de usuario).';
+      else if (code === '403' && !tieneScopePlaylists()) {
+        text = 'Para leer playlists (sobre todo las tuyas, que suelen ser privadas) hace falta darle un permiso nuevo a esta conexión.';
+        mostrarReconectar = true;
+      } else text = `No se pudo leer la playlist (error ${code}).`;
     }
-    box.innerHTML = `<div class="empty" style="padding:26px 8px;"><p>${esc(text)}</p></div>`;
+    box.innerHTML = `<div class="empty" style="padding:26px 8px;"><p>${esc(text)}</p>${mostrarReconectar ? `<div class="acts"><button class="btn primary" data-reconnect="1">Reconectar con Spotify</button></div>` : ''}</div>`;
     document.getElementById('searchSelBar')?.remove();
   }
 }
@@ -1552,13 +1596,29 @@ let playlistMode = 'tracks';
    mismo álbum/canción acababa guardado dos veces. */
 let _bulkCorriendo = false;
 
+/* "Pegar enlaces" tiene dos modos: por enlace (lo de siempre) y por nombre
+   (nuevo — busca cada línea en Spotify y guarda la mejor coincidencia, para
+   cuando no tienes los enlaces a mano y quieres ir rápido con una lista). */
+let bulkInputMode = 'links';
+let bulkNameType = 'track';
+
 function openBulk() {
-  showSheet(`
-    <div class="sheethead"><h2>Pegar enlaces</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
-    <div class="segrow" id="bulkSegs">
+  showSheet(bulkInputMode === 'names' ? bulkNamesHtml() : bulkLinksHtml());
+  wireBulkSheet();
+}
+
+function bulkModeSegsHtml() {
+  return `<div class="segrow" id="bulkSegs">
       <button class="seg" data-t="back">🔎 Buscar</button>
-      <button class="seg on" data-t="bulk">📋 En bloque</button>
-    </div>
+      <button class="seg ${bulkInputMode === 'links' ? 'on' : ''}" data-t="links">🔗 Por enlaces</button>
+      <button class="seg ${bulkInputMode === 'names' ? 'on' : ''}" data-t="names">🔤 Por nombre</button>
+    </div>`;
+}
+
+function bulkLinksHtml() {
+  return `
+    <div class="sheethead"><h2>Pegar enlaces</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    ${bulkModeSegsHtml()}
     <p class="lede">Pega álbumes, canciones, artistas o <strong>playlists enteras</strong> — separados por líneas, espacios o mezclados con texto. Los encuentro todos y me salto los que ya tienes. No hay límite: si pegas miles, los va subiendo por lotes.</p>
     <textarea class="field tall" id="bulkIn" placeholder="https://open.spotify.com/playlist/...
 https://open.spotify.com/album/...
@@ -1576,31 +1636,82 @@ https://open.spotify.com/artist/..."></textarea>
     </div>
     <input type="file" id="bulkFile" accept=".txt,.json,.csv,text/plain,application/json" class="hidden">
     <div id="bulkOut" style="margin-top:14px;font-size:13.5px;color:var(--fg-soft);line-height:1.6;">${_bulkCorriendo ? 'Sigue subiendo lo que pegaste antes de cerrar este panel…' : ''}</div>
-  `);
+  `;
+}
+
+function bulkNamesHtml() {
+  return `
+    <div class="sheethead"><h2>Añadir por nombre</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    ${bulkModeSegsHtml()}
+    <p class="lede">Un título por línea. Busco cada uno en Spotify y guardo la coincidencia más probable — <strong>revisa el resultado después</strong>: acierto el título casi siempre, pero no siempre la versión exacta (directo, remaster, banda sonora…). Para eso mejor un enlace.</p>
+    <div class="flabel">Buscar cada línea como…</div>
+    <div class="segrow" id="bulkNameSeg">
+      <button class="seg ${bulkNameType === 'track' ? 'on' : ''}" data-nt="track">🎵 Canción</button>
+      <button class="seg ${bulkNameType === 'album' ? 'on' : ''}" data-nt="album">💿 Álbum</button>
+      <button class="seg ${bulkNameType === 'artist' ? 'on' : ''}" data-nt="artist">🎤 Artista</button>
+    </div>
+    <textarea class="field tall" id="bulkNames" placeholder="Bohemian Rhapsody
+Hotel California
+Imagine"></textarea>
+
+    <div class="btnrow">
+      <button class="btn primary wide" id="bulkGo" ${_bulkCorriendo ? 'disabled' : ''}>${_bulkCorriendo ? 'Buscando…' : 'Buscar y añadir'}</button>
+      <button class="btn" id="bulkFileBtn" title="Cargar una lista de títulos desde un archivo">📄 Archivo</button>
+    </div>
+    <input type="file" id="bulkFile" accept=".txt,text/plain" class="hidden">
+    <div id="bulkOut" style="margin-top:14px;font-size:13.5px;color:var(--fg-soft);line-height:1.6;">${_bulkCorriendo ? 'Sigue buscando lo que pegaste antes de cerrar este panel…' : ''}</div>
+  `;
+}
+
+function wireBulkSheet() {
   document.getElementById('bulkSegs').addEventListener('click', e => {
     const b = e.target.closest('.seg'); if (!b) return;
-    if (b.dataset.t === 'back') openSearch();
+    if (b.dataset.t === 'back') { openSearch(); return; }
+    if (b.dataset.t === 'links') { bulkInputMode = 'links'; openBulk(); return; }
+    if (b.dataset.t === 'names') { bulkInputMode = 'names'; openBulk(); return; }
   });
-  document.getElementById('bulkFileBtn').addEventListener('click', () => document.getElementById('bulkFile').click());
-  document.getElementById('bulkFile').addEventListener('change', e => {
-    const f = e.target.files[0]; if (!f) return;
-    const fr = new FileReader();
-    fr.onload = () => {
-      const box = document.getElementById('bulkIn');
-      box.value = (box.value ? box.value + '\n' : '') + fr.result;
-      const n = (String(fr.result).match(/open\.spotify\.com\//g) || []).length;
-      document.getElementById('bulkOut').innerHTML = `Archivo cargado: <strong>${n}</strong> enlaces detectados. Pulsa “Añadir al vault”.`;
-    };
-    fr.readAsText(f);
-    e.target.value = '';
-  });
-  document.getElementById('plMode').addEventListener('click', e => {
-    const b = e.target.closest('.seg'); if (!b) return;
-    playlistMode = b.dataset.m;
-    document.querySelectorAll('#plMode .seg').forEach(x => x.classList.toggle('on', x === b));
-  });
-  document.getElementById('bulkGo').addEventListener('click', runBulk);
-  document.getElementById('bulkIn').focus();
+
+  if (bulkInputMode === 'names') {
+    document.getElementById('bulkNameSeg').addEventListener('click', e => {
+      const b = e.target.closest('.seg'); if (!b) return;
+      bulkNameType = b.dataset.nt;
+      document.querySelectorAll('#bulkNameSeg .seg').forEach(x => x.classList.toggle('on', x === b));
+    });
+    document.getElementById('bulkFileBtn').addEventListener('click', () => document.getElementById('bulkFile').click());
+    document.getElementById('bulkFile').addEventListener('change', e => {
+      const f = e.target.files[0]; if (!f) return;
+      const fr = new FileReader();
+      fr.onload = () => {
+        const box = document.getElementById('bulkNames');
+        box.value = (box.value ? box.value + '\n' : '') + fr.result;
+      };
+      fr.readAsText(f);
+      e.target.value = '';
+    });
+    document.getElementById('bulkGo').addEventListener('click', runBulkByName);
+    document.getElementById('bulkNames').focus();
+  } else {
+    document.getElementById('bulkFileBtn').addEventListener('click', () => document.getElementById('bulkFile').click());
+    document.getElementById('bulkFile').addEventListener('change', e => {
+      const f = e.target.files[0]; if (!f) return;
+      const fr = new FileReader();
+      fr.onload = () => {
+        const box = document.getElementById('bulkIn');
+        box.value = (box.value ? box.value + '\n' : '') + fr.result;
+        const n = (String(fr.result).match(/open\.spotify\.com\//g) || []).length;
+        document.getElementById('bulkOut').innerHTML = `Archivo cargado: <strong>${n}</strong> enlaces detectados. Pulsa “Añadir al vault”.`;
+      };
+      fr.readAsText(f);
+      e.target.value = '';
+    });
+    document.getElementById('plMode').addEventListener('click', e => {
+      const b = e.target.closest('.seg'); if (!b) return;
+      playlistMode = b.dataset.m;
+      document.querySelectorAll('#plMode .seg').forEach(x => x.classList.toggle('on', x === b));
+    });
+    document.getElementById('bulkGo').addEventListener('click', runBulk);
+    document.getElementById('bulkIn').focus();
+  }
 }
 
 async function runBulk() {
@@ -1626,6 +1737,7 @@ async function runBulk() {
   _bulkCorriendo = true;
   go.disabled = true;
   let added = 0, dup = 0, fail = 0;
+  let necesitaReconectarPlaylist = false;
   const notes = [];
 
   try {
@@ -1659,11 +1771,14 @@ async function runBulk() {
       notes.push(`Playlist: ${wanted.size} ${playlistMode === 'albums' ? 'álbumes' : 'canciones'} encontrad${playlistMode === 'albums' ? 'os' : 'as'}`);
     } catch (err) {
       const code = (err.message || '').split(':')[1];
-      notes.push(code === '404'
-        ? 'Una playlist no es accesible (privada, o de las que genera Spotify — solo funcionan las públicas de usuario).'
-        : code === '403' && !tieneScopePlaylists()
-          ? 'Una playlist dio error 403 — para leer playlists privadas hace falta reconectar con Spotify en Ajustes (desconecta y vuelve a "Conectar con Spotify").'
+      if (code === '403' && !tieneScopePlaylists()) {
+        notes.push('Una playlist dio error 403 — para leer playlists privadas hace falta darle un permiso nuevo a esta conexión.');
+        necesitaReconectarPlaylist = true;
+      } else {
+        notes.push(code === '404'
+          ? 'Una playlist no es accesible (privada, o de las que genera Spotify — solo funcionan las públicas de usuario).'
           : `Una playlist falló (error ${code || '?'}).`);
+      }
       fail++;
     }
   }
@@ -1708,8 +1823,73 @@ async function runBulk() {
   const bits = [`<strong>${added}</strong> añadidos`];
   if (dup) bits.push(`${dup} ya estaban`);
   if (fail) bits.push(`${fail} fallaron`);
-  out.innerHTML = bits.join(' · ') + (notes.length ? `<br><span style="color:var(--fg-mute);font-size:12.5px;">${notes.map(esc).join('<br>')}</span>` : '');
+  out.innerHTML = bits.join(' · ')
+    + (notes.length ? `<br><span style="color:var(--fg-mute);font-size:12.5px;">${notes.map(esc).join('<br>')}</span>` : '')
+    + (necesitaReconectarPlaylist ? `<div class="btnrow"><button class="btn primary wide" data-reconnect="1">Reconectar con Spotify</button></div>` : '');
   if (added) toast(`${added} añadido${added === 1 ? '' : 's'} al vault`);
+  } finally {
+    _bulkCorriendo = false;
+    go.disabled = false;
+  }
+}
+
+/* Añadir "por nombre": una línea = una búsqueda, se guarda la primera
+   coincidencia. Comparte _bulkCorriendo con runBulk() a propósito — evita que
+   una subida por enlaces y otra por nombre corran a la vez y dupliquen algo,
+   el mismo motivo por el que existe ese cerrojo. */
+async function runBulkByName() {
+  const out = document.getElementById('bulkOut');
+  const go = document.getElementById('bulkGo');
+  if (_bulkCorriendo) { out.innerHTML = 'Ya hay una subida en marcha (la empezaste antes de cerrar este panel). Espera a que termine.'; return; }
+  if (!isConnected()) {
+    out.innerHTML = 'Este dispositivo aún no está conectado con Spotify. La conexión es por dispositivo: ve a ⚙ Ajustes y conéctate también aquí.';
+    return;
+  }
+  const lineas = [...new Set(document.getElementById('bulkNames').value.split('\n').map(s => s.trim()).filter(Boolean))];
+  if (!lineas.length) { out.innerHTML = 'Escribe al menos un título, uno por línea.'; return; }
+
+  _bulkCorriendo = true;
+  go.disabled = true;
+  const tipo = bulkNameType;
+  let added = 0, dup = 0;
+  const sinCoincidencia = [];
+  const yaTengo = new Set(ITEMS.map(x => x.spotifyId));
+
+  try {
+    const CONCURRENCIA = 3;   // cada línea es una búsqueda entera, más cara que un lookup: menos paralelismo que fetchItemsIndividually
+    let i = 0, hechos = 0, pararTodo = null;
+    async function trabajador() {
+      while (i < lineas.length && !pararTodo) {
+        const mio = i++;
+        const texto = lineas[mio];
+        try {
+          const d = await spotifySearch(texto, tipo, 0);
+          const top = (d[tipo + 's']?.items || [])[0];
+          if (!top) sinCoincidencia.push(texto);
+          else if (yaTengo.has(top.id)) dup++;
+          else { ITEMS.push(makeItem(normalize(top, tipo))); yaTengo.add(top.id); added++; }
+        } catch (e) {
+          const msg = e.message || '';
+          if (msg === 'AUTH_FAILED' || msg === 'NO_CREDS') { pararTodo = e; return; }
+          sinCoincidencia.push(texto);   // fallo puntual (red, límite agotado…): cuenta como sin encontrar, no para todo
+        }
+        hechos++;
+        out.innerHTML = `Buscando ${hechos} de ${lineas.length}… <strong>${added}</strong> añadidos`;
+      }
+    }
+    await Promise.all(Array.from({ length: Math.min(CONCURRENCIA, lineas.length) }, trabajador));
+    if (pararTodo) {
+      out.innerHTML = `Parado: tu conexión con Spotify en este dispositivo no es válida o ha caducado. Vuelve a conectarte en Ajustes.<br><span style="color:var(--fg-mute);font-size:12.5px;">${added} añadidos antes de fallar.</span>`;
+      return;
+    }
+    saveItems(); render();
+    const bits = [`<strong>${added}</strong> añadidos`];
+    if (dup) bits.push(`${dup} ya estaban`);
+    if (sinCoincidencia.length) bits.push(`${sinCoincidencia.length} sin coincidencia`);
+    out.innerHTML = bits.join(' · ') + (sinCoincidencia.length
+      ? `<br><span style="color:var(--fg-mute);font-size:12.5px;">Sin encontrar: ${sinCoincidencia.slice(0, 15).map(esc).join(', ')}${sinCoincidencia.length > 15 ? '…' : ''}</span>`
+      : '');
+    if (added) toast(`${added} añadido${added === 1 ? '' : 's'} al vault — revisa que sea la versión correcta`);
   } finally {
     _bulkCorriendo = false;
     go.disabled = false;
@@ -1792,6 +1972,7 @@ function openDetail(id) {
         <h3 class="dtitle">${esc(it.title)}</h3>
         <p class="dartist">${esc(artistsOf(it))}</p>
         <div class="dfacts">
+          ${it.archived ? `<span class="fact">📦 Archivado</span>` : ''}
           ${y ? `<span class="fact">${y}</span>` : ''}
           ${fmtDur(it.durationMs) ? `<span class="fact">${fmtDur(it.durationMs)}</span>` : ''}
           ${it.albumType ? `<span class="fact">${esc(ALBUM_TYPE_ES[it.albumType] || it.albumType)}</span>` : ''}
@@ -1831,12 +2012,28 @@ function openDetail(id) {
       <a class="btn primary wide" href="${esc(it.spotifyUrl)}" target="_blank" rel="noopener">${it.manual ? 'Abrir enlace' : 'Abrir en Spotify'} ↗</a>
     </div>
     <div class="btnrow">
+      <button class="btn wide" id="dArchive">${it.archived ? '📤 Sacar del archivo' : '📦 Archivar'}</button>
+    </div>
+    <div class="btnrow">
       <button class="btn danger wide" id="dDel">Eliminar del vault</button>
     </div>
   `);
 
   document.getElementById('dDisco')?.addEventListener('click', () => openDiscography(it));
   wireMeta(it, id);
+
+  document.getElementById('dArchive').addEventListener('click', () => {
+    it.archived = !it.archived;
+    it.touchedAt = Date.now();
+    const quedaArchivado = it.archived;
+    saveItems(); render(); openDetail(id);
+    toast(quedaArchivado ? 'Archivado — sigue en tu vault, fuera de las listas normales' : 'Fuera del archivo', 'Deshacer', () => {
+      it.archived = !quedaArchivado;
+      it.touchedAt = Date.now();
+      saveItems(); render();
+      if (document.getElementById('dArchive')) openDetail(id);
+    });
+  });
 
   document.getElementById('dListen')?.addEventListener('click', () => { it.listened = !it.listened; saveItems(); render(); openDetail(id); });
   document.getElementById('dStars').addEventListener('click', e => {
@@ -2251,12 +2448,15 @@ function openSettings() {
     <p class="lede">En los ajustes de esa app, en <strong>Redirect URIs</strong>, añade exactamente esta URL y guarda:</p>
     <input class="field mono" id="redirectUri" value="${esc(REDIRECT_URI)}" readonly style="margin-bottom:8px;" onclick="this.select()">
     ${ok && !tieneScopePlaylists() ? `
-    <p class="lede" style="color:var(--rust);">Esta conexión es de antes de añadir soporte de playlists y no tiene permiso para leerlas (sobre todo las tuyas, que suelen ser privadas). Desconecta y vuelve a conectar para darle ese permiso — el resto (álbumes, canciones, artistas) sigue funcionando igual mientras tanto.</p>` : ''}
+    <p class="lede" style="color:var(--rust);">Esta conexión es de antes de añadir soporte de playlists y no tiene permiso para leerlas (sobre todo las tuyas, que suelen ser privadas). El resto — álbumes, canciones, artistas — sigue funcionando igual mientras tanto.</p>` : ''}
     <div class="btnrow">
-      ${ok
-        ? `<button class="btn wide" id="disconnectSpotify">Desconectar</button>`
-        : `<button class="btn primary wide" id="saveCreds">Guardar y conectar con Spotify</button>`}
+      ${!ok
+        ? `<button class="btn primary wide" id="saveCreds">Guardar y conectar con Spotify</button>`
+        : !tieneScopePlaylists()
+          ? `<button class="btn primary wide" id="reconnectSpotify">Reconectar (añadir permiso de playlists)</button>`
+          : `<button class="btn wide" id="disconnectSpotify">Desconectar</button>`}
     </div>
+    ${ok && !tieneScopePlaylists() ? `<div class="btnrow"><button class="btn wide" id="disconnectSpotify">Desconectar sin más</button></div>` : ''}
 
     <div class="flabel">Etiquetas</div>
     <div id="tagList">${tagListHtml()}</div>
@@ -2349,6 +2549,10 @@ function openSettings() {
   document.getElementById('disconnectSpotify')?.addEventListener('click', () => {
     disconnectSpotify();
     openSettings();
+  });
+  document.getElementById('reconnectSpotify')?.addEventListener('click', () => {
+    disconnectSpotify();
+    beginSpotifyLogin();   // conserva el Client ID ya guardado y pide login de nuevo, con el permiso de playlists
   });
   document.getElementById('sw').addEventListener('click', e => {
     const s = e.target.closest('.sw'); if (!s) return;
@@ -2449,14 +2653,18 @@ function bars(rows, color) {
 
 function openStats() {
   if (!ITEMS.length) { toast('Tu vault está vacío'); return; }
-  // un artista no se "escucha" de golpe: no cuenta como pendiente ni escuchado
-  const contables = ITEMS.filter(i => i.type !== 'artist');
+  // los artistas y lo archivado no cuentan como pendiente ni escuchado
+  const contables = ITEMS.filter(i => i.type !== 'artist' && !i.archived);
   const done = contables.filter(i => i.listened);
   const pending = contables.filter(i => !i.listened);
 
   const byArtist = {};
   ITEMS.forEach(i => (i.artists || []).forEach(a => { byArtist[a] = (byArtist[a] || 0) + 1; }));
   const topArtists = Object.entries(byArtist).sort((a, b) => b[1] - a[1] || cmp(a[0], b[0])).slice(0, 8);
+
+  const byGenre = {};
+  ITEMS.forEach(i => (i.genres || []).forEach(g => { byGenre[g] = (byGenre[g] || 0) + 1; }));
+  const topGenres = Object.entries(byGenre).sort((a, b) => b[1] - a[1] || cmp(a[0], b[0])).slice(0, 8);
 
   const byDecade = {};
   ITEMS.forEach(i => { const y = yearOf(i); if (y) { const d = Math.floor(y / 10) * 10 + 's'; byDecade[d] = (byDecade[d] || 0) + 1; } });
@@ -2495,11 +2703,17 @@ function openStats() {
     <div class="flabel">Artistas con más cosas guardadas</div>
     ${bars(topArtists, 'var(--jade)')}
 
+    ${topGenres.length ? `<div class="flabel">Géneros más frecuentes</div>
+    ${bars(topGenres, 'var(--jade)')}` : ''}
+
     <div class="flabel">Por década de lanzamiento</div>
     ${bars(decades, 'var(--amber)')}
 
     <div class="flabel">Valoraciones</div>
     <p class="lede" style="margin:0;">${rated.length ? `Has valorado ${rated.length} de ${ITEMS.length}. Media: <strong>${avg}</strong> ★` : 'Todavía no has valorado nada. Abre cualquier ficha y toca las estrellas.'}</p>
+
+    ${ITEMS.some(i => i.archived) ? `<div class="flabel">Archivado</div>
+    <p class="lede" style="margin:0;">${ITEMS.filter(i => i.archived).length} guardado${ITEMS.filter(i => i.archived).length === 1 ? '' : 's'} aparte, fuera de las listas normales.</p>` : ''}
   `);
 
   document.querySelector('[data-goto]')?.addEventListener('click', e => openDetail(e.currentTarget.dataset.goto));
@@ -2507,7 +2721,7 @@ function openStats() {
 
 /* ---- shuffle ---- */
 function shuffle() {
-  const pool = ITEMS.filter(i => !i.listened);
+  const pool = ITEMS.filter(i => !i.listened && !i.archived);
   if (!pool.length) {
     toast(ITEMS.length ? '¡No te queda nada pendiente!' : 'Tu vault está vacío');
     return;
@@ -2536,6 +2750,7 @@ document.getElementById('chips').addEventListener('click', e => {
   const b = e.target.closest('.chip'); if (!b) return;
   if (b.dataset.type) PREFS.type = b.dataset.type;
   if (b.dataset.tag) PREFS.tag = PREFS.tag === b.dataset.tag ? 'all' : b.dataset.tag;
+  if (b.dataset.genre) PREFS.genre = PREFS.genre === b.dataset.genre ? 'all' : b.dataset.genre;
   savePrefs(); render();
 });
 
@@ -2548,7 +2763,7 @@ const contentEl = document.querySelector('main.content');
 
 contentEl.addEventListener('click', e => {
   const clear = e.target.closest('[data-clear]');
-  if (clear) { PREFS.type = 'all'; PREFS.status = 'all'; PREFS.tag = 'all'; document.getElementById('q').value = ''; savePrefs(); render(); return; }
+  if (clear) { PREFS.type = 'all'; PREFS.status = 'all'; PREFS.tag = 'all'; PREFS.genre = 'all'; document.getElementById('q').value = ''; savePrefs(); render(); return; }
   const open = e.target.closest('[data-open]');
   if (open) { open.dataset.open === 'search' ? openSearch() : openBulk(); return; }
   const tg = e.target.closest('[data-toggle]');
@@ -2584,6 +2799,16 @@ document.getElementById('selbarRoot').addEventListener('click', e => {
     saveItems(); setSelMode(false); toast(`${n} marcado${n === 1 ? '' : 's'} como escuchado${n === 1 ? '' : 's'}`);
   }
   if (b.dataset.sel === 'tag') openTagPicker(ids);
+  if (b.dataset.sel === 'archive') {
+    const marcar = PREFS.status !== 'archived';   // en la vista de archivo, el botón desarchiva
+    const afectados = [];
+    ids.forEach(id => { const it = ITEMS.find(x => x.id === id); if (it) { it.archived = marcar; it.touchedAt = Date.now(); afectados.push(it); } });
+    saveItems(); setSelMode(false);
+    toast(`${afectados.length} ${marcar ? 'archivado' : 'restaurado'}${afectados.length === 1 ? '' : 's'}`, 'Deshacer', () => {
+      afectados.forEach(it => { it.archived = !marcar; it.touchedAt = Date.now(); });
+      saveItems(); render();
+    });
+  }
   if (b.dataset.sel === 'del') { setSelMode(false); deleteItems(ids); }
 });
 
@@ -2620,6 +2845,7 @@ modalRoot.addEventListener('click', e => {
     return;
   }
   if (e.target.closest('[data-moreres]')) { cargarMasResultados(); return; }
+  if (e.target.closest('[data-reconnect]')) { beginSpotifyLogin(); return; }
   const selbar = e.target.closest('[data-selbar]');
   if (selbar) {
     if (selbar.dataset.selbar === 'add') {
