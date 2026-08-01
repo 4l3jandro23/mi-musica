@@ -186,6 +186,10 @@
   .chip.on { background: var(--fg); color: var(--bg); border-color: transparent; font-weight: 600; }
   .chip .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink:0; }
   .chip .ct { font-size: 10.5px; opacity: .65; font-variant-numeric: tabular-nums; }
+  /* separa visualmente tipo / década / etiquetas / género en la fila de chips:
+     sin esto, cuantas más décadas y etiquetas tengas, más parece una sola
+     lista indiferenciada en vez de varios filtros distintos */
+  .chipdiv { width: 1px; align-self: stretch; background: var(--line-firm); flex-shrink: 0; margin: 2px 3px; }
 
   /* ---------- content ---------- */
   .content { padding: 16px 0 110px; }
@@ -1215,22 +1219,29 @@ function renderChips() {
   }));
   const topGenres = Object.entries(genreFreq).sort((a, b) => b[1] - a[1]).slice(0, 12);
 
-  const parts = [
+  const chipsTipo = [
     `<button class="chip ${PREFS.type === 'all' ? 'on' : ''}" data-type="all">Todo <span class="ct">${visibles.length}</span></button>`,
     ...['album', 'track', 'artist'].map(t =>
       `<button class="chip ${PREFS.type === t ? 'on' : ''}" data-type="${t}">${TYPE_ICON[t]} ${TYPE_PLURAL[t]} <span class="ct">${countType(t)}</span></button>`),
     // el chip de playlists solo aparece si tienes alguna guardada: es un tipo poco
     // frecuente y mostrarlo siempre a cero sería ruido en la barra de filtros
-    ...(countType('playlist') ? [`<button class="chip ${PREFS.type === 'playlist' ? 'on' : ''}" data-type="playlist">${TYPE_ICON.playlist} ${TYPE_PLURAL.playlist} <span class="ct">${countType('playlist')}</span></button>`] : []),
-    ...decades.map(([dec, n]) =>
-      `<button class="chip decade ${PREFS.decade === dec ? 'on' : ''}" data-decade="${dec}">${dec}s <span class="ct">${n}</span></button>`),
-    ...TAGS.map(t => {
-      const n = visibles.filter(i => (i.tagIds || []).includes(t.id)).length;
-      return `<button class="chip ${PREFS.tag === t.id ? 'on' : ''}" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)} <span class="ct">${n}</span></button>`;
-    }),
-    ...topGenres.map(([k, n]) =>
-      `<button class="chip genre ${PREFS.genre === k ? 'on' : ''}" data-genre="${esc(k)}">🎧 ${esc(genreLabel[k])} <span class="ct">${n}</span></button>`)
+    ...(countType('playlist') ? [`<button class="chip ${PREFS.type === 'playlist' ? 'on' : ''}" data-type="playlist">${TYPE_ICON.playlist} ${TYPE_PLURAL.playlist} <span class="ct">${countType('playlist')}</span></button>`] : [])
   ];
+  const chipsDecada = decades.map(([dec, n]) =>
+    `<button class="chip decade ${PREFS.decade === dec ? 'on' : ''}" data-decade="${dec}">${dec}s <span class="ct">${n}</span></button>`);
+  const chipsTag = TAGS.map(t => {
+    const n = visibles.filter(i => (i.tagIds || []).includes(t.id)).length;
+    return `<button class="chip ${PREFS.tag === t.id ? 'on' : ''}" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)} <span class="ct">${n}</span></button>`;
+  });
+  const chipsGenero = topGenres.map(([k, n]) =>
+    `<button class="chip genre ${PREFS.genre === k ? 'on' : ''}" data-genre="${esc(k)}">🎧 ${esc(genreLabel[k])} <span class="ct">${n}</span></button>`);
+
+  // separadores finos entre grupos: con tipo + década + etiquetas + género la
+  // fila puede crecer mucho, y un separador ayuda a distinguir de un vistazo
+  // dónde empieza cada tipo de filtro sin tener que leerlos todos
+  const parts = [chipsTipo, chipsDecada, chipsTag, chipsGenero]
+    .filter(grupo => grupo.length)
+    .flatMap((grupo, i) => i === 0 ? grupo : ['<span class="chipdiv"></span>', ...grupo]);
   document.getElementById('chips').innerHTML = parts.join('');
 }
 
@@ -1431,21 +1442,24 @@ function openSearch() {
       <button class="seg on" data-t="album">💿 Álbumes</button>
       <button class="seg" data-t="track">🎵 Canciones</button>
       <button class="seg" data-t="artist">🎤 Artistas</button>
-      <button class="seg" data-t="bulk">📋 En bloque</button>
+      <button class="seg" data-t="playlist">📑 Playlists</button>
     </div>
     <input type="text" class="field" id="sq" placeholder="Título, artista, o pega un enlace (álbum, canción, artista o playlist)" autocomplete="off">
-    <button class="linkbtn" id="manualLink" style="display:block;margin:9px 0 2px;">🔗 ¿No está en Spotify? Añade un enlace externo</button>
+    <div style="display:flex;flex-wrap:wrap;gap:14px;margin:9px 0 2px;">
+      <button class="linkbtn" id="bulkLink">📋 Pegar varios enlaces a la vez</button>
+      <button class="linkbtn" id="manualLink">🔗 ¿No está en Spotify? Añade un enlace externo</button>
+    </div>
     <div id="sres" style="margin-top:12px;"></div>
   `);
   const sq = document.getElementById('sq');
   document.getElementById('segs').addEventListener('click', e => {
     const b = e.target.closest('.seg'); if (!b) return;
-    if (b.dataset.t === 'bulk') { bulkInputMode = 'links'; openBulk(); return; }   // misma hoja, panel de pegado
     document.querySelectorAll('#segs .seg').forEach(x => x.classList.toggle('on', x === b));
     searchType = b.dataset.t;
     searchSelMode = false; searchSel = new Set(); document.getElementById('searchSelBar')?.remove();
     runSearch();
   });
+  document.getElementById('bulkLink').addEventListener('click', () => { bulkInputMode = 'links'; openBulk(); });
   document.getElementById('manualLink').addEventListener('click', openManualAdd);
   sq.addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(runSearch, 330); });
   sq.focus();
@@ -1939,6 +1953,38 @@ async function runBulkByName() {
    id real de catálogo— los dejen en paz. */
 let manualType = 'album';
 
+/* Relleno automático desde YouTube (título, autor, miniatura) cuando el
+   enlace pegado es un vídeo de YouTube. La propia API de YouTube no deja
+   pedirla desde el navegador (no manda cabeceras CORS); noembed.com es una
+   pasarela oEmbed abierta que sí lo permite. Es una ayuda opcional: si falla
+   por lo que sea, no pasa nada — simplemente no rellena nada solo. */
+const YOUTUBE_RE = /(?:youtube\.com\/(?:watch\?v=|live\/|shorts\/)|youtu\.be\/)/i;
+async function rellenarDesdeYoutube() {
+  const urlEl = document.getElementById('manUrl');
+  if (!urlEl) return;
+  const url = urlEl.value.trim();
+  if (!YOUTUBE_RE.test(url)) return;
+  const tituloEl = document.getElementById('manTitle');
+  const artistaEl = document.getElementById('manArtist');
+  const coverEl = document.getElementById('manCover');
+  if (tituloEl.value.trim() && coverEl.value.trim()) return;   // ya rellenado a mano, no lo piso
+  const stat = document.getElementById('manYtStat');
+  if (stat) stat.style.display = 'block';
+  try {
+    const res = await fetch('https://noembed.com/embed?url=' + encodeURIComponent(url));
+    if (!res.ok) return;
+    const d = await res.json();
+    if (d.error) return;
+    if (!tituloEl.value.trim() && d.title) tituloEl.value = d.title;
+    if (!artistaEl.value.trim() && d.author_name) artistaEl.value = d.author_name;
+    if (!coverEl.value.trim() && d.thumbnail_url) coverEl.value = d.thumbnail_url;
+  } catch {
+    // sin conexión con noembed, o CORS bloqueado: se sigue pudiendo rellenar a mano
+  } finally {
+    if (stat) stat.style.display = 'none';
+  }
+}
+
 function openManualAdd() {
   manualType = 'album';
   showSheet(`
@@ -1947,7 +1993,7 @@ function openManualAdd() {
       <button class="seg" data-t="back">🔎 Buscar</button>
       <button class="seg on" data-t="manual">🔗 Externo</button>
     </div>
-    <p class="lede">Para lo que no está en Spotify: un disco que solo existe en YouTube, Bandcamp, SoundCloud… Rellena lo que sepas — luego se edita como cualquier otro elemento del vault.</p>
+    <p class="lede">Para lo que no está en Spotify: un concierto en YouTube, un disco que solo existe en Bandcamp, SoundCloud… Rellena lo que sepas — luego se edita como cualquier otro elemento del vault. Si pegas un enlace de YouTube, intento rellenar el título y la miniatura por ti.</p>
 
     <div class="flabel">Tipo</div>
     <div class="segrow" id="manType">
@@ -1955,10 +2001,11 @@ function openManualAdd() {
       <button class="seg" data-mt="track">🎵 Canción</button>
       <button class="seg" data-mt="artist">🎤 Artista</button>
     </div>
+    <input class="field mono" id="manUrl" placeholder="Enlace (YouTube, Bandcamp...) *" autocomplete="off" spellcheck="false" style="margin-bottom:8px;">
     <input class="field" id="manTitle" placeholder="Título *" style="margin-bottom:8px;">
     <input class="field" id="manArtist" placeholder="Artista(s), separados por comas" style="margin-bottom:8px;">
-    <input class="field mono" id="manUrl" placeholder="Enlace (empieza por http:// o https://) *" autocomplete="off" spellcheck="false" style="margin-bottom:8px;">
     <input class="field mono" id="manCover" placeholder="URL de carátula (opcional)" autocomplete="off" spellcheck="false">
+    <p class="lede" id="manYtStat" style="display:none;margin-top:6px;">Buscando datos del vídeo…</p>
     <div class="btnrow"><button class="btn primary wide" id="manGo">Añadir al vault</button></div>
   `);
   document.getElementById('manSegs').addEventListener('click', e => {
@@ -1970,6 +2017,7 @@ function openManualAdd() {
     manualType = b.dataset.mt;
     document.querySelectorAll('#manType .seg').forEach(x => x.classList.toggle('on', x === b));
   });
+  document.getElementById('manUrl').addEventListener('blur', rellenarDesdeYoutube);
   document.getElementById('manGo').addEventListener('click', () => {
     const title = document.getElementById('manTitle').value.trim();
     const url = document.getElementById('manUrl').value.trim();
