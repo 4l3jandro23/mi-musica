@@ -91,6 +91,10 @@
     font-size: 15px; line-height: 1.45;
     -webkit-font-smoothing: antialiased;
     padding-bottom: env(safe-area-inset-bottom);
+    /* en iPhone, tirar hacia abajo en lo alto de una lista larga a veces
+       arrastraba la página entera (el rebote nativo de Safari) en vez de
+       quedarse dentro de la lista; esto evita que se escape ese gesto */
+    overscroll-behavior-y: contain;
   }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
@@ -341,6 +345,7 @@
   @media (min-width: 640px) { .overlay { align-items:center; } }
   .sheet {
     background: var(--bg); width: 100%; max-width: 540px; overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     /* min() con --kb: si el teclado está tapando parte de la pantalla, el hueco
        útil se reduce para que el contenido de abajo (el último botón, sobre
        todo) quede siempre por encima del teclado y no oculto detrás. */
@@ -753,6 +758,27 @@ if (window.visualViewport) {
   visualViewport.addEventListener('scroll', ajustarPorTeclado);
   ajustarPorTeclado();
 }
+
+/* En el iPhone, la pantalla se apaga sola a los pocos segundos sin tocarla —
+   justo lo que pasa mientras se mira una barra de progreso de una subida
+   larga (cientos o miles de elementos). Si se apaga o se bloquea, iOS pausa
+   la pestaña y el proceso se corta a mitad. Wake Lock evita que se apague
+   mientras dura; se libera en cuanto termina para no gastar batería de más.
+   Disponible desde iOS 16.4 — en iOS más antiguo, o si algo falla, esto no
+   hace nada y el proceso sigue igual que siempre, solo sin esta protección. */
+let _wakeLock = null;
+async function pedirDespertar() {
+  try { if ('wakeLock' in navigator) _wakeLock = await navigator.wakeLock.request('screen'); }
+  catch {}   // sin soporte, sin permiso, o la pestaña no está visible: no pasa nada
+}
+function soltarDespertar() {
+  if (_wakeLock) { _wakeLock.release().catch(() => {}); _wakeLock = null; }
+}
+// si se bloqueó la pantalla y se desbloquea con el proceso aún en marcha, el
+// wake lock ya se soltó solo (así lo hace el sistema) — hay que volver a pedirlo
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && (_bulkCorriendo || _completandoPortadas || _completandoGeneros)) pedirDespertar();
+});
 
 /* ============ toasts ============ */
 function toast(msg, actionLabel, actionFn, ms = 5000) {
@@ -1787,6 +1813,7 @@ async function runBulk() {
 
   _bulkCorriendo = true;
   go.disabled = true;
+  pedirDespertar();
   let added = 0, dup = 0, fail = 0;
   let necesitaReconectarPlaylist = false;
   const notes = [];
@@ -1887,6 +1914,7 @@ async function runBulk() {
   } finally {
     _bulkCorriendo = false;
     go.disabled = false;
+    soltarDespertar();
   }
 }
 
@@ -1907,6 +1935,7 @@ async function runBulkByName() {
 
   _bulkCorriendo = true;
   go.disabled = true;
+  pedirDespertar();
   const tipo = bulkNameType;
   let added = 0, dup = 0;
   const sinCoincidencia = [];
@@ -1950,6 +1979,7 @@ async function runBulkByName() {
   } finally {
     _bulkCorriendo = false;
     go.disabled = false;
+    soltarDespertar();
   }
 }
 
@@ -2011,10 +2041,10 @@ function openManualAdd() {
       <button class="seg" data-mt="track">🎵 Canción</button>
       <button class="seg" data-mt="artist">🎤 Artista</button>
     </div>
-    <input class="field mono" id="manUrl" placeholder="Enlace (YouTube, Bandcamp...) *" autocomplete="off" spellcheck="false" style="margin-bottom:8px;">
+    <input class="field mono" id="manUrl" placeholder="Enlace (YouTube, Bandcamp...) *" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" style="margin-bottom:8px;">
     <input class="field" id="manTitle" placeholder="Título *" style="margin-bottom:8px;">
     <input class="field" id="manArtist" placeholder="Artista(s), separados por comas" style="margin-bottom:8px;">
-    <input class="field mono" id="manCover" placeholder="URL de carátula (opcional)" autocomplete="off" spellcheck="false">
+    <input class="field mono" id="manCover" placeholder="URL de carátula (opcional)" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
     <p class="lede" id="manYtStat" style="display:none;margin-top:6px;">Buscando datos del vídeo…</p>
     <div class="btnrow"><button class="btn primary wide" id="manGo">Añadir al vault</button></div>
   `);
@@ -2487,6 +2517,7 @@ async function completarPortadas() {
   if (_completandoPortadas) { _parar = true; return; }
   _completandoPortadas = true;
   _parar = false;
+  pedirDespertar();
   if (btn) btn.textContent = 'Detener';
 
   const faltan = ITEMS.filter(i => !i.coverUrl && i.spotifyId && !i.manual && i.type !== 'playlist');
@@ -2536,6 +2567,7 @@ async function completarPortadas() {
 
   saveItems(); render();
   _completandoPortadas = false;
+  soltarDespertar();
   toast(_parar ? `Detenido — ${hechos} completadas`
                : `${hechos} completadas${fallos ? ` · ${fallos} sin datos` : ''}`);
   if (document.getElementById('fillCovers')) openSettings();
@@ -2601,6 +2633,7 @@ async function completarGeneros() {
   if (_completandoGeneros) { _pararGeneros = true; return; }
   _completandoGeneros = true;
   _pararGeneros = false;
+  pedirDespertar();
   const btn = document.getElementById('fillGenres');
   if (btn) btn.textContent = 'Detener';
 
@@ -2645,6 +2678,7 @@ async function completarGeneros() {
   } finally {
     saveItems(); render();
     _completandoGeneros = false;
+    soltarDespertar();
     if (clavemal) toast('Esa clave de Last.fm no es válida. Revísala en Ajustes.');
     else toast(_pararGeneros
       ? `Detenido — ${conEtiquetas} de ${hechos} artistas con género nuevo`
@@ -2666,7 +2700,7 @@ function openSettings() {
     <div class="flabel">Conexión con Spotify</div>
     <div class="statusline ${ok ? 'ok' : 'no'}">${ok ? '● Conectado' : '● Sin conectar'}</div>
     <p class="lede">Desde febrero de 2026 Spotify exige iniciar sesión de verdad (ya no vale solo Client ID + Secret). La sesión es por dispositivo, como antes. Créate una app gratis en <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noopener">developer.spotify.com</a> → Create app.</p>
-    <input class="field mono" id="cid" placeholder="Client ID" value="${esc(c?.clientId || '')}" autocomplete="off" spellcheck="false" style="margin-bottom:8px;" ${ok ? 'disabled' : ''}>
+    <input class="field mono" id="cid" placeholder="Client ID" value="${esc(c?.clientId || '')}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" style="margin-bottom:8px;" ${ok ? 'disabled' : ''}>
     <p class="lede">En los ajustes de esa app, en <strong>Redirect URIs</strong>, añade exactamente esta URL y guarda:</p>
     <input class="field mono" id="redirectUri" value="${esc(REDIRECT_URI)}" readonly style="margin-bottom:8px;" onclick="this.select()">
     ${ok && !tieneScopePlaylists() ? `
@@ -2680,6 +2714,18 @@ function openSettings() {
     </div>
     ${ok && !tieneScopePlaylists() ? `<div class="btnrow"><button class="btn wide" id="disconnectSpotify">Desconectar sin más</button></div>` : ''}
 
+    <div class="flabel">Añadir desde Compartir (iPhone)</div>
+    <details>
+      <summary class="lede" style="cursor:pointer;">Un atajo para añadir desde la app de Spotify en dos toques</summary>
+      <p class="lede" style="margin-top:8px;">iOS no deja que una web se apunte sola a la hoja de "Compartir" — hace falta un Atajo tuyo, una vez, con la app <strong>Atajos</strong>:</p>
+      <ol class="lede" style="margin:0 0 10px;padding-left:18px;">
+        <li>Crea un atajo nuevo → acción <strong>"Abrir URLs"</strong>.</li>
+        <li>En el texto de la URL, pon esto seguido de la variable "Contenido compartido" / "Entrada rápida":<br><span class="mono" style="word-break:break-all;">${esc(REDIRECT_URI)}?add=</span></li>
+        <li>En los ajustes del atajo (ⓘ), activa <strong>"Mostrar en hoja de compartir"</strong> y que acepte enlaces y texto.</li>
+      </ol>
+      <p class="lede" style="margin:0;">Desde Spotify: Compartir → tu atajo. Un álbum, canción o artista se añade solo; una playlist o un texto abre el buscador ya con eso escrito.</p>
+    </details>
+
     <div class="flabel">Etiquetas</div>
     <div id="tagList">${tagListHtml()}</div>
     <input class="field" id="newTag" placeholder="Nombre de la etiqueta" style="margin-top:10px;">
@@ -2689,8 +2735,8 @@ function openSettings() {
     <div class="flabel">Sincronizar entre dispositivos</div>
     <div class="statusline ${gh && gh.token ? 'ok' : 'no'}">${gh && gh.token ? '● Activada' : '● Desactivada'}</div>
     <p class="lede">Guarda el vault en tu repo de GitHub para que el PC y el iPhone vean lo mismo. Crea un token en <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com → Fine-grained tokens</a>, dale acceso <strong>solo</strong> al repo <code>mi-musica</code> y permiso <strong>Contents: Read and write</strong>. Se guarda únicamente en este dispositivo.</p>
-    <input class="field mono" id="ghRepo" placeholder="usuario/repo" value="${esc((gh && gh.repo) || '4l3jandro23/mi-musica')}" autocomplete="off" spellcheck="false" style="margin-bottom:8px;">
-    <input class="field mono" id="ghTok" type="password" placeholder="github_pat_..." value="${esc((gh && gh.token) || '')}" autocomplete="off" spellcheck="false">
+    <input class="field mono" id="ghRepo" placeholder="usuario/repo" value="${esc((gh && gh.repo) || '4l3jandro23/mi-musica')}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" style="margin-bottom:8px;">
+    <input class="field mono" id="ghTok" type="password" placeholder="github_pat_..." value="${esc((gh && gh.token) || '')}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
     <div class="btnrow">
       <button class="btn primary wide" id="ghSave">Guardar y sincronizar</button>
       <button class="btn" id="ghNow" ${gh && gh.token ? '' : 'disabled'} title="Sincronizar ahora">⟳</button>
@@ -2709,7 +2755,7 @@ function openSettings() {
 
     <div class="flabel">Géneros (vía Last.fm)</div>
     <p class="lede">Spotify ya casi no da géneros — confirmado, 0 de tus artistas los tienen ahora mismo desde su API. Last.fm sí mantiene esta información de forma abierta y gratuita (son etiquetas que pone la gente, no un catálogo oficial, pero para filtrar basta). Consigue una clave gratis en <a href="https://www.last.fm/api/account/create" target="_blank" rel="noopener">last.fm/api/account/create</a> y pégala aquí.</p>
-    <input class="field mono" id="lastfmKey" placeholder="Clave de API de Last.fm" value="${esc(lf?.apiKey || '')}" autocomplete="off" spellcheck="false" style="margin-bottom:8px;">
+    <input class="field mono" id="lastfmKey" placeholder="Clave de API de Last.fm" value="${esc(lf?.apiKey || '')}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" style="margin-bottom:8px;">
     <div class="btnrow"><button class="btn wide" id="saveLastfm">Guardar clave</button></div>
     ${lf ? `
       <div class="statusline ${sinGenero() ? 'no' : 'ok'}" id="genreStat" style="margin-top:10px;">${
@@ -3118,9 +3164,43 @@ document.addEventListener('keydown', e => {
 });
 
 /* ============ init ============ */
+/* Añadir desde el Share Sheet de iOS. iOS no deja que una web instalada se
+   registre como destino de "Compartir" (eso solo existe en Android/ChromeOS),
+   así que la vía real es un Atajo de Apple que abra esta página con
+   ?add=<enlace> — ver Ajustes → "Añadir desde Compartir" para las instrucciones.
+   Un enlace directo a álbum/canción/artista no tiene ambigüedad: se añade
+   solo, sin más toques. Una playlist o un texto sin enlace sí necesita elegir,
+   así que eso abre el buscador ya con la búsqueda lanzada. */
+async function manejarParametroAdd() {
+  const qs = new URLSearchParams(location.search);
+  const add = qs.get('add');
+  if (!add) return;
+  history.replaceState({}, '', location.pathname);   // no reprocesar si se recarga
+  const texto = add.trim();
+  if (!texto) return;
+  const m = texto.match(URL_ONE);
+  if (m) {
+    try {
+      const item = normalize(await spotifyLookup(m[1], m[2]), m[1]);
+      if (ITEMS.some(x => x.spotifyId === item.spotifyId)) { toast('Ya lo tenías: ' + item.title); return; }
+      ITEMS.push(makeItem(item));
+      saveItems(); render();
+      toast('Añadido desde Compartir: ' + item.title);
+      return;
+    } catch {
+      // sin conexión, token caducado, etc. — se cae al buscador normal, que ya
+      // explica el problema con su propio mensaje
+    }
+  }
+  openSearch();
+  document.getElementById('sq').value = texto;
+  runSearch();
+}
+
 handleSpotifyRedirect().then(() => bootStorage()).then(() => {
   render();
   if (ghCfg()) sincronizar(false);
+  manejarParametroAdd();
 });
 
 /* Al volver a la app (cambiar de pestaña, desbloquear el móvil) se comprueba
