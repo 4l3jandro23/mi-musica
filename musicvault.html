@@ -581,6 +581,7 @@ const K_GH    = 'musicvault_github_v1';   // token + repo de sincronización
 const K_TOMB  = 'musicvault_tomb_v1';     // borrados pendientes de propagar
 const K_META  = 'musicvault_meta_v1';     // marca de tiempo del vault local
 const K_LASTFM = 'musicvault_lastfm_v1';  // clave de API de Last.fm, para géneros
+const K_TAG_TOMB = 'musicvault_tagtomb_v1';   // etiquetas borradas pendientes de propagar
 
 const read = (k, fb) => { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? fb; } catch { return fb; } };
 const write = (k, v) => localStorage.setItem(k, JSON.stringify(v));
@@ -650,6 +651,15 @@ function untombstone(items) {   // al deshacer un borrado
   TOMB = TOMB.filter(t => !sids.has(t.sid));
   saveTomb();
 }
+
+/* Las etiquetas se fusionaban solo por unión (se añade lo que falte, nunca se
+   quita): si borrabas una en el PC pero el iPhone no se había enterado, al
+   sincronizar el iPhone la volvía a subir sin querer y "revivía" en el PC en
+   la siguiente vuelta — el mismo problema que tenían los elementos borrados
+   antes de que existieran las tumbas de arriba. Mismo remedio, para etiquetas. */
+let TAG_TOMB = read(K_TAG_TOMB, []);
+const saveTagTomb = () => write(K_TAG_TOMB, TAG_TOMB = [...new Set(TAG_TOMB)].slice(-2000));
+function tombstoneTag(id) { TAG_TOMB.push(id); saveTagTomb(); }
 
 /* Escrituras agrupadas: al importar miles de elementos no queremos una
    transacción por cada uno. */
@@ -2299,10 +2309,19 @@ function fundir(remoto) {
     vivos.push(it);
   });
 
+  // etiquetas: mismo mecanismo que arriba pero para borrados de etiquetas —
+  // sin esto, borrar una etiqueta en un dispositivo no se enteraba el otro y
+  // la volvía a subir en su siguiente sincronización, "reviviéndola"
+  const tagTombLocal = new Set(TAG_TOMB);
+  (remoto.tagTombstones || []).forEach(id => tagTombLocal.add(id));
   const nombres = new Set(TAGS.map(t => t.name.toLowerCase()));
   (remoto.tags || []).forEach(t => {
-    if (t && t.name && !nombres.has(t.name.toLowerCase())) { TAGS.push(t); nombres.add(t.name.toLowerCase()); }
+    if (t && t.name && !tagTombLocal.has(t.id) && !nombres.has(t.name.toLowerCase())) { TAGS.push(t); nombres.add(t.name.toLowerCase()); }
   });
+  TAGS = TAGS.filter(t => !tagTombLocal.has(t.id));   // por si la borraron en el otro dispositivo y aquí seguía
+  vivos.forEach(it => { if (it.tagIds && it.tagIds.length) it.tagIds = it.tagIds.filter(id => !tagTombLocal.has(id)); });
+  TAG_TOMB = [...tagTombLocal];
+  saveTagTomb();
 
   const cambia = vivos.length !== ITEMS.length;
   ITEMS = vivos;
@@ -2350,7 +2369,7 @@ async function sincronizar(manual) {
     // 3) subir el resultado
     const cuerpo = JSON.stringify({
       app: 'MusicVault', version: 2, updatedAt: Date.now(),
-      items: ITEMS, tags: TAGS, tombstones: TOMB
+      items: ITEMS, tags: TAGS, tombstones: TOMB, tagTombstones: TAG_TOMB
     });
     if (cuerpo.length > 60e6) {
       throw new Error(`el vault ocupa ${(cuerpo.length / 1e6).toFixed(0)} MB y no cabe en GitHub. Borra lo que no uses.`);
@@ -2733,6 +2752,7 @@ function openSettings() {
     const b = e.target.closest('[data-del]'); if (!b) return;
     const id = b.dataset.del;
     TAGS = TAGS.filter(t => t.id !== id);
+    tombstoneTag(id);
     ITEMS.forEach(it => { it.tagIds = (it.tagIds || []).filter(x => x !== id); });
     if (PREFS.tag === id) PREFS.tag = 'all';
     saveTags(); saveItems(); savePrefs(); render(); openSettings();
