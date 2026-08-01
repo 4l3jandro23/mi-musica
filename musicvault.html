@@ -1318,7 +1318,14 @@ function render() {
 
   const rows = filtered();
   const anyFilter = PREFS.type !== 'all' || PREFS.status !== 'all' || PREFS.tag !== 'all' || PREFS.genre !== 'all' || PREFS.decade !== 'all' || document.getElementById('q').value.trim();
-  line.innerHTML = `<span>${rows.length} de ${ITEMS.length}</span>${anyFilter ? `<button class="linkbtn" data-clear="1">Quitar filtros</button>` : ''}`;
+  // con un vault grande, filtrar (p. ej. "álbumes de los 70") y no poder
+  // seleccionar todo ese grupo de golpe para archivarlo/etiquetarlo obligaba
+  // a marcarlos uno a uno a mano — esto selecciona TODO lo que cumple el
+  // filtro actual, no solo lo que hay pintado en pantalla ahora mismo
+  const acciones = [];
+  if (rows.length) acciones.push(`<button class="linkbtn" data-selall="1">Seleccionar ${rows.length === ITEMS.length ? 'todo' : `estos ${rows.length.toLocaleString('es-ES')}`}</button>`);
+  if (anyFilter) acciones.push(`<button class="linkbtn" data-clear="1">Quitar filtros</button>`);
+  line.innerHTML = `<span>${rows.length} de ${ITEMS.length}</span>${acciones.length ? `<span style="display:flex;gap:14px;">${acciones.join('')}</span>` : ''}`;
 
   if (rows.length === 0) {
     box.innerHTML = PREFS.status === 'archived'
@@ -1383,8 +1390,11 @@ function toggleListened(id) {
 }
 
 function deleteItems(ids) {
-  const removed = ITEMS.filter(i => ids.includes(i.id));
-  ITEMS = ITEMS.filter(i => !ids.includes(i.id));
+  // con selecciones grandes (p. ej. "Seleccionar todo lo filtrado"), comprobar
+  // ids.includes(...) por cada elemento del vault es lento — un Set lo evita
+  const idSet = new Set(ids);
+  const removed = ITEMS.filter(i => idSet.has(i.id));
+  ITEMS = ITEMS.filter(i => !idSet.has(i.id));
   tombstone(removed);
   saveItems();
   render();
@@ -2275,9 +2285,10 @@ function openTagPicker(ids) {
   document.getElementById('bulkTags').addEventListener('click', e => {
     const b = e.target.closest('.tagsel'); if (!b) return;
     const tid = b.dataset.tag;
-    ids.forEach(id => {
-      const it = ITEMS.find(x => x.id === id);
-      if (it) { it.tagIds = it.tagIds || []; if (!it.tagIds.includes(tid)) it.tagIds.push(tid); }
+    const idSet = new Set(ids);   // evita un .find() por elemento con selecciones grandes
+    ITEMS.forEach(it => {
+      if (!idSet.has(it.id)) return;
+      it.tagIds = it.tagIds || []; if (!it.tagIds.includes(tid)) it.tagIds.push(tid);
     });
     saveItems(); closeModal(); setSelMode(false);
     toast(`Etiqueta añadida a ${ids.length} elemento${ids.length === 1 ? '' : 's'}`);
@@ -2996,6 +3007,8 @@ const contentEl = document.querySelector('main.content');
 contentEl.addEventListener('click', e => {
   const clear = e.target.closest('[data-clear]');
   if (clear) { PREFS.type = 'all'; PREFS.status = 'all'; PREFS.tag = 'all'; PREFS.genre = 'all'; PREFS.decade = 'all'; document.getElementById('q').value = ''; savePrefs(); render(); return; }
+  const selall = e.target.closest('[data-selall]');
+  if (selall) { selMode = true; selected = new Set(filtered().map(it => it.id)); render(); return; }
   const open = e.target.closest('[data-open]');
   if (open) { open.dataset.open === 'search' ? openSearch() : openBulk(); return; }
   const tg = e.target.closest('[data-toggle]');
@@ -3025,16 +3038,18 @@ document.getElementById('selbarRoot').addEventListener('click', e => {
   const ids = [...selected];
   if (b.dataset.sel === 'cancel') return setSelMode(false);
   if (b.dataset.sel === 'listen') {
-    // los artistas no tienen concepto de "escuchado" (ver gcard/lrow/openDetail)
+    // los artistas no tienen concepto de "escuchado" (ver gcard/lrow/openDetail).
+    // Con selecciones grandes (p. ej. "Seleccionar todo lo filtrado"), recorrer
+    // ITEMS una vez y consultar el Set es mucho más rápido que un .find() por id.
     let n = 0;
-    ids.forEach(id => { const it = ITEMS.find(x => x.id === id); if (it && it.type !== 'artist') { it.listened = true; n++; } });
+    ITEMS.forEach(it => { if (selected.has(it.id) && it.type !== 'artist') { it.listened = true; n++; } });
     saveItems(); setSelMode(false); toast(`${n} marcado${n === 1 ? '' : 's'} como escuchado${n === 1 ? '' : 's'}`);
   }
   if (b.dataset.sel === 'tag') openTagPicker(ids);
   if (b.dataset.sel === 'archive') {
     const marcar = PREFS.status !== 'archived';   // en la vista de archivo, el botón desarchiva
     const afectados = [];
-    ids.forEach(id => { const it = ITEMS.find(x => x.id === id); if (it) { it.archived = marcar; it.touchedAt = Date.now(); afectados.push(it); } });
+    ITEMS.forEach(it => { if (selected.has(it.id)) { it.archived = marcar; it.touchedAt = Date.now(); afectados.push(it); } });
     saveItems(); setSelMode(false);
     toast(`${afectados.length} ${marcar ? 'archivado' : 'restaurado'}${afectados.length === 1 ? '' : 's'}`, 'Deshacer', () => {
       afectados.forEach(it => { it.archived = !marcar; it.touchedAt = Date.now(); });
