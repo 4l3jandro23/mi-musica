@@ -1412,10 +1412,12 @@ function metaPairs(it) {
 function filtered() {
   const q = fold(document.getElementById('q').value.trim());
   // índice álbum → títulos de sus canciones guardadas, para que buscar el
-  // nombre de una canción también encuentre el álbum al que pertenece (solo
-  // funciona si esa canción está guardada también como elemento suelto — no
-  // hay tracklist propia guardada en el álbum, y bajarla de Spotify para
-  // cada uno solo por si acaso sería carísimo en peticiones)
+  // nombre de una canción también encuentre el álbum al que pertenece cuando
+  // esa canción está guardada como elemento suelto. Para los álbumes cuya
+  // ficha ya abriste, hay algo mejor: it.trackTitles con la lista real (se
+  // guarda en cargarTracksAlbum al verla) — este índice es el respaldo para
+  // el resto, que no cuesta ninguna petición nueva porque reusa lo que ya
+  // tenías guardado como canciones sueltas.
   let cancionesPorAlbum = null;
   if (q) {
     cancionesPorAlbum = new Map();
@@ -1441,9 +1443,11 @@ function filtered() {
       const tagNames = (it.tagIds || []).map(id => tagById(id)?.name).filter(Boolean).join(' ');
       const texto = fold(it.title + ' ' + artistsOf(it) + ' ' + (it.notes || '') + ' ' + (it.genres || []).join(' ') + ' ' + tagNames + ' ' + (it.albumName || ''));
       let coincide = texto.includes(q);
-      // "no sight" también saca Yeezus si tienes esa canción guardada suelta
-      if (!coincide && it.type === 'album' && cancionesPorAlbum.has(it.spotifyId)) {
-        coincide = cancionesPorAlbum.get(it.spotifyId).some(t => t.includes(q));
+      // "no sight" también saca Yeezus: primero por su propia tracklist (si
+      // ya la viste alguna vez), si no por canciones sueltas que apunten a él
+      if (!coincide && it.type === 'album') {
+        if (it.trackTitles && it.trackTitles.length) coincide = it.trackTitles.some(t => fold(t).includes(q));
+        if (!coincide && cancionesPorAlbum.has(it.spotifyId)) coincide = cancionesPorAlbum.get(it.spotifyId).some(t => t.includes(q));
       }
       if (!coincide) return false;
     }
@@ -1963,6 +1967,16 @@ function pintarResultados() {
   if (!box) return;
   const pendientes = lastResults.filter(r => !ITEMS.some(x => x.spotifyId === r.spotifyId)).length;
 
+  // el orden alternativo solo tiene sentido en Canciones (duración, álbum "padre")
+  // y no mientras seleccionas varios — un desplegable discreto, no otra fila de pestañas
+  const ordenSel = (searchType === 'track' && lastResults.length > 1 && !searchSelMode) ? `
+    <select class="ctl" id="srSort" style="margin-left:auto;max-width:132px;">
+      <option value="relevance" ${searchSortMode === 'relevance' ? 'selected' : ''}>Relevancia</option>
+      <option value="album" ${searchSortMode === 'album' ? 'selected' : ''}>Por álbum</option>
+      <option value="duration" ${searchSortMode === 'duration' ? 'selected' : ''}>Por duración</option>
+      <option value="alpha" ${searchSortMode === 'alpha' ? 'selected' : ''}>A-Z</option>
+    </select>` : '';
+
   let tools = '';
   if (lastResults.length > 1) {
     tools = searchSelMode
@@ -1970,27 +1984,17 @@ function pintarResultados() {
       : `<div class="restools">
            <button data-restool="selmode">Seleccionar varios</button>
            ${pendientes ? `<button data-restool="addall">Añadir todos<span class="n">(${pendientes})</span></button>` : ''}
+           ${ordenSel}
          </div>`;
   }
-
-  // el orden alternativo solo tiene sentido en Canciones — en álbumes/artistas/
-  // playlists no hay duración de canción ni álbum "padre" que ordenar
-  const sortBar = (searchType === 'track' && lastResults.length > 1) ? `
-    <div class="segrow" id="srSort" style="margin-bottom:10px;">
-      <button class="seg ${searchSortMode === 'relevance' ? 'on' : ''}" data-sort="relevance">Relevancia</button>
-      <button class="seg ${searchSortMode === 'album' ? 'on' : ''}" data-sort="album">Álbum</button>
-      <button class="seg ${searchSortMode === 'duration' ? 'on' : ''}" data-sort="duration">Duración</button>
-      <button class="seg ${searchSortMode === 'alpha' ? 'on' : ''}" data-sort="alpha">A-Z</button>
-    </div>` : '';
 
   const masBtn = (!searchAgotado && searchOffset < TOPE_OFFSET_BUSQUEDA)
     ? `<button class="btn vermas" data-moreres="1" ${_cargandoMasResultados ? 'disabled' : ''}>${_cargandoMasResultados ? 'Cargando…' : 'Ver más resultados'}</button>`
     : '';
 
-  box.innerHTML = tools + sortBar + ordenResultados().map(i => rrow(lastResults[i], i)).join('') + masBtn;
-  document.getElementById('srSort')?.addEventListener('click', e => {
-    const b = e.target.closest('[data-sort]'); if (!b) return;
-    searchSortMode = b.dataset.sort;
+  box.innerHTML = tools + ordenResultados().map(i => rrow(lastResults[i], i)).join('') + masBtn;
+  document.getElementById('srSort')?.addEventListener('change', e => {
+    searchSortMode = e.target.value;
     pintarResultados();
   });
 
@@ -2680,6 +2684,10 @@ async function cargarTracksAlbum(it) {
   try {
     const items = await fetchAlbumTracks(it.spotifyId);
     if (!items.length) { box.innerHTML = `<p class="lede" style="margin:0;">Spotify no devuelve canciones para este álbum.</p>`; return; }
+    // se guarda para que la búsqueda del vault encuentre este álbum también
+    // buscando el nombre de una de sus canciones, aunque no la tengas suelta
+    const titulos = items.map(tr => tr.name).filter(Boolean);
+    if (titulos.length) { it.trackTitles = titulos; saveItems(); }
     box.innerHTML = `<div class="tracklist">${items.map(tr => `
       <a class="trow" href="${esc(tr.external_urls?.spotify || it.spotifyUrl)}" target="_blank" rel="noopener">
         <span class="trn">${tr.track_number ?? ''}</span>
