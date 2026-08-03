@@ -83,6 +83,70 @@
     --shadow-lg: 0 -4px 40px rgba(0,0,0,0.6);
   }
 
+  /* ---------- paletas alternativas ----------
+     Mismo mecanismo que el tema claro/oscuro de arriba, pero aplicado a un
+     acento distinto: cada paleta redefine las mismas variables, así que le
+     llega gratis a todos los componentes de la app sin tocarlos uno a uno. */
+  :root[data-palette="oceano"] {
+    --bg:#eef3f5;--surface:#ffffff;--surface-2:#dde8ec;--line:rgba(10,30,40,0.11);--line-firm:rgba(10,30,40,0.20);
+    --fg:#0d2430;--fg-soft:#3d5c68;--fg-mute:#5c7883;
+    --amber:#0f7d9c;--amber-soft:#cfe8ee;--on-amber:#ffffff;--jade:#1a8f6b;--jade-soft:#d3ece2;--rust:#c0392b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root[data-palette="oceano"]:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --bg:#0a1820;--surface:#10202b;--surface-2:#17303d;--line:rgba(220,235,240,0.10);--line-firm:rgba(220,235,240,0.20);
+      --fg:#e8f2f5;--fg-soft:#a8c2cc;--fg-mute:#7e97a1;
+      --amber:#4fc3e0;--amber-soft:#123844;--on-amber:#05141a;--jade:#3ecfa0;--jade-soft:#0e2e26;--rust:#e0705e;
+    }
+  }
+  :root[data-palette="oceano"][data-theme="dark"] {
+    color-scheme: dark;
+    --bg:#0a1820;--surface:#10202b;--surface-2:#17303d;--line:rgba(220,235,240,0.10);--line-firm:rgba(220,235,240,0.20);
+    --fg:#e8f2f5;--fg-soft:#a8c2cc;--fg-mute:#7e97a1;
+    --amber:#4fc3e0;--amber-soft:#123844;--on-amber:#05141a;--jade:#3ecfa0;--jade-soft:#0e2e26;--rust:#e0705e;
+  }
+
+  :root[data-palette="bosque"] {
+    --bg:#f2f1e6;--surface:#fffdf5;--surface-2:#e5e2d0;--line:rgba(30,35,15,0.11);--line-firm:rgba(30,35,15,0.20);
+    --fg:#1c2414;--fg-soft:#4c5a3c;--fg-mute:#6b7a5a;
+    --amber:#4a7c3f;--amber-soft:#dfe9d0;--on-amber:#fffef8;--jade:#a3690f;--jade-soft:#f0e0c2;--rust:#b03f30;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root[data-palette="bosque"]:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --bg:#14180d;--surface:#1c2213;--surface-2:#262e18;--line:rgba(230,235,210,0.10);--line-firm:rgba(230,235,210,0.20);
+      --fg:#eef2e0;--fg-soft:#b9c2a0;--fg-mute:#8c9678;
+      --amber:#7cbf5e;--amber-soft:#26331a;--on-amber:#10160a;--jade:#d4a340;--jade-soft:#332a12;--rust:#e0705e;
+    }
+  }
+  :root[data-palette="bosque"][data-theme="dark"] {
+    color-scheme: dark;
+    --bg:#14180d;--surface:#1c2213;--surface-2:#262e18;--line:rgba(230,235,210,0.10);--line-firm:rgba(230,235,210,0.20);
+    --fg:#eef2e0;--fg-soft:#b9c2a0;--fg-mute:#8c9678;
+    --amber:#7cbf5e;--amber-soft:#26331a;--on-amber:#10160a;--jade:#d4a340;--jade-soft:#332a12;--rust:#e0705e;
+  }
+
+  :root[data-palette="violeta"] {
+    --bg:#f5f0f7;--surface:#fffcff;--surface-2:#e8dcee;--line:rgba(35,15,40,0.11);--line-firm:rgba(35,15,40,0.20);
+    --fg:#22132a;--fg-soft:#5c4266;--fg-mute:#7a6284;
+    --amber:#8a3fa3;--amber-soft:#ecdcf2;--on-amber:#fffdff;--jade:#1a8f7a;--jade-soft:#d3ece5;--rust:#b03f30;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root[data-palette="violeta"]:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --bg:#170f1c;--surface:#201526;--surface-2:#2b1d33;--line:rgba(240,230,245,0.10);--line-firm:rgba(240,230,245,0.20);
+      --fg:#f2e8f5;--fg-soft:#c4a8cf;--fg-mute:#94809e;
+      --amber:#c078e0;--amber-soft:#3a2444;--on-amber:#170f1c;--jade:#e082ae;--jade-soft:#3a1e2c;--rust:#e0705e;
+    }
+  }
+  :root[data-palette="violeta"][data-theme="dark"] {
+    color-scheme: dark;
+    --bg:#170f1c;--surface:#201526;--surface-2:#2b1d33;--line:rgba(240,230,245,0.10);--line-firm:rgba(240,230,245,0.20);
+    --fg:#f2e8f5;--fg-soft:#c4a8cf;--fg-mute:#94809e;
+    --amber:#c078e0;--amber-soft:#3a2444;--on-amber:#170f1c;--jade:#e082ae;--jade-soft:#3a1e2c;--rust:#e0705e;
+  }
+
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { margin:0; padding:0; }
   body {
@@ -199,6 +263,18 @@
   .content { padding: 16px 0 110px; }
   .resultline { font-size: 11.5px; color: var(--fg-mute); font-family: ui-monospace, monospace; margin-bottom: 11px; display:flex; justify-content:space-between; align-items:center; gap:10px; }
   .linkbtn { background:none; border:none; font-family: ui-monospace, monospace; font-size: 11.5px; color: var(--amber); cursor:pointer; padding:0; text-decoration: underline; text-underline-offset: 2px; }
+  /* "Seleccionar todo" y "Quitar filtros" del resultline: antes texto subrayado
+     suelto, ahora una píldora — más fácil de ver y de acertar con el dedo. */
+  .pillbtn {
+    position: relative; display:inline-flex; align-items:center; gap: 4px;
+    font-family: inherit; font-size: 11px; font-weight: 650; white-space: nowrap;
+    color: var(--fg-soft); background: var(--surface); border: 1px solid var(--line);
+    border-radius: 999px; padding: 5px 10px; cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s;
+  }
+  .pillbtn::after { content:""; position:absolute; inset:-6px; }
+  .pillbtn:hover { background: var(--surface-2); }
+  .pillbtn.accent { color: var(--amber); border-color: color-mix(in srgb, var(--amber) 40%, transparent); background: var(--amber-soft); }
 
   .group + .group { margin-top: 22px; }
   .ghead {
@@ -591,6 +667,7 @@ const K_TOMB  = 'musicvault_tomb_v1';     // borrados pendientes de propagar
 const K_META  = 'musicvault_meta_v1';     // marca de tiempo del vault local
 const K_LASTFM = 'musicvault_lastfm_v1';  // clave de API de Last.fm, para géneros
 const K_TAG_TOMB = 'musicvault_tagtomb_v1';   // etiquetas borradas pendientes de propagar
+const K_PALETTE = 'musicvaultPalette';
 
 const read = (k, fb) => { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? fb; } catch { return fb; } };
 const write = (k, v) => localStorage.setItem(k, JSON.stringify(v));
@@ -741,6 +818,24 @@ const tagById = id => TAGS.find(t => t.id === id);
   });
 })();
 
+/* ============ paleta de color ============
+   Igual que el tema claro/oscuro: un atributo en <html>, leído por las
+   variables CSS de arriba. Cambiar de paleta es instantáneo (no hace falta
+   recargar) porque solo se toca ese atributo. */
+const PALETTES = [
+  { id: 'calido',  name: 'Cálido',  swatch: '#a3690f' },
+  { id: 'oceano',  name: 'Océano',  swatch: '#0f7d9c' },
+  { id: 'bosque',  name: 'Bosque',  swatch: '#4a7c3f' },
+  { id: 'violeta', name: 'Violeta', swatch: '#8a3fa3' }
+];
+const paletaActual = () => localStorage.getItem(K_PALETTE) || 'calido';
+function aplicarPaleta(id) {
+  if (id === 'calido') document.documentElement.removeAttribute('data-palette');
+  else document.documentElement.setAttribute('data-palette', id);
+  localStorage.setItem(K_PALETTE, id);
+}
+(() => { const p = paletaActual(); if (p !== 'calido') document.documentElement.setAttribute('data-palette', p); })();
+
 /* ============ teclado en iOS ============
    Cuando aparece el teclado, Safari en iPhone no encoge el viewport de LAYOUT
    (el que usan los position:fixed) — solo el visual. El FAB "＋ Añadir" y el
@@ -751,7 +846,12 @@ function ajustarPorTeclado() {
   const vv = window.visualViewport;
   if (!vv) return;
   const solape = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
-  document.documentElement.style.setProperty('--kb', solape + 'px');
+  // Safari añade, pegada encima del teclado, una barra nativa para moverte
+  // entre campos (flechas + "Hecho") que visualViewport no siempre descuenta
+  // del todo — sin este margen de más, el contenido quedaba justo detrás de
+  // esa barra en vez de por encima.
+  const extra = solape > 0 ? 44 : 0;
+  document.documentElement.style.setProperty('--kb', (solape + extra) + 'px');
 }
 if (window.visualViewport) {
   visualViewport.addEventListener('resize', ajustarPorTeclado);
@@ -1349,9 +1449,9 @@ function render() {
   // a marcarlos uno a uno a mano — esto selecciona TODO lo que cumple el
   // filtro actual, no solo lo que hay pintado en pantalla ahora mismo
   const acciones = [];
-  if (rows.length) acciones.push(`<button class="linkbtn" data-selall="1">Seleccionar ${rows.length === ITEMS.length ? 'todo' : `estos ${rows.length.toLocaleString('es-ES')}`}</button>`);
-  if (anyFilter) acciones.push(`<button class="linkbtn" data-clear="1">Quitar filtros</button>`);
-  line.innerHTML = `<span>${rows.length} de ${ITEMS.length}</span>${acciones.length ? `<span style="display:flex;gap:14px;">${acciones.join('')}</span>` : ''}`;
+  if (rows.length) acciones.push(`<button class="pillbtn accent" data-selall="1">✓ Seleccionar ${rows.length === ITEMS.length ? 'todo' : `estos ${rows.length.toLocaleString('es-ES')}`}</button>`);
+  if (anyFilter) acciones.push(`<button class="pillbtn" data-clear="1">✕ Quitar filtros</button>`);
+  line.innerHTML = `<span>${rows.length} de ${ITEMS.length}</span>${acciones.length ? `<span style="display:flex;gap:8px;">${acciones.join('')}</span>` : ''}`;
 
   if (rows.length === 0) {
     box.innerHTML = PREFS.status === 'archived'
@@ -2743,6 +2843,12 @@ function openSettings() {
     </div>
     <div class="lede" id="ghOut" style="margin-top:6px;">${esc(syncEstadoTexto())}</div>
 
+    <div class="flabel">Colores</div>
+    <p class="lede">Cambia el acento de toda la app con un toque — funciona con el tema claro y con el oscuro.</p>
+    <div class="swatches" id="paletteSw">
+      ${PALETTES.map(p => `<span class="sw ${paletaActual() === p.id ? 'on' : ''}" data-pal="${p.id}" style="background:${p.swatch}" title="${p.name}"></span>`).join('')}
+    </div>
+
     <div class="flabel">Apariencia</div>
     <p class="lede">Sin carátulas el vault se lee como una lista de texto, mucho más rápido con miles de elementos. No borra nada.</p>
     <div class="btnrow">
@@ -2845,6 +2951,11 @@ function openSettings() {
     const s = e.target.closest('.sw'); if (!s) return;
     document.querySelectorAll('#sw .sw').forEach(x => x.classList.toggle('on', x === s));
     swatch = s.dataset.c;
+  });
+  document.getElementById('paletteSw').addEventListener('click', e => {
+    const s = e.target.closest('.sw'); if (!s) return;
+    aplicarPaleta(s.dataset.pal);
+    document.querySelectorAll('#paletteSw .sw').forEach(x => x.classList.toggle('on', x === s));
   });
   document.getElementById('addTag').addEventListener('click', () => {
     const name = document.getElementById('newTag').value.trim();
