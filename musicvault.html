@@ -21,6 +21,10 @@
        position:fixed se ancla al viewport de LAYOUT, que no encoge con el teclado;
        esta variable es lo que permite compensarlo a mano. */
     --kb: 0px;
+    /* "none" en todos los temas normales; la paleta Cristal es la única que
+       la redefine con un desenfoque real — así los componentes de abajo
+       pueden pedir backdrop-filter:var(--glass-blur) sin que afecte a nadie más */
+    --glass-blur: none;
     /* neutrales con sesgo cálido, no gris puro */
     --bg:        #f7f2e9;
     --surface:   #fffdf8;
@@ -229,6 +233,54 @@
     --fg:#e8e5da;--fg-soft:#b0ab98;--fg-mute:#847f6d;
     --amber:#d8d4c4;--amber-soft:#2e2c24;--on-amber:#131311;--jade:#a3a087;--jade-soft:#2a2a1e;--rust:#e0705e;
   }
+
+  /* ---------- Cristal (vidrio esmerilado, tipo "Liquid Glass") ----------
+     Es la única paleta que no solo cambia color: --surface/--surface-2 pasan
+     a ser translúcidos y --glass-blur deja de ser "none", así que cualquier
+     componente que ya pida backdrop-filter:var(--glass-blur) (ver más abajo)
+     se vuelve cristal esmerilado automáticamente, sin tocarlo aparte. El
+     fondo también cambia a un degradado — sin algo de color detrás, el
+     desenfoque no se nota, se ve solo "medio transparente" y ya. */
+  :root[data-palette="cristal"] {
+    --glass-blur: blur(20px) saturate(1.8);
+    --bg:#eef2f7;--surface:rgba(255,255,255,0.55);--surface-2:rgba(255,255,255,0.35);
+    --line:rgba(255,255,255,0.6);--line-firm:rgba(255,255,255,0.85);
+    --fg:#12181f;--fg-soft:#46505c;--fg-mute:#6b7480;
+    --amber:#0a84ff;--amber-soft:rgba(10,132,255,0.16);--on-amber:#ffffff;
+    --jade:#248a3d;--jade-soft:rgba(36,138,61,0.16);--rust:#ff453a;
+    --shadow-sm: 0 1px 2px rgba(20,30,50,0.06), 0 4px 16px rgba(20,30,50,0.08);
+    --shadow-md: 0 4px 10px rgba(20,30,50,0.10), 0 16px 34px rgba(20,30,50,0.14);
+    --shadow-lg: 0 -4px 40px rgba(20,30,50,0.16);
+  }
+  :root[data-palette="cristal"] body { background: radial-gradient(ellipse 90% 60% at 20% -10%, #cfe0fb 0%, transparent 60%), radial-gradient(ellipse 80% 60% at 100% 0%, #f6d9ec 0%, transparent 55%), radial-gradient(ellipse 90% 70% at 50% 120%, #d7f0e2 0%, transparent 60%), #eef2f7; background-attachment: fixed; }
+  @media (prefers-color-scheme: dark) {
+    :root[data-palette="cristal"]:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --glass-blur: blur(20px) saturate(1.8);
+      --bg:#0b0d13;--surface:rgba(42,44,58,0.55);--surface-2:rgba(52,54,70,0.42);
+      --line:rgba(255,255,255,0.14);--line-firm:rgba(255,255,255,0.26);
+      --fg:#f2f4f8;--fg-soft:#b8bfcc;--fg-mute:#8b93a3;
+      --amber:#409cff;--amber-soft:rgba(64,156,255,0.22);--on-amber:#05141f;
+      --jade:#63e6a0;--jade-soft:rgba(99,230,160,0.18);--rust:#ff6961;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.35);
+      --shadow-md: 0 6px 20px rgba(0,0,0,0.45);
+      --shadow-lg: 0 -4px 40px rgba(0,0,0,0.55);
+    }
+    :root[data-palette="cristal"]:where(:not([data-theme="light"])) body { background: radial-gradient(ellipse 90% 60% at 15% -10%, #1c2a4a 0%, transparent 60%), radial-gradient(ellipse 80% 60% at 100% 0%, #3a1c38 0%, transparent 55%), radial-gradient(ellipse 90% 70% at 50% 120%, #14332a 0%, transparent 60%), #0b0d13; background-attachment: fixed; }
+  }
+  :root[data-palette="cristal"][data-theme="dark"] {
+    color-scheme: dark;
+    --glass-blur: blur(20px) saturate(1.8);
+    --bg:#0b0d13;--surface:rgba(42,44,58,0.55);--surface-2:rgba(52,54,70,0.42);
+    --line:rgba(255,255,255,0.14);--line-firm:rgba(255,255,255,0.26);
+    --fg:#f2f4f8;--fg-soft:#b8bfcc;--fg-mute:#8b93a3;
+    --amber:#409cff;--amber-soft:rgba(64,156,255,0.22);--on-amber:#05141f;
+    --jade:#63e6a0;--jade-soft:rgba(99,230,160,0.18);--rust:#ff6961;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.35);
+    --shadow-md: 0 6px 20px rgba(0,0,0,0.45);
+    --shadow-lg: 0 -4px 40px rgba(0,0,0,0.55);
+  }
+  :root[data-palette="cristal"][data-theme="dark"] body { background: radial-gradient(ellipse 90% 60% at 15% -10%, #1c2a4a 0%, transparent 60%), radial-gradient(ellipse 80% 60% at 100% 0%, #3a1c38 0%, transparent 55%), radial-gradient(ellipse 90% 70% at 50% 120%, #14332a 0%, transparent 60%), #0b0d13; background-attachment: fixed; }
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { margin:0; padding:0; }
@@ -593,6 +645,14 @@
   }
   .tagsel.off { opacity: .42; }
   .tagsel .dot { width: 9px; height: 9px; border-radius: 50%; }
+  .simgrid { display:flex; flex-wrap:wrap; gap: 6px; }
+  .simchip {
+    display:flex; align-items:center; gap:6px; font-size: 12.5px; padding: 6px 12px;
+    border-radius: 999px; cursor:pointer; border: 1px solid var(--line); background: var(--surface);
+    color: var(--fg-soft); transition: background .15s, color .15s, border-color .15s;
+  }
+  .simchip:active { transform: scale(0.96); }
+  .simchip.done { background: var(--jade-soft); color: var(--jade); border-color: transparent; }
 
   /* settings */
   .statusline { display:inline-flex; align-items:center; gap: 7px; font-size: 12.5px; padding: 6px 12px; border-radius: 999px; margin-bottom: 12px; font-weight: 550; }
@@ -640,6 +700,14 @@
   .oldinfo { min-width:0; display:flex; flex-direction:column; }
   .oldt { font-size: 13.5px; font-weight: 600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .olda { font-size: 12px; color: var(--fg-mute); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+  /* Todo lo que usa var(--surface) como fondo pide este desenfoque — en
+     cualquier paleta normal --glass-blur vale "none" y no pasa nada; solo la
+     paleta Cristal lo redefine, y estos mismos elementos se vuelven cristal
+     esmerilado de golpe sin tocarlos uno a uno. */
+  .iconbtn, .stat, .chip, .gcard, .lrow, .btn, .seg, .tagsel, .oldcard {
+    backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  }
 
   /* toast */
   .toastwrap { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(88px + env(safe-area-inset-bottom)); z-index: 70; display:flex; flex-direction:column; gap: 8px; align-items:center; width: calc(100% - 28px); max-width: 420px; pointer-events:none; }
@@ -913,7 +981,8 @@ const PALETTES = [
   { id: 'rosa',      name: 'Rosa',      swatch: '#b23e6b' },
   { id: 'terracota', name: 'Terracota', swatch: '#c1502e' },
   { id: 'menta',     name: 'Menta',     swatch: '#159873' },
-  { id: 'grafito',   name: 'Grafito',   swatch: '#4a4740' }
+  { id: 'grafito',   name: 'Grafito',   swatch: '#4a4740' },
+  { id: 'cristal',   name: 'Cristal',   swatch: '#0a84ff' }
 ];
 const paletaActual = () => localStorage.getItem(K_PALETTE) || 'calido';
 function aplicarPaleta(id) {
@@ -1431,7 +1500,10 @@ function renderChips() {
     genreFreq[k] = (genreFreq[k] || 0) + 1;
     if (!genreLabel[k]) genreLabel[k] = g;
   }));
-  const topGenres = Object.entries(genreFreq).sort((a, b) => b[1] - a[1]).slice(0, 12);
+  // antes se cortaba en 12 y con Last.fm ya rellenando géneros de verdad se
+  // quedaba corto — la fila de chips ya se desplaza sola, así que el tope
+  // ahora es solo para no reventar con cientos de etiquetas distintas
+  const topGenres = Object.entries(genreFreq).sort((a, b) => b[1] - a[1]).slice(0, 60);
 
   const chipsTipo = [
     `<button class="chip ${PREFS.type === 'all' ? 'on' : ''}" data-type="all">Todo <span class="ct">${visibles.length}</span></button>`,
@@ -2342,7 +2414,9 @@ function openDetail(id) {
         : `<p class="lede" style="margin:0;">Todavía no has creado ninguna etiqueta. <button class="linkbtn" data-open="settings">Crear una</button></p>`}
     </div>
 
-    ${it.type === 'artist' && !it.manual ? `<div class="btnrow"><button class="btn wide" id="dDisco">Ver su discografía</button></div>` : ''}
+    ${it.type === 'artist' && !it.manual ? `<div class="btnrow"><button class="btn wide" id="dDisco">Ver su discografía</button></div>
+    <div class="flabel">Artistas parecidos</div>
+    <div id="dSimilar"><p class="lede" style="margin:0;">Buscando sugerencias…</p></div>` : ''}
     <div class="btnrow">
       <a class="btn primary wide" href="${esc(it.spotifyUrl)}" target="_blank" rel="noopener">${it.manual ? 'Abrir enlace' : 'Abrir en Spotify'} ↗</a>
       <button class="btn" id="dCopyLink" title="Copiar enlace" aria-label="Copiar enlace">📋</button>
@@ -2356,6 +2430,7 @@ function openDetail(id) {
   `);
 
   document.getElementById('dDisco')?.addEventListener('click', () => openDiscography(it));
+  if (it.type === 'artist' && !it.manual) cargarSimilares(it);
   wireMeta(it, id);
 
   document.getElementById('dCopyLink')?.addEventListener('click', () => copiarEnlaces([it], 'Enlace copiado'));
@@ -2487,10 +2562,20 @@ async function fetchArtistAlbums(artistId, onProgress) {
 }
 
 /* ---- discografía de un artista ---- */
+async function fetchArtistTopTracks(artistId) {
+  const t = await spotifyToken();
+  const res = await fetchConReintento429(`https://api.spotify.com/v1/artists/${artistId}/top-tracks?market=ES`, t);
+  if (res.status === 429) throw new Error('RATE_LIMIT');
+  if (!res.ok) throw new Error('DISCO_FAILED:' + res.status);
+  const d = await res.json();
+  return d.tracks || [];
+}
+
 async function openDiscography(artist) {
+  searchSelMode = false; searchSel = new Set();
   showSheet(`
     <div class="sheethead"><h2>Discografía</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
-    <p class="lede">Álbumes y EPs de <strong>${esc(artist.title)}</strong>. Toca ＋ para guardarlos en tu vault.</p>
+    <p class="lede">Canciones y álbumes de <strong>${esc(artist.title)}</strong>. Toca ＋ para guardarlos en tu vault.</p>
     <div id="discoOut"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
   `);
   const box = document.getElementById('discoOut');
@@ -2501,15 +2586,27 @@ async function openDiscography(artist) {
     return;
   }
   try {
-    const items = await fetchArtistAlbums(artist.spotifyId, (got, tot) => {
-      if (tot > 10) box.innerHTML = `<p class="lede" style="text-align:center;padding:20px 4px;">Leyendo discografía… ${got} de ${tot}</p>`;
-    });
+    const [tracksRaw, albumsRaw] = await Promise.all([
+      fetchArtistTopTracks(artist.spotifyId).catch(() => []),
+      fetchArtistAlbums(artist.spotifyId, (got, tot) => {
+        if (tot > 10) box.innerHTML = `<p class="lede" style="text-align:center;padding:20px 4px;">Leyendo discografía… ${got} de ${tot}</p>`;
+      })
+    ]);
+    const tracks = tracksRaw.map(t => normalize(t, 'track'));
     // Spotify repite el mismo disco en varias ediciones; me quedo con uno por título.
     const seen = new Set();
-    lastResults = items.map(a => normalize(a, 'album'))
+    const albums = albumsRaw.map(a => normalize(a, 'album'))
       .filter(r => { const k = fold(r.title); if (seen.has(k)) return false; seen.add(k); return true; })
       .sort((a, b) => (parseInt(String(b.releaseDate || '0').slice(0, 4)) || 0) - (parseInt(String(a.releaseDate || '0').slice(0, 4)) || 0));
-    box.innerHTML = lastResults.length ? lastResults.map(rrow).join('') : `<div class="empty" style="padding:24px 8px;"><p>Spotify no devuelve álbumes para este artista.</p></div>`;
+    lastResults = tracks.concat(albums);
+    if (!lastResults.length) {
+      box.innerHTML = `<div class="empty" style="padding:24px 8px;"><p>Spotify no devuelve discografía para este artista.</p></div>`;
+      return;
+    }
+    const partes = [];
+    if (tracks.length) partes.push(`<p class="flabel">Canciones</p>${tracks.map((r, i) => rrow(r, i)).join('')}`);
+    if (albums.length) partes.push(`<p class="flabel">Álbumes</p>${albums.map((r, i) => rrow(r, tracks.length + i)).join('')}`);
+    box.innerHTML = partes.join('');
   } catch (err) {
     const text = err.message === 'RATE_LIMIT'
       ? 'Demasiadas peticiones seguidas — espera unos segundos y vuelve a intentarlo.'
@@ -2817,6 +2914,63 @@ async function lastfmToptags(nombreArtista, apiKey, intentos = 3) {
     return lista.map(t => t && t.name).filter(Boolean);
   }
   return [];
+}
+
+async function lastfmSimilar(nombreArtista, apiKey, limite = 8) {
+  const url = `https://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&artist=${encodeURIComponent(nombreArtista)}&autocorrect=1&limit=${limite}&api_key=${encodeURIComponent(apiKey)}&format=json`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('LASTFM_HTTP:' + res.status);
+  const d = await res.json();
+  if (d.error) {
+    if (d.error === 6) return [];   // sin coincidencia en Last.fm
+    throw new Error('LASTFM_ERR:' + d.error);
+  }
+  // mismo caso XML-a-JSON que en gettoptags: un solo resultado llega como objeto suelto
+  const raw = d.similarartists?.artist;
+  const lista = Array.isArray(raw) ? raw : (raw ? [raw] : []);
+  return lista.map(a => a && a.name).filter(Boolean);
+}
+
+async function cargarSimilares(it) {
+  const box = document.getElementById('dSimilar');
+  if (!box) return;
+  const lf = lastfmCfg();
+  if (!lf) { box.innerHTML = `<p class="lede" style="margin:0;">Pon tu clave de Last.fm en Ajustes para ver sugerencias de artistas parecidos.</p>`; return; }
+  try {
+    const nombres = (await lastfmSimilar(it.title, lf.apiKey, 8)).filter(n => fold(n) !== fold(it.title));
+    if (!nombres.length) { box.innerHTML = `<p class="lede" style="margin:0;">Last.fm no tiene sugerencias para este artista.</p>`; return; }
+    box.innerHTML = `<div class="simgrid">${nombres.map(n => `<button class="simchip" data-simadd="${esc(n)}">＋ ${esc(n)}</button>`).join('')}</div>`;
+    box.querySelector('.simgrid').addEventListener('click', e => {
+      const b = e.target.closest('.simchip'); if (!b || b.disabled) return;
+      agregarArtistaSimilar(b.dataset.simadd, b);
+    });
+  } catch {
+    box.innerHTML = `<p class="lede" style="margin:0;">No se pudo consultar Last.fm ahora mismo.</p>`;
+  }
+}
+
+async function agregarArtistaSimilar(nombre, btn) {
+  if (!isConnected()) { toast('Conéctate con Spotify en Ajustes para añadir sugerencias'); return; }
+  btn.disabled = true;
+  const original = btn.innerHTML;
+  btn.innerHTML = '…';
+  try {
+    const d = await spotifySearch(nombre, 'artist', 0);
+    const top = (d.artists?.items || [])[0];
+    if (!top) { toast('No lo encontré en Spotify: ' + nombre); btn.disabled = false; btn.innerHTML = original; return; }
+    if (ITEMS.some(x => x.spotifyId === top.id)) {
+      btn.classList.add('done'); btn.innerHTML = '✓ ' + esc(top.name);
+      toast('Ya lo tenías: ' + top.name);
+      return;
+    }
+    ITEMS.push(makeItem(normalize(top, 'artist')));
+    saveItems(); render();
+    btn.classList.add('done'); btn.innerHTML = '✓ ' + esc(top.name);
+    toast('Añadido: ' + top.name);
+  } catch {
+    toast('No se pudo buscar ahora mismo');
+    btn.disabled = false; btn.innerHTML = original;
+  }
 }
 
 // Las etiquetas de Last.fm son libres: mucha gente etiqueta "seen live", el
