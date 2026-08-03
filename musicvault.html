@@ -2460,6 +2460,43 @@ function openManualAdd() {
   document.getElementById('manTitle').focus();
 }
 
+/* Color dominante de la portada, tipo "Now Playing" de Apple Music: no es la
+   media plana de todos los píxeles (con muchas portadas sale un marrón gris
+   feo) — se prima el píxel más vivo (saturado, ni negro ni blanco) que haya,
+   y solo si no hay ninguno realmente vivo (portada en blanco y negro, p.ej.)
+   se cae a la media. Verificado con el propio dominio de imágenes de Spotify
+   que la lectura de píxeles no se bloquea por CORS. */
+function extraerColorDominante(url) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      try {
+        const size = 32;
+        const c = document.createElement('canvas');
+        c.width = size; c.height = size;
+        const ctx = c.getContext('2d');
+        ctx.drawImage(img, 0, 0, size, size);
+        const data = ctx.getImageData(0, 0, size, size).data;
+        let sr = 0, sg = 0, sb = 0, sn = 0, mejorPuntos = -1, mejor = null;
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i], g = data[i + 1], b = data[i + 2], a = data[i + 3];
+          if (a < 200) continue;
+          sr += r; sg += g; sb += b; sn++;
+          const max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
+          const sat = max === min ? 0 : (max - min) / (255 - Math.abs(2 * l - 255));
+          const puntos = sat * (1 - Math.abs(l - 130) / 130);
+          if (puntos > mejorPuntos) { mejorPuntos = puntos; mejor = [r, g, b]; }
+        }
+        if (!sn) return resolve(null);
+        resolve(mejorPuntos > 0.15 ? mejor : [Math.round(sr / sn), Math.round(sg / sn), Math.round(sb / sn)]);
+      } catch { resolve(null); }   // CORS u otro fallo de lectura: sin tinte, no pasa nada
+    };
+    img.onerror = () => resolve(null);
+    img.src = url;
+  });
+}
+
 /* ---- detail ---- */
 function openDetail(id) {
   const it = ITEMS.find(x => x.id === id);
@@ -2528,6 +2565,15 @@ function openDetail(id) {
   document.getElementById('dDisco')?.addEventListener('click', () => openDiscography(it));
   if (it.type === 'artist' && !it.manual) cargarSimilares(it);
   if (it.type === 'album' && !it.manual) cargarTracksAlbum(it);
+  if (it.coverUrl) {
+    const sheetEl = document.querySelector('.sheet');
+    extraerColorDominante(it.coverUrl).then(rgb => {
+      // isConnected: por si para cuando termina de leer los píxeles ya
+      // cerraste esta ficha o abriste otra — no pintar un cristal que ya no existe
+      if (!rgb || !sheetEl?.isConnected) return;
+      sheetEl.style.background = `linear-gradient(180deg, rgba(${rgb.join(',')},0.30), var(--bg) 340px)`;
+    });
+  }
   wireMeta(it, id);
 
   document.getElementById('dCopyLink')?.addEventListener('click', () => copiarEnlaces([it], 'Enlace copiado'));
