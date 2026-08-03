@@ -147,6 +147,89 @@
     --amber:#c078e0;--amber-soft:#3a2444;--on-amber:#170f1c;--jade:#e082ae;--jade-soft:#3a1e2c;--rust:#e0705e;
   }
 
+  :root[data-palette="rosa"] {
+    --bg:#f9eef1;--surface:#fffbfc;--surface-2:#f0dde2;--line:rgba(45,15,25,0.11);--line-firm:rgba(45,15,25,0.20);
+    --fg:#2a1218;--fg-soft:#654351;--fg-mute:#83616e;
+    --amber:#b23e6b;--amber-soft:#f3dbe4;--on-amber:#fffbfc;--jade:#1a8f7a;--jade-soft:#d3ece5;--rust:#b03f30;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root[data-palette="rosa"]:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --bg:#1c0f14;--surface:#26161c;--surface-2:#331e26;--line:rgba(245,225,235,0.10);--line-firm:rgba(245,225,235,0.20);
+      --fg:#f5e5ea;--fg-soft:#cba3b1;--fg-mute:#9c7883;
+      --amber:#e8709e;--amber-soft:#3d1f2a;--on-amber:#1c0f14;--jade:#4fc9ac;--jade-soft:#12332c;--rust:#e0705e;
+    }
+  }
+  :root[data-palette="rosa"][data-theme="dark"] {
+    color-scheme: dark;
+    --bg:#1c0f14;--surface:#26161c;--surface-2:#331e26;--line:rgba(245,225,235,0.10);--line-firm:rgba(245,225,235,0.20);
+    --fg:#f5e5ea;--fg-soft:#cba3b1;--fg-mute:#9c7883;
+    --amber:#e8709e;--amber-soft:#3d1f2a;--on-amber:#1c0f14;--jade:#4fc9ac;--jade-soft:#12332c;--rust:#e0705e;
+  }
+
+  :root[data-palette="terracota"] {
+    --bg:#f7ede4;--surface:#fffaf5;--surface-2:#ecdccb;--line:rgba(40,20,10,0.11);--line-firm:rgba(40,20,10,0.20);
+    --fg:#2a1810;--fg-soft:#664a38;--fg-mute:#846652;
+    --amber:#c1502e;--amber-soft:#f2ddd0;--on-amber:#fffaf5;--jade:#1a6e6e;--jade-soft:#d2e5e5;--rust:#a3341f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root[data-palette="terracota"]:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --bg:#1c120a;--surface:#261a10;--surface-2:#332216;--line:rgba(245,230,220,0.10);--line-firm:rgba(245,230,220,0.20);
+      --fg:#f5e8dd;--fg-soft:#cbab96;--fg-mute:#9c8270;
+      --amber:#e88a5e;--amber-soft:#3d2416;--on-amber:#1c120a;--jade:#4fb3b3;--jade-soft:#0f2e2e;--rust:#e0705e;
+    }
+  }
+  :root[data-palette="terracota"][data-theme="dark"] {
+    color-scheme: dark;
+    --bg:#1c120a;--surface:#261a10;--surface-2:#332216;--line:rgba(245,230,220,0.10);--line-firm:rgba(245,230,220,0.20);
+    --fg:#f5e8dd;--fg-soft:#cbab96;--fg-mute:#9c8270;
+    --amber:#e88a5e;--amber-soft:#3d2416;--on-amber:#1c120a;--jade:#4fb3b3;--jade-soft:#0f2e2e;--rust:#e0705e;
+  }
+
+  :root[data-palette="menta"] {
+    --bg:#eaf5f0;--surface:#fbfffd;--surface-2:#d9ece3;--line:rgba(10,35,25,0.11);--line-firm:rgba(10,35,25,0.20);
+    --fg:#0e241c;--fg-soft:#3e5c4e;--fg-mute:#5e7a6c;
+    --amber:#159873;--amber-soft:#d2ecdf;--on-amber:#fbfffd;--jade:#d1603f;--jade-soft:#f2ddd2;--rust:#b03f30;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root[data-palette="menta"]:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --bg:#0a1a15;--surface:#0f251e;--surface-2:#163329;--line:rgba(225,245,238,0.10);--line-firm:rgba(225,245,238,0.20);
+      --fg:#e6f5ef;--fg-soft:#a8ccbe;--fg-mute:#7e9c8f;
+      --amber:#4fd9a8;--amber-soft:#0e3628;--on-amber:#05140f;--jade:#e0885e;--jade-soft:#332015;--rust:#e0705e;
+    }
+  }
+  :root[data-palette="menta"][data-theme="dark"] {
+    color-scheme: dark;
+    --bg:#0a1a15;--surface:#0f251e;--surface-2:#163329;--line:rgba(225,245,238,0.10);--line-firm:rgba(225,245,238,0.20);
+    --fg:#e6f5ef;--fg-soft:#a8ccbe;--fg-mute:#7e9c8f;
+    --amber:#4fd9a8;--amber-soft:#0e3628;--on-amber:#05140f;--jade:#e0885e;--jade-soft:#332015;--rust:#e0705e;
+  }
+
+  /* Grafito es la única deliberadamente casi sin color — para quien prefiera
+     algo más silencioso que un acento vivo. Sigue con sesgo cálido (no gris
+     puro) para no perder la textura del resto de la app. */
+  :root[data-palette="grafito"] {
+    --bg:#f0efec;--surface:#fbfaf8;--surface-2:#e2e0da;--line:rgba(25,22,15,0.11);--line-firm:rgba(25,22,15,0.20);
+    --fg:#201e18;--fg-soft:#5a5648;--fg-mute:#78745f;
+    --amber:#4a4740;--amber-soft:#dedcd3;--on-amber:#fbfaf8;--jade:#6b6a54;--jade-soft:#e2e0d0;--rust:#a3341f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root[data-palette="grafito"]:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --bg:#131311;--surface:#1c1b17;--surface-2:#26241d;--line:rgba(238,235,225,0.10);--line-firm:rgba(238,235,225,0.20);
+      --fg:#e8e5da;--fg-soft:#b0ab98;--fg-mute:#847f6d;
+      --amber:#d8d4c4;--amber-soft:#2e2c24;--on-amber:#131311;--jade:#a3a087;--jade-soft:#2a2a1e;--rust:#e0705e;
+    }
+  }
+  :root[data-palette="grafito"][data-theme="dark"] {
+    color-scheme: dark;
+    --bg:#131311;--surface:#1c1b17;--surface-2:#26241d;--line:rgba(238,235,225,0.10);--line-firm:rgba(238,235,225,0.20);
+    --fg:#e8e5da;--fg-soft:#b0ab98;--fg-mute:#847f6d;
+    --amber:#d8d4c4;--amber-soft:#2e2c24;--on-amber:#131311;--jade:#a3a087;--jade-soft:#2a2a1e;--rust:#e0705e;
+  }
+
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { margin:0; padding:0; }
   body {
@@ -702,7 +785,7 @@ const idbSet = (k, v) => idb().then(db => new Promise((res, rej) => {
 
 let ITEMS = [];
 let TAGS  = [];
-let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', status: 'all', tag: 'all', genre: 'all', decade: 'all', covers: false }, read(K_PREFS, {}));
+let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', status: 'all', tag: 'all', genre: 'all', decade: 'all', covers: false, confirmarBorrado: false, tanda: 120 }, read(K_PREFS, {}));
 
 /* Al borrar algo hay que dejar constancia: si no, el otro dispositivo lo
    vuelve a subir en la siguiente sincronización y el borrado "revive". */
@@ -823,10 +906,14 @@ const tagById = id => TAGS.find(t => t.id === id);
    variables CSS de arriba. Cambiar de paleta es instantáneo (no hace falta
    recargar) porque solo se toca ese atributo. */
 const PALETTES = [
-  { id: 'calido',  name: 'Cálido',  swatch: '#a3690f' },
-  { id: 'oceano',  name: 'Océano',  swatch: '#0f7d9c' },
-  { id: 'bosque',  name: 'Bosque',  swatch: '#4a7c3f' },
-  { id: 'violeta', name: 'Violeta', swatch: '#8a3fa3' }
+  { id: 'calido',    name: 'Cálido',    swatch: '#a3690f' },
+  { id: 'oceano',    name: 'Océano',    swatch: '#0f7d9c' },
+  { id: 'bosque',    name: 'Bosque',    swatch: '#4a7c3f' },
+  { id: 'violeta',   name: 'Violeta',   swatch: '#8a3fa3' },
+  { id: 'rosa',      name: 'Rosa',      swatch: '#b23e6b' },
+  { id: 'terracota', name: 'Terracota', swatch: '#c1502e' },
+  { id: 'menta',     name: 'Menta',     swatch: '#159873' },
+  { id: 'grafito',   name: 'Grafito',   swatch: '#4a4740' }
 ];
 const paletaActual = () => localStorage.getItem(K_PALETTE) || 'calido';
 function aplicarPaleta(id) {
@@ -1300,6 +1387,7 @@ function renderSelBar() {
     <button class="btn" data-sel="listen">✓ Escuchado</button>
     <button class="btn" data-sel="tag">Etiquetar</button>
     <button class="btn" data-sel="archive">${enArchivo ? '📤 Desarchivar' : '📦 Archivar'}</button>
+    <button class="btn" data-sel="copiar">📋 Copiar enlaces</button>
     <button class="btn danger" data-sel="del">Eliminar</button>
     <button class="btn" data-sel="cancel">✕</button>
   </div>`;
@@ -1411,13 +1499,13 @@ function lrow(it) {
 
 /* Tanda visible. Se reinicia sola cuando cambian filtros, orden o búsqueda:
    así no hay que acordarse de resetearla en cada sitio que llama a render(). */
-const TANDA = 120;
-let VISTAS = TANDA, _firma = null;
+const tanda = () => PREFS.tanda || 120;   // configurable en Ajustes ("Elementos por pagina")
+let VISTAS = tanda(), _firma = null;
 
 function render() {
   const firma = [PREFS.type, PREFS.status, PREFS.tag, PREFS.sort,
                  document.getElementById('q').value.trim()].join('');
-  if (firma !== _firma) { _firma = firma; VISTAS = TANDA; }
+  if (firma !== _firma) { _firma = firma; VISTAS = tanda(); }
 
   renderStats();
   renderChips();
@@ -1515,6 +1603,26 @@ function toggleListened(id) {
   render();
 }
 
+// El aviso de "Deshacer" ya protege de un borrado sin querer, pero a quien
+// prefiera algo más explícito le vale más un confirm() antes de que pase nada.
+// Los borrados masivos ("Limpiar el vault") ya tienen su propio confirm
+// incondicional aparte — este es solo para borrar uno o varios a mano.
+function confirmarBorradoSiHaceFalta(n) {
+  if (!PREFS.confirmarBorrado) return true;
+  return confirm(`¿Borrar ${n} elemento${n === 1 ? '' : 's'}? Podrás deshacerlo justo después.`);
+}
+
+async function copiarEnlaces(items, mensajeUno) {
+  const enlaces = items.map(it => it.spotifyUrl).filter(Boolean);
+  if (!enlaces.length) { toast('No hay enlace que copiar'); return; }
+  try {
+    await navigator.clipboard.writeText(enlaces.join('\n'));
+    toast(enlaces.length === 1 ? mensajeUno : `${enlaces.length} enlaces copiados`);
+  } catch {
+    toast('No se pudo copiar (el navegador bloqueó el portapapeles)');
+  }
+}
+
 function deleteItems(ids) {
   // con selecciones grandes (p. ej. "Seleccionar todo lo filtrado"), comprobar
   // ids.includes(...) por cada elemento del vault es lento — un Set lo evita
@@ -1542,8 +1650,14 @@ function deleteItems(ids) {
 
 /* ============ modals ============ */
 const modalRoot = document.getElementById('modalRoot');
-const closeModal = () => { modalRoot.innerHTML = ''; };
+/* Cerrar una hoja no siempre dispara a tiempo el evento de visualViewport que
+   corrige --kb (el hueco reservado para el teclado): si se cierra con el
+   teclado todavía abierto, la SIGUIENTE hoja podía heredar ese hueco durante
+   un instante y salir comprimida como si el teclado ya estuviera puesto,
+   antes de que tocaras nada — de ahí que "la segunda vez" se viera mal. */
+const closeModal = () => { modalRoot.innerHTML = ''; document.documentElement.style.setProperty('--kb', '0px'); };
 function showSheet(html) {
+  document.documentElement.style.setProperty('--kb', '0px');
   modalRoot.innerHTML = `<div class="overlay" data-overlay="1"><div class="sheet" role="dialog" aria-modal="true">${html}</div></div>`;
 }
 modalRoot.addEventListener('click', e => { if (e.target.dataset.overlay) closeModal(); });
@@ -2231,6 +2345,7 @@ function openDetail(id) {
     ${it.type === 'artist' && !it.manual ? `<div class="btnrow"><button class="btn wide" id="dDisco">Ver su discografía</button></div>` : ''}
     <div class="btnrow">
       <a class="btn primary wide" href="${esc(it.spotifyUrl)}" target="_blank" rel="noopener">${it.manual ? 'Abrir enlace' : 'Abrir en Spotify'} ↗</a>
+      <button class="btn" id="dCopyLink" title="Copiar enlace" aria-label="Copiar enlace">📋</button>
     </div>
     <div class="btnrow">
       <button class="btn wide" id="dArchive">${it.archived ? '📤 Sacar del archivo' : '📦 Archivar'}</button>
@@ -2243,6 +2358,7 @@ function openDetail(id) {
   document.getElementById('dDisco')?.addEventListener('click', () => openDiscography(it));
   wireMeta(it, id);
 
+  document.getElementById('dCopyLink')?.addEventListener('click', () => copiarEnlaces([it], 'Enlace copiado'));
   document.getElementById('dArchive').addEventListener('click', () => {
     it.archived = !it.archived;
     it.touchedAt = Date.now();
@@ -2272,7 +2388,7 @@ function openDetail(id) {
     it.tagIds = it.tagIds.includes(tid) ? it.tagIds.filter(x => x !== tid) : it.tagIds.concat(tid);
     saveItems(); render(); openDetail(id);
   });
-  document.getElementById('dDel').addEventListener('click', () => { closeModal(); deleteItems([id]); });
+  document.getElementById('dDel').addEventListener('click', () => { if (!confirmarBorradoSiHaceFalta(1)) return; closeModal(); deleteItems([id]); });
 }
 
 /* ---- metadatos: ver / editar / refrescar ---- */
@@ -2593,7 +2709,8 @@ async function sincronizar(manual) {
 
 /* Cualquier cambio en el vault programa una subida, agrupando ráfagas. */
 function programarSync() {
-  if (!ghCfg()) return;
+  const g = ghCfg();
+  if (!g || g.auto === false) return;   // sincronización automática desactivada: solo con el botón ⟳
   clearTimeout(_syncTimer);
   _syncTimer = setTimeout(() => sincronizar(false), 4000);
 }
@@ -2842,6 +2959,11 @@ function openSettings() {
       <button class="btn" id="ghNow" ${gh && gh.token ? '' : 'disabled'} title="Sincronizar ahora">⟳</button>
     </div>
     <div class="lede" id="ghOut" style="margin-top:6px;">${esc(syncEstadoTexto())}</div>
+    ${gh && gh.token ? `
+    <div class="btnrow">
+      <button class="btn wide ${gh.auto === false ? '' : 'jade'}" id="toggleAutoSync">${gh.auto === false ? 'Solo sincronizo a mano' : '✓ Sincronización automática'}</button>
+    </div>
+    <p class="lede" style="margin-top:4px;">${gh.auto === false ? 'Nada se sube ni se baja solo — toca ⟳ cuando quieras sincronizar.' : 'Sube y baja cambios sola, sin que tengas que acordarte.'}</p>` : ''}
 
     <div class="flabel">Colores</div>
     <p class="lede">Cambia el acento de toda la app con un toque — funciona con el tema claro y con el oscuro.</p>
@@ -2859,6 +2981,17 @@ function openSettings() {
         sinPortada() ? `● ${sinPortada().toLocaleString('es-ES')} sin carátula` : '● Todas tienen carátula'}</div>
       <div class="btnrow"><button class="btn wide" id="fillCovers" ${(sinPortada() && ok) || _completandoPortadas ? '' : 'disabled'}>${_completandoPortadas ? 'Detener' : 'Completar carátulas'}</button></div>` : ''}
 
+    <div class="flabel">Comportamiento</div>
+    <div class="btnrow">
+      <button class="btn wide ${PREFS.confirmarBorrado ? 'jade' : ''}" id="togConfirm">${PREFS.confirmarBorrado ? '✓ Confirma antes de borrar' : 'Borra directo (con Deshacer)'}</button>
+    </div>
+    <p class="lede" style="margin:6px 0 12px;">${PREFS.confirmarBorrado ? 'Te pregunta antes de borrar uno o varios elementos a mano.' : 'Borra al momento; el aviso de "Deshacer" sigue ahí por si acaso.'}</p>
+    <div class="flabel" style="margin-top:0;font-size:10px;">Elementos por página</div>
+    <div class="segrow" id="tandaSeg">
+      ${[60, 120, 250, 500].map(n => `<button class="seg ${tanda() === n ? 'on' : ''}" data-tanda="${n}">${n}</button>`).join('')}
+    </div>
+    <p class="lede" style="margin:6px 0 0;">Cuántos se pintan de golpe antes de "Ver más" — menos va más fino en móviles viejos, más significa desplazarte menos.</p>
+
     <div class="flabel">Géneros (vía Last.fm)</div>
     <p class="lede">Spotify ya casi no da géneros — confirmado, 0 de tus artistas los tienen ahora mismo desde su API. Last.fm sí mantiene esta información de forma abierta y gratuita (son etiquetas que pone la gente, no un catálogo oficial, pero para filtrar basta). Consigue una clave gratis en <a href="https://www.last.fm/api/account/create" target="_blank" rel="noopener">last.fm/api/account/create</a> y pégala aquí.</p>
     <input class="field mono" id="lastfmKey" placeholder="Clave de API de Last.fm" value="${esc(lf?.apiKey || '')}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" style="margin-bottom:8px;">
@@ -2868,6 +3001,10 @@ function openSettings() {
         sinGenero() ? `● ${sinGenero().toLocaleString('es-ES')} sin género` : '● Todo lo que puede tener género, lo tiene'}</div>
       <div class="btnrow"><button class="btn wide" id="fillGenres" ${sinGenero() || _completandoGeneros ? '' : 'disabled'}>${_completandoGeneros ? 'Detener' : 'Completar géneros'}</button></div>
       <p class="lede" style="margin-top:8px;font-size:12px;">Con ${porArtistaUnicos().toLocaleString('es-ES')} artistas distintos por mirar, puede tardar un rato — se puede parar y seguir luego. No hace falta iniciar sesión en Last.fm.</p>` : ''}
+
+    <div class="flabel">Mantenimiento</div>
+    <p class="lede">Con varias formas distintas de añadir (búsqueda, "por nombre", enlaces externos, playlists), es fácil que algo se cuele repetido sin que la app lo note por su cuenta.</p>
+    <div class="btnrow"><button class="btn wide" id="findDups">Buscar posibles duplicados</button></div>
 
     <div class="flabel">Limpiar el vault</div>
     <p class="lede">Borra de golpe todo un tipo de elemento. Se puede deshacer desde el aviso que sale justo después, pero solo en ese momento.</p>
@@ -2885,6 +3022,7 @@ function openSettings() {
       <button class="btn wide" id="expBtn">Descargar copia</button>
       <button class="btn wide" id="impBtn">Restaurar copia</button>
     </div>
+    <div class="btnrow"><button class="btn wide" id="expCsvBtn">Descargar como CSV (Excel, Sheets…)</button></div>
     <input type="file" id="impFile" accept="application/json,.json" class="hidden">
   `);
 
@@ -2905,6 +3043,15 @@ function openSettings() {
     savePrefs(); render(); openSettings();
     toast(verPortada() ? 'Carátulas visibles' : 'Carátulas ocultas');
   });
+  document.getElementById('togConfirm').addEventListener('click', () => {
+    PREFS.confirmarBorrado = !PREFS.confirmarBorrado;
+    savePrefs(); openSettings();
+  });
+  document.getElementById('tandaSeg').addEventListener('click', e => {
+    const b = e.target.closest('.seg'); if (!b) return;
+    PREFS.tanda = +b.dataset.tanda;
+    savePrefs(); VISTAS = tanda(); render(); openSettings();
+  });
 
   const purgar = (tipo, etiqueta) => {
     const victimas = ITEMS.filter(i => i.type === tipo);
@@ -2920,10 +3067,16 @@ function openSettings() {
     const repo = document.getElementById('ghRepo').value.trim().replace(/^https?:\/\/github\.com\//, '').replace(/\.git$/, '');
     const token = document.getElementById('ghTok').value.trim();
     if (!repo.includes('/')) { toast('El repo va en formato usuario/repo'); return; }
-    write(K_GH, { repo, token });
+    write(K_GH, { repo, token, auto: gh?.auto });   // conserva la preferencia de auto-sync si ya existía
     document.getElementById('ghOut').textContent = 'Comprobando…';
     const r = await sincronizar(true);
     document.getElementById('ghOut').textContent = r;
+    openSettings();
+  });
+  document.getElementById('toggleAutoSync')?.addEventListener('click', () => {
+    const actual = read(K_GH, null);
+    if (!actual) return;
+    write(K_GH, Object.assign({}, actual, { auto: actual.auto === false }));   // invierte
     openSettings();
   });
   const ghNow = document.getElementById('ghNow');
@@ -2976,6 +3129,8 @@ function openSettings() {
   document.getElementById('expBtn').addEventListener('click', exportBackup);
   document.getElementById('impBtn').addEventListener('click', () => document.getElementById('impFile').click());
   document.getElementById('impFile').addEventListener('change', importBackup);
+  document.getElementById('expCsvBtn').addEventListener('click', exportarCSV);
+  document.getElementById('findDups').addEventListener('click', openDuplicados);
 }
 
 function tagListHtml() {
@@ -2997,6 +3152,31 @@ function exportBackup() {
   a.click();
   URL.revokeObjectURL(a.href);
   toast('Copia descargada');
+}
+
+/* Aparte del JSON (que es el que sabe leer la propia app), un CSV sirve para
+   mirar el vault como lo que ya conoces: una hoja de cálculo. Este no se
+   piensa para volver a importarlo — es de solo lectura, para consultar. */
+function exportarCSV() {
+  const filas = [['Título', 'Artista', 'Tipo', 'Año', 'Escuchado', 'Valoración', 'Etiquetas', 'Archivado', 'Enlace']];
+  ITEMS.forEach(it => {
+    const tagNames = (it.tagIds || []).map(id => tagById(id)?.name).filter(Boolean).join('; ');
+    filas.push([
+      it.title || '', artistsOf(it), TYPE_LABEL[it.type] || it.type, yearOf(it) || '',
+      it.listened ? 'Sí' : 'No', it.rating || 0, tagNames, it.archived ? 'Sí' : 'No', it.spotifyUrl || ''
+    ]);
+  });
+  const csv = filas.map(fila => fila.map(v => {
+    const s = String(v ?? '');
+    return /[",\n;]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }).join(',')).join('\r\n');
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });   // BOM: para que Excel detecte UTF-8 solo
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `musicvault-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('CSV descargado');
 }
 
 function importBackup(e) {
@@ -3028,6 +3208,62 @@ function importBackup(e) {
 }
 
 /* ---- estadísticas ---- */
+/* ---- posibles duplicados ----
+   Con varias vías de entrada (búsqueda exacta, "por nombre" con coincidencia
+   aproximada, enlaces externos, playlists), es fácil que el mismo álbum o
+   canción acabe guardado dos veces sin que la app lo note — porque no
+   comparten el mismo spotifyId (uno puede ser un enlace externo, o venir de
+   ediciones distintas). Se compara título (ignorando remaster/directo/edición)
+   + artista + tipo entre elementos que SÍ tienen spotifyId distinto. */
+function tituloBase(t) {
+  const patron = /(remaster(?:ed)?(?:\s*\d{2,4})?|live|en vivo|directo|deluxe(?:\s*edition)?|mono|stereo|single version|radio edit|explicit|clean|bonus track version|anniversary edition|edición especial)/i;
+  return fold(t)
+    .replace(new RegExp('[-–—]\\s*' + patron.source + '.*$', 'i'), '')
+    .replace(new RegExp('[\\(\\[]\\s*' + patron.source + '[^\\)\\]]*[\\)\\]]', 'gi'), '')
+    .trim();
+}
+function buscarDuplicados() {
+  const grupos = new Map();
+  ITEMS.forEach(it => {
+    if (it.archived || it.type === 'artist' || it.type === 'playlist') return;   // esos no aplican aquí
+    const key = it.type + '::' + tituloBase(it.title) + '::' + fold(artistsOf(it));
+    if (!key || key.startsWith('::')) return;
+    if (!grupos.has(key)) grupos.set(key, []);
+    grupos.get(key).push(it);
+  });
+  return [...grupos.values()].filter(g => g.length > 1 && new Set(g.map(i => i.spotifyId)).size > 1);
+}
+function openDuplicados() {
+  const grupos = buscarDuplicados();
+  const TOPE = 60;
+  showSheet(`
+    <div class="sheethead"><h2>Posibles duplicados</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <p class="lede">Comparo título y artista (ignorando remasters, directos, ediciones especiales…) entre elementos que no comparten el mismo enlace de Spotify. No borro nada por mi cuenta — decides tú cuál te quedas.</p>
+    <div id="dupOut">
+      ${!grupos.length
+        ? `<div class="empty" style="padding:24px 8px;"><div class="ico">✨</div><h2>Nada que limpiar</h2><p>No he encontrado títulos y artistas repetidos entre orígenes distintos.</p></div>`
+        : grupos.slice(0, TOPE).map((g, gi) => `
+          <div class="flabel" style="margin-top:${gi === 0 ? '0' : '18'}px;">${esc(g[0].title)} — ${esc(artistsOf(g[0]))}</div>
+          <div class="list">${g.map(it => `
+            <div class="lrow" style="cursor:default;">
+              <div class="lart">${portada(it.coverUrl, TYPE_ICON[it.type], true)}</div>
+              <div class="linfo">
+                <div class="lt">${esc(it.title)}</div>
+                <div class="la">${it.manual ? 'Enlace externo' : 'Spotify'} · guardado ${relDate(it.dateAdded)}</div>
+              </div>
+              <button class="btn danger" style="padding:7px 11px;font-size:12px;flex-shrink:0;" data-dupdel="${it.id}">Borrar este</button>
+            </div>`).join('')}
+          </div>`).join('') + (grupos.length > TOPE ? `<p class="lede" style="margin-top:14px;">Y ${(grupos.length - TOPE).toLocaleString('es-ES')} grupos más — repite la búsqueda después de limpiar estos para ver el resto.</p>` : '')
+      }
+    </div>
+  `);
+  document.getElementById('dupOut').addEventListener('click', e => {
+    const b = e.target.closest('[data-dupdel]'); if (!b) return;
+    deleteItems([b.dataset.dupdel]);
+    openDuplicados();
+  });
+}
+
 function relDate(ts) {
   const days = Math.floor((Date.now() - ts) / 86400000);
   if (days <= 0) return 'hoy';
@@ -3050,33 +3286,69 @@ function bars(rows, color) {
     </div>`).join('')}</div>`;
 }
 
+/* Artistas guardados como marcador pero de los que todavía no tienes ningún
+   álbum o canción concreta — útil para saber a quién le queda "explorar de
+   verdad" en vez de solo tenerlo apuntado. */
+function artistasSinExplorar() {
+  const conAlgo = new Set();
+  ITEMS.forEach(i => { if (i.type !== 'artist') (i.artists || []).forEach(a => conAlgo.add(fold(a))); });
+  return ITEMS.filter(i => i.type === 'artist' && !i.archived && !conAlgo.has(fold(i.title)));
+}
+
+function openArtistasSinExplorar() {
+  const lista = artistasSinExplorar().sort((a, b) => cmp(sortKey(a.title), sortKey(b.title)));
+  showSheet(`
+    <div class="sheethead"><h2>Sin explorar todavía</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <p class="lede">${lista.length} artista${lista.length === 1 ? '' : 's'} que tienes guardado${lista.length === 1 ? '' : 's'} pero de los que aún no has añadido ningún álbum o canción concreta.</p>
+    <div class="list">${lista.map(it => `
+      <article class="lrow" data-id="${it.id}">
+        <div class="lart">${portada(it.coverUrl, TYPE_ICON[it.type], true)}</div>
+        <div class="linfo"><div class="lt">${esc(it.title)}</div></div>
+      </article>`).join('')}</div>
+  `);
+  document.querySelector('#modalRoot .list')?.addEventListener('click', e => {
+    const card = e.target.closest('[data-id]'); if (!card) return;
+    openDetail(card.dataset.id);
+  });
+}
+
 function openStats() {
   if (!ITEMS.length) { toast('Tu vault está vacío'); return; }
-  // los artistas y lo archivado no cuentan como pendiente ni escuchado
-  const contables = ITEMS.filter(i => i.type !== 'artist' && !i.archived);
+  // si hay un filtro puesto (tipo, década, etiqueta, género, búsqueda...), las
+  // estadísticas se calculan sobre ESO en vez de sobre el vault entero — así
+  // "¿cuánto llevo escuchado de los 70?" se responde solo, sin hacer cuentas
+  const q = fold(document.getElementById('q').value.trim());
+  const anyFilter = PREFS.type !== 'all' || PREFS.status !== 'all' || PREFS.tag !== 'all' || PREFS.genre !== 'all' || PREFS.decade !== 'all' || q;
+  const base = anyFilter ? filtered() : ITEMS.filter(i => !i.archived);
+  if (!base.length) { toast('No hay nada que coincida con el filtro actual'); return; }
+
+  // los artistas no cuentan como pendiente ni escuchado (ver filtered())
+  const contables = base.filter(i => i.type !== 'artist');
   const done = contables.filter(i => i.listened);
   const pending = contables.filter(i => !i.listened);
 
   const byArtist = {};
-  ITEMS.forEach(i => (i.artists || []).forEach(a => { byArtist[a] = (byArtist[a] || 0) + 1; }));
+  base.forEach(i => (i.artists || []).forEach(a => { byArtist[a] = (byArtist[a] || 0) + 1; }));
   const topArtists = Object.entries(byArtist).sort((a, b) => b[1] - a[1] || cmp(a[0], b[0])).slice(0, 8);
 
   const byGenre = {};
-  ITEMS.forEach(i => (i.genres || []).forEach(g => { byGenre[g] = (byGenre[g] || 0) + 1; }));
+  base.forEach(i => (i.genres || []).forEach(g => { byGenre[g] = (byGenre[g] || 0) + 1; }));
   const topGenres = Object.entries(byGenre).sort((a, b) => b[1] - a[1] || cmp(a[0], b[0])).slice(0, 8);
 
   const byDecade = {};
-  ITEMS.forEach(i => { const y = yearOf(i); if (y) { const d = Math.floor(y / 10) * 10 + 's'; byDecade[d] = (byDecade[d] || 0) + 1; } });
+  base.forEach(i => { const y = yearOf(i); if (y) { const d = Math.floor(y / 10) * 10 + 's'; byDecade[d] = (byDecade[d] || 0) + 1; } });
   const decades = Object.entries(byDecade).sort((a, b) => parseInt(a[0]) - parseInt(b[0]));
 
-  const byType = ['album', 'track', 'artist', 'playlist'].map(t => [TYPE_PLURAL[t], ITEMS.filter(i => i.type === t).length]).filter(r => r[1]);
-  const rated = ITEMS.filter(i => i.rating > 0);
+  const byType = ['album', 'track', 'artist', 'playlist'].map(t => [TYPE_PLURAL[t], base.filter(i => i.type === t).length]).filter(r => r[1]);
+  const rated = base.filter(i => i.rating > 0);
   const avg = rated.length ? (rated.reduce((s, i) => s + i.rating, 0) / rated.length).toFixed(1) : null;
   const oldest = pending.slice().sort((a, b) => a.dateAdded - b.dateAdded)[0];
   const pct = contables.length ? Math.round(done.length / contables.length * 100) : 0;
+  const sinExplorar = anyFilter ? [] : artistasSinExplorar();
 
   showSheet(`
-    <div class="sheethead"><h2>Tu vault en números</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="sheethead"><h2>${anyFilter ? 'Esto en números' : 'Tu vault en números'}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    ${anyFilter ? `<p class="lede" style="margin:-8px 0 14px;">Con el filtro que tienes puesto ahora: ${base.length.toLocaleString('es-ES')} de ${ITEMS.length.toLocaleString('es-ES')} elementos.</p>` : ''}
 
     <div class="bigstat">
       <div class="bignum">${pct}<span class="pctsign">%</span></div>
@@ -3101,6 +3373,7 @@ function openStats() {
 
     <div class="flabel">Artistas con más cosas guardadas</div>
     ${bars(topArtists, 'var(--jade)')}
+    ${sinExplorar.length ? `<button class="linkbtn" id="verSinExplorar" style="display:block;margin-top:8px;">Ver los ${sinExplorar.length.toLocaleString('es-ES')} artistas que aún no tienen nada más guardado →</button>` : ''}
 
     ${topGenres.length ? `<div class="flabel">Géneros más frecuentes</div>
     ${bars(topGenres, 'var(--jade)')}` : ''}
@@ -3109,13 +3382,14 @@ function openStats() {
     ${bars(decades, 'var(--amber)')}
 
     <div class="flabel">Valoraciones</div>
-    <p class="lede" style="margin:0;">${rated.length ? `Has valorado ${rated.length} de ${ITEMS.length}. Media: <strong>${avg}</strong> ★` : 'Todavía no has valorado nada. Abre cualquier ficha y toca las estrellas.'}</p>
+    <p class="lede" style="margin:0;">${rated.length ? `Has valorado ${rated.length} de ${base.length}. Media: <strong>${avg}</strong> ★` : 'Todavía no has valorado nada. Abre cualquier ficha y toca las estrellas.'}</p>
 
-    ${ITEMS.some(i => i.archived) ? `<div class="flabel">Archivado</div>
+    ${!anyFilter && ITEMS.some(i => i.archived) ? `<div class="flabel">Archivado</div>
     <p class="lede" style="margin:0;">${ITEMS.filter(i => i.archived).length} guardado${ITEMS.filter(i => i.archived).length === 1 ? '' : 's'} aparte, fuera de las listas normales.</p>` : ''}
   `);
 
   document.querySelector('[data-goto]')?.addEventListener('click', e => openDetail(e.currentTarget.dataset.goto));
+  document.getElementById('verSinExplorar')?.addEventListener('click', openArtistasSinExplorar);
 }
 
 /* ---- shuffle ---- */
@@ -3171,7 +3445,7 @@ contentEl.addEventListener('click', e => {
   const tg = e.target.closest('[data-toggle]');
   if (tg) { e.stopPropagation(); toggleListened(tg.dataset.toggle); return; }
   const more = e.target.closest('[data-more]');
-  if (more) { VISTAS += TANDA * 3; render(); return; }
+  if (more) { VISTAS += tanda() * 3; render(); return; }
   const card = e.target.closest('[data-id]');
   if (!card) return;
   if (selMode) toggleSel(card.dataset.id);
@@ -3213,7 +3487,11 @@ document.getElementById('selbarRoot').addEventListener('click', e => {
       saveItems(); render();
     });
   }
-  if (b.dataset.sel === 'del') { setSelMode(false); deleteItems(ids); }
+  if (b.dataset.sel === 'copiar') copiarEnlaces(ITEMS.filter(it => selected.has(it.id)), 'Enlace copiado');
+  if (b.dataset.sel === 'del') {
+    if (!confirmarBorradoSiHaceFalta(ids.length)) return;
+    setSelMode(false); deleteItems(ids);
+  }
 });
 
 /* modal delegation */
@@ -3310,15 +3588,20 @@ async function manejarParametroAdd() {
 
 handleSpotifyRedirect().then(() => bootStorage()).then(() => {
   render();
-  if (ghCfg()) sincronizar(false);
+  const gArranque = ghCfg();
+  if (gArranque && gArranque.auto !== false) sincronizar(false);
   manejarParametroAdd();
 });
 
 /* Al volver a la app (cambiar de pestaña, desbloquear el móvil) se comprueba
-   si el otro dispositivo ha añadido algo, pero como mucho una vez por minuto. */
+   si el otro dispositivo ha añadido algo, pero como mucho una vez por minuto.
+   Nada de esto corre si la sincronización automática está desactivada — en
+   ese caso solo sincroniza cuando tocas el botón ⟳ a propósito. */
 let _ultimoVistazo = 0;
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState !== 'visible' || !ghCfg()) return;
+  if (document.visibilityState !== 'visible') return;
+  const g = ghCfg();
+  if (!g || g.auto === false) return;
   if (Date.now() - _ultimoVistazo < 60000) return;
   _ultimoVistazo = Date.now();
   sincronizar(false);
