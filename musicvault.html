@@ -1411,6 +1411,20 @@ function metaPairs(it) {
 /* ============ filtering & sorting ============ */
 function filtered() {
   const q = fold(document.getElementById('q').value.trim());
+  // índice álbum → títulos de sus canciones guardadas, para que buscar el
+  // nombre de una canción también encuentre el álbum al que pertenece (solo
+  // funciona si esa canción está guardada también como elemento suelto — no
+  // hay tracklist propia guardada en el álbum, y bajarla de Spotify para
+  // cada uno solo por si acaso sería carísimo en peticiones)
+  let cancionesPorAlbum = null;
+  if (q) {
+    cancionesPorAlbum = new Map();
+    ITEMS.forEach(i => {
+      if (i.type !== 'track' || !i.albumId) return;
+      if (!cancionesPorAlbum.has(i.albumId)) cancionesPorAlbum.set(i.albumId, []);
+      cancionesPorAlbum.get(i.albumId).push(fold(i.title));
+    });
+  }
   let out = ITEMS.filter(it => {
     // archivar no es borrar: se queda en el vault (cuenta en "En el vault"),
     // pero se aparta de todas las listas normales — solo aparece bajo "Archivado"
@@ -1423,7 +1437,16 @@ function filtered() {
     if (PREFS.tag !== 'all' && !(it.tagIds || []).includes(PREFS.tag)) return false;
     if (PREFS.genre !== 'all' && !(it.genres || []).some(g => fold(g) === PREFS.genre)) return false;
     if (PREFS.decade !== 'all') { const y = yearOf(it); if (!y || Math.floor(y / 10) * 10 !== +PREFS.decade) return false; }
-    if (q && !fold(it.title + ' ' + artistsOf(it) + ' ' + (it.notes || '')).includes(q)) return false;
+    if (q) {
+      const tagNames = (it.tagIds || []).map(id => tagById(id)?.name).filter(Boolean).join(' ');
+      const texto = fold(it.title + ' ' + artistsOf(it) + ' ' + (it.notes || '') + ' ' + (it.genres || []).join(' ') + ' ' + tagNames + ' ' + (it.albumName || ''));
+      let coincide = texto.includes(q);
+      // "no sight" también saca Yeezus si tienes esa canción guardada suelta
+      if (!coincide && it.type === 'album' && cancionesPorAlbum.has(it.spotifyId)) {
+        coincide = cancionesPorAlbum.get(it.spotifyId).some(t => t.includes(q));
+      }
+      if (!coincide) return false;
+    }
     return true;
   });
   const s = PREFS.sort;
@@ -1776,6 +1799,9 @@ let lastResults = [];
 let searchTimer;
 let searchSelMode = false;
 let searchSel = new Set();   // índices de lastResults marcados en modo selección
+// solo tiene sentido para "Canciones": no reordena lastResults (eso rompería
+// los índices de searchSel y data-add), solo el orden en que se pintan
+let searchSortMode = 'relevance';   // relevance | album | duration | alpha
 
 /* Spotify solo da 10 resultados por página desde el cambio de febrero de 2026.
    Para poder elegir entre más de 10, "Ver más resultados" pide la siguiente
@@ -1790,7 +1816,7 @@ const TOPE_OFFSET_BUSQUEDA = 100;   // 10 páginas; de sobra para elegir a mano
 
 function openSearch() {
   searchType = 'album';
-  searchSelMode = false; searchSel = new Set();
+  searchSelMode = false; searchSel = new Set(); searchSortMode = 'relevance';
   showSheet(`
     <div class="sheethead"><h2>Buscar en Spotify</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
     <div class="segrow" id="segs">
@@ -1800,9 +1826,9 @@ function openSearch() {
       <button class="seg" data-t="playlist">📑 Playlists</button>
     </div>
     <input type="text" class="field" id="sq" placeholder="Título, artista, o pega un enlace (álbum, canción, artista o playlist)" autocomplete="off">
-    <div style="display:flex;flex-wrap:wrap;gap:14px;margin:9px 0 2px;">
-      <button class="linkbtn" id="bulkLink">📋 Pegar varios enlaces a la vez</button>
-      <button class="linkbtn" id="manualLink">🔗 ¿No está en Spotify? Añade un enlace externo</button>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 2px;">
+      <button class="pillbtn" id="bulkLink">📋 Pegar varios enlaces</button>
+      <button class="pillbtn" id="manualLink">🔗 Añadir enlace externo</button>
     </div>
     <div id="sres" style="margin-top:12px;"></div>
   `);
@@ -1811,7 +1837,7 @@ function openSearch() {
     const b = e.target.closest('.seg'); if (!b) return;
     document.querySelectorAll('#segs .seg').forEach(x => x.classList.toggle('on', x === b));
     searchType = b.dataset.t;
-    searchSelMode = false; searchSel = new Set(); document.getElementById('searchSelBar')?.remove();
+    searchSelMode = false; searchSel = new Set(); searchSortMode = 'relevance'; document.getElementById('searchSelBar')?.remove();
     runSearch();
   });
   document.getElementById('bulkLink').addEventListener('click', () => { bulkInputMode = 'links'; openBulk(); });
@@ -1912,6 +1938,22 @@ function rrow(r, i) {
   </div>`;
 }
 
+// Orden de PINTADO, no de datos: devuelve índices de lastResults reordenados
+// sin tocar el array — así searchSel y data-add (que son índices reales) no
+// se rompen cuando cambias el criterio de orden.
+function ordenResultados() {
+  const idx = lastResults.map((_, i) => i);
+  if (searchSortMode === 'relevance') return idx;
+  idx.sort((ia, ib) => {
+    const a = lastResults[ia], b = lastResults[ib];
+    if (searchSortMode === 'album') return fold(a.albumName || '').localeCompare(fold(b.albumName || ''), 'es') || (a.trackNumber || 0) - (b.trackNumber || 0);
+    if (searchSortMode === 'duration') return (a.durationMs || 0) - (b.durationMs || 0);
+    if (searchSortMode === 'alpha') return fold(a.title).localeCompare(fold(b.title), 'es');
+    return 0;
+  });
+  return idx;
+}
+
 /* Vuelve a pintar la lista de resultados: la barra de herramientas (Seleccionar
    varios / Añadir todos), las filas, y si hay selección activa, la barra de
    confirmación abajo. Se llama tras cada búsqueda y tras cada toque en modo
@@ -1931,11 +1973,26 @@ function pintarResultados() {
          </div>`;
   }
 
+  // el orden alternativo solo tiene sentido en Canciones — en álbumes/artistas/
+  // playlists no hay duración de canción ni álbum "padre" que ordenar
+  const sortBar = (searchType === 'track' && lastResults.length > 1) ? `
+    <div class="segrow" id="srSort" style="margin-bottom:10px;">
+      <button class="seg ${searchSortMode === 'relevance' ? 'on' : ''}" data-sort="relevance">Relevancia</button>
+      <button class="seg ${searchSortMode === 'album' ? 'on' : ''}" data-sort="album">Álbum</button>
+      <button class="seg ${searchSortMode === 'duration' ? 'on' : ''}" data-sort="duration">Duración</button>
+      <button class="seg ${searchSortMode === 'alpha' ? 'on' : ''}" data-sort="alpha">A-Z</button>
+    </div>` : '';
+
   const masBtn = (!searchAgotado && searchOffset < TOPE_OFFSET_BUSQUEDA)
     ? `<button class="btn vermas" data-moreres="1" ${_cargandoMasResultados ? 'disabled' : ''}>${_cargandoMasResultados ? 'Cargando…' : 'Ver más resultados'}</button>`
     : '';
 
-  box.innerHTML = tools + lastResults.map(rrow).join('') + masBtn;
+  box.innerHTML = tools + sortBar + ordenResultados().map(i => rrow(lastResults[i], i)).join('') + masBtn;
+  document.getElementById('srSort')?.addEventListener('click', e => {
+    const b = e.target.closest('[data-sort]'); if (!b) return;
+    searchSortMode = b.dataset.sort;
+    pintarResultados();
+  });
 
   const barra = document.getElementById('searchSelBar');
   if (barra) barra.remove();
