@@ -653,6 +653,16 @@
   }
   .simchip:active { transform: scale(0.96); }
   .simchip.done { background: var(--jade-soft); color: var(--jade); border-color: transparent; }
+  .tracklist { display:flex; flex-direction:column; }
+  .trow {
+    display:flex; align-items:center; gap: 10px; padding: 8px 4px;
+    border-bottom: 1px solid var(--line); color: inherit; text-decoration: none;
+  }
+  .trow:last-child { border-bottom: none; }
+  .trow:hover { background: var(--surface-2); }
+  .trow .trn { width: 20px; flex-shrink:0; font-size: 12px; color: var(--fg-mute); text-align:right; font-variant-numeric: tabular-nums; }
+  .trow .trt { flex:1; min-width:0; font-size: 13.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .trow .trd { font-size: 12px; color: var(--fg-mute); flex-shrink:0; font-variant-numeric: tabular-nums; }
 
   /* settings */
   .statusline { display:inline-flex; align-items:center; gap: 7px; font-size: 12.5px; padding: 6px 12px; border-radius: 999px; margin-bottom: 12px; font-weight: 550; }
@@ -853,6 +863,9 @@ const idbSet = (k, v) => idb().then(db => new Promise((res, rej) => {
 
 let ITEMS = [];
 let TAGS  = [];
+// dondequiera que se listen etiquetas se piden así, en vez de tocar el orden
+// real de TAGS — así no se altera nada de la lógica de fusión/dedup por id.
+const tagsOrdenados = () => TAGS.slice().sort((a, b) => a.name.localeCompare(b.name, 'es'));
 let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', status: 'all', tag: 'all', genre: 'all', decade: 'all', covers: false, confirmarBorrado: false, tanda: 120 }, read(K_PREFS, {}));
 
 /* Al borrar algo hay que dejar constancia: si no, el otro dispositivo lo
@@ -1474,6 +1487,21 @@ function renderStats() {
   document.querySelectorAll('.stat').forEach(b => b.classList.toggle('active', b.dataset.status === PREFS.status));
 }
 
+// se usa desde renderChips() y desde el selector "Ver todos los géneros" —
+// separado para que los dos vean siempre el mismo universo de datos
+function generosConFrecuencia() {
+  const enArchivo = PREFS.status === 'archived';
+  const visibles = ITEMS.filter(i => enArchivo ? i.archived : !i.archived);
+  const freq = {}, label = {};
+  visibles.forEach(i => (i.genres || []).forEach(g => {
+    const k = fold(g);
+    if (!k) return;
+    freq[k] = (freq[k] || 0) + 1;
+    if (!label[k]) label[k] = g;
+  }));
+  return { freq, label };
+}
+
 function renderChips() {
   // los números de los chips reflejan el mismo universo que ve filtered():
   // lo archivado normalmente no cuenta, pero si estás viendo "Archivado" sí
@@ -1492,18 +1520,20 @@ function renderChips() {
   // finales de 2024 (es un cambio suyo, documentado por otros desarrolladores,
   // no algo que dependa de esta app) — así que estos chips solo aparecerán si
   // alguno de tus artistas todavía conserva géneros, o si editas alguno a mano
-  // desde su ficha (Editar → Géneros).
-  const genreFreq = {}, genreLabel = {};
-  visibles.forEach(i => (i.genres || []).forEach(g => {
-    const k = fold(g);
-    if (!k) return;
-    genreFreq[k] = (genreFreq[k] || 0) + 1;
-    if (!genreLabel[k]) genreLabel[k] = g;
-  }));
-  // antes se cortaba en 12 y con Last.fm ya rellenando géneros de verdad se
-  // quedaba corto — la fila de chips ya se desplaza sola, así que el tope
-  // ahora es solo para no reventar con cientos de etiquetas distintas
-  const topGenres = Object.entries(genreFreq).sort((a, b) => b[1] - a[1]).slice(0, 60);
+  // desde su ficha (Editar → Géneros), o si usas "Rellenar géneros con Last.fm".
+  const { freq: genreFreq, label: genreLabel } = generosConFrecuencia();
+  // en la fila solo caben unos pocos sin que se vuelva interminable: se
+  // muestran los más repetidos, y un chip "Ver todos" abre la lista completa
+  // — así con Last.fm rellenando cientos de géneros distintos siguen siendo
+  // todos accesibles, solo que no todos de un vistazo en la fila
+  const TOPE_CHIPS_GENERO = 10;
+  const genOrdenPorFreq = Object.entries(genreFreq).sort((a, b) => b[1] - a[1]);
+  let topGenres = genOrdenPorFreq.slice(0, TOPE_CHIPS_GENERO);
+  if (PREFS.genre !== 'all' && !topGenres.some(([k]) => k === PREFS.genre)) {
+    const activo = genOrdenPorFreq.find(([k]) => k === PREFS.genre);
+    if (activo) topGenres = [activo, ...topGenres.slice(0, TOPE_CHIPS_GENERO - 1)];
+  }
+  const hayMasGeneros = genOrdenPorFreq.length > topGenres.length;
 
   const chipsTipo = [
     `<button class="chip ${PREFS.type === 'all' ? 'on' : ''}" data-type="all">Todo <span class="ct">${visibles.length}</span></button>`,
@@ -1515,12 +1545,15 @@ function renderChips() {
   ];
   const chipsDecada = decades.map(([dec, n]) =>
     `<button class="chip decade ${PREFS.decade === dec ? 'on' : ''}" data-decade="${dec}">${dec}s <span class="ct">${n}</span></button>`);
-  const chipsTag = TAGS.map(t => {
+  const chipsTag = tagsOrdenados().map(t => {
     const n = visibles.filter(i => (i.tagIds || []).includes(t.id)).length;
     return `<button class="chip ${PREFS.tag === t.id ? 'on' : ''}" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)} <span class="ct">${n}</span></button>`;
   });
-  const chipsGenero = topGenres.map(([k, n]) =>
-    `<button class="chip genre ${PREFS.genre === k ? 'on' : ''}" data-genre="${esc(k)}">🎧 ${esc(genreLabel[k])} <span class="ct">${n}</span></button>`);
+  const chipsGenero = [
+    ...topGenres.map(([k, n]) =>
+      `<button class="chip genre ${PREFS.genre === k ? 'on' : ''}" data-genre="${esc(k)}">🎧 ${esc(genreLabel[k])} <span class="ct">${n}</span></button>`),
+    ...(hayMasGeneros ? [`<button class="chip genre" data-genall="1">🎧 Ver todos (${genOrdenPorFreq.length})</button>`] : [])
+  ];
 
   // separadores finos entre grupos: con tipo + década + etiquetas + género la
   // fila puede crecer mucho, y un separador ayuda a distinguir de un vistazo
@@ -2410,13 +2443,15 @@ function openDetail(id) {
 
     <div class="flabel">Etiquetas</div>
     <div class="tagpick" id="dTags">
-      ${TAGS.length ? TAGS.map(t => `<button class="tagsel ${(it.tagIds || []).includes(t.id) ? '' : 'off'}" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)}</button>`).join('')
+      ${TAGS.length ? tagsOrdenados().map(t => `<button class="tagsel ${(it.tagIds || []).includes(t.id) ? '' : 'off'}" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)}</button>`).join('')
         : `<p class="lede" style="margin:0;">Todavía no has creado ninguna etiqueta. <button class="linkbtn" data-open="settings">Crear una</button></p>`}
     </div>
 
     ${it.type === 'artist' && !it.manual ? `<div class="btnrow"><button class="btn wide" id="dDisco">Ver su discografía</button></div>
     <div class="flabel">Artistas parecidos</div>
     <div id="dSimilar"><p class="lede" style="margin:0;">Buscando sugerencias…</p></div>` : ''}
+    ${it.type === 'album' && !it.manual ? `<div class="flabel">Canciones del álbum</div>
+    <div id="dTracks"><p class="lede" style="margin:0;">Cargando canciones…</p></div>` : ''}
     <div class="btnrow">
       <a class="btn primary wide" href="${esc(it.spotifyUrl)}" target="_blank" rel="noopener">${it.manual ? 'Abrir enlace' : 'Abrir en Spotify'} ↗</a>
       <button class="btn" id="dCopyLink" title="Copiar enlace" aria-label="Copiar enlace">📋</button>
@@ -2431,6 +2466,7 @@ function openDetail(id) {
 
   document.getElementById('dDisco')?.addEventListener('click', () => openDiscography(it));
   if (it.type === 'artist' && !it.manual) cargarSimilares(it);
+  if (it.type === 'album' && !it.manual) cargarTracksAlbum(it);
   wireMeta(it, id);
 
   document.getElementById('dCopyLink')?.addEventListener('click', () => copiarEnlaces([it], 'Enlace copiado'));
@@ -2548,7 +2584,7 @@ async function fetchArtistAlbums(artistId, onProgress) {
   let out = [], offset = 0, total = null;
   while (offset < 200) {
     const t = await spotifyToken();
-    const res = await fetchConReintento429(`https://api.spotify.com/v1/artists/${artistId}/albums?include_groups=album,single&limit=10&offset=${offset}&market=ES`, t);
+    const res = await fetchConReintento429(`https://api.spotify.com/v1/artists/${artistId}/albums?include_groups=album,single,compilation&limit=10&offset=${offset}&market=ES`, t);
     if (res.status === 429) throw new Error('RATE_LIMIT');
     if (!res.ok) throw new Error('DISCO_FAILED:' + res.status);
     const d = await res.json();
@@ -2559,6 +2595,46 @@ async function fetchArtistAlbums(artistId, onProgress) {
     if (offset >= total || !(d.items || []).length) break;
   }
   return out;
+}
+
+/* Igual de paginado que fetchArtistAlbums, por el mismo motivo: no fiarse de
+   un límite alto en un solo golpe. Los items son "simplified track objects"
+   — sin portada ni álbum, pero traen external_urls.spotify, que es justo lo
+   único que hace falta para enlazar cada canción sin tener que guardarla. */
+async function fetchAlbumTracks(albumId) {
+  let out = [], offset = 0, total = null;
+  while (offset < 200) {
+    const t = await spotifyToken();
+    const res = await fetchConReintento429(`https://api.spotify.com/v1/albums/${albumId}/tracks?limit=10&offset=${offset}&market=ES`, t);
+    if (res.status === 429) throw new Error('RATE_LIMIT');
+    if (!res.ok) throw new Error('TRACKS_FAILED:' + res.status);
+    const d = await res.json();
+    if (total === null) total = d.total;
+    out = out.concat(d.items || []);
+    offset += 10;
+    if (offset >= total || !(d.items || []).length) break;
+  }
+  return out;
+}
+
+async function cargarTracksAlbum(it) {
+  const box = document.getElementById('dTracks');
+  if (!box) return;
+  try {
+    const items = await fetchAlbumTracks(it.spotifyId);
+    if (!items.length) { box.innerHTML = `<p class="lede" style="margin:0;">Spotify no devuelve canciones para este álbum.</p>`; return; }
+    box.innerHTML = `<div class="tracklist">${items.map(tr => `
+      <a class="trow" href="${esc(tr.external_urls?.spotify || it.spotifyUrl)}" target="_blank" rel="noopener">
+        <span class="trn">${tr.track_number ?? ''}</span>
+        <span class="trt">${esc(tr.name || '')}</span>
+        <span class="trd">${esc(fmtDur(tr.duration_ms) || '')}</span>
+      </a>`).join('')}</div>`;
+  } catch (err) {
+    const text = err.message === 'RATE_LIMIT'
+      ? 'Demasiadas peticiones seguidas — inténtalo de nuevo en unos segundos.'
+      : 'No se pudieron cargar las canciones ahora mismo.';
+    box.innerHTML = `<p class="lede" style="margin:0;">${text}</p>`;
+  }
 }
 
 /* ---- discografía de un artista ---- */
@@ -2585,34 +2661,64 @@ async function openDiscography(artist) {
     box.innerHTML = `<div class="empty" style="padding:24px 8px;"><p>Este artista es un enlace externo, no tiene ficha ni discografía en Spotify.</p></div>`;
     return;
   }
-  try {
-    const [tracksRaw, albumsRaw] = await Promise.all([
-      fetchArtistTopTracks(artist.spotifyId).catch(() => []),
-      fetchArtistAlbums(artist.spotifyId, (got, tot) => {
-        if (tot > 10) box.innerHTML = `<p class="lede" style="text-align:center;padding:20px 4px;">Leyendo discografía… ${got} de ${tot}</p>`;
-      })
-    ]);
-    const tracks = tracksRaw.map(t => normalize(t, 'track'));
-    // Spotify repite el mismo disco en varias ediciones; me quedo con uno por título.
-    const seen = new Set();
-    const albums = albumsRaw.map(a => normalize(a, 'album'))
-      .filter(r => { const k = fold(r.title); if (seen.has(k)) return false; seen.add(k); return true; })
-      .sort((a, b) => (parseInt(String(b.releaseDate || '0').slice(0, 4)) || 0) - (parseInt(String(a.releaseDate || '0').slice(0, 4)) || 0));
-    lastResults = tracks.concat(albums);
-    if (!lastResults.length) {
-      box.innerHTML = `<div class="empty" style="padding:24px 8px;"><p>Spotify no devuelve discografía para este artista.</p></div>`;
-      return;
-    }
-    const partes = [];
-    if (tracks.length) partes.push(`<p class="flabel">Canciones</p>${tracks.map((r, i) => rrow(r, i)).join('')}`);
-    if (albums.length) partes.push(`<p class="flabel">Álbumes</p>${albums.map((r, i) => rrow(r, tracks.length + i)).join('')}`);
-    box.innerHTML = partes.join('');
-  } catch (err) {
-    const text = err.message === 'RATE_LIMIT'
+  // se piden a la vez pero se resuelven por separado: si Spotify niega las
+  // canciones más populares (algunas apps sin "extended quota" lo sufren) no
+  // quiero perder también los álbumes, que sí suelen funcionar siempre
+  const [tracksRes, albumsRes] = await Promise.allSettled([
+    fetchArtistTopTracks(artist.spotifyId),
+    fetchArtistAlbums(artist.spotifyId, (got, tot) => {
+      if (tot > 10) box.innerHTML = `<p class="lede" style="text-align:center;padding:20px 4px;">Leyendo discografía… ${got} de ${tot}</p>`;
+    })
+  ]);
+
+  if (albumsRes.status === 'rejected') {
+    const err = albumsRes.reason;
+    const text = err?.message === 'RATE_LIMIT'
       ? 'Demasiadas peticiones seguidas — espera unos segundos y vuelve a intentarlo.'
-      : `No se pudo cargar la discografía (${esc((err.message || '').split(':')[1] || 'error')}).`;
+      : `No se pudo cargar la discografía (${esc((err?.message || '').split(':')[1] || 'error')}).`;
     box.innerHTML = `<div class="empty" style="padding:24px 8px;"><p>${text}</p></div>`;
+    return;
   }
+
+  let tracks = [], tracksError = null;
+  if (tracksRes.status === 'fulfilled') tracks = tracksRes.value.map(t => normalize(t, 'track'));
+  else tracksError = tracksRes.reason?.message === 'RATE_LIMIT'
+    ? 'Demasiadas peticiones seguidas — inténtalo de nuevo en unos segundos.'
+    : 'Spotify no ha dejado consultar sus canciones más populares con esta conexión.';
+
+  // Spotify repite el mismo disco en varias ediciones; me quedo con uno por título.
+  const seen = new Set();
+  const normalizados = albumsRes.value.map(a => normalize(a, 'album'))
+    .filter(r => { const k = fold(r.title); if (seen.has(k)) return false; seen.add(k); return true; })
+    .sort((a, b) => (parseInt(String(b.releaseDate || '0').slice(0, 4)) || 0) - (parseInt(String(a.releaseDate || '0').slice(0, 4)) || 0));
+  // como en la página de un artista en Spotify: álbumes, singles/EPs y
+  // recopilatorios se ven claramente distintos, no todo mezclado en un montón
+  const albums = normalizados.filter(r => r.albumType === 'album');
+  const singles = normalizados.filter(r => r.albumType === 'single');
+  const comps = normalizados.filter(r => r.albumType === 'compilation');
+  const otros = normalizados.filter(r => !['album', 'single', 'compilation'].includes(r.albumType));
+
+  lastResults = tracks.concat(albums, singles, comps, otros);
+  if (!lastResults.length && !tracksError) {
+    box.innerHTML = `<div class="empty" style="padding:24px 8px;"><p>Spotify no devuelve discografía para este artista.</p></div>`;
+    return;
+  }
+
+  let cursor = 0;
+  const seccion = (titulo, arr) => {
+    if (!arr.length) return '';
+    const html = `<p class="flabel">${titulo}</p>${arr.map((r, i) => rrow(r, cursor + i)).join('')}`;
+    cursor += arr.length;
+    return html;
+  };
+  const partes = [
+    tracks.length ? seccion('Canciones', tracks) : (tracksError ? `<p class="flabel">Canciones</p><p class="lede" style="margin:0 0 4px;">${esc(tracksError)}</p>` : ''),
+    seccion('Álbumes', albums),
+    seccion('Singles y EPs', singles),
+    seccion('Recopilatorios', comps),
+    seccion('Otros', otros)
+  ];
+  box.innerHTML = partes.join('');
 }
 
 /* ---- tag picker (bulk) ---- */
@@ -2622,7 +2728,7 @@ function openTagPicker(ids) {
     <div class="sheethead"><h2>Etiquetar ${ids.length} elemento${ids.length === 1 ? '' : 's'}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
     <p class="lede">Toca una etiqueta para añadirla a todo lo seleccionado.</p>
     <div class="tagpick" id="bulkTags">
-      ${TAGS.map(t => `<button class="tagsel" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)}</button>`).join('')}
+      ${tagsOrdenados().map(t => `<button class="tagsel" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)}</button>`).join('')}
     </div>
   `);
   document.getElementById('bulkTags').addEventListener('click', e => {
@@ -3289,7 +3395,7 @@ function openSettings() {
 
 function tagListHtml() {
   if (!TAGS.length) return `<p class="lede" style="margin:0;">Aún no hay etiquetas. Crea una abajo para organizar tu vault.</p>`;
-  return TAGS.map(t => {
+  return tagsOrdenados().map(t => {
     const n = ITEMS.filter(i => (i.tagIds || []).includes(t.id)).length;
     return `<div class="tagline">
       <span class="lf"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)}<span class="ct">${n}</span></span>
@@ -3575,12 +3681,36 @@ document.querySelector('.state-strip').addEventListener('click', e => {
 
 document.getElementById('chips').addEventListener('click', e => {
   const b = e.target.closest('.chip'); if (!b) return;
+  if (b.dataset.genall) { openGenrePicker(); return; }
   if (b.dataset.type) PREFS.type = b.dataset.type;
   if (b.dataset.tag) PREFS.tag = PREFS.tag === b.dataset.tag ? 'all' : b.dataset.tag;
   if (b.dataset.genre) PREFS.genre = PREFS.genre === b.dataset.genre ? 'all' : b.dataset.genre;
   if (b.dataset.decade) PREFS.decade = PREFS.decade === b.dataset.decade ? 'all' : b.dataset.decade;
   savePrefs(); render();
 });
+
+function openGenrePicker() {
+  const { freq, label } = generosConFrecuencia();
+  const todos = Object.entries(freq).sort((a, b) => label[a[0]].localeCompare(label[b[0]], 'es'));
+  showSheet(`
+    <div class="sheethead"><h2>Todos los géneros</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <input class="field" id="genreSearch" placeholder="Buscar género…" style="margin-bottom:12px;">
+    <div class="tagpick" id="genreList">
+      ${todos.map(([k, n]) => `<button class="chip genre ${PREFS.genre === k ? 'on' : ''}" data-genre="${esc(k)}">${esc(label[k])} <span class="ct">${n}</span></button>`).join('')}
+    </div>
+  `);
+  document.getElementById('genreSearch').addEventListener('input', e => {
+    const q = fold(e.target.value.trim());
+    document.querySelectorAll('#genreList .chip').forEach(b => {
+      b.style.display = fold(b.textContent).includes(q) ? '' : 'none';
+    });
+  });
+  document.getElementById('genreList').addEventListener('click', e => {
+    const b = e.target.closest('[data-genre]'); if (!b) return;
+    PREFS.genre = PREFS.genre === b.dataset.genre ? 'all' : b.dataset.genre;
+    savePrefs(); closeModal(); render();
+  });
+}
 
 /* content delegation: open detail, toggle listened, selection, empty-state buttons.
    Va en el <main> completo (no solo #results): el botón "Quitar filtros" de la
