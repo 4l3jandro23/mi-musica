@@ -1164,6 +1164,12 @@ function isConnected() { const c = loadCreds(); return !!(c && c.refreshToken); 
    nada de escritura ni datos que no sean playlists:
    https://developer.spotify.com/documentation/web-api/concepts/scopes */
 const SPOTIFY_SCOPE = 'playlist-read-private playlist-read-collaborative';
+/* Permiso aparte para leer el historial reciente real (qué has escuchado de
+   verdad en Spotify) y poder marcar "escuchado" solo — separado de
+   SPOTIFY_SCOPE a propósito: tieneScopePlaylists() no debe empezar a exigir
+   este permiso nuevo de golpe y forzar una reconexión a quien ya tenía
+   playlists funcionando. Se piden juntos al conectar, pero se comprueban aparte. */
+const SPOTIFY_SCOPE_RECIENTES = 'user-read-recently-played';
 
 /* Manda al usuario a la pantalla de login real de Spotify. Al volver, Spotify
    añade ?code=...&state=... a esta misma URL (por eso hace falta registrar
@@ -1177,7 +1183,8 @@ async function beginSpotifyLogin() {
   const challenge = await pkceChallenge(verifier);
   const params = new URLSearchParams({
     client_id: c.clientId, response_type: 'code', redirect_uri: REDIRECT_URI,
-    code_challenge_method: 'S256', code_challenge: challenge, state, scope: SPOTIFY_SCOPE
+    code_challenge_method: 'S256', code_challenge: challenge, state,
+    scope: SPOTIFY_SCOPE + ' ' + SPOTIFY_SCOPE_RECIENTES
   });
   location.href = 'https://accounts.spotify.com/authorize?' + params.toString();
 }
@@ -1261,6 +1268,11 @@ function tieneScopePlaylists() {
   if (!c || !c.scope) return false;
   const got = new Set(c.scope.split(' ').filter(Boolean));
   return SPOTIFY_SCOPE.split(' ').every(s => got.has(s));
+}
+function tieneScopeRecientes() {
+  const c = loadCreds();
+  if (!c || !c.scope) return false;
+  return c.scope.split(' ').includes(SPOTIFY_SCOPE_RECIENTES);
 }
 
 /* Búsquedas de sobra en poco tiempo (escribir rápido, o un rato largo de uso
@@ -2913,6 +2925,69 @@ function wireMeta(it, id) {
   });
 }
 
+/* Historial real: qué has escuchado de verdad en Spotify, no lo que marcas tú
+   a mano. El endpoint solo da como mucho las últimas 50 reproducciones — no
+   hay forma de traer el historial completo con una app normal, así que esto
+   solo pilla lo reciente, desde que lo actives hacia delante. Encaja bien con
+   cómo ya usas la app: lo viejo ya lo marcaste tú a mano, esto es para lo
+   nuevo, sin que tengas que acordarte. */
+async function fetchRecentlyPlayed(limit = 50) {
+  const t = await spotifyToken();
+  const res = await fetchConReintento429(`https://api.spotify.com/v1/me/player/recently-played?limit=${limit}`, t);
+  if (res.status === 429) throw new Error('RATE_LIMIT');
+  if (!res.ok) throw new Error('RECENT_FAILED:' + res.status);
+  const d = await res.json();
+  return d.items || [];   // cada uno: { track: {...}, played_at: "..." }
+}
+
+/* Cruza el historial contra lo que ya tienes guardado: una canción suelta se
+   marca escuchada con la fecha real de reproducción; si la canción es de un
+   álbum que tienes guardado, marca esa pista dentro de su tracklist (mismo
+   mecanismo que tocar el check a mano — si se completan todas, el álbum
+   entero pasa a escuchado solo). Nunca desmarca ni pisa algo que ya
+   marcaste tú mismo. */
+async function sincronizarEscuchasSpotify(silencioso) {
+  if (!isConnected() || !tieneScopeRecientes()) {
+    if (!silencioso) toast('Reconéctate en Ajustes para activar esto (hace falta un permiso nuevo de Spotify)');
+    return;
+  }
+  try {
+    const items = await fetchRecentlyPlayed(50);
+    let marcados = 0;
+    items.forEach(({ track, played_at }) => {
+      if (!track) return;
+      const playedTs = new Date(played_at).getTime();
+      const propia = ITEMS.find(x => x.type === 'track' && x.spotifyId === track.id);
+      if (propia && !propia.listened) {
+        propia.listened = true; propia.listenedAt = playedTs; propia.touchedAt = Date.now();
+        marcados++;
+      }
+      if (track.album?.id) {
+        const album = ITEMS.find(x => x.type === 'album' && x.spotifyId === track.album.id);
+        if (album && !album.listened && album.trackTitles?.includes(track.name)) {
+          const set = new Set(album.cancionesEscuchadas || []);
+          if (!set.has(track.name)) {
+            set.add(track.name);
+            album.cancionesEscuchadas = [...set];
+            const completo = album.trackTitles.every(t => set.has(t));
+            if (completo) { album.listened = true; album.listenedAt = playedTs; }
+            album.touchedAt = Date.now();
+            marcados++;
+          }
+        }
+      }
+    });
+    if (marcados) {
+      saveItems(); render();
+      if (!silencioso) toast(`${marcados} marcado${marcados === 1 ? '' : 's'} como escuchado desde tu historial de Spotify`);
+    } else if (!silencioso) {
+      toast('Nada nuevo que marcar por ahora');
+    }
+  } catch (e) {
+    if (!silencioso) toast(e.message === 'RATE_LIMIT' ? 'Demasiadas peticiones seguidas — inténtalo en unos segundos' : 'No se pudo consultar tu historial de Spotify ahora mismo');
+  }
+}
+
 /* Traía limit=50 de golpe, pero este endpoint (a diferencia de /search) siempre
    ha tenido el máximo en 10 — con más, Spotify responde 400 (parámetro
    inválido), no un fallo de red. Pagina de 10 en 10 hasta agotar el catálogo
@@ -3741,16 +3816,28 @@ function openSettings() {
     <input class="field mono" id="cid" placeholder="Client ID" value="${esc(c?.clientId || '')}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" style="margin-bottom:8px;" ${ok ? 'disabled' : ''}>
     <p class="lede">En los ajustes de esa app, en <strong>Redirect URIs</strong>, añade exactamente esta URL y guarda:</p>
     <input class="field mono" id="redirectUri" value="${esc(REDIRECT_URI)}" readonly style="margin-bottom:8px;" onclick="this.select()">
-    ${ok && !tieneScopePlaylists() ? `
-    <p class="lede" style="color:var(--rust);">Esta conexión es de antes de añadir soporte de playlists y no tiene permiso para leerlas (sobre todo las tuyas, que suelen ser privadas). El resto — álbumes, canciones, artistas — sigue funcionando igual mientras tanto.</p>` : ''}
+    ${(() => {
+      if (!ok) return '';
+      const faltan = [];
+      if (!tieneScopePlaylists()) faltan.push('leer playlists (sobre todo las tuyas, que suelen ser privadas)');
+      if (!tieneScopeRecientes()) faltan.push('tu historial real de reproducción');
+      if (!faltan.length) return '';
+      return `<p class="lede" style="color:var(--rust);">Esta conexión es de antes de añadir ${faltan.join(' y ')} y no tiene ese permiso. El resto sigue funcionando igual mientras tanto.</p>`;
+    })()}
     <div class="btnrow">
       ${!ok
         ? `<button class="btn primary wide" id="saveCreds">Guardar y conectar con Spotify</button>`
-        : !tieneScopePlaylists()
-          ? `<button class="btn primary wide" id="reconnectSpotify">Reconectar (añadir permiso de playlists)</button>`
+        : (!tieneScopePlaylists() || !tieneScopeRecientes())
+          ? `<button class="btn primary wide" id="reconnectSpotify">Reconectar (añadir permiso${!tieneScopePlaylists() && !tieneScopeRecientes() ? 's' : ''} nuevo${!tieneScopePlaylists() && !tieneScopeRecientes() ? 's' : ''})</button>`
           : `<button class="btn wide" id="disconnectSpotify">Desconectar</button>`}
     </div>
-    ${ok && !tieneScopePlaylists() ? `<div class="btnrow"><button class="btn wide" id="disconnectSpotify">Desconectar sin más</button></div>` : ''}
+    ${ok && (!tieneScopePlaylists() || !tieneScopeRecientes()) ? `<div class="btnrow"><button class="btn wide" id="disconnectSpotify">Desconectar sin más</button></div>` : ''}
+
+    <div class="flabel">Historial real de escucha</div>
+    <p class="lede">En vez de marcar tú "escuchado" a mano, esto lo detecta solo cuando reproduces algo en Spotify (guardado como canción suelta, o dentro de un álbum que ya tienes). Solo pilla lo reciente — Spotify no da el historial completo, así que no sirve para rellenar lo de antes de activarlo.</p>
+    ${!ok ? `<p class="lede" style="margin:0;">Conéctate con Spotify primero.</p>`
+      : !tieneScopeRecientes() ? `<p class="lede" style="margin:0;">Reconéctate arriba para activar esto.</p>`
+      : `<div class="btnrow"><button class="btn wide" id="syncEscuchas">Sincronizar ahora</button></div>`}
 
     <div class="flabel">Añadir desde Compartir (iPhone)</div>
     <details>
@@ -3936,7 +4023,13 @@ function openSettings() {
   });
   document.getElementById('reconnectSpotify')?.addEventListener('click', () => {
     disconnectSpotify();
-    beginSpotifyLogin();   // conserva el Client ID ya guardado y pide login de nuevo, con el permiso de playlists
+    beginSpotifyLogin();   // conserva el Client ID ya guardado y pide login de nuevo, con los permisos que falten
+  });
+  document.getElementById('syncEscuchas')?.addEventListener('click', async () => {
+    const btn = document.getElementById('syncEscuchas');
+    btn.textContent = 'Consultando…'; btn.disabled = true;
+    await sincronizarEscuchasSpotify(false);
+    openSettings();
   });
   document.getElementById('sw').addEventListener('click', e => {
     const s = e.target.closest('.sw'); if (!s) return;
@@ -4592,6 +4685,7 @@ handleSpotifyRedirect().then(() => bootStorage()).then(() => {
   purgarPapelera();
   const gArranque = ghCfg();
   if (gArranque && gArranque.auto !== false) sincronizar(false);
+  if (isConnected() && tieneScopeRecientes()) sincronizarEscuchasSpotify(true);
   manejarParametroAdd();
 });
 
