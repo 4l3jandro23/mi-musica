@@ -2834,6 +2834,7 @@ function openDetail(id) {
           ${aniversarioTexto(it) ? `<span class="fact">${esc(aniversarioTexto(it))}</span>` : ''}
           ${repasoTexto(it) ? `<span class="fact">${esc(repasoTexto(it))}</span>` : ''}
           ${esFavoritoUnico(it) ? `<span class="fact accent">${esc(esFavoritoUnico(it))}</span>` : ''}
+          ${it.roto ? `<span class="fact" style="color:var(--rust);border-color:color-mix(in srgb, var(--rust) 40%, transparent);">⚠️ Ya no está en Spotify</span>` : ''}
         </div>
         ${it.type !== 'artist' ? `<div class="btnrow">
           <button class="btn ${it.listened ? 'jade' : ''} wide" id="dListen">${it.listened ? '✓ Ya escuchado' : 'Marcar como escuchado'}</button>
@@ -3362,7 +3363,16 @@ async function openDiscography(artist) {
     cursor += arr.length;
     return html;
   };
+  /* "Cuánto te falta" sale gratis: estos datos ya están descargados aquí.
+     Se cuenta solo sobre álbumes de estudio — meter singles y recopilatorios
+     haría que ningún artista pareciera nunca completo. */
+  const tengo = albums.filter(r => ITEMS.some(x => x.spotifyId === r.spotifyId)).length;
+  const resumenFalta = albums.length
+    ? `<p class="lede" style="margin:0 0 10px;">Tienes <strong>${tengo}</strong> de sus <strong>${albums.length}</strong> álbumes${tengo < albums.length ? ` — te faltan ${albums.length - tengo}` : ' — los tienes todos 🎉'}.</p>`
+    : '';
+
   const partes = [
+    resumenFalta,
     tracks.length ? seccion('Canciones', tracks) : (tracksError ? `<p class="flabel">Canciones</p><p class="lede" style="margin:0 0 4px;">${esc(tracksError)}</p>` : ''),
     seccion('Álbumes', albums),
     seccion('Singles y EPs', singles),
@@ -4016,6 +4026,69 @@ async function completarGeneros() {
   }
 }
 
+/* Revisión de metadatos y enlaces en una sola pasada: pedir cada elemento a
+   Spotify ya nos dice las dos cosas — si responde, rellenamos los huecos; si
+   responde 404, ese elemento ya no existe en Spotify (retirado del catálogo,
+   cambio de región…) y se marca como roto.
+   NUNCA pisa lo que hayas editado a mano: solo rellena campos vacíos. */
+let _revisando = false, _pararRevision = false;
+const REVISABLES = () => ITEMS.filter(i => !i.manual && i.spotifyId && !String(i.spotifyId).startsWith('manual:') && i.type !== 'playlist');
+
+async function revisarMetadatos() {
+  if (!isConnected()) { toast('Conéctate con Spotify primero'); return; }
+  if (_revisando) { _pararRevision = true; return; }
+  _revisando = true; _pararRevision = false;
+  pedirDespertar();
+  const btn = document.getElementById('revisarMeta');
+  if (btn) btn.textContent = 'Detener';
+
+  const lista = REVISABLES();
+  let hechos = 0, rellenados = 0, rotos = 0, sinGuardar = 0, authFail = false;
+  const CAMPOS = ['releaseDate', 'label', 'popularity', 'totalTracks', 'durationMs', 'albumType', 'isrc', 'coverUrl'];
+
+  try {
+    const CONCURRENCIA = 4;
+    let i = 0;
+    async function trabajador() {
+      while (i < lista.length && !_pararRevision && !authFail) {
+        const it = lista[i++];
+        try {
+          const t = await spotifyToken();
+          const res = await fetchConReintento429(`https://api.spotify.com/v1/${it.type}s/${it.spotifyId}`, t);
+          if (res.status === 401 || res.status === 403) { authFail = true; return; }
+          if (res.status === 404) {
+            if (!it.roto) { it.roto = true; it.touchedAt = Date.now(); rotos++; }
+          } else if (res.ok) {
+            if (it.roto) { delete it.roto; it.touchedAt = Date.now(); }
+            const fresco = normalize(await res.json(), it.type);
+            let cambio = false;
+            CAMPOS.forEach(c => {
+              const vacio = it[c] === null || it[c] === undefined || it[c] === '';
+              if (vacio && fresco[c] !== null && fresco[c] !== undefined && fresco[c] !== '') { it[c] = fresco[c]; cambio = true; }
+            });
+            if (cambio) { it.touchedAt = Date.now(); rellenados++; }
+          }
+        } catch { /* fallo puntual de red: se salta este elemento */ }
+        hechos++;
+        // guardar cada tanto: con miles de elementos, no perder el trabajo si se cierra la pestaña
+        if (++sinGuardar >= 150) { sinGuardar = 0; saveItems(); }
+        const est = document.getElementById('revisarStat');
+        if (est) est.textContent = `● ${hechos.toLocaleString('es-ES')} de ${lista.length.toLocaleString('es-ES')} revisados · ${rellenados} completados · ${rotos} rotos`;
+      }
+    }
+    await Promise.all(Array.from({ length: Math.min(CONCURRENCIA, lista.length) }, trabajador));
+  } finally {
+    saveItems(); render();
+    _revisando = false;
+    soltarDespertar();
+    if (authFail) toast('Tu conexión con Spotify no vale. Vuelve a conectarte en Ajustes.');
+    else toast(`${rellenados} con datos nuevos · ${rotos} sin resultado en Spotify` + (_pararRevision ? ' (detenido)' : ''));
+    if (document.getElementById('revisarMeta')) openSettings();
+  }
+}
+
+const rotosCount = () => ITEMS.filter(i => i.roto).length;
+
 const cuenta = tipo => ITEMS.filter(i => i.type === tipo).length;
 
 function openSettings() {
@@ -4156,6 +4229,10 @@ function openSettings() {
     <p class="lede">Con varias formas distintas de añadir (búsqueda, "por nombre", enlaces externos, playlists), es fácil que algo se cuele repetido sin que la app lo note por su cuenta.</p>
     <div class="btnrow"><button class="btn wide" id="findDups">Buscar posibles duplicados</button></div>
     <div class="btnrow"><button class="btn wide" id="openTrash">Papelera${TRASH.length ? ` (${TRASH.length})` : ''}</button></div>
+    <p class="lede" style="margin-top:12px;">Repasa todo contra Spotify de una pasada: rellena los datos que falten (año, sello, duración, carátula…) sin tocar lo que hayas editado a mano, y marca lo que ya no existe allí.</p>
+    <div class="statusline ${rotosCount() ? 'no' : 'ok'}" id="revisarStat">${rotosCount() ? `● ${rotosCount()} sin resultado en Spotify` : '● Sin enlaces rotos detectados'}</div>
+    <div class="btnrow"><button class="btn wide" id="revisarMeta">${_revisando ? 'Detener' : 'Revisar metadatos y enlaces'}</button></div>
+    <p class="lede" style="margin-top:6px;font-size:12px;">Son ${REVISABLES().length.toLocaleString('es-ES')} elementos que consultar, así que tarda un buen rato — se puede parar y seguir luego.</p>
 
     <div class="flabel">Limpiar el vault</div>
     <p class="lede">Borra de golpe todo un tipo de elemento. Se puede deshacer desde el aviso que sale justo después, pero solo en ese momento.</p>
@@ -4312,6 +4389,7 @@ function openSettings() {
   document.getElementById('expCsvBtn').addEventListener('click', exportarCSV);
   document.getElementById('findDups').addEventListener('click', openDuplicados);
   document.getElementById('openTrash').addEventListener('click', openPapelera);
+  document.getElementById('revisarMeta').addEventListener('click', revisarMetadatos);
 }
 
 function tagListHtml() {
@@ -4974,6 +5052,7 @@ let pressTimer = null;
 const contentEl = document.querySelector('main.content');
 
 contentEl.addEventListener('click', e => {
+  if (Date.now() < _swipeHasta) { e.stopPropagation(); return; }   // clic fantasma tras deslizar
   const clear = e.target.closest('[data-clear]');
   if (clear) { PREFS.type = 'all'; PREFS.status = 'all'; PREFS.tag = 'all'; PREFS.genre = 'all'; PREFS.decade = 'all'; PREFS.dur = 'all'; document.getElementById('q').value = ''; savePrefs(); render(); return; }
   if (e.target.closest('[data-vistas]')) { openVistasGuardadas(); return; }
@@ -4992,13 +5071,75 @@ contentEl.addEventListener('click', e => {
 });
 
 /* long-press enters selection mode (mobile) */
+/* Deslizar una fila: derecha = escuchado, izquierda = archivar. Convive con
+   la pulsación larga (que entra en modo selección) porque en cuanto el dedo
+   se mueve de verdad se cancela ese temporizador — si no, arrastrar acabaría
+   seleccionando sin querer. Solo en vista lista y fuera del modo selección,
+   donde el gesto no compite con nada. */
+let _sw = null, _swipeHasta = 0;
+const SWIPE_MIN = 60;      // px que hay que recorrer para que cuente
+const SWIPE_MAX_Y = 30;    // si te desvías más en vertical, es un scroll, no un deslizamiento
+
 contentEl.addEventListener('pointerdown', e => {
   const card = e.target.closest('[data-id]');
   if (!card || e.target.closest('[data-toggle]')) return;
+  if (PREFS.view === 'list' && !selMode && e.pointerType !== 'mouse') {
+    _sw = { id: card.dataset.id, el: card, x: e.clientX, y: e.clientY };
+  }
   pressTimer = setTimeout(() => {
     if (!selMode) { selMode = true; selected.add(card.dataset.id); render(); if (navigator.vibrate) navigator.vibrate(12); }
   }, 480);
 });
+
+contentEl.addEventListener('pointermove', e => {
+  if (!_sw) return;
+  const dx = e.clientX - _sw.x, dy = e.clientY - _sw.y;
+  if (Math.abs(dy) > SWIPE_MAX_Y) { cancelarSwipe(); return; }     // se está desplazando, no deslizando
+  if (Math.abs(dx) > 8) {
+    clearTimeout(pressTimer);                                       // ya no es una pulsación larga
+    _sw.el.style.transform = `translateX(${dx}px)`;
+    _sw.el.style.transition = 'none';
+    _sw.movido = true;
+  }
+}, { passive: true });
+
+function cancelarSwipe() {
+  if (_sw?.el) {
+    const el = _sw.el;
+    el.style.transition = 'transform .18s';   // vuelve a su sitio con suavidad, no de golpe
+    el.style.transform = '';
+    setTimeout(() => { el.style.transition = ''; }, 200);
+  }
+  _sw = null;
+}
+
+contentEl.addEventListener('pointerup', e => {
+  if (!_sw) return;
+  const dx = e.clientX - _sw.x;
+  const el = _sw.el, id = _sw.id, movido = _sw.movido;
+  cancelarSwipe();
+  if (!movido) return;
+  // aunque no llegue al mínimo, si hubo arrastre hay que tragarse el clic
+  // que el navegador dispara justo después: si no, se abriría la ficha sola
+  _swipeHasta = Date.now() + 400;
+  if (Math.abs(dx) < SWIPE_MIN) return;
+  const it = ITEMS.find(x => x.id === id);
+  if (!it) return;
+  if (dx > 0) {
+    if (it.type === 'artist') { toast('Un artista no se marca como escuchado'); return; }
+    toggleListened(id);
+  } else {
+    it.archived = !it.archived; it.touchedAt = Date.now();
+    const quedaArchivado = it.archived;
+    saveItems(); render();
+    toast(quedaArchivado ? 'Archivado' : 'Fuera del archivo', 'Deshacer', () => {
+      it.archived = !quedaArchivado; it.touchedAt = Date.now(); saveItems(); render();
+    });
+  }
+});
+
+['pointercancel', 'pointerleave'].forEach(ev =>
+  contentEl.addEventListener(ev, cancelarSwipe, { passive: true }));
 ['pointerup', 'pointercancel', 'pointerleave', 'scroll'].forEach(ev =>
   contentEl.addEventListener(ev, () => clearTimeout(pressTimer), { passive: true }));
 window.addEventListener('scroll', () => clearTimeout(pressTimer), { passive: true });
