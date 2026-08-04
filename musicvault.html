@@ -914,7 +914,7 @@ let TAGS  = [];
 // real de TAGS — así no se altera nada de la lógica de fusión/dedup por id.
 // las fijadas primero (entre ellas, alfabético), luego el resto, también alfabético
 const tagsOrdenados = () => TAGS.slice().sort((a, b) => (b.favorito ? 1 : 0) - (a.favorito ? 1 : 0) || a.name.localeCompare(b.name, 'es'));
-let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', status: 'all', tag: 'all', genre: 'all', decade: 'all', covers: false, confirmarBorrado: false, tanda: 120 }, read(K_PREFS, {}));
+let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', status: 'all', tag: 'all', genre: 'all', decade: 'all', covers: false, confirmarBorrado: false, tanda: 120, autoAddEscuchas: false }, read(K_PREFS, {}));
 
 /* Al borrar algo hay que dejar constancia: si no, el otro dispositivo lo
    vuelve a subir en la siguiente sincronización y el borrado "revive". */
@@ -2945,7 +2945,11 @@ async function fetchRecentlyPlayed(limit = 50) {
    álbum que tienes guardado, marca esa pista dentro de su tracklist (mismo
    mecanismo que tocar el check a mano — si se completan todas, el álbum
    entero pasa a escuchado solo). Nunca desmarca ni pisa algo que ya
-   marcaste tú mismo. */
+   marcaste tú mismo. Con PREFS.autoAddEscuchas activado (apagado por
+   defecto), lo que ni está suelto ni pertenece a un álbum tuyo se añade
+   como canción nueva — apagado de fábrica porque "todo lo que suena en
+   Spotify" incluye saltos rápidos y música de fondo que igual no querías
+   guardar; el marcado de lo que ya tienes SÍ es automático siempre. */
 async function sincronizarEscuchasSpotify(silencioso) {
   if (!isConnected() || !tieneScopeRecientes()) {
     if (!silencioso) toast('Reconéctate en Ajustes para activar esto (hace falta un permiso nuevo de Spotify)');
@@ -2953,33 +2957,51 @@ async function sincronizarEscuchasSpotify(silencioso) {
   }
   try {
     const items = await fetchRecentlyPlayed(50);
-    let marcados = 0;
+    let marcados = 0, anadidas = 0;
     items.forEach(({ track, played_at }) => {
-      if (!track) return;
+      if (!track || (track.type && track.type !== 'track')) return;
       const playedTs = new Date(played_at).getTime();
+      let tocoAlgoExistente = false;
+
       const propia = ITEMS.find(x => x.type === 'track' && x.spotifyId === track.id);
-      if (propia && !propia.listened) {
-        propia.listened = true; propia.listenedAt = playedTs; propia.touchedAt = Date.now();
-        marcados++;
+      if (propia) {
+        tocoAlgoExistente = true;
+        if (!propia.listened) { propia.listened = true; propia.listenedAt = playedTs; propia.touchedAt = Date.now(); marcados++; }
       }
+
       if (track.album?.id) {
         const album = ITEMS.find(x => x.type === 'album' && x.spotifyId === track.album.id);
-        if (album && !album.listened && album.trackTitles?.includes(track.name)) {
-          const set = new Set(album.cancionesEscuchadas || []);
-          if (!set.has(track.name)) {
-            set.add(track.name);
-            album.cancionesEscuchadas = [...set];
-            const completo = album.trackTitles.every(t => set.has(t));
-            if (completo) { album.listened = true; album.listenedAt = playedTs; }
-            album.touchedAt = Date.now();
-            marcados++;
+        if (album) {
+          tocoAlgoExistente = true;
+          if (!album.listened && album.trackTitles?.includes(track.name)) {
+            const set = new Set(album.cancionesEscuchadas || []);
+            if (!set.has(track.name)) {
+              set.add(track.name);
+              album.cancionesEscuchadas = [...set];
+              const completo = album.trackTitles.every(t => set.has(t));
+              if (completo) { album.listened = true; album.listenedAt = playedTs; }
+              album.touchedAt = Date.now();
+              marcados++;
+            }
           }
         }
       }
+
+      if (!tocoAlgoExistente && PREFS.autoAddEscuchas && !ITEMS.some(x => x.spotifyId === track.id)) {
+        const nueva = makeItem(normalize(track, 'track'));
+        nueva.listened = true; nueva.listenedAt = playedTs;
+        ITEMS.push(nueva);
+        anadidas++;
+      }
     });
-    if (marcados) {
+    if (marcados || anadidas) {
       saveItems(); render();
-      if (!silencioso) toast(`${marcados} marcado${marcados === 1 ? '' : 's'} como escuchado desde tu historial de Spotify`);
+      if (!silencioso) {
+        const bits = [];
+        if (marcados) bits.push(`${marcados} marcado${marcados === 1 ? '' : 's'}`);
+        if (anadidas) bits.push(`${anadidas} añadida${anadidas === 1 ? '' : 's'} nueva${anadidas === 1 ? '' : 's'}`);
+        toast(bits.join(' · ') + ' desde tu historial de Spotify');
+      }
     } else if (!silencioso) {
       toast('Nada nuevo que marcar por ahora');
     }
@@ -3837,7 +3859,11 @@ function openSettings() {
     <p class="lede">En vez de marcar tú "escuchado" a mano, esto lo detecta solo cuando reproduces algo en Spotify (guardado como canción suelta, o dentro de un álbum que ya tienes). Solo pilla lo reciente — Spotify no da el historial completo, así que no sirve para rellenar lo de antes de activarlo.</p>
     ${!ok ? `<p class="lede" style="margin:0;">Conéctate con Spotify primero.</p>`
       : !tieneScopeRecientes() ? `<p class="lede" style="margin:0;">Reconéctate arriba para activar esto.</p>`
-      : `<div class="btnrow"><button class="btn wide" id="syncEscuchas">Sincronizar ahora</button></div>`}
+      : `<div class="btnrow"><button class="btn wide" id="syncEscuchas">Sincronizar ahora</button></div>
+         <div class="btnrow">
+           <button class="btn wide ${PREFS.autoAddEscuchas ? 'jade' : ''}" id="togAutoAdd">${PREFS.autoAddEscuchas ? '✓ Añade también lo nuevo' : 'Solo marca lo que ya tengo'}</button>
+         </div>
+         <p class="lede" style="margin-top:4px;">${PREFS.autoAddEscuchas ? 'Lo que escuches y no tengas guardado se añade solo, ya marcado como escuchado.' : 'Si activas esto, cualquier canción que reproduzcas y no tengas ya guardada se añade sola al vault — puede meter ruido (saltos rápidos, música de fondo).'}</p>`}
 
     <div class="flabel">Añadir desde Compartir (iPhone)</div>
     <details>
@@ -4030,6 +4056,10 @@ function openSettings() {
     btn.textContent = 'Consultando…'; btn.disabled = true;
     await sincronizarEscuchasSpotify(false);
     openSettings();
+  });
+  document.getElementById('togAutoAdd')?.addEventListener('click', () => {
+    PREFS.autoAddEscuchas = !PREFS.autoAddEscuchas;
+    savePrefs(); openSettings();
   });
   document.getElementById('sw').addEventListener('click', e => {
     const s = e.target.closest('.sw'); if (!s) return;
