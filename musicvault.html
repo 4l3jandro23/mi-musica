@@ -875,6 +875,7 @@ const K_META  = 'musicvault_meta_v1';     // marca de tiempo del vault local
 const K_LASTFM = 'musicvault_lastfm_v1';  // clave de API de Last.fm, para géneros
 const K_TAG_TOMB = 'musicvault_tagtomb_v1';   // etiquetas borradas pendientes de propagar
 const K_PALETTE = 'musicvaultPalette';
+const K_TRASH = 'musicvault_trash_v1';    // papelera — solo local, ver comentario junto a TRASH
 
 const read = (k, fb) => { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? fb; } catch { return fb; } };
 const write = (k, v) => localStorage.setItem(k, JSON.stringify(v));
@@ -911,7 +912,8 @@ let ITEMS = [];
 let TAGS  = [];
 // dondequiera que se listen etiquetas se piden así, en vez de tocar el orden
 // real de TAGS — así no se altera nada de la lógica de fusión/dedup por id.
-const tagsOrdenados = () => TAGS.slice().sort((a, b) => a.name.localeCompare(b.name, 'es'));
+// las fijadas primero (entre ellas, alfabético), luego el resto, también alfabético
+const tagsOrdenados = () => TAGS.slice().sort((a, b) => (b.favorito ? 1 : 0) - (a.favorito ? 1 : 0) || a.name.localeCompare(b.name, 'es'));
 let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', status: 'all', tag: 'all', genre: 'all', decade: 'all', covers: false, confirmarBorrado: false, tanda: 120 }, read(K_PREFS, {}));
 
 /* Al borrar algo hay que dejar constancia: si no, el otro dispositivo lo
@@ -937,6 +939,22 @@ function podarTumbas() {
 }
 const saveTomb = () => write(K_TOMB, podarTumbas());
 const saveMeta = () => write(K_META, META);
+
+/* Papelera: guarda el elemento COMPLETO (no solo su tumba) durante 7 días
+   tras borrarlo, para poder recuperarlo desde Ajustes aunque hayan pasado
+   horas o días — el aviso de "Deshacer" de 9 segundos sigue existiendo aparte
+   para el despiste inmediato. Deliberadamente NO se sincroniza entre
+   dispositivos: añadirla al JSON que viaja a GitHub tocaría fundir(), que ya
+   es delicada de por sí (todo-o-nada por dispositivo, no por campo) — el
+   riesgo de estropear la fusión real no compensaba una papelera compartida. */
+let TRASH = read(K_TRASH, []);
+const saveTrash = () => write(K_TRASH, TRASH);
+function purgarPapelera() {
+  const limite = Date.now() - 7 * 86400000;
+  const antes = TRASH.length;
+  TRASH = TRASH.filter(t => t.deletedAt > limite);
+  if (TRASH.length !== antes) saveTrash();
+}
 function tombstone(items) {
   const at = Date.now();
   items.forEach(it => { if (it && it.spotifyId) TOMB.push({ sid: it.spotifyId, at }); });
@@ -1782,6 +1800,26 @@ function groupsFor(rows) {
   return out;
 }
 
+/* Un "ding" corto con Web Audio, sin archivo de sonido que descargar ni
+   mantener. navigator.vibrate no existe en Safari de iOS (nunca lo ha
+   implementado), pero el guard no hace daño y sí sirve en Android. */
+let _audioCtx = null;
+function sonidoEscuchado() {
+  try {
+    _audioCtx = _audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = _audioCtx;
+    const osc = ctx.createOscillator(), gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.12, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
+    osc.start(); osc.stop(ctx.currentTime + 0.2);
+  } catch {}
+  if (navigator.vibrate) navigator.vibrate(15);
+}
+
 /* ============ item actions ============ */
 function toggleListened(id) {
   const it = ITEMS.find(i => i.id === id);
@@ -1795,6 +1833,7 @@ function toggleListened(id) {
     it.cancionesEscuchadas = it.listened ? (it.trackTitles || []).slice() : [];
     if (_tracklistCache && _tracklistCache.albumId === it.spotifyId) pintarTracklist(it);
   }
+  if (it.listened) sonidoEscuchado();
   saveItems();
   render();
 }
@@ -1826,6 +1865,8 @@ function deleteItems(ids) {
   const removed = ITEMS.filter(i => idSet.has(i.id));
   ITEMS = ITEMS.filter(i => !idSet.has(i.id));
   tombstone(removed);
+  TRASH = TRASH.concat(removed.map(it => Object.assign({}, it, { deletedAt: Date.now() })));
+  saveTrash();
   saveItems();
   render();
   toast(`${removed.length} eliminado${removed.length === 1 ? '' : 's'}`, 'Deshacer', () => {
@@ -1839,9 +1880,45 @@ function deleteItems(ids) {
     removed.forEach(it => { it.touchedAt = Date.now(); });
     ITEMS = ITEMS.concat(removed);
     untombstone(removed);
+    const idsVueltos = new Set(removed.map(it => it.id));
+    TRASH = TRASH.filter(t => !idsVueltos.has(t.id));
+    saveTrash();
     saveItems();
     render();
   }, 9000);   // borrar es fácil de tocar sin querer: más margen que el resto de avisos
+}
+
+function restaurarDePapelera(id) {
+  const idx = TRASH.findIndex(t => t.id === id);
+  if (idx === -1) return;
+  const it = Object.assign({}, TRASH[idx]);
+  delete it.deletedAt;
+  it.touchedAt = Date.now();   // igual razón que en el Deshacer: gana a una tumba vieja
+  TRASH.splice(idx, 1);
+  ITEMS.push(it);
+  untombstone([it]);
+  saveTrash(); saveItems(); render();
+  toast('Restaurado: ' + it.title);
+}
+
+function openPapelera() {
+  purgarPapelera();
+  const lista = TRASH.slice().sort((a, b) => b.deletedAt - a.deletedAt);
+  showSheet(`
+    <div class="sheethead"><h2>Papelera</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <p class="lede">Lo que borres se queda aquí 7 días antes de irse del todo, por si acaso. Solo en este dispositivo — no se sincroniza con los demás.</p>
+    ${lista.length ? `<div class="list">${lista.map(it => `
+      <article class="lrow" data-id="${it.id}">
+        <div class="lart">${portada(it.coverUrl, TYPE_ICON[it.type], true)}</div>
+        <div class="linfo"><div class="lt">${esc(it.title)}</div><div class="la">${esc(artistsOf(it))} · borrado ${relDate(it.deletedAt)}</div></div>
+        <button class="btn" data-restore="${it.id}">Restaurar</button>
+      </article>`).join('')}</div>` : `<p class="lede" style="margin:0;">La papelera está vacía.</p>`}
+  `);
+  document.querySelector('#modalRoot .list')?.addEventListener('click', e => {
+    const b = e.target.closest('[data-restore]'); if (!b) return;
+    restaurarDePapelera(b.dataset.restore);
+    openPapelera();
+  });
 }
 
 /* ============ modals ============ */
@@ -1958,7 +2035,18 @@ async function runSearch() {
     if (miTurno !== _searchSeq) return;   // ya hay una búsqueda más nueva en curso
     lastResults = resultados;
     searchSelMode = false; searchSel = new Set();   // resultados nuevos: cualquier selección previa ya no aplica
-    if (!lastResults.length) { box.innerHTML = `<div class="empty" style="padding:26px 8px;"><p>Sin resultados para “${esc(q)}”.</p></div>`; document.getElementById('searchSelBar')?.remove(); return; }
+    if (!lastResults.length) {
+      box.innerHTML = `<div class="empty" style="padding:26px 8px;">
+        <p>Sin resultados para “${esc(q)}” en Spotify.</p>
+        <p class="lede" style="margin-top:10px;">Prueba a buscarlo en otro sitio y pega el enlace con "Añadir enlace externo":</p>
+        <div class="acts" style="flex-wrap:wrap;">
+          <a class="btn" href="https://music.youtube.com/search?q=${encodeURIComponent(q)}" target="_blank" rel="noopener">Buscar en YouTube Music ↗</a>
+          <a class="btn" href="https://music.apple.com/search?term=${encodeURIComponent(q)}" target="_blank" rel="noopener">Buscar en Apple Music ↗</a>
+        </div>
+      </div>`;
+      document.getElementById('searchSelBar')?.remove();
+      return;
+    }
     pintarResultados();
   } catch (err) {
     if (miTurno !== _searchSeq) return;
@@ -3197,7 +3285,7 @@ async function sincronizar(manual) {
     if (put.status === 409) throw new Error('Otro dispositivo estaba escribiendo. Prueba otra vez.');
     if (!put.ok) throw new Error('No he podido subirlo (' + put.status + ').');
 
-    META.updatedAt = Date.now(); saveMeta();
+    META.updatedAt = Date.now(); META.lastSyncedAt = Date.now(); saveMeta();
     if (traidos) render();
     const hora = new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
     _syncEstado = { at: Date.now(), err: false,
@@ -3675,6 +3763,16 @@ function openSettings() {
       </ol>
       <p class="lede" style="margin:0;">Desde Spotify: Compartir → tu atajo. Un álbum, canción o artista se añade solo; una playlist o un texto abre el buscador ya con eso escrito.</p>
     </details>
+    <details style="margin-top:8px;">
+      <summary class="lede" style="cursor:pointer;">Aún más rápido: un atajo que lee el portapapeles solo</summary>
+      <p class="lede" style="margin-top:8px;">Este ni siquiera necesita pasar por "Compartir" — copia el enlace en Spotify y toca el atajo desde cualquier sitio (pantalla de inicio, widget, Siri):</p>
+      <ol class="lede" style="margin:0 0 10px;padding-left:18px;">
+        <li>Atajo nuevo → acción <strong>"Obtener portapapeles"</strong>.</li>
+        <li>Debajo, acción <strong>"Abrir URLs"</strong>, con este texto seguido del resultado de "Obtener portapapeles":<br><span class="mono" style="word-break:break-all;">${esc(REDIRECT_URI)}?add=</span></li>
+        <li>Ponle un nombre corto y añádelo a la pantalla de inicio (⋯ → "Añadir a pantalla de inicio") para tenerlo a un toque.</li>
+      </ol>
+      <p class="lede" style="margin:0;">Copiar enlace en Spotify → tocar el atajo. Sin abrir MusicVault ni la hoja de compartir.</p>
+    </details>
 
     <div class="flabel">Etiquetas</div>
     <div id="tagList">${tagListHtml()}</div>
@@ -3692,6 +3790,9 @@ function openSettings() {
       <button class="btn" id="ghNow" ${gh && gh.token ? '' : 'disabled'} title="Sincronizar ahora">⟳</button>
     </div>
     <div class="lede" id="ghOut" style="margin-top:6px;">${esc(syncEstadoTexto())}</div>
+    ${gh && gh.token && META.lastSyncedAt && (Date.now() - META.lastSyncedAt) >= 30 * 86400000
+      ? `<p class="lede" style="color:var(--rust);margin-top:6px;">⚠️ Este dispositivo lleva ${Math.floor((Date.now() - META.lastSyncedAt) / 86400000)} días sin sincronizar de verdad con GitHub — toca ⟳ o revisa tu conexión.</p>`
+      : ''}
     ${gh && gh.token ? `
     <div class="btnrow">
       <button class="btn wide ${gh.auto === false ? '' : 'jade'}" id="toggleAutoSync">${gh.auto === false ? 'Solo sincronizo a mano' : '✓ Sincronización automática'}</button>
@@ -3738,6 +3839,7 @@ function openSettings() {
     <div class="flabel">Mantenimiento</div>
     <p class="lede">Con varias formas distintas de añadir (búsqueda, "por nombre", enlaces externos, playlists), es fácil que algo se cuele repetido sin que la app lo note por su cuenta.</p>
     <div class="btnrow"><button class="btn wide" id="findDups">Buscar posibles duplicados</button></div>
+    <div class="btnrow"><button class="btn wide" id="openTrash">Papelera${TRASH.length ? ` (${TRASH.length})` : ''}</button></div>
 
     <div class="flabel">Limpiar el vault</div>
     <p class="lede">Borra de golpe todo un tipo de elemento. Se puede deshacer desde el aviso que sale justo después, pero solo en ese momento.</p>
@@ -3751,6 +3853,9 @@ function openSettings() {
       ? `<p class="lede">Con la sincronización activada, cada cambio queda también guardado en tu repo de GitHub — no depende solo de este navegador. Y como cada subida es un commit, GitHub guarda el historial completo: si algo se borra por error, siempre puedes recuperar una versión anterior desde ahí.</p>
          <div class="btnrow"><a class="btn wide" href="${esc(`https://github.com/${gh.repo}/commits/main/${GH_PATH}`)}" target="_blank" rel="noopener">Ver historial en GitHub ↗</a></div>`
       : `<p class="lede">Tu vault vive solo en este navegador. Si borras los datos del navegador, se pierde. Activa la sincronización de arriba para tener también una copia en GitHub, o descarga una copia de vez en cuando.</p>`}
+    ${!META.lastExportedAt || (Date.now() - META.lastExportedAt) >= 30 * 86400000
+      ? `<p class="lede" style="color:var(--rust);margin:0 0 8px;">⚠️ ${META.lastExportedAt ? `Hace ${Math.floor((Date.now() - META.lastExportedAt) / 86400000)} días que no descargas una copia suelta.` : 'Todavía no has descargado ninguna copia suelta.'}</p>`
+      : `<p class="lede" style="margin:0 0 8px;color:var(--fg-mute);">Última copia descargada: ${relDate(META.lastExportedAt)}.</p>`}
     <div class="btnrow">
       <button class="btn wide" id="expBtn">Descargar copia</button>
       <button class="btn wide" id="impBtn">Restaurar copia</button>
@@ -3851,6 +3956,12 @@ function openSettings() {
     saveTags(); render(); openSettings();
   });
   document.getElementById('tagList').addEventListener('click', e => {
+    const pin = e.target.closest('[data-pin]');
+    if (pin) {
+      const t = TAGS.find(x => x.id === pin.dataset.pin);
+      if (t) { t.favorito = !t.favorito; saveTags(); render(); openSettings(); }
+      return;
+    }
     const b = e.target.closest('[data-del]'); if (!b) return;
     const id = b.dataset.del;
     TAGS = TAGS.filter(t => t.id !== id);
@@ -3864,6 +3975,7 @@ function openSettings() {
   document.getElementById('impFile').addEventListener('change', importBackup);
   document.getElementById('expCsvBtn').addEventListener('click', exportarCSV);
   document.getElementById('findDups').addEventListener('click', openDuplicados);
+  document.getElementById('openTrash').addEventListener('click', openPapelera);
 }
 
 function tagListHtml() {
@@ -3872,6 +3984,7 @@ function tagListHtml() {
     const n = ITEMS.filter(i => (i.tagIds || []).includes(t.id)).length;
     return `<div class="tagline">
       <span class="lf"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)}<span class="ct">${n}</span></span>
+      <button class="xbtn" data-pin="${esc(t.id)}" aria-label="${t.favorito ? 'Quitar de fijadas' : 'Fijar arriba'}" title="${t.favorito ? 'Quitar de fijadas' : 'Fijar arriba'}">${t.favorito ? '📌' : '📍'}</button>
       <button class="xbtn" data-del="${esc(t.id)}" aria-label="Eliminar etiqueta">✕</button>
     </div>`;
   }).join('');
@@ -3884,6 +3997,7 @@ function exportBackup() {
   a.download = `musicvault-${new Date().toISOString().slice(0, 10)}.json`;
   a.click();
   URL.revokeObjectURL(a.href);
+  META.lastExportedAt = Date.now(); saveMeta();
   toast('Copia descargada');
 }
 
@@ -3909,6 +4023,7 @@ function exportarCSV() {
   a.download = `musicvault-${new Date().toISOString().slice(0, 10)}.csv`;
   a.click();
   URL.revokeObjectURL(a.href);
+  META.lastExportedAt = Date.now(); saveMeta();
   toast('CSV descargado');
 }
 
@@ -4071,6 +4186,92 @@ function openAlbumesAMedias() {
   });
 }
 
+function redescubrirArchivado() {
+  const pool = ITEMS.filter(i => i.archived);
+  if (!pool.length) { toast('No tienes nada archivado'); return; }
+  openDetail(pool[Math.floor(Math.random() * pool.length)].id);
+}
+
+// compara cuántas veces aparece cada género entre lo añadido este año contra
+// lo añadido el año pasado — el que más ha subido, no el más frecuente sin más
+function generoQueMasHaCrecido() {
+  const anioActual = new Date().getFullYear();
+  const porGenero = {};
+  ITEMS.forEach(it => {
+    if (!it.genres?.length) return;
+    const anio = new Date(it.dateAdded).getFullYear();
+    if (anio !== anioActual && anio !== anioActual - 1) return;
+    it.genres.forEach(g => {
+      if (!porGenero[g]) porGenero[g] = { actual: 0, anterior: 0 };
+      porGenero[g][anio === anioActual ? 'actual' : 'anterior']++;
+    });
+  });
+  let mejor = null, mejorDelta = 0;
+  Object.entries(porGenero).forEach(([g, { actual, anterior }]) => {
+    const delta = actual - anterior;
+    if (delta > mejorDelta) { mejorDelta = delta; mejor = g; }
+  });
+  return mejor ? { genero: mejor, delta: mejorDelta } : null;
+}
+
+// lo que añadiste un día como hoy, en años anteriores — "cápsula del tiempo"
+function capsulaDeHoy() {
+  const hoy = new Date();
+  return ITEMS.filter(it => {
+    const d = new Date(it.dateAdded);
+    return d.getMonth() === hoy.getMonth() && d.getDate() === hoy.getDate() && d.getFullYear() < hoy.getFullYear();
+  }).sort((a, b) => b.dateAdded - a.dateAdded);
+}
+function openCapsula() {
+  const lista = capsulaDeHoy();
+  showSheet(`
+    <div class="sheethead"><h2>Un día como hoy</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <p class="lede">Lo que añadiste un ${new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}, en años anteriores.</p>
+    <div class="list">${lista.map(it => `
+      <article class="lrow" data-id="${it.id}">
+        <div class="lart">${portada(it.coverUrl, TYPE_ICON[it.type], true)}</div>
+        <div class="linfo"><div class="lt">${esc(it.title)}</div><div class="la">${esc(artistsOf(it))} · ${new Date(it.dateAdded).getFullYear()}</div></div>
+      </article>`).join('')}</div>
+  `);
+  document.querySelector('#modalRoot .list')?.addEventListener('click', e => {
+    const card = e.target.closest('[data-id]'); if (card) openDetail(card.dataset.id);
+  });
+}
+
+function openResumenAnual() {
+  const anio = new Date().getFullYear();
+  const anadidos = ITEMS.filter(it => new Date(it.dateAdded).getFullYear() === anio);
+  const escuchados = ITEMS.filter(it => it.listenedAt && new Date(it.listenedAt).getFullYear() === anio);
+  if (!anadidos.length && !escuchados.length) { toast(`Todavía no tienes nada de ${anio} en tu vault`); return; }
+
+  const byArtist = {};
+  anadidos.forEach(i => (i.artists || []).forEach(a => { byArtist[a] = (byArtist[a] || 0) + 1; }));
+  const topArtists = Object.entries(byArtist).sort((a, b) => b[1] - a[1] || cmp(a[0], b[0])).slice(0, 5);
+
+  const byGenre = {};
+  anadidos.forEach(i => (i.genres || []).forEach(g => { byGenre[g] = (byGenre[g] || 0) + 1; }));
+  const topGenres = Object.entries(byGenre).sort((a, b) => b[1] - a[1] || cmp(a[0], b[0])).slice(0, 5);
+
+  const favorito5 = anadidos.filter(i => i.rating === 5).sort((a, b) => b.dateAdded - a.dateAdded)[0] || null;
+  // solo cuenta lo que tiene duración guardada (no todo lo trae Spotify) — es una estimación por abajo, no el total real
+  const minutos = Math.round(escuchados.reduce((s, i) => s + (i.durationMs || 0), 0) / 60000);
+
+  showSheet(`
+    <div class="sheethead"><h2>Tu ${anio}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="bigstat">
+      <div class="bignum">${anadidos.length}</div>
+      <div><div style="font-weight:650;">añadidos este año</div><div class="lede" style="margin:0;">${escuchados.length} marcados como escuchados</div></div>
+    </div>
+    ${favorito5 ? `<div class="flabel">Tu 5 estrellas de ${anio}</div><div class="list">${relatedRow(favorito5, false)}</div>` : ''}
+    ${topArtists.length ? `<div class="flabel">Tus artistas de ${anio}</div>${bars(topArtists, 'var(--jade)')}` : ''}
+    ${topGenres.length ? `<div class="flabel">Tus géneros de ${anio}</div>${bars(topGenres, 'var(--amber)')}` : ''}
+    ${minutos > 0 ? `<div class="flabel">Minutos escuchados este año</div><p class="lede" style="margin:0;">${minutos.toLocaleString('es-ES')} minutos (${(minutos / 60).toFixed(1)} h) — solo cuenta lo que tiene duración guardada, así que es una estimación por abajo del total real.</p>` : ''}
+  `);
+  document.querySelector('#modalRoot .list')?.addEventListener('click', e => {
+    const card = e.target.closest('[data-id]'); if (card) openDetail(card.dataset.id);
+  });
+}
+
 function openStats() {
   if (!ITEMS.length) { toast('Tu vault está vacío'); return; }
   // si hay un filtro puesto (tipo, década, etiqueta, género, búsqueda...), las
@@ -4105,10 +4306,14 @@ function openStats() {
   const pct = contables.length ? Math.round(done.length / contables.length * 100) : 0;
   const sinExplorar = anyFilter ? [] : artistasSinExplorar();
   const aMedias = anyFilter ? [] : albumesAMedias();
+  const capsula = anyFilter ? [] : capsulaDeHoy();
+  const crecimiento = anyFilter ? null : generoQueMasHaCrecido();
 
   showSheet(`
     <div class="sheethead"><h2>${anyFilter ? 'Esto en números' : 'Tu vault en números'}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    ${!anyFilter ? `<div class="btnrow"><button class="btn wide" id="verResumenAnual">🎁 Ver tu resumen de ${new Date().getFullYear()}</button></div>` : ''}
     ${anyFilter ? `<p class="lede" style="margin:-8px 0 14px;">Con el filtro que tienes puesto ahora: ${base.length.toLocaleString('es-ES')} de ${ITEMS.length.toLocaleString('es-ES')} elementos.</p>` : ''}
+    ${capsula.length ? `<button class="linkbtn" id="verCapsula" style="display:block;margin-bottom:12px;">📅 Lo que añadiste un día como hoy →</button>` : ''}
 
     <div class="bigstat">
       <div class="bignum">${pct}<span class="pctsign">%</span></div>
@@ -4137,7 +4342,8 @@ function openStats() {
     ${sinExplorar.length ? `<button class="linkbtn" id="verSinExplorar" style="display:block;margin-top:8px;">Ver los ${sinExplorar.length.toLocaleString('es-ES')} artistas que aún no tienen nada más guardado →</button>` : ''}
 
     ${topGenres.length ? `<div class="flabel">Géneros más frecuentes</div>
-    ${bars(topGenres, 'var(--jade)')}` : ''}
+    ${bars(topGenres, 'var(--jade)')}
+    ${crecimiento ? `<p class="lede" style="margin:8px 0 0;">📈 <strong>${esc(crecimiento.genero)}</strong> es el que más ha crecido este año (+${crecimiento.delta} desde el año pasado).</p>` : ''}` : ''}
 
     <div class="flabel">Por década de lanzamiento</div>
     ${bars(decades, 'var(--amber)')}
@@ -4146,12 +4352,16 @@ function openStats() {
     <p class="lede" style="margin:0;">${rated.length ? `Has valorado ${rated.length} de ${base.length}. Media: <strong>${avg}</strong> ★` : 'Todavía no has valorado nada. Abre cualquier ficha y toca las estrellas.'}</p>
 
     ${!anyFilter && ITEMS.some(i => i.archived) ? `<div class="flabel">Archivado</div>
-    <p class="lede" style="margin:0;">${ITEMS.filter(i => i.archived).length} guardado${ITEMS.filter(i => i.archived).length === 1 ? '' : 's'} aparte, fuera de las listas normales.</p>` : ''}
+    <p class="lede" style="margin:0;">${ITEMS.filter(i => i.archived).length} guardado${ITEMS.filter(i => i.archived).length === 1 ? '' : 's'} aparte, fuera de las listas normales.</p>
+    <button class="linkbtn" id="redescubrir" style="display:block;margin-top:6px;">🎲 Redescubrir algo del archivo →</button>` : ''}
   `);
 
   document.querySelector('[data-goto]')?.addEventListener('click', e => openDetail(e.currentTarget.dataset.goto));
   document.getElementById('verSinExplorar')?.addEventListener('click', openArtistasSinExplorar);
   document.getElementById('verAMedias')?.addEventListener('click', openAlbumesAMedias);
+  document.getElementById('verCapsula')?.addEventListener('click', openCapsula);
+  document.getElementById('verResumenAnual')?.addEventListener('click', openResumenAnual);
+  document.getElementById('redescubrir')?.addEventListener('click', redescubrirArchivado);
 }
 
 /* ---- shuffle ---- */
@@ -4379,6 +4589,7 @@ async function manejarParametroAdd() {
 
 handleSpotifyRedirect().then(() => bootStorage()).then(() => {
   render();
+  purgarPapelera();
   const gArranque = ghCfg();
   if (gArranque && gArranque.auto !== false) sincronizar(false);
   manejarParametroAdd();
