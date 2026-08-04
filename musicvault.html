@@ -691,6 +691,13 @@
   .relrow .reltag { font-size: 11px; color: var(--fg-mute); font-weight: 400; }
   .relrow .rely { font-size: 11.5px; color: var(--fg-mute); flex-shrink:0; font-variant-numeric: tabular-nums; }
 
+  .tlchrono { display:flex; flex-direction:column; }
+  .chronorow { display:flex; align-items:center; gap: 10px; padding: 6px 4px; border-bottom: 1px solid var(--line); cursor:pointer; }
+  .chronorow:last-child { border-bottom: none; }
+  .chronorow:hover { background: var(--surface-2); }
+  .chronorow .chronoy { width: 38px; flex-shrink:0; font-size: 12px; color: var(--fg-mute); font-variant-numeric: tabular-nums; }
+  .chronorow .chronot { flex:1; min-width:0; font-size: 13.5px; font-weight: 600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
   .lightbox { position:fixed; inset:0; z-index: 90; background: rgba(10,7,5,0.9); display:flex; align-items:center; justify-content:center; padding: 24px; animation: fade .15s ease; }
   .lightbox img { max-width:100%; max-height:100%; border-radius: 12px; box-shadow: var(--shadow-lg); }
 
@@ -2632,9 +2639,22 @@ function openDetail(id) {
         : `<p class="lede" style="margin:0;">Todavía no has creado ninguna etiqueta. <button class="linkbtn" data-open="settings">Crear una</button></p>`}
     </div>
 
-    ${it.type === 'artist' && !it.manual ? `<div class="btnrow"><button class="btn wide" id="dDisco">Ver su discografía</button></div>
-    <div class="flabel">Artistas parecidos</div>
-    <div id="dSimilar"><p class="lede" style="margin:0;">Buscando sugerencias…</p></div>` : ''}
+    ${it.type === 'artist' && !it.manual ? (() => {
+      const r = resumenLocalArtista(it);
+      const genero = it.genres?.[0] || null;
+      return `<div class="flabel">En tu vault</div>
+      <p class="lede" style="margin:0 0 8px;">${r.misAlbumes.length} álbum${r.misAlbumes.length === 1 ? '' : 'es'} y ${r.misCanciones.length} canción${r.misCanciones.length === 1 ? '' : 'es'} guardados${r.total ? ` · ${r.pct}% escuchado (${r.hechos} de ${r.total})` : ''}</p>
+      ${genero ? `<button class="chip genre" data-goargenre="${esc(fold(genero))}" style="margin-bottom:10px;">🎧 ${esc(genero)}</button>` : ''}
+      ${r.mejorValorado ? `<p class="lede" style="margin:0 0 4px;font-weight:600;">Tu mejor valorado suyo</p><div class="list">${relatedRow(r.mejorValorado, false)}</div>` : ''}
+      ${r.cronologia.length > 1 ? `<p class="lede" style="margin:10px 0 4px;font-weight:600;">Cronología</p><div class="tlchrono">${r.cronologia.map(x => `<div class="chronorow" data-openrel="${x.id}"><span class="chronoy">${yearOf(x)}</span><span class="chronot">${esc(x.title)}</span></div>`).join('')}</div>` : ''}
+      <div class="btnrow"><button class="btn wide" id="dDisco">Ver su discografía</button></div>
+      <div class="flabel">Biografía</div>
+      <div id="dArtistBio"><p class="lede" style="margin:0;">Buscando información…</p></div>
+      <div class="flabel" id="dArtistRelLabel">Relacionados</div>
+      <div id="dArtistRel"><p class="lede" style="margin:0;">Buscando…</p></div>
+      <div class="flabel">Artistas parecidos</div>
+      <div id="dSimilar"><p class="lede" style="margin:0;">Buscando sugerencias…</p></div>`;
+    })() : ''}
     ${it.type === 'album' && !it.manual ? (() => {
       const relacionados = relacionadosDelArtista(it);
       return `<div class="flabel">Sobre el álbum</div>
@@ -2660,7 +2680,17 @@ function openDetail(id) {
   `);
 
   document.getElementById('dDisco')?.addEventListener('click', () => openDiscography(it));
-  if (it.type === 'artist' && !it.manual) cargarSimilares(it);
+  if (it.type === 'artist' && !it.manual) {
+    cargarSimilares(it);
+    cargarBioArtista(it);
+    cargarRelacionesMusicBrainz(it);
+    document.querySelector('.tlchrono')?.addEventListener('click', e => {
+      const b = e.target.closest('[data-openrel]'); if (b) openDetail(b.dataset.openrel);
+    });
+    document.querySelector('[data-goargenre]')?.addEventListener('click', e => {
+      PREFS.genre = e.currentTarget.dataset.goargenre; savePrefs(); closeModal(); render();
+    });
+  }
   if (it.type === 'album' && !it.manual) { cargarTracksAlbum(it); cargarInfoAlbum(it); }
   document.querySelector('.dartist')?.addEventListener('click', e => {
     const b = e.target.closest('[data-goartist]'); if (b) openDetail(b.dataset.goartist);
@@ -3311,6 +3341,63 @@ async function lastfmSimilar(nombreArtista, apiKey, limite = 8) {
   return lista.map(a => a && a.name).filter(Boolean);
 }
 
+/* Wikipedia en español, sin clave y sin registrarse (a diferencia de Last.fm,
+   que solo tiene biografías en inglés). Se busca primero con la API de
+   búsqueda de MediaWiki (para no depender de que el título coincida exacto)
+   y se prueban los primeros resultados hasta encontrar uno con pinta de ser
+   realmente sobre música — si no, se descarta y se cae a Last.fm. */
+async function wikipediaResumen(query) {
+  const searchUrl = `https://es.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&format=json&origin=*&srlimit=3`;
+  const sres = await fetch(searchUrl);
+  if (!sres.ok) throw new Error('WIKI_HTTP:' + sres.status);
+  const sdata = await sres.json();
+  const candidatos = sdata.query?.search || [];
+  const pistas = ['musico', 'musica', 'banda', 'grupo', 'cantante', 'album', 'disco', 'rapero', 'rapera', 'dj', 'productor musical', 'productora musical', 'compositor', 'compositora', 'discografia'];
+  for (const c of candidatos) {
+    const res = await fetch(`https://es.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(c.title.replace(/ /g, '_'))}`);
+    if (!res.ok) continue;
+    const sum = await res.json();
+    if (sum.type === 'disambiguation' || !sum.extract) continue;
+    const texto = fold((sum.description || '') + ' ' + sum.extract);
+    if (!pistas.some(p => texto.includes(p))) continue;
+    return sum.extract;
+  }
+  return null;
+}
+
+async function lastfmArtistInfo(nombreArtista, apiKey) {
+  const url = `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(nombreArtista)}&autocorrect=1&api_key=${encodeURIComponent(apiKey)}&format=json`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('LASTFM_HTTP:' + res.status);
+  const d = await res.json();
+  if (d.error) {
+    if (d.error === 6) return null;
+    throw new Error('LASTFM_ERR:' + d.error);
+  }
+  const ar = d.artist;
+  if (!ar) return null;
+  const resumen = (ar.bio?.summary || '').replace(/<a[^>]*>[\s\S]*?<\/a>/gi, '').replace(/<[^>]+>/g, '').trim();
+  return { resumen, listeners: ar.stats?.listeners ? +ar.stats.listeners : null };
+}
+
+async function cargarBioArtista(it) {
+  const box = document.getElementById('dArtistBio');
+  if (!box) return;
+  try {
+    const extracto = await wikipediaResumen(`${it.title} músico`).catch(() => null);
+    if (extracto) { box.innerHTML = `<p class="lede" style="margin:0;">${esc(extracto)}</p>`; return; }
+  } catch {}
+  const lf = lastfmCfg();
+  if (!lf) { box.innerHTML = `<p class="lede" style="margin:0;">No hay artículo en Wikipedia en español. Pon tu clave de Last.fm en Ajustes para ver una biografía (en inglés).</p>`; return; }
+  try {
+    const info = await lastfmArtistInfo(it.title, lf.apiKey);
+    if (!info || !info.resumen) { box.innerHTML = `<p class="lede" style="margin:0;">No hay biografía disponible para este artista.</p>`; return; }
+    box.innerHTML = `<p class="lede" style="margin:0 0 4px;">${esc(info.resumen)}</p><p class="lede" style="margin:0;font-size:11px;color:var(--fg-mute);">En inglés — no hay artículo en Wikipedia en español para este artista.</p>`;
+  } catch {
+    box.innerHTML = `<p class="lede" style="margin:0;">No se pudo cargar la biografía ahora mismo.</p>`;
+  }
+}
+
 async function lastfmAlbumInfo(nombreAlbum, nombreArtista, apiKey) {
   const url = `https://ws.audioscrobbler.com/2.0/?method=album.getinfo&artist=${encodeURIComponent(nombreArtista)}&album=${encodeURIComponent(nombreAlbum)}&autocorrect=1&api_key=${encodeURIComponent(apiKey)}&format=json`;
   const res = await fetch(url);
@@ -3334,21 +3421,93 @@ async function lastfmAlbumInfo(nombreAlbum, nombreArtista, apiKey) {
 async function cargarInfoAlbum(it) {
   const box = document.getElementById('dAlbumInfo');
   if (!box) return;
+  try {
+    const extracto = await wikipediaResumen(`${it.title} ${artistsOf(it)} álbum`).catch(() => null);
+    if (extracto) { box.innerHTML = `<p class="lede" style="margin:0;">${esc(extracto)}</p>`; return; }
+  } catch {}
   const lf = lastfmCfg();
-  if (!lf) { box.innerHTML = `<p class="lede" style="margin:0;">Pon tu clave de Last.fm en Ajustes para ver información del álbum.</p>`; return; }
+  if (!lf) { box.innerHTML = `<p class="lede" style="margin:0;">No hay artículo en Wikipedia en español. Pon tu clave de Last.fm en Ajustes para ver información (en inglés).</p>`; return; }
   try {
     const info = await lastfmAlbumInfo(it.title, artistsOf(it), lf.apiKey);
-    if (!info || (!info.resumen && !info.listeners)) { box.innerHTML = `<p class="lede" style="margin:0;">Last.fm no tiene información sobre este álbum.</p>`; return; }
+    if (!info || (!info.resumen && !info.listeners)) { box.innerHTML = `<p class="lede" style="margin:0;">No hay información disponible sobre este álbum.</p>`; return; }
     const datos = [];
     if (info.listeners) datos.push(`${info.listeners.toLocaleString('es-ES')} oyentes en Last.fm`);
     if (info.playcount) datos.push(`${info.playcount.toLocaleString('es-ES')} reproducciones`);
     box.innerHTML = `
-      ${info.resumen ? `<p class="lede" style="margin:0 0 8px;">${esc(info.resumen)}</p>` : ''}
+      ${info.resumen ? `<p class="lede" style="margin:0 0 4px;">${esc(info.resumen)}</p><p class="lede" style="margin:0 0 8px;font-size:11px;color:var(--fg-mute);">En inglés — no hay artículo en Wikipedia en español para este álbum.</p>` : ''}
       ${datos.length ? `<p class="lede" style="margin:0;color:var(--fg-mute);font-size:11.5px;">${esc(datos.join(' · '))}</p>` : ''}
     `;
   } catch {
     box.innerHTML = `<p class="lede" style="margin:0;">No se pudo consultar Last.fm ahora mismo.</p>`;
   }
+}
+
+/* MusicBrainz: base de datos musical abierta, sin clave de API. Ni Spotify
+   ni Last.fm modelan "es miembro de esta banda" o "también graba como" — esto
+   sí, con dos peticiones encadenadas (buscar el artista, luego sus
+   relaciones). Verificado en vivo: CORS abierto, y devuelve justo esto —
+   "member of band" (John Lennon → The Beatles, Paul McCartney → Wings…) e
+   "is person" para alias/alter egos (Oliver Heldens → HI-LO). */
+async function musicbrainzRelaciones(nombreArtista) {
+  const sres = await fetch(`https://musicbrainz.org/ws/2/artist/?query=${encodeURIComponent('artist:"' + nombreArtista + '"')}&fmt=json&limit=1`);
+  if (!sres.ok) throw new Error('MB_HTTP:' + sres.status);
+  const sdata = await sres.json();
+  const artist = sdata.artists?.[0];
+  if (!artist) return null;
+  const relRes = await fetch(`https://musicbrainz.org/ws/2/artist/${artist.id}?inc=artist-rels&fmt=json`);
+  if (!relRes.ok) throw new Error('MB_HTTP:' + relRes.status);
+  const rel = await relRes.json();
+  const relaciones = rel.relations || [];
+  const nombresUnicos = tipo => [...new Set(relaciones.filter(r => r.type === tipo && r.artist?.name).map(r => r.artist.name))];
+  return {
+    origen: artist.area?.name || null,
+    bandas: nombresUnicos('member of band'),
+    alterEgos: nombresUnicos('is person')
+  };
+}
+
+function cargarRelacionesMusicBrainz(it) {
+  const box = document.getElementById('dArtistRel');
+  if (!box) return;
+  musicbrainzRelaciones(it.title).then(info => {
+    if (!box.isConnected) return;
+    if (!info || (!info.origen && !info.bandas.length && !info.alterEgos.length)) {
+      box.innerHTML = ''; document.getElementById('dArtistRelLabel')?.remove();
+      return;
+    }
+    const grupo = (titulo, lista) => !lista.length ? '' : `
+      <p class="lede" style="margin:8px 0 4px;font-weight:600;">${esc(titulo)}</p>
+      <div class="simgrid">${lista.map(nombre => {
+        const enVault = ITEMS.find(x => x.type === 'artist' && !x.archived && fold(x.title) === fold(nombre));
+        return enVault
+          ? `<button class="simchip done" data-openrel="${enVault.id}">✓ ${esc(nombre)}</button>`
+          : `<button class="simchip" data-simadd="${esc(nombre)}">＋ ${esc(nombre)}</button>`;
+      }).join('')}</div>`;
+    box.innerHTML = (info.origen ? `<p class="lede" style="margin:0;">📍 ${esc(info.origen)}</p>` : '')
+      + grupo('Miembro de', info.bandas) + grupo('También lo conoces como', info.alterEgos);
+    box.addEventListener('click', e => {
+      const rel = e.target.closest('[data-openrel]');
+      if (rel) { openDetail(rel.dataset.openrel); return; }
+      const add = e.target.closest('[data-simadd]');
+      if (add) agregarArtistaSimilar(add.dataset.simadd, add);
+    });
+  }).catch(() => {
+    box.innerHTML = ''; document.getElementById('dArtistRelLabel')?.remove();
+  });
+}
+
+// resumen 100% local (sin red): incluye tanto lo suyo como propio como lo
+// que aparece "con" él en colaboraciones/feat., aunque el elemento sea de otro artista
+function resumenLocalArtista(it) {
+  const artistaFold = fold(it.title);
+  const misCosas = ITEMS.filter(x => x.type !== 'artist' && !x.archived && (x.artists || []).some(a => fold(a) === artistaFold));
+  const misAlbumes = misCosas.filter(x => x.type === 'album');
+  const misCanciones = misCosas.filter(x => x.type === 'track');
+  const hechos = misCosas.filter(x => x.listened).length;
+  const pct = misCosas.length ? Math.round(hechos / misCosas.length * 100) : 0;
+  const mejorValorado = misAlbumes.filter(x => x.rating > 0).sort((a, b) => b.rating - a.rating || (yearOf(b) || 0) - (yearOf(a) || 0))[0] || null;
+  const cronologia = misAlbumes.filter(x => yearOf(x)).sort((a, b) => yearOf(a) - yearOf(b));
+  return { misAlbumes, misCanciones, total: misCosas.length, hechos, pct, mejorValorado, cronologia };
 }
 
 async function cargarSimilares(it) {
