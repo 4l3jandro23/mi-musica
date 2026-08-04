@@ -655,11 +655,21 @@
   .simchip.done { background: var(--jade-soft); color: var(--jade); border-color: transparent; }
   .tracklist { display:flex; flex-direction:column; }
   .trow {
-    display:flex; align-items:center; gap: 10px; padding: 8px 4px;
-    border-bottom: 1px solid var(--line); color: inherit; text-decoration: none;
+    display:flex; align-items:center; gap: 8px; padding: 7px 4px;
+    border-bottom: 1px solid var(--line);
   }
   .trow:last-child { border-bottom: none; }
   .trow:hover { background: var(--surface-2); }
+  .trow.done { opacity: .6; }
+  .trcheck {
+    width: 22px; height: 22px; border-radius: 50%; flex-shrink:0; cursor:pointer;
+    border: 1px solid var(--line); background: var(--surface); color: transparent;
+    font-size: 12px; display:flex; align-items:center; justify-content:center; transition: transform .1s;
+  }
+  .trcheck:active { transform: scale(0.88); }
+  .trcheck.on { background: var(--jade); border-color: transparent; color: #fff; }
+  .trlink { flex:1; min-width:0; display:flex; align-items:center; gap:10px; color: inherit; text-decoration: none; }
+  .trlink:hover { text-decoration: underline; }
   .trow .trn { width: 20px; flex-shrink:0; font-size: 12px; color: var(--fg-mute); text-align:right; font-variant-numeric: tabular-nums; }
   .trow .trt { flex:1; min-width:0; font-size: 13.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .trow .trd { font-size: 12px; color: var(--fg-mute); flex-shrink:0; font-variant-numeric: tabular-nums; }
@@ -1404,6 +1414,7 @@ function metaPairs(it) {
   add('Popularidad en Spotify', it.popularity !== null && it.popularity !== undefined ? `${it.popularity}/100` : null);
   add('ISRC', it.isrc);
   add('Guardado', `${new Date(it.dateAdded).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })} (${relDate(it.dateAdded)})`);
+  if (it.listenedAt) add('Escuchado', `${new Date(it.listenedAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })} (${relDate(it.listenedAt)})`);
   if (!it.manual) add('ID de Spotify', it.spotifyId);
   return p;
 }
@@ -1731,6 +1742,14 @@ function toggleListened(id) {
   const it = ITEMS.find(i => i.id === id);
   if (!it) return;
   it.listened = !it.listened;
+  it.listenedAt = it.listened ? Date.now() : null;
+  // marcar el álbum entero escuchado marca todas sus canciones, y al revés
+  // (ver toggleCancionEscuchada) — para que el estado del álbum y el de su
+  // lista de canciones no se lleven la contraria
+  if (it.type === 'album') {
+    it.cancionesEscuchadas = it.listened ? (it.trackTitles || []).slice() : [];
+    if (_tracklistCache && _tracklistCache.albumId === it.spotifyId) pintarTracklist(it);
+  }
   saveItems();
   render();
 }
@@ -2511,7 +2530,9 @@ function openDetail(id) {
     ${it.type === 'artist' && !it.manual ? `<div class="btnrow"><button class="btn wide" id="dDisco">Ver su discografía</button></div>
     <div class="flabel">Artistas parecidos</div>
     <div id="dSimilar"><p class="lede" style="margin:0;">Buscando sugerencias…</p></div>` : ''}
-    ${it.type === 'album' && !it.manual ? `<div class="flabel">Canciones del álbum</div>
+    ${it.type === 'album' && !it.manual ? `<div class="flabel">Sobre el álbum</div>
+    <div id="dAlbumInfo"><p class="lede" style="margin:0;">Buscando información…</p></div>
+    <div class="flabel">Canciones del álbum</div>
     <div id="dTracks"><p class="lede" style="margin:0;">Cargando canciones…</p></div>` : ''}
     <div class="btnrow">
       <a class="btn primary wide" href="${esc(it.spotifyUrl)}" target="_blank" rel="noopener">${it.manual ? 'Abrir enlace' : 'Abrir en Spotify'} ↗</a>
@@ -2527,7 +2548,7 @@ function openDetail(id) {
 
   document.getElementById('dDisco')?.addEventListener('click', () => openDiscography(it));
   if (it.type === 'artist' && !it.manual) cargarSimilares(it);
-  if (it.type === 'album' && !it.manual) cargarTracksAlbum(it);
+  if (it.type === 'album' && !it.manual) { cargarTracksAlbum(it); cargarInfoAlbum(it); }
   wireMeta(it, id);
 
   document.getElementById('dCopyLink')?.addEventListener('click', () => copiarEnlaces([it], 'Enlace copiado'));
@@ -2544,7 +2565,7 @@ function openDetail(id) {
     });
   });
 
-  document.getElementById('dListen')?.addEventListener('click', () => { it.listened = !it.listened; saveItems(); render(); openDetail(id); });
+  document.getElementById('dListen')?.addEventListener('click', () => { toggleListened(id); openDetail(id); });
   document.getElementById('dStars').addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     const n = +b.dataset.n;
@@ -2678,6 +2699,10 @@ async function fetchAlbumTracks(albumId) {
   return out;
 }
 
+// { albumId, items } de la última tracklist pintada — evita repetir la
+// petición a Spotify solo para repintar tras marcar una canción escuchada
+let _tracklistCache = null;
+
 async function cargarTracksAlbum(it) {
   const box = document.getElementById('dTracks');
   if (!box) return;
@@ -2688,18 +2713,57 @@ async function cargarTracksAlbum(it) {
     // buscando el nombre de una de sus canciones, aunque no la tengas suelta
     const titulos = items.map(tr => tr.name).filter(Boolean);
     if (titulos.length) { it.trackTitles = titulos; saveItems(); }
-    box.innerHTML = `<div class="tracklist">${items.map(tr => `
-      <a class="trow" href="${esc(tr.external_urls?.spotify || it.spotifyUrl)}" target="_blank" rel="noopener">
-        <span class="trn">${tr.track_number ?? ''}</span>
-        <span class="trt">${esc(tr.name || '')}</span>
-        <span class="trd">${esc(fmtDur(tr.duration_ms) || '')}</span>
-      </a>`).join('')}</div>`;
+    _tracklistCache = { albumId: it.spotifyId, items };
+    pintarTracklist(it);
   } catch (err) {
     const text = err.message === 'RATE_LIMIT'
       ? 'Demasiadas peticiones seguidas — inténtalo de nuevo en unos segundos.'
       : 'No se pudieron cargar las canciones ahora mismo.';
     box.innerHTML = `<p class="lede" style="margin:0;">${text}</p>`;
   }
+}
+
+function pintarTracklist(it) {
+  const box = document.getElementById('dTracks');
+  if (!box || !_tracklistCache || _tracklistCache.albumId !== it.spotifyId) return;
+  const escuchadas = new Set(it.cancionesEscuchadas || []);
+  box.innerHTML = `<div class="tracklist">${_tracklistCache.items.map(tr => {
+    const oida = it.listened || escuchadas.has(tr.name);
+    return `<div class="trow${oida ? ' done' : ''}">
+      <button class="trcheck${oida ? ' on' : ''}" data-trtoggle="${esc(tr.name)}" aria-label="${oida ? 'Marcar pendiente' : 'Marcar escuchada'}">✓</button>
+      <a class="trlink" href="${esc(tr.external_urls?.spotify || it.spotifyUrl)}" target="_blank" rel="noopener">
+        <span class="trn">${tr.track_number ?? ''}</span>
+        <span class="trt">${esc(tr.name || '')}</span>
+      </a>
+      <span class="trd">${esc(fmtDur(tr.duration_ms) || '')}</span>
+    </div>`;
+  }).join('')}</div>`;
+  box.querySelector('.tracklist')?.addEventListener('click', e => {
+    const b = e.target.closest('[data-trtoggle]'); if (!b) return;
+    toggleCancionEscuchada(it, b.dataset.trtoggle);
+    pintarTracklist(it);
+    sincronizarBotonEscuchado(it);
+  });
+}
+
+// Al completo (todas marcadas) el álbum entero pasa a escuchado, con su
+// fecha; al desmarcar cualquiera deja de estar "completo" y el álbum vuelve
+// a pendiente — así el botón grande de la ficha y esta lista nunca se contradicen.
+function toggleCancionEscuchada(it, titulo) {
+  const set = new Set(it.cancionesEscuchadas || []);
+  set.has(titulo) ? set.delete(titulo) : set.add(titulo);
+  it.cancionesEscuchadas = [...set];
+  const todas = it.trackTitles || [];
+  const completo = todas.length > 0 && todas.every(t => set.has(t));
+  it.listened = completo;
+  it.listenedAt = completo ? Date.now() : null;
+  saveItems();
+}
+
+function sincronizarBotonEscuchado(it) {
+  const btn = document.getElementById('dListen');
+  if (btn) { btn.classList.toggle('jade', it.listened); btn.textContent = it.listened ? '✓ Ya escuchado' : 'Marcar como escuchado'; }
+  render();
 }
 
 /* ---- discografía de un artista ---- */
@@ -3100,6 +3164,46 @@ async function lastfmSimilar(nombreArtista, apiKey, limite = 8) {
   const raw = d.similarartists?.artist;
   const lista = Array.isArray(raw) ? raw : (raw ? [raw] : []);
   return lista.map(a => a && a.name).filter(Boolean);
+}
+
+async function lastfmAlbumInfo(nombreAlbum, nombreArtista, apiKey) {
+  const url = `https://ws.audioscrobbler.com/2.0/?method=album.getinfo&artist=${encodeURIComponent(nombreArtista)}&album=${encodeURIComponent(nombreAlbum)}&autocorrect=1&api_key=${encodeURIComponent(apiKey)}&format=json`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('LASTFM_HTTP:' + res.status);
+  const d = await res.json();
+  if (d.error) {
+    if (d.error === 6) return null;   // sin coincidencia en Last.fm
+    throw new Error('LASTFM_ERR:' + d.error);
+  }
+  const al = d.album;
+  if (!al) return null;
+  // el resumen viene con un enlace "Read more on Last.fm" pegado en HTML crudo al final; se limpia entero
+  const resumen = (al.wiki?.summary || '').replace(/<a[^>]*>[\s\S]*?<\/a>/gi, '').replace(/<[^>]+>/g, '').trim();
+  return {
+    resumen,
+    listeners: al.listeners ? +al.listeners : null,
+    playcount: al.playcount ? +al.playcount : null
+  };
+}
+
+async function cargarInfoAlbum(it) {
+  const box = document.getElementById('dAlbumInfo');
+  if (!box) return;
+  const lf = lastfmCfg();
+  if (!lf) { box.innerHTML = `<p class="lede" style="margin:0;">Pon tu clave de Last.fm en Ajustes para ver información del álbum.</p>`; return; }
+  try {
+    const info = await lastfmAlbumInfo(it.title, artistsOf(it), lf.apiKey);
+    if (!info || (!info.resumen && !info.listeners)) { box.innerHTML = `<p class="lede" style="margin:0;">Last.fm no tiene información sobre este álbum.</p>`; return; }
+    const datos = [];
+    if (info.listeners) datos.push(`${info.listeners.toLocaleString('es-ES')} oyentes en Last.fm`);
+    if (info.playcount) datos.push(`${info.playcount.toLocaleString('es-ES')} reproducciones`);
+    box.innerHTML = `
+      ${info.resumen ? `<p class="lede" style="margin:0 0 8px;">${esc(info.resumen)}</p>` : ''}
+      ${datos.length ? `<p class="lede" style="margin:0;color:var(--fg-mute);font-size:11.5px;">${esc(datos.join(' · '))}</p>` : ''}
+    `;
+  } catch {
+    box.innerHTML = `<p class="lede" style="margin:0;">No se pudo consultar Last.fm ahora mismo.</p>`;
+  }
 }
 
 async function cargarSimilares(it) {
@@ -3822,7 +3926,12 @@ document.getElementById('selbarRoot').addEventListener('click', e => {
     // Con selecciones grandes (p. ej. "Seleccionar todo lo filtrado"), recorrer
     // ITEMS una vez y consultar el Set es mucho más rápido que un .find() por id.
     let n = 0;
-    ITEMS.forEach(it => { if (selected.has(it.id) && it.type !== 'artist') { it.listened = true; n++; } });
+    ITEMS.forEach(it => {
+      if (!selected.has(it.id) || it.type === 'artist') return;
+      it.listened = true; it.listenedAt = Date.now();
+      if (it.type === 'album' && it.trackTitles?.length) it.cancionesEscuchadas = it.trackTitles.slice();
+      n++;
+    });
     saveItems(); setSelMode(false); toast(`${n} marcado${n === 1 ? '' : 's'} como escuchado${n === 1 ? '' : 's'}`);
   }
   if (b.dataset.sel === 'tag') openTagPicker(ids);
