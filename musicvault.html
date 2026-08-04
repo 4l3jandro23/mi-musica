@@ -422,9 +422,11 @@
   }
   .ghead .gcount { font-size: 10.5px; color: var(--fg-mute); font-weight: 500; }
 
-  .grid { display:grid; grid-template-columns: repeat(2, 1fr); gap: 13px; }
-  @media (min-width: 560px) { .grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (min-width: 820px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+  /* --gcols lo pone el ajuste "Tamaño de carátula": más columnas = carátulas
+     más pequeñas y más cosas por pantalla. Sin ajuste, se comporta como antes. */
+  .grid { display:grid; grid-template-columns: repeat(var(--gcols, 2), 1fr); gap: 13px; }
+  @media (min-width: 560px) { .grid { grid-template-columns: repeat(calc(var(--gcols, 2) + 1), 1fr); } }
+  @media (min-width: 820px) { .grid { grid-template-columns: repeat(calc(var(--gcols, 2) + 2), 1fr); } }
 
   .gcard {
     background: var(--surface); border: 1px solid var(--line); border-radius: 15px;
@@ -537,6 +539,22 @@
   }
   .azrail button:active { color: var(--amber); transform: scale(1.5); }
   @media (max-width: 380px) { .azrail { display: none; } }
+
+  /* Modo presentación: esconde todo lo que es "manejar la app" y deja solo
+     las carátulas, para enseñar la colección en una pantalla grande. */
+  body.presentacion .topbar, body.presentacion .state-strip, body.presentacion .chiprow,
+  body.presentacion .resultline, body.presentacion .fab, body.presentacion .azrail,
+  body.presentacion .vermas { display: none !important; }
+  body.presentacion .content { padding-top: 8px; }
+  body.presentacion .gcard .gbody { padding: 6px 8px 8px; }
+  #salirPresent { display: none; }
+  body.presentacion #salirPresent {
+    display: flex; position: fixed; top: 10px; right: 10px; z-index: 60;
+    align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+    background: var(--surface); border: 1px solid var(--line); color: var(--fg);
+    font-size: 16px; box-shadow: var(--shadow-md);
+  }
 
   .fab {
     position: fixed; right: 18px; bottom: calc(20px + env(safe-area-inset-bottom) + var(--kb, 0px)); z-index: 35;
@@ -862,6 +880,8 @@
         <option value="artist_asc">Artista A–Z</option>
         <option value="artist_desc">Artista Z–A</option>
         <option value="rating_desc">Mejor valorado</option>
+        <option value="played_desc">Escuchado hace poco</option>
+        <option value="plays_desc">Más reproducido</option>
         <option value="year_desc">Más nuevo</option>
         <option value="year_asc">Más antiguo</option>
       </select>
@@ -877,6 +897,7 @@
 </div>
 
 <nav class="azrail hidden" id="azRail" aria-label="Saltar a una letra"></nav>
+<button id="salirPresent" aria-label="Salir del modo presentación">✕</button>
 <button class="fab" id="addFab">＋ Añadir</button>
 <div id="selbarRoot"></div>
 <div id="modalRoot"></div>
@@ -936,7 +957,7 @@ let TAGS  = [];
 // real de TAGS — así no se altera nada de la lógica de fusión/dedup por id.
 // las fijadas primero (entre ellas, alfabético), luego el resto, también alfabético
 const tagsOrdenados = () => TAGS.slice().sort((a, b) => (b.favorito ? 1 : 0) - (a.favorito ? 1 : 0) || a.name.localeCompare(b.name, 'es'));
-let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', status: 'all', tag: 'all', genre: 'all', decade: 'all', covers: false, confirmarBorrado: false, tanda: 120, autoAddEscuchas: false }, read(K_PREFS, {}));
+let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', status: 'all', tag: 'all', genre: 'all', decade: 'all', covers: false, confirmarBorrado: false, tanda: 120, autoAddEscuchas: false, dur: 'all', vistas: [], gcardSize: 0 }, read(K_PREFS, {}));
 
 /* Al borrar algo hay que dejar constancia: si no, el otro dispositivo lo
    vuelve a subir en la siguiente sincronización y el borrado "revive". */
@@ -1505,6 +1526,7 @@ function metaPairs(it) {
   add('Oyentes (seguidores)', it.followers ? it.followers.toLocaleString('es-ES') : null);
   add('Popularidad en Spotify', it.popularity !== null && it.popularity !== undefined ? `${it.popularity}/100` : null);
   add('ISRC', it.isrc);
+  add('Recomendado por', it.recomendadoPor);
   add('Guardado', `${new Date(it.dateAdded).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })} (${relDate(it.dateAdded)})`);
   if (it.listenedAt) add('Escuchado', `${new Date(it.listenedAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })} (${relDate(it.listenedAt)})`);
   if (totalPlays(it)) {
@@ -1547,6 +1569,18 @@ function filtered() {
     if (PREFS.tag !== 'all' && !(it.tagIds || []).includes(PREFS.tag)) return false;
     if (PREFS.genre !== 'all' && !(it.genres || []).some(g => fold(g) === PREFS.genre)) return false;
     if (PREFS.decade !== 'all') { const y = yearOf(it); if (!y || Math.floor(y / 10) * 10 !== +PREFS.decade) return false; }
+    /* Duración: mide la canción, o la del álbum entero si ya la conocemos
+       (se guarda al abrir su ficha). Lo que no tiene duración conocida se
+       queda fuera al filtrar — decirte "corto" de algo que no he medido
+       sería inventar. */
+    if (PREFS.dur !== 'all') {
+      const ms = it.type === 'album' ? it.totalDurationMs : it.durationMs;
+      if (!ms) return false;
+      const min = ms / 60000;
+      if (PREFS.dur === 'corto' && !(it.type === 'album' ? min < 35 : min < 3)) return false;
+      if (PREFS.dur === 'medio' && !(it.type === 'album' ? (min >= 35 && min <= 60) : (min >= 3 && min <= 6))) return false;
+      if (PREFS.dur === 'largo' && !(it.type === 'album' ? min > 60 : min > 6)) return false;
+    }
     if (q) {
       const tagNames = (it.tagIds || []).map(id => tagById(id)?.name).filter(Boolean).join(' ');
       const texto = fold(it.title + ' ' + artistsOf(it) + ' ' + (it.notes || '') + ' ' + (it.genres || []).join(' ') + ' ' + tagNames + ' ' + (it.albumName || ''));
@@ -1571,6 +1605,9 @@ function filtered() {
       case 'rating_desc': return (b.rating || 0) - (a.rating || 0) || cmp(sortKey(a.title), sortKey(b.title));
       case 'year_desc':   return yearOf(b) - yearOf(a);
       case 'year_asc':    return yearOf(a) - yearOf(b);
+      // lo nunca escuchado cae al final en vez de mezclarse con lo antiguo
+      case 'played_desc': return (b.listenedAt || 0) - (a.listenedAt || 0);
+      case 'plays_desc':  return totalPlays(b) - totalPlays(a) || cmp(sortKey(a.title), sortKey(b.title));
       case 'added_asc':   return a.dateAdded - b.dateAdded;
       default:            return b.dateAdded - a.dateAdded;
     }
@@ -1687,6 +1724,11 @@ function renderChips() {
     const n = visibles.filter(i => (i.tagIds || []).includes(t.id)).length;
     return `<button class="chip ${PREFS.tag === t.id ? 'on' : ''}" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)} <span class="ct">${n}</span></button>`;
   });
+  const DUR_ET = { corto: 'Corto', medio: 'Medio', largo: 'Largo' };
+  const chipsDur = ['corto', 'medio', 'largo'].map(d =>
+    `<button class="chip ${PREFS.dur === d ? 'on' : ''}" data-dur="${d}">⏱ ${DUR_ET[d]}</button>`);
+  const chipsVistas = (PREFS.vistas || []).map((v, i) =>
+    `<button class="chip vista" data-vista="${i}">🔖 ${esc(v.nombre)}</button>`);
   const chipsGenero = [
     ...topGenres.map(([k, n]) =>
       `<button class="chip genre ${PREFS.genre === k ? 'on' : ''}" data-genre="${esc(k)}">🎧 ${esc(genreLabel[k])} <span class="ct">${n}</span></button>`),
@@ -1696,7 +1738,7 @@ function renderChips() {
   // separadores finos entre grupos: con tipo + década + etiquetas + género la
   // fila puede crecer mucho, y un separador ayuda a distinguir de un vistazo
   // dónde empieza cada tipo de filtro sin tener que leerlos todos
-  const parts = [chipsTipo, chipsDecada, chipsTag, chipsGenero]
+  const parts = [chipsVistas, chipsTipo, chipsDur, chipsDecada, chipsTag, chipsGenero]
     .filter(grupo => grupo.length)
     .flatMap((grupo, i) => i === 0 ? grupo : ['<span class="chipdiv"></span>', ...grupo]);
   document.getElementById('chips').innerHTML = parts.join('');
@@ -1777,7 +1819,7 @@ function render() {
 
   const rows = filtered();
   renderIndiceAZ(rows);
-  const anyFilter = PREFS.type !== 'all' || PREFS.status !== 'all' || PREFS.tag !== 'all' || PREFS.genre !== 'all' || PREFS.decade !== 'all' || document.getElementById('q').value.trim();
+  const anyFilter = PREFS.type !== 'all' || PREFS.status !== 'all' || PREFS.tag !== 'all' || PREFS.genre !== 'all' || PREFS.decade !== 'all' || PREFS.dur !== 'all' || document.getElementById('q').value.trim();
   // con un vault grande, filtrar (p. ej. "álbumes de los 70") y no poder
   // seleccionar todo ese grupo de golpe para archivarlo/etiquetarlo obligaba
   // a marcarlos uno a uno a mano — esto selecciona TODO lo que cumple el
@@ -1785,6 +1827,7 @@ function render() {
   const acciones = [];
   if (rows.length) acciones.push(`<button class="pillbtn accent" data-selall="1">✓ Seleccionar ${rows.length === ITEMS.length ? 'todo' : `estos ${rows.length.toLocaleString('es-ES')}`}</button>`);
   if (anyFilter) acciones.push(`<button class="pillbtn" data-clear="1">✕ Quitar filtros</button>`);
+  acciones.push(`<button class="pillbtn" data-vistas="1" title="Vistas guardadas">🔖</button>`);
   line.innerHTML = `<span>${rows.length} de ${ITEMS.length}</span>${acciones.length ? `<span style="display:flex;gap:8px;">${acciones.join('')}</span>` : ''}`;
 
   if (rows.length === 0) {
@@ -1824,6 +1867,16 @@ function render() {
 /* Agrupa solo cuando el orden lo hace significativo: por artista, por inicial o por década. */
 function groupsFor(rows) {
   const s = PREFS.sort;
+  /* Buscando "algo" sin filtrar por tipo, lo útil es ver de un vistazo qué es
+     álbum, qué canción y qué artista — no una lista plana donde se mezclan.
+     Solo cuando buscas: en la vista normal manda el orden que hayas elegido. */
+  if (document.getElementById('q').value.trim() && PREFS.type === 'all') {
+    const orden = ['artist', 'album', 'track', 'playlist'];
+    const porTipo = new Map();
+    rows.forEach(it => { if (!porTipo.has(it.type)) porTipo.set(it.type, []); porTipo.get(it.type).push(it); });
+    const out = orden.filter(t => porTipo.has(t)).map(t => ({ key: TYPE_PLURAL[t] || t, items: porTipo.get(t) }));
+    return out.length > 1 ? out : null;   // con un solo tipo, agrupar no aporta nada
+  }
   let keyOf = null;
   if (s.startsWith('artist')) keyOf = it => artistsOf(it) || 'Sin artista';
   else if (s.startsWith('title')) keyOf = it => { const c = (sortKey(it.title)[0] || '#').toUpperCase(); return /\p{L}/u.test(c) ? c : '#'; };
@@ -1849,6 +1902,11 @@ function letraDe(it) {
 }
 
 const ordenAlfabetico = () => PREFS.sort.startsWith('artist') || PREFS.sort.startsWith('title');
+
+// 0 = grande (2 columnas, como siempre), 1 = media, 2 = pequeña
+function aplicarTamanoCaratula() {
+  document.documentElement.style.setProperty('--gcols', 2 + (PREFS.gcardSize || 0));
+}
 
 function renderIndiceAZ(rows) {
   const rail = document.getElementById('azRail');
@@ -2809,7 +2867,9 @@ function openDetail(id) {
     ${it.type === 'artist' && !it.manual ? (() => {
       const r = resumenLocalArtista(it);
       const genero = it.genres?.[0] || null;
+      const ultima = ultimaEscuchaDeArtista(it);
       return `<div class="flabel">En tu vault</div>
+      ${ultima && (Date.now() - ultima) > 90 * 86400000 ? `<p class="lede" style="margin:0 0 6px;">🔁 No escuchas nada suyo desde ${relDate(ultima)}.</p>` : ''}
       <p class="lede" style="margin:0 0 8px;">${r.misAlbumes.length} álbum${r.misAlbumes.length === 1 ? '' : 'es'} y ${r.misCanciones.length} canción${r.misCanciones.length === 1 ? '' : 'es'} guardados${r.total ? ` · ${r.pct}% escuchado (${r.hechos} de ${r.total})` : ''}</p>
       ${genero ? `<button class="chip genre" data-goargenre="${esc(fold(genero))}" style="margin-bottom:10px;">🎧 ${esc(genero)}</button>` : ''}
       ${r.mejorValorado ? `<p class="lede" style="margin:0 0 4px;font-weight:600;">Tu mejor valorado suyo</p><div class="list">${relatedRow(r.mejorValorado, false)}</div>` : ''}
@@ -2933,7 +2993,8 @@ const EDITABLE = [
   ['releaseDate', 'Fecha de lanzamiento (AAAA o AAAA-MM-DD)', 'text'],
   ['label', 'Sello discográfico', 'text'],
   ['genresStr', 'Géneros, separados por comas', 'text'],
-  ['coverUrl', 'URL de la carátula', 'text']
+  ['coverUrl', 'URL de la carátula', 'text'],
+  ['recomendadoPor', 'Te lo recomendó / dónde lo escuchaste', 'text']
 ];
 
 function metaFormHtml(it) {
@@ -3784,6 +3845,38 @@ function cargarRelacionesMusicBrainz(it) {
 
 // resumen 100% local (sin red): incluye tanto lo suyo como propio como lo
 // que aparece "con" él en colaboraciones/feat., aunque el elemento sea de otro artista
+/* Joyas ocultas: te encantan pero el resto del mundo apenas las escucha.
+   Cruza TU valoración con la popularidad que da Spotify (0-100). */
+function joyasOcultas() {
+  return ITEMS.filter(i => !i.archived && i.rating >= 4 && typeof i.popularity === 'number' && i.popularity <= 40)
+    .sort((a, b) => (b.rating - a.rating) || (a.popularity - b.popularity));
+}
+
+/* Artistas que aparecen mucho acompañando en lo que ya tienes, pero a los que
+   nunca guardaste como artista — colaboradores habituales que se te escapan. */
+function colaboradoresSinGuardar(minApariciones = 3) {
+  const guardados = new Set(ITEMS.filter(i => i.type === 'artist').map(i => fold(i.title)));
+  const cuenta = {};
+  ITEMS.forEach(i => {
+    if (i.type === 'artist' || i.archived) return;
+    (i.artists || []).slice(1).forEach(a => {   // slice(1): el principal no es "colaborador"
+      const k = fold(a);
+      if (!k || guardados.has(k)) return;
+      if (!cuenta[k]) cuenta[k] = { nombre: a, n: 0 };
+      cuenta[k].n++;
+    });
+  });
+  return Object.values(cuenta).filter(c => c.n >= minApariciones).sort((a, b) => b.n - a.n);
+}
+
+// última vez que escuchaste ALGO de este artista (cualquier cosa suya)
+function ultimaEscuchaDeArtista(it) {
+  const f = fold(it.title);
+  const fechas = ITEMS.filter(x => x.type !== 'artist' && x.listenedAt && (x.artists || []).some(a => fold(a) === f))
+    .map(x => x.listenedAt);
+  return fechas.length ? Math.max(...fechas) : null;
+}
+
 function resumenLocalArtista(it) {
   const artistaFold = fold(it.title);
   const misCosas = ITEMS.filter(x => x.type !== 'artist' && !x.archived && (x.artists || []).some(a => fold(a) === artistaFold));
@@ -3991,7 +4084,10 @@ function openSettings() {
     <div class="flabel">Etiquetas</div>
     <div id="tagList">${tagListHtml()}</div>
     <input class="field" id="newTag" placeholder="Nombre de la etiqueta" style="margin-top:10px;">
-    <div class="swatches" id="sw">${TAG_COLORS.map((col, i) => `<span class="sw ${i === 0 ? 'on' : ''}" data-c="${col}" style="background:${col}"></span>`).join('')}</div>
+    <div class="swatches" id="sw">
+      ${TAG_COLORS.map((col, i) => `<span class="sw ${i === 0 ? 'on' : ''}" data-c="${col}" style="background:${col}"></span>`).join('')}
+      <input type="color" id="swCustom" value="${esc(TAG_COLORS[0])}" title="Color a medida" style="width:26px;height:26px;padding:0;border:1px solid var(--line);border-radius:50%;background:none;cursor:pointer;">
+    </div>
     <div class="btnrow"><button class="btn wide" id="addTag">Crear etiqueta</button></div>
 
     <div class="flabel">Sincronizar entre dispositivos</div>
@@ -4034,6 +4130,12 @@ function openSettings() {
       <button class="btn wide ${PREFS.confirmarBorrado ? 'jade' : ''}" id="togConfirm">${PREFS.confirmarBorrado ? '✓ Confirma antes de borrar' : 'Borra directo (con Deshacer)'}</button>
     </div>
     <p class="lede" style="margin:6px 0 12px;">${PREFS.confirmarBorrado ? 'Te pregunta antes de borrar uno o varios elementos a mano.' : 'Borra al momento; el aviso de "Deshacer" sigue ahí por si acaso.'}</p>
+    <div class="btnrow"><button class="btn wide" id="modoPresent">🖼 Modo presentación</button></div>
+    <p class="lede" style="margin:6px 0 12px;">Esconde toda la interfaz y deja solo las carátulas. Sal con Esc o con la ✕ de la esquina.</p>
+    <div class="flabel" style="margin-top:0;font-size:10px;">Tamaño de carátula</div>
+    <div class="segrow" id="gsizeSeg">
+      ${[['Grande', 0], ['Media', 1], ['Pequeña', 2]].map(([et, v]) => `<button class="seg ${(PREFS.gcardSize || 0) === v ? 'on' : ''}" data-gsize="${v}">${et}</button>`).join('')}
+    </div>
     <div class="flabel" style="margin-top:0;font-size:10px;">Elementos por página</div>
     <div class="segrow" id="tandaSeg">
       ${[60, 120, 250, 500].map(n => `<button class="seg ${tanda() === n ? 'on' : ''}" data-tanda="${n}">${n}</button>`).join('')}
@@ -4098,6 +4200,12 @@ function openSettings() {
   document.getElementById('togConfirm').addEventListener('click', () => {
     PREFS.confirmarBorrado = !PREFS.confirmarBorrado;
     savePrefs(); openSettings();
+  });
+  document.getElementById('modoPresent').addEventListener('click', () => { closeModal(); togglePresentacion(); });
+  document.getElementById('gsizeSeg').addEventListener('click', e => {
+    const b = e.target.closest('.seg'); if (!b) return;
+    PREFS.gcardSize = +b.dataset.gsize;
+    savePrefs(); aplicarTamanoCaratula(); render(); openSettings();
   });
   document.getElementById('tandaSeg').addEventListener('click', e => {
     const b = e.target.closest('.seg'); if (!b) return;
@@ -4166,6 +4274,10 @@ function openSettings() {
     const s = e.target.closest('.sw'); if (!s) return;
     document.querySelectorAll('#sw .sw').forEach(x => x.classList.toggle('on', x === s));
     swatch = s.dataset.c;
+  });
+  document.getElementById('swCustom').addEventListener('input', e => {
+    swatch = e.target.value;
+    document.querySelectorAll('#sw .sw').forEach(x => x.classList.remove('on'));   // ninguno de los fijos está elegido ya
   });
   document.getElementById('paletteSw').addEventListener('click', e => {
     const s = e.target.closest('.sw'); if (!s) return;
@@ -4625,7 +4737,7 @@ function openStats() {
   // estadísticas se calculan sobre ESO en vez de sobre el vault entero — así
   // "¿cuánto llevo escuchado de los 70?" se responde solo, sin hacer cuentas
   const q = fold(document.getElementById('q').value.trim());
-  const anyFilter = PREFS.type !== 'all' || PREFS.status !== 'all' || PREFS.tag !== 'all' || PREFS.genre !== 'all' || PREFS.decade !== 'all' || q;
+  const anyFilter = PREFS.type !== 'all' || PREFS.status !== 'all' || PREFS.tag !== 'all' || PREFS.genre !== 'all' || PREFS.decade !== 'all' || PREFS.dur !== 'all' || q;
   const base = anyFilter ? filtered() : ITEMS.filter(i => !i.archived);
   if (!base.length) { toast('No hay nada que coincida con el filtro actual'); return; }
 
@@ -4654,6 +4766,8 @@ function openStats() {
   const sinExplorar = anyFilter ? [] : artistasSinExplorar();
   const aMedias = anyFilter ? [] : albumesAMedias();
   const capsula = anyFilter ? [] : capsulaDeHoy();
+  const joyas = anyFilter ? [] : joyasOcultas();
+  const colabs = anyFilter ? [] : colaboradoresSinGuardar();
   const crecimiento = anyFilter ? null : generoQueMasHaCrecido();
 
   showSheet(`
@@ -4695,6 +4809,14 @@ function openStats() {
     ${bars(topGenres, 'var(--jade)')}
     ${crecimiento ? `<p class="lede" style="margin:8px 0 0;">📈 <strong>${esc(crecimiento.genero)}</strong> es el que más ha crecido este año (+${crecimiento.delta} desde el año pasado).</p>` : ''}` : ''}
 
+    ${joyas.length ? `<div class="flabel">Tus joyas ocultas</div>
+    <p class="lede" style="margin:0 0 6px;">Les diste 4★ o más y en Spotify apenas las escucha nadie.</p>
+    <div class="list">${joyas.slice(0, 8).map(it => relatedRow(it, false)).join('')}</div>` : ''}
+
+    ${colabs.length ? `<div class="flabel">Colaboradores que no tienes guardados</div>
+    <p class="lede" style="margin:0 0 6px;">Aparecen acompañando en varias cosas tuyas, pero no los sigues.</p>
+    <div class="simgrid">${colabs.slice(0, 12).map(c => `<button class="simchip" data-simadd="${esc(c.nombre)}">＋ ${esc(c.nombre)} <span class="ct">${c.n}</span></button>`).join('')}</div>` : ''}
+
     <div class="flabel">Por década de lanzamiento</div>
     ${bars(decades, 'var(--amber)')}
 
@@ -4707,6 +4829,12 @@ function openStats() {
   `);
 
   document.querySelector('[data-goto]')?.addEventListener('click', e => openDetail(e.currentTarget.dataset.goto));
+  document.querySelector('#modalRoot .sheet')?.addEventListener('click', e => {
+    const rel = e.target.closest('[data-openrel]');
+    if (rel) { openDetail(rel.dataset.openrel); return; }
+    const add = e.target.closest('[data-simadd]');
+    if (add) agregarArtistaSimilar(add.dataset.simadd, add);
+  });
   document.getElementById('verSinExplorar')?.addEventListener('click', openArtistasSinExplorar);
   document.getElementById('verAMedias')?.addEventListener('click', openAlbumesAMedias);
   document.getElementById('verCapsula')?.addEventListener('click', openCapsula);
@@ -4726,6 +4854,22 @@ function shuffle() {
 }
 
 /* ============ events ============ */
+/* Fullscreen de verdad si el navegador deja (en iOS no existe para páginas
+   normales, así que allí se queda en "esconder la interfaz", que ya es lo
+   principal). Salir con Esc o con la ✕ de la esquina. */
+function togglePresentacion() {
+  const on = !document.body.classList.contains('presentacion');
+  document.body.classList.toggle('presentacion', on);
+  try {
+    if (on) document.documentElement.requestFullscreen?.();
+    else if (document.fullscreenElement) document.exitFullscreen?.();
+  } catch {}
+}
+document.getElementById('salirPresent').addEventListener('click', togglePresentacion);
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.body.classList.contains('presentacion') && !modalRoot.innerHTML) togglePresentacion();
+});
+
 document.getElementById('azRail').addEventListener('click', e => {
   const b = e.target.closest('[data-az]'); if (!b) return;
   saltarALetra(b.dataset.az);
@@ -4749,12 +4893,55 @@ document.querySelector('.state-strip').addEventListener('click', e => {
 document.getElementById('chips').addEventListener('click', e => {
   const b = e.target.closest('.chip'); if (!b) return;
   if (b.dataset.genall) { openGenrePicker(); return; }
+  if (b.dataset.vista !== undefined) { aplicarVista(+b.dataset.vista); return; }
+  if (b.dataset.dur) PREFS.dur = PREFS.dur === b.dataset.dur ? 'all' : b.dataset.dur;
   if (b.dataset.type) PREFS.type = b.dataset.type;
   if (b.dataset.tag) PREFS.tag = PREFS.tag === b.dataset.tag ? 'all' : b.dataset.tag;
   if (b.dataset.genre) PREFS.genre = PREFS.genre === b.dataset.genre ? 'all' : b.dataset.genre;
   if (b.dataset.decade) PREFS.decade = PREFS.decade === b.dataset.decade ? 'all' : b.dataset.decade;
   savePrefs(); render();
 });
+
+/* Vistas guardadas: una combinación de filtros con nombre, para no tener que
+   volver a montarla a mano. Guarda solo los filtros y el orden — no una lista
+   de elementos — así una vista sigue siendo válida según crece el vault. */
+const CAMPOS_VISTA = ['type', 'status', 'tag', 'genre', 'decade', 'dur', 'sort'];
+function guardarVistaActual() {
+  const nombre = (prompt('Nombre para esta vista (p. ej. "Pendientes de los 90"):') || '').trim();
+  if (!nombre) return;
+  const vista = { nombre };
+  CAMPOS_VISTA.forEach(c => vista[c] = PREFS[c]);
+  vista.q = document.getElementById('q').value.trim();
+  PREFS.vistas = (PREFS.vistas || []).concat([vista]).slice(-12);   // tope: la fila de chips no es infinita
+  savePrefs(); render();
+  toast('Vista guardada: ' + nombre);
+}
+function aplicarVista(i) {
+  const v = (PREFS.vistas || [])[i];
+  if (!v) return;
+  CAMPOS_VISTA.forEach(c => { if (v[c] !== undefined) PREFS[c] = v[c]; });
+  document.getElementById('q').value = v.q || '';
+  savePrefs(); render();
+}
+function openVistasGuardadas() {
+  const vistas = PREFS.vistas || [];
+  showSheet(`
+    <div class="sheethead"><h2>Vistas guardadas</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <p class="lede">Combinaciones de filtros con nombre. Guarda la que tengas puesta ahora mismo, o borra las que ya no uses.</p>
+    <div class="btnrow"><button class="btn primary wide" id="guardarVista">Guardar los filtros actuales</button></div>
+    ${vistas.length ? `<div id="listaVistas">${vistas.map((v, i) => `
+      <div class="tagline">
+        <span class="lf">🔖 ${esc(v.nombre)}</span>
+        <button class="xbtn" data-delvista="${i}" aria-label="Eliminar vista">✕</button>
+      </div>`).join('')}</div>` : `<p class="lede" style="margin-top:10px;">Todavía no tienes ninguna.</p>`}
+  `);
+  document.getElementById('guardarVista').addEventListener('click', () => { closeModal(); guardarVistaActual(); });
+  document.getElementById('listaVistas')?.addEventListener('click', e => {
+    const b = e.target.closest('[data-delvista]'); if (!b) return;
+    PREFS.vistas.splice(+b.dataset.delvista, 1);
+    savePrefs(); render(); openVistasGuardadas();
+  });
+}
 
 function openGenrePicker() {
   const { freq, label } = generosConFrecuencia();
@@ -4788,7 +4975,8 @@ const contentEl = document.querySelector('main.content');
 
 contentEl.addEventListener('click', e => {
   const clear = e.target.closest('[data-clear]');
-  if (clear) { PREFS.type = 'all'; PREFS.status = 'all'; PREFS.tag = 'all'; PREFS.genre = 'all'; PREFS.decade = 'all'; document.getElementById('q').value = ''; savePrefs(); render(); return; }
+  if (clear) { PREFS.type = 'all'; PREFS.status = 'all'; PREFS.tag = 'all'; PREFS.genre = 'all'; PREFS.decade = 'all'; PREFS.dur = 'all'; document.getElementById('q').value = ''; savePrefs(); render(); return; }
+  if (e.target.closest('[data-vistas]')) { openVistasGuardadas(); return; }
   const selall = e.target.closest('[data-selall]');
   if (selall) { selMode = true; selected = new Set(filtered().map(it => it.id)); render(); return; }
   const open = e.target.closest('[data-open]');
@@ -4942,6 +5130,7 @@ async function manejarParametroAdd() {
   runSearch();
 }
 
+aplicarTamanoCaratula();
 handleSpotifyRedirect().then(() => bootStorage()).then(() => {
   render();
   purgarPapelera();
