@@ -2961,19 +2961,25 @@ async function sincronizarEscuchasSpotify(silencioso) {
     items.forEach(({ track, played_at }) => {
       if (!track || (track.type && track.type !== 'track')) return;
       const playedTs = new Date(played_at).getTime();
-      let tocoAlgoExistente = false;
+      /* "Cubierta" = esta escucha queda registrada en algún sitio del vault.
+         OJO: que el ÁLBUM esté guardado no basta — si nunca abriste su ficha
+         no tengo su lista de canciones (trackTitles), así que no puedo marcar
+         la pista dentro de él. Antes eso contaba como cubierta y la canción se
+         quedaba en tierra de nadie: ni marcada ni añadida, en silencio. */
+      let cubierta = false;
 
       const propia = ITEMS.find(x => x.type === 'track' && x.spotifyId === track.id);
       if (propia) {
-        tocoAlgoExistente = true;
+        cubierta = true;
         if (!propia.listened) { propia.listened = true; propia.listenedAt = playedTs; propia.touchedAt = Date.now(); marcados++; }
       }
 
       if (track.album?.id) {
         const album = ITEMS.find(x => x.type === 'album' && x.spotifyId === track.album.id);
-        if (album) {
-          tocoAlgoExistente = true;
-          if (!album.listened && album.trackTitles?.includes(track.name)) {
+        // solo cuenta como cubierta si de verdad puedo situar la pista dentro del álbum
+        if (album && album.trackTitles?.includes(track.name)) {
+          cubierta = true;
+          if (!album.listened) {
             const set = new Set(album.cancionesEscuchadas || []);
             if (!set.has(track.name)) {
               set.add(track.name);
@@ -2987,7 +2993,7 @@ async function sincronizarEscuchasSpotify(silencioso) {
         }
       }
 
-      if (!tocoAlgoExistente && PREFS.autoAddEscuchas && !ITEMS.some(x => x.spotifyId === track.id)) {
+      if (!cubierta && PREFS.autoAddEscuchas && !ITEMS.some(x => x.spotifyId === track.id)) {
         const nueva = makeItem(normalize(track, 'track'));
         nueva.listened = true; nueva.listenedAt = playedTs;
         ITEMS.push(nueva);
@@ -4361,6 +4367,90 @@ function openCapsula() {
   });
 }
 
+/* Historial de escucha: dos mitades. Arriba, lo que TÚ tienes marcado como
+   escuchado (con su fecha real, dato local, siempre disponible). Abajo, lo
+   que Spotify dice que has reproducido hace poco — sirve además para ver de
+   un vistazo por qué algo entró o no entró en el vault, en vez de tener que
+   adivinarlo. */
+function openHistorial() {
+  const escuchados = ITEMS.filter(i => i.listenedAt).sort((a, b) => b.listenedAt - a.listenedAt);
+  const ahora = Date.now();
+  const enUltimos = d => escuchados.filter(i => ahora - i.listenedAt < d * 86400000).length;
+
+  // racha: días seguidos (hacia atrás desde hoy) con al menos una escucha
+  const diasConEscucha = new Set(escuchados.map(i => new Date(i.listenedAt).toDateString()));
+  let racha = 0;
+  for (let d = 0; d < 400; d++) {
+    const dia = new Date(ahora - d * 86400000).toDateString();
+    if (diasConEscucha.has(dia)) racha++;
+    else if (d > 0) break;   // el día de hoy puede estar vacío todavía sin romper la racha
+  }
+
+  const porArtista = {};
+  escuchados.forEach(i => (i.artists || []).forEach(a => { porArtista[a] = (porArtista[a] || 0) + 1; }));
+  const topArtistas = Object.entries(porArtista).sort((a, b) => b[1] - a[1] || cmp(a[0], b[0])).slice(0, 6);
+
+  // por hora del día: revela si eres de escuchar de noche, en el curro, etc.
+  const porHora = new Array(24).fill(0);
+  escuchados.forEach(i => { porHora[new Date(i.listenedAt).getHours()]++; });
+  const maxHora = Math.max(...porHora, 1);
+  const franjas = [['Madrugada (0-6)', 0, 6], ['Mañana (6-12)', 6, 12], ['Tarde (12-20)', 12, 20], ['Noche (20-24)', 20, 24]]
+    .map(([et, a, b]) => [et, porHora.slice(a, b).reduce((s, n) => s + n, 0)]).filter(r => r[1]);
+
+  showSheet(`
+    <div class="sheethead"><h2>Historial de escucha</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    ${!escuchados.length ? `<p class="lede">Todavía no hay nada con fecha de escucha. Las fechas se guardan a partir de que marcaste algo (lo marcado antes de esa función no tiene fecha).</p>` : `
+    <div class="bigstat">
+      <div class="bignum">${racha}</div>
+      <div><div style="font-weight:650;">día${racha === 1 ? '' : 's'} de racha</div><div class="lede" style="margin:0;">seguidos escuchando algo</div></div>
+    </div>
+    <div class="flabel">Ritmo</div>
+    ${bars([['Últimas 24 h', enUltimos(1)], ['Última semana', enUltimos(7)], ['Último mes', enUltimos(30)], ['Último año', enUltimos(365)]].filter(r => r[1]), 'var(--amber)')}
+    ${franjas.length ? `<div class="flabel">A qué horas escuchas</div>${bars(franjas, 'var(--jade)')}` : ''}
+    ${topArtistas.length ? `<div class="flabel">Más escuchados</div>${bars(topArtistas, 'var(--jade)')}` : ''}
+    <div class="flabel">Lo último que marcaste</div>
+    <div class="list">${escuchados.slice(0, 25).map(it => `
+      <article class="lrow" data-id="${it.id}">
+        <div class="lart">${portada(it.coverUrl, TYPE_ICON[it.type], true)}</div>
+        <div class="linfo"><div class="lt">${esc(it.title)}</div><div class="la">${esc(artistsOf(it))} · ${relDate(it.listenedAt)}</div></div>
+      </article>`).join('')}</div>`}
+
+    <div class="flabel">Reproducciones recientes en Spotify</div>
+    <div id="histSpotify"><p class="lede" style="margin:0;">Consultando…</p></div>
+  `);
+  document.querySelector('#modalRoot .list')?.addEventListener('click', e => {
+    const card = e.target.closest('[data-id]'); if (card) openDetail(card.dataset.id);
+  });
+  cargarHistorialSpotify();
+}
+
+async function cargarHistorialSpotify() {
+  const box = document.getElementById('histSpotify');
+  if (!box) return;
+  if (!isConnected() || !tieneScopeRecientes()) {
+    box.innerHTML = `<p class="lede" style="margin:0;">Reconéctate con Spotify en Ajustes para ver esto.</p>`;
+    return;
+  }
+  try {
+    const items = await fetchRecentlyPlayed(50);
+    if (!box.isConnected) return;
+    if (!items.length) { box.innerHTML = `<p class="lede" style="margin:0;">Spotify no devuelve reproducciones recientes. Recuerda que solo cuentan las canciones que sonaron 30 segundos o más sin saltarlas — y nunca la que está sonando ahora mismo.</p>`; return; }
+    box.innerHTML = `<p class="lede" style="margin:0 0 8px;">Lo que Spotify dice que has reproducido. El punto verde es lo que ya está en tu vault.</p>
+      <div class="tracklist">${items.map(({ track, played_at }) => {
+        if (!track) return '';
+        const enVault = ITEMS.some(x => x.spotifyId === track.id)
+          || ITEMS.some(x => x.type === 'album' && x.spotifyId === track.album?.id && x.trackTitles?.includes(track.name));
+        return `<div class="trow">
+          <span class="trcheck ${enVault ? 'on' : ''}" title="${enVault ? 'Ya en tu vault' : 'No está en tu vault'}">${enVault ? '✓' : ''}</span>
+          <span class="trlink"><span class="trt">${esc(track.name || '')}</span></span>
+          <span class="trd">${esc(relDate(new Date(played_at).getTime()))}</span>
+        </div>`;
+      }).join('')}</div>`;
+  } catch (e) {
+    box.innerHTML = `<p class="lede" style="margin:0;">${e.message === 'RATE_LIMIT' ? 'Demasiadas peticiones seguidas — inténtalo en unos segundos.' : 'No se pudo consultar tu historial de Spotify.'}</p>`;
+  }
+}
+
 function openResumenAnual() {
   const anio = new Date().getFullYear();
   const anadidos = ITEMS.filter(it => new Date(it.dateAdded).getFullYear() === anio);
@@ -4434,7 +4524,10 @@ function openStats() {
 
   showSheet(`
     <div class="sheethead"><h2>${anyFilter ? 'Esto en números' : 'Tu vault en números'}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
-    ${!anyFilter ? `<div class="btnrow"><button class="btn wide" id="verResumenAnual">🎁 Ver tu resumen de ${new Date().getFullYear()}</button></div>` : ''}
+    ${!anyFilter ? `<div class="btnrow">
+      <button class="btn wide" id="verResumenAnual">🎁 Resumen de ${new Date().getFullYear()}</button>
+      <button class="btn wide" id="verHistorial">🎧 Historial</button>
+    </div>` : ''}
     ${anyFilter ? `<p class="lede" style="margin:-8px 0 14px;">Con el filtro que tienes puesto ahora: ${base.length.toLocaleString('es-ES')} de ${ITEMS.length.toLocaleString('es-ES')} elementos.</p>` : ''}
     ${capsula.length ? `<button class="linkbtn" id="verCapsula" style="display:block;margin-bottom:12px;">📅 Lo que añadiste un día como hoy →</button>` : ''}
 
@@ -4484,6 +4577,7 @@ function openStats() {
   document.getElementById('verAMedias')?.addEventListener('click', openAlbumesAMedias);
   document.getElementById('verCapsula')?.addEventListener('click', openCapsula);
   document.getElementById('verResumenAnual')?.addEventListener('click', openResumenAnual);
+  document.getElementById('verHistorial')?.addEventListener('click', openHistorial);
   document.getElementById('redescubrir')?.addEventListener('click', redescubrirArchivado);
 }
 
