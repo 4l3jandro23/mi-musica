@@ -728,6 +728,15 @@
   .iconbtn, .stat, .chip, .gcard, .lrow, .btn, .seg, .tagsel, .oldcard {
     backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
   }
+  /* Safari de iOS a veces no compone el desenfoque dentro de contenedores con
+     scroll (como la fila de chips) si el elemento no tiene su propia capa —
+     esto lo fuerza. Va solo bajo Cristal para no gastar una capa de GPU
+     de más en el resto de paletas, donde no hace ninguna falta. */
+  [data-palette="cristal"] .iconbtn, [data-palette="cristal"] .stat, [data-palette="cristal"] .chip,
+  [data-palette="cristal"] .gcard, [data-palette="cristal"] .lrow, [data-palette="cristal"] .btn,
+  [data-palette="cristal"] .seg, [data-palette="cristal"] .tagsel, [data-palette="cristal"] .oldcard {
+    -webkit-transform: translateZ(0); will-change: backdrop-filter;
+  }
 
   /* toast */
   .toastwrap { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(88px + env(safe-area-inset-bottom)); z-index: 70; display:flex; flex-direction:column; gap: 8px; align-items:center; width: calc(100% - 28px); max-width: 420px; pointer-events:none; }
