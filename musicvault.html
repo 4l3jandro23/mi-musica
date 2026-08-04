@@ -463,6 +463,7 @@
   }
   .stars { font-size: 12px; color: var(--amber); letter-spacing: -0.5px; }
   .tagpip { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .pin { font-size: 11px; flex-shrink: 0; line-height: 1; }
 
   /* list view */
   .list { display:flex; flex-direction: column; gap: 7px; }
@@ -630,8 +631,11 @@
   @media (min-width: 460px) { .dwrap { grid-template-columns: 168px 1fr; align-items: start; } }
   .dtitle { font-size: 20px; font-weight: 700; line-height: 1.2; margin: 0 0 3px; text-wrap: balance; }
   .dartist { font-size: 14.5px; color: var(--fg-soft); margin: 0; }
+  .artistlink { cursor:pointer; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 2px; transition: text-decoration-color .15s; }
+  .artistlink:hover, .artistlink:active { text-decoration-color: currentColor; }
   .dfacts { display:flex; flex-wrap:wrap; gap:6px; margin-top: 10px; }
   .fact { font-size: 11px; font-family: ui-monospace, monospace; color: var(--fg-mute); background: var(--surface); border: 1px solid var(--line); border-radius: 7px; padding: 3px 8px; }
+  .fact.accent { color: var(--amber); border-color: color-mix(in srgb, var(--amber) 40%, transparent); background: var(--amber-soft); font-weight: 650; }
   /* gap 0 a propósito: el espaciado lo da el padding, que además crea la zona táctil de 44px */
   .starpick { display:flex; gap: 0; margin-left: -6px; }
   .starpick button { background:none; border:none; font-size: 27px; line-height: 1; cursor:pointer; color: var(--line-firm); padding: 9px 6px; transition: transform .1s, color .12s; }
@@ -1507,6 +1511,9 @@ function filtered() {
       default:            return b.dateAdded - a.dateAdded;
     }
   });
+  // segunda pasada estable: lo prioritario sube arriba del todo sin
+  // desordenar nada dentro de cada grupo, sea cual sea el criterio elegido
+  out.sort((a, b) => (b.prioridad ? 1 : 0) - (a.prioridad ? 1 : 0));
   return out;
 }
 
@@ -1643,6 +1650,7 @@ function gcard(it) {
       <div class="gt">${esc(it.title)}</div>
       <div class="ga">${esc(artistsOf(it))}</div>
       <div class="gmeta">
+        ${it.prioridad ? `<span class="pin" title="Prioritario">📌</span>` : ''}
         ${yearOf(it) ? `<span class="lyear">${yearOf(it)}</span>` : ''}
         ${it.rating ? `<span class="stars">${'★'.repeat(it.rating)}</span>` : ''}
         ${tags.map(t => `<span class="tagpip" style="background:${esc(t.colorHex)}" title="${esc(t.name)}"></span>`).join('')}
@@ -1661,6 +1669,7 @@ function lrow(it) {
       <div class="la">${esc(artistsOf(it))}</div>
     </div>
     <div class="lmeta">
+      ${it.prioridad ? `<span class="pin" title="Prioritario">📌</span>` : ''}
       ${tags.map(t => `<span class="tagpip" style="background:${esc(t.colorHex)}" title="${esc(t.name)}"></span>`).join('')}
       ${it.rating ? `<span class="stars">${'★'.repeat(it.rating)}</span>` : ''}
       ${y ? `<span class="lyear">${y}</span>` : ''}
@@ -2550,6 +2559,28 @@ function repasoTexto(it) {
   return `🔁 ${relDate(it.listenedAt)} sin escucharlo`;
 }
 
+// el único 5 estrellas de ese artista entre lo que no está archivado —
+// no crea ninguna etiqueta real (para no llenar tu lista de etiquetas con
+// una por artista), es solo un aviso calculado al vuelo en la ficha
+function esFavoritoUnico(it) {
+  if (it.rating !== 5 || it.type === 'artist') return null;
+  const artistaFold = fold(artistsOf(it));
+  if (!artistaFold) return null;
+  const hayOtro = ITEMS.some(x => x.id !== it.id && !x.archived && x.rating === 5 && fold(artistsOf(x)) === artistaFold);
+  return hayOtro ? null : `⭐ Tu favorito de ${artistsOf(it)}`;
+}
+
+// cada nombre de artista se enlaza a su ficha SI ese artista ya está
+// guardado como elemento propio en el vault — si no, se queda en texto plano
+function artistLinksHtml(it) {
+  const nombres = it.artists || [];
+  if (!nombres.length) return esc(artistsOf(it));
+  return nombres.map(nombre => {
+    const match = it.type !== 'artist' && ITEMS.find(x => x.type === 'artist' && !x.archived && fold(x.title) === fold(nombre));
+    return match ? `<span class="artistlink" data-goartist="${match.id}">${esc(nombre)}</span>` : esc(nombre);
+  }).join(', ');
+}
+
 /* ---- detail ---- */
 function openDetail(id) {
   const it = ITEMS.find(x => x.id === id);
@@ -2561,7 +2592,7 @@ function openDetail(id) {
       <div class="dart">${portada(it.coverUrl, TYPE_ICON[it.type], false)}</div>
       <div>
         <h3 class="dtitle">${esc(it.title)}</h3>
-        <p class="dartist">${esc(artistsOf(it))}</p>
+        <p class="dartist">${artistLinksHtml(it)}</p>
         <div class="dfacts">
           ${it.archived ? `<span class="fact">📦 Archivado</span>` : ''}
           ${y ? `<span class="fact">${y}</span>` : ''}
@@ -2570,6 +2601,7 @@ function openDetail(id) {
           ${it.explicit ? `<span class="fact">Explícito</span>` : ''}
           ${aniversarioTexto(it) ? `<span class="fact">${esc(aniversarioTexto(it))}</span>` : ''}
           ${repasoTexto(it) ? `<span class="fact">${esc(repasoTexto(it))}</span>` : ''}
+          ${esFavoritoUnico(it) ? `<span class="fact accent">${esc(esFavoritoUnico(it))}</span>` : ''}
         </div>
         ${it.type !== 'artist' ? `<div class="btnrow">
           <button class="btn ${it.listened ? 'jade' : ''} wide" id="dListen">${it.listened ? '✓ Ya escuchado' : 'Marcar como escuchado'}</button>
@@ -2616,6 +2648,9 @@ function openDetail(id) {
       <a class="btn primary wide" href="${esc(it.spotifyUrl)}" target="_blank" rel="noopener">${it.manual ? 'Abrir enlace' : 'Abrir en Spotify'} ↗</a>
       <button class="btn" id="dCopyLink" title="Copiar enlace" aria-label="Copiar enlace">📋</button>
     </div>
+    ${it.type !== 'artist' ? `<div class="btnrow">
+      <button class="btn wide ${it.prioridad ? 'primary' : ''}" id="dPriority">${it.prioridad ? '📌 Quitar de prioritarios' : '📌 Marcar como prioritario'}</button>
+    </div>` : ''}
     <div class="btnrow">
       <button class="btn wide" id="dArchive">${it.archived ? '📤 Sacar del archivo' : '📦 Archivar'}</button>
     </div>
@@ -2627,6 +2662,9 @@ function openDetail(id) {
   document.getElementById('dDisco')?.addEventListener('click', () => openDiscography(it));
   if (it.type === 'artist' && !it.manual) cargarSimilares(it);
   if (it.type === 'album' && !it.manual) { cargarTracksAlbum(it); cargarInfoAlbum(it); }
+  document.querySelector('.dartist')?.addEventListener('click', e => {
+    const b = e.target.closest('[data-goartist]'); if (b) openDetail(b.dataset.goartist);
+  });
   document.getElementById('dRelated')?.addEventListener('click', e => {
     const b = e.target.closest('[data-openrel]'); if (b) openDetail(b.dataset.openrel);
   });
@@ -2646,6 +2684,11 @@ function openDetail(id) {
   wireMeta(it, id);
 
   document.getElementById('dCopyLink')?.addEventListener('click', () => copiarEnlaces([it], 'Enlace copiado'));
+  document.getElementById('dPriority')?.addEventListener('click', () => {
+    it.prioridad = !it.prioridad;
+    it.touchedAt = Date.now();
+    saveItems(); render(); openDetail(id);
+  });
   document.getElementById('dArchive').addEventListener('click', () => {
     it.archived = !it.archived;
     it.touchedAt = Date.now();
@@ -3843,6 +3886,32 @@ function openArtistasSinExplorar() {
   });
 }
 
+// álbumes con alguna canción marcada escuchada pero no todas — los que
+// empezaste y se te quedaron a medio camino, para poder retomarlos
+function albumesAMedias() {
+  return ITEMS.filter(i => i.type === 'album' && !i.archived && !i.listened && (i.cancionesEscuchadas || []).length > 0);
+}
+
+function openAlbumesAMedias() {
+  const lista = albumesAMedias().sort((a, b) => b.dateAdded - a.dateAdded);
+  showSheet(`
+    <div class="sheethead"><h2>A medias</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <p class="lede">${lista.length} álbum${lista.length === 1 ? '' : 'es'} que empezaste pero todavía no terminaste.</p>
+    <div class="list">${lista.map(it => {
+      const total = (it.trackTitles || []).length;
+      const hechas = (it.cancionesEscuchadas || []).length;
+      return `<article class="lrow" data-id="${it.id}">
+        <div class="lart">${portada(it.coverUrl, TYPE_ICON[it.type], true)}</div>
+        <div class="linfo"><div class="lt">${esc(it.title)}</div><div class="la">${esc(artistsOf(it))} · ${hechas} de ${total}</div></div>
+      </article>`;
+    }).join('')}</div>
+  `);
+  document.querySelector('#modalRoot .list')?.addEventListener('click', e => {
+    const card = e.target.closest('[data-id]'); if (!card) return;
+    openDetail(card.dataset.id);
+  });
+}
+
 function openStats() {
   if (!ITEMS.length) { toast('Tu vault está vacío'); return; }
   // si hay un filtro puesto (tipo, década, etiqueta, género, búsqueda...), las
@@ -3876,6 +3945,7 @@ function openStats() {
   const oldest = pending.slice().sort((a, b) => a.dateAdded - b.dateAdded)[0];
   const pct = contables.length ? Math.round(done.length / contables.length * 100) : 0;
   const sinExplorar = anyFilter ? [] : artistasSinExplorar();
+  const aMedias = anyFilter ? [] : albumesAMedias();
 
   showSheet(`
     <div class="sheethead"><h2>${anyFilter ? 'Esto en números' : 'Tu vault en números'}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
@@ -3889,6 +3959,7 @@ function openStats() {
       </div>
     </div>
     <div class="progtrack"><span class="progfill" style="width:${pct}%"></span></div>
+    ${aMedias.length ? `<button class="linkbtn" id="verAMedias" style="display:block;margin-top:8px;">Retomar los ${aMedias.length} álbum${aMedias.length === 1 ? '' : 'es'} que dejaste a medias →</button>` : ''}
 
     ${oldest ? `<div class="flabel">Lo que más tiempo lleva esperando</div>
     <button class="oldcard" data-goto="${oldest.id}">
@@ -3921,6 +3992,7 @@ function openStats() {
 
   document.querySelector('[data-goto]')?.addEventListener('click', e => openDetail(e.currentTarget.dataset.goto));
   document.getElementById('verSinExplorar')?.addEventListener('click', openArtistasSinExplorar);
+  document.getElementById('verAMedias')?.addEventListener('click', openAlbumesAMedias);
 }
 
 /* ---- shuffle ---- */
