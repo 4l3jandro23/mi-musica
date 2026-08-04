@@ -673,6 +673,22 @@
   .trow .trn { width: 20px; flex-shrink:0; font-size: 12px; color: var(--fg-mute); text-align:right; font-variant-numeric: tabular-nums; }
   .trow .trt { flex:1; min-width:0; font-size: 13.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .trow .trd { font-size: 12px; color: var(--fg-mute); flex-shrink:0; font-variant-numeric: tabular-nums; }
+  .tlprogress { display:flex; align-items:center; gap: 9px; margin-bottom: 10px; }
+  .tlprogress-bar { flex:1; height: 5px; border-radius: 3px; background: var(--surface-2); overflow:hidden; }
+  .tlprogress-fill { height:100%; background: var(--jade); border-radius: 3px; transition: width .2s; }
+  .tlprogress-txt { font-size: 11px; color: var(--fg-mute); flex-shrink:0; font-variant-numeric: tabular-nums; white-space:nowrap; }
+
+  .relrow { display:flex; align-items:center; gap: 10px; padding: 7px 4px; border-bottom: 1px solid var(--line); cursor:pointer; }
+  .relrow:last-child { border-bottom: none; }
+  .relrow:hover { background: var(--surface-2); }
+  .relrow .relart { width: 34px; height: 34px; border-radius: 6px; overflow:hidden; background: var(--surface-2); flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .relrow .relart img { width:100%; height:100%; object-fit:cover; }
+  .relrow .relt { flex:1; min-width:0; font-size: 13.5px; font-weight: 600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .relrow .reltag { font-size: 11px; color: var(--fg-mute); font-weight: 400; }
+  .relrow .rely { font-size: 11.5px; color: var(--fg-mute); flex-shrink:0; font-variant-numeric: tabular-nums; }
+
+  .lightbox { position:fixed; inset:0; z-index: 90; background: rgba(10,7,5,0.9); display:flex; align-items:center; justify-content:center; padding: 24px; animation: fade .15s ease; }
+  .lightbox img { max-width:100%; max-height:100%; border-radius: 12px; box-shadow: var(--shadow-lg); }
 
   /* settings */
   .statusline { display:inline-flex; align-items:center; gap: 7px; font-size: 12.5px; padding: 6px 12px; border-radius: 999px; margin-bottom: 12px; font-weight: 550; }
@@ -1414,6 +1430,10 @@ function metaPairs(it) {
   add('Duración', fmtDur(it.durationMs));
   add('Nº de pista', it.trackNumber ? (it.totalTracks ? `${it.trackNumber} de ${it.totalTracks}` : it.trackNumber) : null);
   if (it.type === 'album') add('Pistas', it.totalTracks);
+  if (it.type === 'album' && it.totalDurationMs) {
+    const mins = Math.round(it.totalDurationMs / 60000);
+    add('Duración total', mins >= 60 ? `${Math.floor(mins / 60)} h ${mins % 60} min` : `${mins} min`);
+  }
   if (it.type === 'playlist') add('Canciones', it.totalTracks);
   add('Disco', it.discNumber && it.discNumber > 1 ? it.discNumber : null);
   add('Explícito', it.explicit === true ? 'Sí' : it.explicit === false ? 'No' : null);
@@ -2488,6 +2508,48 @@ function openManualAdd() {
   document.getElementById('manTitle').focus();
 }
 
+// otros álbumes del mismo artista ya guardados — y si el título base coincide
+// (ignorando "deluxe", "remaster"...) se marca como "otra edición" reusando
+// tituloBase(), la misma comparación que ya hace el detector de duplicados
+function relacionadosDelArtista(it) {
+  const artistaFold = fold(artistsOf(it));
+  if (!artistaFold) return [];
+  const base = tituloBase(it.title);
+  const otros = ITEMS.filter(x => x.id !== it.id && x.type === 'album' && !x.archived && fold(artistsOf(x)) === artistaFold);
+  return otros.map(x => ({ item: x, otraEdicion: !!base && tituloBase(x.title) === base })).sort((a, b) => {
+    if (a.otraEdicion !== b.otraEdicion) return a.otraEdicion ? -1 : 1;
+    return (parseInt(String(b.item.releaseDate || '0').slice(0, 4)) || 0) - (parseInt(String(a.item.releaseDate || '0').slice(0, 4)) || 0);
+  });
+}
+function relatedRow(item, esEdicion) {
+  const y = yearOf(item);
+  return `<div class="relrow" data-openrel="${item.id}">
+    <div class="relart">${portada(item.coverUrl, TYPE_ICON[item.type], true)}</div>
+    <span class="relt">${esc(item.title)}${esEdicion ? ' <span class="reltag">· otra edición</span>' : ''}</span>
+    ${y ? `<span class="rely">${y}</span>` : ''}
+  </div>`;
+}
+
+// solo con precisión de día (YYYY-MM-DD) — con solo el año no hay "hoy hace
+// X años" que valga, y muchos discos antiguos en Spotify solo traen el año
+function aniversarioTexto(it) {
+  if (it.type !== 'album' || !it.releaseDate || String(it.releaseDate).length !== 10) return null;
+  const [ry, rm, rd] = it.releaseDate.split('-').map(Number);
+  const years = new Date().getFullYear() - ry;
+  if (years <= 0) return null;
+  const hoy = new Date();
+  const a = new Date(2000, rm - 1, rd).getTime();
+  const b = new Date(2000, hoy.getMonth(), hoy.getDate()).getTime();
+  const diffDias = Math.abs(a - b) / 86400000;
+  if (Math.min(diffDias, 365 - diffDias) > 3) return null;
+  return `🎉 Hace ${years} año${years === 1 ? '' : 's'}`;
+}
+function repasoTexto(it) {
+  if (!it.listened || !it.listenedAt) return null;
+  if (Date.now() - it.listenedAt < 180 * 86400000) return null;
+  return `🔁 ${relDate(it.listenedAt)} sin escucharlo`;
+}
+
 /* ---- detail ---- */
 function openDetail(id) {
   const it = ITEMS.find(x => x.id === id);
@@ -2506,6 +2568,8 @@ function openDetail(id) {
           ${fmtDur(it.durationMs) ? `<span class="fact">${fmtDur(it.durationMs)}</span>` : ''}
           ${it.albumType ? `<span class="fact">${esc(ALBUM_TYPE_ES[it.albumType] || it.albumType)}</span>` : ''}
           ${it.explicit ? `<span class="fact">Explícito</span>` : ''}
+          ${aniversarioTexto(it) ? `<span class="fact">${esc(aniversarioTexto(it))}</span>` : ''}
+          ${repasoTexto(it) ? `<span class="fact">${esc(repasoTexto(it))}</span>` : ''}
         </div>
         ${it.type !== 'artist' ? `<div class="btnrow">
           <button class="btn ${it.listened ? 'jade' : ''} wide" id="dListen">${it.listened ? '✓ Ya escuchado' : 'Marcar como escuchado'}</button>
@@ -2539,10 +2603,15 @@ function openDetail(id) {
     ${it.type === 'artist' && !it.manual ? `<div class="btnrow"><button class="btn wide" id="dDisco">Ver su discografía</button></div>
     <div class="flabel">Artistas parecidos</div>
     <div id="dSimilar"><p class="lede" style="margin:0;">Buscando sugerencias…</p></div>` : ''}
-    ${it.type === 'album' && !it.manual ? `<div class="flabel">Sobre el álbum</div>
-    <div id="dAlbumInfo"><p class="lede" style="margin:0;">Buscando información…</p></div>
-    <div class="flabel">Canciones del álbum</div>
-    <div id="dTracks"><p class="lede" style="margin:0;">Cargando canciones…</p></div>` : ''}
+    ${it.type === 'album' && !it.manual ? (() => {
+      const relacionados = relacionadosDelArtista(it);
+      return `<div class="flabel">Sobre el álbum</div>
+      <div id="dAlbumInfo"><p class="lede" style="margin:0;">Buscando información…</p></div>
+      ${relacionados.length ? `<div class="flabel">Más de ${esc(artistsOf(it))} en tu vault</div>
+      <div id="dRelated">${relacionados.slice(0, 20).map(r => relatedRow(r.item, r.otraEdicion)).join('')}</div>` : ''}
+      <div class="flabel">Canciones del álbum</div>
+      <div id="dTracks"><p class="lede" style="margin:0;">Cargando canciones…</p></div>`;
+    })() : ''}
     <div class="btnrow">
       <a class="btn primary wide" href="${esc(it.spotifyUrl)}" target="_blank" rel="noopener">${it.manual ? 'Abrir enlace' : 'Abrir en Spotify'} ↗</a>
       <button class="btn" id="dCopyLink" title="Copiar enlace" aria-label="Copiar enlace">📋</button>
@@ -2558,6 +2627,22 @@ function openDetail(id) {
   document.getElementById('dDisco')?.addEventListener('click', () => openDiscography(it));
   if (it.type === 'artist' && !it.manual) cargarSimilares(it);
   if (it.type === 'album' && !it.manual) { cargarTracksAlbum(it); cargarInfoAlbum(it); }
+  document.getElementById('dRelated')?.addEventListener('click', e => {
+    const b = e.target.closest('[data-openrel]'); if (b) openDetail(b.dataset.openrel);
+  });
+  if (it.coverUrl) {
+    const art = document.querySelector('.dart');
+    if (art) {
+      art.style.cursor = 'pointer';
+      art.addEventListener('click', () => {
+        const ov = document.createElement('div');
+        ov.className = 'lightbox';
+        ov.innerHTML = `<img src="${esc(it.coverUrl)}" alt="">`;
+        ov.addEventListener('click', () => ov.remove());
+        document.body.appendChild(ov);
+      });
+    }
+  }
   wireMeta(it, id);
 
   document.getElementById('dCopyLink')?.addEventListener('click', () => copiarEnlaces([it], 'Enlace copiado'));
@@ -2721,7 +2806,8 @@ async function cargarTracksAlbum(it) {
     // se guarda para que la búsqueda del vault encuentre este álbum también
     // buscando el nombre de una de sus canciones, aunque no la tengas suelta
     const titulos = items.map(tr => tr.name).filter(Boolean);
-    if (titulos.length) { it.trackTitles = titulos; saveItems(); }
+    const duracionTotal = items.reduce((sum, tr) => sum + (tr.duration_ms || 0), 0);
+    if (titulos.length) { it.trackTitles = titulos; it.totalDurationMs = duracionTotal || null; saveItems(); }
     _tracklistCache = { albumId: it.spotifyId, items };
     pintarTracklist(it);
   } catch (err) {
@@ -2736,7 +2822,14 @@ function pintarTracklist(it) {
   const box = document.getElementById('dTracks');
   if (!box || !_tracklistCache || _tracklistCache.albumId !== it.spotifyId) return;
   const escuchadas = new Set(it.cancionesEscuchadas || []);
-  box.innerHTML = `<div class="tracklist">${_tracklistCache.items.map(tr => {
+  const total = _tracklistCache.items.length;
+  const hechas = it.listened ? total : _tracklistCache.items.filter(tr => escuchadas.has(tr.name)).length;
+  const pct = total ? Math.round(hechas / total * 100) : 0;
+  const progreso = `<div class="tlprogress">
+    <div class="tlprogress-bar"><div class="tlprogress-fill" style="width:${pct}%"></div></div>
+    <span class="tlprogress-txt">${hechas} de ${total} escuchadas</span>
+  </div>`;
+  box.innerHTML = progreso + `<div class="tracklist">${_tracklistCache.items.map(tr => {
     const oida = it.listened || escuchadas.has(tr.name);
     return `<div class="trow${oida ? ' done' : ''}">
       <button class="trcheck${oida ? ' on' : ''}" data-trtoggle="${esc(tr.name)}" aria-label="${oida ? 'Marcar pendiente' : 'Marcar escuchada'}">✓</button>
