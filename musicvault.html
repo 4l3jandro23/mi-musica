@@ -1507,6 +1507,11 @@ function metaPairs(it) {
   add('ISRC', it.isrc);
   add('Guardado', `${new Date(it.dateAdded).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })} (${relDate(it.dateAdded)})`);
   if (it.listenedAt) add('Escuchado', `${new Date(it.listenedAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })} (${relDate(it.listenedAt)})`);
+  if (totalPlays(it)) {
+    const n = totalPlays(it);
+    add('Reproducciones', n >= TOPE_PLAYS ? `${n}+ registradas` : `${n} registrada${n === 1 ? '' : 's'}`);
+    add('Primera vez', `${new Date(primeraEscucha(it)).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })} (${relDate(primeraEscucha(it))})`);
+  }
   if (!it.manual) add('ID de Spotify', it.spotifyId);
   return p;
 }
@@ -2993,6 +2998,30 @@ function wireMeta(it, id) {
    solo pilla lo reciente, desde que lo actives hacia delante. Encaja bien con
    cómo ya usas la app: lo viejo ya lo marcaste tú a mano, esto es para lo
    nuevo, sin que tengas que acordarte. */
+/* Cada reproducción real, no solo un sí/no. Antes, volver a escuchar algo ya
+   marcado no dejaba ni rastro; ahora queda registrada y alimenta el contador,
+   los gráficos por mes y las sugerencias por franja horaria.
+   Dedupe por marca de tiempo exacta: el endpoint devuelve SIEMPRE las últimas
+   50 reproducciones, así que sin esto cada sincronización volvería a contar
+   las mismas. El tope por elemento evita que el JSON que viaja a GitHub
+   crezca sin control con miles de elementos. */
+const TOPE_PLAYS = 40;
+function registrarPlay(it, ts) {
+  if (!ts) return false;
+  const plays = it.plays || [];
+  if (plays.includes(ts)) return false;             // ya contada en una sincronización anterior
+  plays.push(ts);
+  plays.sort((a, b) => a - b);
+  // se recorta por el principio: interesa conservar lo reciente y la primera vez
+  it.plays = plays.length > TOPE_PLAYS
+    ? [plays[0]].concat(plays.slice(plays.length - (TOPE_PLAYS - 1)))
+    : plays;
+  it.touchedAt = Date.now();
+  return true;
+}
+const totalPlays = it => (it.plays || []).length;
+const primeraEscucha = it => (it.plays && it.plays.length) ? it.plays[0] : null;
+
 async function fetchRecentlyPlayed(limit = 50) {
   const t = await spotifyToken();
   const res = await fetchConReintento429(`https://api.spotify.com/v1/me/player/recently-played?limit=${limit}`, t);
@@ -3019,7 +3048,7 @@ async function sincronizarEscuchasSpotify(silencioso) {
   }
   try {
     const items = await fetchRecentlyPlayed(50);
-    let marcados = 0, anadidas = 0;
+    let marcados = 0, anadidas = 0, reproducciones = 0;
     items.forEach(({ track, played_at }) => {
       if (!track || (track.type && track.type !== 'track')) return;
       const playedTs = new Date(played_at).getTime();
@@ -3033,6 +3062,7 @@ async function sincronizarEscuchasSpotify(silencioso) {
       const propia = ITEMS.find(x => x.type === 'track' && x.spotifyId === track.id);
       if (propia) {
         cubierta = true;
+        if (registrarPlay(propia, playedTs)) reproducciones++;
         if (!propia.listened) { propia.listened = true; propia.listenedAt = playedTs; propia.touchedAt = Date.now(); marcados++; }
       }
 
@@ -3041,6 +3071,7 @@ async function sincronizarEscuchasSpotify(silencioso) {
         // solo cuenta como cubierta si de verdad puedo situar la pista dentro del álbum
         if (album && album.trackTitles?.includes(track.name)) {
           cubierta = true;
+          if (registrarPlay(album, playedTs)) reproducciones++;
           if (!album.listened) {
             const set = new Set(album.cancionesEscuchadas || []);
             if (!set.has(track.name)) {
@@ -3058,20 +3089,22 @@ async function sincronizarEscuchasSpotify(silencioso) {
       if (!cubierta && PREFS.autoAddEscuchas && !ITEMS.some(x => x.spotifyId === track.id)) {
         const nueva = makeItem(normalize(track, 'track'));
         nueva.listened = true; nueva.listenedAt = playedTs;
+        registrarPlay(nueva, playedTs);
         ITEMS.push(nueva);
-        anadidas++;
+        anadidas++; reproducciones++;
       }
     });
-    if (marcados || anadidas) {
+    if (marcados || anadidas || reproducciones) {
       saveItems(); render();
       if (!silencioso) {
         const bits = [];
         if (marcados) bits.push(`${marcados} marcado${marcados === 1 ? '' : 's'}`);
         if (anadidas) bits.push(`${anadidas} añadida${anadidas === 1 ? '' : 's'} nueva${anadidas === 1 ? '' : 's'}`);
-        toast(bits.join(' · ') + ' desde tu historial de Spotify');
+        if (reproducciones) bits.push(`${reproducciones} reproducción${reproducciones === 1 ? '' : 'es'} registrada${reproducciones === 1 ? '' : 's'}`);
+        toast(bits.join(' · '));
       }
     } else if (!silencioso) {
-      toast('Nada nuevo que marcar por ahora');
+      toast('Nada nuevo desde la última vez');
     }
   } catch (e) {
     if (!silencioso) toast(e.message === 'RATE_LIMIT' ? 'Demasiadas peticiones seguidas — inténtalo en unos segundos' : 'No se pudo consultar tu historial de Spotify ahora mismo');
@@ -4452,6 +4485,34 @@ function openHistorial() {
   escuchados.forEach(i => (i.artists || []).forEach(a => { porArtista[a] = (porArtista[a] || 0) + 1; }));
   const topArtistas = Object.entries(porArtista).sort((a, b) => b[1] - a[1] || cmp(a[0], b[0])).slice(0, 6);
 
+  // lo más reproducido de verdad (contador real), no lo más guardado
+  const masReproducidos = ITEMS.filter(i => totalPlays(i) > 1).sort((a, b) => totalPlays(b) - totalPlays(a)).slice(0, 10);
+
+  // reproducciones por mes de este año, contando cada play individual
+  const anio = new Date().getFullYear();
+  const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+  const porMes = new Array(12).fill(0);
+  ITEMS.forEach(i => (i.plays || []).forEach(ts => {
+    const d = new Date(ts);
+    if (d.getFullYear() === anio) porMes[d.getMonth()]++;
+  }));
+  const filasMes = porMes.map((n, m) => [MESES[m], n]).filter(r => r[1]);
+
+  /* Sugerencia por franja horaria: mira qué artistas sueles reproducir a esta
+     misma hora (±2 h) y propone algo pendiente de ellos. Solo aparece si hay
+     datos suficientes — si no, sería adivinar. */
+  const horaAhora = new Date().getHours();
+  const artistasDeEstaFranja = {};
+  ITEMS.forEach(i => (i.plays || []).forEach(ts => {
+    const h = new Date(ts).getHours();
+    const dist = Math.min(Math.abs(h - horaAhora), 24 - Math.abs(h - horaAhora));
+    if (dist <= 2) (i.artists || []).forEach(a => { artistasDeEstaFranja[a] = (artistasDeEstaFranja[a] || 0) + 1; });
+  }));
+  const artistaFranja = Object.entries(artistasDeEstaFranja).sort((a, b) => b[1] - a[1])[0];
+  const sugerencia = artistaFranja
+    ? ITEMS.filter(i => !i.listened && !i.archived && i.type !== 'artist' && (i.artists || []).includes(artistaFranja[0]))[0] || null
+    : null;
+
   // por hora del día: revela si eres de escuchar de noche, en el curro, etc.
   const porHora = new Array(24).fill(0);
   escuchados.forEach(i => { porHora[new Date(i.listenedAt).getHours()]++; });
@@ -4469,7 +4530,17 @@ function openHistorial() {
     <div class="flabel">Ritmo</div>
     ${bars([['Últimas 24 h', enUltimos(1)], ['Última semana', enUltimos(7)], ['Último mes', enUltimos(30)], ['Último año', enUltimos(365)]].filter(r => r[1]), 'var(--amber)')}
     ${franjas.length ? `<div class="flabel">A qué horas escuchas</div>${bars(franjas, 'var(--jade)')}` : ''}
-    ${topArtistas.length ? `<div class="flabel">Más escuchados</div>${bars(topArtistas, 'var(--jade)')}` : ''}
+    ${sugerencia ? `<div class="flabel">A esta hora sueles escuchar ${esc(artistaFranja[0])}</div>
+    <div class="list">${relatedRow(sugerencia, false)}</div>` : ''}
+    ${filasMes.length ? `<div class="flabel">Reproducciones por mes (${anio})</div>${bars(filasMes, 'var(--amber)')}` : ''}
+    ${masReproducidos.length ? `<div class="flabel">Lo que más repites</div>
+    <div class="tracklist">${masReproducidos.map(it => `
+      <div class="trow" data-id="${it.id}" style="cursor:pointer;">
+        <span class="trn">${totalPlays(it)}×</span>
+        <span class="trlink"><span class="trt">${esc(it.title)}</span></span>
+        <span class="trd">${esc((it.artists || [])[0] || '')}</span>
+      </div>`).join('')}</div>` : ''}
+    ${topArtistas.length ? `<div class="flabel">Más escuchados (por elementos marcados)</div>${bars(topArtistas, 'var(--jade)')}` : ''}
     <div class="flabel">Lo último que marcaste</div>
     <div class="list">${escuchados.slice(0, 25).map(it => `
       <article class="lrow" data-id="${it.id}">
@@ -4480,7 +4551,8 @@ function openHistorial() {
     <div class="flabel">Reproducciones recientes en Spotify</div>
     <div id="histSpotify"><p class="lede" style="margin:0;">Consultando…</p></div>
   `);
-  document.querySelector('#modalRoot .list')?.addEventListener('click', e => {
+  // en toda la hoja, no solo en .list: "Lo que más repites" es una .tracklist
+  document.querySelector('#modalRoot .sheet')?.addEventListener('click', e => {
     const card = e.target.closest('[data-id]'); if (card) openDetail(card.dataset.id);
   });
   cargarHistorialSpotify();
