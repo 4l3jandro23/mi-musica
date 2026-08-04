@@ -517,6 +517,27 @@
   .btnrow { display:flex; gap: 9px; margin-top: 12px; }
 
   /* ---------- FAB ---------- */
+  /* Índice A-Z lateral, como el de Contactos del iPhone: con miles de
+     elementos, scrollear hasta la M es inviable. Solo aparece cuando el
+     orden es alfabético (por título o por artista), que es cuando saltar a
+     una letra significa algo. */
+  .azrail {
+    position: fixed; right: 2px; top: 50%; transform: translateY(-50%); z-index: 30;
+    display: flex; flex-direction: column; align-items: center; gap: 1px;
+    padding: 6px 3px; border-radius: 999px;
+    background: color-mix(in srgb, var(--surface) 80%, transparent);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+    max-height: 74vh; overflow: hidden;
+  }
+  .azrail button {
+    font-family: ui-monospace, monospace; font-size: 10px; font-weight: 700;
+    line-height: 1; padding: 2px 4px; min-width: 16px;
+    background: none; border: none; color: var(--fg-mute); cursor: pointer;
+  }
+  .azrail button:active { color: var(--amber); transform: scale(1.5); }
+  @media (max-width: 380px) { .azrail { display: none; } }
+
   .fab {
     position: fixed; right: 18px; bottom: calc(20px + env(safe-area-inset-bottom) + var(--kb, 0px)); z-index: 35;
     height: 54px; padding: 0 20px; border-radius: 27px; border:none; cursor:pointer;
@@ -855,6 +876,7 @@
   </main>
 </div>
 
+<nav class="azrail hidden" id="azRail" aria-label="Saltar a una letra"></nav>
 <button class="fab" id="addFab">＋ Añadir</button>
 <div id="selbarRoot"></div>
 <div id="modalRoot"></div>
@@ -1749,6 +1771,7 @@ function render() {
   }
 
   const rows = filtered();
+  renderIndiceAZ(rows);
   const anyFilter = PREFS.type !== 'all' || PREFS.status !== 'all' || PREFS.tag !== 'all' || PREFS.genre !== 'all' || PREFS.decade !== 'all' || document.getElementById('q').value.trim();
   // con un vault grande, filtrar (p. ej. "álbumes de los 70") y no poder
   // seleccionar todo ese grupo de golpe para archivarlo/etiquetarlo obligaba
@@ -1810,6 +1833,45 @@ function groupsFor(rows) {
     cur.items.push(it);
   }
   return out;
+}
+
+/* Inicial de un elemento según el orden activo — misma normalización que usa
+   groupsFor para las cabeceras, así el salto siempre cae donde debe. */
+function letraDe(it) {
+  const base = PREFS.sort.startsWith('artist') ? artistsOf(it) : it.title;
+  const c = (sortKey(base || '')[0] || '#').toUpperCase();
+  return /\p{L}/u.test(c) ? c : '#';
+}
+
+const ordenAlfabetico = () => PREFS.sort.startsWith('artist') || PREFS.sort.startsWith('title');
+
+function renderIndiceAZ(rows) {
+  const rail = document.getElementById('azRail');
+  if (!rail) return;
+  // con pocos elementos scrollear no duele, y el orden por año/fecha no tiene inicial que valga
+  if (!ordenAlfabetico() || rows.length < 40) { rail.classList.add('hidden'); rail.innerHTML = ''; return; }
+  const letras = [...new Set(rows.map(letraDe))];
+  rail.classList.remove('hidden');
+  rail.innerHTML = letras.map(l => `<button data-az="${esc(l)}">${esc(l)}</button>`).join('');
+}
+
+/* Saltar a una letra con la lista paginada: si esa letra todavía no se ha
+   pintado (está más allá de VISTAS), se amplía lo justo para incluirla antes
+   de desplazarse — si no, el scrollIntoView no encontraría nada. */
+function saltarALetra(letra) {
+  const rows = filtered();
+  const idx = rows.findIndex(it => letraDe(it) === letra);
+  if (idx === -1) return;
+  if (idx >= VISTAS) { VISTAS = idx + tanda(); render(); }
+  const objetivo = PREFS.sort.startsWith('artist')
+    ? letraDe(rows[idx]) && rows[idx]                 // por artista las cabeceras son nombres: uso el elemento
+    : null;
+  const cabeceras = [...document.querySelectorAll('#results .ghead')];
+  const dest = objetivo
+    ? document.querySelector(`#results [data-id="${objetivo.id}"]`)
+    : cabeceras.find(h => h.textContent.trim().charAt(0).toUpperCase() === letra);
+  (dest || document.querySelector(`#results [data-id="${rows[idx].id}"]`))
+    ?.scrollIntoView({ block: 'start', behavior: 'smooth' });
 }
 
 /* Un "ding" corto con Web Audio, sin archivo de sonido que descargar ni
@@ -4592,6 +4654,10 @@ function shuffle() {
 }
 
 /* ============ events ============ */
+document.getElementById('azRail').addEventListener('click', e => {
+  const b = e.target.closest('[data-az]'); if (!b) return;
+  saltarALetra(b.dataset.az);
+});
 document.getElementById('shuffleBtn').addEventListener('click', shuffle);
 document.getElementById('statsBtn').addEventListener('click', openStats);
 document.getElementById('bulkBtn').addEventListener('click', openBulk);
