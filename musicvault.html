@@ -1942,7 +1942,16 @@ function renderIndiceAZ(rows) {
   if (!rail) return;
   // con pocos elementos scrollear no duele, y el orden por año/fecha no tiene inicial que valga
   if (!ordenAlfabetico() || rows.length < 40) { rail.classList.add('hidden'); rail.innerHTML = ''; return; }
-  const letras = [...new Set(rows.map(letraDe))];
+  /* "rows" trae lo prioritario subido arriba del todo (ver el segundo sort de
+     filtered()) — perfecto para la lista, pero aquí descolocaba las letras:
+     si algo con "W" era prioritario, "W" se colaba al principio de la barra,
+     antes que la "A". La barra necesita el orden alfabético puro para saber
+     QUÉ letras mostrar y en qué orden; a qué elemento saltar al tocarlas
+     sigue mirando el orden real (rows), eso no cambia. */
+  const paraLetras = rows.slice().sort((a, b) => PREFS.sort.startsWith('artist')
+    ? cmp(sortKey(artistsOf(a)), sortKey(artistsOf(b)))
+    : cmp(sortKey(a.title), sortKey(b.title)));
+  const letras = [...new Set(paraLetras.map(letraDe))];
   rail.classList.remove('hidden');
   rail.innerHTML = letras.map(l => `<button data-az="${esc(l)}">${esc(l)}</button>`).join('');
 }
