@@ -474,6 +474,11 @@
     background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
     padding: 8px 12px 8px 8px; overflow: hidden;
     transition: background .13s, border-color .15s;
+    /* deja que el navegador siga gestionando el scroll vertical nativo y le
+       cede a JS solo el eje horizontal — sin esto, un listener "passive"
+       (necesario para no trabar el scroll) no puede frenar el scroll nativo
+       mientras deslizas, y el gesto se siente atascado o directamente falla */
+    touch-action: pan-y;
   }
   .lrow::before { content:''; position:absolute; left:0; top:0; bottom:0; width: 3px; background: var(--amber); }
   .lrow.done::before { background: var(--jade); }
@@ -5179,8 +5184,14 @@ contentEl.addEventListener('pointermove', e => {
   if (Math.abs(dy) > SWIPE_MAX_Y) { cancelarSwipe(); return; }     // se está desplazando, no deslizando
   if (Math.abs(dx) > 8) {
     clearTimeout(pressTimer);                                       // ya no es una pulsación larga
-    _sw.el.style.transform = `translateX(${dx}px)`;
+    // tope visual: pasado el umbral ya no hace falta seguir arrastrando el
+    // dedo entero de la pantalla para que se note qué va a pasar
+    const topado = Math.max(-100, Math.min(100, dx));
+    _sw.el.style.transform = `translateX(${topado}px)`;
     _sw.el.style.transition = 'none';
+    _sw.el.style.background = Math.abs(dx) < SWIPE_MIN ? ''
+      : dx > 0 ? 'color-mix(in srgb, var(--jade) 18%, var(--surface))'
+               : 'color-mix(in srgb, var(--rust) 18%, var(--surface))';
     _sw.movido = true;
   }
 }, { passive: true });
@@ -5188,8 +5199,9 @@ contentEl.addEventListener('pointermove', e => {
 function cancelarSwipe() {
   if (_sw?.el) {
     const el = _sw.el;
-    el.style.transition = 'transform .18s';   // vuelve a su sitio con suavidad, no de golpe
+    el.style.transition = 'transform .18s, background .18s';   // vuelve a su sitio con suavidad, no de golpe
     el.style.transform = '';
+    el.style.background = '';
     setTimeout(() => { el.style.transition = ''; }, 200);
   }
   _sw = null;
