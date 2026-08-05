@@ -722,6 +722,13 @@
   .trow .trt { flex:1; min-width:0; font-size: 13.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .trow .trd { font-size: 12px; color: var(--fg-mute); flex-shrink:0; font-variant-numeric: tabular-nums; }
   .trow .trplays { font-size: 10.5px; color: var(--jade); background: var(--jade-soft); border-radius: 999px; padding: 1px 6px; flex-shrink:0; font-variant-numeric: tabular-nums; }
+  .trtwrap { display:flex; flex-direction:column; min-width:0; gap: 1px; }
+  .trtwrap .tra { font-size: 11px; color: var(--fg-mute); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+  .histgrid { display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+  .histcell { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 10px; text-align:center; }
+  .histnum { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--amber); line-height:1.15; }
+  .histlbl { font-size: 11px; color: var(--fg-mute); margin-top: 3px; }
   .tlprogress { display:flex; align-items:center; gap: 9px; margin-bottom: 10px; }
   .tlprogress-bar { flex:1; height: 5px; border-radius: 3px; background: var(--surface-2); overflow:hidden; }
   .tlprogress-fill { height:100%; background: var(--jade); border-radius: 3px; transition: width .2s; }
@@ -4774,12 +4781,62 @@ function openHistorial() {
     else if (d > 0) break;   // el día de hoy puede estar vacío todavía sin romper la racha
   }
 
+  // récord de racha: la tirada más larga de días consecutivos, no solo la actual.
+  // Se compara por fecha de calendario (no restando milisegundos) para no
+  // desajustarse en el cambio de hora dos veces al año.
+  let rachaRecord = 0;
+  {
+    const dias = [...diasConEscucha].map(d => new Date(d)).sort((a, b) => a - b);
+    let actual = 0;
+    dias.forEach((dia, i) => {
+      if (i === 0) { actual = 1; }
+      else {
+        const esperado = new Date(dias[i - 1]);
+        esperado.setDate(esperado.getDate() + 1);
+        actual = esperado.toDateString() === dia.toDateString() ? actual + 1 : 1;
+      }
+      rachaRecord = Math.max(rachaRecord, actual);
+    });
+  }
+
+  /* Reproducciones totales: basta con sumar it.plays de cada elemento — el de
+     un álbum YA incluye las de todas sus canciones (se registran a la vez en
+     el mismo evento), así que sumar además trackPlays contaría cada una dos
+     veces. Canciones distintas sí se cuentan aparte: para un álbum, cada
+     pista de trackPlays es una canción distinta; sin ese detalle, el álbum
+     entero cuenta como una sola (no se sabe cuántas fueron sin él). */
+  let totalReproducciones = 0, cancionesDistintas = 0;
+  ITEMS.forEach(i => {
+    if (i.plays?.length) totalReproducciones += i.plays.length;
+    if (i.type === 'album' && i.trackPlays) cancionesDistintas += Object.keys(i.trackPlays).length;
+    else if (i.plays?.length) cancionesDistintas++;
+  });
+
   const porArtista = {};
   escuchados.forEach(i => (i.artists || []).forEach(a => { porArtista[a] = (porArtista[a] || 0) + 1; }));
   const topArtistas = Object.entries(porArtista).sort((a, b) => b[1] - a[1] || cmp(a[0], b[0])).slice(0, 6);
 
-  // lo más reproducido de verdad (contador real), no lo más guardado
-  const masReproducidos = ITEMS.filter(i => totalPlays(i) > 1).sort((a, b) => totalPlays(b) - totalPlays(a)).slice(0, 10);
+  /* Lo más reproducido de verdad, contador real — y mezclando canciones
+     dentro de un álbum con lo suelto, no solo el disco entero como un bloque.
+     Un álbum nunca entra por su cuenta aquí (su total es la suma de todas
+     sus pistas, mezclarlo con el contador de una sola canción no compara lo
+     mismo) — si tiene trackPlays, entra pista por pista; si no, no aparece
+     hasta que alguna de sus canciones se reproduzca lo bastante para tener
+     su propio dato. */
+  const masReproducidos = [];
+  ITEMS.forEach(i => {
+    if (i.archived) return;
+    if (i.type === 'album') {
+      if (!i.trackPlays) return;
+      Object.entries(i.trackPlays).forEach(([nombre, plays]) => {
+        if (plays.length > 1) masReproducidos.push({ id: i.id, title: nombre, sub: `en ${i.title}`, plays: plays.length });
+      });
+    } else if (totalPlays(i) > 1) {
+      masReproducidos.push({ id: i.id, title: i.title, sub: (i.artists || [])[0] || '', plays: totalPlays(i) });
+    }
+  });
+  masReproducidos.sort((a, b) => b.plays - a.plays);
+  masReproducidos.length = Math.min(masReproducidos.length, 10);
 
   // reproducciones por mes de este año, contando cada play individual
   const anio = new Date().getFullYear();
@@ -4816,9 +4873,11 @@ function openHistorial() {
   showSheet(`
     <div class="sheethead"><h2>Historial de escucha</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
     ${!escuchados.length ? `<p class="lede">Todavía no hay nada con fecha de escucha. Las fechas se guardan a partir de que marcaste algo (lo marcado antes de esa función no tiene fecha).</p>` : `
-    <div class="bigstat">
-      <div class="bignum">${racha}</div>
-      <div><div style="font-weight:650;">día${racha === 1 ? '' : 's'} de racha</div><div class="lede" style="margin:0;">seguidos escuchando algo</div></div>
+    <div class="histgrid">
+      <div class="histcell"><div class="histnum">${racha}</div><div class="histlbl">día${racha === 1 ? '' : 's'} de racha</div></div>
+      <div class="histcell"><div class="histnum">${rachaRecord}</div><div class="histlbl">récord de racha</div></div>
+      <div class="histcell"><div class="histnum">${totalReproducciones.toLocaleString('es-ES')}</div><div class="histlbl">reproducciones</div></div>
+      <div class="histcell"><div class="histnum">${cancionesDistintas.toLocaleString('es-ES')}</div><div class="histlbl">canciones distintas</div></div>
     </div>
     <div class="flabel">Ritmo</div>
     ${bars([['Últimas 24 h', enUltimos(1)], ['Última semana', enUltimos(7)], ['Último mes', enUltimos(30)], ['Último año', enUltimos(365)]].filter(r => r[1]), 'var(--amber)')}
@@ -4827,11 +4886,11 @@ function openHistorial() {
     <div class="list">${relatedRow(sugerencia, false)}</div>` : ''}
     ${filasMes.length ? `<div class="flabel">Reproducciones por mes (${anio})</div>${bars(filasMes, 'var(--amber)')}` : ''}
     ${masReproducidos.length ? `<div class="flabel">Lo que más repites</div>
-    <div class="tracklist">${masReproducidos.map(it => `
+    <div class="tracklist">${masReproducidos.map((it, i) => `
       <div class="trow" data-id="${it.id}" style="cursor:pointer;">
-        <span class="trn">${totalPlays(it)}×</span>
+        <span class="trplays" style="flex-shrink:0;">${it.plays}×</span>
         <span class="trlink"><span class="trt">${esc(it.title)}</span></span>
-        <span class="trd">${esc((it.artists || [])[0] || '')}</span>
+        <span class="trd">${esc(it.sub)}</span>
       </div>`).join('')}</div>` : ''}
     ${topArtistas.length ? `<div class="flabel">Más escuchados (por elementos marcados)</div>${bars(topArtistas, 'var(--jade)')}` : ''}
     <div class="flabel">Lo último que marcaste</div>
@@ -4862,14 +4921,21 @@ async function cargarHistorialSpotify() {
     const items = await fetchRecentlyPlayed(50);
     if (!box.isConnected) return;
     if (!items.length) { box.innerHTML = `<p class="lede" style="margin:0;">Spotify no devuelve reproducciones recientes. Recuerda que solo cuentan las canciones que sonaron 30 segundos o más sin saltarlas — y nunca la que está sonando ahora mismo.</p>`; return; }
-    box.innerHTML = `<p class="lede" style="margin:0 0 8px;">Lo que Spotify dice que has reproducido. El punto verde es lo que ya está en tu vault.</p>
+    box.innerHTML = `<p class="lede" style="margin:0 0 8px;">Lo que Spotify dice que has reproducido, más reciente primero. ✓ verde = ya está en tu vault · 🤖 = se añadió sola.</p>
       <div class="tracklist">${items.map(({ track, played_at }) => {
         if (!track) return '';
-        const enVault = ITEMS.some(x => x.spotifyId === track.id)
-          || ITEMS.some(x => x.type === 'album' && x.spotifyId === track.album?.id && x.trackTitles?.includes(track.name));
+        const suelta = ITEMS.find(x => x.spotifyId === track.id);
+        const enAlbum = !suelta && track.album?.id
+          ? ITEMS.some(x => x.type === 'album' && x.spotifyId === track.album.id && x.trackTitles?.includes(track.name))
+          : false;
+        const enVault = !!suelta || enAlbum;
+        const artistas = (track.artists || []).map(a => a.name).filter(Boolean).join(', ');
         return `<div class="trow">
           <span class="trcheck ${enVault ? 'on' : ''}" title="${enVault ? 'Ya en tu vault' : 'No está en tu vault'}">${enVault ? '✓' : ''}</span>
-          <span class="trlink"><span class="trt">${esc(track.name || '')}</span></span>
+          <span class="trlink"><span class="trtwrap">
+            <span class="trt">${esc(track.name || '')}${suelta?.autoAdded ? ' 🤖' : ''}</span>
+            ${artistas ? `<span class="tra">${esc(artistas)}</span>` : ''}
+          </span></span>
           <span class="trd">${esc(relDate(new Date(played_at).getTime()))}</span>
         </div>`;
       }).join('')}</div>`;
