@@ -1661,6 +1661,7 @@ function renderSelBar() {
   root.innerHTML = `<div class="selbar">
     <span class="cnt">${selected.size} seleccionado${selected.size === 1 ? '' : 's'}</span>
     <button class="btn" data-sel="listen">✓ Escuchado</button>
+    <button class="btn" data-sel="prioridad">📌 Prioridad</button>
     <button class="btn" data-sel="tag">Etiquetar</button>
     <button class="btn" data-sel="archive">${enArchivo ? '📤 Desarchivar' : '📦 Archivar'}</button>
     <button class="btn" data-sel="copiar">📋 Copiar enlaces</button>
@@ -5288,6 +5289,17 @@ document.getElementById('selbarRoot').addEventListener('click', e => {
       n++;
     });
     saveItems(); setSelMode(false); toast(`${n} marcado${n === 1 ? '' : 's'} como escuchado${n === 1 ? '' : 's'}`);
+  }
+  if (b.dataset.sel === 'prioridad') {
+    // los artistas no se marcan prioritarios (igual que en su propia ficha)
+    // si ya estaba todo fijado, lo quita; si había alguno sin fijar, fija todo —
+    // el mismo criterio "todo o nada" que usan los checkboxes de tres estados
+    const seleccionados = ITEMS.filter(it => selected.has(it.id) && it.type !== 'artist');
+    if (!seleccionados.length) { toast('Los artistas no se marcan como prioritarios'); return; }
+    const marcar = !seleccionados.every(it => it.prioridad);
+    seleccionados.forEach(it => { it.prioridad = marcar; it.touchedAt = Date.now(); });
+    saveItems(); setSelMode(false);
+    toast(`${seleccionados.length} ${marcar ? 'marcado' : 'desmarcado'}${seleccionados.length === 1 ? '' : 's'} como prioritario${seleccionados.length === 1 ? '' : 's'}`);
   }
   if (b.dataset.sel === 'tag') openTagPicker(ids);
   if (b.dataset.sel === 'archive') {
