@@ -3117,7 +3117,18 @@ async function fetchRecentlyPlayed(limit = 50) {
    defecto), lo que ni está suelto ni pertenece a un álbum tuyo se añade
    como canción nueva — apagado de fábrica porque "todo lo que suena en
    Spotify" incluye saltos rápidos y música de fondo que igual no querías
-   guardar; el marcado de lo que ya tienes SÍ es automático siempre. */
+   guardar; el marcado de lo que ya tienes SÍ es automático siempre.
+
+   Dos correcciones sobre la primera versión de esto:
+   1) Si el álbum ya está guardado pero nunca abriste su ficha (sin
+      trackTitles cacheado), ahora se pide su tracklist EN EL MOMENTO — antes
+      eso hacía que la canción se añadiera suelta y duplicada en vez de
+      marcarse dentro del álbum, que es justo lo que quieres. Se cachea por
+      álbum dentro de la misma pasada para no pedirlo dos veces si suenan
+      varias canciones suyas.
+   2) Si borraste una canción que se había añadido sola, ya no vuelve a
+      añadirse en la siguiente sincronización — se respeta la tumba del
+      borrado, igual que respeta la sincronización entre dispositivos. */
 async function sincronizarEscuchasSpotify(silencioso) {
   if (!isConnected() || !tieneScopeRecientes()) {
     if (!silencioso) toast('Reconéctate en Ajustes para activar esto (hace falta un permiso nuevo de Spotify)');
@@ -3126,14 +3137,26 @@ async function sincronizarEscuchasSpotify(silencioso) {
   try {
     const items = await fetchRecentlyPlayed(50);
     let marcados = 0, anadidas = 0, reproducciones = 0;
-    items.forEach(({ track, played_at }) => {
-      if (!track || (track.type && track.type !== 'track')) return;
+    const tombstoned = new Set(TOMB.map(t => t.sid));
+    const cacheAlbum = new Map();   // albumId -> promesa de trackTitles (o null si falló)
+    const trackTitlesDe = album => {
+      if (album.trackTitles) return Promise.resolve(album.trackTitles);
+      if (!cacheAlbum.has(album.spotifyId)) {
+        cacheAlbum.set(album.spotifyId, fetchAlbumTracks(album.spotifyId).then(tracks => {
+          const titulos = tracks.map(t => t.name).filter(Boolean);
+          if (titulos.length) {
+            album.trackTitles = titulos;
+            album.totalDurationMs = tracks.reduce((s, t) => s + (t.duration_ms || 0), 0) || null;
+          }
+          return album.trackTitles || null;
+        }).catch(() => null));
+      }
+      return cacheAlbum.get(album.spotifyId);
+    };
+
+    for (const { track, played_at } of items) {
+      if (!track || (track.type && track.type !== 'track')) continue;
       const playedTs = new Date(played_at).getTime();
-      /* "Cubierta" = esta escucha queda registrada en algún sitio del vault.
-         OJO: que el ÁLBUM esté guardado no basta — si nunca abriste su ficha
-         no tengo su lista de canciones (trackTitles), así que no puedo marcar
-         la pista dentro de él. Antes eso contaba como cubierta y la canción se
-         quedaba en tierra de nadie: ni marcada ni añadida, en silencio. */
       let cubierta = false;
 
       const propia = ITEMS.find(x => x.type === 'track' && x.spotifyId === track.id);
@@ -3145,32 +3168,34 @@ async function sincronizarEscuchasSpotify(silencioso) {
 
       if (track.album?.id) {
         const album = ITEMS.find(x => x.type === 'album' && x.spotifyId === track.album.id);
-        // solo cuenta como cubierta si de verdad puedo situar la pista dentro del álbum
-        if (album && album.trackTitles?.includes(track.name)) {
-          cubierta = true;
-          if (registrarPlay(album, playedTs)) reproducciones++;
-          if (!album.listened) {
-            const set = new Set(album.cancionesEscuchadas || []);
-            if (!set.has(track.name)) {
-              set.add(track.name);
-              album.cancionesEscuchadas = [...set];
-              const completo = album.trackTitles.every(t => set.has(t));
-              if (completo) { album.listened = true; album.listenedAt = playedTs; }
-              album.touchedAt = Date.now();
-              marcados++;
+        if (album) {
+          const titulos = await trackTitlesDe(album);
+          if (titulos && titulos.includes(track.name)) {
+            cubierta = true;
+            if (registrarPlay(album, playedTs)) reproducciones++;
+            if (!album.listened) {
+              const set = new Set(album.cancionesEscuchadas || []);
+              if (!set.has(track.name)) {
+                set.add(track.name);
+                album.cancionesEscuchadas = [...set];
+                const completo = titulos.every(t => set.has(t));
+                if (completo) { album.listened = true; album.listenedAt = playedTs; }
+                album.touchedAt = Date.now();
+                marcados++;
+              }
             }
           }
         }
       }
 
-      if (!cubierta && PREFS.autoAddEscuchas && !ITEMS.some(x => x.spotifyId === track.id)) {
+      if (!cubierta && PREFS.autoAddEscuchas && !tombstoned.has(track.id) && !ITEMS.some(x => x.spotifyId === track.id)) {
         const nueva = makeItem(normalize(track, 'track'));
         nueva.listened = true; nueva.listenedAt = playedTs;
         registrarPlay(nueva, playedTs);
         ITEMS.push(nueva);
         anadidas++; reproducciones++;
       }
-    });
+    }
     if (marcados || anadidas || reproducciones) {
       saveItems(); render();
       if (!silencioso) {
