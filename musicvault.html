@@ -721,6 +721,7 @@
   .trow .trn { width: 20px; flex-shrink:0; font-size: 12px; color: var(--fg-mute); text-align:right; font-variant-numeric: tabular-nums; }
   .trow .trt { flex:1; min-width:0; font-size: 13.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .trow .trd { font-size: 12px; color: var(--fg-mute); flex-shrink:0; font-variant-numeric: tabular-nums; }
+  .trow .trplays { font-size: 10.5px; color: var(--jade); background: var(--jade-soft); border-radius: 999px; padding: 1px 6px; flex-shrink:0; font-variant-numeric: tabular-nums; }
   .tlprogress { display:flex; align-items:center; gap: 9px; margin-bottom: 10px; }
   .tlprogress-bar { flex:1; height: 5px; border-radius: 3px; background: var(--surface-2); overflow:hidden; }
   .tlprogress-fill { height:100%; background: var(--jade); border-radius: 3px; transition: width .2s; }
@@ -3136,6 +3137,25 @@ function registrarPlay(it, ts) {
 const totalPlays = it => (it.plays || []).length;
 const primeraEscucha = it => (it.plays && it.plays.length) ? it.plays[0] : null;
 
+/* Lo mismo que registrarPlay pero por canción DENTRO de un álbum — para que
+   "Time" y "Money" del mismo disco tengan cada una su propio contador, en
+   vez de que el álbum entero sume todas las reproducciones en un solo saco.
+   album.plays (registrarPlay) sigue existiendo aparte: sirve para "algo de
+   este disco sonó", esto es "esta pista concreta sonó". */
+function registrarPlayCancion(album, nombreCancion, ts) {
+  if (!ts || !nombreCancion) return false;
+  album.trackPlays = album.trackPlays || {};
+  const plays = album.trackPlays[nombreCancion] || [];
+  if (plays.includes(ts)) return false;
+  plays.push(ts);
+  plays.sort((a, b) => a - b);
+  album.trackPlays[nombreCancion] = plays.length > TOPE_PLAYS
+    ? [plays[0]].concat(plays.slice(plays.length - (TOPE_PLAYS - 1)))
+    : plays;
+  return true;
+}
+const playsDeCancion = (album, nombre) => (album.trackPlays?.[nombre] || []).length;
+
 async function fetchRecentlyPlayed(limit = 50) {
   const t = await spotifyToken();
   const res = await fetchConReintento429(`https://api.spotify.com/v1/me/player/recently-played?limit=${limit}`, t);
@@ -3210,6 +3230,7 @@ async function sincronizarEscuchasSpotify(silencioso) {
           if (titulos && titulos.includes(track.name)) {
             cubierta = true;
             if (registrarPlay(album, playedTs)) reproducciones++;
+            registrarPlayCancion(album, track.name, playedTs);   // el contador de ESA pista, no solo el del disco entero
             if (!album.listened) {
               const set = new Set(album.cancionesEscuchadas || []);
               if (!set.has(track.name)) {
@@ -3330,12 +3351,14 @@ function pintarTracklist(it) {
   </div>`;
   box.innerHTML = progreso + `<div class="tracklist">${_tracklistCache.items.map(tr => {
     const oida = it.listened || escuchadas.has(tr.name);
+    const n = playsDeCancion(it, tr.name);
     return `<div class="trow${oida ? ' done' : ''}">
       <button class="trcheck${oida ? ' on' : ''}" data-trtoggle="${esc(tr.name)}" aria-label="${oida ? 'Marcar pendiente' : 'Marcar escuchada'}">✓</button>
       <a class="trlink" href="${esc(tr.external_urls?.spotify || it.spotifyUrl)}" target="_blank" rel="noopener">
         <span class="trn">${tr.track_number ?? ''}</span>
         <span class="trt">${esc(tr.name || '')}</span>
       </a>
+      ${n ? `<span class="trplays" title="Reproducciones registradas">${n}×</span>` : ''}
       <span class="trd">${esc(fmtDur(tr.duration_ms) || '')}</span>
     </div>`;
   }).join('')}</div>`;
