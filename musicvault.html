@@ -882,6 +882,7 @@
         <option value="rating_desc">Mejor valorado</option>
         <option value="played_desc">Escuchado hace poco</option>
         <option value="plays_desc">Más reproducido</option>
+        <option value="manual">Orden manual (por etiqueta)</option>
         <option value="year_desc">Más nuevo</option>
         <option value="year_asc">Más antiguo</option>
       </select>
@@ -1605,6 +1606,19 @@ function filtered() {
       case 'rating_desc': return (b.rating || 0) - (a.rating || 0) || cmp(sortKey(a.title), sortKey(b.title));
       case 'year_desc':   return yearOf(b) - yearOf(a);
       case 'year_asc':    return yearOf(a) - yearOf(b);
+      /* Orden manual: solo significa algo dentro de una etiqueta concreta (el
+         orden vive en la propia etiqueta). Sin etiqueta elegida se comporta
+         como "añadido hace poco", en vez de dejar la lista en un orden
+         arbitrario que parecería un fallo. */
+      case 'manual': {
+        const t = PREFS.tag !== 'all' ? tagById(PREFS.tag) : null;
+        if (!t || !t.orden) return b.dateAdded - a.dateAdded;
+        const ia = t.orden.indexOf(a.id), ib = t.orden.indexOf(b.id);
+        if (ia === -1 && ib === -1) return b.dateAdded - a.dateAdded;
+        if (ia === -1) return 1;          // lo que aún no has colocado va al final
+        if (ib === -1) return -1;
+        return ia - ib;
+      }
       // lo nunca escuchado cae al final en vez de mezclarse con lo antiguo
       case 'played_desc': return (b.listenedAt || 0) - (a.listenedAt || 0);
       case 'plays_desc':  return totalPlays(b) - totalPlays(a) || cmp(sortKey(a.title), sortKey(b.title));
@@ -1828,6 +1842,7 @@ function render() {
   if (rows.length) acciones.push(`<button class="pillbtn accent" data-selall="1">✓ Seleccionar ${rows.length === ITEMS.length ? 'todo' : `estos ${rows.length.toLocaleString('es-ES')}`}</button>`);
   if (anyFilter) acciones.push(`<button class="pillbtn" data-clear="1">✕ Quitar filtros</button>`);
   acciones.push(`<button class="pillbtn" data-vistas="1" title="Vistas guardadas">🔖</button>`);
+  if (PREFS.tag !== 'all') acciones.push(`<button class="pillbtn" data-ordenar="1">↕ Ordenar</button>`);
   line.innerHTML = `<span>${rows.length} de ${ITEMS.length}</span>${acciones.length ? `<span style="display:flex;gap:8px;">${acciones.join('')}</span>` : ''}`;
 
   if (rows.length === 0) {
@@ -5001,6 +5016,47 @@ function aplicarVista(i) {
   document.getElementById('q').value = v.q || '';
   savePrefs(); render();
 }
+/* Ordenar a mano dentro de una etiqueta. Con botones ↑/↓ y no arrastrando:
+   estas filas ya tienen pulsación larga (seleccionar) y deslizamiento
+   (marcar/archivar), y un tercer gesto encima los volvería imprevisibles. */
+function openOrdenarEtiqueta() {
+  const t = PREFS.tag !== 'all' ? tagById(PREFS.tag) : null;
+  if (!t) { toast('Elige antes una etiqueta en los filtros'); return; }
+  const conEtiqueta = ITEMS.filter(i => (i.tagIds || []).includes(t.id) && !i.archived);
+  if (!conEtiqueta.length) { toast('Esa etiqueta no tiene nada todavía'); return; }
+  // el orden guardado manda; lo que no esté en él se añade al final
+  const orden = (t.orden || []).filter(id => conEtiqueta.some(i => i.id === id));
+  conEtiqueta.forEach(i => { if (!orden.includes(i.id)) orden.push(i.id); });
+  t.orden = orden;
+
+  const pintar = () => {
+    showSheet(`
+      <div class="sheethead"><h2>Ordenar «${esc(t.name)}»</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+      <p class="lede">Coloca los elementos a tu gusto. Para verlo así en la lista, elige el orden «Orden manual» con esta etiqueta puesta.</p>
+      <div class="tracklist" id="ordList">
+        ${t.orden.map((id, idx) => {
+          const it = ITEMS.find(x => x.id === id);
+          if (!it) return '';
+          return `<div class="trow">
+            <span class="trn">${idx + 1}</span>
+            <span class="trlink"><span class="trt">${esc(it.title)}</span></span>
+            <button class="xbtn" data-mv="up" data-i="${idx}" ${idx === 0 ? 'disabled' : ''} aria-label="Subir">↑</button>
+            <button class="xbtn" data-mv="down" data-i="${idx}" ${idx === t.orden.length - 1 ? 'disabled' : ''} aria-label="Bajar">↓</button>
+          </div>`;
+        }).join('')}
+      </div>
+    `);
+    document.getElementById('ordList').addEventListener('click', e => {
+      const b = e.target.closest('[data-mv]'); if (!b) return;
+      const i = +b.dataset.i, j = b.dataset.mv === 'up' ? i - 1 : i + 1;
+      if (j < 0 || j >= t.orden.length) return;
+      [t.orden[i], t.orden[j]] = [t.orden[j], t.orden[i]];
+      saveTags(); render(); pintar();
+    });
+  };
+  pintar();
+}
+
 function openVistasGuardadas() {
   const vistas = PREFS.vistas || [];
   showSheet(`
@@ -5056,6 +5112,7 @@ contentEl.addEventListener('click', e => {
   const clear = e.target.closest('[data-clear]');
   if (clear) { PREFS.type = 'all'; PREFS.status = 'all'; PREFS.tag = 'all'; PREFS.genre = 'all'; PREFS.decade = 'all'; PREFS.dur = 'all'; document.getElementById('q').value = ''; savePrefs(); render(); return; }
   if (e.target.closest('[data-vistas]')) { openVistasGuardadas(); return; }
+  if (e.target.closest('[data-ordenar]')) { openOrdenarEtiqueta(); return; }
   const selall = e.target.closest('[data-selall]');
   if (selall) { selMode = true; selected = new Set(filtered().map(it => it.id)); render(); return; }
   const open = e.target.closest('[data-open]');
