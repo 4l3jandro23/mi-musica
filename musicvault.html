@@ -2078,6 +2078,36 @@ function openPapelera() {
   });
 }
 
+/* Todo lo que el scrobbling añadió solo (nueva.autoAdded), para poder
+   auditarlo de un vistazo y borrar lo que no cuadre — como el caso de la
+   pista mal etiquetada por el propio Spotify. Marcarla aquí como "revisada"
+   no borra el dato: simplemente dice "ya la miré y está bien", para no tener
+   que repasar siempre la misma lista entera. */
+function openAutoAdded() {
+  const lista = ITEMS.filter(i => i.autoAdded && !i.archived).sort((a, b) => b.dateAdded - a.dateAdded);
+  showSheet(`
+    <div class="sheethead"><h2>Añadidas automáticamente</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <p class="lede">Todo lo que se añadió solo porque sonó en tu Spotify, no porque tú lo guardaras. Revisa y borra lo que no sea lo que creías escuchar.</p>
+    ${lista.length ? `<div class="list">${lista.map(it => `
+      <article class="lrow" data-id="${it.id}">
+        <div class="lart">${portada(it.coverUrl, TYPE_ICON[it.type], true)}</div>
+        <div class="linfo"><div class="lt">${esc(it.title)}</div><div class="la">${esc(artistsOf(it))} · ${relDate(it.dateAdded)}</div></div>
+        <button class="xbtn" data-quitarauto="${it.id}" aria-label="Ya no es automática">✓</button>
+        <button class="xbtn" data-delauto="${it.id}" aria-label="Eliminar">✕</button>
+      </article>`).join('')}</div>` : `<p class="lede" style="margin:0;">No hay nada añadido automáticamente ahora mismo.</p>`}
+  `);
+  document.querySelector('#modalRoot .list')?.addEventListener('click', e => {
+    const del = e.target.closest('[data-delauto]');
+    if (del) { deleteItems([del.dataset.delauto]); openAutoAdded(); return; }
+    const quitar = e.target.closest('[data-quitarauto]');
+    if (quitar) {
+      const it = ITEMS.find(x => x.id === quitar.dataset.quitarauto);
+      if (it) { delete it.autoAdded; it.touchedAt = Date.now(); saveItems(); render(); }
+      openAutoAdded();
+    }
+  });
+}
+
 /* ============ modals ============ */
 const modalRoot = document.getElementById('modalRoot');
 /* Cerrar una hoja no siempre dispara a tiempo el evento de visualViewport que
@@ -2855,6 +2885,7 @@ function openDetail(id) {
           ${repasoTexto(it) ? `<span class="fact">${esc(repasoTexto(it))}</span>` : ''}
           ${esFavoritoUnico(it) ? `<span class="fact accent">${esc(esFavoritoUnico(it))}</span>` : ''}
           ${it.roto ? `<span class="fact" style="color:var(--rust);border-color:color-mix(in srgb, var(--rust) 40%, transparent);">⚠️ Ya no está en Spotify</span>` : ''}
+          ${it.autoAdded ? `<span class="fact" title="Se añadió sola porque sonó en tu Spotify, no la guardaste tú a mano">🤖 Añadida automáticamente</span>` : ''}
         </div>
         ${it.type !== 'artist' ? `<div class="btnrow">
           <button class="btn ${it.listened ? 'jade' : ''} wide" id="dListen">${it.listened ? '✓ Ya escuchado' : 'Marcar como escuchado'}</button>
@@ -3196,6 +3227,7 @@ async function sincronizarEscuchasSpotify(silencioso) {
       if (!cubierta && PREFS.autoAddEscuchas && !tombstoned.has(track.id) && !ITEMS.some(x => x.spotifyId === track.id)) {
         const nueva = makeItem(normalize(track, 'track'));
         nueva.listened = true; nueva.listenedAt = playedTs;
+        nueva.autoAdded = true;   // se pintó en Metadatos y sale en "Auto-añadidos" (Ajustes), para poder auditar
         registrarPlay(nueva, playedTs);
         ITEMS.push(nueva);
         anadidas++; reproducciones++;
@@ -4274,6 +4306,7 @@ function openSettings() {
     <p class="lede">Con varias formas distintas de añadir (búsqueda, "por nombre", enlaces externos, playlists), es fácil que algo se cuele repetido sin que la app lo note por su cuenta.</p>
     <div class="btnrow"><button class="btn wide" id="findDups">Buscar posibles duplicados</button></div>
     <div class="btnrow"><button class="btn wide" id="openTrash">Papelera${TRASH.length ? ` (${TRASH.length})` : ''}</button></div>
+    <div class="btnrow"><button class="btn wide" id="openAutoAdded">🤖 Añadidas automáticamente${(() => { const n = ITEMS.filter(i => i.autoAdded && !i.archived).length; return n ? ` (${n})` : ''; })()}</button></div>
     <p class="lede" style="margin-top:12px;">Repasa todo contra Spotify de una pasada: rellena los datos que falten (año, sello, duración, carátula…) sin tocar lo que hayas editado a mano, y marca lo que ya no existe allí.</p>
     <div class="statusline ${rotosCount() ? 'no' : 'ok'}" id="revisarStat">${rotosCount() ? `● ${rotosCount()} sin resultado en Spotify` : '● Sin enlaces rotos detectados'}</div>
     <div class="btnrow"><button class="btn wide" id="revisarMeta">${_revisando ? 'Detener' : 'Revisar metadatos y enlaces'}</button></div>
@@ -4434,6 +4467,7 @@ function openSettings() {
   document.getElementById('expCsvBtn').addEventListener('click', exportarCSV);
   document.getElementById('findDups').addEventListener('click', openDuplicados);
   document.getElementById('openTrash').addEventListener('click', openPapelera);
+  document.getElementById('openAutoAdded').addEventListener('click', openAutoAdded);
   document.getElementById('revisarMeta').addEventListener('click', revisarMetadatos);
 }
 
