@@ -543,7 +543,9 @@
     background: none; border: none; color: var(--fg-mute); cursor: pointer;
   }
   .azrail button:active { color: var(--amber); transform: scale(1.5); }
-  @media (max-width: 380px) { .azrail { display: none; } }
+  /* Ocupa espacio de sobra en el iPhone (pantalla estrecha, ya hay barra
+     inferior); se queda en iPad/desktop, donde sí cabe y ayuda. */
+  @media (max-width: 480px) { .azrail { display: none; } }
 
   /* Modo presentación: esconde todo lo que es "manejar la app" y deja solo
      las carátulas, para enseñar la colección en una pantalla grande. */
@@ -703,12 +705,17 @@
   .simchip.done { background: var(--jade-soft); color: var(--jade); border-color: transparent; }
   .tracklist { display:flex; flex-direction:column; }
   .trow {
-    display:flex; align-items:center; gap: 8px; padding: 7px 4px;
+    display:flex; flex-direction:column; gap: 2px; padding: 7px 4px;
     border-bottom: 1px solid var(--line);
   }
   .trow:last-child { border-bottom: none; }
   .trow:hover { background: var(--surface-2); }
   .trow.done { opacity: .6; }
+  .trmain { display:flex; align-items:center; gap: 8px; }
+  .trstars { display:flex; gap: 0; padding-left: 30px; }
+  .trstars button { background:none; border:none; font-size: 13px; line-height: 1; cursor:pointer; color: var(--line-firm); padding: 3px 2px; transition: transform .1s, color .12s; }
+  .trstars button.on { color: var(--amber); }
+  .trstars button:active { transform: scale(1.2); }
   .trcheck {
     width: 22px; height: 22px; border-radius: 50%; flex-shrink:0; cursor:pointer;
     border: 1px solid var(--line); background: var(--surface); color: transparent;
@@ -865,7 +872,6 @@
   <div class="cmd-actions">
     <button class="iconbtn" id="shuffleBtn" title="¿Qué escucho?" aria-label="Elegir algo al azar">🎲</button>
     <button class="iconbtn" id="statsBtn" title="Estadísticas" aria-label="Estadísticas">📊</button>
-    <button class="iconbtn" id="bulkBtn" title="Pegar enlaces" aria-label="Añadir en bloque">📋</button>
     <button class="iconbtn" id="themeBtn" title="Cambiar tema" aria-label="Cambiar tema">◐</button>
     <button class="iconbtn" id="setBtn" title="Ajustes" aria-label="Ajustes">⚙</button>
   </div>
@@ -1540,7 +1546,6 @@ function metaPairs(it) {
   add('Oyentes (seguidores)', it.followers ? it.followers.toLocaleString('es-ES') : null);
   add('Popularidad en Spotify', it.popularity !== null && it.popularity !== undefined ? `${it.popularity}/100` : null);
   add('ISRC', it.isrc);
-  add('Recomendado por', it.recomendadoPor);
   add('Guardado', `${new Date(it.dateAdded).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })} (${relDate(it.dateAdded)})`);
   if (it.listenedAt) add('Escuchado', `${new Date(it.listenedAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })} (${relDate(it.listenedAt)})`);
   if (totalPlays(it)) {
@@ -2928,6 +2933,9 @@ function openDetail(id) {
     <div class="flabel">Notas</div>
     <textarea class="field" id="dNotes" placeholder="¿Por qué lo guardaste? ¿Quién te lo recomendó?">${esc(it.notes || '')}</textarea>
 
+    <div class="flabel">Te lo recomendó / dónde lo escuchaste</div>
+    <input class="field" id="dRecBy" placeholder="Nombre o sitio" value="${esc(it.recomendadoPor || '')}">
+
     <div class="flabel">Etiquetas</div>
     <div class="tagpick" id="dTags">
       ${TAGS.length ? tagsOrdenados().map(t => `<button class="tagsel ${(it.tagIds || []).includes(t.id) ? '' : 'off'}" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)}</button>`).join('')
@@ -3038,6 +3046,8 @@ function openDetail(id) {
   });
   const notes = document.getElementById('dNotes');
   notes.addEventListener('input', () => { it.notes = notes.value; saveItems(); });
+  const recBy = document.getElementById('dRecBy');
+  recBy.addEventListener('input', () => { it.recomendadoPor = recBy.value.trim() || null; saveItems(); });
   document.getElementById('dTags').addEventListener('click', e => {
     const b = e.target.closest('.tagsel'); if (!b) return;
     it.tagIds = it.tagIds || [];
@@ -3063,8 +3073,7 @@ const EDITABLE = [
   ['releaseDate', 'Fecha de lanzamiento (AAAA o AAAA-MM-DD)', 'text'],
   ['label', 'Sello discográfico', 'text'],
   ['genresStr', 'Géneros, separados por comas', 'text'],
-  ['coverUrl', 'URL de la carátula', 'text'],
-  ['recomendadoPor', 'Te lo recomendó / dónde lo escuchaste', 'text']
+  ['coverUrl', 'URL de la carátula', 'text']
 ];
 
 function metaFormHtml(it) {
@@ -3368,17 +3377,34 @@ function pintarTracklist(it) {
   box.innerHTML = progreso + `<div class="tracklist">${_tracklistCache.items.map(tr => {
     const oida = it.listened || escuchadas.has(tr.name);
     const n = playsDeCancion(it, tr.name);
+    const rating = (it.trackRatings || {})[tr.name] || 0;
     return `<div class="trow${oida ? ' done' : ''}">
-      <button class="trcheck${oida ? ' on' : ''}" data-trtoggle="${esc(tr.name)}" aria-label="${oida ? 'Marcar pendiente' : 'Marcar escuchada'}">✓</button>
-      <a class="trlink" href="${esc(tr.external_urls?.spotify || it.spotifyUrl)}" target="_blank" rel="noopener">
-        <span class="trn">${tr.track_number ?? ''}</span>
-        <span class="trt">${esc(tr.name || '')}</span>
-      </a>
-      ${n ? `<span class="trplays" title="Reproducciones registradas">${n}×</span>` : ''}
-      <span class="trd">${esc(fmtDur(tr.duration_ms) || '')}</span>
+      <div class="trmain">
+        <button class="trcheck${oida ? ' on' : ''}" data-trtoggle="${esc(tr.name)}" aria-label="${oida ? 'Marcar pendiente' : 'Marcar escuchada'}">✓</button>
+        <a class="trlink" href="${esc(tr.external_urls?.spotify || it.spotifyUrl)}" target="_blank" rel="noopener">
+          <span class="trn">${tr.track_number ?? ''}</span>
+          <span class="trt">${esc(tr.name || '')}</span>
+        </a>
+        ${n ? `<span class="trplays" title="Reproducciones registradas">${n}×</span>` : ''}
+        <span class="trd">${esc(fmtDur(tr.duration_ms) || '')}</span>
+      </div>
+      <div class="trstars" data-trstars="${esc(tr.name)}">
+        ${[1,2,3,4,5].map(v => `<button data-n="${v}" class="${v <= rating ? 'on' : ''}" aria-label="${v} estrellas">★</button>`).join('')}
+      </div>
     </div>`;
   }).join('')}</div>`;
   box.querySelector('.tracklist')?.addEventListener('click', e => {
+    const s = e.target.closest('.trstars button');
+    if (s) {
+      const titulo = s.closest('[data-trstars]').dataset.trstars;
+      const n = +s.dataset.n;
+      it.trackRatings = it.trackRatings || {};
+      it.trackRatings[titulo] = it.trackRatings[titulo] === n ? 0 : n;
+      if (!it.trackRatings[titulo]) delete it.trackRatings[titulo];
+      saveItems();
+      pintarTracklist(it);
+      return;
+    }
     const b = e.target.closest('[data-trtoggle]'); if (!b) return;
     toggleCancionEscuchada(it, b.dataset.trtoggle);
     pintarTracklist(it);
@@ -5132,7 +5158,6 @@ document.getElementById('azRail').addEventListener('click', e => {
 });
 document.getElementById('shuffleBtn').addEventListener('click', shuffle);
 document.getElementById('statsBtn').addEventListener('click', openStats);
-document.getElementById('bulkBtn').addEventListener('click', openBulk);
 document.getElementById('setBtn').addEventListener('click', openSettings);
 document.getElementById('addFab').addEventListener('click', openSearch);
 
