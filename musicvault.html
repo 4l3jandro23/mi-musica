@@ -3156,7 +3156,11 @@ function registrarPlay(it, ts) {
   it.plays = plays.length > TOPE_PLAYS
     ? [plays[0]].concat(plays.slice(plays.length - (TOPE_PLAYS - 1)))
     : plays;
-  it.touchedAt = Date.now();
+  // Sin tocar touchedAt a propósito: es un registro automático de fondo, no
+  // una edición deliberada. Si lo tocara, una reproducción de Spotify en un
+  // dispositivo que todavía no se ha enterado de que borraste esto en otro
+  // le ganaría a la tumba del borrado y lo revivería en la próxima
+  // sincronización (justo lo que le pasó a "Locked & Loaded" con d4vd).
   return true;
 }
 const totalPlays = it => (it.plays || []).length;
@@ -3245,7 +3249,7 @@ async function sincronizarEscuchasSpotify(silencioso) {
       if (propia) {
         cubierta = true;
         if (registrarPlay(propia, playedTs)) reproducciones++;
-        if (!propia.listened) { propia.listened = true; propia.listenedAt = playedTs; propia.touchedAt = Date.now(); marcados++; }
+        if (!propia.listened) { propia.listened = true; propia.listenedAt = playedTs; marcados++; }   // sin touchedAt: mismo motivo que en registrarPlay
       }
 
       if (track.album?.id) {
@@ -3274,7 +3278,7 @@ async function sincronizarEscuchasSpotify(silencioso) {
                 album.cancionesEscuchadas = [...set];
                 const completo = titulos.every(t => set.has(t));
                 if (completo) { album.listened = true; album.listenedAt = playedTs; }
-                album.touchedAt = Date.now();
+                // sin touchedAt aquí tampoco: mismo motivo que en registrarPlay
                 marcados++;
               }
             }
