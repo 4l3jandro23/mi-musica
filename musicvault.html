@@ -5546,11 +5546,16 @@ async function manejarParametroAdd() {
 }
 
 aplicarTamanoCaratula();
-handleSpotifyRedirect().then(() => bootStorage()).then(() => {
+handleSpotifyRedirect().then(() => bootStorage()).then(async () => {
   render();
   purgarPapelera();
   const gArranque = ghCfg();
-  if (gArranque && gArranque.auto !== false) sincronizar(false);
+  // Hay que esperar a que termine esta bajada de tumbas de borrado del otro
+  // dispositivo ANTES de mirar el historial de Spotify: si se lanzan a la
+  // vez, el scrobbling puede no enterarse todavía de un borrado reciente y
+  // volver a añadir esa canción — y esa "resurrección" luego se sube de
+  // vuelta al repo, deshaciendo el borrado también en el otro dispositivo.
+  if (gArranque && gArranque.auto !== false) await sincronizar(false);
   if (isConnected() && tieneScopeRecientes()) sincronizarEscuchasSpotify(true);
   manejarParametroAdd();
 });
