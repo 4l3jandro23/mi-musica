@@ -3249,7 +3249,18 @@ async function sincronizarEscuchasSpotify(silencioso) {
       }
 
       if (track.album?.id) {
-        const album = ITEMS.find(x => x.type === 'album' && x.spotifyId === track.album.id);
+        // Spotify a veces sirve la misma canción bajo un ID de álbum distinto
+        // al que guardaste (otra edición/región) aunque el título y el
+        // artista sean iguales. Si el ID exacto no encuentra nada, se busca
+        // entre tus álbumes guardados uno cuya tracklist ya cacheada
+        // contenga ese título y comparta artista — así no se cuela como
+        // canción suelta un tema que ya tienes en un álbum.
+        let album = ITEMS.find(x => x.type === 'album' && x.spotifyId === track.album.id);
+        if (!album) {
+          const artistasPista = new Set((track.artists || []).map(a => fold(a.name)));
+          album = ITEMS.find(x => x.type === 'album' && x.trackTitles?.includes(track.name)
+            && (x.artists || []).some(a => artistasPista.has(fold(a))));
+        }
         if (album) {
           const titulos = await trackTitlesDe(album);
           if (titulos && titulos.includes(track.name)) {
