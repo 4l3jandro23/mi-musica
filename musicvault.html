@@ -1343,25 +1343,53 @@ function tieneScopeRecientes() {
    se enseñaba tal cual "Spotify devolvió un error 429"; ahora se reintenta
    solo, respetando el Retry-After que manda Spotify (con un tope para no
    dejar la búsqueda colgada), y solo si sigue fallando se avisa. */
-async function fetchConReintento429(url, token, intentos = 3) {
+/* Un 429 no es problema de UNA petición: Spotify limita por app y por ventana
+   de tiempo, así que en cuanto llega uno, todo lo que salga detrás va a chocar
+   igual. Antes cada petición descubría el 429 por su cuenta —gastando otra
+   petición en enterarse— y con solo 3 intentos y 4s de tope acababa rindiéndose
+   y enseñando el aviso. Esta puerta global hace que, en cuanto una petición se
+   come el castigo, TODAS las demás esperen a que pase. */
+let _pausaSpotifyHasta = 0;
+const esperarTurnoSpotify = async () => {
+  const falta = _pausaSpotifyHasta - Date.now();
+  if (falta > 0) await new Promise(r => setTimeout(r, falta));
+};
+
+async function fetchConReintento429(url, token, intentos = 5) {
   let res;
   for (let i = 0; i < intentos; i++) {
+    await esperarTurnoSpotify();
     res = await fetch(url, { headers: { Authorization: 'Bearer ' + token } });
-    if (res.status !== 429 || i === intentos - 1) return res;
-    const espera = Math.min(+res.headers.get('Retry-After') || 1, 4) * 1000;
-    await new Promise(r => setTimeout(r, espera));
+    if (res.status !== 429) return res;
+    // Retry-After viene en segundos; si Spotify no lo manda, subida exponencial
+    const espera = Math.min(+res.headers.get('Retry-After') || Math.pow(2, i), 10) * 1000;
+    _pausaSpotifyHasta = Math.max(_pausaSpotifyHasta, Date.now() + espera);
+    if (i === intentos - 1) return res;
   }
   return res;
 }
 
+/* Escribir, borrar un par de letras y volver a escribirlas repetía la misma
+   búsqueda una y otra vez: era la forma más fácil de comerse un 429 sin estar
+   haciendo nada raro. Se guarda cinco minutos lo ya preguntado. */
+const _cacheBusqueda = new Map();
+const TTL_BUSQUEDA = 5 * 60000;
+
 async function spotifySearch(q, type, offset = 0) {
+  const clave = type + '|' + offset + '|' + fold(q).trim();
+  const guardado = _cacheBusqueda.get(clave);
+  if (guardado && Date.now() - guardado.t < TTL_BUSQUEDA) return guardado.data;
+
   const t = await spotifyToken();
   // el límite máximo bajó de 50 a 10 en el cambio de febrero de 2026; para ver
   // más de 10 hay que pedir páginas sucesivas con offset (ver cargarMasResultados)
   const res = await fetchConReintento429(`https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=${type}&limit=10&offset=${offset}`, t);
   if (res.status === 429) throw new Error('RATE_LIMIT');
   if (!res.ok) throw new Error('SEARCH_FAILED:' + res.status);
-  return res.json();
+  const data = await res.json();
+  _cacheBusqueda.set(clave, { t: Date.now(), data });
+  if (_cacheBusqueda.size > 300) _cacheBusqueda.delete(_cacheBusqueda.keys().next().value);
+  return data;
 }
 
 async function spotifyLookup(type, id) {
@@ -2132,29 +2160,13 @@ function openAutoAdded() {
   });
 }
 
-/* ============ duplicados ============
+/* ============ unir duplicados (lo usa openDuplicados) ============
    Spotify da IDs distintos a la misma canción según la edición (normal /
-   deluxe / remaster / reedición) y según el mercado. Antes eso hacía que el
-   historial la añadiera otra vez creyendo que era nueva: este vault llegó a
-   tener 21 pares con el mismo ISRC y 65 con el mismo título+artista.
-   El emparejamiento nuevo ya evita crear más, pero los que había siguen ahí,
-   y borrar a mano el "malo" perdería lo que tuvieras en él. De ahí unir.
-   Solo canciones, a propósito: un álbum y su edición deluxe comparten nombre
-   pero NO su lista de canciones, así que unirlos sí perdería información
-   real. Esos conviene mirarlos a mano. */
-function gruposDuplicados() {
-  const grupos = new Map();
-  ITEMS.forEach(it => {
-    if (it.type !== 'track' || it.manual) return;
-    const k = claveObra(it.title, (it.artists || [])[0]);
-    if (!grupos.has(k)) grupos.set(k, []);
-    grupos.get(k).push(it);
-  });
-  return [...grupos.values()].filter(g => g.length > 1)
-    .sort((a, b) => (a[0].title || '').localeCompare(b[0].title || '', 'es'));
-}
-
-/* Se queda la ficha con más trabajo tuyo encima (valoración, notas,
+   deluxe / remaster) y según el mercado, así que el historial llegó a
+   añadirla otra vez creyendo que era nueva: había 21 pares con el mismo ISRC.
+   El emparejamiento nuevo ya evita crear más, pero los que había siguen ahí
+   y borrar a mano el "malo" perdería lo que tuvieras dentro.
+   Se queda la ficha con más trabajo tuyo encima (valoración, notas,
    etiquetas...) y hereda de las otras todo lo que ella no tenga: así unir
    nunca puede hacerte perder un dato que ya habías puesto. */
 function unirGrupo(grupo) {
@@ -2184,47 +2196,6 @@ function unirGrupo(grupo) {
   });
   queda.touchedAt = Date.now();   // es una edición tuya: debe ganarle a una tumba vieja
   return { queda, sobran };
-}
-
-function openDuplicados() {
-  const grupos = gruposDuplicados();
-  const total = grupos.reduce((n, g) => n + g.length - 1, 0);
-  showSheet(`
-    <div class="sheethead"><h2>Duplicados</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
-    <p class="lede">El mismo tema guardado más de una vez porque Spotify le da otro ID en cada edición (deluxe, remaster, reedición). Al unir se conserva la ficha más completa y hereda de las demás lo que le falte: escuchado, valoración, notas, etiquetas y reproducciones.</p>
-    ${grupos.length ? `
-      <div class="btnrow"><button class="btn primary wide" id="unirTodos">Unir todo (${total} ficha${total === 1 ? '' : 's'} de sobra)</button></div>
-      <div class="list" id="dupList">${grupos.map((g, i) => {
-        const { queda } = (() => { const p = it => (it.rating ? 4 : 0) + (it.notes ? 3 : 0) + ((it.tagIds || []).length ? 2 : 0) + (it.listened ? 1 : 0) + (it.autoAdded ? -2 : 0);
-          return { queda: g.slice().sort((a, b) => p(b) - p(a) || (a.dateAdded || 0) - (b.dateAdded || 0))[0] }; })();
-        return `<article class="lrow">
-          <div class="lart">${portada(queda.coverUrl, TYPE_ICON[queda.type], true)}</div>
-          <div class="linfo">
-            <div class="lt">${esc(queda.title)}</div>
-            <div class="la">${esc(artistsOf(queda))} · ${g.length} copias</div>
-            <div class="la" style="opacity:.75;">${g.map(x => esc(x.albumName || x.title)).join(' · ')}</div>
-          </div>
-          <button class="xbtn" data-unir="${i}" aria-label="Unir estas copias">⇢</button>
-        </article>`;
-      }).join('')}</div>`
-      : `<p class="lede" style="margin:0;">No hay duplicados. 👌</p>`}
-  `);
-
-  const aplicar = gs => {
-    let quitadas = 0;
-    const paraBorrar = [];
-    gs.forEach(g => { const { sobran } = unirGrupo(g); paraBorrar.push(...sobran); quitadas += sobran.length; });
-    if (!paraBorrar.length) return;
-    // por deleteItems: deja tumba (no vuelven del otro dispositivo), guarda
-    // copia en la papelera 7 días y ofrece Deshacer con su propio aviso
-    deleteItems(paraBorrar.map(x => x.id));
-    openDuplicados();
-  };
-  document.getElementById('unirTodos')?.addEventListener('click', () => aplicar(grupos));
-  document.getElementById('dupList')?.addEventListener('click', e => {
-    const b = e.target.closest('[data-unir]'); if (!b) return;
-    aplicar([grupos[+b.dataset.unir]]);
-  });
 }
 
 /* ============ modals ============ */
@@ -2293,7 +2264,9 @@ function openSearch() {
   });
   document.getElementById('bulkLink').addEventListener('click', () => { bulkInputMode = 'links'; openBulk(); });
   document.getElementById('manualLink').addEventListener('click', openManualAdd);
-  sq.addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(runSearch, 330); });
+  // 330ms disparaba una búsqueda casi por sílaba; 450 apenas se nota al
+  // escribir y manda bastantes menos peticiones (menos riesgo de 429)
+  sq.addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(runSearch, 450); });
   sq.focus();
 }
 
@@ -3058,10 +3031,18 @@ function openDetail(id) {
     })() : ''}
     ${it.type === 'album' && !it.manual ? (() => {
       const relacionados = relacionadosDelArtista(it);
-      return `<div class="flabel">Sobre el álbum</div>
+      // las otras ediciones (deluxe ↔ normal, remaster...) salen en su propio
+      // bloque arriba del todo: antes iban mezcladas entre otros 20 álbumes
+      // del artista y no había forma de saltar de una edición a la otra
+      const ediciones = relacionados.filter(r => r.otraEdicion);
+      const resto = relacionados.filter(r => !r.otraEdicion);
+      return `
+      ${ediciones.length ? `<div class="flabel">${ediciones.length === 1 ? 'Otra edición de este álbum' : 'Otras ediciones de este álbum'}</div>
+      <div id="dEdiciones">${ediciones.map(r => relatedRow(r.item, false)).join('')}</div>` : ''}
+      <div class="flabel">Sobre el álbum</div>
       <div id="dAlbumInfo"><p class="lede" style="margin:0;">Buscando información…</p></div>
-      ${relacionados.length ? `<div class="flabel">Más de ${esc(artistsOf(it))} en tu vault</div>
-      <div id="dRelated">${relacionados.slice(0, 20).map(r => relatedRow(r.item, r.otraEdicion)).join('')}</div>` : ''}
+      ${resto.length ? `<div class="flabel">Más de ${esc(artistsOf(it))} en tu vault</div>
+      <div id="dRelated">${resto.slice(0, 20).map(r => relatedRow(r.item, false)).join('')}</div>` : ''}
       <div class="flabel">Canciones del álbum</div>
       <div id="dTracks"><p class="lede" style="margin:0;">Cargando canciones…</p></div>`;
     })() : ''}
@@ -3097,6 +3078,9 @@ function openDetail(id) {
     const b = e.target.closest('[data-goartist]'); if (b) openDetail(b.dataset.goartist);
   });
   document.getElementById('dRelated')?.addEventListener('click', e => {
+    const b = e.target.closest('[data-openrel]'); if (b) openDetail(b.dataset.openrel);
+  });
+  document.getElementById('dEdiciones')?.addEventListener('click', e => {
     const b = e.target.closest('[data-openrel]'); if (b) openDetail(b.dataset.openrel);
   });
   if (it.coverUrl) {
@@ -3784,6 +3768,38 @@ async function ghFetch(url, opts) {
   }));
 }
 
+/* Cuándo cambió por última vez ESTE elemento, mirando las cuatro huellas que
+   deja cualquier cambio real: edición deliberada, marcado como escuchado,
+   última reproducción registrada por el scrobbling, y su alta. */
+const marcaCambio = it => Math.max(
+  it.touchedAt || 0,
+  it.listenedAt || 0,
+  (it.plays && it.plays.length) ? it.plays[it.plays.length - 1] : 0,
+  it.dateAdded || 0
+);
+
+/* Las reproducciones son un histórico que solo crece: nunca "des-escuchas"
+   algo. Así que al resolver un conflicto se unen las de los dos lados en vez
+   de que el perdedor las tire. Los demás campos sí los decide el ganador, para
+   que desmarcar como escuchado o quitar una etiqueta siga funcionando. */
+function unirHistoriales(gana, pierde) {
+  const hayPlays = pierde.plays && pierde.plays.length;
+  if (!hayPlays && !pierde.trackPlays) return gana;
+  const out = Object.assign({}, gana);
+  if (hayPlays) {
+    const p = [...new Set((gana.plays || []).concat(pierde.plays))].sort((a, b) => a - b);
+    out.plays = p.length > TOPE_PLAYS ? [p[0]].concat(p.slice(p.length - (TOPE_PLAYS - 1))) : p;
+  }
+  if (pierde.trackPlays) {
+    out.trackPlays = Object.assign({}, gana.trackPlays);
+    Object.keys(pierde.trackPlays).forEach(k => {
+      const p = [...new Set((out.trackPlays[k] || []).concat(pierde.trackPlays[k]))].sort((a, b) => a - b);
+      out.trackPlays[k] = p.length > TOPE_PLAYS ? [p[0]].concat(p.slice(p.length - (TOPE_PLAYS - 1))) : p;
+    });
+  }
+  return out;
+}
+
 function fundir(remoto) {
   const tombLocal = TOMB.slice();
   (remoto.tombstones || []).forEach(t => { if (t && t.sid) tombLocal.push(t); });
@@ -3792,14 +3808,23 @@ function fundir(remoto) {
     if (!ultimaTumba.has(t.sid) || t.at > ultimaTumba.get(t.sid)) ultimaTumba.set(t.sid, t.at);
   });
 
-  const remotoGana = (remoto.updatedAt || 0) > (META.updatedAt || 0);
+  /* Antes esto era todo-o-nada POR DOCUMENTO: se comparaba qué copia del vault
+     ENTERO era más reciente (remoto.updatedAt vs META.updatedAt) y esa ganaba
+     para todos los elementos a la vez. De ahí el fallo real de "marco algo
+     escuchado en el iPhone y en el PC no aparece": bastaba con que el PC
+     hubiera tocado cualquier otra cosa después para que impusiera su copia
+     entera y borrase esa marca. Ahora gana el más reciente elemento a
+     elemento, con su propia fecha de cambio. */
   const porId = new Map();
-  const meter = (arr, prioritario) => (arr || []).forEach(it => {
+  const meter = arr => (arr || []).forEach(it => {
     if (!it || !it.spotifyId) return;
-    if (!porId.has(it.spotifyId) || prioritario) porId.set(it.spotifyId, it);
+    const previo = porId.get(it.spotifyId);
+    if (!previo) { porId.set(it.spotifyId, it); return; }
+    const gana = marcaCambio(it) > marcaCambio(previo) ? it : previo;   // empate: se queda el local
+    porId.set(it.spotifyId, unirHistoriales(gana, gana === it ? previo : it));
   });
-  meter(remotoGana ? ITEMS : remoto.items, false);
-  meter(remotoGana ? remoto.items : ITEMS, true);
+  meter(ITEMS);
+  meter(remoto.items);
 
   const vivos = [];
   porId.forEach((it, sid) => {
@@ -4569,7 +4594,6 @@ function openSettings() {
     <div class="btnrow"><button class="btn wide" id="findDups">Buscar posibles duplicados</button></div>
     <div class="btnrow"><button class="btn wide" id="openTrash">Papelera${TRASH.length ? ` (${TRASH.length})` : ''}</button></div>
     <div class="btnrow"><button class="btn wide" id="openAutoAdded">🤖 Añadidas automáticamente${(() => { const n = ITEMS.filter(i => i.autoAdded && !i.archived).length; return n ? ` (${n})` : ''; })()}</button></div>
-    <div class="btnrow"><button class="btn wide" id="openDuplicados">👯 Buscar duplicados${(() => { const n = gruposDuplicados().length; return n ? ` (${n})` : ''; })()}</button></div>
     <p class="lede" style="margin-top:12px;">Repasa todo contra Spotify de una pasada: rellena los datos que falten (año, sello, duración, carátula…) sin tocar lo que hayas editado a mano, y marca lo que ya no existe allí.</p>
     <div class="statusline ${rotosCount() ? 'no' : 'ok'}" id="revisarStat">${rotosCount() ? `● ${rotosCount()} sin resultado en Spotify` : '● Sin enlaces rotos detectados'}</div>
     <div class="btnrow"><button class="btn wide" id="revisarMeta">${_revisando ? 'Detener' : 'Revisar metadatos y enlaces'}</button></div>
@@ -4731,7 +4755,6 @@ function openSettings() {
   document.getElementById('findDups').addEventListener('click', openDuplicados);
   document.getElementById('openTrash').addEventListener('click', openPapelera);
   document.getElementById('openAutoAdded').addEventListener('click', openAutoAdded);
-  document.getElementById('openDuplicados').addEventListener('click', openDuplicados);
   document.getElementById('revisarMeta').addEventListener('click', revisarMetadatos);
 }
 
@@ -4844,11 +4867,15 @@ function openDuplicados() {
   showSheet(`
     <div class="sheethead"><h2>Posibles duplicados</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
     <p class="lede">Comparo título y artista (ignorando remasters, directos, ediciones especiales…) entre elementos que no comparten el mismo enlace de Spotify. No borro nada por mi cuenta — decides tú cuál te quedas.</p>
+    <p class="lede"><strong>Unir</strong> deja una sola ficha, la más completa, y le pasa lo que tengan las otras: escuchado, valoración, notas, etiquetas y reproducciones. <strong>Borrar este</strong> quita esa copia tal cual, con lo que tuviera dentro.</p>
     <div id="dupOut">
       ${!grupos.length
         ? `<div class="empty" style="padding:24px 8px;"><div class="ico">✨</div><h2>Nada que limpiar</h2><p>No he encontrado títulos y artistas repetidos entre orígenes distintos.</p></div>`
         : grupos.slice(0, TOPE).map((g, gi) => `
-          <div class="flabel" style="margin-top:${gi === 0 ? '0' : '18'}px;">${esc(g[0].title)} — ${esc(artistsOf(g[0]))}</div>
+          <div class="flabel" style="margin-top:${gi === 0 ? '0' : '18'}px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
+            <span>${esc(g[0].title)} — ${esc(artistsOf(g[0]))}</span>
+            <button class="linkbtn" data-dupunir="${gi}">Unir las ${g.length}</button>
+          </div>
           <div class="list">${g.map(it => `
             <div class="lrow" style="cursor:default;">
               <div class="lart">${portada(it.coverUrl, TYPE_ICON[it.type], true)}</div>
@@ -4863,6 +4890,15 @@ function openDuplicados() {
     </div>
   `);
   document.getElementById('dupOut').addEventListener('click', e => {
+    const unir = e.target.closest('[data-dupunir]');
+    if (unir) {
+      // unirGrupo vuelca en la ficha más completa lo que tengan las demás
+      // antes de borrarlas, para que limpiar no cueste ningún dato tuyo
+      const { sobran } = unirGrupo(grupos[+unir.dataset.dupunir]);
+      if (sobran.length) deleteItems(sobran.map(x => x.id));   // deja tumba + papelera + Deshacer
+      openDuplicados();
+      return;
+    }
     const b = e.target.closest('[data-dupdel]'); if (!b) return;
     deleteItems([b.dataset.dupdel]);
     openDuplicados();
