@@ -3404,7 +3404,17 @@ async function sincronizarEscuchasSpotify(silencioso) {
       for (const id of idsDe(track)) { const m = trackPorId.get(id); if (m) return m; }
       const isrc = track.external_ids?.isrc;
       if (isrc && trackPorIsrc.has(isrc)) return trackPorIsrc.get(isrc);
-      return trackPorObra.get(claveObra(track.name, track.artists?.[0]?.name)) || null;
+      /* El nivel 3 es el único que puede equivocarse de canción: dos
+         grabaciones distintas pueden compartir título y artista (un directo,
+         una versión de otro disco, un tema regrabado años después). Sin más
+         comprobación, sonaba una y se marcaba la otra. La duración las
+         distingue: la misma grabación dura lo mismo, y dos versiones
+         distintas casi nunca coinciden al segundo. */
+      const candidata = trackPorObra.get(claveObra(track.name, track.artists?.[0]?.name));
+      if (!candidata) return null;
+      const a = track.duration_ms, b = candidata.durationMs;
+      if (a && b && Math.abs(a - b) > 3000) return null;   // duraciones muy distintas: no es la misma
+      return candidata;
     };
     const cacheAlbum = new Map();   // albumId -> promesa de trackTitles (o null si falló)
     const trackTitlesDe = album => {
@@ -3468,7 +3478,17 @@ async function sincronizarEscuchasSpotify(silencioso) {
          ya descarta que la tengas guardada con otro id/edición, así que llegar
          aquí significa de verdad "esto no lo tienes". */
       const enterrada = idsDe(track).some(id => tombstoned.has(id));
-      if (!cubierta && PREFS.autoAddEscuchas && !enterrada) {
+      /* Spotify sirve en el historial cosas que NO son pistas de catálogo:
+         los vídeos musicales y clips promocionales. Se reconocen porque no
+         traen ISRC (el identificador de la grabación) — de 1.636 canciones
+         reales de este vault, 1.628 lo tienen; de las 8 que no, las 8 eran
+         justo eso. Además vienen con la carátula del VÍDEO en vez de la del
+         álbum, y con el título retocado ("- HD Remaster", "- Re-Edit"), así
+         que al colarse parecía que se guardaba "otra canción" distinta a la
+         que sonaba. Sirven para marcar lo que ya tienes (arriba), pero no
+         para crear fichas nuevas con metadatos que no son de la canción. */
+      const esClipDeVideo = !track.external_ids?.isrc;
+      if (!cubierta && PREFS.autoAddEscuchas && !enterrada && !esClipDeVideo) {
         const nueva = makeItem(normalize(track, 'track'));
         nueva.listened = true; nueva.listenedAt = playedTs;
         nueva.autoAdded = true;   // se pintó en Metadatos y sale en "Auto-añadidos" (Ajustes), para poder auditar
