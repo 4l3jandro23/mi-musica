@@ -43,6 +43,11 @@
     --shadow-sm: 0 1px 2px rgba(26,20,14,0.06), 0 4px 12px rgba(26,20,14,0.06);
     --shadow-md: 0 2px 6px rgba(26,20,14,0.10), 0 12px 28px rgba(26,20,14,0.12);
     --shadow-lg: 0 -4px 40px rgba(26,20,14,0.18);
+    /* Curvas con más carácter que las de CSS por defecto — las de serie son
+       demasiado suaves y las animaciones se notan blandas, sin intención. */
+    --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
   }
   @media (prefers-color-scheme: dark) {
     :root:where(:not([data-theme="light"])) {
@@ -596,10 +601,19 @@
     position: fixed; inset: 0; z-index: 60; background: rgba(10,7,5,0.55);
     display:flex; align-items:flex-end; justify-content:center;
     backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
-    animation: fade .18s ease;
+    animation: fade .18s var(--ease-out);
   }
+  /* Antes cerrar era instantáneo (innerHTML = ''): la ficha, ajustes, buscar,
+     TODO desaparecía de golpe en cada cierre de toda la app. Que algo
+     aparezca con una entrada cuidada y se esfume de golpe se nota — rompe la
+     sensación de que la interfaz responde a lo que haces. Con .closing (ver
+     closeModal) ahora también sale con su propia transición, un poco más
+     rápida que la entrada porque cerrar debe sentirse inmediato. */
+  .overlay.closing { animation: fadeOut .15s var(--ease-out) forwards; pointer-events: none; }
   @keyframes fade { from { opacity: 0 } to { opacity: 1 } }
+  @keyframes fadeOut { from { opacity: 1 } to { opacity: 0 } }
   @keyframes rise { from { transform: translateY(18px); opacity: .6 } to { transform: none; opacity: 1 } }
+  @keyframes fall { from { transform: none; opacity: 1 } to { transform: translateY(14px); opacity: 0 } }
   @media (min-width: 640px) { .overlay { align-items:center; } }
   .sheet {
     background: var(--bg); width: 100%; max-width: 540px; overflow-y: auto;
@@ -610,8 +624,9 @@
     max-height: min(90vh, calc(100vh - var(--kb, 0px) - 12px));
     border-radius: 22px 22px 0 0; padding: 18px 18px calc(26px + env(safe-area-inset-bottom) + var(--kb, 0px));
     border: 1px solid var(--line); border-bottom: none;
-    animation: rise .2s cubic-bezier(.2,.8,.3,1);
+    animation: rise .2s var(--ease-out);
   }
+  .sheet.closing { animation: fall .15s var(--ease-out) forwards; }
   @media (min-width: 640px) { .sheet { border-radius: 20px; max-height: min(86vh, calc(100vh - var(--kb, 0px) - 12px)); border-bottom: 1px solid var(--line); } }
   .sheethead { display:flex; align-items:center; justify-content:space-between; gap: 12px; margin-bottom: 14px; }
   .sheethead h2 { font-size: 17px; margin:0; font-weight: 680; }
@@ -2205,8 +2220,25 @@ const modalRoot = document.getElementById('modalRoot');
    teclado todavía abierto, la SIGUIENTE hoja podía heredar ese hueco durante
    un instante y salir comprimida como si el teclado ya estuviera puesto,
    antes de que tocaras nada — de ahí que "la segunda vez" se viera mal. */
-const closeModal = () => { modalRoot.innerHTML = ''; document.documentElement.style.setProperty('--kb', '0px'); };
+let _closeTimer = null;
+function closeModal() {
+  const overlay = modalRoot.querySelector('.overlay');
+  if (!overlay) { modalRoot.innerHTML = ''; document.documentElement.style.setProperty('--kb', '0px'); return; }
+  if (overlay.classList.contains('closing')) return;   // ya se está cerrando: no reiniciar la cuenta atrás
+  overlay.classList.add('closing');
+  overlay.querySelector('.sheet')?.classList.add('closing');
+  // 150ms = la duración de .closing en CSS. Un timeout en vez de esperar a
+  // 'animationend' porque si la pestaña pasa a segundo plano a media
+  // animación ese evento puede no llegar nunca, y el modal se quedaría
+  // atascado a medio cerrar para siempre.
+  clearTimeout(_closeTimer);
+  _closeTimer = setTimeout(() => {
+    modalRoot.innerHTML = '';
+    document.documentElement.style.setProperty('--kb', '0px');
+  }, 150);
+}
 function showSheet(html) {
+  clearTimeout(_closeTimer);   // abrir algo nuevo gana sin esperar a que termine un cierre en marcha
   document.documentElement.style.setProperty('--kb', '0px');
   modalRoot.innerHTML = `<div class="overlay" data-overlay="1"><div class="sheet" role="dialog" aria-modal="true">${html}</div></div>`;
 }
