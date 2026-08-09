@@ -2132,6 +2132,101 @@ function openAutoAdded() {
   });
 }
 
+/* ============ duplicados ============
+   Spotify da IDs distintos a la misma canción según la edición (normal /
+   deluxe / remaster / reedición) y según el mercado. Antes eso hacía que el
+   historial la añadiera otra vez creyendo que era nueva: este vault llegó a
+   tener 21 pares con el mismo ISRC y 65 con el mismo título+artista.
+   El emparejamiento nuevo ya evita crear más, pero los que había siguen ahí,
+   y borrar a mano el "malo" perdería lo que tuvieras en él. De ahí unir.
+   Solo canciones, a propósito: un álbum y su edición deluxe comparten nombre
+   pero NO su lista de canciones, así que unirlos sí perdería información
+   real. Esos conviene mirarlos a mano. */
+function gruposDuplicados() {
+  const grupos = new Map();
+  ITEMS.forEach(it => {
+    if (it.type !== 'track' || it.manual) return;
+    const k = claveObra(it.title, (it.artists || [])[0]);
+    if (!grupos.has(k)) grupos.set(k, []);
+    grupos.get(k).push(it);
+  });
+  return [...grupos.values()].filter(g => g.length > 1)
+    .sort((a, b) => (a[0].title || '').localeCompare(b[0].title || '', 'es'));
+}
+
+/* Se queda la ficha con más trabajo tuyo encima (valoración, notas,
+   etiquetas...) y hereda de las otras todo lo que ella no tenga: así unir
+   nunca puede hacerte perder un dato que ya habías puesto. */
+function unirGrupo(grupo) {
+  const puntos = it => (it.rating ? 4 : 0) + (it.notes ? 3 : 0) + ((it.tagIds || []).length ? 2 : 0)
+                     + (it.listened ? 1 : 0) + (it.autoAdded ? -2 : 0);
+  const orden = grupo.slice().sort((a, b) => puntos(b) - puntos(a) || (a.dateAdded || 0) - (b.dateAdded || 0));
+  const queda = orden[0], sobran = orden.slice(1);
+  sobran.forEach(o => {
+    if (!queda.listened && o.listened) { queda.listened = true; queda.listenedAt = o.listenedAt; }
+    if (!queda.rating && o.rating) queda.rating = o.rating;
+    if (!queda.notes && o.notes) queda.notes = o.notes;
+    if (!queda.recomendadoPor && o.recomendadoPor) queda.recomendadoPor = o.recomendadoPor;
+    if (!queda.coverUrl && o.coverUrl) queda.coverUrl = o.coverUrl;
+    if (o.prioridad) queda.prioridad = true;
+    queda.tagIds = [...new Set((queda.tagIds || []).concat(o.tagIds || []))];
+    if (o.cancionesEscuchadas?.length) {
+      queda.cancionesEscuchadas = [...new Set((queda.cancionesEscuchadas || []).concat(o.cancionesEscuchadas))];
+    }
+    if (o.trackRatings) queda.trackRatings = Object.assign({}, o.trackRatings, queda.trackRatings || {});
+    const plays = [...new Set((queda.plays || []).concat(o.plays || []))].sort((a, b) => a - b);
+    if (plays.length) {
+      queda.plays = plays.length > TOPE_PLAYS
+        ? [plays[0]].concat(plays.slice(plays.length - (TOPE_PLAYS - 1)))
+        : plays;
+    }
+    if (o.dateAdded && (!queda.dateAdded || o.dateAdded < queda.dateAdded)) queda.dateAdded = o.dateAdded;
+  });
+  queda.touchedAt = Date.now();   // es una edición tuya: debe ganarle a una tumba vieja
+  return { queda, sobran };
+}
+
+function openDuplicados() {
+  const grupos = gruposDuplicados();
+  const total = grupos.reduce((n, g) => n + g.length - 1, 0);
+  showSheet(`
+    <div class="sheethead"><h2>Duplicados</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <p class="lede">El mismo tema guardado más de una vez porque Spotify le da otro ID en cada edición (deluxe, remaster, reedición). Al unir se conserva la ficha más completa y hereda de las demás lo que le falte: escuchado, valoración, notas, etiquetas y reproducciones.</p>
+    ${grupos.length ? `
+      <div class="btnrow"><button class="btn primary wide" id="unirTodos">Unir todo (${total} ficha${total === 1 ? '' : 's'} de sobra)</button></div>
+      <div class="list" id="dupList">${grupos.map((g, i) => {
+        const { queda } = (() => { const p = it => (it.rating ? 4 : 0) + (it.notes ? 3 : 0) + ((it.tagIds || []).length ? 2 : 0) + (it.listened ? 1 : 0) + (it.autoAdded ? -2 : 0);
+          return { queda: g.slice().sort((a, b) => p(b) - p(a) || (a.dateAdded || 0) - (b.dateAdded || 0))[0] }; })();
+        return `<article class="lrow">
+          <div class="lart">${portada(queda.coverUrl, TYPE_ICON[queda.type], true)}</div>
+          <div class="linfo">
+            <div class="lt">${esc(queda.title)}</div>
+            <div class="la">${esc(artistsOf(queda))} · ${g.length} copias</div>
+            <div class="la" style="opacity:.75;">${g.map(x => esc(x.albumName || x.title)).join(' · ')}</div>
+          </div>
+          <button class="xbtn" data-unir="${i}" aria-label="Unir estas copias">⇢</button>
+        </article>`;
+      }).join('')}</div>`
+      : `<p class="lede" style="margin:0;">No hay duplicados. 👌</p>`}
+  `);
+
+  const aplicar = gs => {
+    let quitadas = 0;
+    const paraBorrar = [];
+    gs.forEach(g => { const { sobran } = unirGrupo(g); paraBorrar.push(...sobran); quitadas += sobran.length; });
+    if (!paraBorrar.length) return;
+    // por deleteItems: deja tumba (no vuelven del otro dispositivo), guarda
+    // copia en la papelera 7 días y ofrece Deshacer con su propio aviso
+    deleteItems(paraBorrar.map(x => x.id));
+    openDuplicados();
+  };
+  document.getElementById('unirTodos')?.addEventListener('click', () => aplicar(grupos));
+  document.getElementById('dupList')?.addEventListener('click', e => {
+    const b = e.target.closest('[data-unir]'); if (!b) return;
+    aplicar([grupos[+b.dataset.unir]]);
+  });
+}
+
 /* ============ modals ============ */
 const modalRoot = document.getElementById('modalRoot');
 /* Cerrar una hoja no siempre dispara a tiempo el evento de visualViewport que
@@ -3188,13 +3283,43 @@ function registrarPlayCancion(album, nombreCancion, ts) {
 }
 const playsDeCancion = (album, nombre) => (album.trackPlays?.[nombre] || []).length;
 
-async function fetchRecentlyPlayed(limit = 50) {
-  const t = await spotifyToken();
-  const res = await fetchConReintento429(`https://api.spotify.com/v1/me/player/recently-played?limit=${limit}`, t);
-  if (res.status === 429) throw new Error('RATE_LIMIT');
-  if (!res.ok) throw new Error('RECENT_FAILED:' + res.status);
-  const d = await res.json();
-  return d.items || [];   // cada uno: { track: {...}, played_at: "..." }
+/* Claves de comparación "es la misma obra aunque Spotify la sirva distinta".
+   Deliberadamente conservadoras: quitan solo lo que de verdad es la MISMA
+   grabación reetiquetada (remaster, edición deluxe, reedición). NO tocan
+   "Live", "Remix", "Acoustic" ni "Radio Edit" — esas sí son grabaciones
+   distintas y fundirlas sería peor que tener dos fichas. */
+const _RUIDO_EDICION = /\s*[-–(\[]\s*(\d{4}\s+)?(remaster(ed|izado)?|deluxe|expanded|anniversary|special|bonus)\b[^)\]]*[)\]]?\s*$/i;
+const limpiarEdicion = s => String(s || '').replace(_RUIDO_EDICION, '').trim();
+const claveObra = (titulo, artista) => fold(limpiarEdicion(titulo)).replace(/[^a-z0-9]+/g, ' ').trim()
+  + '|' + fold(artista || '').replace(/[^a-z0-9]+/g, ' ').trim();
+
+/* Antes pedía siempre "las últimas 50 y ya". Si escuchabas más de 50 canciones
+   entre dos aperturas de la app, las más viejas se caían del historial de
+   Spotify sin registrarse nunca — y con 15k me gusta eso pasa a menudo.
+   Ahora recuerda la última escucha procesada y pide con el cursor `after`
+   todo lo posterior, paginando. Sin marca previa (primera vez) sigue
+   pidiendo las últimas 50, que es todo lo que Spotify guarda de golpe. */
+async function fetchRecentlyPlayed(desde) {
+  const out = [];
+  const vistos = new Set();
+  let url = 'https://api.spotify.com/v1/me/player/recently-played?limit=50'
+          + (desde ? `&after=${desde}` : '');
+  for (let pagina = 0; pagina < 10 && url; pagina++) {
+    const t = await spotifyToken();
+    const res = await fetchConReintento429(url, t);
+    if (res.status === 429) throw new Error('RATE_LIMIT');
+    if (!res.ok) throw new Error('RECENT_FAILED:' + res.status);
+    const d = await res.json();
+    let nuevos = 0;
+    (d.items || []).forEach(x => {
+      const k = x.played_at + '|' + (x.track?.id || '');
+      if (!vistos.has(k)) { vistos.add(k); out.push(x); nuevos++; }
+    });
+    // sin `after` solo tiene sentido la primera página (las 50 últimas);
+    // y si una página no aporta nada nuevo, seguir sería dar vueltas
+    url = (desde && nuevos) ? d.next : null;
+  }
+  return out;   // cada uno: { track: {...}, played_at: "..." }
 }
 
 /* Cruza el historial contra lo que ya tienes guardado: una canción suelta se
@@ -3224,9 +3349,47 @@ async function sincronizarEscuchasSpotify(silencioso) {
     return;
   }
   try {
-    const items = await fetchRecentlyPlayed(50);
+    const items = await fetchRecentlyPlayed(META.lastPlayedAt || 0);
     let marcados = 0, anadidas = 0, reproducciones = 0;
+    let maxTs = META.lastPlayedAt || 0;
     const tombstoned = new Set(TOMB.map(t => t.sid));
+
+    /* Índices en vez de un .find() por cada canción sonada: con ~5.000
+       elementos y 50 escuchas eran 250.000 comparaciones por sincronización.
+       Y sobre todo, permiten emparejar por algo más que el ID exacto (ver
+       buscarPropia): el ID de Spotify NO es estable para una misma canción. */
+    const trackPorId = new Map(), trackPorIsrc = new Map(), trackPorObra = new Map();
+    const albPorId = new Map(), albPorObra = new Map();
+    const indexar = x => {
+      if (x.type === 'track') {
+        if (x.spotifyId) trackPorId.set(x.spotifyId, x);
+        if (x.isrc && !trackPorIsrc.has(x.isrc)) trackPorIsrc.set(x.isrc, x);
+        const k = claveObra(x.title, (x.artists || [])[0]);
+        if (!trackPorObra.has(k)) trackPorObra.set(k, x);
+      } else if (x.type === 'album') {
+        if (x.spotifyId) albPorId.set(x.spotifyId, x);
+        const k = claveObra(x.title, (x.artists || [])[0]);
+        if (!albPorObra.has(k)) albPorObra.set(k, x);
+      }
+    };
+    ITEMS.forEach(indexar);
+
+    /* Los tres motivos reales por los que "escucho una canción y me marca otra
+       cosa, o me la añade repetida aunque ya la tenga":
+        1) `linked_from`: Spotify sirve IDs distintos según el mercado, y el
+           que reproduce no tiene por qué ser el que guardaste.
+        2) ISRC: identifica la GRABACIÓN, no la edición. Es lo que hace que
+           "Dark Horse" de PRISM y de PRISM (Deluxe) se reconozcan como la
+           misma canción — en este vault había 21 pares así duplicados.
+        3) Título+artista normalizados, como último recurso para las pocas
+           fichas viejas que no tienen ISRC guardado. */
+    const idsDe = track => [track.id, track.linked_from?.id].filter(Boolean);
+    const buscarPropia = track => {
+      for (const id of idsDe(track)) { const m = trackPorId.get(id); if (m) return m; }
+      const isrc = track.external_ids?.isrc;
+      if (isrc && trackPorIsrc.has(isrc)) return trackPorIsrc.get(isrc);
+      return trackPorObra.get(claveObra(track.name, track.artists?.[0]?.name)) || null;
+    };
     const cacheAlbum = new Map();   // albumId -> promesa de trackTitles (o null si falló)
     const trackTitlesDe = album => {
       if (album.trackTitles) return Promise.resolve(album.trackTitles);
@@ -3246,9 +3409,10 @@ async function sincronizarEscuchasSpotify(silencioso) {
     for (const { track, played_at } of items) {
       if (!track || (track.type && track.type !== 'track')) continue;
       const playedTs = new Date(played_at).getTime();
+      if (playedTs > maxTs) maxTs = playedTs;
       let cubierta = false;
 
-      const propia = ITEMS.find(x => x.type === 'track' && x.spotifyId === track.id);
+      const propia = buscarPropia(track);
       if (propia) {
         cubierta = true;
         if (registrarPlay(propia, playedTs)) reproducciones++;
@@ -3256,18 +3420,12 @@ async function sincronizarEscuchasSpotify(silencioso) {
       }
 
       if (track.album?.id) {
-        // Spotify a veces sirve la misma canción bajo un ID de álbum distinto
-        // al que guardaste (otra edición/región) aunque el título y el
-        // artista sean iguales. Si el ID exacto no encuentra nada, se busca
-        // entre tus álbumes guardados uno cuya tracklist ya cacheada
-        // contenga ese título y comparta artista — así no se cuela como
-        // canción suelta un tema que ya tienes en un álbum.
-        let album = ITEMS.find(x => x.type === 'album' && x.spotifyId === track.album.id);
-        if (!album) {
-          const artistasPista = new Set((track.artists || []).map(a => fold(a.name)));
-          album = ITEMS.find(x => x.type === 'album' && x.trackTitles?.includes(track.name)
-            && (x.artists || []).some(a => artistasPista.has(fold(a))));
-        }
+        // Mismo problema que con las canciones: el ID del álbum cambia entre
+        // ediciones y mercados. Se busca por ID y, si no, por nombre+artista
+        // normalizados (quitando "Deluxe", "Remastered"...), que reconoce la
+        // reedición sin arriesgarse a confundir dos discos distintos.
+        let album = albPorId.get(track.album.id);
+        if (!album) album = albPorObra.get(claveObra(track.album.name, track.album.artists?.[0]?.name || track.artists?.[0]?.name));
         if (album) {
           const titulos = await trackTitlesDe(album);
           if (titulos && titulos.includes(track.name)) {
@@ -3289,15 +3447,25 @@ async function sincronizarEscuchasSpotify(silencioso) {
         }
       }
 
-      if (!cubierta && PREFS.autoAddEscuchas && !tombstoned.has(track.id) && !ITEMS.some(x => x.spotifyId === track.id)) {
+      /* La tumba se comprueba contra TODOS los ids posibles de la canción: si
+         no, borras algo y vuelve solo bajo el id de otra edición. Y buscarPropia
+         ya descarta que la tengas guardada con otro id/edición, así que llegar
+         aquí significa de verdad "esto no lo tienes". */
+      const enterrada = idsDe(track).some(id => tombstoned.has(id));
+      if (!cubierta && PREFS.autoAddEscuchas && !enterrada) {
         const nueva = makeItem(normalize(track, 'track'));
         nueva.listened = true; nueva.listenedAt = playedTs;
         nueva.autoAdded = true;   // se pintó en Metadatos y sale en "Auto-añadidos" (Ajustes), para poder auditar
         registrarPlay(nueva, playedTs);
         ITEMS.push(nueva);
+        indexar(nueva);   // si vuelve a sonar en esta misma tanda, ya no se duplica
         anadidas++; reproducciones++;
       }
     }
+    // avanza el cursor aunque no haya cambiado nada: lo ya visto no se
+    // vuelve a pedir, y así el historial no se pierde por desbordar las 50
+    if (maxTs > (META.lastPlayedAt || 0)) { META.lastPlayedAt = maxTs; saveMeta(); }
+
     if (marcados || anadidas || reproducciones) {
       saveItems(); render();
       if (!silencioso) {
@@ -3740,7 +3908,14 @@ function programarSync() {
   const g = ghCfg();
   if (!g || g.auto === false) return;   // sincronización automática desactivada: solo con el botón ⟳
   clearTimeout(_syncTimer);
-  _syncTimer = setTimeout(() => sincronizar(false), 4000);
+  _syncTimer = setTimeout(() => {
+    /* Si justo ahora hay una subida en marcha, sincronizar() se rendía y
+       devolvía "ya hay una en marcha" — y este cambio se quedaba sin subir
+       hasta que algo lo disparase otra vez (o hasta la próxima apertura).
+       Reintentar en unos segundos cuesta nada y cierra ese agujero. */
+    if (_syncCorriendo) { programarSync(); return; }
+    sincronizar(false);
+  }, 4000);
 }
 
 const sinPortada = () => ITEMS.filter(i => !i.coverUrl && !i.manual && i.type !== 'playlist').length;
@@ -4394,6 +4569,7 @@ function openSettings() {
     <div class="btnrow"><button class="btn wide" id="findDups">Buscar posibles duplicados</button></div>
     <div class="btnrow"><button class="btn wide" id="openTrash">Papelera${TRASH.length ? ` (${TRASH.length})` : ''}</button></div>
     <div class="btnrow"><button class="btn wide" id="openAutoAdded">🤖 Añadidas automáticamente${(() => { const n = ITEMS.filter(i => i.autoAdded && !i.archived).length; return n ? ` (${n})` : ''; })()}</button></div>
+    <div class="btnrow"><button class="btn wide" id="openDuplicados">👯 Buscar duplicados${(() => { const n = gruposDuplicados().length; return n ? ` (${n})` : ''; })()}</button></div>
     <p class="lede" style="margin-top:12px;">Repasa todo contra Spotify de una pasada: rellena los datos que falten (año, sello, duración, carátula…) sin tocar lo que hayas editado a mano, y marca lo que ya no existe allí.</p>
     <div class="statusline ${rotosCount() ? 'no' : 'ok'}" id="revisarStat">${rotosCount() ? `● ${rotosCount()} sin resultado en Spotify` : '● Sin enlaces rotos detectados'}</div>
     <div class="btnrow"><button class="btn wide" id="revisarMeta">${_revisando ? 'Detener' : 'Revisar metadatos y enlaces'}</button></div>
@@ -4555,6 +4731,7 @@ function openSettings() {
   document.getElementById('findDups').addEventListener('click', openDuplicados);
   document.getElementById('openTrash').addEventListener('click', openPapelera);
   document.getElementById('openAutoAdded').addEventListener('click', openAutoAdded);
+  document.getElementById('openDuplicados').addEventListener('click', openDuplicados);
   document.getElementById('revisarMeta').addEventListener('click', revisarMetadatos);
 }
 
