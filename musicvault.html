@@ -363,6 +363,15 @@
     padding: 10px 0 9px; margin-top: 12px;
     border-bottom: 1px solid var(--line);
   }
+  /* En Cristal, esta barra se quedaba con un desenfoque fijo de 12px y un
+     fondo plano al 92% de --bg (que ahí es un gris liso) mientras el resto
+     de tarjetas/chips usan --surface translúcido + el desenfoque de 20px con
+     más saturación de la paleta — de ahí que se viera como un panel gris
+     aparte en vez de cristal a juego con todo lo demás. */
+  :root[data-palette="cristal"] .toolbar {
+    background: var(--surface);
+    backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  }
   .toolbar-row { display:flex; gap: 8px; align-items:center; }
   .searchwrap { position: relative; flex: 1 1 auto; min-width: 0; }
   .searchwrap .mag { position:absolute; left: 11px; top: 50%; transform: translateY(-50%); font-size: 13px; color: var(--fg-mute); pointer-events:none; }
