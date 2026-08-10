@@ -437,18 +437,20 @@
      de cada render() llevan animation-delay escalonado (ver gcard/lrow en el
      JS) — el resto entra sin más para no tardar una eternidad ni marear con
      cientos animando a la vez. */
-  @keyframes cardIn { from { opacity: 0; transform: translateY(10px) scale(.96); } to { opacity: 1; transform: none; } }
-  .gcard, .lrow { animation: cardIn .38s var(--ease-out) both; }
+  @keyframes cardIn { from { opacity: 0; transform: translateY(46px) scale(.8) rotate(-2deg); } to { opacity: 1; transform: none; } }
+  .gcard, .lrow { animation: cardIn .62s var(--ease-out) both; }
   @media (prefers-reduced-motion: reduce) { .gcard, .lrow { animation: none !important; } }
 
   /* Celebración al marcar como escuchado: solo la tarjeta que acabas de tocar
      (ver _ultimoToggle), nunca al filtrar o re-renderizar el resto. */
-  @keyframes celebra { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--jade) 55%, transparent); }
-    100% { box-shadow: 0 0 0 16px color-mix(in srgb, var(--jade) 0%, transparent); } }
-  @keyframes popCheck { 0% { transform: scale(1); } 40% { transform: scale(1.38); } 65% { transform: scale(.92); } 100% { transform: scale(1); } }
-  .gcard.pop .art { animation: celebra .6s var(--ease-out); border-radius: inherit; }
-  .lrow.pop .lart { animation: celebra .6s var(--ease-out); border-radius: 8px; }
-  .gcard.pop .statusdot.on, .lrow.pop .lcheck.on { animation: popCheck .5s var(--ease-out); }
+  @keyframes celebra { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--jade) 75%, transparent); }
+    100% { box-shadow: 0 0 0 34px color-mix(in srgb, var(--jade) 0%, transparent); } }
+  @keyframes cardBounce { 0% { transform: scale(1); } 35% { transform: scale(1.06); } 60% { transform: scale(.98); } 100% { transform: scale(1); } }
+  @keyframes popCheck { 0% { transform: scale(1) rotate(0); } 40% { transform: scale(1.75) rotate(-8deg); } 65% { transform: scale(.85) rotate(4deg); } 100% { transform: scale(1) rotate(0); } }
+  .gcard.pop, .lrow.pop { animation: cardBounce .5s var(--ease-out); }
+  .gcard.pop .art { animation: celebra .85s var(--ease-out); border-radius: inherit; }
+  .lrow.pop .lart { animation: celebra .85s var(--ease-out); border-radius: 8px; }
+  .gcard.pop .statusdot.on, .lrow.pop .lcheck.on { animation: popCheck .7s var(--ease-out); }
 
   .gcard {
     background: var(--surface); border: 1px solid var(--line); border-radius: 15px;
@@ -1839,8 +1841,11 @@ function renderChips() {
 
 function gcard(it, idx) {
   const tags = (it.tagIds || []).map(tagById).filter(Boolean).slice(0, 4);
-  const entra = idx != null ? ` style="animation-delay:${idx * 32}ms"` : ' style="animation:none"';
   const celebra = it.id === _ultimoToggle ? ' pop' : '';
+  // el "animation:none" en línea gana a CUALQUIER regla de clase, incluida
+  // .gcard.pop — si la tarjeta que acabas de marcar cae fuera de la cascada
+  // (más allá de la nº12), esto tapaba su propia celebración
+  const entra = celebra ? '' : (idx != null ? ` style="animation-delay:${idx * 60}ms"` : ' style="animation:none"');
   return `<article class="gcard${celebra} ${it.listened ? 'done' : ''} ${selected.has(it.id) ? 'sel' : ''}" data-id="${it.id}"${entra}>
     <div class="art">
       ${portada(it.coverUrl, `<span class="ph">${TYPE_ICON[it.type]}</span>`, true)}
@@ -1863,8 +1868,8 @@ function gcard(it, idx) {
 function lrow(it, idx) {
   const tags = (it.tagIds || []).map(tagById).filter(Boolean).slice(0, 4);
   const y = yearOf(it);
-  const entra = idx != null ? ` style="animation-delay:${idx * 26}ms"` : ' style="animation:none"';
   const celebra = it.id === _ultimoToggle ? ' pop' : '';
+  const entra = celebra ? '' : (idx != null ? ` style="animation-delay:${idx * 50}ms"` : ' style="animation:none"');
   return `<article class="lrow${celebra} ${it.listened ? 'done' : ''} ${selected.has(it.id) ? 'sel' : ''}" data-id="${it.id}"${entra}>
     <div class="lart">${portada(it.coverUrl, TYPE_ICON[it.type], true)}</div>
     <div class="linfo">
