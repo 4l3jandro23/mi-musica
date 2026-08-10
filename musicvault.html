@@ -433,6 +433,23 @@
   @media (min-width: 560px) { .grid { grid-template-columns: repeat(calc(var(--gcols, 2) + 1), 1fr); } }
   @media (min-width: 820px) { .grid { grid-template-columns: repeat(calc(var(--gcols, 2) + 2), 1fr); } }
 
+  /* Cascada de entrada de las tarjetas (grid Y lista): solo las primeras 12
+     de cada render() llevan animation-delay escalonado (ver gcard/lrow en el
+     JS) — el resto entra sin más para no tardar una eternidad ni marear con
+     cientos animando a la vez. */
+  @keyframes cardIn { from { opacity: 0; transform: translateY(10px) scale(.96); } to { opacity: 1; transform: none; } }
+  .gcard, .lrow { animation: cardIn .38s var(--ease-out) both; }
+  @media (prefers-reduced-motion: reduce) { .gcard, .lrow { animation: none !important; } }
+
+  /* Celebración al marcar como escuchado: solo la tarjeta que acabas de tocar
+     (ver _ultimoToggle), nunca al filtrar o re-renderizar el resto. */
+  @keyframes celebra { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--jade) 55%, transparent); }
+    100% { box-shadow: 0 0 0 16px color-mix(in srgb, var(--jade) 0%, transparent); } }
+  @keyframes popCheck { 0% { transform: scale(1); } 40% { transform: scale(1.38); } 65% { transform: scale(.92); } 100% { transform: scale(1); } }
+  .gcard.pop .art { animation: celebra .6s var(--ease-out); border-radius: inherit; }
+  .lrow.pop .lart { animation: celebra .6s var(--ease-out); border-radius: 8px; }
+  .gcard.pop .statusdot.on, .lrow.pop .lcheck.on { animation: popCheck .5s var(--ease-out); }
+
   .gcard {
     background: var(--surface); border: 1px solid var(--line); border-radius: 15px;
     overflow: hidden; cursor: pointer; position: relative;
@@ -1820,9 +1837,11 @@ function renderChips() {
   document.getElementById('chips').innerHTML = parts.join('');
 }
 
-function gcard(it) {
+function gcard(it, idx) {
   const tags = (it.tagIds || []).map(tagById).filter(Boolean).slice(0, 4);
-  return `<article class="gcard ${it.listened ? 'done' : ''} ${selected.has(it.id) ? 'sel' : ''}" data-id="${it.id}">
+  const entra = idx != null ? ` style="animation-delay:${idx * 32}ms"` : ' style="animation:none"';
+  const celebra = it.id === _ultimoToggle ? ' pop' : '';
+  return `<article class="gcard${celebra} ${it.listened ? 'done' : ''} ${selected.has(it.id) ? 'sel' : ''}" data-id="${it.id}"${entra}>
     <div class="art">
       ${portada(it.coverUrl, `<span class="ph">${TYPE_ICON[it.type]}</span>`, true)}
       ${it.type !== 'artist' ? `<button class="statusdot ${it.listened ? 'on' : ''}" data-toggle="${it.id}" aria-label="${it.listened ? 'Marcar pendiente' : 'Marcar escuchado'}">${it.listened ? '✓' : ''}</button>` : ''}
@@ -1841,10 +1860,12 @@ function gcard(it) {
   </article>`;
 }
 
-function lrow(it) {
+function lrow(it, idx) {
   const tags = (it.tagIds || []).map(tagById).filter(Boolean).slice(0, 4);
   const y = yearOf(it);
-  return `<article class="lrow ${it.listened ? 'done' : ''} ${selected.has(it.id) ? 'sel' : ''}" data-id="${it.id}">
+  const entra = idx != null ? ` style="animation-delay:${idx * 26}ms"` : ' style="animation:none"';
+  const celebra = it.id === _ultimoToggle ? ' pop' : '';
+  return `<article class="lrow${celebra} ${it.listened ? 'done' : ''} ${selected.has(it.id) ? 'sel' : ''}" data-id="${it.id}"${entra}>
     <div class="lart">${portada(it.coverUrl, TYPE_ICON[it.type], true)}</div>
     <div class="linfo">
       <div class="lt">${esc(it.title)}</div>
@@ -1929,9 +1950,16 @@ function render() {
   const visibles = rows.slice(0, VISTAS);
   const restan = rows.length - visibles.length;
   const groups = groupsFor(visibles);
+  // Cascada de entrada solo en las primeras tarjetas: con cientos por tanda,
+  // escalonarlas todas tardaría segundos en terminar y cansaría a la vista.
+  // Compartido entre grupos (no se reinicia por grupo) para que el efecto
+  // se note arriba del todo y el resto aparezca de golpe, sin retraso.
+  const TOPE_CASCADA = 12;
+  let _n = 0;
+  const sigueIdx = () => _n++ < TOPE_CASCADA ? _n - 1 : null;
   const draw = list => PREFS.view === 'grid'
-    ? `<div class="grid">${list.map(gcard).join('')}</div>`
-    : `<div class="list">${list.map(lrow).join('')}</div>`;
+    ? `<div class="grid">${list.map(it => gcard(it, sigueIdx())).join('')}</div>`
+    : `<div class="list">${list.map(it => lrow(it, sigueIdx())).join('')}</div>`;
 
   box.innerHTML = (groups
     ? groups.map(g => `<section class="group"><h3 class="ghead">${esc(g.key)}<span class="gcount">${g.items.length}</span></h3>${draw(g.items)}</section>`).join('')
@@ -2059,8 +2087,14 @@ function toggleListened(id) {
   }
   if (it.listened) sonidoEscuchado();
   saveItems();
-  render();
+  // render() reconstruye TODA la rejilla desde cero — el nodo que tocaste ya
+  // no existe tras esto, así que la única forma de que solo ESA tarjeta
+  // celebre (y no las demás al filtrar después) es que gcard/lrow sepan por
+  // esta variable cuál acaba de cambiar, en la misma pasada de render.
+  if (it.listened) { _ultimoToggle = id; render(); _ultimoToggle = null; }
+  else render();
 }
+let _ultimoToggle = null;
 
 // El aviso de "Deshacer" ya protege de un borrado sin querer, pero a quien
 // prefiera algo más explícito le vale más un confirm() antes de que pase nada.
