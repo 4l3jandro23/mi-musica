@@ -1082,9 +1082,10 @@ const loadCreds = () => read(K_CREDS, null);
 /* Carga inicial + migración desde localStorage la primera vez. */
 async function bootStorage() {
   try {
-    const [i, t] = await Promise.all([idbGet(K_ITEMS), idbGet(K_TAGS)]);
+    const [i, t, q] = await Promise.all([idbGet(K_ITEMS), idbGet(K_TAGS), idbGet(K_IMPORT_QUEUE)]);
     if (Array.isArray(i)) ITEMS = i;
     if (Array.isArray(t)) TAGS = t;
+    if (Array.isArray(q)) IMPORT_QUEUE = q;
     if (!Array.isArray(i)) {
       const li = read(K_ITEMS, []), lt = read(K_TAGS, []);
       if (li.length || lt.length) {
@@ -1096,6 +1097,7 @@ async function bootStorage() {
     _sinIDB = true;
     ITEMS = read(K_ITEMS, []);
     TAGS  = read(K_TAGS, []);
+    IMPORT_QUEUE = [];   // sin IndexedDB no merece la pena meter esto en localStorage: no es vault, se puede perder
   }
 }
 
@@ -1379,16 +1381,46 @@ const esperarTurnoSpotify = async () => {
   if (falta > 0) await new Promise(r => setTimeout(r, falta));
 };
 
+/* Si Spotify pide esperar 20s o más, no es el típico "escribiste muy rápido
+   en el buscador" — es un bloqueo en serio (pasa sobre todo importando cientos
+   de enlaces seguidos). Por debajo de eso se trata como ruido normal y se
+   reintenta sin más. El número es una estimación nuestra, no algo que Spotify
+   documente. */
+const SEG_BLOQUEO_SOSTENIDO = 20;
+
+/* Cuánto queda de la pausa actual, en texto para el usuario. Antes los avisos
+   de "demasiadas peticiones" decían siempre "espera unos segundos" aunque la
+   espera real pedida por Spotify fuera de minutos u horas — mentira a medias
+   que solo hacía que el usuario lo reintentase antes de tiempo. */
+function tiempoEsperaTexto() {
+  const s = Math.ceil((_pausaSpotifyHasta - Date.now()) / 1000);
+  if (s <= 5) return 'unos segundos';
+  if (s < 60) return `unos ${s} segundos`;
+  const min = Math.ceil(s / 60);
+  if (min < 60) return `unos ${min} minuto${min === 1 ? '' : 's'}`;
+  const horas = Math.ceil(min / 60);
+  return `unas ${horas} hora${horas === 1 ? '' : 's'}`;
+}
+
 async function fetchConReintento429(url, token, intentos = 5) {
   let res;
   for (let i = 0; i < intentos; i++) {
     await esperarTurnoSpotify();
     res = await fetch(url, { headers: { Authorization: 'Bearer ' + token } });
     if (res.status !== 429) return res;
-    // Retry-After viene en segundos; si Spotify no lo manda, subida exponencial
-    const espera = Math.min(+res.headers.get('Retry-After') || Math.pow(2, i), 10) * 1000;
-    _pausaSpotifyHasta = Math.max(_pausaSpotifyHasta, Date.now() + espera);
+    // Retry-After viene en segundos; si Spotify no lo manda, subida exponencial.
+    // Antes esto se recortaba a 10s como mucho ANTES de guardarlo como pausa
+    // global (más abajo) — si Spotify pedía esperar de verdad más que eso, la
+    // puerta se volvía a abrir demasiado pronto y todo lo demás chocaba otra
+    // vez con el mismo 429 en vez de esperar lo que tocaba.
+    const seg = +res.headers.get('Retry-After') || Math.pow(2, i);
+    _pausaSpotifyHasta = Math.max(_pausaSpotifyHasta, Date.now() + seg * 1000);
     if (i === intentos - 1) return res;
+    // Para algo interactivo (buscar mientras escribes) no tiene sentido dejar
+    // la pantalla colgada una hora esperando: si la espera real es larga, no
+    // se agota aquí — se devuelve el 429 tal cual (la puerta global ya deja en
+    // pausa a todo lo demás el tiempo real) y quien llamó decide qué decir.
+    if (seg > 10) return res;
   }
   return res;
 }
@@ -1433,13 +1465,21 @@ async function spotifyLookup(type, id) {
 async function fetchItemsIndividually(tipo, ids, onProgress, shouldStop, onItem) {
   const CONCURRENCIA = 5;
   const resultados = new Array(ids.length).fill(null);
-  let hechos = 0, i = 0, pararTodo = null;
+  // true = Spotify dijo que no (bloqueo real, o agotamos reintentos con un
+  // 429 corto): NO significa "no existe", así que quien llame no debe darlo
+  // por perdido — hay que reintentarlo más tarde (ver import queue).
+  const bloqueados = new Array(ids.length).fill(false);
+  let hechos = 0, i = 0, pararTodo = null, bloqueoDetectado = false;
 
   async function trabajador() {
-    while (i < ids.length && !pararTodo) {
+    while (i < ids.length && !pararTodo && !bloqueoDetectado) {
       if (shouldStop && shouldStop()) return;
       const mio = i++;
       for (let intento = 0; intento < 4; intento++) {
+        // puerta compartida: si otro worker (u otra búsqueda) ya se comió un
+        // 429 hace un instante, todos esperan juntos en vez de ir chocando
+        // uno detrás de otro contra el mismo límite
+        await esperarTurnoSpotify();
         let t;
         try { t = await spotifyToken(); }
         catch (e) { pararTodo = e; return; }
@@ -1447,9 +1487,21 @@ async function fetchItemsIndividually(tipo, ids, onProgress, shouldStop, onItem)
         try {
           res = await fetch(`https://api.spotify.com/v1/${tipo}s/${ids[mio]}`, { headers: { Authorization: 'Bearer ' + t } });
         } catch { break; }   // fallo de red puntual: cuenta como fallo de este elemento, no para todo
-        if (res.status === 429 && intento < 3) {
-          await new Promise(r => setTimeout(r, (+res.headers.get('Retry-After') || 2) * 1000));
-          continue;
+        if (res.status === 429) {
+          const seg = +res.headers.get('Retry-After') || 2;
+          _pausaSpotifyHasta = Math.max(_pausaSpotifyHasta, Date.now() + seg * 1000);
+          if (seg >= SEG_BLOQUEO_SOSTENIDO) {
+            // esto ya no es "espera un poco y sigue": es un bloqueo en serio.
+            // Paramos TODO el lote entero aquí mismo en vez de que cada
+            // worker se coma 4 intentos por canción sin ninguna esperanza —
+            // lo que quede pendiente se queda tal cual para reintentarlo luego.
+            bloqueados[mio] = true;
+            bloqueoDetectado = true;
+            return;
+          }
+          if (intento < 3) continue;   // la siguiente vuelta ya espera la pausa puesta arriba
+          bloqueados[mio] = true;
+          break;
         }
         if (res.status === 401 || res.status === 403) { pararTodo = new Error('AUTH_FAILED'); return; }
         if (res.ok) {
@@ -1467,6 +1519,8 @@ async function fetchItemsIndividually(tipo, ids, onProgress, shouldStop, onItem)
   }
   await Promise.all(Array.from({ length: Math.min(CONCURRENCIA, ids.length) }, trabajador));
   if (pararTodo) throw pararTodo;
+  resultados.bloqueados = bloqueados;
+  resultados.bloqueoDetectado = bloqueoDetectado;
   return resultados;
 }
 
@@ -2374,7 +2428,7 @@ async function runSearch() {
     let text = 'No se pudo conectar con Spotify. Revisa tu conexión.';
     let mostrarReconectar = false;
     if (msg === 'AUTH_FAILED' || msg === 'NO_CREDS') text = 'Tu conexión con Spotify ha caducado o no es válida. Vuelve a conectarte en Ajustes.';
-    else if (msg === 'RATE_LIMIT') text = 'Demasiadas búsquedas seguidas — Spotify ha puesto un límite temporal. Espera unos segundos y vuelve a intentarlo.';
+    else if (msg === 'RATE_LIMIT') text = `Demasiadas búsquedas seguidas — Spotify ha puesto un límite temporal. Espera ${tiempoEsperaTexto()} y vuelve a intentarlo.`;
     else if (msg.startsWith('LOOKUP_FAILED')) text = `Ese enlace no existe o es privado (error ${msg.split(':')[1]}).`;
     else if (msg.startsWith('SEARCH_FAILED')) text = `Spotify devolvió un error ${msg.split(':')[1]}.`;
     else if (msg.startsWith('PLAYLIST_FAILED')) {
@@ -2722,10 +2776,23 @@ async function runBulk() {
   }
   const pendientes = porTipo.album.length + porTipo.track.length + porTipo.artist.length;
   let hechosTotal = 0;
+  // Con listas de cientos/miles de enlaces, Spotify acaba poniendo un límite
+  // en firme (ver SEG_BLOQUEO_SOSTENIDO en fetchItemsIndividually). Antes eso
+  // se traducía en un montón de "fallaron" sin explicación, y había que ir
+  // pegando el resto del Excel a mano al día siguiente. Ahora, en cuanto se
+  // detecta el bloqueo, lo que falte (de este tipo Y de los que quedan por
+  // procesar) se guarda en la cola de importación y la propia app lo sigue
+  // metiendo sola, un poco cada vez, sin que haya que volver a pegar nada.
+  let bloqueado = false;
+  let encoladas = 0;
 
   for (const tipo of ['album', 'track', 'artist']) {
     const ids = porTipo[tipo];
     if (!ids.length) continue;
+    if (bloqueado) {
+      encoladas += encolarImportacion(ids.map(id => ({ type: tipo, id })));
+      continue;
+    }
     let sinGuardar = 0;
     let datos;
     try {
@@ -2750,7 +2817,12 @@ async function runBulk() {
       out.innerHTML = `Parado: tu conexión con Spotify en este dispositivo no es válida o ha caducado. Vuelve a conectarte en Ajustes.<br><span style="color:var(--fg-mute);font-size:12.5px;">${added} añadidos antes de fallar.</span>`;
       return;   // el finally de más abajo repone _bulkCorriendo y el botón
     }
-    fail += datos.filter(d => !d).length;
+    fail += datos.filter((d, idx) => !d && !datos.bloqueados[idx]).length;
+    if (datos.bloqueoDetectado) {
+      bloqueado = true;
+      const pendientesTipo = ids.filter((id, idx) => datos.bloqueados[idx]);
+      encoladas += encolarImportacion(pendientesTipo.map(id => ({ type: tipo, id })));
+    }
     hechosTotal += ids.length;
     saveItems();
   }
@@ -2759,7 +2831,9 @@ async function runBulk() {
   const bits = [`<strong>${added}</strong> añadidos`];
   if (dup) bits.push(`${dup} ya estaban`);
   if (fail) bits.push(`${fail} fallaron`);
+  if (encoladas) bits.push(`<strong>${encoladas.toLocaleString('es-ES')}</strong> en cola`);
   out.innerHTML = bits.join(' · ')
+    + (bloqueado ? `<br><span style="color:var(--fg-mute);font-size:12.5px;">Spotify ha puesto un límite temporal por tantas peticiones seguidas (parece que va para largo — más de ${tiempoEsperaTexto()}). Lo que falta se ha guardado y esta app lo irá añadiendo sola, poco a poco, cada vez que la abras — no hace falta que hagas nada más. Puedes ver el progreso en ⚙ Ajustes → Cola de importación.</span>` : '')
     + (notes.length ? `<br><span style="color:var(--fg-mute);font-size:12.5px;">${notes.map(esc).join('<br>')}</span>` : '')
     + (necesitaReconectarPlaylist ? `<div class="btnrow"><button class="btn primary wide" data-reconnect="1">Reconectar con Spotify</button></div>` : '');
   if (added) toast(`${added} añadido${added === 1 ? '' : 's'} al vault`);
@@ -2767,6 +2841,97 @@ async function runBulk() {
     _bulkCorriendo = false;
     go.disabled = false;
     soltarDespertar();
+  }
+}
+
+/* ============ Cola de importación ============
+   Cuando se pegan cientos/miles de enlaces de golpe (ver runBulk), Spotify
+   acaba poniendo un límite en firme que puede durar minutos u horas — no lo
+   controlamos ni lo sabemos de antemano. En vez de forzar la marcha o hacer
+   que el usuario vaya troceando el pegado a mano día a día, lo que no cabe
+   AHORA se queda guardado aquí, y la propia app lo sigue metiendo sola, un
+   poco cada vez, cada vez que se abre — sin que haga falta acordarse de nada.
+   Solo vive en este dispositivo (no se sincroniza entre PC/iPhone): cada uno
+   importa a su ritmo, y lo que entra al vault sí se sincroniza como siempre. */
+const K_IMPORT_QUEUE = 'musicvault_import_queue_v1';
+let IMPORT_QUEUE = [];   // [{type, id}] — se carga de IndexedDB en bootStorage()
+const saveImportQueue = () => _flush(K_IMPORT_QUEUE, () => IMPORT_QUEUE);
+
+function encolarImportacion(entradas) {
+  const yaTengo = new Set(ITEMS.map(x => x.spotifyId));
+  const yaEnCola = new Set(IMPORT_QUEUE.map(e => e.type + ':' + e.id));
+  let nuevos = 0;
+  for (const e of entradas) {
+    if (yaTengo.has(e.id) || yaEnCola.has(e.type + ':' + e.id)) continue;
+    IMPORT_QUEUE.push(e);
+    yaEnCola.add(e.type + ':' + e.id);
+    nuevos++;
+  }
+  if (nuevos) saveImportQueue();
+  return nuevos;
+}
+
+const colaStatTexto = () => IMPORT_QUEUE.length
+  ? `● ${IMPORT_QUEUE.length.toLocaleString('es-ES')} en cola — se van añadiendo solas cada vez que abres la app`
+  : '● Cola vacía';
+
+let _procesandoCola = false;
+let _ultimoIntentoCola = 0;
+
+/* auto=true: la llama la propia app al abrirse, en silencio (si no hay nada
+   que hacer, no toca la interfaz para nada). auto=false: la ha pedido el
+   usuario a mano desde Ajustes → sí refleja progreso ahí y avisa al acabar. */
+async function procesarColaImportacion(auto) {
+  if (_procesandoCola || !IMPORT_QUEUE.length) return;
+  if (!isConnected()) return;
+  // no reintentar en cada apertura/cambio de pestaña si acabamos de fallar hace nada
+  if (auto && Date.now() - _ultimoIntentoCola < 5 * 60000) return;
+  _ultimoIntentoCola = Date.now();
+  _procesandoCola = true;
+  pedirDespertar();
+
+  const est = () => document.getElementById('colaStat');
+  let añadidas = 0;
+
+  try {
+    const porTipo = { album: [], track: [], artist: [] };
+    for (const e of IMPORT_QUEUE) if (porTipo[e.type]) porTipo[e.type].push(e.id);
+    const yaTengo = new Set(ITEMS.map(x => x.spotifyId));
+
+    for (const tipo of ['album', 'track', 'artist']) {
+      const ids = porTipo[tipo];
+      if (!ids.length) continue;
+      let sinGuardar = 0;
+      let datos;
+      try {
+        datos = await fetchItemsIndividually(tipo, ids, () => {
+          const nodo = est();
+          if (nodo) nodo.textContent = `● Importando… ${añadidas.toLocaleString('es-ES')} añadidas, quedan ${IMPORT_QUEUE.length.toLocaleString('es-ES')}`;
+        }, null, raw => {
+          if (!raw.id || yaTengo.has(raw.id)) return;
+          ITEMS.push(makeItem(normalize(raw, tipo)));
+          yaTengo.add(raw.id);
+          añadidas++;
+          if (++sinGuardar >= 25) { saveItems(); sinGuardar = 0; }
+        });
+      } catch (e) {
+        break;   // token inválido u otro fallo fuerte: se para y la cola queda tal cual para el próximo intento
+      }
+      // sale de la cola lo que ya se añadió y lo que Spotify confirma que ya
+      // no existe; lo que sigue bloqueado por el límite se queda para luego
+      const idsSalen = new Set();
+      ids.forEach((id, idx) => { if (!datos.bloqueados[idx]) idsSalen.add(id); });
+      IMPORT_QUEUE = IMPORT_QUEUE.filter(e => !(e.type === tipo && idsSalen.has(e.id)));
+      saveImportQueue();
+      if (datos.bloqueoDetectado) break;   // ya sabemos que hoy no da para más
+    }
+  } finally {
+    _procesandoCola = false;
+    soltarDespertar();
+    if (añadidas) { saveItems(); render(); }
+    const nodo = est();
+    if (nodo) nodo.textContent = colaStatTexto();
+    if (!auto && añadidas) toast(`${añadidas} añadida${añadidas === 1 ? '' : 's'} desde la cola de importación`);
   }
 }
 
@@ -3524,7 +3689,7 @@ async function sincronizarEscuchasSpotify(silencioso) {
       toast('Nada nuevo desde la última vez');
     }
   } catch (e) {
-    if (!silencioso) toast(e.message === 'RATE_LIMIT' ? 'Demasiadas peticiones seguidas — inténtalo en unos segundos' : 'No se pudo consultar tu historial de Spotify ahora mismo');
+    if (!silencioso) toast(e.message === 'RATE_LIMIT' ? `Demasiadas peticiones seguidas — inténtalo en ${tiempoEsperaTexto()}` : 'No se pudo consultar tu historial de Spotify ahora mismo');
   }
 }
 
@@ -3588,7 +3753,7 @@ async function cargarTracksAlbum(it) {
     pintarTracklist(it);
   } catch (err) {
     const text = err.message === 'RATE_LIMIT'
-      ? 'Demasiadas peticiones seguidas — inténtalo de nuevo en unos segundos.'
+      ? `Demasiadas peticiones seguidas — inténtalo de nuevo en ${tiempoEsperaTexto()}.`
       : 'No se pudieron cargar las canciones ahora mismo.';
     box.innerHTML = `<p class="lede" style="margin:0;">${text}</p>`;
   }
@@ -3702,7 +3867,7 @@ async function openDiscography(artist) {
   if (albumsRes.status === 'rejected') {
     const err = albumsRes.reason;
     const text = err?.message === 'RATE_LIMIT'
-      ? 'Demasiadas peticiones seguidas — espera unos segundos y vuelve a intentarlo.'
+      ? `Demasiadas peticiones seguidas — espera ${tiempoEsperaTexto()} y vuelve a intentarlo.`
       : `No se pudo cargar la discografía (${esc((err?.message || '').split(':')[1] || 'error')}).`;
     box.innerHTML = `<div class="empty" style="padding:24px 8px;"><p>${text}</p></div>`;
     return;
@@ -3711,7 +3876,7 @@ async function openDiscography(artist) {
   let tracks = [], tracksError = null;
   if (tracksRes.status === 'fulfilled') tracks = tracksRes.value.map(t => normalize(t, 'track'));
   else tracksError = tracksRes.reason?.message === 'RATE_LIMIT'
-    ? 'Demasiadas peticiones seguidas — inténtalo de nuevo en unos segundos.'
+    ? `Demasiadas peticiones seguidas — inténtalo de nuevo en ${tiempoEsperaTexto()}.`
     : 'Spotify no ha dejado consultar sus canciones más populares con esta conexión.';
 
   // Spotify repite el mismo disco en varias ediciones; me quedo con uno por título.
@@ -4650,6 +4815,13 @@ function openSettings() {
       <div class="btnrow"><button class="btn wide" id="fillGenres" ${sinGenero() || _completandoGeneros ? '' : 'disabled'}>${_completandoGeneros ? 'Detener' : 'Completar géneros'}</button></div>
       <p class="lede" style="margin-top:8px;font-size:12px;">Con ${porArtistaUnicos().toLocaleString('es-ES')} artistas distintos por mirar, puede tardar un rato — se puede parar y seguir luego. No hace falta iniciar sesión en Last.fm.</p>` : ''}
 
+    ${IMPORT_QUEUE.length ? `
+    <div class="flabel">Cola de importación</div>
+    <p class="lede">Cuando pegas muchos enlaces de golpe (en "Pegar enlaces") y Spotify pone un límite antes de terminar, lo que falta se queda guardado aquí. La app lo sigue añadiendo sola, poco a poco, cada vez que abres esta página — no hace falta hacer nada, pero puedes forzarlo ahora mismo si quieres.</p>
+    <div class="statusline ok" id="colaStat">${colaStatTexto()}</div>
+    <div class="btnrow"><button class="btn wide" id="seguirCola" ${_procesandoCola ? 'disabled' : ''}>${_procesandoCola ? 'Importando…' : 'Seguir importando ahora'}</button></div>
+    ` : ''}
+
     <div class="flabel">Mantenimiento</div>
     <p class="lede">Con varias formas distintas de añadir (búsqueda, "por nombre", enlaces externos, playlists), es fácil que algo se cuele repetido sin que la app lo note por su cuenta.</p>
     <div class="btnrow"><button class="btn wide" id="findDups">Buscar posibles duplicados</button></div>
@@ -4694,6 +4866,12 @@ function openSettings() {
     openSettings();
   });
   document.getElementById('fillGenres')?.addEventListener('click', completarGeneros);
+  document.getElementById('seguirCola')?.addEventListener('click', async () => {
+    const btn = document.getElementById('seguirCola');
+    btn.textContent = 'Importando…'; btn.disabled = true;
+    await procesarColaImportacion(false);
+    openSettings();
+  });
 
   document.getElementById('togCovers').addEventListener('click', () => {
     PREFS.covers = !verPortada();
@@ -5270,7 +5448,7 @@ async function cargarHistorialSpotify() {
         </div>`;
       }).join('')}</div>`;
   } catch (e) {
-    box.innerHTML = `<p class="lede" style="margin:0;">${e.message === 'RATE_LIMIT' ? 'Demasiadas peticiones seguidas — inténtalo en unos segundos.' : 'No se pudo consultar tu historial de Spotify.'}</p>`;
+    box.innerHTML = `<p class="lede" style="margin:0;">${e.message === 'RATE_LIMIT' ? `Demasiadas peticiones seguidas — inténtalo en ${tiempoEsperaTexto()}.` : 'No se pudo consultar tu historial de Spotify.'}</p>`;
   }
 }
 
@@ -5841,6 +6019,9 @@ handleSpotifyRedirect().then(() => bootStorage()).then(async () => {
   // vuelta al repo, deshaciendo el borrado también en el otro dispositivo.
   if (gArranque && gArranque.auto !== false) await sincronizar(false);
   if (isConnected() && tieneScopeRecientes()) sincronizarEscuchasSpotify(true);
+  // sin await a propósito: si hay cola pendiente (ver runBulk/Ajustes), se va
+  // procesando de fondo sin retrasar que la app esté usable ya mismo
+  if (isConnected() && IMPORT_QUEUE.length) procesarColaImportacion(true);
   manejarParametroAdd();
 });
 
