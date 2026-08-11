@@ -1476,10 +1476,21 @@ async function fetchItemsIndividually(tipo, ids, onProgress, shouldStop, onItem)
       if (shouldStop && shouldStop()) return;
       const mio = i++;
       for (let intento = 0; intento < 4; intento++) {
+        if (bloqueoDetectado) { bloqueados[mio] = true; return; }
         // puerta compartida: si otro worker (u otra búsqueda) ya se comió un
         // 429 hace un instante, todos esperan juntos en vez de ir chocando
-        // uno detrás de otro contra el mismo límite
-        await esperarTurnoSpotify();
+        // uno detrás de otro contra el mismo límite. Cooperativa (a trozos de
+        // 1s como mucho): si MIENTRAS esperamos otro worker descubre que es
+        // un bloqueo sostenido, salimos enseguida en vez de agotar la espera
+        // entera puesta ahí abajo, que puede ser de minutos u horas — si no,
+        // toda la subida se queda "congelada" ese tiempo entero antes de
+        // poder pasar el resto a la cola.
+        let falta = _pausaSpotifyHasta - Date.now();
+        while (falta > 0 && !bloqueoDetectado) {
+          await new Promise(r => setTimeout(r, Math.min(falta, 1000)));
+          falta = _pausaSpotifyHasta - Date.now();
+        }
+        if (bloqueoDetectado) { bloqueados[mio] = true; return; }
         let t;
         try { t = await spotifyToken(); }
         catch (e) { pararTodo = e; return; }
@@ -1519,6 +1530,10 @@ async function fetchItemsIndividually(tipo, ids, onProgress, shouldStop, onItem)
   }
   await Promise.all(Array.from({ length: Math.min(CONCURRENCIA, ids.length) }, trabajador));
   if (pararTodo) throw pararTodo;
+  // el hueco entre "donde nos quedamos" (i) y el final nunca se llegó a
+  // intentar por culpa del bloqueo — hay que marcarlo también como
+  // bloqueado (no como "no existe"), o se perdería de la cola sin más
+  if (bloqueoDetectado) for (let k = i; k < ids.length; k++) bloqueados[k] = true;
   resultados.bloqueados = bloqueados;
   resultados.bloqueoDetectado = bloqueoDetectado;
   return resultados;
