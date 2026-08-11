@@ -442,14 +442,6 @@
   @media (min-width: 560px) { .grid { grid-template-columns: repeat(calc(var(--gcols, 2) + 1), 1fr); } }
   @media (min-width: 820px) { .grid { grid-template-columns: repeat(calc(var(--gcols, 2) + 2), 1fr); } }
 
-  /* Cascada de entrada de las tarjetas (grid Y lista): solo las primeras 12
-     de cada render() llevan animation-delay escalonado (ver gcard/lrow en el
-     JS) — el resto entra sin más para no tardar una eternidad ni marear con
-     cientos animando a la vez. */
-  @keyframes cardIn { from { opacity: 0; transform: translateY(16px) scale(.96); } to { opacity: 1; transform: none; } }
-  .gcard, .lrow { animation: cardIn .32s var(--ease-out) both; }
-  @media (prefers-reduced-motion: reduce) { .gcard, .lrow { animation: none !important; } }
-
   .gcard {
     background: var(--surface); border: 1px solid var(--line); border-radius: 15px;
     overflow: hidden; cursor: pointer; position: relative;
@@ -1837,10 +1829,9 @@ function renderChips() {
   document.getElementById('chips').innerHTML = parts.join('');
 }
 
-function gcard(it, idx) {
+function gcard(it) {
   const tags = (it.tagIds || []).map(tagById).filter(Boolean).slice(0, 4);
-  const entra = idx != null ? ` style="animation-delay:${idx * 28}ms"` : ' style="animation:none"';
-  return `<article class="gcard ${it.listened ? 'done' : ''} ${selected.has(it.id) ? 'sel' : ''}" data-id="${it.id}"${entra}>
+  return `<article class="gcard ${it.listened ? 'done' : ''} ${selected.has(it.id) ? 'sel' : ''}" data-id="${it.id}">
     <div class="art">
       ${portada(it.coverUrl, `<span class="ph">${TYPE_ICON[it.type]}</span>`, true)}
       ${it.type !== 'artist' ? `<button class="statusdot ${it.listened ? 'on' : ''}" data-toggle="${it.id}" aria-label="${it.listened ? 'Marcar pendiente' : 'Marcar escuchado'}">${it.listened ? '✓' : ''}</button>` : ''}
@@ -1859,11 +1850,10 @@ function gcard(it, idx) {
   </article>`;
 }
 
-function lrow(it, idx) {
+function lrow(it) {
   const tags = (it.tagIds || []).map(tagById).filter(Boolean).slice(0, 4);
   const y = yearOf(it);
-  const entra = idx != null ? ` style="animation-delay:${idx * 24}ms"` : ' style="animation:none"';
-  return `<article class="lrow ${it.listened ? 'done' : ''} ${selected.has(it.id) ? 'sel' : ''}" data-id="${it.id}"${entra}>
+  return `<article class="lrow ${it.listened ? 'done' : ''} ${selected.has(it.id) ? 'sel' : ''}" data-id="${it.id}">
     <div class="lart">${portada(it.coverUrl, TYPE_ICON[it.type], true)}</div>
     <div class="linfo">
       <div class="lt">${esc(it.title)}</div>
@@ -1887,13 +1877,7 @@ let VISTAS = tanda(), _firma = null;
 function render() {
   const firma = [PREFS.type, PREFS.status, PREFS.tag, PREFS.sort,
                  document.getElementById('q').value.trim()].join('');
-  // render() se llama en decenas de sitios (marcar escuchado, cerrar un
-  // modal, seleccionar...), no solo al cambiar de lista de verdad. La
-  // cascada de entrada solo debe verse al aparecer una lista nueva
-  // (carga inicial o cambio de filtro/busqueda/orden); si no, se repite
-  // en cada repintado y se ve como un parpadeo en vez de una entrada.
-  const esListaNueva = firma !== _firma;
-  if (esListaNueva) { _firma = firma; VISTAS = tanda(); }
+  if (firma !== _firma) { _firma = firma; VISTAS = tanda(); }
 
   renderStats();
   renderChips();
@@ -1954,19 +1938,9 @@ function render() {
   const visibles = rows.slice(0, VISTAS);
   const restan = rows.length - visibles.length;
   const groups = groupsFor(visibles);
-  // Cascada de entrada solo en las primeras tarjetas: con cientos por tanda,
-  // escalonarlas todas tardaría segundos en terminar y cansaría a la vista.
-  // Compartido entre grupos (no se reinicia por grupo) para que el efecto
-  // se note arriba del todo y el resto aparezca de golpe, sin retraso.
-  const TOPE_CASCADA = 12;
-  let _n = 0;
-  // Fuera de una lista nueva no hay indice -> sin animacion (evita el
-  // parpadeo al repintar por un toggle, un modal, etc. que no cambian
-  // que se esta mostrando).
-  const sigueIdx = () => esListaNueva && _n++ < TOPE_CASCADA ? _n - 1 : null;
   const draw = list => PREFS.view === 'grid'
-    ? `<div class="grid">${list.map(it => gcard(it, sigueIdx())).join('')}</div>`
-    : `<div class="list">${list.map(it => lrow(it, sigueIdx())).join('')}</div>`;
+    ? `<div class="grid">${list.map(it => gcard(it)).join('')}</div>`
+    : `<div class="list">${list.map(it => lrow(it)).join('')}</div>`;
 
   box.innerHTML = (groups
     ? groups.map(g => `<section class="group"><h3 class="ghead">${esc(g.key)}<span class="gcount">${g.items.length}</span></h3>${draw(g.items)}</section>`).join('')
