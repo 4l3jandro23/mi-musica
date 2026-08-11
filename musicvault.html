@@ -1388,6 +1388,19 @@ const esperarTurnoSpotify = async () => {
    documente. */
 const SEG_BLOQUEO_SOSTENIDO = 20;
 
+/* El Retry-After no siempre delata un bloqueo en serio: a veces Spotify
+   contesta 429 sin esa cabecera, o con un número pequeño (2-5s) que dice
+   "espera un poco" pero el bloqueo real sigue horas — confirmado con un vault
+   real, donde eso hacía que la importación se quedara reintentando canción a
+   canción sin parar en vez de darse cuenta y pasar el resto a la cola. Si se
+   encadenan varios 429 SEGUIDOS (sin ningún éxito de por medio, venga el
+   Retry-After que venga), se trata igual que un bloqueo sostenido. Compartido
+   entre lotes: si un tipo (p. ej. álbumes) ya demostró que estamos
+   bloqueados, el siguiente tipo (canciones) no tiene que volver a
+   descubrirlo desde cero. */
+let _429Seguidos = 0;
+const UMBRAL_429_SEGUIDOS = 6;
+
 /* Cuánto queda de la pausa actual, en texto para el usuario. Antes los avisos
    de "demasiadas peticiones" decían siempre "espera unos segundos" aunque la
    espera real pedida por Spotify fuera de minutos u horas — mentira a medias
@@ -1407,7 +1420,8 @@ async function fetchConReintento429(url, token, intentos = 5) {
   for (let i = 0; i < intentos; i++) {
     await esperarTurnoSpotify();
     res = await fetch(url, { headers: { Authorization: 'Bearer ' + token } });
-    if (res.status !== 429) return res;
+    if (res.status !== 429) { if (res.ok) _429Seguidos = 0; return res; }
+    _429Seguidos++;
     // Retry-After viene en segundos; si Spotify no lo manda, subida exponencial.
     // Antes esto se recortaba a 10s como mucho ANTES de guardarlo como pausa
     // global (más abajo) — si Spotify pedía esperar de verdad más que eso, la
@@ -1501,11 +1515,13 @@ async function fetchItemsIndividually(tipo, ids, onProgress, shouldStop, onItem)
         if (res.status === 429) {
           const seg = +res.headers.get('Retry-After') || 2;
           _pausaSpotifyHasta = Math.max(_pausaSpotifyHasta, Date.now() + seg * 1000);
-          if (seg >= SEG_BLOQUEO_SOSTENIDO) {
-            // esto ya no es "espera un poco y sigue": es un bloqueo en serio.
-            // Paramos TODO el lote entero aquí mismo en vez de que cada
-            // worker se coma 4 intentos por canción sin ninguna esperanza —
-            // lo que quede pendiente se queda tal cual para reintentarlo luego.
+          _429Seguidos++;
+          if (seg >= SEG_BLOQUEO_SOSTENIDO || _429Seguidos >= UMBRAL_429_SEGUIDOS) {
+            // esto ya no es "espera un poco y sigue": es un bloqueo en serio
+            // (o Spotify no está siendo sincero sobre cuánto dura). Paramos
+            // TODO el lote entero aquí mismo en vez de que cada worker se
+            // coma 4 intentos por canción sin ninguna esperanza — lo que
+            // quede pendiente se queda tal cual para reintentarlo luego.
             bloqueados[mio] = true;
             bloqueoDetectado = true;
             return;
@@ -1516,6 +1532,7 @@ async function fetchItemsIndividually(tipo, ids, onProgress, shouldStop, onItem)
         }
         if (res.status === 401 || res.status === 403) { pararTodo = new Error('AUTH_FAILED'); return; }
         if (res.ok) {
+          _429Seguidos = 0;   // una respuesta buena de verdad rompe la racha
           const raw = await res.json();
           resultados[mio] = raw;
           // con listas largas esto permite guardar sobre la marcha en vez de
