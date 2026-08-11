@@ -446,8 +446,8 @@
      de cada render() llevan animation-delay escalonado (ver gcard/lrow en el
      JS) — el resto entra sin más para no tardar una eternidad ni marear con
      cientos animando a la vez. */
-  @keyframes cardIn { from { opacity: 0; transform: translateY(46px) scale(.8) rotate(-2deg); } to { opacity: 1; transform: none; } }
-  .gcard, .lrow { animation: cardIn .62s var(--ease-out) both; }
+  @keyframes cardIn { from { opacity: 0; transform: translateY(16px) scale(.96); } to { opacity: 1; transform: none; } }
+  .gcard, .lrow { animation: cardIn .32s var(--ease-out) both; }
   @media (prefers-reduced-motion: reduce) { .gcard, .lrow { animation: none !important; } }
 
   .gcard {
@@ -1839,7 +1839,7 @@ function renderChips() {
 
 function gcard(it, idx) {
   const tags = (it.tagIds || []).map(tagById).filter(Boolean).slice(0, 4);
-  const entra = idx != null ? ` style="animation-delay:${idx * 60}ms"` : ' style="animation:none"';
+  const entra = idx != null ? ` style="animation-delay:${idx * 28}ms"` : ' style="animation:none"';
   return `<article class="gcard ${it.listened ? 'done' : ''} ${selected.has(it.id) ? 'sel' : ''}" data-id="${it.id}"${entra}>
     <div class="art">
       ${portada(it.coverUrl, `<span class="ph">${TYPE_ICON[it.type]}</span>`, true)}
@@ -1862,7 +1862,7 @@ function gcard(it, idx) {
 function lrow(it, idx) {
   const tags = (it.tagIds || []).map(tagById).filter(Boolean).slice(0, 4);
   const y = yearOf(it);
-  const entra = idx != null ? ` style="animation-delay:${idx * 50}ms"` : ' style="animation:none"';
+  const entra = idx != null ? ` style="animation-delay:${idx * 24}ms"` : ' style="animation:none"';
   return `<article class="lrow ${it.listened ? 'done' : ''} ${selected.has(it.id) ? 'sel' : ''}" data-id="${it.id}"${entra}>
     <div class="lart">${portada(it.coverUrl, TYPE_ICON[it.type], true)}</div>
     <div class="linfo">
