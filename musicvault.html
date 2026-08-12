@@ -5121,6 +5121,19 @@ const CAMPOS_TUYOS = new Set(['id', 'dateAdded', 'notes', 'rating', 'tagIds',
 
 /* Rellena los huecos de `it` con lo que traiga `fresco`, sin tocar nada tuyo
    ni machacar un dato que ya estuviera puesto. Devuelve true si cambió algo. */
+/* Caso aparte: una lista a la que solo le FALTAN nombres. Si lo que ya tienes
+   está entero dentro de lo que llega y lo que llega trae más, no es pisar un
+   dato — es completarlo. Pasa con las colaboraciones: una ficha guardada como
+   "Brennan Heart" cuando en realidad es "Brennan Heart, HI-LO, Project
+   Zeitgeist". Si has quitado o cambiado algún nombre a mano, tu versión ya no
+   está contenida en la nueva y no se toca. */
+function listaAmpliable(actual, nuevo) {
+  if (!Array.isArray(actual) || !Array.isArray(nuevo)) return false;
+  if (nuevo.length <= actual.length) return false;
+  const enNuevo = new Set(nuevo.map(x => String(x).trim().toLowerCase()));
+  return actual.every(x => enNuevo.has(String(x).trim().toLowerCase()));
+}
+
 function enriquecer(it, fresco) {
   let cambio = false;
   Object.keys(fresco).forEach(k => {
@@ -5129,7 +5142,7 @@ function enriquecer(it, fresco) {
     if (nuevo == null || nuevo === '' || (Array.isArray(nuevo) && !nuevo.length)) return;
     const actual = it[k];
     const vacio = actual == null || actual === '' || (Array.isArray(actual) && !actual.length);
-    if (!vacio) return;
+    if (!vacio && !listaAmpliable(actual, nuevo)) return;
     it[k] = nuevo;
     cambio = true;
   });
