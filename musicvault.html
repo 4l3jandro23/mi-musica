@@ -4713,6 +4713,32 @@ const rotosCount = () => ITEMS.filter(i => i.roto).length;
 
 const cuenta = tipo => ITEMS.filter(i => i.type === tipo).length;
 
+/* Canciones sueltas cuyo álbum ya está guardado entero: al importar listas
+   grandes (o al guardar canciones de un disco que luego guardas completo) el
+   vault acaba con la misma música contada dos veces — la ficha del álbum ya
+   lleva su lista de canciones dentro, así que la copia suelta solo estorba.
+   No se toca lo que tenga algo tuyo (valoración, notas, etiquetas, escuchado,
+   prioridad): eso lo guardaste por algo. */
+function cancionesConAlbumGuardado() {
+  const albumes = new Set(ITEMS.filter(i => i.type === 'album' && i.spotifyId).map(i => i.spotifyId));
+  if (!albumes.size) return [];
+  return ITEMS.filter(i =>
+    i.type === 'track' && i.albumId && albumes.has(i.albumId) &&
+    !i.rating && !(i.notes || '').trim() && !(i.tagIds || []).length &&
+    !i.listened && !i.prioridad && !i.archived);
+}
+
+function quitarCancionesConAlbumGuardado() {
+  const sobran = cancionesConAlbumGuardado();
+  if (!sobran.length) { toast('No hay ninguna canción suelta cuyo álbum ya tengas'); return; }
+  const porAlbum = new Set(sobran.map(i => i.albumId));
+  if (!confirm(`¿Quitar ${sobran.length.toLocaleString('es-ES')} canciones sueltas?\n\n` +
+    `Están todas dentro de ${porAlbum.size.toLocaleString('es-ES')} álbumes que ya tienes guardados enteros, así que no pierdes nada: siguen estando en la ficha de su álbum.\n\n` +
+    `No se toca ninguna que tenga valoración, notas, etiquetas, prioridad o esté marcada como escuchada. Podrás deshacerlo desde el aviso que sale justo después.`)) return;
+  deleteItems(sobran.map(i => i.id));
+  openSettings();
+}
+
 function openSettings() {
   const c = loadCreds();
   const ok = isConnected();
@@ -4857,6 +4883,12 @@ function openSettings() {
     <div class="flabel">Mantenimiento</div>
     <p class="lede">Con varias formas distintas de añadir (búsqueda, "por nombre", enlaces externos, playlists), es fácil que algo se cuele repetido sin que la app lo note por su cuenta.</p>
     <div class="btnrow"><button class="btn wide" id="findDups">Buscar posibles duplicados</button></div>
+    ${(() => {
+      const n = cancionesConAlbumGuardado().length;
+      if (!n) return '';
+      return `<p class="lede" style="margin-top:12px;">Tienes <strong>${n.toLocaleString('es-ES')}</strong> canciones sueltas que pertenecen a álbumes que ya guardaste enteros — la ficha del álbum ya las lleva dentro. Quitarlas no pierde nada y deja el vault mucho más limpio. Se respetan las que tengan valoración, notas, etiquetas, prioridad o estén escuchadas.</p>
+      <div class="btnrow"><button class="btn wide" id="quitarSueltas">Quitar ${n.toLocaleString('es-ES')} canciones sueltas</button></div>`;
+    })()}
     <div class="btnrow"><button class="btn wide" id="openTrash">Papelera${TRASH.length ? ` (${TRASH.length})` : ''}</button></div>
     <div class="btnrow"><button class="btn wide" id="openAutoAdded">🤖 Añadidas automáticamente${(() => { const n = ITEMS.filter(i => i.autoAdded && !i.archived).length; return n ? ` (${n})` : ''; })()}</button></div>
     <p class="lede" style="margin-top:12px;">Repasa todo contra Spotify de una pasada: rellena los datos que falten (año, sello, duración, carátula…) sin tocar lo que hayas editado a mano, y marca lo que ya no existe allí.</p>
@@ -5024,6 +5056,7 @@ function openSettings() {
   document.getElementById('impFile').addEventListener('change', importBackup);
   document.getElementById('expCsvBtn').addEventListener('click', exportarCSV);
   document.getElementById('findDups').addEventListener('click', openDuplicados);
+  document.getElementById('quitarSueltas')?.addEventListener('click', quitarCancionesConAlbumGuardado);
   document.getElementById('openTrash').addEventListener('click', openPapelera);
   document.getElementById('openAutoAdded').addEventListener('click', openAutoAdded);
   document.getElementById('revisarMeta').addEventListener('click', revisarMetadatos);
@@ -5078,6 +5111,31 @@ function exportarCSV() {
   toast('CSV descargado');
 }
 
+/* Lo tuyo, que una copia NUNCA debe pisar al restaurarla: es lo que has hecho
+   tú a mano (o lo que ha registrado el historial de escucha), no metadatos
+   que se puedan volver a pedir. El resto de campos (carátula, año, duración,
+   géneros…) sí se rellenan, pero solo si están vacíos. */
+const CAMPOS_TUYOS = new Set(['id', 'dateAdded', 'notes', 'rating', 'tagIds',
+  'listened', 'listenedAt', 'archived', 'prioridad', 'plays', 'trackPlays',
+  'cancionesEscuchadas', 'touchedAt', 'autoAdded']);
+
+/* Rellena los huecos de `it` con lo que traiga `fresco`, sin tocar nada tuyo
+   ni machacar un dato que ya estuviera puesto. Devuelve true si cambió algo. */
+function enriquecer(it, fresco) {
+  let cambio = false;
+  Object.keys(fresco).forEach(k => {
+    if (CAMPOS_TUYOS.has(k)) return;
+    const nuevo = fresco[k];
+    if (nuevo == null || nuevo === '' || (Array.isArray(nuevo) && !nuevo.length)) return;
+    const actual = it[k];
+    const vacio = actual == null || actual === '' || (Array.isArray(actual) && !actual.length);
+    if (!vacio) return;
+    it[k] = nuevo;
+    cambio = true;
+  });
+  return cambio;
+}
+
 function importBackup(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -5086,8 +5144,22 @@ function importBackup(e) {
     try {
       const d = JSON.parse(fr.result);
       if (!Array.isArray(d.items)) throw new Error('bad');
-      const known = new Set(ITEMS.map(i => i.spotifyId));
-      const fresh = d.items.filter(i => i && i.spotifyId && !known.has(i.spotifyId));
+      const porSid = new Map();
+      ITEMS.forEach(i => { if (i.spotifyId) porSid.set(i.spotifyId, i); });
+
+      const fresh = [];
+      let rellenados = 0;
+      /* Antes lo que ya tenías se saltaba sin más. Si la copia traía MÁS datos
+         (p. ej. una importación masiva que entró sin carátula ni año, y luego
+         una copia con todo), no había forma de completarlo: tocaba borrar y
+         volver a importar. Ahora esos huecos se rellenan aquí mismo. */
+      (d.items || []).forEach(i => {
+        if (!i || !i.spotifyId) return;
+        const mio = porSid.get(i.spotifyId);
+        if (!mio) { fresh.push(i); porSid.set(i.spotifyId, i); return; }
+        if (enriquecer(mio, i)) { mio.touchedAt = Date.now(); rellenados++; }
+      });
+
       // si alguno estaba borrado (con tumba) desde después de esta copia, que la
       // restauración gane: si no, la próxima sincronización lo borraría otra vez
       // sin avisar, justo después de decirte que se había restaurado
@@ -5097,7 +5169,10 @@ function importBackup(e) {
       (d.tags || []).forEach(t => { if (t && t.name && !tagNames.has(t.name.toLowerCase())) TAGS.push(t); });
       ITEMS = ITEMS.concat(fresh);
       saveItems(); saveTags(); render(); closeModal();
-      toast(`${fresh.length} elemento${fresh.length === 1 ? '' : 's'} restaurado${fresh.length === 1 ? '' : 's'}`);
+      const partes = [];
+      if (fresh.length) partes.push(`${fresh.length.toLocaleString('es-ES')} restaurado${fresh.length === 1 ? '' : 's'}`);
+      if (rellenados) partes.push(`${rellenados.toLocaleString('es-ES')} completado${rellenados === 1 ? '' : 's'}`);
+      toast(partes.length ? partes.join(' · ') : 'No había nada nuevo que restaurar');
     } catch {
       toast('Ese archivo no es una copia válida de MusicVault');
     }
