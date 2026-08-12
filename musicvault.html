@@ -4224,12 +4224,12 @@ async function completarPortadas() {
   if (btn) btn.textContent = 'Detener';
 
   const faltan = ITEMS.filter(i => !i.coverUrl && i.spotifyId && !i.manual && i.type !== 'playlist');
-  let hechos = 0, fallos = 0;
+  let hechos = 0, fallos = 0, bloqueado = false;
 
   try {
     for (const tipo of ['album', 'artist', 'track']) {
       const grupo = faltan.filter(i => i.type === tipo);
-      if (!grupo.length || _parar) continue;
+      if (!grupo.length || _parar || bloqueado) continue;
       const porId = new Map(grupo.map(it => [it.spotifyId, it]));
       const hechosAntes = hechos;
       let sinGuardar = 0;
@@ -4258,7 +4258,12 @@ async function completarPortadas() {
           if (++sinGuardar >= 25) { saveItems(); sinGuardar = 0; }
         }
       );
-      fallos += datos.filter(d => !d).length;
+      // un 429 NO significa "esta canción no tiene datos": significa que
+      // Spotify no nos ha dejado preguntar. Contarlo como fallo hacía que el
+      // aviso final dijera "0 completadas · 880 sin datos", que suena a que el
+      // vault está roto cuando en realidad solo hay que esperar un rato.
+      fallos += datos.filter((d, i) => !d && !datos.bloqueados[i]).length;
+      if (datos.bloqueoDetectado) bloqueado = true;
       saveItems();
     }
   } catch (e) {
@@ -4272,7 +4277,9 @@ async function completarPortadas() {
   _completandoPortadas = false;
   soltarDespertar();
   toast(_parar ? `Detenido — ${hechos} completadas`
-               : `${hechos} completadas${fallos ? ` · ${fallos} sin datos` : ''}`);
+               : bloqueado
+                 ? `${hechos} completadas — Spotify no deja seguir ahora mismo (demasiadas peticiones). Vuelve a darle en ${tiempoEsperaTexto()}; lo que falte sigue esperando.`
+                 : `${hechos} completadas${fallos ? ` · ${fallos} sin datos` : ''}`);
   if (document.getElementById('fillCovers')) openSettings();
 }
 
