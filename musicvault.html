@@ -457,6 +457,9 @@
   .gcard .gbody { padding: 9px 11px 11px; }
   .gcard .gt { font-size: 13px; font-weight: 650; line-height: 1.25; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .gcard .ga { font-size: 11.5px; color: var(--fg-mute); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top: 2px; }
+  /* Los colaboradores, medio tono por debajo del artista principal. Con opacidad
+     en vez de un color fijo, para que siga funcionando en todas las paletas. */
+  .ga .feat, .la .feat { opacity: .58; }
   .gcard .gmeta { display:flex; align-items:center; gap: 5px; margin-top: 7px; min-height: 15px; }
 
   .statusdot {
@@ -1109,6 +1112,12 @@ const TYPE_PLURAL = { album: 'Álbumes', track: 'Canciones', artist: 'Artistas',
 const TYPE_ICON  = { album: '💿', track: '🎵', artist: '🎤', playlist: '📑' };
 const TAG_COLORS = ['#2a78d6','#1baf7a','#eda100','#3f9c35','#7a5cd6','#e34948','#e87ba4','#eb6834'];
 const artistsOf = it => (it.artists || []).join(', ');
+/* Spotify devuelve el artista principal el primero, y la importación desde el
+   Excel mantuvo ese orden: artists[0] es de quién es la canción y el resto son
+   colaboraciones. Agrupar por el principal junta "50 Cent" con "50 Cent, Olivia"
+   en lugar de abrir una cabecera distinta por cada combinación de invitados. */
+const principalDe = it => (it.artists || [])[0] || '';
+const colaboradoresDe = it => (it.artists || []).slice(1);
 /* Con las carátulas desactivadas el vault se lee como una lista, no como una
    pared de discos. Es una preferencia, no un borrado: se vuelve a activar en Ajustes. */
 const verPortada = () => PREFS.covers !== false;
@@ -1120,6 +1129,9 @@ const yearOf = it => (it.releaseDate ? parseInt(String(it.releaseDate).slice(0, 
 // Para ordenar como una discoteca de verdad: "The Beatles" va por la B.
 const sortKey = s => String(s || '').toLowerCase().replace(/^(the|los|las|el|la|a|an)\s+/, '').replace(/^[^\p{L}\p{N}]+/u, '').trim();
 const cmp = (a, b) => a.localeCompare(b, 'es', { sensitivity: 'base' });
+/* Agrupar y ordenar tienen que coincidir o los grupos salen partidos. Va foldeada
+   para que "deadmau5" y "Deadmau5" no sean dos cabeceras seguidas. */
+const claveArtista = it => fold(sortKey(principalDe(it)));
 const tagById = id => TAGS.find(t => t.id === id);
 
 /* ============ theme ============ */
@@ -1757,8 +1769,10 @@ function filtered() {
     switch (s) {
       case 'title_asc':   return cmp(sortKey(a.title), sortKey(b.title));
       case 'title_desc':  return cmp(sortKey(b.title), sortKey(a.title));
-      case 'artist_asc':  return cmp(sortKey(artistsOf(a)), sortKey(artistsOf(b))) || cmp(sortKey(a.title), sortKey(b.title));
-      case 'artist_desc': return cmp(sortKey(artistsOf(b)), sortKey(artistsOf(a))) || cmp(sortKey(a.title), sortKey(b.title));
+      /* Manda el principal: ordenando por la cadena entera, "Ed Sheeran & Justin
+         Bieber" se cuela entre las de "Ed Sheeran" y parte el grupo en dos. */
+      case 'artist_asc':  return cmp(sortKey(principalDe(a)), sortKey(principalDe(b))) || cmp(sortKey(artistsOf(a)), sortKey(artistsOf(b))) || cmp(sortKey(a.title), sortKey(b.title));
+      case 'artist_desc': return cmp(sortKey(principalDe(b)), sortKey(principalDe(a))) || cmp(sortKey(artistsOf(b)), sortKey(artistsOf(a))) || cmp(sortKey(a.title), sortKey(b.title));
       case 'rating_desc': return (b.rating || 0) - (a.rating || 0) || cmp(sortKey(a.title), sortKey(b.title));
       case 'year_desc':   return yearOf(b) - yearOf(a);
       case 'year_asc':    return yearOf(a) - yearOf(b);
@@ -1915,6 +1929,16 @@ function renderChips() {
   document.getElementById('chips').innerHTML = parts.join('');
 }
 
+/* El principal en primer plano y los colaboradores detrás y más apagados: la
+   línea se corta con puntos suspensivos, así lo primero que se lee siempre es
+   de quién es la canción y no medio nombre del cuarto invitado. */
+function artistaHtml(it) {
+  const p = principalDe(it);
+  if (!p) return '';
+  const otros = colaboradoresDe(it);
+  return esc(p) + (otros.length ? `<span class="feat"> · ${esc(otros.join(', '))}</span>` : '');
+}
+
 function gcard(it) {
   const tags = (it.tagIds || []).map(tagById).filter(Boolean).slice(0, 4);
   return `<article class="gcard ${it.listened ? 'done' : ''} ${selected.has(it.id) ? 'sel' : ''}" data-id="${it.id}">
@@ -1925,7 +1949,7 @@ function gcard(it) {
     </div>
     <div class="gbody">
       <div class="gt">${esc(it.title)}</div>
-      <div class="ga">${esc(artistsOf(it))}</div>
+      <div class="ga">${artistaHtml(it)}</div>
       <div class="gmeta">
         ${it.prioridad ? `<span class="pin" title="Prioritario">📌</span>` : ''}
         ${yearOf(it) ? `<span class="lyear">${yearOf(it)}</span>` : ''}
@@ -1943,7 +1967,7 @@ function lrow(it) {
     <div class="lart">${portada(it.coverUrl, TYPE_ICON[it.type], true)}</div>
     <div class="linfo">
       <div class="lt">${esc(it.title)}</div>
-      <div class="la">${esc(artistsOf(it))}</div>
+      <div class="la">${artistaHtml(it)}</div>
     </div>
     <div class="lmeta">
       ${it.prioridad ? `<span class="pin" title="Prioritario">📌</span>` : ''}
@@ -2049,17 +2073,17 @@ function groupsFor(rows) {
     const out = orden.filter(t => porTipo.has(t)).map(t => ({ key: TYPE_PLURAL[t] || t, items: porTipo.get(t) }));
     return out.length > 1 ? out : null;   // con un solo tipo, agrupar no aporta nada
   }
-  let keyOf = null;
-  if (s.startsWith('artist')) keyOf = it => artistsOf(it) || 'Sin artista';
+  let keyOf = null, tituloDe = null;   // keyOf agrupa (normalizado), tituloDe es lo que se lee en la cabecera
+  if (s.startsWith('artist')) { keyOf = claveArtista; tituloDe = it => principalDe(it) || 'Sin artista'; }
   else if (s.startsWith('title')) keyOf = it => { const c = (sortKey(it.title)[0] || '#').toUpperCase(); return /\p{L}/u.test(c) ? c : '#'; };
   else if (s.startsWith('year')) keyOf = it => { const y = yearOf(it); return y ? Math.floor(y / 10) * 10 + 's' : 'Sin año'; };
   if (!keyOf) return null;
 
   const out = [];
-  let cur = null;
+  let cur = null, curK = null;
   for (const it of rows) {
     const k = keyOf(it);
-    if (!cur || cur.key !== k) { cur = { key: k, items: [] }; out.push(cur); }
+    if (!cur || curK !== k) { curK = k; cur = { key: tituloDe ? tituloDe(it) : k, items: [] }; out.push(cur); }
     cur.items.push(it);
   }
   return out;
@@ -2068,7 +2092,7 @@ function groupsFor(rows) {
 /* Inicial de un elemento según el orden activo — misma normalización que usa
    groupsFor para las cabeceras, así el salto siempre cae donde debe. */
 function letraDe(it) {
-  const base = PREFS.sort.startsWith('artist') ? artistsOf(it) : it.title;
+  const base = PREFS.sort.startsWith('artist') ? principalDe(it) : it.title;
   const c = (sortKey(base || '')[0] || '#').toUpperCase();
   return /\p{L}/u.test(c) ? c : '#';
 }
@@ -2092,7 +2116,7 @@ function renderIndiceAZ(rows) {
      QUÉ letras mostrar y en qué orden; a qué elemento saltar al tocarlas
      sigue mirando el orden real (rows), eso no cambia. */
   const paraLetras = rows.slice().sort((a, b) => PREFS.sort.startsWith('artist')
-    ? cmp(sortKey(artistsOf(a)), sortKey(artistsOf(b)))
+    ? cmp(sortKey(principalDe(a)), sortKey(principalDe(b)))
     : cmp(sortKey(a.title), sortKey(b.title)));
   const letras = [...new Set(paraLetras.map(letraDe))];
   rail.classList.remove('hidden');
