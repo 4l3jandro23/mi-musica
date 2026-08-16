@@ -1128,10 +1128,31 @@ const fold = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ
 const yearOf = it => (it.releaseDate ? parseInt(String(it.releaseDate).slice(0, 4), 10) : 0) || 0;
 // Para ordenar como una discoteca de verdad: "The Beatles" va por la B.
 const sortKey = s => String(s || '').toLowerCase().replace(/^(the|los|las|el|la|a|an)\s+/, '').replace(/^[^\p{L}\p{N}]+/u, '').trim();
-const cmp = (a, b) => a.localeCompare(b, 'es', { sensitivity: 'base' });
+/* localeCompare construye un comparador nuevo en CADA llamada, y ordenar el
+   vault son cientos de miles de llamadas: era segundo y medio de espera por
+   render (mucho más en el móvil). Reutilizar un Intl.Collator compara igual
+   pero cuesta una fracción. */
+const COLLATOR = new Intl.Collator('es', { sensitivity: 'base' });
+const cmp = (a, b) => COLLATOR.compare(a, b);
 /* Agrupar y ordenar tienen que coincidir o los grupos salen partidos. Va foldeada
    para que "deadmau5" y "Deadmau5" no sean dos cabeceras seguidas. */
-const claveArtista = it => fold(sortKey(principalDe(it)));
+/* Ordenar recalculaba sortKey() de título y artistas en cada comparación: para
+   17.000 elementos son millones de normalizaciones de texto repetidas. Se
+   calculan una vez por elemento y se guardan aquí. El caché se revalida solo
+   comparando el título y la referencia del array de artistas, así que editar
+   una ficha (o que llegue una versión nueva al sincronizar) lo recalcula sin
+   necesidad de acordarse de invalidarlo a mano en cada sitio. */
+const _clavesOrden = new WeakMap();
+function clavesDe(it) {
+  let k = _clavesOrden.get(it);
+  if (!k || k.t !== it.title || k.a !== it.artists) {
+    const art = sortKey(principalDe(it));
+    k = { t: it.title, a: it.artists, art, agr: fold(art), full: sortKey(artistsOf(it)), tit: sortKey(it.title) };
+    _clavesOrden.set(it, k);
+  }
+  return k;
+}
+const claveArtista = it => clavesDe(it).agr;
 const tagById = id => TAGS.find(t => t.id === id);
 
 /* ============ theme ============ */
@@ -1708,6 +1729,48 @@ function metaPairs(it) {
 }
 
 /* ============ filtering & sorting ============ */
+
+/* El comparador se elige UNA vez, antes de ordenar. Cuando el switch vivía
+   dentro del comparador se resolvía en cada una de las cientos de miles de
+   comparaciones, y de paso impedía que el motor optimizara la única rama que
+   se estaba usando. */
+function comparadorDe(s) {
+  switch (s) {
+    case 'title_asc':   return (a, b) => cmp(clavesDe(a).tit, clavesDe(b).tit);
+    case 'title_desc':  return (a, b) => cmp(clavesDe(b).tit, clavesDe(a).tit);
+    /* Manda el principal: ordenando por la cadena entera, "Ed Sheeran & Justin
+       Bieber" se cuela entre las de "Ed Sheeran" y parte el grupo en dos. */
+    case 'artist_asc':  return (a, b) => { const x = clavesDe(a), y = clavesDe(b); return cmp(x.art, y.art) || cmp(x.full, y.full) || cmp(x.tit, y.tit); };
+    case 'artist_desc': return (a, b) => { const x = clavesDe(a), y = clavesDe(b); return cmp(y.art, x.art) || cmp(y.full, x.full) || cmp(x.tit, y.tit); };
+    case 'rating_desc': return (a, b) => (b.rating || 0) - (a.rating || 0) || cmp(clavesDe(a).tit, clavesDe(b).tit);
+    case 'year_desc':   return (a, b) => yearOf(b) - yearOf(a);
+    case 'year_asc':    return (a, b) => yearOf(a) - yearOf(b);
+    /* Orden manual: solo significa algo dentro de una etiqueta concreta (el
+       orden vive en la propia etiqueta). Sin etiqueta elegida se comporta
+       como "añadido hace poco", en vez de dejar la lista en un orden
+       arbitrario que parecería un fallo. */
+    case 'manual': {
+      const t = PREFS.tag !== 'all' ? tagById(PREFS.tag) : null;
+      if (!t || !t.orden) return (a, b) => b.dateAdded - a.dateAdded;
+      /* Un indexOf() por comparación recorría la lista entera cada vez: con una
+         etiqueta grande, ordenarla a mano se arrastraba. */
+      const pos = new Map(t.orden.map((id, i) => [id, i]));
+      return (a, b) => {
+        const ia = pos.has(a.id) ? pos.get(a.id) : -1, ib = pos.has(b.id) ? pos.get(b.id) : -1;
+        if (ia === -1 && ib === -1) return b.dateAdded - a.dateAdded;
+        if (ia === -1) return 1;          // lo que aún no has colocado va al final
+        if (ib === -1) return -1;
+        return ia - ib;
+      };
+    }
+    // lo nunca escuchado cae al final en vez de mezclarse con lo antiguo
+    case 'played_desc': return (a, b) => (b.listenedAt || 0) - (a.listenedAt || 0);
+    case 'plays_desc':  return (a, b) => totalPlays(b) - totalPlays(a) || cmp(clavesDe(a).tit, clavesDe(b).tit);
+    case 'added_asc':   return (a, b) => a.dateAdded - b.dateAdded;
+    default:            return (a, b) => b.dateAdded - a.dateAdded;
+  }
+}
+
 function filtered() {
   const q = fold(document.getElementById('q').value.trim());
   // índice álbum → títulos de sus canciones guardadas, para que buscar el
@@ -1764,38 +1827,7 @@ function filtered() {
     }
     return true;
   });
-  const s = PREFS.sort;
-  out.sort((a, b) => {
-    switch (s) {
-      case 'title_asc':   return cmp(sortKey(a.title), sortKey(b.title));
-      case 'title_desc':  return cmp(sortKey(b.title), sortKey(a.title));
-      /* Manda el principal: ordenando por la cadena entera, "Ed Sheeran & Justin
-         Bieber" se cuela entre las de "Ed Sheeran" y parte el grupo en dos. */
-      case 'artist_asc':  return cmp(sortKey(principalDe(a)), sortKey(principalDe(b))) || cmp(sortKey(artistsOf(a)), sortKey(artistsOf(b))) || cmp(sortKey(a.title), sortKey(b.title));
-      case 'artist_desc': return cmp(sortKey(principalDe(b)), sortKey(principalDe(a))) || cmp(sortKey(artistsOf(b)), sortKey(artistsOf(a))) || cmp(sortKey(a.title), sortKey(b.title));
-      case 'rating_desc': return (b.rating || 0) - (a.rating || 0) || cmp(sortKey(a.title), sortKey(b.title));
-      case 'year_desc':   return yearOf(b) - yearOf(a);
-      case 'year_asc':    return yearOf(a) - yearOf(b);
-      /* Orden manual: solo significa algo dentro de una etiqueta concreta (el
-         orden vive en la propia etiqueta). Sin etiqueta elegida se comporta
-         como "añadido hace poco", en vez de dejar la lista en un orden
-         arbitrario que parecería un fallo. */
-      case 'manual': {
-        const t = PREFS.tag !== 'all' ? tagById(PREFS.tag) : null;
-        if (!t || !t.orden) return b.dateAdded - a.dateAdded;
-        const ia = t.orden.indexOf(a.id), ib = t.orden.indexOf(b.id);
-        if (ia === -1 && ib === -1) return b.dateAdded - a.dateAdded;
-        if (ia === -1) return 1;          // lo que aún no has colocado va al final
-        if (ib === -1) return -1;
-        return ia - ib;
-      }
-      // lo nunca escuchado cae al final en vez de mezclarse con lo antiguo
-      case 'played_desc': return (b.listenedAt || 0) - (a.listenedAt || 0);
-      case 'plays_desc':  return totalPlays(b) - totalPlays(a) || cmp(sortKey(a.title), sortKey(b.title));
-      case 'added_asc':   return a.dateAdded - b.dateAdded;
-      default:            return b.dateAdded - a.dateAdded;
-    }
-  });
+  out.sort(comparadorDe(PREFS.sort));
   // segunda pasada estable: lo prioritario sube arriba del todo sin
   // desordenar nada dentro de cada grupo, sea cual sea el criterio elegido
   out.sort((a, b) => (b.prioridad ? 1 : 0) - (a.prioridad ? 1 : 0));
@@ -2092,8 +2124,8 @@ function groupsFor(rows) {
 /* Inicial de un elemento según el orden activo — misma normalización que usa
    groupsFor para las cabeceras, así el salto siempre cae donde debe. */
 function letraDe(it) {
-  const base = PREFS.sort.startsWith('artist') ? principalDe(it) : it.title;
-  const c = (sortKey(base || '')[0] || '#').toUpperCase();
+  const k = clavesDe(it);
+  const c = ((PREFS.sort.startsWith('artist') ? k.art : k.tit)[0] || '#').toUpperCase();
   return /\p{L}/u.test(c) ? c : '#';
 }
 
@@ -2110,15 +2142,13 @@ function renderIndiceAZ(rows) {
   // con pocos elementos scrollear no duele, y el orden por año/fecha no tiene inicial que valga
   if (!ordenAlfabetico() || rows.length < 40) { rail.classList.add('hidden'); rail.innerHTML = ''; return; }
   /* "rows" trae lo prioritario subido arriba del todo (ver el segundo sort de
-     filtered()) — perfecto para la lista, pero aquí descolocaba las letras:
-     si algo con "W" era prioritario, "W" se colaba al principio de la barra,
-     antes que la "A". La barra necesita el orden alfabético puro para saber
-     QUÉ letras mostrar y en qué orden; a qué elemento saltar al tocarlas
-     sigue mirando el orden real (rows), eso no cambia. */
-  const paraLetras = rows.slice().sort((a, b) => PREFS.sort.startsWith('artist')
-    ? cmp(sortKey(principalDe(a)), sortKey(principalDe(b)))
-    : cmp(sortKey(a.title), sortKey(b.title)));
-  const letras = [...new Set(paraLetras.map(letraDe))];
+     filtered()), así que el orden en que salen las letras al recorrerlo no
+     vale: si algo con "W" es prioritario, la "W" se colaría antes que la "A".
+     Antes eso se arreglaba reordenando OTRA VEZ el vault entero — el segundo
+     orden más caro de cada render. Pero letras hay treinta y pico: se recogen
+     de una pasada y se ordenan ellas, que da lo mismo y no cuesta nada. A qué
+     elemento saltar al tocarlas sigue mirando el orden real (rows). */
+  const letras = [...new Set(rows.map(letraDe))].sort((a, b) => (b === '#') - (a === '#') || cmp(a, b) || (a < b ? -1 : a > b ? 1 : 0));
   rail.classList.remove('hidden');
   rail.innerHTML = letras.map(l => `<button data-az="${esc(l)}">${esc(l)}</button>`).join('');
 }
@@ -5785,7 +5815,13 @@ document.getElementById('statsBtn').addEventListener('click', openStats);
 document.getElementById('setBtn').addEventListener('click', openSettings);
 document.getElementById('addFab').addEventListener('click', openSearch);
 
-document.getElementById('q').addEventListener('input', render);
+/* Sin esto, cada tecla del buscador filtra y reordena el vault entero. Con una
+   pausa corta se pinta cuando dejas de escribir, no siete veces por palabra. */
+let _teclaBusqueda = null;
+document.getElementById('q').addEventListener('input', () => {
+  clearTimeout(_teclaBusqueda);
+  _teclaBusqueda = setTimeout(render, 160);
+});
 document.getElementById('sortSel').addEventListener('change', e => { PREFS.sort = e.target.value; savePrefs(); render(); });
 document.getElementById('viewBtn').addEventListener('click', () => { PREFS.view = PREFS.view === 'grid' ? 'list' : 'grid'; savePrefs(); render(); });
 
