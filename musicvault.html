@@ -502,9 +502,9 @@
   /* list view */
   .list { display:flex; flex-direction: column; gap: 7px; }
   .lrow {
-    display:flex; align-items:center; gap: 11px; cursor: pointer; position: relative;
-    background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
-    padding: 8px 12px 8px 8px; overflow: hidden;
+    display:flex; flex-wrap: wrap; align-items:center; gap: 11px; cursor: pointer; position: relative;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+    padding: 10px 12px 10px 10px; overflow: hidden;
     transition: background .13s, border-color .15s;
     /* deja que el navegador siga gestionando el scroll vertical nativo y le
        cede a JS solo el eje horizontal — sin esto, un listener "passive"
@@ -516,12 +516,15 @@
   .lrow.done::before { background: var(--jade); }
   .lrow:hover { background: var(--surface-2); }
   .lrow.sel { border-color: var(--amber); box-shadow: inset 0 0 0 1px var(--amber); }
-  .lrow .lart { width: 46px; height: 46px; border-radius: 8px; flex-shrink:0; overflow:hidden; background: var(--surface-2); display:flex; align-items:center; justify-content:center; margin-left: 4px; }
+  .lrow .lart { width: 58px; height: 58px; border-radius: 8px; flex-shrink:0; overflow:hidden; background: var(--surface-2); display:flex; align-items:center; justify-content:center; margin-left: 4px; }
   .lrow .lart img { width:100%; height:100%; object-fit:cover; }
   .lrow.done .lart img { opacity:.5; filter: saturate(.55); }
   .lrow .linfo { flex: 1; min-width: 0; }
-  .lrow .lt { font-size: 14px; font-weight: 600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .lrow .la { font-size: 12px; color: var(--fg-mute); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .lrow .lt { font-size: 15.5px; font-weight: 700; letter-spacing: -0.01em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .lrow .la { font-size: 14px; color: var(--fg-mute); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top: 1px; }
+  /* Los chips van en su propio renglón, separados por una línea fina: es lo
+     que deja respirar la fila cuando el título ya ocupa lo suyo. */
+  .lrow .lchips { flex-basis: 100%; display:flex; flex-wrap:wrap; gap: 5px; padding-top: 9px; margin-top: 1px; border-top: 1px solid var(--line); }
   .lrow .lmeta { display:flex; align-items:center; gap:6px; flex-shrink:0; }
   .lrow .lyear { font-size: 11px; color: var(--fg-mute); font-variant-numeric: tabular-nums; font-family: ui-monospace, monospace; }
   .lcheck {
@@ -890,6 +893,66 @@
     -webkit-transform: translateZ(0); will-change: backdrop-filter;
   }
 
+  /* ---- pantalla de inicio ---- */
+  /* Solo se pinta una de las dos: en Inicio sobran la tira de estado, la barra
+     de herramientas y la lista, y esconderlas evita además que se repinten. */
+  .inicio { display: none; padding: 2px 0 100px; }
+  body.en-inicio .inicio { display: block; }
+  body.en-inicio .state-strip, body.en-inicio .toolbar, body.en-inicio .content,
+  body.en-inicio .azrail, body.en-inicio .fab { display: none !important; }
+
+  .inicio h1 { font-size: 33px; font-weight: 800; letter-spacing: -0.03em; margin: 8px 0 15px; }
+  .inicio h2 { font-size: 21px; font-weight: 750; letter-spacing: -0.02em; margin: 28px 0 10px; }
+
+  .tiles { display:grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+  .tile {
+    border: none; border-radius: 19px; padding: 14px 15px 13px; cursor: pointer;
+    color: #fff; text-align: left; font-family: inherit;
+    display:flex; flex-direction: column; gap: 24px;
+    box-shadow: var(--shadow-sm); transition: transform .12s;
+  }
+  .tile:active { transform: scale(0.97); }
+  .tile .top { display:flex; align-items:center; justify-content:space-between; gap: 8px; }
+  .tile .ico { font-size: 18px; line-height: 1; }
+  .tile .n { font-size: 25px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+  .tile .l { font-size: 15px; font-weight: 650; }
+  /* Los cuatro tonos salen de tus propios acentos, no de una paleta nueva:
+     así los mosaicos cambian con el tema como todo lo demás. */
+  .tile.t1 { background: linear-gradient(155deg, color-mix(in srgb, var(--amber) 72%, #fff), var(--amber)); }
+  .tile.t2 { background: linear-gradient(155deg, color-mix(in srgb, var(--jade) 72%, #fff), var(--jade)); }
+  .tile.t3 { background: linear-gradient(155deg, var(--fg-soft), var(--fg)); }
+  .tile.t4 { background: linear-gradient(155deg, color-mix(in srgb, var(--rust) 72%, #fff), var(--rust)); }
+
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+  .crow {
+    position: relative; display:flex; align-items:center; gap: 12px; width: 100%;
+    padding: 13px 15px; background:none; border:none; cursor:pointer;
+    font-family: inherit; font-size: 15.5px; color: var(--fg); text-align:left;
+  }
+  /* La línea arranca después del icono, no de punta a punta */
+  .crow + .crow::before, .aexp + .crow::before { content:''; position:absolute; left: 49px; right: 0; top: 0; height: 1px; background: var(--line); }
+  .crow:active { background: var(--surface-2); }
+  .crow .ci { font-size: 16px; width: 22px; text-align:center; flex-shrink:0; }
+  .crow .ct { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .crow .cn { margin-left:auto; color: var(--fg-mute); font-size: 14.5px; flex-shrink:0; }
+  .crow.abierta { background: var(--surface-2); }
+
+  /* Los discos y canciones de un artista, colgando de su fila */
+  .aexp { background: var(--surface-2); }
+  .irow { display:flex; align-items:center; gap: 11px; padding: 8px 15px 8px 49px; cursor:pointer; }
+  .irow:active { background: var(--line); }
+  .irow .ip { width: 44px; height: 44px; border-radius: 7px; flex-shrink:0; overflow:hidden; background: var(--surface); display:flex; align-items:center; justify-content:center; font-size: 18px; }
+  .irow .ip img { width:100%; height:100%; object-fit:cover; }
+  .irow .ii { min-width: 0; }
+  .irow .it { font-size: 14.5px; font-weight: 650; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .irow .ig { display:flex; gap: 5px; margin-top: 4px; }
+
+  /* La reseña, en burbuja y por defecto solo la primera frase */
+  .editorial { background: var(--surface-2); border-radius: 14px; padding: 13px 15px; }
+  .editorial p { margin: 0; font-size: 15px; line-height: 1.45; }
+  .editorial p.mas { margin-top: 9px; color: var(--fg-soft); }
+  .editorial .linkbtn { margin-top: 7px; }
+
   /* toast */
   .toastwrap { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(88px + env(safe-area-inset-bottom)); z-index: 70; display:flex; flex-direction:column; gap: 8px; align-items:center; width: calc(100% - 28px); max-width: 420px; pointer-events:none; }
   .toast {
@@ -936,6 +999,7 @@
     <span class="wm-text">MusicVault</span>
   </div>
   <div class="cmd-actions">
+    <button class="iconbtn" id="homeBtn" title="Inicio" aria-label="Ir al inicio">🏠</button>
     <button class="iconbtn" id="shuffleBtn" title="¿Qué escucho?" aria-label="Elegir algo al azar">🎲</button>
     <button class="iconbtn" id="statsBtn" title="Estadísticas" aria-label="Estadísticas">📊</button>
     <button class="iconbtn" id="themeBtn" title="Cambiar tema" aria-label="Cambiar tema">◐</button>
@@ -944,6 +1008,8 @@
 </header>
 
 <div class="shell">
+  <section class="inicio" id="inicio"></section>
+
   <div class="state-strip">
     <button class="stat" data-status="all"><div class="n num" id="statAll">0</div><div class="l">En el vault</div></button>
     <button class="stat pending" data-status="pending"><div class="n num" id="statPending">0</div><div class="l">Pendientes</div></button>
@@ -1043,7 +1109,7 @@ let TAGS  = [];
 // real de TAGS — así no se altera nada de la lógica de fusión/dedup por id.
 // las fijadas primero (entre ellas, alfabético), luego el resto, también alfabético
 const tagsOrdenados = () => TAGS.slice().sort((a, b) => (b.favorito ? 1 : 0) - (a.favorito ? 1 : 0) || a.name.localeCompare(b.name, 'es'));
-let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', status: 'all', tag: 'all', genre: 'all', decade: 'all', covers: false, confirmarBorrado: false, tanda: 120, autoAddEscuchas: false, dur: 'all', vistas: [], gcardSize: 0 }, read(K_PREFS, {}));
+let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', status: 'all', tag: 'all', genre: 'all', decade: 'all', covers: false, confirmarBorrado: false, tanda: 120, autoAddEscuchas: false, dur: 'all', vistas: [], gcardSize: 0, pantalla: 'inicio' }, read(K_PREFS, {}));
 
 /* Al borrar algo hay que dejar constancia: si no, el otro dispositivo lo
    vuelve a subir en la siguiente sincronización y el borrado "revive". */
@@ -1837,7 +1903,10 @@ function filtered() {
     // un artista no se "escucha" de golpe: no participa en pendiente/escuchado
     if (PREFS.status === 'pending' && (it.listened || it.type === 'artist')) return false;
     if (PREFS.status === 'listened' && (!it.listened || it.type === 'artist')) return false;
-    if (PREFS.tag !== 'all' && !(it.tagIds || []).includes(PREFS.tag)) return false;
+    /* "none" no es una etiqueta de verdad: es el filtro de lo que todavía no
+       tiene ninguna, que es justo por donde se empieza a ordenar un vault. */
+    if (PREFS.tag === 'none') { if ((it.tagIds || []).length) return false; }
+    else if (PREFS.tag !== 'all' && !(it.tagIds || []).includes(PREFS.tag)) return false;
     if (PREFS.genre !== 'all' && !(it.genres || []).some(g => fold(g) === PREFS.genre)) return false;
     if (PREFS.decade !== 'all') { const y = yearOf(it); if (!y || Math.floor(y / 10) * 10 !== +PREFS.decade) return false; }
     /* Duración: mide la canción, o la del álbum entero si ya la conocemos
@@ -1980,6 +2049,9 @@ function renderChips() {
     const n = visibles.filter(i => (i.tagIds || []).includes(t.id)).length;
     return `<button class="chip ${PREFS.tag === t.id ? 'on' : ''}" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)} <span class="ct">${n}</span></button>`;
   });
+  /* Va con las etiquetas porque es donde se busca, aunque signifique lo contrario */
+  const sinEtiquetar = visibles.filter(i => !(i.tagIds || []).length).length;
+  if (sinEtiquetar) chipsTag.push(`<button class="chip ${PREFS.tag === 'none' ? 'on' : ''}" data-tag="none">🏷️ Sin etiqueta <span class="ct">${sinEtiquetar}</span></button>`);
   const DUR_ET = { corto: 'Corto', medio: 'Medio', largo: 'Largo' };
   const chipsDur = ['corto', 'medio', 'largo'].map(d =>
     `<button class="chip ${PREFS.dur === d ? 'on' : ''}" data-dur="${d}">⏱ ${DUR_ET[d]}</button>`);
@@ -2044,8 +2116,11 @@ function lrow(it) {
       ${it.prioridad ? `<span class="pin" title="Prioritario">📌</span>` : ''}
       ${tags.map(t => `<span class="tagpip" style="background:${esc(t.colorHex)}" title="${esc(t.name)}"></span>`).join('')}
       ${it.rating ? `<span class="stars">${'★'.repeat(it.rating)}</span>` : ''}
-      ${y ? `<span class="lyear">${y}</span>` : ''}
       ${it.type !== 'artist' ? `<button class="lcheck ${it.listened ? 'on' : ''}" data-toggle="${it.id}" aria-label="${it.listened ? 'Marcar pendiente' : 'Marcar escuchado'}">✓</button>` : ''}
+    </div>
+    <div class="lchips">
+      ${y ? `<span class="gchip">📅 ${y}</span>` : ''}
+      <span class="gchip">${TYPE_ICON[it.type]} ${TYPE_LABEL[it.type]}</span>
     </div>
   </article>`;
 }
@@ -2056,6 +2131,19 @@ const tanda = () => PREFS.tanda || 120;   // configurable en Ajustes ("Elementos
 let VISTAS = tanda(), _firma = null;
 
 function render() {
+  /* En Inicio no hay lista que filtrar ni ordenar: se sale antes de tocar nada
+     de eso, así entrar y salir es instantáneo aunque el vault sea enorme. */
+  if (PREFS.pantalla === 'inicio') {
+    document.body.classList.add('en-inicio');
+    const hb = document.getElementById('homeBtn');
+    hb.textContent = '🗄️'; hb.title = 'Ver el vault';
+    renderInicio();
+    return;
+  }
+  document.body.classList.remove('en-inicio');
+  const hb = document.getElementById('homeBtn');
+  hb.textContent = '🏠'; hb.title = 'Inicio';
+
   const firma = [PREFS.type, PREFS.status, PREFS.tag, PREFS.sort,
                  document.getElementById('q').value.trim()].join('');
   if (firma !== _firma) { _firma = firma; VISTAS = tanda(); }
@@ -2129,6 +2217,103 @@ function render() {
     + (restan > 0
       ? `<button class="btn vermas" data-more="1">Ver más — quedan ${restan.toLocaleString('es-ES')}</button>`
       : '');
+}
+
+/* ============ pantalla de inicio ============ */
+
+/* Índice de artistas: agrupa por artista principal (la misma clave que usan
+   las cabeceras de la lista) y deja fuera las fichas de artista, que no son
+   discos ni canciones — el número de al lado cuenta lo que tienes SUYO. */
+/* Agrupar 17.000 elementos y ordenar 4.000 nombres cuesta lo suyo para hacerlo
+   cada vez que entras y sales de Inicio. META.updatedAt cambia en cada guardado,
+   así que sirve de marca: mientras no toques el vault, vale el índice de antes. */
+let _indiceCache = null;
+function indiceArtistas() {
+  if (_indiceCache && _indiceCache.marca === META.updatedAt && _indiceCache.n === ITEMS.length) return _indiceCache.lista;
+  const m = new Map();
+  for (const it of ITEMS) {
+    if (it.archived || it.type === 'artist') continue;
+    const k = claveArtista(it);
+    if (!k) continue;
+    let g = m.get(k);
+    if (!g) { g = { clave: k, nombre: principalDe(it), items: [] }; m.set(k, g); }
+    g.items.push(it);
+  }
+  const lista = [...m.values()].sort((a, b) => cmp(sortKey(a.nombre), sortKey(b.nombre)));
+  _indiceCache = { marca: META.updatedAt, n: ITEMS.length, lista };
+  return lista;
+}
+
+let VISTOS_ARTISTAS = 60;                  // artistas pintados; crece con "Ver más"
+const ARTISTAS_ABIERTOS = new Set();       // cuáles están desplegados
+
+/* Dentro de un artista: primero los discos, luego las canciones, y dentro de
+   cada grupo lo más nuevo arriba — que es como se busca algo de alguien. */
+const ordenDentroDeArtista = (a, b) =>
+  (a.type === b.type ? 0 : a.type === 'album' ? -1 : 1) || (yearOf(b) - yearOf(a)) || cmp(clavesDe(a).tit, clavesDe(b).tit);
+
+function filaElemento(it) {
+  const y = yearOf(it);
+  return `<div class="irow" data-abrir="${it.id}">
+    <div class="ip">${portada(it.coverUrl, TYPE_ICON[it.type], true)}</div>
+    <div class="ii">
+      <div class="it">${esc(it.title)}</div>
+      <div class="ig">${y ? `<span class="gchip">📅 ${y}</span>` : ''}<span class="gchip">${TYPE_ICON[it.type]} ${TYPE_LABEL[it.type]}</span></div>
+    </div>
+  </div>`;
+}
+
+function renderInicio() {
+  const box = document.getElementById('inicio');
+  if (!box) return;
+  const vivos = ITEMS.filter(i => !i.archived);
+  const contables = vivos.filter(i => i.type !== 'artist');
+  const escuchados = contables.filter(i => i.listened).length;
+  const sinEtiqueta = vivos.filter(i => !(i.tagIds || []).length).length;
+
+  const artistas = indiceArtistas();
+  const visibles = artistas.slice(0, VISTOS_ARTISTAS);
+  const restan = artistas.length - visibles.length;
+
+  box.innerHTML = `
+    <h1>MusicVault</h1>
+    <div class="tiles">
+      <button class="tile t1" data-ira="pending"><div class="top"><span class="ico">◎</span><span class="n">${(contables.length - escuchados).toLocaleString('es-ES')}</span></div><div class="l">Pendientes</div></button>
+      <button class="tile t2" data-ira="listened"><div class="top"><span class="ico">✓</span><span class="n">${escuchados.toLocaleString('es-ES')}</span></div><div class="l">Escuchados</div></button>
+      <button class="tile t3" data-ira="all"><div class="top"><span class="ico">🗄️</span><span class="n">${vivos.length.toLocaleString('es-ES')}</span></div><div class="l">Todo</div></button>
+      <button class="tile t4" data-ira="sintag"><div class="top"><span class="ico">🏷️</span><span class="n">${sinEtiqueta.toLocaleString('es-ES')}</span></div><div class="l">Sin etiqueta</div></button>
+    </div>
+
+    <h2>Acciones</h2>
+    <div class="card">
+      <button class="crow" data-acc="buscar"><span class="ci">🔍</span><span class="ct">Buscar en Spotify</span></button>
+      <button class="crow" data-acc="pegar"><span class="ci">🔗</span><span class="ct">Pegar enlaces</span></button>
+      <button class="crow" data-acc="azar"><span class="ci">🎲</span><span class="ct">Abrir uno al azar</span></button>
+      <button class="crow" data-acc="lote"><span class="ci">✏️</span><span class="ct">Editar en lote</span></button>
+      <button class="crow" data-acc="stats"><span class="ci">📊</span><span class="ct">Estadísticas</span></button>
+    </div>
+
+    <h2>Artistas</h2>
+    ${!artistas.length ? `<p class="lede">Cuando guardes discos o canciones, aquí aparecerán sus artistas para desplegarlos.</p>` : `
+    <div class="card" id="cardArtistas">
+      ${visibles.map(g => {
+        const abierto = ARTISTAS_ABIERTOS.has(g.clave);
+        return `<button class="crow ${abierto ? 'abierta' : ''}" data-art="${esc(g.clave)}">
+          <span class="ci">${abierto ? '▾' : '👤'}</span><span class="ct">${esc(g.nombre)}</span><span class="cn">${g.items.length}</span>
+        </button>${abierto ? `<div class="aexp">${g.items.slice().sort(ordenDentroDeArtista).map(filaElemento).join('')}</div>` : ''}`;
+      }).join('')}
+    </div>
+    ${restan > 0 ? `<button class="btn vermas" data-masart="1">Ver más — quedan ${restan.toLocaleString('es-ES')} artistas</button>` : ''}`}
+  `;
+}
+
+/* Cambiar de pantalla se recuerda: si te gusta empezar en el vault, te quedas
+   en el vault, y si te gusta empezar aquí, te quedas aquí. */
+function irAPantalla(p) {
+  PREFS.pantalla = p;
+  savePrefs();
+  window.scrollTo(0, 0);
+  render();
 }
 
 /* Agrupa solo cuando el orden lo hace significativo: por artista, por inicial o por década. */
@@ -4538,12 +4723,34 @@ async function lastfmAlbumInfo(nombreAlbum, nombreArtista, apiKey) {
   };
 }
 
+/* Una frase y punto, como el renglón editorial de las apps de música. El resto
+   del texto sigue ahí, detrás de "Leer más", para quien quiera la historia
+   larga — pero no se la come de entrada quien solo quería saber de qué va. */
+function burbujaEditorial(texto) {
+  const t = String(texto || '').trim();
+  if (!t) return '';
+  const corte = t.search(/[.!?]\s/);
+  const primera = (corte > 40 && corte < t.length - 2) ? t.slice(0, corte + 1) : t;
+  const resto = t.slice(primera.length).trim();
+  return `<div class="editorial">
+    <p>${esc(primera)}</p>
+    ${resto ? `<button class="linkbtn" data-masinfo="1">Leer más</button><p class="mas hidden">${esc(resto)}</p>` : ''}
+  </div>`;
+}
+
+function wireEditorial(box) {
+  box.querySelector('[data-masinfo]')?.addEventListener('click', e => {
+    box.querySelector('.editorial .mas')?.classList.remove('hidden');
+    e.currentTarget.remove();
+  });
+}
+
 async function cargarInfoAlbum(it) {
   const box = document.getElementById('dAlbumInfo');
   if (!box) return;
   try {
     const extracto = await wikipediaResumen(`${it.title} ${artistsOf(it)} álbum`).catch(() => null);
-    if (extracto) { box.innerHTML = `<p class="lede" style="margin:0;">${esc(extracto)}</p>`; return; }
+    if (extracto) { box.innerHTML = burbujaEditorial(extracto); wireEditorial(box); return; }
   } catch {}
   const lf = lastfmCfg();
   if (!lf) { box.innerHTML = `<p class="lede" style="margin:0;">No hay artículo en Wikipedia en español. Pon tu clave de Last.fm en Ajustes para ver información (en inglés).</p>`; return; }
@@ -4554,9 +4761,10 @@ async function cargarInfoAlbum(it) {
     if (info.listeners) datos.push(`${info.listeners.toLocaleString('es-ES')} oyentes en Last.fm`);
     if (info.playcount) datos.push(`${info.playcount.toLocaleString('es-ES')} reproducciones`);
     box.innerHTML = `
-      ${info.resumen ? `<p class="lede" style="margin:0 0 4px;">${esc(info.resumen)}</p><p class="lede" style="margin:0 0 8px;font-size:11px;color:var(--fg-mute);">En inglés — no hay artículo en Wikipedia en español para este álbum.</p>` : ''}
+      ${info.resumen ? `${burbujaEditorial(info.resumen)}<p class="lede" style="margin:6px 0 8px;font-size:11px;color:var(--fg-mute);">En inglés — no hay artículo en Wikipedia en español para este álbum.</p>` : ''}
       ${datos.length ? `<p class="lede" style="margin:0;color:var(--fg-mute);font-size:11.5px;">${esc(datos.join(' · '))}</p>` : ''}
     `;
+    wireEditorial(box);
   } catch {
     box.innerHTML = `<p class="lede" style="margin:0;">No se pudo consultar Last.fm ahora mismo.</p>`;
   }
@@ -5898,6 +6106,48 @@ document.getElementById('addFab').addEventListener('click', openSearch);
 /* Sin esto, cada tecla del buscador filtra y reordena el vault entero. Con una
    pausa corta se pinta cuando dejas de escribir, no siete veces por palabra. */
 let _teclaBusqueda = null;
+document.getElementById('homeBtn').addEventListener('click', () =>
+  irAPantalla(PREFS.pantalla === 'inicio' ? 'lista' : 'inicio'));
+
+document.getElementById('inicio').addEventListener('click', e => {
+  /* Los mosaicos llevan al vault ya filtrado: tocar "Pendientes" es lo mismo
+     que entrar en la lista y elegir ese filtro, en un solo gesto. */
+  const tile = e.target.closest('[data-ira]');
+  if (tile) {
+    const d = tile.dataset.ira;
+    PREFS.type = 'all'; PREFS.genre = 'all'; PREFS.decade = 'all'; PREFS.dur = 'all';
+    PREFS.status = d === 'sintag' ? 'all' : d;
+    PREFS.tag = d === 'sintag' ? 'none' : 'all';
+    document.getElementById('q').value = '';
+    irAPantalla('lista');
+    return;
+  }
+  const acc = e.target.closest('[data-acc]');
+  if (acc) {
+    const a = acc.dataset.acc;
+    if (a === 'buscar') openSearch();
+    else if (a === 'pegar') openBulk();
+    else if (a === 'azar') shuffle();
+    else if (a === 'stats') openStats();
+    else if (a === 'lote') { irAPantalla('lista'); setSelMode(true); }
+    return;
+  }
+  const art = e.target.closest('[data-art]');
+  if (art) {
+    const k = art.dataset.art;
+    ARTISTAS_ABIERTOS.has(k) ? ARTISTAS_ABIERTOS.delete(k) : ARTISTAS_ABIERTOS.add(k);
+    const y = art.getBoundingClientRect().top;
+    renderInicio();
+    /* el artista que acabas de tocar se queda donde estaba, no salta */
+    const otra = document.querySelector(`[data-art="${CSS.escape(k)}"]`);
+    if (otra) window.scrollBy(0, otra.getBoundingClientRect().top - y);
+    return;
+  }
+  const abrir = e.target.closest('[data-abrir]');
+  if (abrir) { openDetail(abrir.dataset.abrir); return; }
+  if (e.target.closest('[data-masart]')) { VISTOS_ARTISTAS += 120; renderInicio(); }
+});
+
 document.getElementById('q').addEventListener('input', () => {
   clearTimeout(_teclaBusqueda);
   _teclaBusqueda = setTimeout(render, 160);
