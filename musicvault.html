@@ -903,6 +903,41 @@
     -webkit-transform: translateZ(0); will-change: backdrop-filter;
   }
 
+  /* El despliegue entra en vez de aparecer de golpe: como la lista se repinta
+     entera, sin esto el bloque nuevo da un salto seco bajo el dedo. */
+  @keyframes desplegar { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: none; } }
+  .aexp { animation: desplegar .17s var(--ease-out); }
+  @media (prefers-reduced-motion: reduce) { .aexp { animation: none; } }
+  /* Un botón que se hunde al tocarlo confirma el toque antes de que dé tiempo
+     a que la pantalla cambie — que es la mitad de la sensación de que va fino. */
+  .btn:active, .iconbtn:active, .chip:active, .tagsel:active, .stat:active { transform: scale(0.955); }
+  .btn, .iconbtn, .chip, .tagsel, .stat { transition: transform .13s var(--ease-out), background .15s, border-color .15s, color .15s; }
+  .crow { transition: background .14s var(--ease-out); }
+  .irow { transition: background .14s var(--ease-out); }
+  .tagsel { display:inline-flex; align-items:center; gap: 7px; }
+
+  /* ---- etiquetas con icono ---- */
+  .tgico { display:block; flex-shrink:0; }
+  /* El icono sobre su color al 15%: se distingue de un vistazo sin gritar */
+  .tgbadge { display:flex; align-items:center; justify-content:center; border-radius: 9px; flex-shrink:0; }
+
+  .icogrid { display:grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .icogrid button {
+    display:flex; align-items:center; justify-content:center; aspect-ratio: 1;
+    border: none; border-radius: 11px; background: var(--surface-2); cursor:pointer;
+    transition: transform .12s var(--ease-out), background .15s;
+  }
+  .icogrid button:active { transform: scale(.9); }
+  .icogrid button.on { background: color-mix(in srgb, currentColor 18%, transparent); box-shadow: inset 0 0 0 2px currentColor; }
+
+  .tagline { display:flex; align-items:center; gap: 10px; padding: 9px 2px; border-bottom: 1px solid var(--line); }
+  .tagline:last-child { border-bottom: none; }
+  .tagline .lf { display:flex; align-items:center; gap: 9px; flex: 1; min-width: 0; font-size: 15px; }
+  .tagline .lf .nm { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .tagline.dentro { padding-left: 22px; }
+  .tagcab { display:flex; align-items:center; gap: 9px; margin: 14px 0 2px; font-size: 13px; font-weight: 700; color: var(--fg-soft); }
+  .tagcab:first-child { margin-top: 0; }
+
   /* ---- pantalla de inicio ---- */
   /* Solo se pinta una de las dos: en Inicio sobran la tira de estado, la barra
      de herramientas y la lista, y esconderlas evita además que se repinten. */
@@ -1120,7 +1155,17 @@ let TAGS  = [];
 // dondequiera que se listen etiquetas se piden así, en vez de tocar el orden
 // real de TAGS — así no se altera nada de la lógica de fusión/dedup por id.
 // las fijadas primero (entre ellas, alfabético), luego el resto, también alfabético
-const tagsOrdenados = () => TAGS.slice().sort((a, b) => (b.favorito ? 1 : 0) - (a.favorito ? 1 : 0) || a.name.localeCompare(b.name, 'es'));
+/* Las carpetas viven en el MISMO array que las etiquetas, marcadas con
+   esCarpeta. Así heredan gratis la sincronización y las tumbas que ya existían
+   para etiquetas, sin tocar el formato del fichero que se sube a GitHub — que
+   es la parte donde un fallo cuesta datos de verdad. Todo lo que pinta
+   etiquetas pasa por aquí, así que filtrarlas en este sitio las deja fuera de
+   los chips, del selector de la ficha y de los filtros de una sola vez. */
+const esCarpeta = t => !!(t && t.esCarpeta);
+const tagsOrdenados = () => TAGS.filter(t => !esCarpeta(t)).sort((a, b) => (b.favorito ? 1 : 0) - (a.favorito ? 1 : 0) || a.name.localeCompare(b.name, 'es'));
+const carpetasOrdenadas = () => TAGS.filter(esCarpeta).sort((a, b) => a.name.localeCompare(b.name, 'es'));
+/* Etiquetas de una carpeta; sin argumento, las que no están en ninguna. */
+const tagsDeCarpeta = id => tagsOrdenados().filter(t => (t.carpetaId || null) === (id || null));
 let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', status: 'all', tag: 'all', genre: 'all', decade: 'all', covers: false, confirmarBorrado: false, tanda: 120, autoAddEscuchas: false, dur: 'all', vistas: [], gcardSize: 0, pantalla: 'inicio' }, read(K_PREFS, {}));
 
 /* Al borrar algo hay que dejar constancia: si no, el otro dispositivo lo
@@ -1228,6 +1273,52 @@ const TYPE_LABEL = { album: 'Álbum', track: 'Canción', artist: 'Artista', play
 const TYPE_PLURAL = { album: 'Álbumes', track: 'Canciones', artist: 'Artistas', playlist: 'Playlists' };
 const TYPE_ICON  = { album: '💿', track: '🎵', artist: '🎤', playlist: '📑' };
 const TAG_COLORS = ['#2a78d6','#1baf7a','#eda100','#3f9c35','#7a5cd6','#e34948','#e87ba4','#eb6834'];
+
+/* Iconos de etiqueta. En SVG de un solo trazo y no en emoji: así se tiñen del
+   color de la etiqueta, se ven igual en todos los teléfonos y no cambian de
+   estilo según la versión del sistema. Todos en una rejilla de 24x24. */
+const ICONOS = {
+  etiqueta:  'M11.6 2.4H4a1.6 1.6 0 0 0-1.6 1.6v7.6c0 .43.17.83.47 1.13l8.4 8.4a1.6 1.6 0 0 0 2.26 0l7.2-7.2a1.6 1.6 0 0 0 0-2.26l-8.4-8.4a1.6 1.6 0 0 0-.73-.87zM7 9.2a1.8 1.8 0 1 1 0-3.6 1.8 1.8 0 0 1 0 3.6z',
+  estrella:  'M12 2.4l2.94 5.96 6.58.96-4.76 4.64 1.12 6.56L12 17.42l-5.88 3.1 1.12-6.56L2.48 9.32l6.58-.96z',
+  corazon:   'M12 21.3l-1.45-1.32C5.4 15.36 2.4 12.28 2.4 8.9a5 5 0 0 1 9.6-2.1 5 5 0 0 1 9.6 2.1c0 3.38-3 6.46-8.15 11.08z',
+  marcador:  'M6.4 2.4h11.2a1 1 0 0 1 1 1v18.2l-6.6-4.3-6.6 4.3V3.4a1 1 0 0 1 1-1z',
+  bandera:   'M4 2.4h1.9v19.2H4zM6.9 3.6h11.6l-2.7 4 2.7 4H6.9z',
+  rayo:      'M13.8 2L5.4 13.6h5.2L9.6 22l8.6-11.9h-5.4z',
+  fuego:     'M12.9 2c.6 3.1-1.5 4.4-2.7 5.8-1.7 1.9-2.7 3.5-2.7 5.8a6.6 6.6 0 0 0 10.9 5 6.6 6.6 0 0 0 .1-9.9C16.4 6.8 14.4 4.9 12.9 2z',
+  luna:      'M12.9 2.4A9.6 9.6 0 1 0 21.6 15.4 7.7 7.7 0 0 1 12.9 2.4z',
+  nota:      'M20.4 2.6v11.9a3.3 3.3 0 1 1-2-3.03V7.1L10.4 8.8v8.6a3.3 3.3 0 1 1-2-3.03V5.5z',
+  disco:     'M12 2.2a9.8 9.8 0 1 0 0 19.6 9.8 9.8 0 0 0 0-19.6zm0 12a2.2 2.2 0 1 1 0-4.4 2.2 2.2 0 0 1 0 4.4z',
+  microfono: 'M12 14.6a3.6 3.6 0 0 0 3.6-3.6V5.4a3.6 3.6 0 1 0-7.2 0V11a3.6 3.6 0 0 0 3.6 3.6zM18.8 11a6.8 6.8 0 0 1-5.8 6.72V21h-2v-3.28A6.8 6.8 0 0 1 5.2 11h2a4.8 4.8 0 0 0 9.6 0z',
+  auriculares:'M12 2.6A9.4 9.4 0 0 0 2.6 12v6.4A2.6 2.6 0 0 0 5.2 21h3.4v-8.4H4.6V12a7.4 7.4 0 0 1 14.8 0v.6h-4V21h3.4a2.6 2.6 0 0 0 2.6-2.6V12A9.4 9.4 0 0 0 12 2.6z',
+  altavoz:   'M12.8 3.2 7.2 7.6H3.4v8.8h3.8l5.6 4.4zM16.4 8.2a5.2 5.2 0 0 1 0 7.6l1.5 1.5a7.3 7.3 0 0 0 0-10.6z',
+  trofeo:    'M18 3.2h3.4v3a4.4 4.4 0 0 1-4 4.38A6.4 6.4 0 0 1 13 14.5v3.1h3.6v2.6H7.4v-2.6H11v-3.1a6.4 6.4 0 0 1-4.4-3.92 4.4 4.4 0 0 1-4-4.38v-3H6V2.4h12zM6 5.8H4.6v.4a2 2 0 0 0 1.4 1.9zm13.4 0H18v2.3a2 2 0 0 0 1.4-1.9z',
+  cafe:      'M3.4 4.4h13.2v3h2.6a3.4 3.4 0 0 1 0 6.8h-2.7a6.6 6.6 0 0 1-13.1-1zm13.2 5v2.4h2.6a1.2 1.2 0 0 0 0-2.4zM2.6 19.4h15.2V22H2.6z',
+  copa:      'M5 2.6h14l-1.2 6.2a6 6 0 0 1-4.8 4.7v5.9h4v2.6H7v-2.6h4v-5.9a6 6 0 0 1-4.8-4.7z',
+  pesas:     'M2.2 9.4h2.4v5.2H2.2zm3.6-1.6h2.6v8.4H5.8zm3.8 2.6h4.8v3.2H9.4zm6-2.6h2.6v8.4h-2.6zm3.8 1.6h2.4v5.2h-2.4z',
+  avion:     'M21.6 15.4v-2.2l-8-4.8V3.6a1.6 1.6 0 1 0-3.2 0v4.8l-8 4.8v2.2l8-2.4v4.9l-2.4 1.6v1.7l4-1.1 4 1.1v-1.7l-2.4-1.6v-4.9z',
+  coche:     'M18.4 4.6H5.6L3 11.4v8.2h3.2v-2.2h11.6v2.2H21v-8.2zM5.9 9.4l1.3-2.4h9.6l1.3 2.4zM6.8 15.4a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm10.4 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z',
+  casa:      'M12 2.4 2.4 10.8h2.8v10.8h5V15h3.6v6.6h5V10.8h2.8z',
+  libro:     'M4 3h7.2v17.4A5.4 5.4 0 0 0 8 19.2H4zm8.8 0H20v16.2h-4a5.4 5.4 0 0 0-3.2 1.2z',
+  pelicula:  'M2.6 3.4h18.8v17.2H2.6zm2.6 2.6v2.4h2.4V6zm11.2 0v2.4h2.4V6zM5.2 10.8v2.4h2.4v-2.4zm11.2 0v2.4h2.4v-2.4zM5.2 15.6V18h2.4v-2.4zm11.2 0V18h2.4v-2.4zM9.8 6v12h4.4V6z',
+  mando:     'M7.4 6.6h9.2a5.4 5.4 0 0 1 5.4 5.4v1.6a4 4 0 0 1-7.2 2.4H9.2A4 4 0 0 1 2 13.6V12a5.4 5.4 0 0 1 5.4-5.4zM6 9.6v1.6H4.4v1.8H6v1.6h1.8v-1.6h1.6v-1.8H7.8V9.6zm10.6.6a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8z',
+  camara:    'M9.2 3.4h5.6l1.4 2.2h4.2v15H3.6v-15h4.2zm2.8 4.4a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2.6a2.4 2.4 0 1 1 0 4.8 2.4 2.4 0 0 1 0-4.8z',
+  reloj:     'M12 2.2a9.8 9.8 0 1 0 0 19.6 9.8 9.8 0 0 0 0-19.6zm1.2 4.6v5.2l3.6 2.2-1.1 1.8-4.5-2.8V6.8z',
+  calendario:'M7 2v2.2H5.2A2.6 2.6 0 0 0 2.6 6.8v12.6a2.6 2.6 0 0 0 2.6 2.6h13.6a2.6 2.6 0 0 0 2.6-2.6V6.8a2.6 2.6 0 0 0-2.6-2.6H17V2h-2.4v2.2H9.4V2zm12 8v9.4H5V10z',
+  check:     'M12 2.2a9.8 9.8 0 1 0 0 19.6 9.8 9.8 0 0 0 0-19.6zm-1.3 14.2-4.3-4.3 1.8-1.8 2.5 2.5 5.4-5.4 1.8 1.8z',
+  caja:      'M2.4 4.4h19.2v4.4H2.4zm1.6 6h15.6v9.2a1.6 1.6 0 0 1-1.6 1.6H5.6A1.6 1.6 0 0 1 4 19.6zm5 2.4v2.4h6v-2.4z',
+  regalo:    'M12 5.2a3.1 3.1 0 0 1 5.6-2.4 3.1 3.1 0 0 1-1.3 4.4h4.5v4.4H2.4V7.2h4.5A3.1 3.1 0 0 1 12 5.2zM3.6 13.2h7.2v8.4H5.2a1.6 1.6 0 0 1-1.6-1.6zm9.6 0h7.2V20a1.6 1.6 0 0 1-1.6 1.6h-5.6z',
+  carpeta:   'M2.6 5.4A2 2 0 0 1 4.6 3.4h4.6l2.2 2.6h8a2 2 0 0 1 2 2v10.6a2 2 0 0 1-2 2h-15a2 2 0 0 1-2-2z',
+  ojo:       'M12 4.6c-5.2 0-9 4.3-9.8 7.4.8 3.1 4.6 7.4 9.8 7.4s9-4.3 9.8-7.4c-.8-3.1-4.6-7.4-9.8-7.4zm0 3a4.4 4.4 0 1 1 0 8.8 4.4 4.4 0 0 1 0-8.8zm0 2.4a2 2 0 1 0 0 4 2 2 0 0 0 0-4z',
+  gota:      'M12 2.2c4 5.4 6.6 8.4 6.6 12A6.6 6.6 0 0 1 5.4 14.2c0-3.6 2.6-6.6 6.6-12z',
+  sol:       'M12 7.4a4.6 4.6 0 1 0 0 9.2 4.6 4.6 0 0 0 0-9.2zM10.8 1.4h2.4v3.6h-2.4zm0 17.6h2.4v3.6h-2.4zM1.4 10.8H5v2.4H1.4zm17.6 0h3.6v2.4H19zM4.1 5.8l1.7-1.7 2.5 2.5-1.7 1.7zm12 12 1.7-1.7 2.5 2.5-1.7 1.7zm2.5-13.7 1.7 1.7-2.5 2.5-1.7-1.7zm-12 12 1.7 1.7-2.5 2.5-1.7-1.7z'
+};
+const ICONOS_ORDEN = Object.keys(ICONOS);
+
+/* Una etiqueta sin icono elegido se pinta con el de etiqueta, y una carpeta
+   con el de carpeta: nunca sale un hueco. */
+const iconoDe = t => ICONOS[t && t.icon] ? t.icon : (t && t.esCarpeta ? 'carpeta' : 'etiqueta');
+const iconoHtml = (t, px) =>
+  `<svg class="tgico" viewBox="0 0 24 24" width="${px}" height="${px}" fill="${esc(t && t.colorHex || 'currentColor')}" aria-hidden="true"><path d="${ICONOS[iconoDe(t)]}"/></svg>`;
 const artistsOf = it => (it.artists || []).join(', ');
 /* Spotify devuelve el artista principal el primero, y la importación desde el
    Excel mantuvo ese orden: artists[0] es de quién es la canción y el resto son
@@ -2059,7 +2150,7 @@ function renderChips() {
     `<button class="chip decade ${PREFS.decade === dec ? 'on' : ''}" data-decade="${dec}">${dec}s <span class="ct">${n}</span></button>`);
   const chipsTag = tagsOrdenados().map(t => {
     const n = visibles.filter(i => (i.tagIds || []).includes(t.id)).length;
-    return `<button class="chip ${PREFS.tag === t.id ? 'on' : ''}" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)} <span class="ct">${n}</span></button>`;
+    return `<button class="chip ${PREFS.tag === t.id ? 'on' : ''}" data-tag="${esc(t.id)}">${iconoHtml(t, 13)}${esc(t.name)} <span class="ct">${n}</span></button>`;
   });
   /* Va con las etiquetas porque es donde se busca, aunque signifique lo contrario */
   const sinEtiquetar = visibles.filter(i => !(i.tagIds || []).length).length;
@@ -2258,6 +2349,42 @@ function indiceArtistas() {
 
 let VISTOS_ARTISTAS = 60;                  // artistas pintados; crece con "Ver más"
 const ARTISTAS_ABIERTOS = new Set();       // cuáles están desplegados
+const TAGS_ABIERTAS = new Set();
+const CARPETAS_ABIERTAS = new Set();
+
+const itemsDeTag = id => ITEMS.filter(i => !i.archived && (i.tagIds || []).includes(id));
+
+/* La fila de una etiqueta enseña la portada de lo último que le pusiste: con
+   veinte etiquetas, reconocerlas por la carátula es más rápido que leerlas. */
+function filaTag(t, dentro) {
+  const items = itemsDeTag(t.id);
+  const abierta = TAGS_ABIERTAS.has(t.id);
+  const conPortada = items.find(i => i.coverUrl);
+  const emblema = (conPortada && verPortada())
+    ? `<span class="tgbadge" style="width:30px;height:30px;overflow:hidden;"><img src="${esc(conPortada.coverUrl)}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;"></span>`
+    : `<span class="tgbadge" style="width:30px;height:30px;background:${esc(t.colorHex)}22;">${iconoHtml(t, 18)}</span>`;
+  return `<button class="crow ${dentro ? 'dentro' : ''} ${abierta ? 'abierta' : ''}" data-tag2="${esc(t.id)}">
+      <span class="ci">${emblema}</span><span class="ct">${esc(t.name)}</span><span class="cn">${items.length}</span>
+    </button>${abierta ? `<div class="aexp">${items.length
+      ? items.slice().sort(ordenDentroDeArtista).slice(0, 40).map(filaElemento).join('')
+        + (items.length > 40 ? `<div class="irow" data-vertag="${esc(t.id)}"><div class="ii"><div class="it" style="color:var(--amber);">Ver las ${items.length} en el vault →</div></div></div>` : '')
+      : `<div class="irow"><div class="ii"><div class="it" style="font-weight:500;color:var(--fg-mute);">Todavía no has puesto esta etiqueta a nada.</div></div></div>`}</div>` : ''}`;
+}
+
+function bloqueEtiquetas() {
+  const carpetas = carpetasOrdenadas(), sueltas = tagsDeCarpeta(null);
+  if (!carpetas.length && !sueltas.length) {
+    return `<p class="lede">Las etiquetas son lo que convierte 17.000 canciones en algo que se puede mirar. Crea la primera en Ajustes → Etiquetas.</p>`;
+  }
+  return `<div class="card">${carpetas.map(c => {
+    const abierta = CARPETAS_ABIERTAS.has(c.id);
+    const dentro = tagsDeCarpeta(c.id);
+    return `<button class="crow ${abierta ? 'abierta' : ''}" data-carp="${esc(c.id)}">
+        <span class="ci"><span class="tgbadge" style="width:30px;height:30px;background:${esc(c.colorHex)}22;">${iconoHtml(c, 18)}</span></span>
+        <span class="ct">${esc(c.name)}</span><span class="cn">${dentro.length} ${abierta ? '▾' : '▸'}</span>
+      </button>${abierta ? dentro.map(t => filaTag(t, true)).join('') || `<div class="aexp"><div class="irow"><div class="ii"><div class="it" style="font-weight:500;color:var(--fg-mute);">Carpeta vacía.</div></div></div></div>` : ''}`;
+  }).join('')}${sueltas.map(t => filaTag(t, false)).join('')}</div>`;
+}
 
 /* Dentro de un artista: primero los discos, luego las canciones, y dentro de
    cada grupo lo más nuevo arriba — que es como se busca algo de alguien. */
@@ -2305,6 +2432,9 @@ function renderInicio() {
       <button class="crow" data-acc="stats"><span class="ci">📊</span><span class="ct">Estadísticas</span></button>
     </div>
 
+    <h2>Etiquetas</h2>
+    ${bloqueEtiquetas()}
+
     <h2>Artistas</h2>
     ${!artistas.length ? `<p class="lede">Cuando guardes discos o canciones, aquí aparecerán sus artistas para desplegarlos.</p>` : `
     <div class="card" id="cardArtistas">
@@ -2321,6 +2451,18 @@ function renderInicio() {
 
 /* Cambiar de pantalla se recuerda: si te gusta empezar en el vault, te quedas
    en el vault, y si te gusta empezar aquí, te quedas aquí. */
+/* Plegar y desplegar repinta la pantalla entera, así que hay que devolver la
+   fila que has tocado a la misma altura de pantalla en la que estaba: si no,
+   al abrir algo que está a mitad de la lista, el contenido salta bajo el dedo. */
+function alternar(conjunto, clave, boton, attr) {   // attr: el atributo por el que reencontrar la fila tras repintar
+  conjunto.has(clave) ? conjunto.delete(clave) : conjunto.add(clave);
+  const antes = boton.getBoundingClientRect().top;
+  const sel = `[${attr}="${CSS.escape(clave)}"]`;
+  renderInicio();
+  const otra = document.querySelector(sel);
+  if (otra) window.scrollBy(0, otra.getBoundingClientRect().top - antes);
+}
+
 function irAPantalla(p) {
   PREFS.pantalla = p;
   savePrefs();
@@ -3549,7 +3691,7 @@ function openDetail(id) {
 
     <div class="flabel" id="secTags">Etiquetas</div>
     <div class="tagpick" id="dTags">
-      ${TAGS.length ? tagsOrdenados().map(t => `<button class="tagsel ${(it.tagIds || []).includes(t.id) ? '' : 'off'}" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)}</button>`).join('')
+      ${tagsOrdenados().length ? tagsOrdenados().map(t => `<button class="tagsel ${(it.tagIds || []).includes(t.id) ? '' : 'off'}" data-tag="${esc(t.id)}">${iconoHtml(t, 15)}${esc(t.name)}</button>`).join('')
         : `<p class="lede" style="margin:0;">Todavía no has creado ninguna etiqueta. <button class="linkbtn" data-open="settings">Crear una</button></p>`}
     </div>
 
@@ -4288,12 +4430,12 @@ async function openDiscography(artist) {
 
 /* ---- tag picker (bulk) ---- */
 function openTagPicker(ids) {
-  if (!TAGS.length) { closeModal(); toast('Crea una etiqueta primero en Ajustes'); return; }
+  if (!tagsOrdenados().length) { closeModal(); toast('Crea una etiqueta primero en Ajustes'); return; }
   showSheet(`
     <div class="sheethead"><h2>Etiquetar ${ids.length} elemento${ids.length === 1 ? '' : 's'}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
     <p class="lede">Toca una etiqueta para añadirla a todo lo seleccionado.</p>
     <div class="tagpick" id="bulkTags">
-      ${tagsOrdenados().map(t => `<button class="tagsel" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)}</button>`).join('')}
+      ${tagsOrdenados().map(t => `<button class="tagsel" data-tag="${esc(t.id)}">${iconoHtml(t, 15)}${esc(t.name)}</button>`).join('')}
     </div>
   `);
   document.getElementById('bulkTags').addEventListener('click', e => {
@@ -4429,9 +4571,17 @@ function fundir(remoto) {
   // la volvía a subir en su siguiente sincronización, "reviviéndola"
   const tagTombLocal = new Set(TAG_TOMB);
   (remoto.tagTombstones || []).forEach(id => tagTombLocal.add(id));
-  const nombres = new Set(TAGS.map(t => t.name.toLowerCase()));
+  const nombres = new Map(TAGS.map(t => [t.name.toLowerCase(), t]));
   (remoto.tags || []).forEach(t => {
-    if (t && t.name && !tagTombLocal.has(t.id) && !nombres.has(t.name.toLowerCase())) { TAGS.push(t); nombres.add(t.name.toLowerCase()); }
+    if (!t || !t.name || tagTombLocal.has(t.id)) return;
+    const mia = nombres.get(t.name.toLowerCase());
+    if (!mia) { TAGS.push(t); nombres.set(t.name.toLowerCase(), t); return; }
+    /* Ya la tengo: no la piso, pero SÍ relleno lo que aquí falta. Si eliges el
+       icono o la carpeta en el móvil, el PC los adopta en vez de quedarse con
+       una etiqueta a medias para siempre — y al revés nunca borra lo tuyo. */
+    if (!mia.icon && t.icon) mia.icon = t.icon;
+    if (!mia.carpetaId && t.carpetaId) mia.carpetaId = t.carpetaId;
+    if (mia.esCarpeta === undefined && t.esCarpeta) mia.esCarpeta = true;
   });
   TAGS = TAGS.filter(t => !tagTombLocal.has(t.id));   // por si la borraron en el otro dispositivo y aquí seguía
   vivos.forEach(it => { if (it.tagIds && it.tagIds.length) it.tagIds = it.tagIds.filter(id => !tagTombLocal.has(id)); });
@@ -5165,12 +5315,10 @@ function openSettings() {
 
     <div class="flabel">Etiquetas</div>
     <div id="tagList">${tagListHtml()}</div>
-    <input class="field" id="newTag" placeholder="Nombre de la etiqueta" style="margin-top:10px;">
-    <div class="swatches" id="sw">
-      ${TAG_COLORS.map((col, i) => `<span class="sw ${i === 0 ? 'on' : ''}" data-c="${col}" style="background:${col}"></span>`).join('')}
-      <input type="color" id="swCustom" value="${esc(TAG_COLORS[0])}" title="Color a medida" style="width:26px;height:26px;padding:0;border:1px solid var(--line);border-radius:50%;background:none;cursor:pointer;">
+    <div class="btnrow" style="margin-top:12px;">
+      <button class="btn primary wide" id="addTag">＋ Nueva etiqueta</button>
+      <button class="btn" id="addCarpeta" title="Nueva carpeta">📁</button>
     </div>
-    <div class="btnrow"><button class="btn wide" id="addTag">Crear etiqueta</button></div>
 
     <div class="flabel">Sincronizar entre dispositivos</div>
     <div class="statusline ${gh && gh.token ? 'ok' : 'no'}">${gh && gh.token ? '● Activada' : '● Desactivada'}</div>
@@ -5376,27 +5524,14 @@ function openSettings() {
     PREFS.autoAddEscuchas = !PREFS.autoAddEscuchas;
     savePrefs(); openSettings();
   });
-  document.getElementById('sw').addEventListener('click', e => {
-    const s = e.target.closest('.sw'); if (!s) return;
-    document.querySelectorAll('#sw .sw').forEach(x => x.classList.toggle('on', x === s));
-    swatch = s.dataset.c;
-  });
-  document.getElementById('swCustom').addEventListener('input', e => {
-    swatch = e.target.value;
-    document.querySelectorAll('#sw .sw').forEach(x => x.classList.remove('on'));   // ninguno de los fijos está elegido ya
-  });
+  /* El color y el icono ya se eligen dentro del editor de cada etiqueta */
   document.getElementById('paletteSw').addEventListener('click', e => {
     const s = e.target.closest('.sw'); if (!s) return;
     aplicarPaleta(s.dataset.pal);
     document.querySelectorAll('#paletteSw .sw').forEach(x => x.classList.toggle('on', x === s));
   });
-  document.getElementById('addTag').addEventListener('click', () => {
-    const name = document.getElementById('newTag').value.trim();
-    if (!name) return;
-    if (TAGS.some(t => t.name.toLowerCase() === name.toLowerCase())) { toast('Ya tienes una etiqueta con ese nombre'); return; }
-    TAGS.push({ id: uid(), name, colorHex: swatch });
-    saveTags(); render(); openSettings();
-  });
+  document.getElementById('addTag').addEventListener('click', () => abrirEditorTag(null, false));
+  document.getElementById('addCarpeta').addEventListener('click', () => abrirEditorTag(null, true));
   document.getElementById('tagList').addEventListener('click', e => {
     const pin = e.target.closest('[data-pin]');
     if (pin) {
@@ -5404,13 +5539,8 @@ function openSettings() {
       if (t) { t.favorito = !t.favorito; saveTags(); render(); openSettings(); }
       return;
     }
-    const b = e.target.closest('[data-del]'); if (!b) return;
-    const id = b.dataset.del;
-    TAGS = TAGS.filter(t => t.id !== id);
-    tombstoneTag(id);
-    ITEMS.forEach(it => { it.tagIds = (it.tagIds || []).filter(x => x !== id); });
-    if (PREFS.tag === id) PREFS.tag = 'all';
-    saveTags(); saveItems(); savePrefs(); render(); openSettings();
+    const ed = e.target.closest('[data-edit]');
+    if (ed) abrirEditorTag(ed.dataset.edit);
   });
   document.getElementById('expBtn').addEventListener('click', exportBackup);
   document.getElementById('impBtn').addEventListener('click', () => document.getElementById('impFile').click());
@@ -5423,16 +5553,95 @@ function openSettings() {
   document.getElementById('revisarMeta').addEventListener('click', revisarMetadatos);
 }
 
+/* Editor de etiqueta y de carpeta. Es la misma hoja: una carpeta es una
+   etiqueta con esCarpeta y sin carpeta propia, así que cambia el título, el
+   texto y poco más — y no hay dos formularios que mantener a la vez. */
+function abrirEditorTag(id, carpeta) {
+  const t = id ? TAGS.find(x => x.id === id) : null;
+  const esCar = t ? esCarpeta(t) : !!carpeta;
+  let color = t ? t.colorHex : TAG_COLORS[Math.floor(Math.random() * TAG_COLORS.length)];
+  let icono = iconoDe(t || { esCarpeta: esCar });
+  const pintar = () => {
+    document.getElementById('icoGrid').innerHTML = ICONOS_ORDEN.map(k =>
+      `<button data-ico="${k}" class="${k === icono ? 'on' : ''}" style="color:${esc(color)}">` +
+      `<svg viewBox="0 0 24 24" width="22" height="22" fill="${esc(color)}"><path d="${ICONOS[k]}"/></svg></button>`).join('');
+  };
+  showSheet(`
+    <div class="sheethead"><h2>${t ? 'Editar' : 'Nueva'} ${esCar ? 'carpeta' : 'etiqueta'}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="flabel">Nombre</div>
+    <input class="field" id="tgName" value="${esc(t ? t.name : '')}" placeholder="${esCar ? 'Por ejemplo: Géneros' : 'Por ejemplo: Para el gimnasio'}" autocomplete="off">
+    <div class="flabel">Color</div>
+    <div class="swatches" id="tgSw">
+      ${TAG_COLORS.map(c => `<span class="sw ${c === color ? 'on' : ''}" data-c="${c}" style="background:${c}"></span>`).join('')}
+      <input type="color" id="tgSwCustom" value="${esc(color)}" title="Color a medida" style="width:26px;height:26px;padding:0;border:1px solid var(--line);border-radius:50%;background:none;cursor:pointer;">
+    </div>
+    <div class="flabel">Icono</div>
+    <div class="icogrid" id="icoGrid"></div>
+    ${!esCar ? `<div class="flabel">Carpeta</div>
+    <select class="field" id="tgCarpeta">
+      <option value="">Sin carpeta</option>
+      ${carpetasOrdenadas().map(c => `<option value="${esc(c.id)}" ${t && t.carpetaId === c.id ? 'selected' : ''}>${esc(c.name)}</option>`).join('')}
+    </select>` : ''}
+    <div class="btnrow" style="margin-top:16px;"><button class="btn primary wide" id="tgSave">Guardar</button></div>
+    ${t ? `<div class="btnrow"><button class="btn danger wide" id="tgDel">Eliminar ${esCar ? 'carpeta' : 'etiqueta'}</button></div>` : ''}
+  `);
+  pintar();
+  document.getElementById('icoGrid').addEventListener('click', e => {
+    const b = e.target.closest('[data-ico]'); if (!b) return;
+    icono = b.dataset.ico; pintar();
+  });
+  const cambiaColor = c => { color = c; document.getElementById('tgSwCustom').value = c; pintar(); };
+  document.getElementById('tgSw').addEventListener('click', e => {
+    const s = e.target.closest('.sw'); if (!s) return;
+    document.querySelectorAll('#tgSw .sw').forEach(x => x.classList.toggle('on', x === s));
+    cambiaColor(s.dataset.c);
+  });
+  document.getElementById('tgSwCustom').addEventListener('input', e => {
+    document.querySelectorAll('#tgSw .sw').forEach(x => x.classList.remove('on'));
+    cambiaColor(e.target.value);
+  });
+  document.getElementById('tgSave').addEventListener('click', () => {
+    const name = document.getElementById('tgName').value.trim();
+    if (!name) { toast('Ponle un nombre'); return; }
+    const repe = TAGS.some(x => x.id !== (t && t.id) && esCarpeta(x) === esCar && x.name.toLowerCase() === name.toLowerCase());
+    if (repe) { toast(`Ya tienes ${esCar ? 'una carpeta' : 'una etiqueta'} con ese nombre`); return; }
+    const carpetaId = esCar ? null : (document.getElementById('tgCarpeta')?.value || null);
+    if (t) Object.assign(t, { name, colorHex: color, icon: icono, carpetaId });
+    else TAGS.push({ id: uid(), name, colorHex: color, icon: icono, carpetaId, esCarpeta: esCar || undefined });
+    saveTags(); render(); closeModal(); openSettings();
+  });
+  document.getElementById('tgDel')?.addEventListener('click', () => {
+    /* Borrar una carpeta no borra lo que hay dentro: sus etiquetas salen a la
+       superficie. Perder etiquetas por reordenar carpetas sería el peor
+       recuerdo posible de esta pantalla. */
+    if (esCar) TAGS.forEach(x => { if (x.carpetaId === t.id) x.carpetaId = null; });
+    else ITEMS.forEach(it => { it.tagIds = (it.tagIds || []).filter(x => x !== t.id); });
+    TAGS = TAGS.filter(x => x.id !== t.id);
+    tombstoneTag(t.id);
+    if (PREFS.tag === t.id) PREFS.tag = 'all';
+    saveTags(); if (!esCar) saveItems(); savePrefs(); render(); closeModal(); openSettings();
+  });
+}
+
 function tagListHtml() {
   if (!TAGS.length) return `<p class="lede" style="margin:0;">Aún no hay etiquetas. Crea una abajo para organizar tu vault.</p>`;
-  return tagsOrdenados().map(t => {
-    const n = ITEMS.filter(i => (i.tagIds || []).includes(t.id)).length;
-    return `<div class="tagline">
-      <span class="lf"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)}<span class="ct">${n}</span></span>
+  const cuenta = id => ITEMS.filter(i => !i.archived && (i.tagIds || []).includes(id)).length;
+  const fila = (t, dentro) => `<div class="tagline ${dentro ? 'dentro' : ''}">
+      <span class="lf" data-edit="${esc(t.id)}" style="cursor:pointer;">
+        <span class="tgbadge" style="width:30px;height:30px;background:${esc(t.colorHex)}22;">${iconoHtml(t, 18)}</span>
+        <span class="nm">${esc(t.name)}</span><span class="ct">${cuenta(t.id)}</span>
+      </span>
       <button class="xbtn" data-pin="${esc(t.id)}" aria-label="${t.favorito ? 'Quitar de fijadas' : 'Fijar arriba'}" title="${t.favorito ? 'Quitar de fijadas' : 'Fijar arriba'}">${t.favorito ? '📌' : '📍'}</button>
-      <button class="xbtn" data-del="${esc(t.id)}" aria-label="Eliminar etiqueta">✕</button>
+      <button class="xbtn" data-edit="${esc(t.id)}" aria-label="Editar">✎</button>
     </div>`;
-  }).join('');
+  const sueltas = tagsDeCarpeta(null);
+  return carpetasOrdenadas().map(c => `
+      <div class="tagcab">${iconoHtml(c, 16)} ${esc(c.name)}
+        <button class="xbtn" data-edit="${esc(c.id)}" aria-label="Editar carpeta" style="margin-left:auto;">✎</button>
+      </div>
+      ${tagsDeCarpeta(c.id).map(t => fila(t, true)).join('') || '<p class="lede" style="margin:0 0 6px;">Vacía por ahora.</p>'}
+    `).join('')
+    + (sueltas.length ? (carpetasOrdenadas().length ? `<div class="tagcab">Sin carpeta</div>` : '') + sueltas.map(t => fila(t, false)).join('') : '');
 }
 
 function exportBackup() {
@@ -6145,17 +6354,19 @@ document.getElementById('inicio').addEventListener('click', e => {
     else if (a === 'lote') { irAPantalla('lista'); setSelMode(true); }
     return;
   }
-  const art = e.target.closest('[data-art]');
-  if (art) {
-    const k = art.dataset.art;
-    ARTISTAS_ABIERTOS.has(k) ? ARTISTAS_ABIERTOS.delete(k) : ARTISTAS_ABIERTOS.add(k);
-    const y = art.getBoundingClientRect().top;
-    renderInicio();
-    /* el artista que acabas de tocar se queda donde estaba, no salta */
-    const otra = document.querySelector(`[data-art="${CSS.escape(k)}"]`);
-    if (otra) window.scrollBy(0, otra.getBoundingClientRect().top - y);
+  const carp = e.target.closest('[data-carp]');
+  if (carp) { alternar(CARPETAS_ABIERTAS, carp.dataset.carp, carp, 'data-carp'); return; }
+  const tg = e.target.closest('[data-tag2]');
+  if (tg) { alternar(TAGS_ABIERTAS, tg.dataset.tag2, tg, 'data-tag2'); return; }
+  const vertag = e.target.closest('[data-vertag]');
+  if (vertag) {
+    PREFS.tag = vertag.dataset.vertag; PREFS.status = 'all'; PREFS.type = 'all';
+    PREFS.genre = 'all'; PREFS.decade = 'all'; PREFS.dur = 'all';
+    irAPantalla('lista');
     return;
   }
+  const art = e.target.closest('[data-art]');
+  if (art) { alternar(ARTISTAS_ABIERTOS, art.dataset.art, art, 'data-art'); return; }
   const abrir = e.target.closest('[data-abrir]');
   if (abrir) { openDetail(abrir.dataset.abrir); return; }
   if (e.target.closest('[data-masart]')) { VISTOS_ARTISTAS += 120; renderInicio(); }
