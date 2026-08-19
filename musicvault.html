@@ -319,6 +319,16 @@
   }
   .wordmark { display:flex; align-items:center; gap:9px; font-family: Georgia, "Times New Roman", serif; font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
   .wordmark .disc { width:19px; height:19px; flex-shrink:0; }
+  /* El logo lleva al inicio, como en cualquier sitio. En el movil el nombre se
+     esconde y queda solo el disco, asi que el boton se agranda por dentro para
+     que siga siendo comodo de tocar. */
+  .wmbtn {
+    display:flex; align-items:center; gap:9px; cursor:pointer;
+    background:none; border:none; padding: 12px 6px; margin: -12px -6px;
+    font: inherit; color: inherit; letter-spacing: inherit;
+    transition: opacity .15s;
+  }
+  .wmbtn:active { opacity: .55; }
   /* en pantallas estrechas el disco basta como identidad; el espacio va a los controles */
   @media (max-width: 419px) { .wordmark .wm-text { display: none; } }
   .cmd-actions { display:flex; gap: 7px; }
@@ -995,8 +1005,10 @@
 <header class="cmdbar">
   <div class="wordmark">
     <a class="iconbtn backbtn" href="index.html" title="Volver a Mi Música" aria-label="Volver a la página de inicio">←</a>
-    <svg class="disc" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="var(--amber)" stroke-width="2.2"/><circle cx="12" cy="12" r="2.6" fill="var(--amber)"/></svg>
-    <span class="wm-text">MusicVault</span>
+    <button class="wmbtn" id="logoHome" title="Inicio" aria-label="Ir al inicio">
+      <svg class="disc" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="var(--amber)" stroke-width="2.2"/><circle cx="12" cy="12" r="2.6" fill="var(--amber)"/></svg>
+      <span class="wm-text">MusicVault</span>
+    </button>
   </div>
   <div class="cmd-actions">
     <button class="iconbtn" id="homeBtn" title="Inicio" aria-label="Ir al inicio">🏠</button>
@@ -6108,6 +6120,7 @@ document.getElementById('addFab').addEventListener('click', openSearch);
 let _teclaBusqueda = null;
 document.getElementById('homeBtn').addEventListener('click', () =>
   irAPantalla(PREFS.pantalla === 'inicio' ? 'lista' : 'inicio'));
+document.getElementById('logoHome').addEventListener('click', () => irAPantalla('inicio'));
 
 document.getElementById('inicio').addEventListener('click', e => {
   /* Los mosaicos llevan al vault ya filtrado: tocar "Pendientes" es lo mismo
