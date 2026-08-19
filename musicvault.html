@@ -442,25 +442,44 @@
   @media (min-width: 560px) { .grid { grid-template-columns: repeat(calc(var(--gcols, 2) + 1), 1fr); } }
   @media (min-width: 820px) { .grid { grid-template-columns: repeat(calc(var(--gcols, 2) + 2), 1fr); } }
 
+  /* La portada es el objeto, no hay caja que la envuelva: el título y el
+     artista van sueltos sobre el fondo y los datos bajan a chips. Así la
+     rejilla se lee como una estantería de discos y no como un formulario. */
   .gcard {
-    background: var(--surface); border: 1px solid var(--line); border-radius: 15px;
-    overflow: hidden; cursor: pointer; position: relative;
-    box-shadow: var(--shadow-sm); transition: transform .12s, box-shadow .15s, border-color .15s;
+    background: none; border: none; border-radius: 0; box-shadow: none;
+    overflow: visible; cursor: pointer; position: relative;
+    transition: transform .12s;
+    /* Sin caja, la tarjeta dejó de recortar su contenido y el texto sin partir
+       ensanchaba su columna: las dos de la rejilla salían de distinto ancho.
+       Esto le devuelve permiso a encogerse hasta lo que le toca. */
+    min-width: 0;
   }
   .gcard:active { transform: scale(0.975); }
-  @media (hover: hover) { .gcard:hover { box-shadow: var(--shadow-md); } }
-  .gcard.sel { border-color: var(--amber); box-shadow: 0 0 0 2px var(--amber); }
-  .gcard .art { position: relative; aspect-ratio: 1; background: var(--surface-2); display:flex; align-items:center; justify-content:center; }
+  @media (hover: hover) { .gcard:hover .art { box-shadow: var(--shadow-md); } }
+  .gcard.sel .art { outline: 2.5px solid var(--amber); outline-offset: 2px; }
+  .gcard .art {
+    position: relative; aspect-ratio: 1; background: var(--surface-2);
+    display:flex; align-items:center; justify-content:center;
+    border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm);
+    transition: box-shadow .15s, outline-color .15s;
+  }
   .gcard .art img { width:100%; height:100%; object-fit: cover; display:block; transition: opacity .2s, filter .2s; }
   .gcard.done .art img { opacity: .5; filter: saturate(.55); }
   .gcard .art .ph { font-size: 30px; opacity: .3; }
-  .gcard .gbody { padding: 9px 11px 11px; }
-  .gcard .gt { font-size: 13px; font-weight: 650; line-height: 1.25; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .gcard .ga { font-size: 11.5px; color: var(--fg-mute); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top: 2px; }
+  .gcard .gbody { padding: 9px 1px 2px; }
+  .gcard .gt { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.25; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .gcard .ga { font-size: 13.5px; color: var(--fg-mute); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top: 1px; }
   /* Los colaboradores, medio tono por debajo del artista principal. Con opacidad
      en vez de un color fijo, para que siga funcionando en todas las paletas. */
   .ga .feat, .la .feat { opacity: .58; }
-  .gcard .gmeta { display:flex; align-items:center; gap: 5px; margin-top: 7px; min-height: 15px; }
+  .gcard .gmeta { display:flex; flex-wrap:wrap; align-items:center; gap: 5px; margin-top: 8px; min-height: 15px; }
+  /* Los datos sueltos (año, tipo) en chips bajo el título: se leen de un vistazo
+     sin competir con el nombre, y es lo que hace que la rejilla respire. */
+  .gchip {
+    display:inline-flex; align-items:center; gap: 4px; white-space: nowrap;
+    font-size: 12px; font-weight: 600; line-height: 1; padding: 5px 8.5px;
+    border-radius: 7px; background: var(--amber-soft); color: var(--amber);
+  }
 
   .statusdot {
     position:absolute; top: 8px; left: 8px; width: 24px; height: 24px; border-radius: 50%;
@@ -474,12 +493,8 @@
   .statusdot.on { background: var(--jade); border-color: var(--jade); }
   /* el círculo se ve de 24px pero se toca en 44px */
   .statusdot::after { content:''; position:absolute; inset:-10px; border-radius: 50%; }
-  .typetag {
-    position:absolute; top: 8px; right: 8px; z-index: 2;
-    font-size: 11px; font-family: ui-monospace, monospace; letter-spacing: 0.04em;
-    padding: 3px 7px; border-radius: 6px; color: #fff;
-    background: rgba(20,16,13,0.55); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
-  }
+  /* El tipo se movió a un chip debajo del título: encima de la portada tapaba
+     parte del arte y repetía algo que ya se ve mejor en la línea de datos. */
   .stars { font-size: 12px; color: var(--amber); letter-spacing: -0.5px; }
   .tagpip { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
   .pin { font-size: 11px; flex-shrink: 0; line-height: 1; }
@@ -639,12 +654,18 @@
     animation: rise .2s var(--ease-out);
   }
   .sheet.closing { animation: fall .15s var(--ease-out) forwards; }
+  /* El salto entre bloques de la ficha se anima desde aquí: scrollTo() con
+     behavior:'smooth' lo ignoran los navegadores con el scroll suave apagado
+     y el salto se quedaba sin hacer; moviendo scrollTop siempre ocurre, y
+     esto le pone la animación cuando se puede. */
+  .sheet { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { .sheet { scroll-behavior: auto; } }
   @media (min-width: 640px) { .sheet { border-radius: 20px; max-height: min(86vh, calc(100vh - var(--kb, 0px) - 12px)); border-bottom: 1px solid var(--line); } }
   .sheethead { display:flex; align-items:center; justify-content:space-between; gap: 12px; margin-bottom: 14px; }
   .sheethead h2 { font-size: 17px; margin:0; font-weight: 680; }
   .lede { font-size: 13px; color: var(--fg-mute); margin: 0 0 13px; line-height: 1.5; }
   .lede a { color: var(--amber); }
-  .flabel { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-mute); font-family: ui-monospace, monospace; margin: 18px 0 7px; }
+  .flabel { font-size: 15px; font-weight: 600; color: var(--fg-mute); margin: 22px 0 8px; }
   .flabel:first-child { margin-top: 0; }
 
   .field {
@@ -698,17 +719,33 @@
   @keyframes sweep { from { background-position: 200% 0 } to { background-position: -200% 0 } }
 
   /* detail */
-  .dart { width: 100%; aspect-ratio: 1; border-radius: 16px; overflow:hidden; background: var(--surface-2); box-shadow: var(--shadow-md); display:flex; align-items:center; justify-content:center; font-size: 44px; }
+  /* La portada, grande y centrada, manda en la ficha: es de lo que va la
+     pantalla. Debajo el título y el artista, y solo después los datos. */
+  .dart { width: min(64%, 236px); aspect-ratio: 1; margin: 2px auto 16px; border-radius: 14px; overflow:hidden; background: var(--surface-2); box-shadow: 0 14px 34px rgba(26,20,14,0.22); display:flex; align-items:center; justify-content:center; font-size: 44px; }
   .dart img { width:100%; height:100%; object-fit:cover; }
-  .dwrap { display:grid; grid-template-columns: 1fr; gap: 16px; }
-  @media (min-width: 460px) { .dwrap { grid-template-columns: 168px 1fr; align-items: start; } }
-  .dtitle { font-size: 20px; font-weight: 700; line-height: 1.2; margin: 0 0 3px; text-wrap: balance; }
-  .dartist { font-size: 14.5px; color: var(--fg-soft); margin: 0; }
+  .dwrap { display: block; text-align: center; }
+  .dtitle { font-size: 25px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.18; margin: 0 0 4px; text-wrap: balance; }
+  .dartist { font-size: 17px; color: var(--fg-mute); margin: 0; }
   .artistlink { cursor:pointer; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 2px; transition: text-decoration-color .15s; }
   .artistlink:hover, .artistlink:active { text-decoration-color: currentColor; }
-  .dfacts { display:flex; flex-wrap:wrap; gap:6px; margin-top: 10px; }
-  .fact { font-size: 11px; font-family: ui-monospace, monospace; color: var(--fg-mute); background: var(--surface); border: 1px solid var(--line); border-radius: 7px; padding: 3px 8px; }
-  .fact.accent { color: var(--amber); border-color: color-mix(in srgb, var(--amber) 40%, transparent); background: var(--amber-soft); font-weight: 650; }
+  .dfacts { display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin-top: 12px; }
+  .fact { font-size: 12px; font-weight: 600; color: var(--fg-mute); background: var(--surface-2); border: none; border-radius: 7px; padding: 4.5px 9px; }
+  .fact.accent { color: var(--amber); background: var(--amber-soft); }
+
+  /* Pestañas de la ficha: no esconden nada, saltan a cada bloque de la
+     pantalla — que es larga y así no hay que buscarlos con el dedo. */
+  .dtabs {
+    display:flex; gap: 2px; max-width: 300px; margin: 18px auto 22px;
+    background: var(--surface-2); border-radius: 999px; padding: 3px;
+  }
+  .dtabs button {
+    flex: 1; display:flex; align-items:center; justify-content:center;
+    border: none; background: none; border-radius: 999px; padding: 8px 0;
+    color: var(--fg-mute); cursor: pointer;
+    transition: background .2s var(--ease-out), color .2s, box-shadow .2s;
+  }
+  .dtabs button.on { background: var(--surface); color: var(--fg); box-shadow: var(--shadow-sm); }
+  .dtabs svg { width: 19px; height: 19px; display:block; }
   /* gap 0 a propósito: el espaciado lo da el padding, que además crea la zona táctil de 44px */
   .starpick { display:flex; gap: 0; margin-left: -6px; }
   .starpick button { background:none; border:none; font-size: 27px; line-height: 1; cursor:pointer; color: var(--line-firm); padding: 9px 6px; transition: transform .1s, color .12s; }
@@ -802,11 +839,13 @@
   .xbtn:hover { color: var(--rust); }
 
   /* metadatos */
-  .metalist { margin: 0; display:flex; flex-direction:column; }
-  .metarow { display:flex; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--line); align-items:baseline; }
+  /* Ficha técnica como bloque agrupado: etiqueta a la izquierda, valor a la
+     derecha en gris, y una línea finísima entre filas. */
+  .metalist { margin: 0; display:flex; flex-direction:column; background: var(--surface); border: 1px solid var(--line); border-radius: 13px; overflow: hidden; }
+  .metarow { display:flex; gap: 12px; padding: 12px 14px; border-bottom: 1px solid var(--line); align-items:baseline; }
   .metarow:last-child { border-bottom: none; }
-  .metarow dt { flex: 0 0 40%; font-size: 11.5px; color: var(--fg-mute); font-family: ui-monospace, monospace; }
-  .metarow dd { margin: 0; flex: 1; font-size: 13px; overflow-wrap: anywhere; }
+  .metarow dt { flex: 0 0 42%; font-size: 14px; color: var(--fg); }
+  .metarow dd { margin: 0; flex: 1; font-size: 14px; color: var(--fg-mute); text-align: right; overflow-wrap: anywhere; }
   .metaform { display:flex; flex-direction:column; gap: 10px; }
   .mfield { display:flex; flex-direction:column; gap: 5px; }
   .mfield span { font-size: 11.5px; color: var(--fg-mute); font-family: ui-monospace, monospace; }
@@ -838,7 +877,7 @@
      cualquier paleta normal --glass-blur vale "none" y no pasa nada; solo la
      paleta Cristal lo redefine, y estos mismos elementos se vuelven cristal
      esmerilado de golpe sin tocarlos uno a uno. */
-  .iconbtn, .stat, .chip, .gcard, .lrow, .btn, .seg, .tagsel, .oldcard {
+  .iconbtn, .stat, .chip, .lrow, .btn, .seg, .tagsel, .oldcard {
     backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
   }
   /* Safari de iOS a veces no compone el desenfoque dentro de contenedores con
@@ -846,7 +885,7 @@
      esto lo fuerza. Va solo bajo Cristal para no gastar una capa de GPU
      de más en el resto de paletas, donde no hace ninguna falta. */
   [data-palette="cristal"] .iconbtn, [data-palette="cristal"] .stat, [data-palette="cristal"] .chip,
-  [data-palette="cristal"] .gcard, [data-palette="cristal"] .lrow, [data-palette="cristal"] .btn,
+  [data-palette="cristal"] .lrow, [data-palette="cristal"] .btn,
   [data-palette="cristal"] .seg, [data-palette="cristal"] .tagsel, [data-palette="cristal"] .oldcard {
     -webkit-transform: translateZ(0); will-change: backdrop-filter;
   }
@@ -1977,14 +2016,14 @@ function gcard(it) {
     <div class="art">
       ${portada(it.coverUrl, `<span class="ph">${TYPE_ICON[it.type]}</span>`, true)}
       ${it.type !== 'artist' ? `<button class="statusdot ${it.listened ? 'on' : ''}" data-toggle="${it.id}" aria-label="${it.listened ? 'Marcar pendiente' : 'Marcar escuchado'}">${it.listened ? '✓' : ''}</button>` : ''}
-      <span class="typetag">${TYPE_LABEL[it.type]}</span>
     </div>
     <div class="gbody">
       <div class="gt">${esc(it.title)}</div>
       <div class="ga">${artistaHtml(it)}</div>
       <div class="gmeta">
         ${it.prioridad ? `<span class="pin" title="Prioritario">📌</span>` : ''}
-        ${yearOf(it) ? `<span class="lyear">${yearOf(it)}</span>` : ''}
+        ${yearOf(it) ? `<span class="gchip">📅 ${yearOf(it)}</span>` : ''}
+        <span class="gchip">${TYPE_ICON[it.type]} ${TYPE_LABEL[it.type]}</span>
         ${it.rating ? `<span class="stars">${'★'.repeat(it.rating)}</span>` : ''}
         ${tags.map(t => `<span class="tagpip" style="background:${esc(t.colorHex)}" title="${esc(t.name)}"></span>`).join('')}
       </div>
@@ -3248,6 +3287,13 @@ function artistLinksHtml(it) {
 }
 
 /* ---- detail ---- */
+
+/* Iconos de las pestañas de la ficha. Van en SVG y no en emoji porque dentro
+   de la pastilla tienen que ser de un solo tono y seguir al color activo. */
+const ICO_INFO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 3.9a1.45 1.45 0 1 1 0 2.9 1.45 1.45 0 0 1 0-2.9ZM13.35 17.6h-2.7v-7.2h2.7v7.2Z"/></svg>';
+const ICO_NOTA = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3.2c5.08 0 9.2 3.42 9.2 7.64 0 4.22-4.12 7.64-9.2 7.64-.86 0-1.7-.1-2.5-.28l-4.04 2.06a.55.55 0 0 1-.79-.64l.9-3.2c-1.83-1.4-2.97-3.34-2.97-5.54C2.6 6.62 6.72 3.2 12 3.2Z"/></svg>';
+const ICO_TAG  = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.4 2.3a2 2 0 0 1 1.42.59l8.29 8.29a2 2 0 0 1 0 2.83l-7.1 7.1a2 2 0 0 1-2.83 0l-8.29-8.3a2 2 0 0 1-.58-1.41V4.3a2 2 0 0 1 2-2h7.09ZM7.3 5.8a1.75 1.75 0 1 0 0 3.5 1.75 1.75 0 0 0 0-3.5Z"/></svg>';
+const ICO_MAS  = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5.2" cy="12" r="2.05"/><circle cx="12" cy="12" r="2.05"/><circle cx="18.8" cy="12" r="2.05"/></svg>';
 function openDetail(id) {
   const it = ITEMS.find(x => x.id === id);
   if (!it) return;
@@ -3277,7 +3323,14 @@ function openDetail(id) {
       </div>
     </div>
 
-    <div class="flabel">Valoración</div>
+    <div class="dtabs" id="dTabs">
+      <button class="on" data-goto="secInfo" aria-label="Información">${ICO_INFO}</button>
+      <button data-goto="secNotas" aria-label="Notas">${ICO_NOTA}</button>
+      <button data-goto="secTags" aria-label="Etiquetas">${ICO_TAG}</button>
+      <button data-goto="secMas" aria-label="Más">${ICO_MAS}</button>
+    </div>
+
+    <div class="flabel" id="secInfo">Valoración</div>
     <div class="starpick" id="dStars">
       ${[1,2,3,4,5].map(n => `<button data-n="${n}" class="${n <= (it.rating || 0) ? 'on' : ''}" aria-label="${n} estrellas">★</button>`).join('')}
     </div>
@@ -3291,13 +3344,13 @@ function openDetail(id) {
     </div>
     <div id="dMeta">${metaTableHtml(it)}</div>
 
-    <div class="flabel">Notas</div>
+    <div class="flabel" id="secNotas">Notas</div>
     <textarea class="field" id="dNotes" placeholder="¿Por qué lo guardaste? ¿Quién te lo recomendó?">${esc(it.notes || '')}</textarea>
 
     <div class="flabel">Te lo recomendó / dónde lo escuchaste</div>
     <input class="field" id="dRecBy" placeholder="Nombre o sitio" value="${esc(it.recomendadoPor || '')}">
 
-    <div class="flabel">Etiquetas</div>
+    <div class="flabel" id="secTags">Etiquetas</div>
     <div class="tagpick" id="dTags">
       ${TAGS.length ? tagsOrdenados().map(t => `<button class="tagsel ${(it.tagIds || []).includes(t.id) ? '' : 'off'}" data-tag="${esc(t.id)}"><span class="dot" style="background:${esc(t.colorHex)}"></span>${esc(t.name)}</button>`).join('')
         : `<p class="lede" style="margin:0;">Todavía no has creado ninguna etiqueta. <button class="linkbtn" data-open="settings">Crear una</button></p>`}
@@ -3338,7 +3391,7 @@ function openDetail(id) {
       <div class="flabel">Canciones del álbum</div>
       <div id="dTracks"><p class="lede" style="margin:0;">Cargando canciones…</p></div>`;
     })() : ''}
-    <div class="btnrow">
+    <div class="btnrow" id="secMas">
       <a class="btn primary wide" href="${esc(it.spotifyUrl)}" target="_blank" rel="noopener">${it.manual ? 'Abrir enlace' : 'Abrir en Spotify'} ↗</a>
       <button class="btn" id="dCopyLink" title="Copiar enlace" aria-label="Copiar enlace">📋</button>
     </div>
@@ -3352,6 +3405,33 @@ function openDetail(id) {
       <button class="btn danger wide" id="dDel">Eliminar del vault</button>
     </div>
   `);
+
+  /* Las pestañas llevan al bloque, no lo aíslan: la ficha sigue siendo una
+     sola página que se puede recorrer entera hacia abajo. */
+  const tabs = document.getElementById('dTabs');
+  if (tabs) {
+    const hoja = tabs.closest('.sheet');
+    tabs.addEventListener('click', e => {
+      const b = e.target.closest('[data-goto]');
+      if (!b) return;
+      const destino = document.getElementById(b.dataset.goto);
+      if (!destino) return;
+      [...tabs.children].forEach(x => x.classList.toggle('on', x === b));
+      hoja.scrollTop += destino.getBoundingClientRect().top - hoja.getBoundingClientRect().top - 12;
+    });
+    /* y al revés: bajando a mano, la pastilla marca dónde estás */
+    /* Cuatro medidas por evento de scroll no necesitan throttle: el navegador
+       ya no dispara scroll más de una vez por fotograma. */
+    hoja.addEventListener('scroll', () => {
+      const linea = hoja.getBoundingClientRect().top + 90;
+      let activa = 0;
+      [...tabs.children].forEach((b, i) => {
+        const d = document.getElementById(b.dataset.goto);
+        if (d && d.getBoundingClientRect().top <= linea) activa = i;
+      });
+      [...tabs.children].forEach((b, i) => b.classList.toggle('on', i === activa));
+    }, { passive: true });
+  }
 
   document.getElementById('dDisco')?.addEventListener('click', () => openDiscography(it));
   if (it.type === 'artist' && !it.manual) {
