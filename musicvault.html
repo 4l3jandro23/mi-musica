@@ -926,6 +926,37 @@
   .popbar { height: 8px; border-radius: 999px; background: var(--surface-2); overflow:hidden; }
   .popfill { height:100%; border-radius:999px; background: linear-gradient(90deg, color-mix(in srgb, var(--amber) 70%, #fff), var(--amber)); transition: width .4s var(--ease-out); }
   .poptxt { font-size: 12px; color: var(--fg-mute); }
+  /* El marcador del mezclador: el numero manda, todo lo demas es contexto. */
+  .mezmarca {
+    display:flex; align-items:baseline; gap:10px; margin: 0 0 12px;
+    padding: 14px 16px; border-radius: 18px; border: 1px solid var(--line);
+    background: linear-gradient(160deg, color-mix(in srgb, var(--amber) 12%, var(--surface)), var(--surface));
+    box-shadow: var(--shadow-sm); min-width: 0; overflow: hidden;
+  }
+  .mezmarca .mezn { font-size: 30px; font-weight: 800; letter-spacing:-0.03em; line-height:1; color: var(--fg); font-variant-numeric: tabular-nums; }
+  .mezmarca .mezl { font-size: 12.5px; color: var(--fg-mute); min-width:0; overflow:hidden; text-overflow:ellipsis; }
+  /* Verde entra, rojo sale. Sin leyenda: el color lo dice todo. */
+  .crow.mezinc, .chip.mezinc { background: var(--jade-soft); }
+  .crow.mezinc .ct, .chip.mezinc { color: var(--jade); font-weight: 650; }
+  .crow.mezexc, .chip.mezexc { background: color-mix(in srgb, var(--rust) 14%, transparent); }
+  .crow.mezexc .ct, .chip.mezexc { color: var(--rust); font-weight: 650; text-decoration: line-through; }
+  .chip.mezinc { border-color: color-mix(in srgb, var(--jade) 45%, transparent); }
+  .chip.mezexc { border-color: color-mix(in srgb, var(--rust) 45%, transparent); }
+  .chip.mezinc svg.ui, .chip.mezexc svg.ui { width: 12px; height: 12px; opacity: .7; }
+  .chiprow.mezsel { margin-bottom: 12px; }
+  .revlista { display:flex; flex-direction:column; max-height: 42vh; overflow-y:auto; border:1px solid var(--line); border-radius:14px; padding:4px; margin-bottom:10px; }
+  .revfila { display:flex; align-items:center; gap:9px; padding:6px 7px; border-bottom:1px solid var(--line); min-width:0; }
+  .revfila:last-child { border-bottom:none; }
+  .revart { width:36px; height:36px; border-radius:7px; overflow:hidden; background:var(--surface-2); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:15px; }
+  .revart img { width:100%; height:100%; object-fit:cover; }
+  .revflecha { color: var(--fg-mute); display:flex; flex-shrink:0; }
+  .revflecha svg { width:14px; height:14px; }
+  .revtxt { flex:1; min-width:0; }
+  .revt { font-size:12.5px; color:var(--fg-mute); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-decoration: line-through; }
+  .revl { font-size:13.5px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .chip.mezchip { background: linear-gradient(160deg, color-mix(in srgb, var(--amber) 88%, #fff), var(--amber)); color: var(--on-amber); border-color: transparent; font-weight: 650; }
+  .chip.mezchip .quitamez { opacity: .75; display:inline-flex; padding: 2px; margin-left: 2px; }
+  .chip.mezchip .quitamez svg { width: 12px; height: 12px; }
   /* Rejilla de cifras: se lee de un vistazo y no se sale nunca de ancho
      porque las columnas pueden encogerse por debajo de su contenido. */
   .minidatos { display:grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 8px; }
@@ -2376,6 +2407,22 @@ function textoBuscable(it) {
   return s;
 }
 
+/* La mezcla activa: incluir unas etiquetas y excluir otras, con "todas a la
+   vez" o "cualquiera de ellas". Vive aparte de PREFS.tag para que puedas
+   tener una etiqueta suelta puesta y encima una mezcla. */
+const mezclaVacia = () => ({ modo: 'y', inc: [], exc: [] });
+const mezclaActiva = () => { const m = PREFS.mezcla; return !!(m && ((m.inc || []).length || (m.exc || []).length)); };
+function cumpleMezcla(it) {
+  const m = PREFS.mezcla;
+  if (!m) return true;
+  const inc = m.inc || [], exc = m.exc || [];
+  if (!inc.length && !exc.length) return true;
+  const ids = it.tagIds || [];
+  for (const id of exc) if (ids.includes(id)) return false;
+  if (!inc.length) return true;
+  return m.modo === 'o' ? inc.some(id => ids.includes(id)) : inc.every(id => ids.includes(id));
+}
+
 function filtered() {
   const q = fold(document.getElementById('q').value.trim());
   // índice álbum → títulos de sus canciones guardadas, para que buscar el
@@ -2408,6 +2455,7 @@ function filtered() {
        tiene ninguna, que es justo por donde se empieza a ordenar un vault. */
     if (PREFS.tag === 'none') { if ((it.tagIds || []).length) return false; }
     else if (PREFS.tag !== 'all' && !(it.tagIds || []).includes(PREFS.tag)) return false;
+    if (!cumpleMezcla(it)) return false;
     if (PREFS.genre !== 'all' && !(it.genres || []).some(g => fold(g) === PREFS.genre)) return false;
     if (PREFS.decade !== 'all') { const y = yearOf(it); if (!y || Math.floor(y / 10) * 10 !== +PREFS.decade) return false; }
     /* Duración: mide la canción, o la del álbum entero si ya la conocemos
@@ -2586,6 +2634,12 @@ function renderChips() {
   /* El sello no es una etiqueta guardada, asi que necesita su propio filtro. */
   const nCanon = C.nCanon;
   if (nCanon) chipsTag.unshift(`<button class="chip canon ${PREFS.canon ? 'on' : ''}" data-canon="1">${ICO_LAUREL} Aclamados <span class="ct">${nCanon.toLocaleString('es-ES')}</span></button>`);
+  if (mezclaActiva()) {
+    const mm = PREFS.mezcla;
+    const dentro = (mm.inc || []).length, fuera = (mm.exc || []).length;
+    const txt = (dentro ? dentro + (mm.modo === 'o' ? ' cualquiera' : ' a la vez') : '') + (fuera ? (dentro ? ' · ' : '') + fuera + ' fuera' : '');
+    chipsTag.unshift(`<button class="chip on mezchip" data-abrirmezcla="1" title="Tienes una mezcla puesta">${ui('destello')} Mezcla: ${txt} <span class="quitamez">${ui('cerrar')}</span></button>`);
+  }
   if (sinEtiquetar) chipsTag.push(`<button class="chip ${PREFS.tag === 'none' ? 'on' : ''}" data-tag="none">${ui('etiqueta')} Sin etiqueta <span class="ct">${sinEtiquetar}</span></button>`);
   const DUR_ET = { corto: 'Corto', medio: 'Medio', largo: 'Largo' };
   const chipsDur = ['corto', 'medio', 'largo'].map(d =>
@@ -2715,7 +2769,7 @@ function render() {
 
   const rows = filtered();
   renderIndiceAZ(rows);
-  const anyFilter = PREFS.type !== 'all' || PREFS.status !== 'all' || PREFS.tag !== 'all' || PREFS.genre !== 'all' || PREFS.decade !== 'all' || PREFS.dur !== 'all' || document.getElementById('q').value.trim();
+  const anyFilter = PREFS.type !== 'all' || PREFS.status !== 'all' || PREFS.tag !== 'all' || PREFS.genre !== 'all' || PREFS.decade !== 'all' || PREFS.dur !== 'all' || mezclaActiva() || document.getElementById('q').value.trim();
   // con un vault grande, filtrar (p. ej. "álbumes de los 70") y no poder
   // seleccionar todo ese grupo de golpe para archivarlo/etiquetarlo obligaba
   // a marcarlos uno a uno a mano — esto selecciona TODO lo que cumple el
@@ -2897,7 +2951,17 @@ function renderInicio() {
     <div class="tiles">
       <button class="tile t3" data-ira="all"><div class="top"><span class="ico">${ui('baul')}</span><span class="n">${vivos.length.toLocaleString('es-ES')}</span></div><div class="l">Todo</div></button>
       <button class="tile t2" data-ira="listened"><div class="top"><span class="ico">${ui('visto')}</span><span class="n">${escuchados.toLocaleString('es-ES')}</span></div><div class="l">Escuchados</div></button>
-      <button class="tile t4" data-ira="sintag"><div class="top"><span class="ico">${ui('etiqueta')}</span><span class="n">${sinEtiqueta.toLocaleString('es-ES')}</span></div><div class="l">Sin etiqueta</div></button>
+      ${(() => {
+        /* Antes aqui habia "Sin etiqueta". Con 471 etiquetas automaticas ese
+           numero se queda en nada y la baldosa dejaba de servir para algo.
+           Ahora manda el mezclador, que es lo que de verdad se usa para
+           decidir que escuchar; y si de verdad quedan muchas cosas sin
+           etiquetar, la baldosa vuelve a ser esa. */
+        if (sinEtiqueta > vivos.length * 0.15)
+          return `<button class="tile t4" data-ira="sintag"><div class="top"><span class="ico">${ui('etiqueta')}</span><span class="n">${sinEtiqueta.toLocaleString('es-ES')}</span></div><div class="l">Sin etiquetar</div></button>`;
+        const m = PREFS.mezcla, n = m ? (m.inc || []).length + (m.exc || []).length : 0;
+        return `<button class="tile t4" data-ira="mezcla"><div class="top"><span class="ico">${ui('destello')}</span><span class="n">${n || ''}</span></div><div class="l">${n ? 'Mezcla puesta' : 'Mezclar etiquetas'}</div></button>`;
+      })()}
       <button class="tile t1" data-ira="pending"><div class="top"><span class="ico">${ui('circulo')}</span><span class="n">${(contables.length - escuchados).toLocaleString('es-ES')}</span></div><div class="l">Pendientes</div></button>
     </div>
 
@@ -2906,7 +2970,9 @@ function renderInicio() {
       <button class="crow" data-acc="buscar"><span class="ci">${ui('lupa')}</span><span class="ct">Buscar en Spotify</span></button>
       <button class="crow" data-acc="pegar"><span class="ci">${ui('enlace')}</span><span class="ct">Pegar enlaces</span></button>
       <button class="crow" data-acc="azar"><span class="ci">${ui('dado')}</span><span class="ct">Abrir uno al azar</span></button>
+      <button class="crow" data-acc="mezcla"><span class="ci">${ui('marcador')}</span><span class="ct">Mezclar etiquetas y sacar una playlist</span></button>
       <button class="crow" data-acc="autotag"><span class="ci">${ui('destello')}</span><span class="ct">Etiquetar automáticamente</span></button>
+      <button class="crow" data-acc="revision"><span class="ci">${ui('ajustes')}</span><span class="ct">Arreglar el vault</span></button>
       <button class="crow" data-acc="anyos"><span class="ci">${ui('calendario')}</span><span class="ct">Revisar años mal puestos</span></button>
       <button class="crow" data-acc="lote"><span class="ci">${ui('lapiz')}</span><span class="ct">Editar en lote</span></button>
       <button class="crow" data-acc="stats"><span class="ci">${ui('barras')}</span><span class="ct">Estadísticas</span></button>
@@ -5361,6 +5427,359 @@ function renderDiferido() {
   _renderPend = setTimeout(() => render(), 260);
 }
 
+/* ============ el mezclador ============
+   Pensado para dos cosas concretas que hace a diario: encontrar que escuchar
+   cruzando ejes que por separado no dicen nada ("big room" son 1.700 temas,
+   "big room + para el gimnasio + 2013" son treinta), y sacar de ahi una lista
+   de enlaces para montarse la playlist en Spotify. */
+let _mezBusca = '', _mezAbiertas = null;
+
+/* ============ arreglar el vault ============
+   Tres cosas que se pueden arreglar sin pedirle nada a Spotify (o casi):
+   coletillas de edicion en el titulo, portadas que no coinciden con las de su
+   propio album, y portadas que faltan. Ninguna toca nada sin que lo mandes tu,
+   y la del titulo guarda el original por si te arrepientes. */
+
+/* Solo lo que no aporta NADA: "- 2011 Remaster", "- Mono", "- Radio Edit".
+   A proposito no entra "Live at...", "Remix", "Deluxe" ni "Acoustic": eso no
+   es ruido, es que es otra grabacion distinta y quitarlo seria perder el dato. */
+const _RX_RUIDO_TIT = /\s*[-–—]\s*((19|20)\d{2}\s*)?(digital\s+)?(remaster(ed|izado)?|remasterizada)(\s*(19|20)\d{2})?\s*(version|mix)?\s*$/i;
+const _RX_RUIDO_TIT2 = /\s*[-–—]\s*(mono|stereo|single version|album version|radio edit|original mix|main version|clean|explicit)\s*(version)?\s*$/i;
+function tituloLimpio(t) {
+  let s = String(t || '');
+  for (let i = 0; i < 3; i++) {
+    const antes = s;
+    s = s.replace(_RX_RUIDO_TIT, '').replace(_RX_RUIDO_TIT2, '');
+    if (s === antes) break;
+  }
+  s = s.trim();
+  return (s && s.length >= 2) ? s : String(t || '');
+}
+
+function analizarVault() {
+  const titulos = [], portadasMal = [], sinPortada = [];
+  /* ids de etiqueta que no corresponden a ninguna etiqueta viva */
+  const vivas = new Set(TAGS.map(t => t.id));
+  const fantasma = { ids: new Set(), items: [], total: 0, quedarianVacios: 0 };
+  /* indice de albumes para comparar la portada de una cancion con la de su album */
+  const albPorNombre = new Map();
+  for (const a of ITEMS) {
+    if (a.type !== 'album' || a.archived || !a.coverUrl) continue;
+    albPorNombre.set(fold(a.title) + '|' + fold(principalDe(a)), a);
+  }
+  const cola = u => String(u || '').replace(/^https?:\/\/[^/]+\//, '');
+  for (const it of ITEMS) {
+    const ids = it.tagIds;
+    if (ids && ids.length) {
+      const malos = ids.filter(x => !vivas.has(x));
+      if (malos.length) {
+        malos.forEach(x => fantasma.ids.add(x));
+        fantasma.items.push(it); fantasma.total += malos.length;
+        if (malos.length === ids.length) fantasma.quedarianVacios++;
+      }
+    }
+    if (it.archived) continue;
+    if (it.tituloOrig === undefined) {
+      const limpio = tituloLimpio(it.title);
+      if (limpio !== it.title) titulos.push({ it, limpio });
+    }
+    if (it.type === 'track') {
+      if (!it.coverUrl) { if (it.spotifyUrl) sinPortada.push(it); continue; }
+      if (it.portadaRevisada) continue;
+      const alb = itemPorSpotifyId(it.albumId) || (it.albumName ? albPorNombre.get(fold(it.albumName) + '|' + fold(principalDe(it))) : null);
+      if (alb && alb.coverUrl && cola(alb.coverUrl) !== cola(it.coverUrl)) portadasMal.push({ it, alb });
+    } else if (!it.coverUrl && it.spotifyUrl && it.type !== 'playlist') sinPortada.push(it);
+  }
+  return { titulos, portadasMal, sinPortada, fantasma };
+}
+
+let _revision = null, _revPagina = { tit: 40, port: 30 };
+
+function openRevision() {
+  _revision = analizarVault();
+  _revPagina = { tit: 40, port: 30 };
+  pintarRevision();
+}
+
+function pintarRevision() {
+  const { titulos, portadasMal, sinPortada, fantasma } = _revision;
+  const dups = buscarDuplicados().length;
+  const anyos = (() => { try { const a = analizarAnyos(); return a.corregibles.length + a.dudosos.length; } catch { return 0; } })();
+  const fila = (t, l) => `<div class="revfila">
+      <div class="revart">${portada(t.coverUrl, TYPE_ICON[t.type], true)}</div>
+      <div class="revtxt"><div class="revt">${esc(t.title)}</div><div class="revl">${esc(l)}</div></div>
+    </div>`;
+  showSheet(`
+    <div class="sheethead"><h2>${ui('destello')} Arreglar el vault</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
+    <p class="lede">Lo que he encontrado revisando tus ${ITEMS.length.toLocaleString('es-ES')} elementos. Nada se toca hasta que le des al botón, y lo que cambio se puede deshacer.</p>
+
+    ${fantasma.total ? `<div class="flabel">Etiquetas fantasma</div>
+    <p class="lede" style="margin:0 0 8px;"><strong>${fantasma.total.toLocaleString('es-ES')}</strong> marcas de etiqueta repartidas por ${fantasma.items.length.toLocaleString('es-ES')} elementos apuntan a ${fantasma.ids.size} etiquetas que ya no existen. No se ven en ningún sitio, pero viajan en cada sincronización.</p>
+    <p class="lede" style="margin:0 0 8px;color:var(--fg-mute);">No vienen de que borraras nada (no están en la papelera de etiquetas): son de una tanda de etiquetado anterior cuyas etiquetas se perdieron por el camino. ${fantasma.quedarianVacios ? `Ojo: ${fantasma.quedarianVacios} elementos se quedarían sin ninguna etiqueta.` : 'Ningún elemento se queda sin etiquetas al quitarlas: todos tienen ya las equivalentes de verdad.'}</p>
+    <div class="btnrow"><button class="btn ${fantasma.quedarianVacios ? '' : 'jade'} wide" id="revFant">Quitar las ${fantasma.total.toLocaleString('es-ES')} marcas muertas</button></div>` : ''}
+
+    <div class="flabel">Coletillas de edición en el título</div>
+    ${titulos.length ? `<p class="lede" style="margin:0 0 8px;">${titulos.length.toLocaleString('es-ES')} títulos arrastran cosas como <em>"- 2011 Remaster"</em> o <em>"- Radio Edit"</em>, que no dicen nada y ensucian las listas. Guardo el original: puedes volver atrás cuando quieras.</p>
+      <p class="lede" style="margin:0 0 8px;color:var(--fg-mute);">No toco "Live at…", "Remix", "Acoustic" ni "Deluxe": eso no es ruido, es que es otra grabación.</p>
+      <div class="revlista">${titulos.slice(0, _revPagina.tit).map(x => fila(x.it, x.limpio)).join('')}</div>
+      ${titulos.length > _revPagina.tit ? `<button class="linkbtn" data-revmas="tit" style="display:block;margin:6px 0;">Ver ${Math.min(60, titulos.length - _revPagina.tit)} más</button>` : ''}
+      <div class="btnrow"><button class="btn primary wide" id="revTit">Limpiar los ${titulos.length.toLocaleString('es-ES')} títulos</button></div>`
+      : '<p class="lede">Ningún título con coletilla. Todo limpio.</p>'}
+
+    <div class="flabel">Portadas que no cuadran</div>
+    ${portadasMal.length ? `<p class="lede" style="margin:0 0 8px;">${portadasMal.length.toLocaleString('es-ES')} canciones llevan una portada distinta a la del álbum al que dicen pertenecer — casi todas vienen de la importación masiva, donde la carátula se sacó de otro sitio. Se les puede poner la de su álbum.</p>
+      <div class="revlista">${portadasMal.slice(0, _revPagina.port).map(x => `<div class="revfila">
+        <div class="revart">${portada(x.it.coverUrl, TYPE_ICON.track, true)}</div>
+        <span class="revflecha">${ui('derecha')}</span>
+        <div class="revart">${portada(x.alb.coverUrl, TYPE_ICON.album, true)}</div>
+        <div class="revtxt"><div class="revt">${esc(x.it.title)}</div><div class="revl">${esc(x.alb.title)}</div></div>
+      </div>`).join('')}</div>
+      ${portadasMal.length > _revPagina.port ? `<button class="linkbtn" data-revmas="port" style="display:block;margin:6px 0;">Ver ${Math.min(40, portadasMal.length - _revPagina.port)} más</button>` : ''}
+      <div class="btnrow"><button class="btn wide" id="revPort">Poner la del álbum en ${portadasMal.length.toLocaleString('es-ES')}</button></div>`
+      : '<p class="lede">Todas las canciones que puedo comparar llevan la portada de su álbum.</p>'}
+
+    <div class="flabel">Sin portada</div>
+    ${sinPortada.length ? `<p class="lede" style="margin:0 0 8px;">${sinPortada.length.toLocaleString('es-ES')} elementos no tienen carátula. Las busco en Deezer, que no pide clave y no gasta ni una petición de tu cuota de Spotify. No acierta con todo: comprueba que el artista coincida antes de aceptar una imagen, así que prefiero dejarlo sin portada antes que ponerte la de otro disco.</p>
+      <div class="btnrow"><button class="btn wide" id="revCov">Buscar ${sinPortada.length.toLocaleString('es-ES')} carátulas en Deezer</button></div>
+      <div class="lede" id="revCovEst" style="margin:0;"></div>`
+      : '<p class="lede">Todo tiene carátula.</p>'}
+
+    <div class="flabel">Lo que se revisa en su propia pantalla</div>
+    <div class="btnrow"><button class="btn wide" id="revDup">${ui('portapapeles')} Posibles duplicados${dups ? ' (' + dups + ')' : ''}</button></div>
+    <div class="btnrow"><button class="btn wide" id="revAnyos">${ui('calendario')} Años mal puestos${anyos ? ' (' + anyos + ')' : ''}</button></div>
+  `);
+
+  document.querySelector('.sheet')?.addEventListener('click', e => {
+    const mas = e.target.closest('[data-revmas]');
+    if (mas) { const k = mas.dataset.revmas; _revPagina[k] += (k === 'tit' ? 60 : 40); pintarRevision(); }
+  });
+  document.getElementById('revTit')?.addEventListener('click', () => {
+    let n = 0;
+    for (const { it, limpio } of _revision.titulos) { it.tituloOrig = it.title; it.title = limpio; it.touchedAt = Date.now(); n++; }
+    saveItems(); invalidarConteos(); render();
+    toast(n.toLocaleString('es-ES') + ' títulos limpios · el original queda guardado');
+    openRevision();
+  });
+  document.getElementById('revPort')?.addEventListener('click', () => {
+    let n = 0;
+    for (const { it, alb } of _revision.portadasMal) { it.portadaOrig = it.coverUrl; it.coverUrl = alb.coverUrl; it.portadaRevisada = true; it.touchedAt = Date.now(); n++; }
+    saveItems(); render();
+    toast(n.toLocaleString('es-ES') + ' portadas puestas al día');
+    openRevision();
+  });
+  document.getElementById('revFant')?.addEventListener('click', () => {
+    const vivas = new Set(TAGS.map(t => t.id));
+    let n = 0;
+    for (const it of _revision.fantasma.items) {
+      const antes = (it.tagIds || []).length;
+      it.tagIds = (it.tagIds || []).filter(x => vivas.has(x));
+      n += antes - it.tagIds.length;
+      /* sin tocar touchedAt: esto es limpieza, no una edicion tuya, y no
+         debe ganarle a nada en la proxima fusion entre dispositivos */
+    }
+    saveItems(); invalidarConteos(); render();
+    toast(n.toLocaleString('es-ES') + ' marcas muertas fuera');
+    openRevision();
+  });
+  document.getElementById('revDup')?.addEventListener('click', () => openDuplicados());
+  document.getElementById('revAnyos')?.addEventListener('click', () => openAnyos());
+  document.getElementById('revCov')?.addEventListener('click', () => portadasDesdeDeezer());
+}
+
+/* Deezer no pide clave y responde rapido, pero hay que comprobar que el
+   artista coincide: buscando "Thriller" sin mas te devuelve el disco de
+   cualquiera. Mejor quedarse sin portada que poner la equivocada. */
+let _buscandoPortadas = false, _pararPortadas = false;
+async function portadasDesdeDeezer() {
+  if (_buscandoPortadas) { _pararPortadas = true; return; }
+  _buscandoPortadas = true; _pararPortadas = false;
+  const btn = document.getElementById('revCov'), est = document.getElementById('revCovEst');
+  if (btn) btn.textContent = 'Detener';
+  const lista = _revision.sinPortada.slice();
+  let hechos = 0, fallos = 0, sinGuardar = 0;
+  const limpia = s => fold(s).replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+  try {
+    for (let i = 0; i < lista.length; i++) {
+      if (_pararPortadas) break;
+      const it = lista[i];
+      const artista = principalDe(it);
+      const busca = it.type === 'artist' ? it.title : (it.albumName || it.title);
+      try {
+        const url = it.type === 'artist'
+          ? 'https://api.deezer.com/search/artist?limit=3&q=' + encodeURIComponent(it.title)
+          : 'https://api.deezer.com/search/album?limit=3&q=' + encodeURIComponent('artist:"' + artista + '" album:"' + busca + '"');
+        const res = await fetch(url);
+        if (res.ok) {
+          const d = await res.json();
+          const cand = (d.data || []).find(x => {
+            if (it.type === 'artist') return limpia(x.name) === limpia(it.title);
+            /* el artista tiene que cuadrar: si no, es otro disco con el mismo nombre */
+            return x.artist && limpia(x.artist.name) === limpia(artista);
+          });
+          const img = cand && (cand.cover_xl || cand.cover_big || cand.picture_xl || cand.picture_big);
+          if (img) { it.coverUrl = img; hechos++; if (++sinGuardar >= 20) { saveItems(); sinGuardar = 0; } }
+          else fallos++;
+        } else fallos++;
+      } catch { fallos++; }
+      if (est) est.textContent = (i + 1).toLocaleString('es-ES') + ' de ' + lista.length.toLocaleString('es-ES') + ' · ' + hechos.toLocaleString('es-ES') + ' encontradas, ' + fallos.toLocaleString('es-ES') + ' sin resultado';
+      await new Promise(r => setTimeout(r, 45));   // ~20 por segundo, muy por debajo de lo que aguanta
+    }
+  } finally {
+    _buscandoPortadas = false;
+    saveItems(); render();
+    if (btn) btn.textContent = 'Buscar carátulas en Deezer';
+    toast(hechos.toLocaleString('es-ES') + ' carátulas nuevas');
+  }
+}
+function openMezcla() {
+  const m = PREFS.mezcla = PREFS.mezcla || mezclaVacia();
+  m.inc = m.inc || []; m.exc = m.exc || [];
+  /* se limpian las que ya no existen (etiqueta borrada con la mezcla puesta) */
+  m.inc = m.inc.filter(id => tagById(id)); m.exc = m.exc.filter(id => tagById(id));
+  if (_mezAbiertas === null) _mezAbiertas = new Set();
+
+  /* Cuantos elementos toca cada etiqueta DENTRO de lo que ya has mezclado:
+     asi ves de un vistazo cual te va a dejar con algo y cual con cero. */
+  const cuentaEn = lista => {
+    const c = new Map();
+    for (const it of lista) for (const id of (it.tagIds || [])) c.set(id, (c.get(id) || 0) + 1);
+    return c;
+  };
+
+  const calcula = () => {
+    const base = ITEMS.filter(i => !i.archived);
+    const dentro = base.filter(cumpleMezcla);
+    return { base, dentro, cuenta: cuentaEn(dentro) };
+  };
+
+  const pinta = () => {
+    const { dentro, cuenta } = calcula();
+    const caja = document.getElementById('mezCuerpo');
+    if (!caja) return;
+    const estado = id => m.inc.includes(id) ? 'inc' : m.exc.includes(id) ? 'exc' : '';
+    const q = fold(_mezBusca);
+
+    /* arriba, lo que ya has elegido */
+    const elegidas = [...m.inc, ...m.exc].map(tagById).filter(Boolean);
+    const resumen = elegidas.length
+      ? '<div class="chiprow mezsel">' + elegidas.map(t =>
+          '<button class="chip mez' + estado(t.id) + '" data-mezquita="' + esc(t.id) + '">' +
+          iconoHtml(t, 13) + ' ' + esc(t.name) + ' ' + ui('cerrar') + '</button>').join('') + '</div>'
+      : '<p class="lede" style="margin:0 0 10px;">Toca una etiqueta para <strong>incluirla</strong>, tócala otra vez para <strong>excluirla</strong> y una tercera para quitarla.</p>';
+
+    /* las carpetas, plegadas */
+    const carpetas = carpetasOrdenadas();
+    const sueltas = tagsOrdenados().filter(t => !t.carpetaId);
+    const filaTag = t => {
+      const n = cuenta.get(t.id) || 0;
+      const e = estado(t.id);
+      return '<button class="crow dentro mez' + e + '" data-meztag="' + esc(t.id) + '">' +
+        '<span class="ci">' + iconoHtml(t, 15) + '</span>' +
+        '<span class="ct">' + esc(t.name) + '</span>' +
+        '<span class="cn">' + (e === 'exc' ? 'fuera' : n.toLocaleString('es-ES')) + '</span></button>';
+    };
+    const bloqueCarpeta = (c, dentroTags) => {
+      const l = q ? dentroTags.filter(t => fold(t.name).includes(q)) : dentroTags;
+      if (!l.length) return '';
+      const abierta = q ? true : _mezAbiertas.has(c ? c.id : 'sueltas');
+      const nom = c ? c.name : 'Sin carpeta';
+      const ico = c ? iconoHtml(c, 14) : ui('etiqueta');
+      return '<div class="card" style="margin-bottom:10px;">' +
+        '<button class="crow" data-mezcarp="' + esc(c ? c.id : 'sueltas') + '">' +
+          '<span class="ci">' + ico + '</span>' +
+          '<span class="ct">' + esc(nom) + '</span>' +
+          '<span class="cn">' + l.length + ' ' + (abierta ? ui('abajo') : ui('derecha')) + '</span>' +
+        '</button>' +
+        (abierta ? '<div class="aexp">' + l.slice(0, 200).sort((a, b) => (cuenta.get(b.id) || 0) - (cuenta.get(a.id) || 0)).map(filaTag).join('') + '</div>' : '') +
+      '</div>';
+    };
+    const cuerpo = carpetas.map(c => bloqueCarpeta(c, tagsOrdenados().filter(t => t.carpetaId === c.id))).join('')
+      + bloqueCarpeta(null, sueltas);
+
+    caja.innerHTML = resumen + (cuerpo || '<p class="lede">Ninguna etiqueta con ese nombre.</p>');
+
+    /* el marcador de abajo */
+    const marca = document.getElementById('mezMarca');
+    if (marca) {
+      const tipos = { album: 0, track: 0, artist: 0, playlist: 0 };
+      dentro.forEach(i => tipos[i.type] = (tipos[i.type] || 0) + 1);
+      const detalle = ['track', 'album', 'artist'].filter(t => tipos[t])
+        .map(t => tipos[t].toLocaleString('es-ES') + ' ' + (tipos[t] === 1 ? TYPE_LABEL[t].toLowerCase() : TYPE_PLURAL[t].toLowerCase())).join(' · ');
+      marca.innerHTML = '<span class="mezn">' + dentro.length.toLocaleString('es-ES') + '</span>' +
+        '<span class="mezl">' + (detalle || 'nada con esa combinación') + '</span>';
+    }
+    const bVer = document.getElementById('mezVer'), bCop = document.getElementById('mezCopiar'), bGuardar = document.getElementById('mezGuardar');
+    const conEnlace = dentro.filter(i => i.spotifyUrl).length;
+    if (bVer) { bVer.disabled = !dentro.length; bVer.textContent = dentro.length ? 'Ver los ' + dentro.length.toLocaleString('es-ES') + ' en el vault' : 'No hay nada que ver'; }
+    if (bCop) { bCop.disabled = !conEnlace; bCop.innerHTML = ui('portapapeles') + ' Copiar ' + conEnlace.toLocaleString('es-ES') + ' enlaces'; }
+    if (bGuardar) bGuardar.disabled = !(m.inc.length || m.exc.length);
+  };
+
+  showSheet(`
+    <div class="sheethead"><h2>${ui('nota')} Mezclador</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
+    <p class="lede">Cruza varias etiquetas a la vez. Cada etiqueta te dice cuántos elementos le quedan <em>dentro de la mezcla que ya llevas</em>, así que nunca acabas en cero sin verlo venir.</p>
+    <div class="segrow" id="mezModo">
+      <button class="seg ${m.modo === 'y' ? 'on' : ''}" data-mezmodo="y">Todas a la vez</button>
+      <button class="seg ${m.modo === 'o' ? 'on' : ''}" data-mezmodo="o">Cualquiera de ellas</button>
+    </div>
+    <div class="mezmarca" id="mezMarca"></div>
+    <div class="buscaart selbusca"><span class="mag">${ui('lupa')}</span><input type="text" id="mezBusca" placeholder="Buscar etiqueta…" value="${esc(_mezBusca)}" autocomplete="off"></div>
+    <div id="mezCuerpo"></div>
+    <div class="btnrow"><button class="btn primary wide" id="mezVer"></button></div>
+    <div class="btnrow"><button class="btn wide" id="mezCopiar"></button></div>
+    <div class="btnrow">
+      <button class="btn wide" id="mezGuardar">${ui('marcapaginas')} Guardar como vista</button>
+      <button class="btn" id="mezLimpiar" title="Vaciar la mezcla" aria-label="Vaciar la mezcla">${ui('cerrar')}</button>
+    </div>
+  `);
+  pinta();
+
+  const hoja = document.querySelector('.sheet');
+  hoja.addEventListener('click', e => {
+    const mo = e.target.closest('[data-mezmodo]');
+    if (mo) { m.modo = mo.dataset.mezmodo; savePrefs(); openMezcla(); return; }
+    const carp = e.target.closest('[data-mezcarp]');
+    if (carp) { const k = carp.dataset.mezcarp; _mezAbiertas.has(k) ? _mezAbiertas.delete(k) : _mezAbiertas.add(k); pinta(); return; }
+    const quita = e.target.closest('[data-mezquita]');
+    if (quita) { const id = quita.dataset.mezquita; m.inc = m.inc.filter(x => x !== id); m.exc = m.exc.filter(x => x !== id); savePrefs(); pinta(); return; }
+    const tg = e.target.closest('[data-meztag]');
+    if (tg) {
+      const id = tg.dataset.meztag;
+      /* tres estados en un solo gesto: fuera -> dentro -> excluida -> fuera */
+      if (m.inc.includes(id)) { m.inc = m.inc.filter(x => x !== id); m.exc.push(id); }
+      else if (m.exc.includes(id)) { m.exc = m.exc.filter(x => x !== id); }
+      else m.inc.push(id);
+      savePrefs(); pinta(); return;
+    }
+  });
+  const inp = document.getElementById('mezBusca');
+  inp?.addEventListener('input', () => { _mezBusca = inp.value; pinta(); });
+
+  document.getElementById('mezVer')?.addEventListener('click', () => {
+    PREFS.pantalla = 'vault'; PREFS.tag = 'all'; savePrefs();
+    closeModal(); render();
+    toast(mezclaActiva() ? 'Mezcla puesta como filtro' : 'Filtro quitado');
+  });
+  document.getElementById('mezCopiar')?.addEventListener('click', () => {
+    const { dentro } = calcula();
+    const urls = dentro.map(i => i.spotifyUrl).filter(Boolean);
+    if (!urls.length) { toast('Ninguno tiene enlace'); return; }
+    navigator.clipboard?.writeText(urls.join('\n')).then(
+      () => toast(urls.length.toLocaleString('es-ES') + ' enlaces copiados — pégalos en una playlist de Spotify'),
+      () => toast('No se pudo copiar'));
+  });
+  document.getElementById('mezGuardar')?.addEventListener('click', () => {
+    const nombres = [...m.inc].map(id => tagById(id)?.name).filter(Boolean);
+    const fuera = [...m.exc].map(id => tagById(id)?.name).filter(Boolean);
+    const sug = (nombres.join(m.modo === 'o' ? ' o ' : ' + ') || 'Mezcla') + (fuera.length ? ' sin ' + fuera.join(', ') : '');
+    const nombre = prompt('Nombre de la vista:', sug.slice(0, 60));
+    if (!nombre) return;
+    guardarVistaActual(nombre.trim());
+  });
+  document.getElementById('mezLimpiar')?.addEventListener('click', () => {
+    PREFS.mezcla = mezclaVacia(); savePrefs(); openMezcla(); render();
+  });
+}
 function openTagAll() {
   showSheet(`
     <div class="sheethead"><h2>Todas las etiquetas</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
@@ -7512,312 +7931,312 @@ const TAXONOMIA = [
   {g:'genero',n:"Infantil y animación",i:'flor',c:'#3aa8c0',k:["disney","anime","cartoon","childrens music","infantil","pixar","dibujos animados","theme song","themes"]},
 
   /* ---------- SUBGENEROS (304) ---------- */
-  {g:'sub',n:"Big room",i:'onda',c:'#5b8cf0',k:["big room","bigroom"]},
-  {g:'sub',n:"Progressive house",i:'onda',c:'#5b8cf0',k:["progressive house"]},
-  {g:'sub',n:"Electro house",i:'onda',c:'#5b8cf0',k:["electro house","electro-house","complextro","dutch house"]},
-  {g:'sub',n:"Future house",i:'onda',c:'#5b8cf0',k:["future house"]},
-  {g:'sub',n:"Bass house",i:'onda',c:'#5b8cf0',k:["bass house","g-house","ghouse"]},
-  {g:'sub',n:"Deep house",i:'onda',c:'#5b8cf0',k:["deep house"]},
-  {g:'sub',n:"Tech house",i:'onda',c:'#5b8cf0',k:["tech house"]},
-  {g:'sub',n:"Tropical house",i:'palmera',c:'#5b8cf0',k:["tropical house"]},
-  {g:'sub',n:"Slap house",i:'onda',c:'#5b8cf0',k:["slap house"]},
-  {g:'sub',n:"Melodic house",i:'onda',c:'#5b8cf0',k:["melodic house"]},
-  {g:'sub',n:"Afro house",i:'sol',c:'#5b8cf0',k:["afro house"]},
-  {g:'sub',n:"Latin house",i:'copa',c:'#5b8cf0',k:["latin house","tribal house"]},
-  {g:'sub',n:"French house",i:'bandera',c:'#5b8cf0',k:["french house","filter house"]},
-  {g:'sub',n:"Disco house",i:'disco',c:'#5b8cf0',k:["disco house","nu disco","funky house"]},
-  {g:'sub',n:"Acid house",i:'gota',c:'#5b8cf0',k:["acid house"]},
-  {g:'sub',n:"Chicago house",i:'casa',c:'#5b8cf0',k:["chicago house"]},
-  {g:'sub',n:"Hip house",i:'microfono',c:'#5b8cf0',k:["hip house"]},
-  {g:'sub',n:"Melbourne bounce",i:'espiral',c:'#5b8cf0',k:["melbourne bounce","bounce"]},
-  {g:'sub',n:"Rally house",i:'coche',c:'#5b8cf0',k:["rally house"]},
-  {g:'sub',n:"Minimal techno",i:'engranaje',c:'#4a5568',k:["minimal techno","minimal"]},
-  {g:'sub',n:"Hard techno",i:'engranaje',c:'#4a5568',k:["hard techno","hypertechno","schranz"]},
-  {g:'sub',n:"Melodic techno",i:'engranaje',c:'#4a5568',k:["melodic techno"]},
-  {g:'sub',n:"Acid techno",i:'gota',c:'#4a5568',k:["acid techno","acid"]},
-  {g:'sub',n:"Detroit techno",i:'engranaje',c:'#4a5568',k:["detroit techno"]},
-  {g:'sub',n:"Psytrance",i:'espiral',c:'#8b7ce8',k:["psytrance","psychedelic trance","goa trance","goa","darkpsy","psycore","forest psy","full-on"]},
-  {g:'sub',n:"Progressive trance",i:'espiral',c:'#8b7ce8',k:["progressive trance"]},
-  {g:'sub',n:"Uplifting trance",i:'espiral',c:'#8b7ce8',k:["uplifting trance","vocal trance"]},
-  {g:'sub',n:"Eurodance",i:'disco',c:'#8b7ce8',k:["eurodance","europop"]},
-  {g:'sub',n:"Riddim",i:'onda',c:'#2b9c8a',k:["riddim"]},
-  {g:'sub',n:"Deathstep",i:'calavera',c:'#2b9c8a',k:["deathstep","tearout"]},
-  {g:'sub',n:"Melodic dubstep",i:'onda',c:'#2b9c8a',k:["melodic dubstep","melodic bass"]},
-  {g:'sub',n:"Chillstep",i:'nube',c:'#2b9c8a',k:["chillstep"]},
-  {g:'sub',n:"Drumstep",i:'onda',c:'#2b9c8a',k:["drumstep"]},
-  {g:'sub',n:"Future bass",i:'onda',c:'#2b9c8a',k:["future bass"]},
-  {g:'sub',n:"Trap electrónico",i:'niebla',c:'#2b9c8a',k:["edm trap","festival trap","hybrid trap"]},
-  {g:'sub',n:"Moombahton",i:'copa',c:'#2b9c8a',k:["moombahton","moombahcore"]},
-  {g:'sub',n:"Glitch hop",i:'glitch',c:'#2b9c8a',k:["glitch hop","wonky","neurohop"]},
-  {g:'sub',n:"Breakbeat",i:'onda',c:'#2b9c8a',k:["breakbeat","big beat","breaks","nu skool breaks"]},
-  {g:'sub',n:"UK garage",i:'caja',c:'#2b9c8a',k:["uk garage","garage","2-step","uk funky","future garage","speed garage"]},
-  {g:'sub',n:"Jersey club",i:'espiral',c:'#2b9c8a',k:["jersey club","baltimore club"]},
-  {g:'sub',n:"Dub techno",i:'gota',c:'#2b9c8a',k:["dub techno"]},
-  {g:'sub',n:"Liquid dnb",i:'gota',c:'#c0533f',k:["liquid funk","liquid dnb","liquid drum and bass","liquid"]},
-  {g:'sub',n:"Neurofunk",i:'rayo',c:'#c0533f',k:["neurofunk","neuro"]},
-  {g:'sub',n:"Jungle",i:'palmera',c:'#c0533f',k:["jungle","ragga jungle"]},
-  {g:'sub',n:"Breakcore",i:'glitch',c:'#c0533f',k:["breakcore","digital hardcore"]},
-  {g:'sub',n:"Gabber",i:'martillo',c:'#b8202e',k:["gabber","gabba"]},
-  {g:'sub',n:"Frenchcore",i:'martillo',c:'#b8202e',k:["frenchcore"]},
-  {g:'sub',n:"Speedcore",i:'martillo',c:'#b8202e',k:["speedcore","extratone"]},
-  {g:'sub',n:"Happy hardcore",i:'sol',c:'#b8202e',k:["happy hardcore","uk hardcore","makina"]},
-  {g:'sub',n:"Boom bap",i:'microfono',c:'#eb6834',k:["boom bap","old school hip hop","old school","golden age hip hop"]},
-  {g:'sub',n:"Rap de la Costa Este",i:'microfono',c:'#eb6834',k:["east coast hip hop","east coast","new york hip hop"]},
-  {g:'sub',n:"Rap de la Costa Oeste",i:'palmera',c:'#eb6834',k:["west coast hip hop","west coast"]},
-  {g:'sub',n:"Rap sureño",i:'microfono',c:'#eb6834',k:["southern hip hop","dirty south","southern rap","atlanta hip hop","memphis rap","houston rap"]},
-  {g:'sub',n:"Gangsta rap",i:'calavera',c:'#eb6834',k:["gangsta rap","gangster rap","hardcore hip hop","mafioso rap"]},
-  {g:'sub',n:"Rap consciente",i:'libro',c:'#eb6834',k:["conscious hip hop","conscious rap","political hip hop","jazz rap"]},
-  {g:'sub',n:"Rap alternativo",i:'marcador',c:'#eb6834',k:["alternative hip hop","alternative rap","abstract hip hop","underground hip hop","underground hip-hop","experimental hip hop","experimental hip-hop"]},
-  {g:'sub',n:"Rap melódico",i:'corazon',c:'#eb6834',k:["melodic rap","emo rap","sad rap","cloud rap"]},
-  {g:'sub',n:"Drill",i:'martillo',c:'#eb6834',k:["drill","uk drill","new york drill","brooklyn drill","chicago drill"]},
-  {g:'sub',n:"Grime",i:'microfono',c:'#eb6834',k:["grime","uk grime"]},
-  {g:'sub',n:"Horrorcore",i:'calavera',c:'#eb6834',k:["horrorcore","trap metal","rap metal","rapcore"]},
-  {g:'sub',n:"Instrumental hip-hop",i:'auriculares',c:'#eb6834',k:["instrumental hip hop","instrumental hip-hop","lofi hip hop","lo-fi hip hop","chillhop"]},
-  {g:'sub',n:"Rap en español",i:'bandera',c:'#eb6834',k:["spanish hip hop","rap espanol","latin hip hop","rap en espanol","hip hop espanol"]},
-  {g:'sub',n:"Rap francés",i:'bandera',c:'#eb6834',k:["french rap","french hip hop","rap francais"]},
-  {g:'sub',n:"Pop rap",i:'estrella',c:'#eb6834',k:["pop rap","country rap","electro hop","crunk","swag"]},
-  {g:'sub',n:"Trap latino",i:'copa',c:'#8a4a2e',k:["trap latino","latin trap","argentine trap","trap argentino","trap chileno"]},
-  {g:'sub',n:"Phonk",i:'niebla',c:'#8a4a2e',k:["phonk","drift phonk","brazilian phonk","house phonk","chopped and screwed","screwed","slowed"]},
-  {g:'sub',n:"Rage",i:'fuego',c:'#8a4a2e',k:["rage rap","rage","opium"]},
-  {g:'sub',n:"Plugg",i:'rayo',c:'#8a4a2e',k:["plugg","pluggnb","plugnb"]},
-  {g:'sub',n:"Dance pop",i:'disco',c:'#e87ba4',k:["dance-pop","dance pop","pop dance"]},
-  {g:'sub',n:"Art pop",i:'chispa',c:'#e87ba4',k:["art pop","baroque pop","chamber pop","experimental pop"]},
-  {g:'sub',n:"Indie pop",i:'marcador',c:'#e87ba4',k:["indie pop","twee pop","jangle pop"]},
-  {g:'sub',n:"Dream pop",i:'nube',c:'#e87ba4',k:["dream pop","shoegaze","ethereal wave"]},
-  {g:'sub',n:"Power pop",i:'rayo',c:'#e87ba4',k:["power pop","powerpop"]},
-  {g:'sub',n:"Pop rock",i:'guitarra',c:'#e87ba4',k:["pop rock","pop-rock","soft rock","aor","yacht rock"]},
-  {g:'sub',n:"Hyperpop",i:'chispa',c:'#e87ba4',k:["hyperpop","glitchcore","digicore","bubblegum bass","pc music"]},
-  {g:'sub',n:"Pop latino",i:'copa',c:'#e87ba4',k:["latin pop","pop latino","colombian pop","spanish pop","flamenco pop","mexican pop"]},
-  {g:'sub',n:"Teen pop",i:'estrella',c:'#e87ba4',k:["teen pop","bubblegum pop","boy band","girl group"]},
-  {g:'sub',n:"Eurovisión",i:'microfono',c:'#e87ba4',k:["eurovision","operacion triunfo","melodifestivalen"]},
-  {g:'sub',n:"Soft pop",i:'nube',c:'#e87ba4',k:["soft pop","sophisti-pop","easy listening","adult contemporary"]},
-  {g:'sub',n:"Classic rock",i:'guitarra',c:'#e34948',k:["classic rock"]},
-  {g:'sub',n:"Hard rock",i:'guitarra',c:'#e34948',k:["hard rock","glam rock","glam metal","arena rock"]},
-  {g:'sub',n:"Psicodélico",i:'espiral',c:'#e34948',k:["psychedelic rock","psychedelic","acid rock","neo-psychedelic","krautrock"]},
-  {g:'sub',n:"Rock progresivo",i:'engranaje',c:'#e34948',k:["progressive rock","prog rock","art rock","canterbury scene","symphonic rock"]},
-  {g:'sub',n:"Grunge",i:'guitarra',c:'#e34948',k:["grunge","post-grunge"]},
-  {g:'sub',n:"Britpop",i:'bandera',c:'#e34948',k:["britpop","madchester","baggy"]},
-  {g:'sub',n:"Indie rock",i:'marcador',c:'#e34948',k:["indie rock","garage rock","post-punk revival"]},
-  {g:'sub',n:"Post-punk",i:'rayo',c:'#e34948',k:["post-punk","coldwave","cold wave","darkwave","gothic rock","goth","no wave"]},
-  {g:'sub',n:"Post-rock",i:'niebla',c:'#e34948',k:["post-rock","math rock","slowcore"]},
-  {g:'sub',n:"Noise rock",i:'rayo',c:'#e34948',k:["noise rock","industrial rock","industrial"]},
-  {g:'sub',n:"Surf rock",i:'onda',c:'#e34948',k:["surf rock","surf"]},
-  {g:'sub',n:"Southern rock",i:'casa',c:'#e34948',k:["southern rock","roots rock","heartland rock","swamp rock"]},
-  {g:'sub',n:"Folk rock",i:'hoja',c:'#e34948',k:["folk rock","country rock","celtic rock"]},
-  {g:'sub',n:"Rock en español",i:'bandera',c:'#e34948',k:["rock en espanol","spanish rock","argentine rock","rock catala","mexican rock","rock nacional","latin rock","latin alternative","latin indie","mestizo","patchanka","mestizaje","rock latino"]},
-  {g:'sub',n:"Proto-punk",i:'rayo',c:'#e34948',k:["proto-punk","protopunk"]},
-  {g:'sub',n:"Rockabilly",i:'guitarra',c:'#e34948',k:["rockabilly","rock and roll","rock n roll","doo-wop"]},
-  {g:'sub',n:"Heavy metal",i:'calavera',c:'#4c4a52',k:["heavy metal","nwobhm","speed metal","power metal"]},
-  {g:'sub',n:"Thrash metal",i:'calavera',c:'#4c4a52',k:["thrash metal","thrash","crossover thrash"]},
-  {g:'sub',n:"Death metal",i:'calavera',c:'#4c4a52',k:["death metal","old school death metal","swedish death metal","brutal death metal","technical death metal","melodic death metal","deathcore"]},
-  {g:'sub',n:"Black metal",i:'calavera',c:'#4c4a52',k:["black metal","blackgaze","atmospheric black metal"]},
-  {g:'sub',n:"Doom y sludge",i:'niebla',c:'#4c4a52',k:["doom metal","doom","sludge","stoner rock","stoner metal"]},
-  {g:'sub',n:"Metal alternativo",i:'marcador',c:'#4c4a52',k:["alternative metal","nu metal","metalcore","post-metal","djent","groove metal"]},
-  {g:'sub',n:"Punk rock",i:'rayo',c:'#d1394f',k:["punk rock","street punk","oi"]},
-  {g:'sub',n:"Hardcore punk",i:'rayo',c:'#d1394f',k:["hardcore punk","post-hardcore","powerviolence","crust punk","d-beat"]},
-  {g:'sub',n:"Pop punk",i:'rayo',c:'#d1394f',k:["pop punk","skate punk","emo pop","easycore"]},
-  {g:'sub',n:"Emo y screamo",i:'corazon',c:'#d1394f',k:["emo","screamo","midwest emo","emo revival"]},
-  {g:'sub',n:"Ska punk",i:'gota',c:'#d1394f',k:["ska punk","two tone","2 tone"]},
-  {g:'sub',n:"Classic soul",i:'corazon',c:'#2a78d6',k:["classic soul","southern soul","northern soul","memphis soul","philly soul","deep soul"]},
-  {g:'sub',n:"Neo soul",i:'corazon',c:'#2a78d6',k:["neo soul","neo-soul","alternative rnb","alternative r&b","prog-rnb"]},
-  {g:'sub',n:"R&B contemporáneo",i:'corazon',c:'#2a78d6',k:["contemporary r&b","urban contemporary","slow jams","quiet storm","latin r&b","french r&b"]},
-  {g:'sub',n:"Doo-wop",i:'microfono',c:'#2a78d6',k:["doo-wop","doo wop","vocal group"]},
-  {g:'sub',n:"Motown",i:'estrella',c:'#2a78d6',k:["motown"]},
-  {g:'sub',n:"New jack swing",i:'espiral',c:'#2a78d6',k:["new jack swing","swingbeat"]},
-  {g:'sub',n:"P-funk",i:'disco',c:'#d98c1f',k:["p-funk","funk rock","funk pop","funky"]},
-  {g:'sub',n:"G-funk",i:'palmera',c:'#d98c1f',k:["g-funk","g funk"]},
-  {g:'sub',n:"Boogie y disco",i:'disco',c:'#d98c1f',k:["boogie","disco","euro disco","space disco"]},
-  {g:'sub',n:"Bebop",i:'nota',c:'#1baf7a',k:["bebop","hard bop","post-bop"]},
-  {g:'sub',n:"Cool jazz",i:'copo',c:'#1baf7a',k:["cool jazz","modal jazz","west coast jazz"]},
-  {g:'sub',n:"Free jazz",i:'espiral',c:'#1baf7a',k:["free jazz","avant-garde jazz","spiritual jazz"]},
-  {g:'sub',n:"Jazz fusión",i:'engranaje',c:'#1baf7a',k:["jazz fusion","fusion","jazz-funk","jazz funk","acid jazz","nu jazz"]},
-  {g:'sub',n:"Jazz vocal",i:'microfono',c:'#1baf7a',k:["vocal jazz","jazz vocal","adult standards","traditional pop","crooner","torch song"]},
-  {g:'sub',n:"Big band y swing",i:'nota',c:'#1baf7a',k:["big band","swing","swing music","jump blues","dixieland"]},
-  {g:'sub',n:"Bossa nova",i:'palmera',c:'#1baf7a',k:["bossa nova","samba jazz","latin jazz"]},
-  {g:'sub',n:"Soul jazz",i:'nota',c:'#1baf7a',k:["soul jazz","organ jazz"]},
-  {g:'sub',n:"Delta blues",i:'onda',c:'#3a5f8a',k:["delta blues","country blues","acoustic blues","classic blues"]},
-  {g:'sub',n:"Chicago blues",i:'onda',c:'#3a5f8a',k:["chicago blues","electric blues"]},
-  {g:'sub',n:"Blues rock",i:'guitarra',c:'#3a5f8a',k:["blues rock","soul blues","british blues"]},
-  {g:'sub',n:"Barroco",i:'libro',c:'#8a6a4a',k:["baroque","early music","renaissance"]},
-  {g:'sub',n:"Ópera",i:'microfono',c:'#8a6a4a',k:["opera","operetta","zarzuela","bel canto","tenor","soprano","baritono","aria"]},
-  {g:'sub',n:"Piano solo",i:'teclado',c:'#8a6a4a',k:["classical piano","solo piano","piano"]},
-  {g:'sub',n:"Música de cámara",i:'nota',c:'#8a6a4a',k:["chamber music","string quartet","concerto","sonata"]},
-  {g:'sub',n:"Minimalismo",i:'niebla',c:'#8a6a4a',k:["minimalism","post-minimalism","modern classical","contemporary classical","neoclassical"]},
-  {g:'sub',n:"Classic country",i:'casa',c:'#a3690f',k:["classic country","outlaw country","honky tonk","nashville sound"]},
-  {g:'sub',n:"Bluegrass",i:'guitarra',c:'#a3690f',k:["bluegrass","old-time","appalachian"]},
-  {g:'sub',n:"Cantautor",i:'hoja',c:'#a3690f',k:["singer-songwriter","cantautor","chanson","trova","nueva trova","variete francaise","italian singer-songwriter"]},
-  {g:'sub',n:"Folk indie",i:'hoja',c:'#a3690f',k:["indie folk","freak folk","contemporary folk","folk pop"]},
-  {g:'sub',n:"Americana",i:'casa',c:'#a3690f',k:["americana","alt-country","cowpunk"]},
-  {g:'sub',n:"Roots reggae",i:'hoja',c:'#3f9c35',k:["roots reggae","roots","lovers rock","reggae en espanol"]},
-  {g:'sub',n:"Dub",i:'gota',c:'#3f9c35',k:["dub","dub poetry"]},
-  {g:'sub',n:"Dancehall",i:'altavoz',c:'#3f9c35',k:["dancehall","ragga","bashment"]},
-  {g:'sub',n:"Ska",i:'gota',c:'#3f9c35',k:["ska","rocksteady"]},
-  {g:'sub',n:"Salsa",i:'nota',c:'#eda100',k:["salsa","salsa dura","son cubano","guaracha","mambo","boogaloo"]},
-  {g:'sub',n:"Bachata",i:'guitarra',c:'#eda100',k:["bachata"]},
-  {g:'sub',n:"Cumbia",i:'onda',c:'#eda100',k:["cumbia","cumbia villera","vallenato"]},
-  {g:'sub',n:"Merengue",i:'copa',c:'#eda100',k:["merengue","merengue tipico"]},
-  {g:'sub',n:"Bolero",i:'corazon',c:'#eda100',k:["bolero","bolero son","trio romantico","boleros"]},
-  {g:'sub',n:"Tango",i:'flor',c:'#eda100',k:["tango","milonga","techengue"]},
-  {g:'sub',n:"Reggaetón clásico",i:'altavoz',c:'#e0563a',k:["old school reggaeton","reggaeton clasico","perreo"]},
-  {g:'sub',n:"Neoperreo",i:'chispa',c:'#e0563a',k:["neoperreo","experimental reggaeton","perreo","malianteo","underground reggaeton"]},
-  {g:'sub',n:"Dembow",i:'onda',c:'#e0563a',k:["dembow","dembow dominicano"]},
-  {g:'sub',n:"Afrobeats",i:'sol',c:'#e0563a',k:["afrobeats","afro pop","afroswing","amapiano"]},
-  {g:'sub',n:"Corridos tumbados",i:'corona',c:'#b5761c',k:["corridos tumbados","sad sierreno","sierreno","corridos belicos","corrido"]},
-  {g:'sub',n:"Banda y norteño",i:'nota',c:'#b5761c',k:["banda","norteno","duranguense","mariachi","ranchera"]},
-  {g:'sub',n:"Flamenco puro",i:'abanico',c:'#b03f30',k:["flamenco","cante jondo","cante"]},
-  {g:'sub',n:"Flamenco nuevo",i:'chispa',c:'#b03f30',k:["flamenco nuevo","nuevo flamenco","flamenco urbano","flamenco fusion","flamenco pop"]},
-  {g:'sub',n:"Rumba",i:'guitarra',c:'#b03f30',k:["rumba","rumba catalana","rumba flamenca"]},
-  {g:'sub',n:"Copla",i:'abanico',c:'#b03f30',k:["copla","cancion espanola","tonadilla"]},
-  {g:'sub',n:"Synthwave",i:'sol',c:'#a05cc0',k:["synthwave","retrowave","outrun","vaporwave"]},
-  {g:'sub',n:"New wave",i:'chispa',c:'#a05cc0',k:["new wave","neue deutsche welle","new romantic","minimal wave"]},
-  {g:'sub',n:"Synthpop",i:'teclado',c:'#a05cc0',k:["synthpop","synth pop","electropop","futurepop"]},
-  {g:'sub',n:"Italo disco",i:'disco',c:'#a05cc0',k:["italo disco","hi-nrg","italo dance"]},
-  {g:'sub',n:"Electroclash",i:'chispa',c:'#a05cc0',k:["electroclash","new rave","bloghouse","blog house","dance-punk","alternative dance"]},
-  {g:'sub',n:"Chiptune",i:'mando',c:'#a05cc0',k:["chiptune","8-bit","bitpop","video game"]},
-  {g:'sub',n:"Indietronica",i:'marcador',c:'#a05cc0',k:["indietronica","folktronica","electronic rock"]},
-  {g:'sub',n:"Ambient",i:'niebla',c:'#6b7b8c',k:["ambient","drone","dark ambient","space ambient"]},
-  {g:'sub',n:"IDM",i:'glitch',c:'#6b7b8c',k:["idm","braindance","glitch","wonky","ninja tune"]},
-  {g:'sub',n:"Trip hop",i:'niebla',c:'#6b7b8c',k:["trip hop","trip-hop","downtempo"]},
-  {g:'sub',n:"Lo-fi",i:'auriculares',c:'#6b7b8c',k:["lo-fi","lofi","bedroom pop","bedroom"]},
-  {g:'sub',n:"Musique concrète",i:'espiral',c:'#6b7b8c',k:["musique concrete","tape music","field recording","noise","power electronics"]},
-  {g:'sub',n:"Plunderphonics",i:'glitch',c:'#6b7b8c',k:["plunderphonics","mashup","sampledelia","bootleg"]},
-  {g:'sub',n:"New age",i:'flor',c:'#6b7b8c',k:["new age","healing","meditation"]},
-  {g:'sub',n:"Big beat",i:'martillo',c:'#7a5cd6',k:["big beat","bigbeat"]},
-  {g:'sub',n:"Nu disco",i:'disco',c:'#7a5cd6',k:["nu disco","nu-disco","disco funk","future funk"]},
-  {g:'sub',n:"Hi-NRG y eurobeat",i:'rayo',c:'#7a5cd6',k:["hi-nrg","hi nrg","hinrg","eurobeat","italo dance","hands up","handsup"]},
-  {g:'sub',n:"Jumpstyle y hardbass",i:'pesas',c:'#7a5cd6',k:["jumpstyle","hardbass","hard bass","tekstyle","gopnik"]},
-  {g:'sub',n:"Hypertechno",i:'chispa',c:'#7a5cd6',k:["hypertechno","hyper techno"]},
-  {g:'sub',n:"Techengue",i:'copa',c:'#7a5cd6',k:["techengue","cumbiaton","cumbia 420"]},
-  {g:'sub',n:"Tekno y free party",i:'altavoz',c:'#7a5cd6',k:["tekno","free tekno","freetekno","tribe","hardtek","mentalcore"]},
-  {g:'sub',n:"Chillwave y vaporwave",i:'palmera',c:'#7a5cd6',k:["chillwave","vaporwave","future funk","glo-fi"]},
-  {g:'sub',n:"Downtempo",i:'nube',c:'#7a5cd6',k:["downtempo","chillout","chill out","chill-out","electronic-lounge"]},
-  {g:'sub',n:"Nightcore",i:'chispa',c:'#7a5cd6',k:["nightcore","sped up","speed up","spedup"]},
-  {g:'sub',n:"Ghettotech y juke",i:'glitch',c:'#7a5cd6',k:["ghettotech","ghetto house","juke","footwork","ghetto tech"]},
-  {g:'sub',n:"Baltimore club",i:'onda',c:'#7a5cd6',k:["baltimore club","baltimore breaks","bmore"]},
-  {g:'sub',n:"UK funky",i:'disco',c:'#7a5cd6',k:["uk funky","funky house"]},
-  {g:'sub',n:"Bassline y speed garage",i:'onda',c:'#7a5cd6',k:["bassline","speed garage","4x4 garage","niche"]},
-  {g:'sub',n:"Future garage",i:'niebla',c:'#7a5cd6',k:["future garage"]},
-  {g:'sub',n:"Electro swing",i:'teclado',c:'#7a5cd6',k:["electro swing","electroswing","swing house"]},
-  {g:'sub',n:"Afro tech",i:'sol',c:'#7a5cd6',k:["afro tech","afrotech","afro techno"]},
-  {g:'sub',n:"G-house",i:'ciudad',c:'#5b8cf0',k:["g-house","g house","ghouse","gangsta house"]},
-  {g:'sub',n:"Tribal house",i:'martillo',c:'#5b8cf0',k:["tribal house","tribal","tribal tech"]},
-  {g:'sub',n:"Dutch house",i:'bandera',c:'#5b8cf0',k:["dutch house","dirty dutch","fidget house","stutter house"]},
-  {g:'sub',n:"Brazilian bass",i:'palmera',c:'#5b8cf0',k:["brazilian bass","speed house","bass brasileiro"]},
-  {g:'sub',n:"Peak time techno",i:'montana',c:'#4a5568',k:["peak time","peak-time","driving techno"]},
-  {g:'sub',n:"Melodic bass",i:'corazon',c:'#2b9c8a',k:["melodic bass","future riddim","colour bass","color bass","kawaii bass"]},
-  {g:'sub',n:"Brostep y tearout",i:'calavera',c:'#2b9c8a',k:["brostep","tearout","tear out","filthstep","gorestep","filth"]},
-  {g:'sub',n:"Lovestep",i:'corazon',c:'#2b9c8a',k:["lovestep"]},
-  {g:'sub',n:"Techstep y darkstep",i:'calavera',c:'#c0533f',k:["techstep","darkstep","neurostep"]},
-  {g:'sub',n:"Hardcore techno",i:'martillo',c:'#b8202e',k:["hardcore techno","hardtekk","makina","bakalao","mákina"]},
-  {g:'sub',n:"Old school",i:'reloj',c:'#eb6834',k:["old school hip hop","old school rap","golden age hip hop","old school hip-hop"]},
-  {g:'sub',n:"Underground hip-hop",i:'niebla',c:'#eb6834',k:["underground hip hop","underground hip-hop","underground rap","indie rap"]},
-  {g:'sub',n:"Experimental hip-hop",i:'glitch',c:'#eb6834',k:["experimental hip hop","experimental hip-hop","abstract hip hop","art rap","avant-garde hip hop"]},
-  {g:'sub',n:"Cloud rap",i:'nube',c:'#eb6834',k:["cloud rap","cloudrap"]},
-  {g:'sub',n:"Emo rap",i:'gota',c:'#eb6834',k:["emo rap","sad rap","sadboys","sadboy"]},
-  {g:'sub',n:"Crunk",i:'altavoz',c:'#eb6834',k:["crunk","crunkcore","snap music"]},
-  {g:'sub',n:"Hardcore hip-hop",i:'martillo',c:'#eb6834',k:["hardcore hip hop","hardcore rap","hardcore hip-hop"]},
-  {g:'sub',n:"Jazz rap",i:'nota',c:'#eb6834',k:["jazz rap","jazzy hip hop","jazz hop"]},
-  {g:'sub',n:"Turntablism",i:'disco',c:'#eb6834',k:["turntablism","scratch","turntable","dj battle","scratching"]},
-  {g:'sub',n:"Miami bass",i:'palmera',c:'#eb6834',k:["miami bass","booty bass","booty music"]},
-  {g:'sub',n:"Country rap",i:'casa',c:'#eb6834',k:["country rap","hick hop","hick-hop"]},
-  {g:'sub',n:"Hyphy y jerk",i:'coche',c:'#eb6834',k:["hyphy","jerk","jerkin","bay area rap"]},
-  {g:'sub',n:"Mumble rap",i:'niebla',c:'#eb6834',k:["mumble rap"]},
-  {g:'sub',n:"Nederhop",i:'bandera',c:'#eb6834',k:["nederhop","dutch hip hop","nederrap"]},
-  {g:'sub',n:"Drift phonk",i:'coche',c:'#8a4a2e',k:["drift phonk","driftphonk","house phonk"]},
-  {g:'sub',n:"Brazilian phonk",i:'palmera',c:'#8a4a2e',k:["brazilian phonk","funk phonk","phonk brasileiro","krushfunk"]},
-  {g:'sub',n:"Trap argentino",i:'bandera',c:'#8a4a2e',k:["argentine trap","trap argentino","trap arg"]},
-  {g:'sub',n:"Trap metal",i:'calavera',c:'#8a4a2e',k:["trap metal","rage","opium","scream rap"]},
-  {g:'sub',n:"Baroque pop",i:'libro',c:'#e87ba4',k:["baroque pop","chamber pop","orchestral pop"]},
-  {g:'sub',n:"Bedroom pop",i:'luna',c:'#e87ba4',k:["bedroom pop","bedroom"]},
-  {g:'sub',n:"Europop",i:'estrella',c:'#e87ba4',k:["europop","euro pop","euro-pop"]},
-  {g:'sub',n:"Bubblegum y boy bands",i:'chispa',c:'#e87ba4',k:["bubblegum","boy band","boyband","boybands","girl group","bubblegum pop"]},
-  {g:'sub',n:"Standards y crooner",i:'copa',c:'#e87ba4',k:["adult standards","traditional pop","crooner","vocal pop","easy listening","swing pop"]},
-  {g:'sub',n:"K-pop",i:'flor',c:'#e87ba4',k:["k-pop","kpop","korean pop","k-hip hop"]},
-  {g:'sub',n:"J-pop y city pop",i:'flor',c:'#e87ba4',k:["j-pop","jpop","japanese pop","city pop","citypop","shibuya-kei"]},
-  {g:'sub',n:"Schlager",i:'copa',c:'#e87ba4',k:["schlager","volksmusik","deutschpop"]},
-  {g:'sub',n:"Chanson y yé-yé",i:'flor',c:'#e87ba4',k:["chanson","variete francaise","ye-ye","yeye","ye ye","french pop"]},
-  {g:'sub',n:"Balada romántica",i:'corazon',c:'#e87ba4',k:["balada","baladas","balada romantica","romantica","musica romantica","bolero pop"]},
-  {g:'sub',n:"Soft rock",i:'nube',c:'#e34948',k:["soft rock","adult contemporary","mellow rock"]},
-  {g:'sub',n:"Yacht rock",i:'avion',c:'#e34948',k:["yacht rock","smooth rock","west coast sound"]},
-  {g:'sub',n:"Glam rock",i:'estrella',c:'#e34948',k:["glam rock","glam","glitter rock"]},
-  {g:'sub',n:"Art rock",i:'flor',c:'#e34948',k:["art rock","experimental rock","avant-rock"]},
-  {g:'sub',n:"Krautrock",i:'engranaje',c:'#e34948',k:["krautrock","kosmische","kosmische musik","zeuhl"]},
-  {g:'sub',n:"Garage rock",i:'coche',c:'#e34948',k:["garage rock","garage punk","freakbeat"]},
-  {g:'sub',n:"Shoegaze",i:'niebla',c:'#e34948',k:["shoegaze","shoegazing","nu gaze"]},
-  {g:'sub',n:"Math rock",i:'engranaje',c:'#e34948',k:["math rock","midwest emo","post-math"]},
-  {g:'sub',n:"Roots rock",i:'casa',c:'#e34948',k:["roots rock","heartland rock","pub rock"]},
-  {g:'sub',n:"Acid rock",i:'espiral',c:'#e34948',k:["acid rock","space rock","freak folk"]},
-  {g:'sub',n:"Stoner rock",i:'nube',c:'#e34948',k:["stoner rock","desert rock","stoner","stoner metal"]},
-  {g:'sub',n:"Nu metal",i:'calavera',c:'#4c4a52',k:["nu metal","nu-metal","numetal"]},
-  {g:'sub',n:"Rap metal",i:'microfono',c:'#4c4a52',k:["rap metal","rapcore","funk metal","rap rock"]},
-  {g:'sub',n:"Glam metal",i:'estrella',c:'#4c4a52',k:["glam metal","hair metal","sleaze rock","sleaze metal"]},
-  {g:'sub',n:"Power y sinfónico",i:'corona',c:'#4c4a52',k:["power metal","symphonic metal","epic metal"]},
-  {g:'sub',n:"Metalcore",i:'martillo',c:'#4c4a52',k:["metalcore","deathcore","post-hardcore","mathcore"]},
-  {g:'sub',n:"Death metal clásico",i:'calavera',c:'#4c4a52',k:["old school death metal","swedish death metal","melodic death metal","brutal death metal"]},
-  {g:'sub',n:"Groove e industrial",i:'engranaje',c:'#4c4a52',k:["groove metal","industrial metal","nu-industrial"]},
-  {g:'sub',n:"Metal progresivo",i:'espiral',c:'#4c4a52',k:["progressive metal","djent","technical death metal","avant-garde metal"]},
-  {g:'sub',n:"Psychobilly",i:'calavera',c:'#d1394f',k:["psychobilly","horror punk","deathrock"]},
-  {g:'sub',n:"Riot grrrl y queercore",i:'flor',c:'#d1394f',k:["riot grrrl","queercore","riot grrl"]},
-  {g:'sub',n:"Indie latino",i:'palmera',c:'#3f9c35',k:["latin indie","indie latino","latin alternative","rock alternativo","indie espanol"]},
-  {g:'sub',n:"Alternative dance",i:'rayo',c:'#3f9c35',k:["alternative dance","new rave","dance-punk","indie dance","dance punk","madchester"]},
-  {g:'sub',n:"Twee y jangle",i:'flor',c:'#3f9c35',k:["twee pop","jangle pop","twee","c86"]},
-  {g:'sub',n:"Quiet storm",i:'luna',c:'#2a78d6',k:["quiet storm"]},
-  {g:'sub',n:"Slow jams",i:'corazon',c:'#2a78d6',k:["slow jam","slow jams","baby making music"]},
-  {g:'sub',n:"Northern soul",i:'disco',c:'#2a78d6',k:["northern soul","deep soul"]},
-  {g:'sub',n:"Soul blues",i:'gota',c:'#2a78d6',k:["soul blues","southern soul","memphis soul"]},
-  {g:'sub',n:"R&B alternativo",i:'niebla',c:'#2a78d6',k:["alternative rnb","alternative r&b","prog-rnb","pbr&b","indie soul","alt r&b","uk r&b"]},
-  {g:'sub',n:"Rhythm and blues",i:'nota',c:'#2a78d6',k:["rhythm and blues","rhythm & blues","jump blues"]},
-  {g:'sub',n:"Funk carioca",i:'palmera',c:'#d98c1f',k:["funk carioca","brazilian funk","baile funk","funk brasileiro","funk mandelao","funk paulista","passo bem solto"]},
-  {g:'sub',n:"Jazz funk",i:'nota',c:'#d98c1f',k:["jazz funk","jazz-funk","acid jazz"]},
-  {g:'sub',n:"Latin jazz",i:'copa',c:'#1baf7a',k:["latin jazz","afro-cuban jazz","jazz latino"]},
-  {g:'sub',n:"Smooth jazz",i:'nube',c:'#1baf7a',k:["smooth jazz","jazz pop","elevator jazz"]},
-  {g:'sub',n:"Hard bop",i:'nota',c:'#1baf7a',k:["hard bop","post-bop","modal jazz"]},
-  {g:'sub',n:"Ragtime y stride",i:'teclado',c:'#1baf7a',k:["ragtime","stride","dixieland","new orleans jazz"]},
-  {g:'sub',n:"Nu jazz",i:'chispa',c:'#1baf7a',k:["nu jazz","jazztronica","future jazz"]},
-  {g:'sub',n:"Classic blues",i:'reloj',c:'#3a5f8a',k:["classic blues","country blues","acoustic blues","piedmont blues"]},
-  {g:'sub',n:"Orquestal",i:'libro',c:'#8a6a4a',k:["orchestral","orchestra","symphony","symphonic","sinfonia","sinfonico"]},
-  {g:'sub',n:"Concierto",i:'nota',c:'#8a6a4a',k:["concerto","concierto","concerto grosso"]},
-  {g:'sub',n:"Coral",i:'corona',c:'#8a6a4a',k:["choral","chorus","coro","requiem","cantata","gregorian","canto gregoriano"]},
-  {g:'sub',n:"Música antigua",i:'libro',c:'#8a6a4a',k:["early music","renaissance","medieval","musica antigua"]},
-  {g:'sub',n:"Romanticismo",i:'corazon',c:'#8a6a4a',k:["romanticism","romantic era","impressionism","impressionist","impresionismo"]},
-  {g:'sub',n:"Clásica contemporánea",i:'chispa',c:'#8a6a4a',k:["contemporary classical","avant-garde classical","electronic classical","neoclassical","neoclasica"]},
-  {g:'sub',n:"Outlaw country",i:'coche',c:'#a3690f',k:["outlaw country","honky tonk","western","western swing"]},
-  {g:'sub',n:"Country pop",i:'estrella',c:'#a3690f',k:["country pop","country rock","nashville sound","contemporary country"]},
-  {g:'sub',n:"Folk celta",i:'hoja',c:'#a3690f',k:["celtic","celtic folk","irish folk","folk irlandes","celtic punk"]},
-  {g:'sub',n:"Folclore latinoamericano",i:'montana',c:'#a3690f',k:["nueva cancion","folclore","folklore","andean","andina","musica andina","peruvian folk","folclore argentino"]},
-  {g:'sub',n:"Rocksteady",i:'sol',c:'#3f9c35',k:["rocksteady","early reggae","ska jazz"]},
-  {g:'sub',n:"Ragga",i:'altavoz',c:'#3f9c35',k:["ragga","raggamuffin","bashment","ragga jungle"]},
-  {g:'sub',n:"Son cubano",i:'palmera',c:'#eda100',k:["son cubano","son montuno","guaracha","trova cubana","buena vista social club","timba"]},
-  {g:'sub',n:"Trova",i:'guitarra',c:'#eda100',k:["trova","nueva trova","cantautor latino","trovador"]},
-  {g:'sub',n:"Cha-cha-chá y mambo",i:'copa',c:'#eda100',k:["cha cha cha","chachacha","cha-cha-cha","mambo","danzon"]},
-  {g:'sub',n:"Candombe y murga",i:'martillo',c:'#eda100',k:["candombe","murga","milonga"]},
-  {g:'sub',n:"Vallenato y champeta",i:'sol',c:'#eda100',k:["vallenato","champeta","cumbia villera","porro"]},
-  {g:'sub',n:"Electrocumbia",i:'rayo',c:'#eda100',k:["electrocumbia","cumbia electronica","digital cumbia","nu cumbia"]},
-  {g:'sub',n:"RKT y turreo",i:'fuego',c:'#e0563a',k:["rkt","turreo","cumbia 420","turreo argentino"]},
-  {g:'sub',n:"Reggaetón chileno",i:'bandera',c:'#e0563a',k:["reggaeton chileno","trap chileno","perreo chileno"]},
-  {g:'sub',n:"Mariachi",i:'corona',c:'#b5761c',k:["mariachi","son jalisciense","mariachi moderno"]},
-  {g:'sub',n:"Ranchera",i:'copa',c:'#b5761c',k:["ranchera","rancheras","ranchero"]},
-  {g:'sub',n:"Corrido",i:'guitarra',c:'#b5761c',k:["corrido","corridos","corridos belicos","narcocorrido"]},
-  {g:'sub',n:"Tejano",i:'bandera',c:'#b5761c',k:["tejano","tex-mex","conjunto"]},
-  {g:'sub',n:"Flamenco pop",i:'abanico',c:'#b03f30',k:["flamenco pop","pop flamenco","pop andaluz"]},
-  {g:'sub',n:"Flamenco urbano",i:'ciudad',c:'#b03f30',k:["flamenco urbano","flamenco trap","nuevo flamenco urbano"]},
-  {g:'sub',n:"Rumba catalana",i:'guitarra',c:'#b03f30',k:["rumba catalana","rumbapop","tecnorumba","rumba flamenca","catalan rumba"]},
-  {g:'sub',n:"Electropop",i:'teclado',c:'#a05cc0',k:["electropop","electro pop","synth pop moderno"]},
-  {g:'sub',n:"Darkwave",i:'luna',c:'#a05cc0',k:["darkwave","coldwave","minimal wave","ethereal wave"]},
-  {g:'sub',n:"EBM e industrial",i:'engranaje',c:'#a05cc0',k:["ebm","electronic body music","aggrotech","futurepop"]},
-  {g:'sub',n:"Glitch",i:'glitch',c:'#6b7b8c',k:["glitch","glitchtronica","clicks and cuts"]},
-  {g:'sub',n:"Drone y dark ambient",i:'niebla',c:'#6b7b8c',k:["drone","dark ambient","field recording","ambient drone"]},
-  {g:'sub',n:"Noise",i:'altavoz',c:'#6b7b8c',k:["noise","harsh noise","power electronics","noise music"]},
-  {g:'sub',n:"Disney",i:'estrella',c:'#726858',k:["disney","pixar","musical de disney"]},
-  {g:'sub',n:"Anime",i:'flor',c:'#726858',k:["anime","anime ost","j-anime","anisong"]},
-  {g:'sub',n:"Videojuegos",i:'mando',c:'#726858',k:["video game","videogame","game soundtrack","vgm","videojuego","gta","initial d","osu"]},
-  {g:'sub',n:"Villancicos",i:'arbol',c:'#2f8f4e',k:["villancicos","christmas carol","christmas song","navidad","villancico"]},
-  {g:'sub',n:"Afrobeat clásico",i:'sol',c:'#c98a1f',k:["afrobeat","fela","afro-funk"]},
-  {g:'sub',n:"Kuduro y kizomba",i:'sol',c:'#c98a1f',k:["kuduro","kizomba","semba","tarraxinha"]},
-  {g:'sub',n:"Samba y pagode",i:'palmera',c:'#2f9e5e',k:["samba","pagode","samba-rock","samba de roda"]},
-  {g:'sub',n:"MPB y tropicália",i:'flor',c:'#2f9e5e',k:["mpb","musica popular brasileira","tropicalia","tropicalismo"]},
+  {g:'sub',n:"Big room",i:'onda',c:'#5b8cf0',k:["big room","bigroom"],p:"House"},
+  {g:'sub',n:"Progressive house",i:'onda',c:'#5b8cf0',k:["progressive house"],p:"House"},
+  {g:'sub',n:"Electro house",i:'onda',c:'#5b8cf0',k:["electro house","electro-house","complextro","dutch house"],p:"House"},
+  {g:'sub',n:"Future house",i:'onda',c:'#5b8cf0',k:["future house"],p:"House"},
+  {g:'sub',n:"Bass house",i:'onda',c:'#5b8cf0',k:["bass house","g-house","ghouse"],p:"House"},
+  {g:'sub',n:"Deep house",i:'onda',c:'#5b8cf0',k:["deep house"],p:"House"},
+  {g:'sub',n:"Tech house",i:'onda',c:'#5b8cf0',k:["tech house"],p:"House"},
+  {g:'sub',n:"Tropical house",i:'palmera',c:'#5b8cf0',k:["tropical house"],p:"House"},
+  {g:'sub',n:"Slap house",i:'onda',c:'#5b8cf0',k:["slap house"],p:"House"},
+  {g:'sub',n:"Melodic house",i:'onda',c:'#5b8cf0',k:["melodic house"],p:"House"},
+  {g:'sub',n:"Afro house",i:'sol',c:'#5b8cf0',k:["afro house"],p:"House"},
+  {g:'sub',n:"Latin house",i:'copa',c:'#5b8cf0',k:["latin house","tribal house"],p:"House"},
+  {g:'sub',n:"French house",i:'bandera',c:'#5b8cf0',k:["french house","filter house"],p:"House"},
+  {g:'sub',n:"Disco house",i:'disco',c:'#5b8cf0',k:["disco house","nu disco","funky house"],p:"House"},
+  {g:'sub',n:"Acid house",i:'gota',c:'#5b8cf0',k:["acid house"],p:"House"},
+  {g:'sub',n:"Chicago house",i:'casa',c:'#5b8cf0',k:["chicago house"],p:"House"},
+  {g:'sub',n:"Hip house",i:'microfono',c:'#5b8cf0',k:["hip house"],p:"House"},
+  {g:'sub',n:"Melbourne bounce",i:'espiral',c:'#5b8cf0',k:["melbourne bounce","bounce"],p:"House"},
+  {g:'sub',n:"Rally house",i:'coche',c:'#5b8cf0',k:["rally house"],p:"House"},
+  {g:'sub',n:"Minimal techno",i:'engranaje',c:'#4a5568',k:["minimal techno","minimal"],p:"Techno"},
+  {g:'sub',n:"Hard techno",i:'engranaje',c:'#4a5568',k:["hard techno","hypertechno","schranz"],p:"Techno"},
+  {g:'sub',n:"Melodic techno",i:'engranaje',c:'#4a5568',k:["melodic techno"],p:"Techno"},
+  {g:'sub',n:"Acid techno",i:'gota',c:'#4a5568',k:["acid techno","acid"],p:"Techno"},
+  {g:'sub',n:"Detroit techno",i:'engranaje',c:'#4a5568',k:["detroit techno"],p:"Techno"},
+  {g:'sub',n:"Psytrance",i:'espiral',c:'#8b7ce8',k:["psytrance","psychedelic trance","goa trance","goa","darkpsy","psycore","forest psy","full-on"],p:"Trance"},
+  {g:'sub',n:"Progressive trance",i:'espiral',c:'#8b7ce8',k:["progressive trance"],p:"Trance"},
+  {g:'sub',n:"Uplifting trance",i:'espiral',c:'#8b7ce8',k:["uplifting trance","vocal trance"],p:"Trance"},
+  {g:'sub',n:"Eurodance",i:'disco',c:'#8b7ce8',k:["eurodance","europop"],p:"Trance"},
+  {g:'sub',n:"Riddim",i:'onda',c:'#2b9c8a',k:["riddim"],p:"Dubstep y bass"},
+  {g:'sub',n:"Deathstep",i:'calavera',c:'#2b9c8a',k:["deathstep","tearout"],p:"Dubstep y bass"},
+  {g:'sub',n:"Melodic dubstep",i:'onda',c:'#2b9c8a',k:["melodic dubstep","melodic bass"],p:"Dubstep y bass"},
+  {g:'sub',n:"Chillstep",i:'nube',c:'#2b9c8a',k:["chillstep"],p:"Dubstep y bass"},
+  {g:'sub',n:"Drumstep",i:'onda',c:'#2b9c8a',k:["drumstep"],p:"Dubstep y bass"},
+  {g:'sub',n:"Future bass",i:'onda',c:'#2b9c8a',k:["future bass"],p:"Dubstep y bass"},
+  {g:'sub',n:"Trap electrónico",i:'niebla',c:'#2b9c8a',k:["edm trap","festival trap","hybrid trap"],p:"Dubstep y bass"},
+  {g:'sub',n:"Moombahton",i:'copa',c:'#2b9c8a',k:["moombahton","moombahcore"],p:"Dubstep y bass"},
+  {g:'sub',n:"Glitch hop",i:'glitch',c:'#2b9c8a',k:["glitch hop","wonky","neurohop"],p:"Dubstep y bass"},
+  {g:'sub',n:"Breakbeat",i:'onda',c:'#2b9c8a',k:["breakbeat","big beat","breaks","nu skool breaks"],p:"Dubstep y bass"},
+  {g:'sub',n:"UK garage",i:'caja',c:'#2b9c8a',k:["uk garage","garage","2-step","uk funky","future garage","speed garage"],p:"Dubstep y bass"},
+  {g:'sub',n:"Jersey club",i:'espiral',c:'#2b9c8a',k:["jersey club","baltimore club"],p:"Dubstep y bass"},
+  {g:'sub',n:"Dub techno",i:'gota',c:'#2b9c8a',k:["dub techno"],p:"Dubstep y bass"},
+  {g:'sub',n:"Liquid dnb",i:'gota',c:'#c0533f',k:["liquid funk","liquid dnb","liquid drum and bass","liquid"],p:"Drum and bass"},
+  {g:'sub',n:"Neurofunk",i:'rayo',c:'#c0533f',k:["neurofunk","neuro"],p:"Drum and bass"},
+  {g:'sub',n:"Jungle",i:'palmera',c:'#c0533f',k:["jungle","ragga jungle"],p:"Drum and bass"},
+  {g:'sub',n:"Breakcore",i:'glitch',c:'#c0533f',k:["breakcore","digital hardcore"],p:"Drum and bass"},
+  {g:'sub',n:"Gabber",i:'martillo',c:'#b8202e',k:["gabber","gabba"],p:"Hardstyle y hardcore"},
+  {g:'sub',n:"Frenchcore",i:'martillo',c:'#b8202e',k:["frenchcore"],p:"Hardstyle y hardcore"},
+  {g:'sub',n:"Speedcore",i:'martillo',c:'#b8202e',k:["speedcore","extratone"],p:"Hardstyle y hardcore"},
+  {g:'sub',n:"Happy hardcore",i:'sol',c:'#b8202e',k:["happy hardcore","uk hardcore","makina"],p:"Hardstyle y hardcore"},
+  {g:'sub',n:"Boom bap",i:'microfono',c:'#eb6834',k:["boom bap","old school hip hop","old school","golden age hip hop"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Rap de la Costa Este",i:'microfono',c:'#eb6834',k:["east coast hip hop","east coast","new york hip hop"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Rap de la Costa Oeste",i:'palmera',c:'#eb6834',k:["west coast hip hop","west coast"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Rap sureño",i:'microfono',c:'#eb6834',k:["southern hip hop","dirty south","southern rap","atlanta hip hop","memphis rap","houston rap"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Gangsta rap",i:'calavera',c:'#eb6834',k:["gangsta rap","gangster rap","hardcore hip hop","mafioso rap"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Rap consciente",i:'libro',c:'#eb6834',k:["conscious hip hop","conscious rap","political hip hop","jazz rap"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Rap alternativo",i:'marcador',c:'#eb6834',k:["alternative hip hop","alternative rap","abstract hip hop","underground hip hop","underground hip-hop","experimental hip hop","experimental hip-hop"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Rap melódico",i:'corazon',c:'#eb6834',k:["melodic rap","emo rap","sad rap","cloud rap"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Drill",i:'martillo',c:'#eb6834',k:["drill","uk drill","new york drill","brooklyn drill","chicago drill"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Grime",i:'microfono',c:'#eb6834',k:["grime","uk grime"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Horrorcore",i:'calavera',c:'#eb6834',k:["horrorcore","trap metal","rap metal","rapcore"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Instrumental hip-hop",i:'auriculares',c:'#eb6834',k:["instrumental hip hop","instrumental hip-hop","lofi hip hop","lo-fi hip hop","chillhop"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Rap en español",i:'bandera',c:'#eb6834',k:["spanish hip hop","rap espanol","latin hip hop","rap en espanol","hip hop espanol"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Rap francés",i:'bandera',c:'#eb6834',k:["french rap","french hip hop","rap francais"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Pop rap",i:'estrella',c:'#eb6834',k:["pop rap","country rap","electro hop","crunk","swag"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Trap latino",i:'copa',c:'#8a4a2e',k:["trap latino","latin trap","argentine trap","trap argentino","trap chileno"],p:"Trap"},
+  {g:'sub',n:"Phonk",i:'niebla',c:'#8a4a2e',k:["phonk","drift phonk","brazilian phonk","house phonk","chopped and screwed","screwed","slowed"],p:"Trap"},
+  {g:'sub',n:"Rage",i:'fuego',c:'#8a4a2e',k:["rage rap","rage","opium"],p:"Trap"},
+  {g:'sub',n:"Plugg",i:'rayo',c:'#8a4a2e',k:["plugg","pluggnb","plugnb"],p:"Trap"},
+  {g:'sub',n:"Dance pop",i:'disco',c:'#e87ba4',k:["dance-pop","dance pop","pop dance"],p:"Pop"},
+  {g:'sub',n:"Art pop",i:'chispa',c:'#e87ba4',k:["art pop","baroque pop","chamber pop","experimental pop"],p:"Pop"},
+  {g:'sub',n:"Indie pop",i:'marcador',c:'#e87ba4',k:["indie pop","twee pop","jangle pop"],p:"Pop"},
+  {g:'sub',n:"Dream pop",i:'nube',c:'#e87ba4',k:["dream pop","shoegaze","ethereal wave"],p:"Pop"},
+  {g:'sub',n:"Power pop",i:'rayo',c:'#e87ba4',k:["power pop","powerpop"],p:"Pop"},
+  {g:'sub',n:"Pop rock",i:'guitarra',c:'#e87ba4',k:["pop rock","pop-rock","soft rock","aor","yacht rock"],p:"Pop"},
+  {g:'sub',n:"Hyperpop",i:'chispa',c:'#e87ba4',k:["hyperpop","glitchcore","digicore","bubblegum bass","pc music"],p:"Pop"},
+  {g:'sub',n:"Pop latino",i:'copa',c:'#e87ba4',k:["latin pop","pop latino","colombian pop","spanish pop","flamenco pop","mexican pop"],p:"Pop"},
+  {g:'sub',n:"Teen pop",i:'estrella',c:'#e87ba4',k:["teen pop","bubblegum pop","boy band","girl group"],p:"Pop"},
+  {g:'sub',n:"Eurovisión",i:'microfono',c:'#e87ba4',k:["eurovision","operacion triunfo","melodifestivalen"],p:"Pop"},
+  {g:'sub',n:"Soft pop",i:'nube',c:'#e87ba4',k:["soft pop","sophisti-pop","easy listening","adult contemporary"],p:"Pop"},
+  {g:'sub',n:"Classic rock",i:'guitarra',c:'#e34948',k:["classic rock"],p:"Rock"},
+  {g:'sub',n:"Hard rock",i:'guitarra',c:'#e34948',k:["hard rock","glam rock","glam metal","arena rock"],p:"Rock"},
+  {g:'sub',n:"Psicodélico",i:'espiral',c:'#e34948',k:["psychedelic rock","psychedelic","acid rock","neo-psychedelic","krautrock"],p:"Rock"},
+  {g:'sub',n:"Rock progresivo",i:'engranaje',c:'#e34948',k:["progressive rock","prog rock","art rock","canterbury scene","symphonic rock"],p:"Rock"},
+  {g:'sub',n:"Grunge",i:'guitarra',c:'#e34948',k:["grunge","post-grunge"],p:"Rock"},
+  {g:'sub',n:"Britpop",i:'bandera',c:'#e34948',k:["britpop","madchester","baggy"],p:"Rock"},
+  {g:'sub',n:"Indie rock",i:'marcador',c:'#e34948',k:["indie rock","garage rock","post-punk revival"],p:"Rock"},
+  {g:'sub',n:"Post-punk",i:'rayo',c:'#e34948',k:["post-punk","coldwave","cold wave","darkwave","gothic rock","goth","no wave"],p:"Rock"},
+  {g:'sub',n:"Post-rock",i:'niebla',c:'#e34948',k:["post-rock","math rock","slowcore"],p:"Rock"},
+  {g:'sub',n:"Noise rock",i:'rayo',c:'#e34948',k:["noise rock","industrial rock","industrial"],p:"Rock"},
+  {g:'sub',n:"Surf rock",i:'onda',c:'#e34948',k:["surf rock","surf"],p:"Rock"},
+  {g:'sub',n:"Southern rock",i:'casa',c:'#e34948',k:["southern rock","roots rock","heartland rock","swamp rock"],p:"Rock"},
+  {g:'sub',n:"Folk rock",i:'hoja',c:'#e34948',k:["folk rock","country rock","celtic rock"],p:"Rock"},
+  {g:'sub',n:"Rock en español",i:'bandera',c:'#e34948',k:["rock en espanol","spanish rock","argentine rock","rock catala","mexican rock","rock nacional","latin rock","latin alternative","latin indie","mestizo","patchanka","mestizaje","rock latino"],p:"Rock"},
+  {g:'sub',n:"Proto-punk",i:'rayo',c:'#e34948',k:["proto-punk","protopunk"],p:"Rock"},
+  {g:'sub',n:"Rockabilly",i:'guitarra',c:'#e34948',k:["rockabilly","rock and roll","rock n roll","doo-wop"],p:"Rock"},
+  {g:'sub',n:"Heavy metal",i:'calavera',c:'#4c4a52',k:["heavy metal","nwobhm","speed metal","power metal"],p:"Metal"},
+  {g:'sub',n:"Thrash metal",i:'calavera',c:'#4c4a52',k:["thrash metal","thrash","crossover thrash"],p:"Metal"},
+  {g:'sub',n:"Death metal",i:'calavera',c:'#4c4a52',k:["death metal","old school death metal","swedish death metal","brutal death metal","technical death metal","melodic death metal","deathcore"],p:"Metal"},
+  {g:'sub',n:"Black metal",i:'calavera',c:'#4c4a52',k:["black metal","blackgaze","atmospheric black metal"],p:"Metal"},
+  {g:'sub',n:"Doom y sludge",i:'niebla',c:'#4c4a52',k:["doom metal","doom","sludge","stoner rock","stoner metal"],p:"Metal"},
+  {g:'sub',n:"Metal alternativo",i:'marcador',c:'#4c4a52',k:["alternative metal","nu metal","metalcore","post-metal","djent","groove metal"],p:"Metal"},
+  {g:'sub',n:"Punk rock",i:'rayo',c:'#d1394f',k:["punk rock","street punk","oi"],p:"Punk"},
+  {g:'sub',n:"Hardcore punk",i:'rayo',c:'#d1394f',k:["hardcore punk","post-hardcore","powerviolence","crust punk","d-beat"],p:"Punk"},
+  {g:'sub',n:"Pop punk",i:'rayo',c:'#d1394f',k:["pop punk","skate punk","emo pop","easycore"],p:"Punk"},
+  {g:'sub',n:"Emo y screamo",i:'corazon',c:'#d1394f',k:["emo","screamo","midwest emo","emo revival"],p:"Punk"},
+  {g:'sub',n:"Ska punk",i:'gota',c:'#d1394f',k:["ska punk","two tone","2 tone"],p:"Punk"},
+  {g:'sub',n:"Classic soul",i:'corazon',c:'#2a78d6',k:["classic soul","southern soul","northern soul","memphis soul","philly soul","deep soul"],p:"R&B y soul"},
+  {g:'sub',n:"Neo soul",i:'corazon',c:'#2a78d6',k:["neo soul","neo-soul","alternative rnb","alternative r&b","prog-rnb"],p:"R&B y soul"},
+  {g:'sub',n:"R&B contemporáneo",i:'corazon',c:'#2a78d6',k:["contemporary r&b","urban contemporary","slow jams","quiet storm","latin r&b","french r&b"],p:"R&B y soul"},
+  {g:'sub',n:"Doo-wop",i:'microfono',c:'#2a78d6',k:["doo-wop","doo wop","vocal group"],p:"R&B y soul"},
+  {g:'sub',n:"Motown",i:'estrella',c:'#2a78d6',k:["motown"],p:"R&B y soul"},
+  {g:'sub',n:"New jack swing",i:'espiral',c:'#2a78d6',k:["new jack swing","swingbeat"],p:"R&B y soul"},
+  {g:'sub',n:"P-funk",i:'disco',c:'#d98c1f',k:["p-funk","funk rock","funk pop","funky"],p:"Funk y disco"},
+  {g:'sub',n:"G-funk",i:'palmera',c:'#d98c1f',k:["g-funk","g funk"],p:"Funk y disco"},
+  {g:'sub',n:"Boogie y disco",i:'disco',c:'#d98c1f',k:["boogie","disco","euro disco","space disco"],p:"Funk y disco"},
+  {g:'sub',n:"Bebop",i:'nota',c:'#1baf7a',k:["bebop","hard bop","post-bop"],p:"Jazz"},
+  {g:'sub',n:"Cool jazz",i:'copo',c:'#1baf7a',k:["cool jazz","modal jazz","west coast jazz"],p:"Jazz"},
+  {g:'sub',n:"Free jazz",i:'espiral',c:'#1baf7a',k:["free jazz","avant-garde jazz","spiritual jazz"],p:"Jazz"},
+  {g:'sub',n:"Jazz fusión",i:'engranaje',c:'#1baf7a',k:["jazz fusion","fusion","jazz-funk","jazz funk","acid jazz","nu jazz"],p:"Jazz"},
+  {g:'sub',n:"Jazz vocal",i:'microfono',c:'#1baf7a',k:["vocal jazz","jazz vocal","adult standards","traditional pop","crooner","torch song"],p:"Jazz"},
+  {g:'sub',n:"Big band y swing",i:'nota',c:'#1baf7a',k:["big band","swing","swing music","jump blues","dixieland"],p:"Jazz"},
+  {g:'sub',n:"Bossa nova",i:'palmera',c:'#1baf7a',k:["bossa nova","samba jazz","latin jazz"],p:"Jazz"},
+  {g:'sub',n:"Soul jazz",i:'nota',c:'#1baf7a',k:["soul jazz","organ jazz"],p:"Jazz"},
+  {g:'sub',n:"Delta blues",i:'onda',c:'#3a5f8a',k:["delta blues","country blues","acoustic blues","classic blues"],p:"Blues"},
+  {g:'sub',n:"Chicago blues",i:'onda',c:'#3a5f8a',k:["chicago blues","electric blues"],p:"Blues"},
+  {g:'sub',n:"Blues rock",i:'guitarra',c:'#3a5f8a',k:["blues rock","soul blues","british blues"],p:"Blues"},
+  {g:'sub',n:"Barroco",i:'libro',c:'#8a6a4a',k:["baroque","early music","renaissance"],p:"Clásica"},
+  {g:'sub',n:"Ópera",i:'microfono',c:'#8a6a4a',k:["opera","operetta","zarzuela","bel canto","tenor","soprano","baritono","aria"],p:"Clásica"},
+  {g:'sub',n:"Piano solo",i:'teclado',c:'#8a6a4a',k:["classical piano","solo piano","piano"],p:"Clásica"},
+  {g:'sub',n:"Música de cámara",i:'nota',c:'#8a6a4a',k:["chamber music","string quartet","concerto","sonata"],p:"Clásica"},
+  {g:'sub',n:"Minimalismo",i:'niebla',c:'#8a6a4a',k:["minimalism","post-minimalism","modern classical","contemporary classical","neoclassical"],p:"Clásica"},
+  {g:'sub',n:"Classic country",i:'casa',c:'#a3690f',k:["classic country","outlaw country","honky tonk","nashville sound"],p:"Country y folk"},
+  {g:'sub',n:"Bluegrass",i:'guitarra',c:'#a3690f',k:["bluegrass","old-time","appalachian"],p:"Country y folk"},
+  {g:'sub',n:"Cantautor",i:'hoja',c:'#a3690f',k:["singer-songwriter","cantautor","chanson","trova","nueva trova","variete francaise","italian singer-songwriter"],p:"Country y folk"},
+  {g:'sub',n:"Folk indie",i:'hoja',c:'#a3690f',k:["indie folk","freak folk","contemporary folk","folk pop"],p:"Country y folk"},
+  {g:'sub',n:"Americana",i:'casa',c:'#a3690f',k:["americana","alt-country","cowpunk"],p:"Country y folk"},
+  {g:'sub',n:"Roots reggae",i:'hoja',c:'#3f9c35',k:["roots reggae","roots","lovers rock","reggae en espanol"],p:"Reggae y dancehall"},
+  {g:'sub',n:"Dub",i:'gota',c:'#3f9c35',k:["dub","dub poetry"],p:"Reggae y dancehall"},
+  {g:'sub',n:"Dancehall",i:'altavoz',c:'#3f9c35',k:["dancehall","ragga","bashment"],p:"Reggae y dancehall"},
+  {g:'sub',n:"Ska",i:'gota',c:'#3f9c35',k:["ska","rocksteady"],p:"Reggae y dancehall"},
+  {g:'sub',n:"Salsa",i:'nota',c:'#eda100',k:["salsa","salsa dura","son cubano","guaracha","mambo","boogaloo"],p:"Latino"},
+  {g:'sub',n:"Bachata",i:'guitarra',c:'#eda100',k:["bachata"],p:"Latino"},
+  {g:'sub',n:"Cumbia",i:'onda',c:'#eda100',k:["cumbia","cumbia villera","vallenato"],p:"Latino"},
+  {g:'sub',n:"Merengue",i:'copa',c:'#eda100',k:["merengue","merengue tipico"],p:"Latino"},
+  {g:'sub',n:"Bolero",i:'corazon',c:'#eda100',k:["bolero","bolero son","trio romantico","boleros"],p:"Latino"},
+  {g:'sub',n:"Tango",i:'flor',c:'#eda100',k:["tango","milonga","techengue"],p:"Latino"},
+  {g:'sub',n:"Reggaetón clásico",i:'altavoz',c:'#e0563a',k:["old school reggaeton","reggaeton clasico","perreo"],p:"Reggaetón y urbano"},
+  {g:'sub',n:"Neoperreo",i:'chispa',c:'#e0563a',k:["neoperreo","experimental reggaeton","perreo","malianteo","underground reggaeton"],p:"Reggaetón y urbano"},
+  {g:'sub',n:"Dembow",i:'onda',c:'#e0563a',k:["dembow","dembow dominicano"],p:"Reggaetón y urbano"},
+  {g:'sub',n:"Afrobeats",i:'sol',c:'#e0563a',k:["afrobeats","afro pop","afroswing","amapiano"],p:"Reggaetón y urbano"},
+  {g:'sub',n:"Corridos tumbados",i:'corona',c:'#b5761c',k:["corridos tumbados","sad sierreno","sierreno","corridos belicos","corrido"],p:"Regional mexicano"},
+  {g:'sub',n:"Banda y norteño",i:'nota',c:'#b5761c',k:["banda","norteno","duranguense","mariachi","ranchera"],p:"Regional mexicano"},
+  {g:'sub',n:"Flamenco puro",i:'abanico',c:'#b03f30',k:["flamenco","cante jondo","cante"],p:"Flamenco"},
+  {g:'sub',n:"Flamenco nuevo",i:'chispa',c:'#b03f30',k:["flamenco nuevo","nuevo flamenco","flamenco urbano","flamenco fusion","flamenco pop"],p:"Flamenco"},
+  {g:'sub',n:"Rumba",i:'guitarra',c:'#b03f30',k:["rumba","rumba catalana","rumba flamenca"],p:"Flamenco"},
+  {g:'sub',n:"Copla",i:'abanico',c:'#b03f30',k:["copla","cancion espanola","tonadilla"],p:"Flamenco"},
+  {g:'sub',n:"Synthwave",i:'sol',c:'#a05cc0',k:["synthwave","retrowave","outrun","vaporwave"],p:"Electropop y synth"},
+  {g:'sub',n:"New wave",i:'chispa',c:'#a05cc0',k:["new wave","neue deutsche welle","new romantic","minimal wave"],p:"Electropop y synth"},
+  {g:'sub',n:"Synthpop",i:'teclado',c:'#a05cc0',k:["synthpop","synth pop","electropop","futurepop"],p:"Electropop y synth"},
+  {g:'sub',n:"Italo disco",i:'disco',c:'#a05cc0',k:["italo disco","hi-nrg","italo dance"],p:"Electropop y synth"},
+  {g:'sub',n:"Electroclash",i:'chispa',c:'#a05cc0',k:["electroclash","new rave","bloghouse","blog house","dance-punk","alternative dance"],p:"Electropop y synth"},
+  {g:'sub',n:"Chiptune",i:'mando',c:'#a05cc0',k:["chiptune","8-bit","bitpop","video game"],p:"Electropop y synth"},
+  {g:'sub',n:"Indietronica",i:'marcador',c:'#a05cc0',k:["indietronica","folktronica","electronic rock"],p:"Electropop y synth"},
+  {g:'sub',n:"Ambient",i:'niebla',c:'#6b7b8c',k:["ambient","drone","dark ambient","space ambient"],p:"Ambient y experimental"},
+  {g:'sub',n:"IDM",i:'glitch',c:'#6b7b8c',k:["idm","braindance","glitch","wonky","ninja tune"],p:"Ambient y experimental"},
+  {g:'sub',n:"Trip hop",i:'niebla',c:'#6b7b8c',k:["trip hop","trip-hop","downtempo"],p:"Ambient y experimental"},
+  {g:'sub',n:"Lo-fi",i:'auriculares',c:'#6b7b8c',k:["lo-fi","lofi","bedroom pop","bedroom"],p:"Ambient y experimental"},
+  {g:'sub',n:"Musique concrète",i:'espiral',c:'#6b7b8c',k:["musique concrete","tape music","field recording","noise","power electronics"],p:"Ambient y experimental"},
+  {g:'sub',n:"Plunderphonics",i:'glitch',c:'#6b7b8c',k:["plunderphonics","mashup","sampledelia","bootleg"],p:"Ambient y experimental"},
+  {g:'sub',n:"New age",i:'flor',c:'#6b7b8c',k:["new age","healing","meditation"],p:"Ambient y experimental"},
+  {g:'sub',n:"Big beat",i:'martillo',c:'#7a5cd6',k:["big beat","bigbeat"],p:"Electrónica"},
+  {g:'sub',n:"Nu disco",i:'disco',c:'#7a5cd6',k:["nu disco","nu-disco","disco funk","future funk"],p:"Electrónica"},
+  {g:'sub',n:"Hi-NRG y eurobeat",i:'rayo',c:'#7a5cd6',k:["hi-nrg","hi nrg","hinrg","eurobeat","italo dance","hands up","handsup"],p:"Electrónica"},
+  {g:'sub',n:"Jumpstyle y hardbass",i:'pesas',c:'#7a5cd6',k:["jumpstyle","hardbass","hard bass","tekstyle","gopnik"],p:"Electrónica"},
+  {g:'sub',n:"Hypertechno",i:'chispa',c:'#7a5cd6',k:["hypertechno","hyper techno"],p:"Electrónica"},
+  {g:'sub',n:"Techengue",i:'copa',c:'#7a5cd6',k:["techengue","cumbiaton","cumbia 420"],p:"Electrónica"},
+  {g:'sub',n:"Tekno y free party",i:'altavoz',c:'#7a5cd6',k:["tekno","free tekno","freetekno","tribe","hardtek","mentalcore"],p:"Electrónica"},
+  {g:'sub',n:"Chillwave y vaporwave",i:'palmera',c:'#7a5cd6',k:["chillwave","vaporwave","future funk","glo-fi"],p:"Electrónica"},
+  {g:'sub',n:"Downtempo",i:'nube',c:'#7a5cd6',k:["downtempo","chillout","chill out","chill-out","electronic-lounge"],p:"Electrónica"},
+  {g:'sub',n:"Nightcore",i:'chispa',c:'#7a5cd6',k:["nightcore","sped up","speed up","spedup"],p:"Electrónica"},
+  {g:'sub',n:"Ghettotech y juke",i:'glitch',c:'#7a5cd6',k:["ghettotech","ghetto house","juke","footwork","ghetto tech"],p:"Electrónica"},
+  {g:'sub',n:"Baltimore club",i:'onda',c:'#7a5cd6',k:["baltimore club","baltimore breaks","bmore"],p:"Electrónica"},
+  {g:'sub',n:"UK funky",i:'disco',c:'#7a5cd6',k:["uk funky","funky house"],p:"Electrónica"},
+  {g:'sub',n:"Bassline y speed garage",i:'onda',c:'#7a5cd6',k:["bassline","speed garage","4x4 garage","niche"],p:"Electrónica"},
+  {g:'sub',n:"Future garage",i:'niebla',c:'#7a5cd6',k:["future garage"],p:"Electrónica"},
+  {g:'sub',n:"Electro swing",i:'teclado',c:'#7a5cd6',k:["electro swing","electroswing","swing house"],p:"Electrónica"},
+  {g:'sub',n:"Afro tech",i:'sol',c:'#7a5cd6',k:["afro tech","afrotech","afro techno"],p:"Electrónica"},
+  {g:'sub',n:"G-house",i:'ciudad',c:'#5b8cf0',k:["g-house","g house","ghouse","gangsta house"],p:"House"},
+  {g:'sub',n:"Tribal house",i:'martillo',c:'#5b8cf0',k:["tribal house","tribal","tribal tech"],p:"House"},
+  {g:'sub',n:"Dutch house",i:'bandera',c:'#5b8cf0',k:["dutch house","dirty dutch","fidget house","stutter house"],p:"House"},
+  {g:'sub',n:"Brazilian bass",i:'palmera',c:'#5b8cf0',k:["brazilian bass","speed house","bass brasileiro"],p:"House"},
+  {g:'sub',n:"Peak time techno",i:'montana',c:'#4a5568',k:["peak time","peak-time","driving techno"],p:"Techno"},
+  {g:'sub',n:"Melodic bass",i:'corazon',c:'#2b9c8a',k:["melodic bass","future riddim","colour bass","color bass","kawaii bass"],p:"Dubstep y bass"},
+  {g:'sub',n:"Brostep y tearout",i:'calavera',c:'#2b9c8a',k:["brostep","tearout","tear out","filthstep","gorestep","filth"],p:"Dubstep y bass"},
+  {g:'sub',n:"Lovestep",i:'corazon',c:'#2b9c8a',k:["lovestep"],p:"Dubstep y bass"},
+  {g:'sub',n:"Techstep y darkstep",i:'calavera',c:'#c0533f',k:["techstep","darkstep","neurostep"],p:"Drum and bass"},
+  {g:'sub',n:"Hardcore techno",i:'martillo',c:'#b8202e',k:["hardcore techno","hardtekk","makina","bakalao","mákina"],p:"Hardstyle y hardcore"},
+  {g:'sub',n:"Old school",i:'reloj',c:'#eb6834',k:["old school hip hop","old school rap","golden age hip hop","old school hip-hop"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Underground hip-hop",i:'niebla',c:'#eb6834',k:["underground hip hop","underground hip-hop","underground rap","indie rap"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Experimental hip-hop",i:'glitch',c:'#eb6834',k:["experimental hip hop","experimental hip-hop","abstract hip hop","art rap","avant-garde hip hop"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Cloud rap",i:'nube',c:'#eb6834',k:["cloud rap","cloudrap"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Emo rap",i:'gota',c:'#eb6834',k:["emo rap","sad rap","sadboys","sadboy"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Crunk",i:'altavoz',c:'#eb6834',k:["crunk","crunkcore","snap music"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Hardcore hip-hop",i:'martillo',c:'#eb6834',k:["hardcore hip hop","hardcore rap","hardcore hip-hop"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Jazz rap",i:'nota',c:'#eb6834',k:["jazz rap","jazzy hip hop","jazz hop"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Turntablism",i:'disco',c:'#eb6834',k:["turntablism","scratch","turntable","dj battle","scratching"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Miami bass",i:'palmera',c:'#eb6834',k:["miami bass","booty bass","booty music"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Country rap",i:'casa',c:'#eb6834',k:["country rap","hick hop","hick-hop"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Hyphy y jerk",i:'coche',c:'#eb6834',k:["hyphy","jerk","jerkin","bay area rap"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Mumble rap",i:'niebla',c:'#eb6834',k:["mumble rap"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Nederhop",i:'bandera',c:'#eb6834',k:["nederhop","dutch hip hop","nederrap"],p:"Rap y hip-hop"},
+  {g:'sub',n:"Drift phonk",i:'coche',c:'#8a4a2e',k:["drift phonk","driftphonk","house phonk"],p:"Trap"},
+  {g:'sub',n:"Brazilian phonk",i:'palmera',c:'#8a4a2e',k:["brazilian phonk","funk phonk","phonk brasileiro","krushfunk"],p:"Trap"},
+  {g:'sub',n:"Trap argentino",i:'bandera',c:'#8a4a2e',k:["argentine trap","trap argentino","trap arg"],p:"Trap"},
+  {g:'sub',n:"Trap metal",i:'calavera',c:'#8a4a2e',k:["trap metal","rage","opium","scream rap"],p:"Trap"},
+  {g:'sub',n:"Baroque pop",i:'libro',c:'#e87ba4',k:["baroque pop","chamber pop","orchestral pop"],p:"Pop"},
+  {g:'sub',n:"Bedroom pop",i:'luna',c:'#e87ba4',k:["bedroom pop","bedroom"],p:"Pop"},
+  {g:'sub',n:"Europop",i:'estrella',c:'#e87ba4',k:["europop","euro pop","euro-pop"],p:"Pop"},
+  {g:'sub',n:"Bubblegum y boy bands",i:'chispa',c:'#e87ba4',k:["bubblegum","boy band","boyband","boybands","girl group","bubblegum pop"],p:"Pop"},
+  {g:'sub',n:"Standards y crooner",i:'copa',c:'#e87ba4',k:["adult standards","traditional pop","crooner","vocal pop","easy listening","swing pop"],p:"Pop"},
+  {g:'sub',n:"K-pop",i:'flor',c:'#e87ba4',k:["k-pop","kpop","korean pop","k-hip hop"],p:"Pop"},
+  {g:'sub',n:"J-pop y city pop",i:'flor',c:'#e87ba4',k:["j-pop","jpop","japanese pop","city pop","citypop","shibuya-kei"],p:"Pop"},
+  {g:'sub',n:"Schlager",i:'copa',c:'#e87ba4',k:["schlager","volksmusik","deutschpop"],p:"Pop"},
+  {g:'sub',n:"Chanson y yé-yé",i:'flor',c:'#e87ba4',k:["chanson","variete francaise","ye-ye","yeye","ye ye","french pop"],p:"Pop"},
+  {g:'sub',n:"Balada romántica",i:'corazon',c:'#e87ba4',k:["balada","baladas","balada romantica","romantica","musica romantica","bolero pop"],p:"Pop"},
+  {g:'sub',n:"Soft rock",i:'nube',c:'#e34948',k:["soft rock","adult contemporary","mellow rock"],p:"Rock"},
+  {g:'sub',n:"Yacht rock",i:'avion',c:'#e34948',k:["yacht rock","smooth rock","west coast sound"],p:"Rock"},
+  {g:'sub',n:"Glam rock",i:'estrella',c:'#e34948',k:["glam rock","glam","glitter rock"],p:"Rock"},
+  {g:'sub',n:"Art rock",i:'flor',c:'#e34948',k:["art rock","experimental rock","avant-rock"],p:"Rock"},
+  {g:'sub',n:"Krautrock",i:'engranaje',c:'#e34948',k:["krautrock","kosmische","kosmische musik","zeuhl"],p:"Rock"},
+  {g:'sub',n:"Garage rock",i:'coche',c:'#e34948',k:["garage rock","garage punk","freakbeat"],p:"Rock"},
+  {g:'sub',n:"Shoegaze",i:'niebla',c:'#e34948',k:["shoegaze","shoegazing","nu gaze"],p:"Rock"},
+  {g:'sub',n:"Math rock",i:'engranaje',c:'#e34948',k:["math rock","midwest emo","post-math"],p:"Rock"},
+  {g:'sub',n:"Roots rock",i:'casa',c:'#e34948',k:["roots rock","heartland rock","pub rock"],p:"Rock"},
+  {g:'sub',n:"Acid rock",i:'espiral',c:'#e34948',k:["acid rock","space rock","freak folk"],p:"Rock"},
+  {g:'sub',n:"Stoner rock",i:'nube',c:'#e34948',k:["stoner rock","desert rock","stoner","stoner metal"],p:"Rock"},
+  {g:'sub',n:"Nu metal",i:'calavera',c:'#4c4a52',k:["nu metal","nu-metal","numetal"],p:"Metal"},
+  {g:'sub',n:"Rap metal",i:'microfono',c:'#4c4a52',k:["rap metal","rapcore","funk metal","rap rock"],p:"Metal"},
+  {g:'sub',n:"Glam metal",i:'estrella',c:'#4c4a52',k:["glam metal","hair metal","sleaze rock","sleaze metal"],p:"Metal"},
+  {g:'sub',n:"Power y sinfónico",i:'corona',c:'#4c4a52',k:["power metal","symphonic metal","epic metal"],p:"Metal"},
+  {g:'sub',n:"Metalcore",i:'martillo',c:'#4c4a52',k:["metalcore","deathcore","post-hardcore","mathcore"],p:"Metal"},
+  {g:'sub',n:"Death metal clásico",i:'calavera',c:'#4c4a52',k:["old school death metal","swedish death metal","melodic death metal","brutal death metal"],p:"Metal"},
+  {g:'sub',n:"Groove e industrial",i:'engranaje',c:'#4c4a52',k:["groove metal","industrial metal","nu-industrial"],p:"Metal"},
+  {g:'sub',n:"Metal progresivo",i:'espiral',c:'#4c4a52',k:["progressive metal","djent","technical death metal","avant-garde metal"],p:"Metal"},
+  {g:'sub',n:"Psychobilly",i:'calavera',c:'#d1394f',k:["psychobilly","horror punk","deathrock"],p:"Punk"},
+  {g:'sub',n:"Riot grrrl y queercore",i:'flor',c:'#d1394f',k:["riot grrrl","queercore","riot grrl"],p:"Punk"},
+  {g:'sub',n:"Indie latino",i:'palmera',c:'#3f9c35',k:["latin indie","indie latino","latin alternative","rock alternativo","indie espanol"],p:"Indie y alternativo"},
+  {g:'sub',n:"Alternative dance",i:'rayo',c:'#3f9c35',k:["alternative dance","new rave","dance-punk","indie dance","dance punk","madchester"],p:"Indie y alternativo"},
+  {g:'sub',n:"Twee y jangle",i:'flor',c:'#3f9c35',k:["twee pop","jangle pop","twee","c86"],p:"Indie y alternativo"},
+  {g:'sub',n:"Quiet storm",i:'luna',c:'#2a78d6',k:["quiet storm"],p:"R&B y soul"},
+  {g:'sub',n:"Slow jams",i:'corazon',c:'#2a78d6',k:["slow jam","slow jams","baby making music"],p:"R&B y soul"},
+  {g:'sub',n:"Northern soul",i:'disco',c:'#2a78d6',k:["northern soul","deep soul"],p:"R&B y soul"},
+  {g:'sub',n:"Soul blues",i:'gota',c:'#2a78d6',k:["soul blues","southern soul","memphis soul"],p:"R&B y soul"},
+  {g:'sub',n:"R&B alternativo",i:'niebla',c:'#2a78d6',k:["alternative rnb","alternative r&b","prog-rnb","pbr&b","indie soul","alt r&b","uk r&b"],p:"R&B y soul"},
+  {g:'sub',n:"Rhythm and blues",i:'nota',c:'#2a78d6',k:["rhythm and blues","rhythm & blues","jump blues"],p:"R&B y soul"},
+  {g:'sub',n:"Funk carioca",i:'palmera',c:'#d98c1f',k:["funk carioca","brazilian funk","baile funk","funk brasileiro","funk mandelao","funk paulista","passo bem solto"],p:"Funk y disco"},
+  {g:'sub',n:"Jazz funk",i:'nota',c:'#d98c1f',k:["jazz funk","jazz-funk","acid jazz"],p:"Funk y disco"},
+  {g:'sub',n:"Latin jazz",i:'copa',c:'#1baf7a',k:["latin jazz","afro-cuban jazz","jazz latino"],p:"Jazz"},
+  {g:'sub',n:"Smooth jazz",i:'nube',c:'#1baf7a',k:["smooth jazz","jazz pop","elevator jazz"],p:"Jazz"},
+  {g:'sub',n:"Hard bop",i:'nota',c:'#1baf7a',k:["hard bop","post-bop","modal jazz"],p:"Jazz"},
+  {g:'sub',n:"Ragtime y stride",i:'teclado',c:'#1baf7a',k:["ragtime","stride","dixieland","new orleans jazz"],p:"Jazz"},
+  {g:'sub',n:"Nu jazz",i:'chispa',c:'#1baf7a',k:["nu jazz","jazztronica","future jazz"],p:"Jazz"},
+  {g:'sub',n:"Classic blues",i:'reloj',c:'#3a5f8a',k:["classic blues","country blues","acoustic blues","piedmont blues"],p:"Blues"},
+  {g:'sub',n:"Orquestal",i:'libro',c:'#8a6a4a',k:["orchestral","orchestra","symphony","symphonic","sinfonia","sinfonico"],p:"Clásica"},
+  {g:'sub',n:"Concierto",i:'nota',c:'#8a6a4a',k:["concerto","concierto","concerto grosso"],p:"Clásica"},
+  {g:'sub',n:"Coral",i:'corona',c:'#8a6a4a',k:["choral","chorus","coro","requiem","cantata","gregorian","canto gregoriano"],p:"Clásica"},
+  {g:'sub',n:"Música antigua",i:'libro',c:'#8a6a4a',k:["early music","renaissance","medieval","musica antigua"],p:"Clásica"},
+  {g:'sub',n:"Romanticismo",i:'corazon',c:'#8a6a4a',k:["romanticism","romantic era","impressionism","impressionist","impresionismo"],p:"Clásica"},
+  {g:'sub',n:"Clásica contemporánea",i:'chispa',c:'#8a6a4a',k:["contemporary classical","avant-garde classical","electronic classical","neoclassical","neoclasica"],p:"Clásica"},
+  {g:'sub',n:"Outlaw country",i:'coche',c:'#a3690f',k:["outlaw country","honky tonk","western","western swing"],p:"Country y folk"},
+  {g:'sub',n:"Country pop",i:'estrella',c:'#a3690f',k:["country pop","country rock","nashville sound","contemporary country"],p:"Country y folk"},
+  {g:'sub',n:"Folk celta",i:'hoja',c:'#a3690f',k:["celtic","celtic folk","irish folk","folk irlandes","celtic punk"],p:"Country y folk"},
+  {g:'sub',n:"Folclore latinoamericano",i:'montana',c:'#a3690f',k:["nueva cancion","folclore","folklore","andean","andina","musica andina","peruvian folk","folclore argentino"],p:"Country y folk"},
+  {g:'sub',n:"Rocksteady",i:'sol',c:'#3f9c35',k:["rocksteady","early reggae","ska jazz"],p:"Reggae y dancehall"},
+  {g:'sub',n:"Ragga",i:'altavoz',c:'#3f9c35',k:["ragga","raggamuffin","bashment","ragga jungle"],p:"Reggae y dancehall"},
+  {g:'sub',n:"Son cubano",i:'palmera',c:'#eda100',k:["son cubano","son montuno","guaracha","trova cubana","buena vista social club","timba"],p:"Latino"},
+  {g:'sub',n:"Trova",i:'guitarra',c:'#eda100',k:["trova","nueva trova","cantautor latino","trovador"],p:"Latino"},
+  {g:'sub',n:"Cha-cha-chá y mambo",i:'copa',c:'#eda100',k:["cha cha cha","chachacha","cha-cha-cha","mambo","danzon"],p:"Latino"},
+  {g:'sub',n:"Candombe y murga",i:'martillo',c:'#eda100',k:["candombe","murga","milonga"],p:"Latino"},
+  {g:'sub',n:"Vallenato y champeta",i:'sol',c:'#eda100',k:["vallenato","champeta","cumbia villera","porro"],p:"Latino"},
+  {g:'sub',n:"Electrocumbia",i:'rayo',c:'#eda100',k:["electrocumbia","cumbia electronica","digital cumbia","nu cumbia"],p:"Latino"},
+  {g:'sub',n:"RKT y turreo",i:'fuego',c:'#e0563a',k:["rkt","turreo","cumbia 420","turreo argentino"],p:"Reggaetón y urbano"},
+  {g:'sub',n:"Reggaetón chileno",i:'bandera',c:'#e0563a',k:["reggaeton chileno","trap chileno","perreo chileno"],p:"Reggaetón y urbano"},
+  {g:'sub',n:"Mariachi",i:'corona',c:'#b5761c',k:["mariachi","son jalisciense","mariachi moderno"],p:"Regional mexicano"},
+  {g:'sub',n:"Ranchera",i:'copa',c:'#b5761c',k:["ranchera","rancheras","ranchero"],p:"Regional mexicano"},
+  {g:'sub',n:"Corrido",i:'guitarra',c:'#b5761c',k:["corrido","corridos","corridos belicos","narcocorrido"],p:"Regional mexicano"},
+  {g:'sub',n:"Tejano",i:'bandera',c:'#b5761c',k:["tejano","tex-mex","conjunto"],p:"Regional mexicano"},
+  {g:'sub',n:"Flamenco pop",i:'abanico',c:'#b03f30',k:["flamenco pop","pop flamenco","pop andaluz"],p:"Flamenco"},
+  {g:'sub',n:"Flamenco urbano",i:'ciudad',c:'#b03f30',k:["flamenco urbano","flamenco trap","nuevo flamenco urbano"],p:"Flamenco"},
+  {g:'sub',n:"Rumba catalana",i:'guitarra',c:'#b03f30',k:["rumba catalana","rumbapop","tecnorumba","rumba flamenca","catalan rumba"],p:"Flamenco"},
+  {g:'sub',n:"Electropop",i:'teclado',c:'#a05cc0',k:["electropop","electro pop","synth pop moderno"],p:"Electropop y synth"},
+  {g:'sub',n:"Darkwave",i:'luna',c:'#a05cc0',k:["darkwave","coldwave","minimal wave","ethereal wave"],p:"Electropop y synth"},
+  {g:'sub',n:"EBM e industrial",i:'engranaje',c:'#a05cc0',k:["ebm","electronic body music","aggrotech","futurepop"],p:"Electropop y synth"},
+  {g:'sub',n:"Glitch",i:'glitch',c:'#6b7b8c',k:["glitch","glitchtronica","clicks and cuts"],p:"Ambient y experimental"},
+  {g:'sub',n:"Drone y dark ambient",i:'niebla',c:'#6b7b8c',k:["drone","dark ambient","field recording","ambient drone"],p:"Ambient y experimental"},
+  {g:'sub',n:"Noise",i:'altavoz',c:'#6b7b8c',k:["noise","harsh noise","power electronics","noise music"],p:"Ambient y experimental"},
+  {g:'sub',n:"Disney",i:'estrella',c:'#726858',k:["disney","pixar","musical de disney"],p:"Bandas sonoras"},
+  {g:'sub',n:"Anime",i:'flor',c:'#726858',k:["anime","anime ost","j-anime","anisong"],p:"Bandas sonoras"},
+  {g:'sub',n:"Videojuegos",i:'mando',c:'#726858',k:["video game","videogame","game soundtrack","vgm","videojuego","gta","initial d","osu"],p:"Bandas sonoras"},
+  {g:'sub',n:"Villancicos",i:'arbol',c:'#2f8f4e',k:["villancicos","christmas carol","christmas song","navidad","villancico"],p:"Navidad"},
+  {g:'sub',n:"Afrobeat clásico",i:'sol',c:'#c98a1f',k:["afrobeat","fela","afro-funk"],p:"Africano"},
+  {g:'sub',n:"Kuduro y kizomba",i:'sol',c:'#c98a1f',k:["kuduro","kizomba","semba","tarraxinha"],p:"Africano"},
+  {g:'sub',n:"Samba y pagode",i:'palmera',c:'#2f9e5e',k:["samba","pagode","samba-rock","samba de roda"],p:"Brasileño"},
+  {g:'sub',n:"MPB y tropicália",i:'flor',c:'#2f9e5e',k:["mpb","musica popular brasileira","tropicalia","tropicalismo"],p:"Brasileño"},
 
-  /* ---------- AMBIENTE (28) ---------- */
+  /* ---------- AMBIENTE (56) ---------- */
   {g:'ambiente',n:"Para reventar",i:'fuego',c:'#e0402e',k:["big room","festival","hardstyle","hardcore","riddim","deathstep","brostep","gabber","frenchcore","speedcore","rawstyle","tearout","uptempo","hard techno","hard dance","crunk","trap metal","thrash","death metal","grindcore"]},
   {g:'ambiente',n:"Fiesta",i:'copa',c:'#e8a020',k:["party","dance","club","disco","eurodance","moombahton","jersey club","baltimore club","funk carioca","dembow","perreo","reggaeton","bounce","europop","hi-nrg","italo dance","jackin"]},
   {g:'ambiente',n:"Tranquilo",i:'luna',c:'#5b7fa0',k:["chill","chillout","chillstep","ambient","downtempo","lo-fi","lofi","acoustic","soft","easy listening","new age","slowcore","quiet storm","bossa nova","chillhop","sleep","meditation","soft rock","soft pop","bedroom pop"]},
@@ -7846,6 +8265,34 @@ const TAXONOMIA = [
   {g:'ambiente',n:"Festivalero",i:'chispa',c:'#e59020',k:["festival","mainstage","main stage","tomorrowland","rave","anthem","stadium"]},
   {g:'ambiente',n:"Para llorar",i:'gota',c:'#5a7f9c',k:["sad","sad songs","triste","heartbreak","breakup","crying","tearjerker"]},
   {g:'ambiente',n:"Motivación",i:'montana',c:'#2f9e7e',k:["motivational","uplifting","feel good","feelgood","inspirational","upbeat"]},
+  {g:'ambiente',n:"Liminal",i:'niebla',c:'#7f8fa0',k:["vaporwave","dark ambient","drone","plunderphonics","dungeon synth","liminal","backrooms","weirdcore","dreamcore","chillwave"],L:'LIMINAL'},
+  {g:'ambiente',n:"Ingrávido",i:'nube',c:'#7aa8d0',k:["shoegaze","dream pop","ambient pop","ethereal wave","uplifting trance","post-rock","new age","chillstep","melodic dubstep","future garage"]},
+  {g:'ambiente',n:"La previa",i:'copa',c:'#e5701f',k:["eurodance","dance pop","electro house","big room","moombahton","hip house","tribal house","bounce","melbourne bounce","italo dance","hands up","party"]},
+  {g:'ambiente',n:"Para gritar",i:'microfono',c:'#d4402e',k:["pop punk","emo","post-hardcore","punk rock","power ballad","glam metal","arena rock","stadium rock","britpop","hard rock","nu metal","rap metal","anthem"]},
+  {g:'ambiente',n:"Rabia",i:'fuego',c:'#a01f1f',k:["hardcore punk","thrash metal","death metal","grindcore","metalcore","nu metal","industrial metal","drill","horrorcore","hardcore techno","speedcore","uptempo","powerviolence","black metal"]},
+  {g:'ambiente',n:"Insufrible",i:'calavera',c:'#6a6a72',k:["worst","terrible","awful","cringe","mediocre","bad music","horrible","trash","so bad it is good"]},
+  {g:'ambiente',n:"Risa",i:'chispa',c:'#e5b520',k:["comedy","parody","novelty","humor","humour","funny","comedia","parodia","nerdcore"],L:'MEMES'},
+  {g:'ambiente',n:"Meme",i:'glitch',c:'#c05cc0',k:["meme","memes","viral","tiktok","earrape","shitpost","nightcore"],L:'MEMES'},
+  {g:'ambiente',n:"Para correr",i:'pesas',c:'#2f9e7e',k:["drum and bass","liquid dnb","neurofunk","jungle","big room","hard techno","uplifting trance","happy hardcore","frenchcore","eurodance","breakbeat","running","jogging","cardio"]},
+  {g:'ambiente',n:"Para dormir",i:'luna',c:'#5a6b8c',k:["ambient","new age","drone","piano solo","minimalism","lullaby","dark ambient","chillout","downtempo","slowcore"]},
+  {g:'ambiente',n:"Siniestro",i:'calavera',c:'#4a3f52',k:["dark ambient","horrorcore","witch house","black metal","darkwave","gothic rock","deathrock","horror punk","doom","sludge","breakcore","industrial"]},
+  {g:'ambiente',n:"Hipnótico",i:'espiral',c:'#7a5cd6',k:["minimal techno","krautrock","dub techno","psytrance","drone","acid house","minimalism","tribal house","deep house","hypnotic"]},
+  {g:'ambiente',n:"Solitario",i:'luna',c:'#5f7f9c',k:["slowcore","sadcore","singer-songwriter","bedroom pop","folk indie","dream pop","cantautor","emo"]},
+  {g:'ambiente',n:"Nihilista",i:'calavera',c:'#3f3f45',k:["depressive black metal","doom","sludge","slowcore","sadcore","post-punk","darkwave","black metal","nihilistic"]},
+  {g:'ambiente',n:"Catártico",i:'montana',c:'#c0553f',k:["post-rock","shoegaze","screamo","emo","gospel","power ballad","doom","symphonic metal","opera","orchestral"]},
+  {g:'ambiente',n:"Triunfal",i:'corona',c:'#c9a227',k:["power metal","symphonic metal","uplifting trance","big room","gospel","orchestral","marching band","epic"]},
+  {g:'ambiente',n:"Tenso",i:'rayo',c:'#7a6a52',k:["industrial","dark ambient","industrial techno","noise","breakcore","horrorcore","drill","darkwave","post-punk","no wave","musique concrete"]},
+  {g:'ambiente',n:"Íntimo",i:'corazon',c:'#9c7f8a',k:["singer-songwriter","acoustic","bedroom pop","folk indie","slowcore","cantautor","unplugged","piano solo","soft pop"]},
+  {g:'ambiente',n:"Sucio y crudo",i:'martillo',c:'#7a5f3f',k:["garage rock","garage punk","noise rock","proto-punk","no wave","punk rock","blues rock","stoner rock","psychobilly"]},
+  {g:'ambiente',n:"Elegante",i:'copa',c:'#3f5f7a',k:["cool jazz","bossa nova","lounge","easy listening","vocal jazz","smooth jazz","soul jazz","sophisti-pop","yacht rock","chamber pop","adult standards"]},
+  {g:'ambiente',n:"Cursi",i:'flor',c:'#d47fa8',k:["soft rock","power ballad","adult contemporary","balada","europop","schlager","teen pop","soft pop","bolero pop","eurovision"]},
+  {g:'ambiente',n:"Adolescencia",i:'mando',c:'#5b8cf0',k:["pop punk","emo","emo rap","teen pop","hyperpop","bedroom pop","indie pop","post-hardcore","screamo","nu metal"]},
+  {g:'ambiente',n:"Días de lluvia",i:'gota',c:'#5a7f9c',k:["slowcore","sadcore","shoegaze","trip hop","jazz vocal","bossa nova","folk indie","downtempo","dream pop","chillout"]},
+  {g:'ambiente',n:"Amanecer",i:'sol',c:'#e5a020',k:["new age","acoustic","bossa nova","soft pop","chillout","downtempo","indie folk","ambient pop"]},
+  {g:'ambiente',n:"Esperanzador",i:'arbol',c:'#3f9c6a',k:["gospel","uplifting trance","indie folk","post-rock","tropical house","future bass","folk rock"]},
+  {g:'ambiente',n:"Descarado",i:'corona',c:'#b5761c',k:["gangsta rap","drill","crunk","trap latino","g-funk","hyphy","neoperreo","glam metal","dirty south","southern hip hop"]},
+  {g:'ambiente',n:"Contemplativo",i:'libro',c:'#6a7f8c',k:["minimalism","post-rock","modern classical","piano solo","new age","drone","folk indie","neoclassical","early music","musica antigua"]},
+  {g:'ambiente',n:"Muro de ruido",i:'altavoz',c:'#55505c',k:["noise","noise rock","harsh noise","power electronics","shoegaze","breakcore","no wave","drone"]},
 
   /* ---------- ORIGEN (46) ---------- */
   {g:'origen',n:"España",i:'bandera',c:'#c4342e',k:["spanish","spain","espanol","espana","flamenco","copla","rumba catalana","rock en espanol","spanish pop","spanish rock","spanish hip hop","madrid","barcelona","sevilla","andalucia","galician","galego","galicia","gallego","basque","euskadi","euskera","vasco","bilbao","espanyol","spanisch","espagnol"]},
@@ -7895,9 +8342,7 @@ const TAXONOMIA = [
   {g:'origen',n:"Texas",i:'coche',c:'#b5761c',k:["texas","houston","austin","texan","screwed up click","dallas"]},
   {g:'origen',n:"Nueva Orleans",i:'copa',c:'#9a7b3f',k:["new orleans","nola","bounce music","louisiana"]},
 
-  /* ---------- DECADAS (8) ----------
-     No llevan claves: se resuelven por el ano de lanzamiento, que esta en
-     practicamente todo. Es el unico eje que no adivina nada. */
+  /* ---------- DECADAS (8) ---------- */
   {g:'decada',n:"Antes de 1960",i:'libro',c:'#8a6a4a',d:[1900,1959]},
   {g:'decada',n:"Años 60",i:'flor',c:'#b5761c',d:[1960,1969]},
   {g:'decada',n:"Años 70",i:'disco',c:'#d98c1f',d:[1970,1979]},
@@ -7905,7 +8350,27 @@ const TAXONOMIA = [
   {g:'decada',n:"Años 90",i:'mando',c:'#5b8cf0',d:[1990,1999]},
   {g:'decada',n:"Años 2000",i:'camara',c:'#2b9c8a',d:[2000,2009]},
   {g:'decada',n:"Años 2010",i:'auriculares',c:'#3f9c35',d:[2010,2019]},
-  {g:'decada',n:"Años 2020",i:'chispa',c:'#e0563a',d:[2020,2029]}
+  {g:'decada',n:"Años 2020",i:'chispa',c:'#e0563a',d:[2020,2029]},
+
+  /* ---------- EPOCAS (11) ---------- */
+  {g:'epoca',n:"Mi infancia",i:'mando',c:'#3aa8c0',d:[2001,2008]},
+  {g:'epoca',n:"Mi época de la ESO",i:'teclado',c:'#5b8cf0',d:[2009,2013]},
+  {g:'epoca',n:"Bachillerato y después",i:'libro',c:'#7a5cd6',d:[2014,2017]},
+  {g:'epoca',n:"EDM: rave de los 90",i:'altavoz',c:'#b8202e',k:["rave","breakbeat","big beat","acid house","acid techno","jungle","happy hardcore","gabber","hardcore techno","eurodance","trance","techno","house","electronic","edm","dance","breaks"],y:[1988,1999]},
+  {g:'epoca',n:"EDM: trance de los 2000",i:'espiral',c:'#8b7ce8',k:["trance","progressive trance","uplifting trance","vocal trance","hard trance","psytrance","goa"],y:[1999,2010]},
+  {g:'epoca',n:"EDM: electro house",i:'rayo',c:'#a05cc0',k:["electro house","fidget house","dutch house","complextro","blog house","electroclash","dirty dutch","french house","nu rave"],y:[2005,2011]},
+  {g:'epoca',n:"EDM: big room",i:'montana',c:'#e0563a',k:["big room","melbourne bounce","progressive house","festival","electro house","edm","bounce"],y:[2011,2016]},
+  {g:'epoca',n:"EDM: trap y twerk",i:'niebla',c:'#8a4a2e',k:["edm trap","twerk","moombahton","jersey club","hybrid trap","trap","bass music"],y:[2011,2017]},
+  {g:'epoca',n:"EDM: future y tropical",i:'palmera',c:'#2b9c8a',k:["future house","future bass","tropical house","deep house","melodic house","chillstep","slap house"],y:[2013,2019]},
+  {g:'epoca',n:"EDM: riddim y bass",i:'onda',c:'#2b6c8a',k:["riddim","dubstep","deathstep","melodic bass","brostep","colour bass","drumstep","tearout"],y:[2015,2021]},
+  {g:'epoca',n:"EDM: slap, techno y afro",i:'engranaje',c:'#4a5568',k:["slap house","hypertechno","hard techno","afro house","brazilian bass","tech house","hardgroove","techengue","rally house","organic house"],y:[2018,2035]},
+
+  /* ---------- HITOS (4) ---------- */
+  {g:'hito',n:"De las mejores de la historia",i:'trofeo',c:'#c9a227',L:'MEJORES'},
+  {g:'hito',n:"Cambió la música",i:'rayo',c:'#c05c1f',L:'INFLUYENTES'},
+  {g:'hito',n:"Fundó un género",i:'chispa',c:'#2f8f5e',L:'FUNDACIONALES'},
+  {g:'hito',n:"Sampleada mil veces",i:'disco',c:'#5b8cf0',L:'SAMPLEADAS'}
+
 ];
 
 const GRUPOS = [
@@ -7913,27 +8378,1415 @@ const GRUPOS = [
   { id: 'sub',      nombre: 'Subgéneros', icon: 'marcador', color: '#7a5cd6', que: 'El detalle fino: G-house, Boom bap, Flamenco urbano, Drift phonk, Northern soul…' },
   { id: 'ambiente', nombre: 'Ambiente',   icon: 'corazon',  color: '#d4568a', que: 'Para qué sirve cada cosa, no qué es. Es el eje que de verdad usas al buscar música.' },
   { id: 'origen',   nombre: 'Origen',     icon: 'bandera',  color: '#2f8f5e', que: 'De dónde viene, hasta el nivel de ciudad o región. Sale del país que traen las etiquetas de Last.fm, así que cubre menos.' },
-  { id: 'decada',   nombre: 'Década',     icon: 'reloj',    color: '#5b8cf0', que: 'La única carpeta que no adivina nada: sale de la fecha de lanzamiento, así que acierta siempre.' }
+  { id: 'decada',   nombre: 'Década',     icon: 'reloj',    color: '#5b8cf0', que: 'Sale de la fecha de lanzamiento, así que acierta siempre.' },
+  { id: 'epoca',    nombre: 'Épocas',     icon: 'calendario', color: '#c05c1f', que: 'Tu vida y la del EDM. Las del EDM cruzan género Y año: “trance” a secas no dice de qué década es.' },
+  { id: 'hito',     nombre: 'Hitos',      icon: 'trofeo',   color: '#c9a227', que: 'Listas hechas a mano, no palabras clave: lo que la crítica considera lo mejor, lo que cambió la música, lo que fundó un género y lo que todo el mundo ha sampleado.' }
 ];
+const GRUPO_SOLO_OBRA = new Set(['decada', 'epoca', 'hito']);   // no tienen sentido en un artista
+
+const ENFRENTADOS = [
+  ["Metal","Reggaetón y urbano"],
+  ["Metal","Latino"],
+  ["Metal","Regional mexicano"],
+  ["Metal","Clásica"],
+  ["Metal","Musicales y teatro"],
+  ["Metal","Navidad"],
+  ["Clásica","Reggaetón y urbano"],
+  ["Clásica","Trap"],
+  ["Clásica","Rap y hip-hop"],
+  ["Clásica","Hardstyle y hardcore"],
+  ["Clásica","Punk"],
+  ["Clásica","Dubstep y bass"],
+  ["Country y folk","Reggaetón y urbano"],
+  ["Country y folk","Hardstyle y hardcore"],
+  ["Regional mexicano","Techno"],
+  ["Regional mexicano","House"],
+  ["Regional mexicano","Metal"],
+  ["Punk","Reggaetón y urbano"],
+  ["Navidad","Reggaetón y urbano"],
+  ["Ópera","Trap"],
+  ["Ópera","Reggaetón y urbano"]
+];
+
+const L_MEJORES = `
+The Beatles :: A Day in the Life
+The Beatles :: Hey Jude
+The Beatles :: Strawberry Fields Forever
+The Beatles :: Yesterday
+The Beatles :: Something
+The Beatles :: Let It Be
+The Beatles :: Come Together
+The Beatles :: In My Life
+The Beatles :: Here Comes the Sun
+The Beatles :: While My Guitar Gently Weeps
+The Beatles :: Eleanor Rigby
+The Beatles :: Norwegian Wood
+The Beatles :: Help!
+The Beatles :: Blackbird
+The Rolling Stones :: (I Can't Get No) Satisfaction
+The Rolling Stones :: Gimme Shelter
+The Rolling Stones :: Sympathy for the Devil
+The Rolling Stones :: Paint It Black
+The Rolling Stones :: Wild Horses
+The Rolling Stones :: You Can't Always Get What You Want
+Bob Dylan :: Like a Rolling Stone
+Bob Dylan :: Blowin' in the Wind
+Bob Dylan :: The Times They Are a-Changin'
+Bob Dylan :: Tangled Up in Blue
+Bob Dylan :: Visions of Johanna
+Bob Dylan :: Mr. Tambourine Man
+Bob Dylan :: Knockin' on Heaven's Door
+Marvin Gaye :: What's Going On
+Marvin Gaye :: I Heard It Through the Grapevine
+Marvin Gaye :: Let's Get It On
+Marvin Gaye :: Sexual Healing
+Aretha Franklin :: Respect
+Aretha Franklin :: I Never Loved a Man
+Aretha Franklin :: Chain of Fools
+Sam Cooke :: A Change Is Gonna Come
+Sam Cooke :: Bring It On Home to Me
+Otis Redding :: (Sittin' On) The Dock of the Bay
+Otis Redding :: Try a Little Tenderness
+Ray Charles :: What'd I Say
+Ray Charles :: Georgia on My Mind
+Nina Simone :: Feeling Good
+Nina Simone :: Sinnerman
+Nina Simone :: I Put a Spell on You
+Etta James :: At Last
+Ben E. King :: Stand by Me
+Percy Sledge :: When a Man Loves a Woman
+The Righteous Brothers :: You've Lost That Lovin' Feelin'
+The Ronettes :: Be My Baby
+The Shangri-Las :: Leader of the Pack
+The Supremes :: You Keep Me Hangin' On
+The Temptations :: My Girl
+The Temptations :: Papa Was a Rollin' Stone
+Smokey Robinson :: The Tracks of My Tears
+Stevie Wonder :: Superstition
+Stevie Wonder :: I Wish
+Stevie Wonder :: Sir Duke
+Stevie Wonder :: Living for the City
+Al Green :: Let's Stay Together
+Bill Withers :: Ain't No Sunshine
+Bill Withers :: Lean on Me
+Curtis Mayfield :: Move On Up
+Curtis Mayfield :: People Get Ready
+Gladys Knight :: Midnight Train to Georgia
+Donny Hathaway :: A Song for You
+Roberta Flack :: Killing Me Softly with His Song
+Elvis Presley :: Suspicious Minds
+Elvis Presley :: Heartbreak Hotel
+Elvis Presley :: Can't Help Falling in Love
+Elvis Presley :: Jailhouse Rock
+Johnny Cash :: Hurt
+Johnny Cash :: Ring of Fire
+Johnny Cash :: Folsom Prison Blues
+Roy Orbison :: Crying
+Roy Orbison :: Oh Pretty Woman
+The Everly Brothers :: All I Have to Do Is Dream
+Buddy Holly :: Not Fade Away
+Jerry Lee Lewis :: Great Balls of Fire
+Led Zeppelin :: Stairway to Heaven
+Led Zeppelin :: Whole Lotta Love
+Led Zeppelin :: Kashmir
+Led Zeppelin :: Immigrant Song
+Led Zeppelin :: Black Dog
+Pink Floyd :: Comfortably Numb
+Pink Floyd :: Wish You Were Here
+Pink Floyd :: Another Brick in the Wall
+Pink Floyd :: Time
+Pink Floyd :: Money
+Pink Floyd :: Shine On You Crazy Diamond
+Queen :: Bohemian Rhapsody
+Queen :: Don't Stop Me Now
+Queen :: Under Pressure
+Queen :: Somebody to Love
+Queen :: We Will Rock You
+David Bowie :: Heroes
+David Bowie :: Life on Mars?
+David Bowie :: Space Oddity
+David Bowie :: Ziggy Stardust
+David Bowie :: Changes
+David Bowie :: Ashes to Ashes
+David Bowie :: Rebel Rebel
+The Who :: Baba O'Riley
+The Who :: Won't Get Fooled Again
+The Who :: My Generation
+The Kinks :: Waterloo Sunset
+The Kinks :: You Really Got Me
+The Beach Boys :: God Only Knows
+The Beach Boys :: Good Vibrations
+The Beach Boys :: Wouldn't It Be Nice
+Jimi Hendrix :: Purple Haze
+Jimi Hendrix :: All Along the Watchtower
+Jimi Hendrix :: Voodoo Child
+Jimi Hendrix :: Little Wing
+The Doors :: Light My Fire
+The Doors :: Riders on the Storm
+The Doors :: The End
+Creedence Clearwater Revival :: Fortunate Son
+Creedence Clearwater Revival :: Have You Ever Seen the Rain
+The Velvet Underground :: Pale Blue Eyes
+The Velvet Underground :: Sunday Morning
+The Velvet Underground :: I'm Waiting for the Man
+Simon & Garfunkel :: Bridge Over Troubled Water
+Simon & Garfunkel :: The Sound of Silence
+Joni Mitchell :: A Case of You
+Joni Mitchell :: River
+Joni Mitchell :: Both Sides Now
+Neil Young :: Heart of Gold
+Neil Young :: Old Man
+Neil Young :: After the Gold Rush
+Van Morrison :: Astral Weeks
+Van Morrison :: Brown Eyed Girl
+Leonard Cohen :: Hallelujah
+Leonard Cohen :: Suzanne
+Nick Drake :: Pink Moon
+Nick Drake :: River Man
+Jeff Buckley :: Hallelujah
+Jeff Buckley :: Last Goodbye
+Fleetwood Mac :: Dreams
+Fleetwood Mac :: Go Your Own Way
+Fleetwood Mac :: Landslide
+Eagles :: Hotel California
+Steely Dan :: Deacon Blues
+Bruce Springsteen :: Born to Run
+Bruce Springsteen :: Thunder Road
+Bruce Springsteen :: Dancing in the Dark
+Talking Heads :: Once in a Lifetime
+Talking Heads :: This Must Be the Place
+Talking Heads :: Psycho Killer
+Joy Division :: Love Will Tear Us Apart
+The Clash :: London Calling
+The Clash :: Should I Stay or Should I Go
+The Clash :: Train in Vain
+Sex Pistols :: God Save the Queen
+Ramones :: Blitzkrieg Bop
+Patti Smith :: Because the Night
+Television :: Marquee Moon
+The Smiths :: There Is a Light That Never Goes Out
+The Smiths :: How Soon Is Now?
+The Smiths :: This Charming Man
+The Cure :: Just Like Heaven
+The Cure :: Boys Don't Cry
+The Cure :: Lovesong
+New Order :: Blue Monday
+New Order :: Bizarre Love Triangle
+Depeche Mode :: Enjoy the Silence
+Depeche Mode :: Personal Jesus
+The Police :: Every Breath You Take
+The Police :: Roxanne
+Prince :: Purple Rain
+Prince :: When Doves Cry
+Prince :: Kiss
+Prince :: 1999
+Michael Jackson :: Billie Jean
+Michael Jackson :: Beat It
+Michael Jackson :: Thriller
+Michael Jackson :: Smooth Criminal
+Michael Jackson :: Man in the Mirror
+Madonna :: Like a Prayer
+Madonna :: Vogue
+Madonna :: Into the Groove
+Whitney Houston :: I Will Always Love You
+Whitney Houston :: I Wanna Dance with Somebody
+Kate Bush :: Running Up That Hill
+Kate Bush :: Wuthering Heights
+Tracy Chapman :: Fast Car
+Sinéad O'Connor :: Nothing Compares 2 U
+Cyndi Lauper :: Time After Time
+Tina Turner :: What's Love Got to Do with It
+U2 :: With or Without You
+U2 :: One
+U2 :: Where the Streets Have No Name
+R.E.M. :: Losing My Religion
+R.E.M. :: Everybody Hurts
+Nirvana :: Smells Like Teen Spirit
+Nirvana :: Come as You Are
+Nirvana :: Heart-Shaped Box
+Nirvana :: All Apologies
+Pearl Jam :: Alive
+Pearl Jam :: Black
+Soundgarden :: Black Hole Sun
+Alice in Chains :: Would?
+Radiohead :: Creep
+Radiohead :: Paranoid Android
+Radiohead :: Karma Police
+Radiohead :: Everything in Its Right Place
+Radiohead :: No Surprises
+Radiohead :: Idioteque
+Radiohead :: Weird Fishes
+Oasis :: Wonderwall
+Oasis :: Live Forever
+Oasis :: Don't Look Back in Anger
+Blur :: Song 2
+Pulp :: Common People
+The Verve :: Bitter Sweet Symphony
+Massive Attack :: Teardrop
+Massive Attack :: Unfinished Sympathy
+Portishead :: Glory Box
+Björk :: Hyperballad
+Björk :: Army of Me
+Beck :: Loser
+Pixies :: Where Is My Mind?
+Pixies :: Debaser
+Sonic Youth :: Teen Age Riot
+My Bloody Valentine :: Only Shallow
+The Jesus and Mary Chain :: Just Like Honey
+Neutral Milk Hotel :: In the Aeroplane Over the Sea
+Elliott Smith :: Between the Bars
+Jeff Mangum :: Holland 1945
+The Strokes :: Last Nite
+The Strokes :: Someday
+The White Stripes :: Seven Nation Army
+Arctic Monkeys :: Do I Wanna Know?
+Arctic Monkeys :: 505
+Arcade Fire :: Wake Up
+Arcade Fire :: Rebellion (Lies)
+LCD Soundsystem :: All My Friends
+LCD Soundsystem :: Dance Yrself Clean
+The Killers :: Mr. Brightside
+Interpol :: Evil
+Yeah Yeah Yeahs :: Maps
+MGMT :: Time to Pretend
+MGMT :: Kids
+Vampire Weekend :: A-Punk
+Sufjan Stevens :: Chicago
+Bon Iver :: Skinny Love
+Bon Iver :: Holocene
+Fleet Foxes :: White Winter Hymnal
+Tame Impala :: The Less I Know the Better
+Tame Impala :: Let It Happen
+Frank Ocean :: Pyramids
+Frank Ocean :: Nights
+Frank Ocean :: Thinkin Bout You
+Kendrick Lamar :: Alright
+Kendrick Lamar :: HUMBLE.
+Kendrick Lamar :: m.A.A.d city
+Kendrick Lamar :: King Kunta
+Kanye West :: Runaway
+Kanye West :: Stronger
+Kanye West :: Jesus Walks
+Kanye West :: Gold Digger
+Kanye West :: Power
+Jay-Z :: 99 Problems
+Jay-Z :: Empire State of Mind
+Nas :: N.Y. State of Mind
+Nas :: The World Is Yours
+The Notorious B.I.G. :: Juicy
+The Notorious B.I.G. :: Big Poppa
+2Pac :: Dear Mama
+2Pac :: California Love
+2Pac :: Changes
+Dr. Dre :: Nuthin' but a G Thang
+Snoop Dogg :: Gin and Juice
+Wu-Tang Clan :: C.R.E.A.M.
+Mobb Deep :: Shook Ones Part II
+A Tribe Called Quest :: Can I Kick It?
+OutKast :: Hey Ya!
+OutKast :: Ms. Jackson
+OutKast :: B.O.B.
+Missy Elliott :: Get Ur Freak On
+Lauryn Hill :: Doo Wop (That Thing)
+Eminem :: Lose Yourself
+Eminem :: Stan
+Eminem :: The Real Slim Shady
+50 Cent :: In da Club
+Drake :: Hotline Bling
+Beyoncé :: Crazy in Love
+Beyoncé :: Single Ladies
+Beyoncé :: Formation
+Rihanna :: Umbrella
+Amy Winehouse :: Back to Black
+Amy Winehouse :: Rehab
+Adele :: Rolling in the Deep
+Adele :: Someone Like You
+Lana Del Rey :: Video Games
+Robyn :: Dancing On My Own
+Daft Punk :: One More Time
+Daft Punk :: Get Lucky
+Daft Punk :: Around the World
+Daft Punk :: Digital Love
+The Chemical Brothers :: Block Rockin' Beats
+The Prodigy :: Firestarter
+Fatboy Slim :: Praise You
+Underworld :: Born Slippy
+Moby :: Porcelain
+Aphex Twin :: Windowlicker
+Burial :: Archangel
+Four Tet :: Angel Echoes
+Caribou :: Odessa
+Jamie xx :: Loud Places
+The xx :: Intro
+James Blake :: Retrograde
+Disclosure :: Latch
+Avicii :: Wake Me Up
+Avicii :: Levels
+Swedish House Mafia :: Don't You Worry Child
+Calvin Harris :: Feel So Close
+Bee Gees :: Stayin' Alive
+Bee Gees :: How Deep Is Your Love
+ABBA :: Dancing Queen
+ABBA :: The Winner Takes It All
+Chic :: Le Freak
+Donna Summer :: I Feel Love
+Earth Wind & Fire :: September
+Kool & the Gang :: Celebration
+Sister Sledge :: We Are Family
+Blondie :: Heart of Glass
+Blondie :: Call Me
+Bob Marley :: Redemption Song
+Bob Marley :: Three Little Birds
+Bob Marley :: Is This Love
+Toots and the Maytals :: Pressure Drop
+Jimmy Cliff :: The Harder They Come
+Serge Gainsbourg :: Je t'aime moi non plus
+Édith Piaf :: La Vie en Rose
+Frank Sinatra :: My Way
+Frank Sinatra :: Fly Me to the Moon
+Frank Sinatra :: New York New York
+Louis Armstrong :: What a Wonderful World
+Billie Holiday :: Strange Fruit
+Ella Fitzgerald :: Summertime
+John Coltrane :: My Favorite Things
+Miles Davis :: So What
+Dave Brubeck :: Take Five
+Nina Simone :: My Baby Just Cares for Me
+Antônio Carlos Jobim :: Garota de Ipanema
+Camarón de la Isla :: Como el Agua
+Camarón de la Isla :: Volando Voy
+Paco de Lucía :: Entre Dos Aguas
+Rosalía :: Malamente
+Rosalía :: Pienso en Tu Mirá
+Rosalía :: Con Altura
+C. Tangana :: Tú Me Dejaste de Querer
+Héroes del Silencio :: Entre Dos Tierras
+Los Planetas :: Segundo Premio
+Extremoduro :: So Payaso
+Joaquín Sabina :: 19 Días y 500 Noches
+Joaquín Sabina :: Y Nos Dieron las Diez
+Joan Manuel Serrat :: Mediterráneo
+Mecano :: Hijo de la Luna
+Mecano :: Me Cuesta Tanto Olvidarte
+Radio Futura :: Escuela de Calor
+Nacha Pop :: Chica de Ayer
+Alaska y Dinarama :: A Quién le Importa
+Los Rodríguez :: Sin Documentos
+Manu Chao :: Me Gustas Tú
+Manu Chao :: Clandestino
+Ketama :: No Estamos Locos
+Estopa :: La Raja de Tu Falda
+Soda Stereo :: De Música Ligera
+Gustavo Cerati :: Crimen
+Charly García :: Demoliendo Hoteles
+Luis Alberto Spinetta :: Muchacha Ojos de Papel
+Sui Generis :: Confesiones de Invierno
+Café Tacvba :: Eres
+Caifanes :: La Célula Que Explota
+Los Fabulosos Cadillacs :: Matador
+Juan Luis Guerra :: Burbujas de Amor
+Rubén Blades :: Pedro Navaja
+Héctor Lavoe :: El Cantante
+Celia Cruz :: La Vida Es un Carnaval
+Buena Vista Social Club :: Chan Chan
+Violeta Parra :: Gracias a la Vida
+Silvio Rodríguez :: Ojalá
+Caetano Veloso :: Sozinho
+Gilberto Gil :: Aquele Abraço
+Fela Kuti :: Zombie
+Bad Bunny :: Tití Me Preguntó
+Bad Bunny :: Safaera
+Daddy Yankee :: Gasolina
+`;
+
+const L_INFLUYENTES = `
+Bill Haley :: Rock Around the Clock
+Elvis Presley :: Heartbreak Hotel
+Chuck Berry :: Johnny B. Goode
+The Beatles :: I Want to Hold Your Hand
+The Beatles :: A Day in the Life
+The Beatles :: Tomorrow Never Knows
+The Beach Boys :: Good Vibrations
+Bob Dylan :: Like a Rolling Stone
+The Rolling Stones :: (I Can't Get No) Satisfaction
+The Kinks :: You Really Got Me
+The Who :: My Generation
+Jimi Hendrix :: Purple Haze
+Led Zeppelin :: Whole Lotta Love
+Black Sabbath :: Paranoid
+Deep Purple :: Smoke on the Water
+Pink Floyd :: Money
+Queen :: Bohemian Rhapsody
+David Bowie :: Space Oddity
+David Bowie :: Heroes
+Kraftwerk :: Autobahn
+Kraftwerk :: Trans-Europe Express
+Donna Summer :: I Feel Love
+Chic :: Good Times
+The Sugarhill Gang :: Rapper's Delight
+Grandmaster Flash :: The Message
+Afrika Bambaataa :: Planet Rock
+Run-DMC :: Walk This Way
+Public Enemy :: Fight the Power
+N.W.A :: Straight Outta Compton
+Dr. Dre :: Nuthin' but a G Thang
+The Notorious B.I.G. :: Juicy
+2Pac :: California Love
+Missy Elliott :: Get Ur Freak On
+Kanye West :: Through the Wire
+Kanye West :: Runaway
+Kendrick Lamar :: Alright
+Sex Pistols :: Anarchy in the U.K.
+Ramones :: Blitzkrieg Bop
+The Clash :: London Calling
+Joy Division :: Love Will Tear Us Apart
+New Order :: Blue Monday
+The Smiths :: This Charming Man
+Nirvana :: Smells Like Teen Spirit
+Radiohead :: Paranoid Android
+Radiohead :: Everything in Its Right Place
+The Strokes :: Last Nite
+The White Stripes :: Seven Nation Army
+Arcade Fire :: Wake Up
+LCD Soundsystem :: Losing My Edge
+Michael Jackson :: Billie Jean
+Michael Jackson :: Thriller
+Madonna :: Like a Virgin
+Prince :: When Doves Cry
+Whitney Houston :: I Will Always Love You
+Mariah Carey :: Fantasy
+Britney Spears :: Baby One More Time
+Destiny's Child :: Say My Name
+Beyoncé :: Crazy in Love
+Rihanna :: Umbrella
+Lady Gaga :: Bad Romance
+Robyn :: Dancing On My Own
+Amy Winehouse :: Rehab
+Adele :: Rolling in the Deep
+Lana Del Rey :: Video Games
+Frank Ocean :: Thinkin Bout You
+Billie Eilish :: Bad Guy
+The Weeknd :: Blinding Lights
+Daft Punk :: Around the World
+Daft Punk :: One More Time
+The Prodigy :: Firestarter
+The Chemical Brothers :: Block Rockin' Beats
+Fatboy Slim :: The Rockafeller Skank
+Underworld :: Born Slippy
+Moby :: Play
+Aphex Twin :: Windowlicker
+Massive Attack :: Unfinished Sympathy
+Portishead :: Sour Times
+Burial :: Archangel
+Skrillex :: Scary Monsters and Nice Sprites
+Avicii :: Levels
+Swedish House Mafia :: One
+Martin Garrix :: Animals
+Baauer :: Harlem Shake
+Jack Ü :: Where Are Ü Now
+Fisher :: Losing It
+Bee Gees :: Stayin' Alive
+ABBA :: Dancing Queen
+Blondie :: Rapture
+Gary Numan :: Cars
+The Human League :: Don't You Want Me
+Soft Cell :: Tainted Love
+Depeche Mode :: Personal Jesus
+Nine Inch Nails :: Closer
+Rage Against the Machine :: Killing in the Name
+Korn :: Blind
+Linkin Park :: In the End
+System of a Down :: Chop Suey!
+Metallica :: Enter Sandman
+Slipknot :: Wait and Bleed
+My Chemical Romance :: Welcome to the Black Parade
+Green Day :: Basket Case
+Blink-182 :: All the Small Things
+Bob Marley :: One Love
+Shabba Ranks :: Dem Bow
+Sean Paul :: Get Busy
+Daddy Yankee :: Gasolina
+Luis Fonsi :: Despacito
+J Balvin :: Mi Gente
+Bad Bunny :: Soy Peor
+Rosalía :: Malamente
+Ozuna :: Se Preparó
+Karol G :: Tusa
+PSY :: Gangnam Style
+BTS :: Dynamite
+Los del Río :: Macarena
+Ricky Martin :: Livin' la Vida Loca
+Shakira :: Whenever Wherever
+Manu Chao :: Clandestino
+Mecano :: Hijo de la Luna
+Héroes del Silencio :: Entre Dos Tierras
+Soda Stereo :: De Música Ligera
+Camarón de la Isla :: La Leyenda del Tiempo
+Paco de Lucía :: Entre Dos Aguas
+Antônio Carlos Jobim :: Garota de Ipanema
+Fela Kuti :: Zombie
+Miriam Makeba :: Pata Pata
+Ravi Shankar :: Raga Jog
+John Cage :: 4'33"
+Steve Reich :: Music for 18 Musicians
+Philip Glass :: Glassworks
+Brian Eno :: Music for Airports
+Wendy Carlos :: Switched-On Bach
+Vangelis :: Chariots of Fire
+Ennio Morricone :: The Good the Bad and the Ugly
+John Williams :: Star Wars Main Title
+Hans Zimmer :: Time
+Nobuo Uematsu :: One-Winged Angel
+Koji Kondo :: Super Mario Bros. Theme
+Frank Sinatra :: My Way
+Louis Armstrong :: West End Blues
+Billie Holiday :: Strange Fruit
+Charlie Parker :: Ko-Ko
+Miles Davis :: So What
+John Coltrane :: Giant Steps
+Ornette Coleman :: Lonely Woman
+Herbie Hancock :: Rockit
+James Brown :: Papa's Got a Brand New Bag
+Sly and the Family Stone :: Family Affair
+Parliament :: Flash Light
+Marvin Gaye :: What's Going On
+Stevie Wonder :: Superstition
+Aretha Franklin :: Respect
+Sam Cooke :: A Change Is Gonna Come
+Robert Johnson :: Cross Road Blues
+Muddy Waters :: Rollin' Stone
+Howlin' Wolf :: Smokestack Lightnin'
+Hank Williams :: Your Cheatin' Heart
+Johnny Cash :: I Walk the Line
+Dolly Parton :: Jolene
+Willie Nelson :: On the Road Again
+Woody Guthrie :: This Land Is Your Land
+Joni Mitchell :: Both Sides Now
+Leonard Cohen :: Hallelujah
+Simon & Garfunkel :: The Sound of Silence
+Neil Young :: Rockin' in the Free World
+Bruce Springsteen :: Born in the U.S.A.
+U2 :: Sunday Bloody Sunday
+Bob Geldof :: Do They Know It's Christmas?
+USA for Africa :: We Are the World
+`;
+
+const L_FUNDACIONALES = `
+Jackie Brenston :: Rocket 88
+Ike Turner :: Rocket 88
+Chuck Berry :: Maybellene
+Chuck Berry :: Johnny B. Goode
+Chuck Berry :: Roll Over Beethoven
+Bill Haley :: Rock Around the Clock
+Elvis Presley :: That's All Right
+Elvis Presley :: Hound Dog
+Little Richard :: Tutti Frutti
+Big Joe Turner :: Shake, Rattle and Roll
+Fats Domino :: The Fat Man
+Sister Rosetta Tharpe :: Strange Things Happening Every Day
+Bo Diddley :: Bo Diddley
+The Kingsmen :: Louie Louie
+Link Wray :: Rumble
+Dick Dale :: Misirlou
+The Kinks :: You Really Got Me
+The Sonics :: The Witch
+The Trashmen :: Surfin' Bird
+The Beatles :: Tomorrow Never Knows
+The Beach Boys :: Good Vibrations
+The Byrds :: Eight Miles High
+The Velvet Underground :: Sister Ray
+The Velvet Underground :: Heroin
+The Stooges :: I Wanna Be Your Dog
+The Stooges :: Search and Destroy
+MC5 :: Kick Out the Jams
+New York Dolls :: Personality Crisis
+Ramones :: Blitzkrieg Bop
+Sex Pistols :: Anarchy in the U.K.
+The Damned :: New Rose
+Television :: Marquee Moon
+Patti Smith :: Gloria
+Wire :: Three Girl Rhumba
+Black Flag :: Nervous Breakdown
+Minor Threat :: Straight Edge
+Bad Brains :: Pay to Cum
+Dead Kennedys :: California Über Alles
+Buzzcocks :: Ever Fallen in Love
+Joy Division :: Love Will Tear Us Apart
+Joy Division :: She's Lost Control
+Public Image Ltd :: Public Image
+Gang of Four :: Damaged Goods
+Bauhaus :: Bela Lugosi's Dead
+Siouxsie and the Banshees :: Hong Kong Garden
+The Cure :: A Forest
+Throbbing Gristle :: Hamburger Lady
+Cabaret Voltaire :: Nag Nag Nag
+Suicide :: Ghost Rider
+Kraftwerk :: Autobahn
+Kraftwerk :: Trans-Europe Express
+Kraftwerk :: The Robots
+Kraftwerk :: Numbers
+Kraftwerk :: Tour de France
+Giorgio Moroder :: I Feel Love
+Donna Summer :: I Feel Love
+Can :: Halleluwah
+Neu! :: Hallogallo
+Tangerine Dream :: Phaedra
+Brian Eno :: Music for Airports
+Brian Eno :: An Ending (Ascent)
+Wendy Carlos :: Switched-On Bach
+Silver Apples :: Oscillations
+Delia Derbyshire :: Doctor Who Theme
+Afrika Bambaataa :: Planet Rock
+The Sugarhill Gang :: Rapper's Delight
+Grandmaster Flash :: The Message
+Grandmaster Flash :: The Adventures of Grandmaster Flash on the Wheels of Steel
+Kurtis Blow :: The Breaks
+Run-DMC :: Sucker M.C.'s
+Run-DMC :: Walk This Way
+Schoolly D :: P.S.K. What Does It Mean?
+Boogie Down Productions :: South Bronx
+Eric B. & Rakim :: Eric B. Is President
+Public Enemy :: Rebel Without a Pause
+N.W.A :: Straight Outta Compton
+Ice-T :: 6 in the Mornin'
+Geto Boys :: Mind Playing Tricks on Me
+DJ Screw :: June 27
+Three 6 Mafia :: Tear da Club Up
+UGK :: Front Back and Side to Side
+Lil Jon :: Get Low
+T.I. :: Rubber Band Man
+Gucci Mane :: Icy
+Young Jeezy :: Soul Survivor
+Chief Keef :: I Don't Like
+Lil Wayne :: A Milli
+Kanye West :: Through the Wire
+A Tribe Called Quest :: Can I Kick It?
+De La Soul :: Me Myself and I
+Beastie Boys :: Paul Revere
+2 Live Crew :: Me So Horny
+Frankie Knuckles :: Your Love
+Jesse Saunders :: On and On
+Marshall Jefferson :: Move Your Body
+Phuture :: Acid Tracks
+Mr. Fingers :: Can You Feel It
+Farley Jackmaster Funk :: Love Can't Turn Around
+Steve Silk Hurley :: Jack Your Body
+Cybotron :: Clear
+Juan Atkins :: Clear
+Model 500 :: No UFO's
+Derrick May :: Strings of Life
+Rhythim Is Rhythim :: Strings of Life
+Jeff Mills :: The Bells
+Underground Resistance :: Jaguar
+Robert Hood :: Minimal Nation
+Basic Channel :: Phylyps Trak
+Plastikman :: Spastik
+Richie Hawtin :: Spastik
+A Guy Called Gerald :: Voodoo Ray
+808 State :: Pacific State
+The KLF :: What Time Is Love?
+The Prodigy :: Charly
+The Prodigy :: Firestarter
+The Shamen :: Ebeneezer Goode
+Altern 8 :: Activ 8
+Human Resource :: Dominator
+Joey Beltram :: Energy Flash
+Lennie De Ice :: We Are I.E.
+Rebel MC :: Wickedest Sound
+Goldie :: Timeless
+Goldie :: Inner City Life
+LTJ Bukem :: Music
+Roni Size :: Brown Paper Bag
+Ed Rush & Optical :: Wormhole
+Photek :: Ni Ten Ichi Ryu
+4hero :: Mr. Kirk's Nightmare
+Shy FX :: Original Nuttah
+Dillinja :: The Angels Fell
+Aphex Twin :: Xtal
+Aphex Twin :: Windowlicker
+Autechre :: Basscad
+Squarepusher :: My Red Hot Car
+Boards of Canada :: Roygbiv
+Massive Attack :: Unfinished Sympathy
+Massive Attack :: Teardrop
+Portishead :: Sour Times
+Portishead :: Glory Box
+Tricky :: Aftermath
+DJ Shadow :: Midnight in a Perfect World
+Burial :: Archangel
+Burial :: Near Dark
+Skream :: Midnight Request Line
+Benga :: Night
+Digital Mystikz :: Anti-War Dub
+Horsepower Productions :: Gorgon Sound
+El-B :: Ghost Story
+Wiley :: Eskimo
+Dizzee Rascal :: I Luv U
+Skepta :: That's Not Me
+So Solid Crew :: 21 Seconds
+MJ Cole :: Sincere
+Artful Dodger :: Re-Rewind
+Todd Edwards :: Saved My Life
+Daft Punk :: Da Funk
+Daft Punk :: Around the World
+Daft Punk :: One More Time
+Stardust :: Music Sounds Better with You
+Thomas Bangalter :: Music Sounds Better with You
+Cassius :: Cassius 1999
+Justice :: D.A.N.C.E.
+Justice :: Genesis
+Ed Banger :: Waters of Nazareth
+Bloody Beetroots :: Warp
+Skrillex :: Scary Monsters and Nice Sprites
+Rusko :: Cockney Thug
+Flux Pavilion :: Bass Cannon
+Knife Party :: Internet Friends
+Swedish House Mafia :: One
+Swedish House Mafia :: Don't You Worry Child
+Avicii :: Levels
+Avicii :: Wake Me Up
+Martin Garrix :: Animals
+Dimitri Vegas & Like Mike :: Tremor
+Alesso :: Calling
+Zedd :: Clarity
+Flume :: Never Be Like You
+Rustie :: Slasherr
+Hudson Mohawke :: Cbat
+Baauer :: Harlem Shake
+RL Grime :: Core
+TNGHT :: Higher Ground
+Jack Ü :: Where Are Ü Now
+Marshmello :: Alone
+Kygo :: Firestone
+Robin Schulz :: Prayer in C
+Klingande :: Jubel
+Oliver Heldens :: Gecko
+Tchami :: After Life
+Malaa :: Bling Bling
+Jauz :: Feel the Volume
+Fisher :: Losing It
+Meduza :: Piece of Your Heart
+Imanbek :: Roses
+Joel Corry :: Head & Heart
+Dua Lipa :: Don't Start Now
+Fred again.. :: Delilah
+Bicep :: Glue
+Charlotte de Witte :: Doppler
+Amelie Lens :: Basiliek
+DJ Snake :: Turn Down for What
+Diplo :: Express Yourself
+Major Lazer :: Pon de Floor
+Dave Nada :: Moombahton
+Bob Marley :: One Love
+Bob Marley :: No Woman No Cry
+Bob Marley :: Exodus
+The Wailers :: Simmer Down
+Toots and the Maytals :: Do the Reggay
+Desmond Dekker :: Israelites
+Prince Buster :: Al Capone
+The Skatalites :: Guns of Navarone
+King Tubby :: King Tubby Meets Rockers Uptown
+Lee Scratch Perry :: Blackboard Jungle Dub
+Augustus Pablo :: King Tubby Meets Rockers Uptown
+U-Roy :: Wear You to the Ball
+Yellowman :: Zungguzungguguzungguzeng
+Wayne Smith :: Under Mi Sleng Teng
+Shabba Ranks :: Dem Bow
+Nando Boom :: Ellos Benia
+El General :: Tu Pum Pum
+DJ Playero :: Playero 37
+Daddy Yankee :: Gasolina
+Tego Calderón :: Pa' Que Retozen
+Ivy Queen :: Quiero Bailar
+N.O.R.E. :: Oye Mi Canto
+Luny Tunes :: Mayor Que Yo
+Don Omar :: Dale Don Dale
+Wisin & Yandel :: Rakata
+Bad Bunny :: Soy Peor
+Ozuna :: Se Preparó
+J Balvin :: Ay Vamos
+Luis Fonsi :: Despacito
+Rosalía :: Malamente
+C. Tangana :: Mala Mujer
+Yung Beef :: Ready Pa Morir
+Kaydy Cain :: Fuck Tha Police
+Robert Johnson :: Cross Road Blues
+Muddy Waters :: Rollin' Stone
+Howlin' Wolf :: Smokestack Lightnin'
+B.B. King :: The Thrill Is Gone
+John Lee Hooker :: Boogie Chillen'
+Son House :: Death Letter
+Charley Patton :: Pony Blues
+Bessie Smith :: Downhearted Blues
+Ma Rainey :: See See Rider Blues
+W.C. Handy :: St. Louis Blues
+Louis Armstrong :: West End Blues
+Duke Ellington :: Take the A Train
+Count Basie :: One O'Clock Jump
+Benny Goodman :: Sing Sing Sing
+Charlie Parker :: Ko-Ko
+Dizzy Gillespie :: A Night in Tunisia
+Miles Davis :: So What
+Miles Davis :: Bitches Brew
+John Coltrane :: Giant Steps
+Ornette Coleman :: Lonely Woman
+Dave Brubeck :: Take Five
+Herbie Hancock :: Rockit
+Herbie Hancock :: Chameleon
+Sun Ra :: Space Is the Place
+James Brown :: Papa's Got a Brand New Bag
+James Brown :: Cold Sweat
+James Brown :: Get Up (I Feel Like Being a) Sex Machine
+Sly and the Family Stone :: Thank You
+Parliament :: Flash Light
+Funkadelic :: One Nation Under a Groove
+The Meters :: Cissy Strut
+Isaac Hayes :: Theme from Shaft
+Curtis Mayfield :: Superfly
+Marvin Gaye :: What's Going On
+Ray Charles :: I Got a Woman
+Sam Cooke :: A Change Is Gonna Come
+Aretha Franklin :: Respect
+Otis Redding :: Try a Little Tenderness
+The Supremes :: Where Did Our Love Go
+The Temptations :: Papa Was a Rollin' Stone
+Stevie Wonder :: Superstition
+Chic :: Good Times
+Chic :: Le Freak
+Donna Summer :: Love to Love You Baby
+Sylvester :: You Make Me Feel (Mighty Real)
+Gloria Gaynor :: I Will Survive
+The Trammps :: Disco Inferno
+Black Sabbath :: Black Sabbath
+Black Sabbath :: Paranoid
+Black Sabbath :: Iron Man
+Led Zeppelin :: Whole Lotta Love
+Deep Purple :: Smoke on the Water
+Judas Priest :: Breaking the Law
+Iron Maiden :: The Number of the Beast
+Motörhead :: Ace of Spades
+Venom :: Welcome to Hell
+Metallica :: Master of Puppets
+Slayer :: Angel of Death
+Bathory :: A Fine Day to Die
+Mayhem :: Freezing Moon
+Death :: Zombie Ritual
+Napalm Death :: You Suffer
+Pantera :: Walk
+Korn :: Blind
+Nirvana :: Smells Like Teen Spirit
+Pixies :: Debaser
+Sonic Youth :: Teen Age Riot
+My Bloody Valentine :: Only Shallow
+Slint :: Good Morning Captain
+Radiohead :: Paranoid Android
+Radiohead :: Idioteque
+The Smiths :: This Charming Man
+R.E.M. :: Radio Free Europe
+Talking Heads :: Once in a Lifetime
+Devo :: Whip It
+Blondie :: Rapture
+The Human League :: Don't You Want Me
+Depeche Mode :: Enjoy the Silence
+New Order :: Blue Monday
+Soft Cell :: Tainted Love
+Gary Numan :: Cars
+The Buggles :: Video Killed the Radio Star
+Madonna :: Like a Prayer
+Michael Jackson :: Billie Jean
+Michael Jackson :: Thriller
+Prince :: When Doves Cry
+Whitney Houston :: I Wanna Dance with Somebody
+Hank Williams :: Your Cheatin' Heart
+Johnny Cash :: I Walk the Line
+Patsy Cline :: Crazy
+Bill Monroe :: Blue Moon of Kentucky
+Willie Nelson :: On the Road Again
+Dolly Parton :: Jolene
+Bob Dylan :: Like a Rolling Stone
+Bob Dylan :: Subterranean Homesick Blues
+Woody Guthrie :: This Land Is Your Land
+Simon & Garfunkel :: The Sound of Silence
+Joni Mitchell :: Both Sides Now
+Neil Young :: Heart of Gold
+Nick Drake :: Pink Moon
+Leonard Cohen :: Hallelujah
+Camarón de la Isla :: La Leyenda del Tiempo
+Camarón de la Isla :: Volando Voy
+Paco de Lucía :: Entre Dos Aguas
+Antonio Mairena :: Seguiriyas
+Enrique Morente :: Omega
+Ketama :: Vente Pa Madrid
+Pata Negra :: Blues de la Frontera
+Triana :: Abre la Puerta
+Kiko Veneno :: Volando Voy
+Los Chichos :: Quiero Ser Libre
+Las Grecas :: Te Estoy Amando Locamente
+Peret :: El Muerto Vivo
+Gato Pérez :: Gitanitos y Morenos
+Manu Chao :: Clandestino
+Mano Negra :: Mala Vida
+Héroes del Silencio :: Entre Dos Tierras
+Radio Futura :: Escuela de Calor
+Alaska y Dinarama :: A Quién le Importa
+Nacha Pop :: Chica de Ayer
+Los Planetas :: Segundo Premio
+Extremoduro :: So Payaso
+Violeta Parra :: Gracias a la Vida
+Atahualpa Yupanqui :: Los Ejes de Mi Carreta
+Carlos Gardel :: Mi Buenos Aires Querido
+Astor Piazzolla :: Libertango
+Celia Cruz :: Quimbara
+Fania All-Stars :: Quítate Tú
+Héctor Lavoe :: El Cantante
+Willie Colón :: Che Che Colé
+Rubén Blades :: Pedro Navaja
+Juan Luis Guerra :: Ojalá Que Llueva Café
+Buena Vista Social Club :: Chan Chan
+Compay Segundo :: Chan Chan
+Pérez Prado :: Mambo No. 5
+Tito Puente :: Oye Como Va
+Antônio Carlos Jobim :: Garota de Ipanema
+João Gilberto :: Chega de Saudade
+Caetano Veloso :: Tropicália
+Gilberto Gil :: Domingo no Parque
+Os Mutantes :: Bat Macumba
+Jorge Ben :: Mas Que Nada
+Fela Kuti :: Zombie
+Fela Kuti :: Water No Get Enemy
+Miriam Makeba :: Pata Pata
+King Sunny Adé :: Ja Funmi
+Youssou N'Dour :: 7 Seconds
+Ali Farka Touré :: Diaraby
+Manu Dibango :: Soul Makossa
+Wizkid :: Ojuelegba
+Burna Boy :: Ye
+DJ Maphorisa :: Midnight Starring
+Kabza De Small :: Sponono
+Vico C :: La Recta Final
+Ramón Orlando :: El Venao
+Silvio Rodríguez :: Ojalá
+`;
+
+const L_SAMPLEADAS = `
+The Winstons :: Amen Brother
+James Brown :: Funky Drummer
+James Brown :: Funky President
+James Brown :: Give It Up or Turnit a Loose
+James Brown :: The Payback
+James Brown :: Get Up (I Feel Like Being a) Sex Machine
+Lyn Collins :: Think (About It)
+The J.B.'s :: The Grunt
+Bobby Byrd :: I Know You Got Soul
+The Incredible Bongo Band :: Apache
+The Incredible Bongo Band :: Bongo Rock
+Michael Viner :: Apache
+The Honey Drippers :: Impeach the President
+Melvin Bliss :: Synthetic Substitution
+Skull Snaps :: It's a New Day
+Lafayette Afro Rock Band :: Darkest Light
+The Emotions :: Blind Alley
+The Isley Brothers :: Footsteps in the Dark
+The Isley Brothers :: Between the Sheets
+Chic :: Good Times
+Rick James :: Super Freak
+Zapp :: More Bounce to the Ounce
+Roger Troutman :: More Bounce to the Ounce
+Kool & the Gang :: Jungle Boogie
+Kool & the Gang :: N.T.
+The Meters :: Handclapping Song
+Billy Squier :: The Big Beat
+Bob James :: Nautilus
+Bob James :: Take Me to the Mardi Gras
+Herbie Hancock :: Watermelon Man
+Ramsey Lewis :: Les Fleurs
+Roy Ayers :: Everybody Loves the Sunshine
+Lou Donaldson :: Ode to Billie Joe
+David Axelrod :: The Edge
+Isaac Hayes :: Hyperbolicsyllabicsesquedalymistic
+Isaac Hayes :: Ike's Rap II
+Curtis Mayfield :: Move On Up
+Marvin Gaye :: Inner City Blues
+Al Green :: I'm Glad You're Mine
+The Mohawks :: The Champ
+Jimmy Castor Bunch :: It's Just Begun
+Dennis Coffey :: Scorpio
+Cymande :: Bra
+Cymande :: Dove
+Barry White :: I'm Gonna Love You Just a Little More Baby
+Labi Siffre :: I Got The
+Ann Peebles :: I Can't Stand the Rain
+Aretha Franklin :: Rock Steady
+Sly and the Family Stone :: Sing a Simple Song
+The Turtles :: You Showed Me
+The Beach Boys :: Good Vibrations
+The Beatles :: Tomorrow Never Knows
+The Doors :: Five to One
+Led Zeppelin :: When the Levee Breaks
+Led Zeppelin :: Kashmir
+Black Sabbath :: Iron Man
+Deep Purple :: Smoke on the Water
+Queen :: Under Pressure
+David Bowie :: Under Pressure
+Kraftwerk :: Trans-Europe Express
+Kraftwerk :: Numbers
+Yellow Magic Orchestra :: Firecracker
+Tom Tom Club :: Genius of Love
+Fab 5 Freddy :: Change the Beat
+Beside :: Change the Beat
+Manzel :: Midnight Theme
+Jean Michel Jarre :: Oxygene
+Vangelis :: Blade Runner Blues
+Ennio Morricone :: The Ecstasy of Gold
+John Carpenter :: Halloween Theme
+Lalo Schifrin :: Danube Incident
+Loleatta Holloway :: Love Sensation
+First Choice :: Let No Man Put Asunder
+Taana Gardner :: Heartbeat
+MFSB :: Love Is the Message
+Double Exposure :: Ten Percent
+Ce Ce Rogers :: Someday
+Alison Limerick :: Where Love Lives
+Robin S :: Show Me Love
+Crystal Waters :: Gypsy Woman
+Lil Louis :: French Kiss
+Frankie Knuckles :: Your Love
+Mr. Fingers :: Can You Feel It
+Todd Terry :: Can You Party
+Reese :: Just Want Another Chance
+Kevin Saunderson :: Just Want Another Chance
+Ce Ce Peniston :: Finally
+Rufus & Chaka Khan :: Ain't Nobody
+Diana Ross :: Love Hangover
+Donna Summer :: I Feel Love
+Giorgio Moroder :: Chase
+Sister Nancy :: Bam Bam
+Dawn Penn :: You Don't Love Me (No No No)
+Dennis Brown :: Money in My Pocket
+Barrington Levy :: Here I Come
+Wayne Smith :: Under Mi Sleng Teng
+Shabba Ranks :: Dem Bow
+Sleng Teng :: Sleng Teng
+Slick Rick :: La Di Da Di
+Doug E. Fresh :: La Di Da Di
+Eric B. & Rakim :: Paid in Full
+Nas :: The World Is Yours
+Mobb Deep :: Shook Ones Part II
+Ol' Dirty Bastard :: Shimmy Shimmy Ya
+Biz Markie :: Nobody Beats the Biz
+Audio Two :: Top Billin'
+T La Rock :: It's Yours
+Rob Base :: It Takes Two
+Public Enemy :: Bring the Noise
+2Pac :: Ambitionz Az a Ridah
+Toto :: Africa
+Phil Collins :: In the Air Tonight
+Peter Gabriel :: Sledgehammer
+Steely Dan :: Black Cow
+The Police :: Every Breath You Take
+Fleetwood Mac :: Dreams
+Stevie Nicks :: Edge of Seventeen
+Hall & Oates :: I Can't Go for That
+Michael Jackson :: Billie Jean
+Nile Rodgers :: Le Freak
+Daft Punk :: One More Time
+Eddie Johns :: More Spell on You
+Breakwater :: Fun
+Tavares :: Don't Take Away the Music
+The Sound of Philadelphia :: TSOP
+Gwen McCrae :: Funky Sensation
+Bill Withers :: Grandma's Hands
+Bill Withers :: Ain't No Sunshine
+Al Green :: Let's Stay Together
+Otis Redding :: Try a Little Tenderness
+Nina Simone :: Sinnerman
+Nina Simone :: Feeling Good
+Etta James :: I'd Rather Go Blind
+The Undisputed Truth :: Smiling Faces Sometimes
+The Delfonics :: Ready or Not Here I Come
+The Dramatics :: In the Rain
+Minnie Riperton :: Inside My Love
+Aaliyah :: One in a Million
+Whitney Houston :: It's Not Right but It's Okay
+Crystal Waters :: Gypsy Woman
+Luther Vandross :: Never Too Much
+`;
+
+const L_MEMES = `
+Rick Astley :: Never Gonna Give You Up
+Darude :: Sandstorm
+Crazy Frog :: Axel F
+PSY :: Gangnam Style
+Baauer :: Harlem Shake
+Smash Mouth :: All Star
+O-Zone :: Dragostea Din Tei
+Toto :: Africa
+a-ha :: Take On Me
+Rednex :: Cotton Eye Joe
+Los del Río :: Macarena
+Vengaboys :: Boom Boom Boom Boom
+Vengaboys :: We Like to Party
+Eiffel 65 :: Blue (Da Ba Dee)
+Haddaway :: What Is Love
+Aqua :: Barbie Girl
+Las Ketchup :: Aserejé
+Chumbawamba :: Tubthumping
+The Weeknd :: Blinding Lights
+Nickelback :: How You Remind Me
+Daft Punk :: Technologic
+Daft Punk :: Harder Better Faster Stronger
+Europe :: The Final Countdown
+Survivor :: Eye of the Tiger
+Journey :: Don't Stop Believin'
+Bonnie Tyler :: Total Eclipse of the Heart
+Céline Dion :: My Heart Will Go On
+Queen :: Bohemian Rhapsody
+Living on a Prayer :: Bon Jovi
+Bon Jovi :: Livin' on a Prayer
+John Cena :: The Time Is Now
+Kevin MacLeod :: Sandstorm
+Gigi D'Agostino :: L'Amour Toujours
+Basshunter :: Boten Anna
+Basshunter :: DotA
+Dr. Dre :: Still D.R.E.
+Coolio :: Gangsta's Paradise
+Vanilla Ice :: Ice Ice Baby
+MC Hammer :: U Can't Touch This
+Right Said Fred :: I'm Too Sexy
+Los Umbrellos :: No Tengo Dinero
+Ricardo Milos :: I Wanna Be a Hippy
+Technohead :: I Wanna Be a Hippy
+Scatman John :: Scatman
+Dschinghis Khan :: Moskau
+Boney M. :: Rasputin
+Village People :: YMCA
+Wham! :: Last Christmas
+Mariah Carey :: All I Want for Christmas Is You
+The Weather Girls :: It's Raining Men
+Rockwell :: Somebody's Watching Me
+Michael Sembello :: Maniac
+Kenny Loggins :: Danger Zone
+Tag Team :: Whoomp! (There It Is)
+Los Lobos :: La Bamba
+Ritchie Valens :: La Bamba
+Trololo :: I Am Very Glad
+Eduard Khil :: Trololo
+Yakety Sax :: Boots Randolph
+Boots Randolph :: Yakety Sax
+Jimmy Fontana :: Il Mondo
+El Chombo :: Dame Tu Cosita
+El Chombo :: El Cubo de Leche
+Ozuna :: Dame Tu Cosita
+DJ Ötzi :: Hey Baby
+Alan Walker :: Faded
+Lil Nas X :: Old Town Road
+Soulja Boy :: Crank That
+Rebecca Black :: Friday
+Ylvis :: The Fox
+Psy :: Gentleman
+LMFAO :: Party Rock Anthem
+LMFAO :: Sexy and I Know It
+Carly Rae Jepsen :: Call Me Maybe
+Chuck Berry :: My Ding-a-Ling
+Nyan Cat :: Nyan Cat
+Caramella Girls :: Caramelldansen
+Tom Jones :: Sex Bomb
+Sabaton :: Primo Victoria
+Camila Cabello :: Havana
+Pitbull :: Fireball
+Pitbull :: Timber
+Flo Rida :: Low
+Baha Men :: Who Let the Dogs Out
+Los Del Mar :: Macarena
+Zombie Nation :: Kernkraft 400
+Sandstorm :: Darude
+Eminem :: Without Me
+System of a Down :: Chop Suey!
+Rage Against the Machine :: Killing in the Name
+Toto :: Hold the Line
+Michael Jackson :: Smooth Criminal
+Rick Ross :: Hustlin'
+DJ Khaled :: All I Do Is Win
+Fatboy Slim :: Right Here Right Now
+Sean Paul :: Temperature
+Shaggy :: It Wasn't Me
+Los Tigres del Norte :: La Puerta Negra
+La Sonora Dinamita :: Mi Cucu
+Chico Che :: Uy Que Miedo
+Grupo Bronco :: Que No Quede Huella
+`;
+
+const L_LIMINAL = `
+Boards of Canada :: Dayvan Cowboy
+Boards of Canada :: Roygbiv
+Boards of Canada :: Olson
+Burial :: Archangel
+Burial :: Near Dark
+Brian Eno :: Music for Airports
+Brian Eno :: An Ending (Ascent)
+Aphex Twin :: Xtal
+Aphex Twin :: Rhubarb
+Aphex Twin :: Avril 14th
+Tim Hecker :: Harmony in Ultraviolet
+William Basinski :: The Disintegration Loops
+Stars of the Lid :: Requiem for Dying Mothers
+Grouper :: Heavy Water
+The Caretaker :: Everywhere at the End of Time
+Leyland Kirby :: Everywhere at the End of Time
+Macintosh Plus :: Lisa Frank 420
+Vektroid :: Lisa Frank 420
+Blank Banshee :: Teen Pregnancy
+Chuck Person :: Eccojams
+Oneohtrix Point Never :: Nobody Here
+Mac DeMarco :: Chamber of Reflection
+Radiohead :: Everything in Its Right Place
+Radiohead :: Treefingers
+Sigur Rós :: Untitled 3
+Sigur Rós :: Svefn-g-englar
+Slowdive :: Alison
+Slowdive :: Souvlaki Space Station
+Cocteau Twins :: Cherry-Coloured Funk
+My Bloody Valentine :: Sometimes
+Angelo Badalamenti :: Twin Peaks Theme
+Angelo Badalamenti :: Laura Palmer's Theme
+Julee Cruise :: Falling
+Vangelis :: Blade Runner Blues
+Vangelis :: Tears in Rain
+Ryuichi Sakamoto :: Merry Christmas Mr. Lawrence
+Nine Inch Nails :: A Warm Place
+Portishead :: Roads
+Massive Attack :: Teardrop
+Nujabes :: Feather
+Nujabes :: Aruarian Dance
+Clams Casino :: I'm God
+Yung Lean :: Kyoto
+Bladee :: Be Nice 2 Me
+Øneheart :: Snowfall
+Reidenshi :: Snowfall
+Cigarettes After Sex :: Apocalypse
+Beach House :: Space Song
+Deftones :: Digital Bath
+Duster :: Inside Out
+Duster :: Stratosphere
+American Football :: Never Meant
+Alex G :: Sorry
+Elliott Smith :: Between the Bars
+Sufjan Stevens :: Death with Dignity
+Godspeed You! Black Emperor :: East Hastings
+Explosions in the Sky :: Your Hand in Mine
+Hiroshi Yoshimura :: Blink
+Haruomi Hosono :: Talking
+Susumu Yokota :: Long Long Silence After
+Global Communication :: 14 31
+The Orb :: Little Fluffy Clouds
+KLF :: Chill Out
+Moby :: Porcelain
+DJ Shadow :: Midnight in a Perfect World
+Gas :: Pop 1
+Wolfgang Voigt :: Pop 1
+Huerco S. :: A Sea of Love
+Actress :: Hubble
+Arca :: Anoche
+`;
+
+const LISTAS = { MEJORES: L_MEJORES, INFLUYENTES: L_INFLUYENTES, FUNDACIONALES: L_FUNDACIONALES, SAMPLEADAS: L_SAMPLEADAS, MEMES: L_MEMES, LIMINAL: L_LIMINAL };
 const GRUPO_POR_ID = Object.fromEntries(GRUPOS.map(g => [g.id, g]));
 
 /* Las expresiones se compilan una vez y el resultado se guarda POR CADENA DE
    GENERO, no por elemento: hay 1.497 cadenas distintas y 13.892 elementos, asi
    que cachear por cadena convierte 3,5 segundos en medio. */
-/* Dos familias de etiqueta con motores distintos: las que se resuelven por
-   palabra (420) y las ocho de decada, que se resuelven por el ano. */
-const TAX_GEN = TAXONOMIA.filter(t => t.k);
-const TAX_DEC = TAXONOMIA.filter(t => t.d);
+/* Cuatro motores distintos, no uno:
+     TAX_GEN    por palabra suelta (genero, subgenero, ambiente, origen)
+     TAX_ANYO   solo por ano (decadas y tus epocas)
+     TAX_EPOCA  palabra Y ano a la vez (las epocas del EDM: "trance" no dice
+                de que decada es, y el ano solo no distingue trance de balada)
+     TAX_LISTA  ni palabra ni ano: una lista escrita a mano */
+const TAX_GEN   = TAXONOMIA.filter(t => t.k && !t.y);
+const TAX_ANYO  = TAXONOMIA.filter(t => t.d);
+const TAX_EPOCA = TAXONOMIA.filter(t => t.y && t.k);
+const TAX_LISTA = TAXONOMIA.filter(t => t.L);
+const TAX_DEC = TAX_ANYO;   // nombre viejo, se mantiene por compatibilidad
+const SUB_PADRE = new Map(TAXONOMIA.filter(t => t.g === 'sub').map(t => [t.n, t.p]));
+const _PARES_ENF = new Set(ENFRENTADOS.flatMap(([a, b]) => [a + '|' + b, b + '|' + a]));
+
+/* Las listas hechas a mano, indexadas por "artista|obra". El titulo se limpia
+   de todo lo que Spotify le cuelga (" - 2011 Remaster", "(feat. X)") porque
+   la misma cancion aparece en el vault con cinco nombres distintos. */
+const _RX_COLA = /\s*[-–—]\s*(19|20)?\d{0,4}\s*(remaster(ed)?|remasterizado|mono|stereo|single version|album version|radio edit|edit|live|en vivo|en directo|acoustic|version|deluxe|bonus|anniversary|re-?issue|instrumental|extended|club mix|original mix|from .*|feat\..*|with .*).*$/i;
+const _RX_PAR = /\s*[\(\[][^\)\]]*(feat|ft|with|remaster|live|version|edit|mix|mono|stereo|bonus|deluxe|anniversary|from|soundtrack)[^\)\]]*[\)\]]/gi;
+const obraDe = s => fold(s).replace(_RX_PAR, '').replace(_RX_COLA, '').replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+let _idxListas = null;
+function idxListas() {
+  if (_idxListas) return _idxListas;
+  _idxListas = new Map();   // "artista|obra" -> Set de nombres de lista
+  for (const [nombre, txt] of Object.entries(LISTAS)) {
+    for (const l of txt.split('\n')) {
+      const p = l.split('::');
+      if (p.length !== 2) continue;
+      const k = obraDe(p[0]) + '|' + obraDe(p[1]);
+      if (!_idxListas.has(k)) _idxListas.set(k, new Set());
+      _idxListas.get(k).add(nombre);
+    }
+  }
+  return _idxListas;
+}
+/* Una sola pasada por elemento: normalizar el titulo es caro y hacerlo una
+   vez por lista multiplicaba por seis el coste de etiquetar. */
+function listasDe(it) {
+  const idx = idxListas();
+  const t = obraDe(it.title);
+  if (!t) return null;
+  let r = null;
+  for (const a of (it.artists || [])) {
+    const s = idx.get(obraDe(a) + '|' + t);
+    if (s) { r = r || new Set(); s.forEach(x => r.add(x)); }
+  }
+  return r;
+}
 let _rxListo = false, _tagsPorGenero = null;
 function tagsDeGeneroFold(g) {
   if (!_rxListo) {
-    for (const t of TAX_GEN) t._rx = t.k.map(k => new RegExp('(^|[^a-z0-9])' + k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '([^a-z0-9]|$)'));
+    for (const t of TAX_GEN.concat(TAX_EPOCA)) t._rx = t.k.map(k => new RegExp('(^|[^a-z0-9])' + k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '([^a-z0-9]|$)'));
     _rxListo = true;
   }
   if (!_tagsPorGenero) _tagsPorGenero = new Map();
   let r = _tagsPorGenero.get(g);
   if (r === undefined) { r = TAX_GEN.filter(t => t._rx.some(x => x.test(g))); _tagsPorGenero.set(g, r); }
   return r;
+}
+
+/* Coherencia de familias.
+   Las etiquetas de Last.fm las pone la gente, y la gente hace bromas: en este
+   vault hay reggaeton de El Chombo etiquetado "Brutal Death Metal" y trap
+   italiano etiquetado "Concerto". Sin filtro, esa broma se convierte en una
+   etiqueta de Metal encima de una cancion de reggaeton.
+   La regla: Last.fm devuelve sus etiquetas ordenadas por votos, asi que la
+   primera vale mucho mas que la quinta. Cada familia puntua segun lo bien
+   colocada que este su mejor palabra, y de dos familias enfrentadas se queda
+   la mejor colocada — arrastrando consigo a sus subgeneros. Si empatan no se
+   toca nada: en la duda, mejor de mas que de menos.
+   Fuera de la lista de enfrentados quedan a proposito las fusiones que SI
+   existen (flamenco urbano, country trap, rock andaluz). */
+function tagsCoherentes(gs) {
+  const set = new Set(), puntos = new Map();
+  gs.forEach((g, i) => {
+    const f = fold(g);
+    for (const t of tagsDeGeneroFold(f)) {
+      set.add(t);
+      if (t.g === 'genero') puntos.set(t.n, Math.max(puntos.get(t.n) || 0, 1 / (1 + i)));
+    }
+  });
+  if (puntos.size < 2) return set;
+  const ns = [...puntos.keys()], fuera = new Set();
+  for (let i = 0; i < ns.length; i++) for (let j = i + 1; j < ns.length; j++) {
+    if (!_PARES_ENF.has(ns[i] + '|' + ns[j])) continue;
+    const a = puntos.get(ns[i]), b = puntos.get(ns[j]);
+    if (Math.abs(a - b) > 1e-9) fuera.add(a < b ? ns[i] : ns[j]);
+  }
+  if (!fuera.size) return set;
+  for (const t of [...set])
+    if ((t.g === 'genero' && fuera.has(t.n)) || (t.g === 'sub' && fuera.has(SUB_PADRE.get(t.n)))) set.delete(t);
+  return set;
 }
 /* La decada del ano de lanzamiento, ya corregido si lo corregiste. */
 const tagDecada = it => { const y = yearOf(it); return y ? TAX_DEC.find(t => y >= t.d[0] && y <= t.d[1]) : null; };
@@ -7958,14 +9811,27 @@ function proponerEtiquetas() {
   const porTag = new Map(TAXONOMIA.map(t => [t, []]));
   let sinGenero = 0, total = 0;
   for (const it of ITEMS) {
-    if (it.type === 'artist') continue;
     total++;
-    const suyas = new Set();
-    for (const g of generosDe(it)) for (const t of tagsDeGeneroFold(fold(g))) suyas.add(t);
-    /* "sin genero" sigue contando lo mismo que antes — los que Spotify dejo
-       sin genero ninguno — aunque ahora igualmente reciban su decada. */
+    /* Los artistas tambien se etiquetan (traen sus propios generos de
+       Last.fm), pero solo con los ejes que tienen sentido en un artista:
+       un artista no tiene fecha de lanzamiento ni es "una cancion que
+       fundo un genero". */
+    const esArtista = it.type === 'artist';
+    const gs = generosDe(it);
+    const suyas = gs.length ? tagsCoherentes(gs) : new Set();
     if (!suyas.size) sinGenero++;
-    const td = tagDecada(it); if (td) suyas.add(td);
+    if (!esArtista) {
+      const y = yearOf(it);
+      if (y) {
+        for (const t of TAX_ANYO) if (y >= t.d[0] && y <= t.d[1]) suyas.add(t);
+        for (const t of TAX_EPOCA) {
+          if (y < t.y[0] || y > t.y[1]) continue;
+          if (gs.some(g => { const f = fold(g); return t._rx.some(x => x.test(f)); })) suyas.add(t);
+        }
+      }
+      const enL = listasDe(it);
+      if (enL) for (const t of TAX_LISTA) if (enL.has(t.L)) suyas.add(t);
+    }
     if (!suyas.size) continue;
     suyas.forEach(t => porTag.get(t).push(it));
   }
@@ -7983,7 +9849,7 @@ function openAutoTag() {
   /* Arrancan marcados generos, ambiente y decada: los tres ejes que se usan a
      diario y que no se equivocan casi nunca. Subgeneros y origen son 350
      etiquetas mas, muy finas, y eso se elige a mano. */
-  const grupoOn = new Set(['genero', 'ambiente', 'decada']);
+  const grupoOn = new Set(['genero', 'ambiente', 'decada', 'epoca', 'hito']);
   const apagadas = new Set();          // etiquetas sueltas que ha desmarcado
   const abiertos = new Set();
 
@@ -8031,7 +9897,7 @@ function openAutoTag() {
 
   showSheet(`
     <div class="sheethead"><h2>Etiquetar automáticamente</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
-    <p class="lede">Spotify guarda el género de cada cosa en inglés y suelto &mdash;"Big Room", "Edm Trap", "rnb"&mdash; y así no sirve de nada. Esto lo traduce a ${TAXONOMIA.length} etiquetas repartidas en cinco carpetas. Por género cubre ${(total - sinGenero).toLocaleString('es-ES')} de tus ${total.toLocaleString('es-ES')} elementos; la carpeta de década los cubre todos, porque sale de la fecha y no de adivinar.</p>
+    <p class="lede">Spotify guarda el género de cada cosa en inglés y suelto &mdash;"Big Room", "Edm Trap", "rnb"&mdash; y así no sirve de nada. Esto lo traduce a ${TAXONOMIA.length} etiquetas repartidas en siete carpetas, y ahora también etiqueta a los artistas. Por género cubre ${(total - sinGenero).toLocaleString('es-ES')} de tus ${total.toLocaleString('es-ES')} elementos; Década sale de la fecha, y Épocas e Hitos no adivinan nada.</p>
     <p class="lede">Solo añade: nunca quita una etiqueta que hayas puesto tú, y pasarlo dos veces no duplica nada.</p>
     <div id="autoCuerpo"></div>
     <p class="lede">A ${sinGenero.toLocaleString('es-ES')} elementos Spotify no les dio ningún género, así que de esos solo se sabe la década.</p>
@@ -8871,6 +10737,7 @@ document.getElementById('inicio').addEventListener('click', e => {
   const tile = e.target.closest('[data-ira]');
   if (tile) {
     const d = tile.dataset.ira;
+    if (d === 'mezcla') { openMezcla(); return; }
     PREFS.type = 'all'; PREFS.genre = 'all'; PREFS.decade = 'all'; PREFS.dur = 'all';
     PREFS.status = d === 'sintag' ? 'all' : d;
     PREFS.tag = d === 'sintag' ? 'none' : 'all';
@@ -8885,6 +10752,8 @@ document.getElementById('inicio').addEventListener('click', e => {
     else if (a === 'pegar') openBulk();
     else if (a === 'azar') shuffle();
     else if (a === 'stats') openStats();
+    else if (a === 'mezcla') openMezcla();
+    else if (a === 'revision') openRevision();
     else if (a === 'autotag') openAutoTag();
     else if (a === 'anyos') openAnyos();
     else if (a === 'lote') { irAPantalla('lista'); setSelMode(true); }
@@ -8926,6 +10795,12 @@ document.querySelector('.state-strip').addEventListener('click', e => {
 document.getElementById('chips').addEventListener('click', e => {
   const b = e.target.closest('.chip'); if (!b) return;
   if (b.dataset.genall) { openGenrePicker(); return; }
+  if (b.dataset.abrirmezcla) {
+    /* tocar la aspa quita la mezcla; tocar el resto del chip la abre */
+    if (e.target.closest('.quitamez')) { PREFS.mezcla = mezclaVacia(); savePrefs(); render(); toast('Mezcla quitada'); }
+    else openMezcla();
+    return;
+  }
   if (b.dataset.tagall) { openTagAll(); return; }
   if (b.dataset.canon) { PREFS.canon = !PREFS.canon; savePrefs(); render(); return; }
   if (b.dataset.vista !== undefined) { aplicarVista(+b.dataset.vista); return; }
@@ -8940,12 +10815,13 @@ document.getElementById('chips').addEventListener('click', e => {
 /* Vistas guardadas: una combinación de filtros con nombre, para no tener que
    volver a montarla a mano. Guarda solo los filtros y el orden — no una lista
    de elementos — así una vista sigue siendo válida según crece el vault. */
-const CAMPOS_VISTA = ['type', 'status', 'tag', 'genre', 'decade', 'dur', 'sort'];
-function guardarVistaActual() {
-  const nombre = (prompt('Nombre para esta vista (p. ej. "Pendientes de los 90"):') || '').trim();
+const CAMPOS_VISTA = ['type', 'status', 'tag', 'genre', 'decade', 'dur', 'sort', 'mezcla'];
+function guardarVistaActual(nombreDado) {
+  const nombre = (nombreDado || prompt('Nombre para esta vista (p. ej. "Pendientes de los 90"):') || '').trim();
   if (!nombre) return;
   const vista = { nombre };
   CAMPOS_VISTA.forEach(c => vista[c] = PREFS[c]);
+  if (vista.mezcla) vista.mezcla = { modo: vista.mezcla.modo, inc: (vista.mezcla.inc || []).slice(), exc: (vista.mezcla.exc || []).slice() };
   vista.q = document.getElementById('q').value.trim();
   PREFS.vistas = (PREFS.vistas || []).concat([vista]).slice(-12);   // tope: la fila de chips no es infinita
   savePrefs(); render();
@@ -8955,6 +10831,7 @@ function aplicarVista(i) {
   const v = (PREFS.vistas || [])[i];
   if (!v) return;
   CAMPOS_VISTA.forEach(c => { if (v[c] !== undefined) PREFS[c] = v[c]; });
+  if (v.mezcla) PREFS.mezcla = { modo: v.mezcla.modo, inc: (v.mezcla.inc || []).slice(), exc: (v.mezcla.exc || []).slice() };
   document.getElementById('q').value = v.q || '';
   savePrefs(); render();
 }
@@ -9052,7 +10929,7 @@ const contentEl = document.querySelector('main.content');
 contentEl.addEventListener('click', e => {
   if (Date.now() < _swipeHasta) { e.stopPropagation(); return; }   // clic fantasma tras deslizar
   const clear = e.target.closest('[data-clear]');
-  if (clear) { PREFS.type = 'all'; PREFS.status = 'all'; PREFS.tag = 'all'; PREFS.genre = 'all'; PREFS.decade = 'all'; PREFS.dur = 'all'; PREFS.canon = false; document.getElementById('q').value = ''; savePrefs(); render(); return; }
+  if (clear) { PREFS.type = 'all'; PREFS.status = 'all'; PREFS.tag = 'all'; PREFS.genre = 'all'; PREFS.decade = 'all'; PREFS.dur = 'all'; PREFS.canon = false; PREFS.mezcla = mezclaVacia(); document.getElementById('q').value = ''; savePrefs(); render(); return; }
   if (e.target.closest('[data-vistas]')) { openVistasGuardadas(); return; }
   if (e.target.closest('[data-ordenar]')) { openOrdenarEtiqueta(); return; }
   const selall = e.target.closest('[data-selall]');
