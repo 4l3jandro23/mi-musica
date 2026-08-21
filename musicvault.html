@@ -5944,20 +5944,59 @@ function fundir(remoto) {
   // la volvía a subir en su siguiente sincronización, "reviviéndola"
   const tagTombLocal = new Set(TAG_TOMB);
   (remoto.tagTombstones || []).forEach(id => tagTombLocal.add(id));
-  const nombres = new Map(TAGS.map(t => [t.name.toLowerCase(), t]));
-  (remoto.tags || []).forEach(t => {
-    if (!t || !t.name || tagTombLocal.has(t.id)) return;
-    const mia = nombres.get(t.name.toLowerCase());
-    if (!mia) { TAGS.push(t); nombres.set(t.name.toLowerCase(), t); return; }
+
+  /* Las etiquetas se emparejan por nombre porque cada dispositivo se inventa
+     sus propios ids. Durante mucho tiempo faltaba la otra mitad: el id de la
+     que perdía seguía pegado a los elementos que venían de allí y nadie lo
+     traducía, así que se quedaba señalando a una etiqueta que aquí no existe.
+     No se veía en ningún sitio, pero cada sincronización dejaba unas cuantas
+     más — 27.532 llegó a haber. 'traduce' es esa mitad que faltaba:
+     id de allí -> id de aquí. */
+  const traduce = new Map();
+  const remotas = (remoto.tags || []).filter(t => t && t.name && !tagTombLocal.has(t.id));
+
+  /* Y se emparejan DENTRO de su carpeta, no por nombre a secas. Con las 471
+     etiquetas automáticas hay nombres que existen dos veces a propósito:
+     "Sensual" suelta, puesta a mano, y "Sensual" dentro de Ambiente. Por
+     nombre a secas se fundían en una y los elementos de la otra se quedaban
+     colgando. Las carpetas van primero: hacen falta para reconocer a sus hijas. */
+  const claveTag = (t, carpetaLocal) => esCarpeta(t)
+    ? 'C|' + t.name.toLowerCase()
+    : 'T|' + (carpetaLocal || '') + '|' + t.name.toLowerCase();
+  const indice = new Map(TAGS.map(t => [claveTag(t, t.carpetaId), t]));
+
+  const emparejar = t => {
+    const carpetaLocal = t.carpetaId ? (traduce.get(t.carpetaId) || t.carpetaId) : null;
+    const k = claveTag(t, carpetaLocal);
+    const mia = indice.get(k);
+    if (!mia) {
+      /* nueva por aquí: entra con la carpeta ya traducida a la de este
+         dispositivo, y en copia para no tocar el objeto que vino de fuera */
+      const copia = Object.assign({}, t);
+      if (copia.carpetaId) copia.carpetaId = carpetaLocal;
+      TAGS.push(copia); indice.set(k, copia);
+      return;
+    }
     /* Ya la tengo: no la piso, pero SÍ relleno lo que aquí falta. Si eliges el
        icono o la carpeta en el móvil, el PC los adopta en vez de quedarse con
        una etiqueta a medias para siempre — y al revés nunca borra lo tuyo. */
     if (!mia.icon && t.icon) mia.icon = t.icon;
-    if (!mia.carpetaId && t.carpetaId) mia.carpetaId = t.carpetaId;
+    if (!mia.carpetaId && carpetaLocal) mia.carpetaId = carpetaLocal;
     if (mia.esCarpeta === undefined && t.esCarpeta) mia.esCarpeta = true;
-  });
+    if (mia.id !== t.id) traduce.set(t.id, mia.id);
+  };
+  remotas.filter(t => esCarpeta(t)).forEach(emparejar);
+  remotas.filter(t => !esCarpeta(t)).forEach(emparejar);
+
   TAGS = TAGS.filter(t => !tagTombLocal.has(t.id));   // por si la borraron en el otro dispositivo y aquí seguía
-  vivos.forEach(it => { if (it.tagIds && it.tagIds.length) it.tagIds = it.tagIds.filter(id => !tagTombLocal.has(id)); });
+  /* Red de seguridad: pase lo que pase, un elemento no sale de aquí señalando
+     a una etiqueta que no existe. Si algún día vuelve a colarse un id huérfano
+     por otro camino, se queda en esta línea en vez de acumularse durante meses. */
+  const tagsVivas = new Set(TAGS.map(t => t.id));
+  vivos.forEach(it => {
+    if (!it.tagIds || !it.tagIds.length) return;
+    it.tagIds = [...new Set(it.tagIds.map(id => traduce.get(id) || id))].filter(id => tagsVivas.has(id));
+  });
   TAG_TOMB = [...tagTombLocal];
   saveTagTomb();
 
