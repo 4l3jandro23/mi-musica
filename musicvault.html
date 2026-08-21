@@ -310,6 +310,21 @@
     ::-webkit-scrollbar-thumb { background: var(--line-firm); border-radius: 99px; border: 3px solid transparent; background-clip: content-box; }
     ::-webkit-scrollbar-track { background: transparent; }
   }
+  /* Los iconos de trazo: nunca se aplastan y se alinean con el texto por su
+     centro optico, no por la linea base (una caja cuadrada colgada de la
+     base siempre parece hundida). */
+  svg.ui { flex-shrink: 0; display: inline-block; vertical-align: -0.16em; }
+  /* En contenedores que ya son flex el vertical-align sobra y descoloca. */
+  .btn > svg.ui, .chip > svg.ui, .seg > svg.ui, .iconbtn > svg.ui,
+  .crow .ci > svg.ui, .tile .ico > svg.ui, .pillbtn > svg.ui { vertical-align: 0; }
+  /* De relleno cuando no hay caratula: presente pero sin gritar. */
+  .art > svg.ui, .lart > svg.ui, .dart > svg.ui, .ip > svg.ui, .rart > svg.ui,
+  .relart > svg.ui, .oldart > svg.ui, .anyoart > svg.ui { opacity: .3; }
+  .lrow .lart { font-size: 22px; }
+  .empty .ico svg.ui { width: 38px; height: 38px; }
+  .empty .ico { opacity: .35; }
+  .marca { display:inline-flex; align-items:center; }
+  .marca svg.ui { width: 15px; height: 15px; }
   .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
   .num { font-variant-numeric: tabular-nums; }
 
@@ -526,6 +541,7 @@
   .gcard .gmeta { display:flex; flex-wrap:wrap; align-items:center; gap: 5px; margin-top: 8px; min-height: 15px; }
   /* Los datos sueltos (año, tipo) en chips bajo el título: se leen de un vistazo
      sin competir con el nombre, y es lo que hace que la rejilla respire. */
+  .gchip svg.ui, .fact svg.ui { margin-right: 3px; }
   .gchip {
     display:inline-flex; align-items:center; gap: 4px; white-space: nowrap;
     font-size: 12px; font-weight: 600; line-height: 1; padding: 5px 8.5px;
@@ -778,6 +794,7 @@
   .seg {
     flex: 1; font-family: inherit; font-size: 13px; color: var(--fg-soft);
     background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 8px 6px; cursor:pointer;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
     transition: background .15s, color .15s;
   }
   .seg.on { background: var(--fg); color: var(--bg); border-color: transparent; font-weight: 600; }
@@ -890,7 +907,36 @@
   }
   .trcheck:active { transform: scale(0.88); }
   .trcheck.on { background: var(--jade); border-color: transparent; color: #fff; }
-  .trlink { flex:1; min-width:0; display:flex; align-items:center; gap:10px; color: inherit; text-decoration: none; }
+  .trlink { flex:1; min-width:0; display:flex; align-items:center; gap:10px; color: inherit; text-decoration: none;
+    background:none; border:none; font-family:inherit; text-align:left; padding:0; cursor:pointer; }
+  .trow .trmine { color: var(--jade); display:inline-flex; flex-shrink:0; }
+  .trow .trmine svg { width: 13px; height: 13px; }
+  .trspot {
+    display:flex; align-items:center; justify-content:center; width:26px; height:26px; flex-shrink:0;
+    border-radius:50%; color: var(--fg-mute); background:none; text-decoration:none;
+    transition: color .14s, background .14s, transform .1s;
+  }
+  .trspot svg { width: 16px; height: 16px; }
+  .trspot:active { transform: scale(.86); }
+  @media (hover: hover) { .trspot:hover { color: #1db954; background: var(--surface); } }
+  .trcheck svg { width: 13px; height: 13px; }
+  .statusdot svg.ui, .lcheck svg.ui { width: 13px; height: 13px; }
+  /* La barra de popularidad: un 0-100 suelto no dice nada, la barra si. */
+  .popbox { display:flex; flex-direction:column; gap:6px; }
+  .popbar { height: 8px; border-radius: 999px; background: var(--surface-2); overflow:hidden; }
+  .popfill { height:100%; border-radius:999px; background: linear-gradient(90deg, color-mix(in srgb, var(--amber) 70%, #fff), var(--amber)); transition: width .4s var(--ease-out); }
+  .poptxt { font-size: 12px; color: var(--fg-mute); }
+  /* Rejilla de cifras: se lee de un vistazo y no se sale nunca de ancho
+     porque las columnas pueden encogerse por debajo de su contenido. */
+  .minidatos { display:grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 8px; }
+  @media (max-width: 480px) { .minidatos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .minidato {
+    min-width: 0; overflow: hidden; padding: 10px 11px; border-radius: 14px;
+    background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+    display:flex; flex-direction:column; gap:2px;
+  }
+  .minidato .mdn { font-size: 18px; font-weight: 750; letter-spacing:-0.02em; line-height:1.1; color: var(--fg); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .minidato .mdl { font-size: 11px; color: var(--fg-mute); line-height:1.25; }
   .trlink:hover { text-decoration: underline; }
   .trow .trn { width: 20px; flex-shrink:0; font-size: 12px; color: var(--fg-mute); text-align:right; font-variant-numeric: tabular-nums; }
   .trow .trt { flex:1; min-width:0; font-size: 13.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
@@ -1117,7 +1163,7 @@
   }
   .tile:active { transform: scale(0.97); }
   .tile .top { display:flex; align-items:center; justify-content:space-between; gap: 8px; }
-  .tile .ico { font-size: 18px; line-height: 1; }
+  .tile .ico { font-size: 18px; line-height: 1; display:flex; align-items:center; }
   .tile .n { font-size: 25px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
   .tile .l { font-size: 15px; font-weight: 650; }
   /* Los cuatro tonos salen de tus propios acentos, no de una paleta nueva:
@@ -1142,7 +1188,7 @@
   /* La línea arranca después del icono, no de punta a punta */
   .crow + .crow::before, .aexp + .crow::before { content:''; position:absolute; left: 49px; right: 0; top: 0; height: 1px; background: var(--line); }
   .crow:active { background: var(--surface-2); }
-  .crow .ci { font-size: 16px; width: 22px; text-align:center; flex-shrink:0; }
+  .crow .ci { font-size: 16px; width: 22px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
   .crow .ct { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .crow .cn { margin-left:auto; color: var(--fg-mute); font-size: 14.5px; flex-shrink:0; }
   .crow.abierta { background: var(--surface-2); }
@@ -1204,18 +1250,18 @@
 
 <header class="cmdbar">
   <div class="wordmark">
-    <a class="iconbtn backbtn" href="index.html" title="Volver a Mi Música" aria-label="Volver a la página de inicio">←</a>
+    <a class="iconbtn backbtn" href="index.html" title="Volver a Mi Música" aria-label="Volver a la página de inicio"><svg class="ui" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg></a>
     <button class="wmbtn" id="logoHome" title="Inicio" aria-label="Ir al inicio">
       <svg class="disc" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="var(--amber)" stroke-width="2.2"/><circle cx="12" cy="12" r="2.6" fill="var(--amber)"/></svg>
       <span class="wm-text">MusicVault</span>
     </button>
   </div>
   <div class="cmd-actions">
-    <button class="iconbtn" id="homeBtn" title="Inicio" aria-label="Ir al inicio">🏠</button>
-    <button class="iconbtn" id="shuffleBtn" title="¿Qué escucho?" aria-label="Elegir algo al azar">🎲</button>
-    <button class="iconbtn" id="statsBtn" title="Estadísticas" aria-label="Estadísticas">📊</button>
-    <button class="iconbtn" id="themeBtn" title="Cambiar tema" aria-label="Cambiar tema">◐</button>
-    <button class="iconbtn" id="setBtn" title="Ajustes" aria-label="Ajustes">⚙</button>
+    <button class="iconbtn" id="homeBtn" title="Inicio" aria-label="Ir al inicio"><svg class="ui" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></button>
+    <button class="iconbtn" id="shuffleBtn" title="¿Qué escucho?" aria-label="Elegir algo al azar"><svg class="ui" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="3"/><path d="M8.5 8.5h.01"/><path d="M15.5 8.5h.01"/><path d="M12 12h.01"/><path d="M8.5 15.5h.01"/><path d="M15.5 15.5h.01"/></svg></button>
+    <button class="iconbtn" id="statsBtn" title="Estadísticas" aria-label="Estadísticas"><svg class="ui" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M8 17v-5"/><path d="M13 17V8"/><path d="M18 17v-8"/></svg></button>
+    <button class="iconbtn" id="themeBtn" title="Cambiar tema" aria-label="Cambiar tema"></button>
+    <button class="iconbtn" id="setBtn" title="Ajustes" aria-label="Ajustes"><svg class="ui" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-6"/><path d="M4 11V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-4"/><path d="M20 13V3"/><path d="M1 15h6"/><path d="M9 12h6"/><path d="M17 17h6"/></svg></button>
   </div>
 </header>
 
@@ -1232,7 +1278,7 @@
   <div class="toolbar">
     <div class="toolbar-row">
       <div class="searchwrap">
-        <span class="mag">🔍</span>
+        <span class="mag"><svg class="ui" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
         <input type="text" id="q" placeholder="Buscar en tu vault..." autocomplete="off">
       </div>
       <select class="ctl" id="sortSel" aria-label="Ordenar por">
@@ -1249,7 +1295,7 @@
         <option value="year_desc">Más nuevo</option>
         <option value="year_asc">Más antiguo</option>
       </select>
-      <button class="iconbtn" id="viewBtn" title="Cambiar vista" aria-label="Cambiar vista">▦</button>
+      <button class="iconbtn" id="viewBtn" title="Cambiar vista" aria-label="Cambiar vista"><svg class="ui" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7.5" height="7.5" x="3" y="3" rx="1.6"/><rect width="7.5" height="7.5" x="13.5" y="3" rx="1.6"/><rect width="7.5" height="7.5" x="13.5" y="13.5" rx="1.6"/><rect width="7.5" height="7.5" x="3" y="13.5" rx="1.6"/></svg></button>
     </div>
     <div class="chiprow" id="chips"></div>
   </div>
@@ -1261,8 +1307,8 @@
 </div>
 
 <nav class="azrail hidden" id="azRail" aria-label="Saltar a una letra"></nav>
-<button id="salirPresent" aria-label="Salir del modo presentación">✕</button>
-<button class="fab" id="addFab">＋ Añadir</button>
+<button id="salirPresent" aria-label="Salir del modo presentación"><svg class="ui" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+<button class="fab" id="addFab"><svg class="ui" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Añadir</button>
 <div id="selbarRoot"></div>
 <div id="modalRoot"></div>
 <div class="toastwrap" id="toasts"></div>
@@ -1400,6 +1446,7 @@ function _flush(k, get) {
   idbSet(k, get()).catch(() => toast('No se ha podido guardar'));
 }
 function saveItems() {
+  invalidarConteos();
   META.updatedAt = Date.now(); saveMeta();
   clearTimeout(_pend);
   _pend = setTimeout(() => _flush(K_ITEMS, () => ITEMS), 120);
@@ -1436,7 +1483,6 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 const TYPE_LABEL = { album: 'Álbum', track: 'Canción', artist: 'Artista', playlist: 'Playlist' };
 const TYPE_PLURAL = { album: 'Álbumes', track: 'Canciones', artist: 'Artistas', playlist: 'Playlists' };
-const TYPE_ICON  = { album: '💿', track: '🎵', artist: '🎤', playlist: '📑' };
 const TAG_COLORS = ['#2a78d6','#1baf7a','#eda100','#3f9c35','#7a5cd6','#e34948','#e87ba4','#eb6834'];
 
 /* Iconos de etiqueta. En SVG de un solo trazo y no en emoji: así se tiñen del
@@ -1500,6 +1546,84 @@ const ICONOS = {
   abanico:   'M12 21.6a1.8 1.8 0 0 1-1.8-1.8c0-.6.3-1.2.8-1.5L3.4 8.2A10.6 10.6 0 0 1 12 3.8a10.6 10.6 0 0 1 8.6 4.4L13 18.3c.5.3.8.9.8 1.5a1.8 1.8 0 0 1-1.8 1.8z'
 };
 const ICONOS_ORDEN = Object.keys(ICONOS);
+
+/* ============ iconos de interfaz ============
+   Los de arriba (ICONOS) son siluetas rellenas y sirven para las etiquetas,
+   que se tinen del color de cada una. Estos son otra cosa: el mobiliario de
+   la app — botones, cabeceras, filas — dibujados a trazo sobre la misma
+   rejilla de 24 y con el mismo grosor, que es lo que hace que un juego de
+   iconos parezca un juego y no una coleccion. Sustituyen a los emoji: un
+   emoji lo dibuja el sistema, asi que cambiaba de estilo y de color entre
+   el movil y el ordenador y nunca combinaba con la paleta.
+   Van a 1em por defecto: heredan el tamano del texto que los rodea, asi que
+   el mismo icono vale en una pastilla de 11px y en una portada de 44px. */
+const ICO = {
+  casa:        '<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',
+  dado:        '<rect width="18" height="18" x="3" y="3" rx="3"/><path d="M8.5 8.5h.01"/><path d="M15.5 8.5h.01"/><path d="M12 12h.01"/><path d="M8.5 15.5h.01"/><path d="M15.5 15.5h.01"/>',
+  barras:      '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M8 17v-5"/><path d="M13 17V8"/><path d="M18 17v-8"/>',
+  ajustes:     '<path d="M4 21v-6"/><path d="M4 11V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-4"/><path d="M20 13V3"/><path d="M1 15h6"/><path d="M9 12h6"/><path d="M17 17h6"/>',
+  lupa:        '<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>',
+  disco:       '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/>',
+  nota:        '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+  micro:       '<rect width="6" height="11" x="9" y="2" rx="3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/>',
+  lista:       '<path d="M21 15V6"/><circle cx="18" cy="18" r="3"/><path d="M12 12H3"/><path d="M16 6H3"/><path d="M12 18H3"/>',
+  chincheta:   '<path d="M12 17v5"/><path d="M9 10.8a2 2 0 0 1-1.1 1.8l-1.8.9A2 2 0 0 0 5 15.2V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.8a2 2 0 0 0-1.1-1.7l-1.8-.9a2 2 0 0 1-1.1-1.8V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/>',
+  archivo:     '<rect width="20" height="5" x="2" y="3" rx="1.5"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/>',
+  sacar:       '<rect width="20" height="5" x="2" y="3" rx="1.5"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="m9 14 3-3 3 3"/><path d="M12 11v7"/>',
+  portapapeles:'<rect width="8" height="4" x="8" y="2" rx="1.5"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>',
+  etiqueta:    '<path d="M12.6 2.6A2 2 0 0 0 11.2 2H4a2 2 0 0 0-2 2v7.2a2 2 0 0 0 .6 1.4l8.7 8.7a2.4 2.4 0 0 0 3.4 0l6.6-6.6a2.4 2.4 0 0 0 0-3.4z"/><path d="M7.5 7.5h.01"/>',
+  crono:       '<path d="M10 2h4"/><path d="M12 14v-4"/><circle cx="12" cy="14" r="8"/>',
+  cascos:      '<path d="M3 16v-4a9 9 0 0 1 18 0v4"/><path d="M21 17a2 2 0 0 1-2 2h-1a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h3z"/><path d="M3 17a2 2 0 0 0 2 2h1a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1H3z"/>',
+  calendario:  '<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2.5"/><path d="M3 10h18"/>',
+  baul:        '<rect width="18" height="18" x="3" y="3" rx="3"/><circle cx="12" cy="12" r="4"/><path d="M12 7.5V9"/><path d="M12 15v1.5"/><path d="M16.5 12H15"/><path d="M9 12H7.5"/>',
+  enlace:      '<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7L11.8 6"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>',
+  destello:    '<path d="M10 3.5 11.9 9 17.5 11 11.9 13 10 18.5 8.1 13 2.5 11 8.1 9z"/><path d="M18 15v5"/><path d="M15.5 17.5h5"/>',
+  lapiz:       '<path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/><path d="m15 5 4 4"/>',
+  persona:     '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+  personas:    '<circle cx="9" cy="8" r="3.5"/><path d="M2 21a7 7 0 0 1 14 0"/><path d="M17 4.6a3.5 3.5 0 0 1 0 6.8"/><path d="M19 14.3A6 6 0 0 1 22 21"/>',
+  tipo:        '<path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/>',
+  documento:   '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8"/><path d="M8 17h5"/>',
+  confeti:     '<path d="M3 21 8.5 9.5 15 16z"/><path d="M14 3v2.5"/><path d="m19.5 5.5-1.8 1.8"/><path d="M21.5 12H19"/><path d="M12 8.5c1.5-2 4-2 5.5-.5"/>',
+  repetir:     '<path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>',
+  estrella:    '<path d="m12 2.5 2.95 5.98 6.6.96-4.775 4.655 1.127 6.573L12 17.57l-5.902 3.098 1.127-6.573L2.45 9.44l6.6-.96z"/>',
+  carpeta:     '<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"/>',
+  alfiler:     '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',
+  imagen:      '<rect width="18" height="18" x="3" y="3" rx="2.5"/><circle cx="9" cy="9" r="2"/><path d="m21 15-4.5-4.5L3 21"/>',
+  regalo:      '<rect width="20" height="5" x="2" y="7" rx="1.5"/><path d="M12 22V7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M7.5 7a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7"/><path d="M16.5 7a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7"/>',
+  subida:      '<path d="M22 7 13.5 15.5l-5-5L2 17"/><path d="M16 7h6v6"/>',
+  marcapaginas:'<path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>',
+  aviso:       '<path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+  robot:       '<path d="M12 2v3"/><rect width="18" height="12" x="3" y="8" rx="3"/><path d="M8.5 13.5h.01"/><path d="M15.5 13.5h.01"/><path d="M2 14h1"/><path d="M21 14h1"/>',
+  fuera:       '<path d="M7 17 17 7"/><path d="M8 7h9v9"/>',
+  ordenar:     '<path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/>',
+  rejilla:     '<rect width="7.5" height="7.5" x="3" y="3" rx="1.6"/><rect width="7.5" height="7.5" x="13.5" y="3" rx="1.6"/><rect width="7.5" height="7.5" x="13.5" y="13.5" rx="1.6"/><rect width="7.5" height="7.5" x="3" y="13.5" rx="1.6"/>',
+  filas:       '<path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/>',
+  visto:       '<path d="M20 6 9 17l-5-5"/>',
+  cerrar:      '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  atras:       '<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
+  abajo:       '<path d="m6 9 6 6 6-6"/>',
+  derecha:     '<path d="m9 18 6-6-6-6"/>',
+  reloj:       '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
+  globo:       '<circle cx="12" cy="12" r="9"/><path d="M3.2 9h17.6"/><path d="M3.2 15h17.6"/><path d="M12 3a15 15 0 0 1 0 18"/><path d="M12 3a15 15 0 0 0 0 18"/>',
+  fuego:       '<path d="M12 2c.6 3-1.4 4.3-2.6 5.6C7.8 9.4 6.8 11 6.8 13.2a5.2 5.2 0 0 0 10.4 0c0-2.5-1.4-4.3-2.8-6"/><path d="M12 21a2.6 2.6 0 0 1-1.4-4.8c.9-.6 1.4-1.5 1.4-2.4.9.6 2.6 2.2 2.6 4.2A2.6 2.6 0 0 1 12 21z"/>',
+  pesas:       '<path d="M14.4 14.4 9.6 9.6"/><path d="m18.657 6.757-1.414-1.414a2 2 0 0 0-2.829 0l-1.414 1.414a2 2 0 0 0 0 2.829l1.414 1.414a2 2 0 0 0 2.829 0l1.414-1.414a2 2 0 0 0 0-2.829"/><path d="m10.586 14.828-1.414-1.414a2 2 0 0 0-2.829 0l-1.414 1.414a2 2 0 0 0 0 2.829l1.414 1.414a2 2 0 0 0 2.829 0l1.414-1.414a2 2 0 0 0 0-2.829"/><path d="m2.5 21.5 2-2"/><path d="m19.5 4.5 2-2"/>',
+  corazon:     '<path d="M12 20.5c-5-4.4-8-7.2-8-10.4a4.6 4.6 0 0 1 8-3.1 4.6 4.6 0 0 1 8 3.1c0 3.2-3 6-8 10.4z"/>',
+  descarga:    '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>',
+  onda:        '<path d="M2 12h2"/><path d="M7 6v12"/><path d="M12 3v18"/><path d="M17 8v8"/><path d="M22 11v2"/>',
+  libro:       '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+  bocadillo:   '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  arbol:       '<path d="M12 2 6.5 10h3L5 17h14l-4.5-7h3z"/><path d="M12 17v5"/>',
+  sol:         '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.9 4.9 1.4 1.4"/><path d="m17.7 17.7 1.4 1.4"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.3 17.7-1.4 1.4"/><path d="m19.1 4.9-1.4 1.4"/>',
+  luna:        '<path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/>',
+  circulo:     '<circle cx="12" cy="12" r="9"/>',
+  mas:         '<path d="M12 5v14"/><path d="M5 12h14"/>'
+};
+/* A 1em hereda el tamano del texto de alrededor; con px se fuerza. */
+/* Cada tipo con su icono, para cuando no hay caratula y para las pastillas. */
+const TYPE_ICON = { album: null, track: null, artist: null, playlist: null };
+const ui = (n, px) => '<svg class="ui" viewBox="0 0 24 24" width="' + (px || '1em') + '" height="' + (px || '1em') + '" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICO[n] || ICO.nota) + '</svg>';
+TYPE_ICON.album = ui('disco'); TYPE_ICON.track = ui('nota');
+TYPE_ICON.artist = ui('micro'); TYPE_ICON.playlist = ui('lista');
 
 /* Una etiqueta sin icono elegido se pinta con el de etiqueta, y una carpeta
    con el de carpeta: nunca sale un hueco. */
@@ -1587,8 +1711,16 @@ const autoTemaOn = () => localStorage.getItem(K_AUTOTEMA) !== '0';
   const root = document.documentElement;
   const K_ULT = 'mv_tema_ult';   // que tramo tocaba la ultima vez que se miro
 
+  /* El boton ensena a donde vas, no donde estas: en claro ofrece la luna. */
+  function pintarBotonTema() {
+    const b = document.getElementById('themeBtn');
+    if (!b) return;
+    const oscuro = (root.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark';
+    b.innerHTML = ui(oscuro ? 'sol' : 'luna', 18);
+    b.title = oscuro ? 'Pasar a claro' : 'Pasar a oscuro';
+  }
   function aplicar() {
-    if (!autoTemaOn()) return;
+    if (!autoTemaOn()) { pintarBotonTema(); return; }
     const toca = temaPorHora();
     /* Si el tramo no ha cambiado, se respeta lo que hubiera (tu override
        manual incluido). En cuanto cambia, manda el reloj otra vez. */
@@ -1596,11 +1728,13 @@ const autoTemaOn = () => localStorage.getItem(K_AUTOTEMA) !== '0';
     localStorage.setItem(K_ULT, toca);
     root.setAttribute('data-theme', toca);
     localStorage.setItem(K_THEME, toca);
+    pintarBotonTema();
   }
 
   const saved = localStorage.getItem(K_THEME);
   if (saved) root.setAttribute('data-theme', saved);
   aplicar();
+  pintarBotonTema();
   /* cada cinco minutos, y ademas al volver a la app: en el movil la pestana
      se congela y sin esto amanecias con la pantalla todavia en oscuro */
   setInterval(aplicar, 5 * 60 * 1000);
@@ -1611,6 +1745,7 @@ const autoTemaOn = () => localStorage.getItem(K_AUTOTEMA) !== '0';
     const next = cur === 'dark' ? 'light' : 'dark';
     root.setAttribute('data-theme', next);
     localStorage.setItem(K_THEME, next);
+    pintarBotonTema();
     if (autoTemaOn()) {
       localStorage.setItem(K_ULT, temaPorHora());   // manda tu hasta el proximo tramo
       toast(next === 'dark' ? 'Oscuro hasta mañana' : 'Claro hasta la noche');
@@ -2165,7 +2300,15 @@ function metaPairs(it) {
   add('Explícito', it.explicit === true ? 'Sí' : it.explicit === false ? 'No' : null);
   add('Sello', it.label);
   add('Géneros', it.genres?.length ? it.genres.join(', ') : null);
+  /* La popularidad la traia Spotify desde el primer dia y no se ensenaba en
+     ningun sitio. Arriba va con barra; aqui, el numero. */
+  add('Popularidad', typeof it.popularity === 'number' ? it.popularity + '/100' : null);
   add('Oyentes (seguidores)', it.followers ? it.followers.toLocaleString('es-ES') : null);
+  if (it.type !== 'artist' && it.type !== 'playlist') {
+    const edad = edadLanzamiento(it);
+    if (edad) add('Antigüedad', edad);
+  }
+  if (it.releaseDateOrig) add('Año que daba Spotify', fmtDate(it.releaseDateOrig) + ' (corregido)');
   add('ISRC', it.isrc);
   add('Guardado', `${new Date(it.dateAdded).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })} (${relDate(it.dateAdded)})`);
   if (it.listenedAt) add('Escuchado', `${new Date(it.listenedAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })} (${relDate(it.listenedAt)})`);
@@ -2322,13 +2465,13 @@ function renderSelBar() {
   const enArchivo = PREFS.status === 'archived';
   root.innerHTML = `<div class="selbar">
     <span class="cnt">${selected.size} seleccionado${selected.size === 1 ? '' : 's'}</span>
-    <button class="btn" data-sel="listen">✓ Escuchado</button>
-    <button class="btn" data-sel="prioridad">📌 Prioridad</button>
+    <button class="btn" data-sel="listen">${ui('visto')} Escuchado</button>
+    <button class="btn" data-sel="prioridad">${ui('chincheta')} Prioridad</button>
     <button class="btn" data-sel="tag">Etiquetar</button>
-    <button class="btn" data-sel="archive">${enArchivo ? '📤 Desarchivar' : '📦 Archivar'}</button>
-    <button class="btn" data-sel="copiar">📋 Copiar enlaces</button>
+    <button class="btn" data-sel="archive">${enArchivo ? `${ui('sacar')} Desarchivar` : `${ui('archivo')} Archivar`}</button>
+    <button class="btn" data-sel="copiar">${ui('portapapeles')} Copiar enlaces</button>
     <button class="btn danger" data-sel="del">Eliminar</button>
-    <button class="btn" data-sel="cancel">✕</button>
+    <button class="btn" data-sel="cancel">${ui('cerrar')}</button>
   </div>`;
 }
 
@@ -2346,17 +2489,43 @@ function renderStats() {
 
 // se usa desde renderChips() y desde el selector "Ver todos los géneros" —
 // separado para que los dos vean siempre el mismo universo de datos
-function generosConFrecuencia() {
+/* Todos los numeros que necesita la barra de filtros salen de UNA pasada, y
+   la pasada se guarda: mientras no cambie el vault ni las etiquetas,
+   repintar no vuelve a contar nada. Antes eran siete recorridos completos
+   del vault por cada repintado, y con 17.000 elementos eso era la mitad de
+   lo que costaba dibujar la pantalla. */
+let _versionItems = 0;
+const invalidarConteos = () => { _versionItems++; };
+let _conteos = null, _claveConteos = '';
+function conteosChips() {
   const enArchivo = PREFS.status === 'archived';
-  const visibles = ITEMS.filter(i => enArchivo ? i.archived : !i.archived);
-  const freq = {}, label = {};
-  visibles.forEach(i => (i.genres || []).forEach(g => {
-    const k = fold(g);
-    if (!k) return;
-    freq[k] = (freq[k] || 0) + 1;
-    if (!label[k]) label[k] = g;
-  }));
-  return { freq, label };
+  const clave = enArchivo + '|' + ITEMS.length + '|' + _versionItems + '|' + _versionTags;
+  if (_conteos && _claveConteos === clave) return _conteos;
+  const tipos = { all: 0, album: 0, track: 0, artist: 0, playlist: 0 };
+  const decadas = {}, freq = {}, label = {}, cuentaTag = new Map();
+  let sinEtiquetar = 0, nCanon = 0;
+  for (const i of ITEMS) {
+    if (enArchivo ? !i.archived : i.archived) continue;
+    tipos.all++;
+    if (tipos[i.type] !== undefined) tipos[i.type]++;
+    if (i.releaseDate) {
+      const y = parseInt(String(i.releaseDate).slice(0, 4), 10);
+      if (y) { const d = Math.floor(y / 10) * 10; decadas[d] = (decadas[d] || 0) + 1; }
+    }
+    const gs = i.genres;
+    if (gs) for (const g of gs) { const k = fold(g); if (k) { freq[k] = (freq[k] || 0) + 1; if (!label[k]) label[k] = g; } }
+    const ids = i.tagIds;
+    if (!ids || !ids.length) sinEtiquetar++;
+    else for (const id of ids) cuentaTag.set(id, (cuentaTag.get(id) || 0) + 1);
+    if (esCanon(i)) nCanon++;
+  }
+  _conteos = { tipos, decadas, freq, label, cuentaTag, sinEtiquetar, nCanon };
+  _claveConteos = clave;
+  return _conteos;
+}
+function generosConFrecuencia() {
+  const c = conteosChips();
+  return { freq: c.freq, label: c.label };
 }
 
 function renderChips() {
@@ -2364,14 +2533,12 @@ function renderChips() {
   // lo archivado normalmente no cuenta, pero si estás viendo "Archivado" sí
   // tiene sentido que los chips describan lo archivado, no el resto del vault
   const enArchivo = PREFS.status === 'archived';
-  const visibles = ITEMS.filter(i => enArchivo ? i.archived : !i.archived);
-  const countType = t => t === 'all' ? visibles.length : visibles.filter(i => i.type === t).length;
+  const C = conteosChips();
+  const countType = t => C.tipos[t] || 0;
 
   // Por década: dato fiable (releaseDate llega para la mayoría de álbumes y
   // canciones), así que estos chips sí van a verse casi siempre.
-  const decadeCounts = {};
-  visibles.forEach(i => { const y = yearOf(i); if (y) { const dec = Math.floor(y / 10) * 10; decadeCounts[dec] = (decadeCounts[dec] || 0) + 1; } });
-  const decades = Object.entries(decadeCounts).sort((a, b) => +a[0] - +b[0]);   // cronológico, no por frecuencia
+  const decades = Object.entries(C.decadas).sort((a, b) => +a[0] - +b[0]);   // cronológico, no por frecuencia
 
   // Género: Spotify prácticamente ha dejado de rellenar este campo desde
   // finales de 2024 (es un cambio suyo, documentado por otros desarrolladores,
@@ -2393,7 +2560,7 @@ function renderChips() {
   const hayMasGeneros = genOrdenPorFreq.length > topGenres.length;
 
   const chipsTipo = [
-    `<button class="chip ${PREFS.type === 'all' ? 'on' : ''}" data-type="all">Todo <span class="ct">${visibles.length}</span></button>`,
+    `<button class="chip ${PREFS.type === 'all' ? 'on' : ''}" data-type="all">Todo <span class="ct">${C.tipos.all}</span></button>`,
     ...['album', 'track', 'artist'].map(t =>
       `<button class="chip ${PREFS.type === t ? 'on' : ''}" data-type="${t}">${TYPE_ICON[t]} ${TYPE_PLURAL[t]} <span class="ct">${countType(t)}</span></button>`),
     // el chip de playlists solo aparece si tienes alguna guardada: es un tipo poco
@@ -2402,13 +2569,7 @@ function renderChips() {
   ];
   const chipsDecada = decades.map(([dec, n]) =>
     `<button class="chip decade ${PREFS.decade === dec ? 'on' : ''}" data-decade="${dec}">${dec}s <span class="ct">${n}</span></button>`);
-  const cuentaTag = new Map();
-  let sinEtiquetar = 0;
-  for (const i of visibles) {
-    const ids = i.tagIds;
-    if (!ids || !ids.length) { sinEtiquetar++; continue; }
-    for (const id of ids) cuentaTag.set(id, (cuentaTag.get(id) || 0) + 1);
-  }
+  const cuentaTag = C.cuentaTag, sinEtiquetar = C.sinEtiquetar;
   /* Con 254 etiquetas, pintarlas todas en la barra la deja inservible: salen
      las que mas cosas tienen aqui (mas la que tengas puesta, este donde este)
      y el resto detras de un boton, igual que los generos. */
@@ -2421,19 +2582,19 @@ function renderChips() {
   }
   const chipsTag = tagsVisibles.map(t =>
     `<button class="chip ${PREFS.tag === t.id ? 'on' : ''}" data-tag="${esc(t.id)}">${iconoHtml(t, 13)}${esc(t.name)} <span class="ct">${(cuentaTag.get(t.id) || 0).toLocaleString('es-ES')}</span></button>`);
-  if (tagsPorUso.length > tagsVisibles.length) chipsTag.push(`<button class="chip" data-tagall="1">&#127991; Ver todas (${tagsPorUso.length})</button>`);
+  if (tagsPorUso.length > tagsVisibles.length) chipsTag.push(`<button class="chip" data-tagall="1">${ui('etiqueta')} Ver todas (${tagsPorUso.length})</button>`);
   /* El sello no es una etiqueta guardada, asi que necesita su propio filtro. */
-  const nCanon = visibles.reduce((n, i) => n + (esCanon(i) ? 1 : 0), 0);
+  const nCanon = C.nCanon;
   if (nCanon) chipsTag.unshift(`<button class="chip canon ${PREFS.canon ? 'on' : ''}" data-canon="1">${ICO_LAUREL} Aclamados <span class="ct">${nCanon.toLocaleString('es-ES')}</span></button>`);
-  if (sinEtiquetar) chipsTag.push(`<button class="chip ${PREFS.tag === 'none' ? 'on' : ''}" data-tag="none">🏷️ Sin etiqueta <span class="ct">${sinEtiquetar}</span></button>`);
+  if (sinEtiquetar) chipsTag.push(`<button class="chip ${PREFS.tag === 'none' ? 'on' : ''}" data-tag="none">${ui('etiqueta')} Sin etiqueta <span class="ct">${sinEtiquetar}</span></button>`);
   const DUR_ET = { corto: 'Corto', medio: 'Medio', largo: 'Largo' };
   const chipsDur = ['corto', 'medio', 'largo'].map(d =>
-    `<button class="chip ${PREFS.dur === d ? 'on' : ''}" data-dur="${d}">⏱ ${DUR_ET[d]}</button>`);
+    `<button class="chip ${PREFS.dur === d ? 'on' : ''}" data-dur="${d}">${ui('crono')} ${DUR_ET[d]}</button>`);
   const chipsVistas = [];   // las vistas guardadas se retiraron: nunca se usaban
   const chipsGenero = [
     ...topGenres.map(([k, n]) =>
-      `<button class="chip genre ${PREFS.genre === k ? 'on' : ''}" data-genre="${esc(k)}">🎧 ${esc(genreLabel[k])} <span class="ct">${n}</span></button>`),
-    ...(hayMasGeneros ? [`<button class="chip genre" data-genall="1">🎧 Ver todos (${genOrdenPorFreq.length})</button>`] : [])
+      `<button class="chip genre ${PREFS.genre === k ? 'on' : ''}" data-genre="${esc(k)}">${ui('cascos')} ${esc(genreLabel[k])} <span class="ct">${n}</span></button>`),
+    ...(hayMasGeneros ? [`<button class="chip genre" data-genall="1">${ui('cascos')} Ver todos (${genOrdenPorFreq.length})</button>`] : [])
   ];
 
   // separadores finos entre grupos: con tipo + década + etiquetas + género la
@@ -2460,7 +2621,7 @@ function gcard(it) {
   return `<article class="gcard ${it.listened ? 'done' : ''} ${selected.has(it.id) ? 'sel' : ''}" data-id="${it.id}">
     <div class="art">
       ${portada(it.coverUrl, `<span class="ph">${TYPE_ICON[it.type]}</span>`, true)}
-      ${it.type !== 'artist' ? `<button class="statusdot ${it.listened ? 'on' : ''}" data-toggle="${it.id}" aria-label="${it.listened ? 'Marcar pendiente' : 'Marcar escuchado'}">${it.listened ? '✓' : ''}</button>` : ''}
+      ${it.type !== 'artist' ? `<button class="statusdot ${it.listened ? 'on' : ''}" data-toggle="${it.id}" aria-label="${it.listened ? 'Marcar pendiente' : 'Marcar escuchado'}">${it.listened ? ui('visto') : ''}</button>` : ''}
       ${it.spotifyUrl ? `<button class="spotdot" data-spot="${esc(it.spotifyUrl)}" title="Abrir en Spotify" aria-label="Abrir ${esc(it.title)} en Spotify">${ICO_SPOT}</button>` : ''}
       ${esCanon(it) ? `<span class="laurel" title="De un disco aclamado por la crítica">${ICO_LAUREL}</span>` : ''}
     </div>
@@ -2468,8 +2629,8 @@ function gcard(it) {
       <div class="gt">${esc(it.title)}</div>
       <div class="ga">${artistaHtml(it)}</div>
       <div class="gmeta">
-        ${it.prioridad ? `<span class="pin" title="Prioritario">📌</span>` : ''}
-        ${yearOf(it) ? `<span class="gchip">📅 ${yearOf(it)}</span>` : ''}
+        ${it.prioridad ? `<span class="pin" title="Prioritario">${ui('chincheta')}</span>` : ''}
+        ${yearOf(it) ? `<span class="gchip">${ui('calendario')} ${yearOf(it)}</span>` : ''}
         <span class="gchip">${TYPE_ICON[it.type]} ${TYPE_LABEL[it.type]}</span>
         ${it.rating ? `<span class="stars">${'★'.repeat(it.rating)}</span>` : ''}
         ${tags.map(t => `<span class="tagpip" style="background:${esc(t.colorHex)}" title="${esc(t.name)}"></span>`).join('')}
@@ -2488,14 +2649,14 @@ function lrow(it) {
       <div class="la">${artistaHtml(it)}</div>
     </div>
     <div class="lmeta">
-      ${it.prioridad ? `<span class="pin" title="Prioritario">📌</span>` : ''}
+      ${it.prioridad ? `<span class="pin" title="Prioritario">${ui('chincheta')}</span>` : ''}
       ${tags.map(t => `<span class="tagpip" style="background:${esc(t.colorHex)}" title="${esc(t.name)}"></span>`).join('')}
       ${it.rating ? `<span class="stars">${'★'.repeat(it.rating)}</span>` : ''}
       ${it.spotifyUrl ? `<button class="spotbtn" data-spot="${esc(it.spotifyUrl)}" title="Abrir en Spotify" aria-label="Abrir en Spotify">${ICO_SPOT}</button>` : ''}
-      ${it.type !== 'artist' ? `<button class="lcheck ${it.listened ? 'on' : ''}" data-toggle="${it.id}" aria-label="${it.listened ? 'Marcar pendiente' : 'Marcar escuchado'}">✓</button>` : ''}
+      ${it.type !== 'artist' ? `<button class="lcheck ${it.listened ? 'on' : ''}" data-toggle="${it.id}" aria-label="${it.listened ? 'Marcar pendiente' : 'Marcar escuchado'}">${ui('visto')}</button>` : ''}
     </div>
     <div class="lchips">
-      ${y ? `<span class="gchip">📅 ${y}</span>` : ''}
+      ${y ? `<span class="gchip">${ui('calendario')} ${y}</span>` : ''}
       <span class="gchip">${TYPE_ICON[it.type]} ${TYPE_LABEL[it.type]}</span>
     </div>
   </article>`;
@@ -2516,13 +2677,13 @@ function render() {
   if (PREFS.pantalla === 'inicio') {
     document.body.classList.add('en-inicio');
     const hb = document.getElementById('homeBtn');
-    hb.textContent = '🗄️'; hb.title = 'Ver el vault';
+    hb.innerHTML = ui('baul', 18); hb.title = 'Ver el vault';
     renderInicio();
     return;
   }
   document.body.classList.remove('en-inicio');
   const hb = document.getElementById('homeBtn');
-  hb.textContent = '🏠'; hb.title = 'Inicio';
+  hb.innerHTML = ui('casa', 18); hb.title = 'Inicio';
 
   const firma = [PREFS.type, PREFS.status, PREFS.tag, PREFS.sort,
                  document.getElementById('q').value.trim()].join('');
@@ -2533,7 +2694,7 @@ function render() {
   renderChips();
   renderSelBar();
   document.getElementById('sortSel').value = PREFS.sort;
-  document.getElementById('viewBtn').textContent = PREFS.view === 'grid' ? '▦' : '☰';
+  document.getElementById('viewBtn').innerHTML = PREFS.view === 'grid' ? ui('rejilla', 18) : ui('filas', 18);
 
   const box = document.getElementById('results');
   const line = document.getElementById('resultline');
@@ -2541,7 +2702,7 @@ function render() {
   if (ITEMS.length === 0) {
     line.innerHTML = '';
     box.innerHTML = `<div class="empty">
-      <div class="ico">🗄️</div>
+      <div class="ico">${ui('baul')}</div>
       <h2>Tu vault está vacío</h2>
       <p>Guarda álbumes, canciones y artistas de Spotify para no perderlos de vista. Nada se reproduce aquí: esto es tu lista de lo que quieres escuchar.</p>
       <div class="acts">
@@ -2560,21 +2721,21 @@ function render() {
   // a marcarlos uno a uno a mano — esto selecciona TODO lo que cumple el
   // filtro actual, no solo lo que hay pintado en pantalla ahora mismo
   const acciones = [];
-  if (rows.length) acciones.push(`<button class="pillbtn accent" data-selall="1">✓ Seleccionar ${rows.length === ITEMS.length ? 'todo' : `estos ${rows.length.toLocaleString('es-ES')}`}</button>`);
-  if (anyFilter) acciones.push(`<button class="pillbtn" data-clear="1">✕ Quitar filtros</button>`);
-  if (PREFS.tag !== 'all') acciones.push(`<button class="pillbtn" data-ordenar="1">↕ Ordenar</button>`);
+  if (rows.length) acciones.push(`<button class="pillbtn accent" data-selall="1">${ui('visto')} Seleccionar ${rows.length === ITEMS.length ? 'todo' : `estos ${rows.length.toLocaleString('es-ES')}`}</button>`);
+  if (anyFilter) acciones.push(`<button class="pillbtn" data-clear="1">${ui('cerrar')} Quitar filtros</button>`);
+  if (PREFS.tag !== 'all') acciones.push(`<button class="pillbtn" data-ordenar="1">${ui('ordenar')} Ordenar</button>`);
   line.innerHTML = `<span>${rows.length} de ${ITEMS.length}</span>${acciones.length ? `<span style="display:flex;gap:8px;">${acciones.join('')}</span>` : ''}`;
 
   if (rows.length === 0) {
     box.innerHTML = PREFS.status === 'archived'
       ? `<div class="empty">
-          <div class="ico">📦</div>
+          <div class="ico">${ui('archivo')}</div>
           <h2>Nada archivado por aquí</h2>
           <p>No has archivado nada todavía, o nada archivado coincide con estos filtros. Archivar algo (desde su ficha, o seleccionando varios) lo saca de tus listas normales sin borrarlo.</p>
           <div class="acts"><button class="btn" data-clear="1">Quitar filtros</button></div>
         </div>`
       : `<div class="empty">
-          <div class="ico">🔍</div>
+          <div class="ico">${ui('lupa')}</div>
           <h2>Nada coincide</h2>
           <p>Prueba a quitar algún filtro o a buscar otra cosa.</p>
           <div class="acts"><button class="btn" data-clear="1">Quitar filtros</button></div>
@@ -2661,7 +2822,7 @@ function bloqueEtiquetas() {
     const dentro = tagsDeCarpeta(c.id);
     return `<button class="crow ${abierta ? 'abierta' : ''}" data-carp="${esc(c.id)}">
         <span class="ci"><span class="tgbadge" style="width:30px;height:30px;background:${esc(c.colorHex)}22;">${iconoHtml(c, 18)}</span></span>
-        <span class="ct">${esc(c.name)}</span><span class="cn">${dentro.length} ${abierta ? '▾' : '▸'}</span>
+        <span class="ct">${esc(c.name)}</span><span class="cn">${dentro.length} ${abierta ? ui('abajo') : ui('derecha')}</span>
       </button>${abierta ? dentro.map(t => filaTag(t, true)).join('') || `<div class="aexp"><div class="irow"><div class="ii"><div class="it" style="font-weight:500;color:var(--fg-mute);">Carpeta vacía.</div></div></div></div>` : ''}`;
   }).join('')}${sueltas.map(t => filaTag(t, false)).join('')}</div>`;
 }
@@ -2677,7 +2838,7 @@ function filaElemento(it) {
     <div class="ip">${portada(it.coverUrl, TYPE_ICON[it.type], true)}</div>
     <div class="ii">
       <div class="it">${esc(it.title)}</div>
-      <div class="ig">${y ? `<span class="gchip">📅 ${y}</span>` : ''}<span class="gchip">${TYPE_ICON[it.type]} ${TYPE_LABEL[it.type]}</span>${it.archived ? `<span class="gchip apagado">📦 Archivado</span>` : ''}</div>
+      <div class="ig">${y ? `<span class="gchip">${ui('calendario')} ${y}</span>` : ''}<span class="gchip">${TYPE_ICON[it.type]} ${TYPE_LABEL[it.type]}</span>${it.archived ? `<span class="gchip apagado">${ui('archivo')} Archivado</span>` : ''}</div>
     </div>
     ${it.spotifyUrl ? `<button class="spotbtn" data-spot="${esc(it.spotifyUrl)}" title="Abrir en Spotify" aria-label="Abrir en Spotify">${ICO_SPOT}</button>` : ''}
   </div>`;
@@ -2702,7 +2863,7 @@ function pintarArtistas() {
     : `<div class="card">${visibles.map(g => {
         const abierto = ARTISTAS_ABIERTOS.has(g.clave);
         return `<button class="crow ${abierto ? 'abierta' : ''}" data-art="${esc(g.clave)}">
-          <span class="ci">${abierto ? '▾' : '👤'}</span><span class="ct">${esc(g.nombre)}</span><span class="cn">${g.items.length}</span>
+          <span class="ci">${abierto ? ui('abajo') : ui('persona')}</span><span class="ct">${esc(g.nombre)}</span><span class="cn">${g.items.length}</span>
         </button>${abierto ? `<div class="aexp">${g.items.slice().sort(ordenDentroDeArtista).map(filaElemento).join('')}</div>` : ''}`;
       }).join('')}</div>`)
     + (restan > 0 ? `<div class="masart" id="masArt">Cargando ${Math.min(restan, 120).toLocaleString('es-ES')} más…</div>` : '');
@@ -2734,21 +2895,21 @@ function renderInicio() {
   box.innerHTML = `
     <h1>MusicVault</h1>
     <div class="tiles">
-      <button class="tile t3" data-ira="all"><div class="top"><span class="ico">🗄️</span><span class="n">${vivos.length.toLocaleString('es-ES')}</span></div><div class="l">Todo</div></button>
-      <button class="tile t2" data-ira="listened"><div class="top"><span class="ico">✓</span><span class="n">${escuchados.toLocaleString('es-ES')}</span></div><div class="l">Escuchados</div></button>
-      <button class="tile t4" data-ira="sintag"><div class="top"><span class="ico">🏷️</span><span class="n">${sinEtiqueta.toLocaleString('es-ES')}</span></div><div class="l">Sin etiqueta</div></button>
-      <button class="tile t1" data-ira="pending"><div class="top"><span class="ico">◎</span><span class="n">${(contables.length - escuchados).toLocaleString('es-ES')}</span></div><div class="l">Pendientes</div></button>
+      <button class="tile t3" data-ira="all"><div class="top"><span class="ico">${ui('baul')}</span><span class="n">${vivos.length.toLocaleString('es-ES')}</span></div><div class="l">Todo</div></button>
+      <button class="tile t2" data-ira="listened"><div class="top"><span class="ico">${ui('visto')}</span><span class="n">${escuchados.toLocaleString('es-ES')}</span></div><div class="l">Escuchados</div></button>
+      <button class="tile t4" data-ira="sintag"><div class="top"><span class="ico">${ui('etiqueta')}</span><span class="n">${sinEtiqueta.toLocaleString('es-ES')}</span></div><div class="l">Sin etiqueta</div></button>
+      <button class="tile t1" data-ira="pending"><div class="top"><span class="ico">${ui('circulo')}</span><span class="n">${(contables.length - escuchados).toLocaleString('es-ES')}</span></div><div class="l">Pendientes</div></button>
     </div>
 
     <h2>Acciones</h2>
     <div class="card">
-      <button class="crow" data-acc="buscar"><span class="ci">🔍</span><span class="ct">Buscar en Spotify</span></button>
-      <button class="crow" data-acc="pegar"><span class="ci">🔗</span><span class="ct">Pegar enlaces</span></button>
-      <button class="crow" data-acc="azar"><span class="ci">🎲</span><span class="ct">Abrir uno al azar</span></button>
-      <button class="crow" data-acc="autotag"><span class="ci">✨</span><span class="ct">Etiquetar automáticamente</span></button>
-      <button class="crow" data-acc="anyos"><span class="ci">📅</span><span class="ct">Revisar años mal puestos</span></button>
-      <button class="crow" data-acc="lote"><span class="ci">✏️</span><span class="ct">Editar en lote</span></button>
-      <button class="crow" data-acc="stats"><span class="ci">📊</span><span class="ct">Estadísticas</span></button>
+      <button class="crow" data-acc="buscar"><span class="ci">${ui('lupa')}</span><span class="ct">Buscar en Spotify</span></button>
+      <button class="crow" data-acc="pegar"><span class="ci">${ui('enlace')}</span><span class="ct">Pegar enlaces</span></button>
+      <button class="crow" data-acc="azar"><span class="ci">${ui('dado')}</span><span class="ct">Abrir uno al azar</span></button>
+      <button class="crow" data-acc="autotag"><span class="ci">${ui('destello')}</span><span class="ct">Etiquetar automáticamente</span></button>
+      <button class="crow" data-acc="anyos"><span class="ci">${ui('calendario')}</span><span class="ct">Revisar años mal puestos</span></button>
+      <button class="crow" data-acc="lote"><span class="ci">${ui('lapiz')}</span><span class="ct">Editar en lote</span></button>
+      <button class="crow" data-acc="stats"><span class="ci">${ui('barras')}</span><span class="ct">Estadísticas</span></button>
     </div>
 
     <h2>Etiquetas</h2>
@@ -2756,7 +2917,7 @@ function renderInicio() {
 
     <h2>Artistas <span class="h2n">${artistas.length.toLocaleString('es-ES')}</span></h2>
     ${!artistas.length ? `<p class="lede">Cuando guardes discos o canciones, aquí aparecerán sus artistas para desplegarlos.</p>` : `
-    <div class="buscaart"><span class="mag">🔍</span><input type="text" id="buscaArtista" placeholder="Buscar artista…" value="${esc(FILTRO_ARTISTA)}" autocomplete="off"></div>
+    <div class="buscaart"><span class="mag">${ui('lupa')}</span><input type="text" id="buscaArtista" placeholder="Buscar artista…" value="${esc(FILTRO_ARTISTA)}" autocomplete="off"></div>
     <div id="zonaArtistas"></div>`}
   `;
   pintarArtistas();
@@ -2975,7 +3136,7 @@ function openPapelera() {
   purgarPapelera();
   const lista = TRASH.slice().sort((a, b) => b.deletedAt - a.deletedAt);
   showSheet(`
-    <div class="sheethead"><h2>Papelera</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="sheethead"><h2>Papelera</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     <p class="lede">Lo que borres se queda aquí 7 días antes de irse del todo, por si acaso. Solo en este dispositivo — no se sincroniza con los demás.</p>
     ${lista.length ? `<div class="list">${lista.map(it => `
       <article class="lrow" data-id="${it.id}">
@@ -2999,14 +3160,14 @@ function openPapelera() {
 function openAutoAdded() {
   const lista = ITEMS.filter(i => i.autoAdded && !i.archived).sort((a, b) => b.dateAdded - a.dateAdded);
   showSheet(`
-    <div class="sheethead"><h2>Añadidas automáticamente</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="sheethead"><h2>Añadidas automáticamente</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     <p class="lede">Todo lo que se añadió solo porque sonó en tu Spotify, no porque tú lo guardaras. Revisa y borra lo que no sea lo que creías escuchar.</p>
     ${lista.length ? `<div class="list">${lista.map(it => `
       <article class="lrow" data-id="${it.id}">
         <div class="lart">${portada(it.coverUrl, TYPE_ICON[it.type], true)}</div>
         <div class="linfo"><div class="lt">${esc(it.title)}</div><div class="la">${esc(artistsOf(it))} · ${relDate(it.dateAdded)}</div></div>
-        <button class="xbtn" data-quitarauto="${it.id}" aria-label="Ya no es automática">✓</button>
-        <button class="xbtn" data-delauto="${it.id}" aria-label="Eliminar">✕</button>
+        <button class="xbtn" data-quitarauto="${it.id}" aria-label="Ya no es automática">${ui('visto')}</button>
+        <button class="xbtn" data-delauto="${it.id}" aria-label="Eliminar">${ui('cerrar')}</button>
       </article>`).join('')}</div>` : `<p class="lede" style="margin:0;">No hay nada añadido automáticamente ahora mismo.</p>`}
   `);
   document.querySelector('#modalRoot .list')?.addEventListener('click', e => {
@@ -3118,17 +3279,17 @@ function openSearch() {
   searchType = 'album';
   searchSelMode = false; searchSel = new Set(); searchSortMode = 'relevance';
   showSheet(`
-    <div class="sheethead"><h2>Buscar en Spotify</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="sheethead"><h2>Buscar en Spotify</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     <div class="segrow" id="segs">
-      <button class="seg on" data-t="album">💿 Álbumes</button>
-      <button class="seg" data-t="track">🎵 Canciones</button>
-      <button class="seg" data-t="artist">🎤 Artistas</button>
-      <button class="seg" data-t="playlist">📑 Playlists</button>
+      <button class="seg on" data-t="album">${ui('disco')} Álbumes</button>
+      <button class="seg" data-t="track">${ui('nota')} Canciones</button>
+      <button class="seg" data-t="artist">${ui('micro')} Artistas</button>
+      <button class="seg" data-t="playlist">${ui('lista')} Playlists</button>
     </div>
     <input type="text" class="field" id="sq" placeholder="Título, artista, o pega un enlace (álbum, canción, artista o playlist)" autocomplete="off">
     <div style="display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 2px;">
-      <button class="pillbtn" id="bulkLink">📋 Pegar varios enlaces</button>
-      <button class="pillbtn" id="manualLink">🔗 Añadir enlace externo</button>
+      <button class="pillbtn" id="bulkLink">${ui('portapapeles')} Pegar varios enlaces</button>
+      <button class="pillbtn" id="manualLink">${ui('enlace')} Añadir enlace externo</button>
     </div>
     <div id="sres" style="margin-top:12px;"></div>
   `);
@@ -3197,8 +3358,8 @@ async function runSearch() {
         <p>Sin resultados para “${esc(q)}” en Spotify.</p>
         <p class="lede" style="margin-top:10px;">Prueba a buscarlo en otro sitio y pega el enlace con "Añadir enlace externo":</p>
         <div class="acts" style="flex-wrap:wrap;">
-          <a class="btn" href="https://music.youtube.com/search?q=${encodeURIComponent(q)}" target="_blank" rel="noopener">Buscar en YouTube Music ↗</a>
-          <a class="btn" href="https://music.apple.com/search?term=${encodeURIComponent(q)}" target="_blank" rel="noopener">Buscar en Apple Music ↗</a>
+          <a class="btn" href="https://music.youtube.com/search?q=${encodeURIComponent(q)}" target="_blank" rel="noopener">Buscar en YouTube Music ${ui('fuera')}</a>
+          <a class="btn" href="https://music.apple.com/search?term=${encodeURIComponent(q)}" target="_blank" rel="noopener">Buscar en Apple Music ${ui('fuera')}</a>
         </div>
       </div>`;
       document.getElementById('searchSelBar')?.remove();
@@ -3247,7 +3408,7 @@ function rrow(r, i) {
   }
   return `<div class="rrow">
     ${info}
-    <button class="addbtn ${saved ? 'done' : ''}" data-add="${i}" aria-label="${saved ? 'Ya guardado' : 'Guardar'}">${saved ? '✓' : '＋'}</button>
+    <button class="addbtn ${saved ? 'done' : ''}" data-add="${i}" aria-label="${saved ? 'Ya guardado' : 'Guardar'}">${saved ? ui('visto') : ui('mas')}</button>
   </div>`;
 }
 
@@ -3375,15 +3536,15 @@ function openBulk() {
 
 function bulkModeSegsHtml() {
   return `<div class="segrow" id="bulkSegs">
-      <button class="seg" data-t="back">🔎 Buscar</button>
-      <button class="seg ${bulkInputMode === 'links' ? 'on' : ''}" data-t="links">🔗 Por enlaces</button>
-      <button class="seg ${bulkInputMode === 'names' ? 'on' : ''}" data-t="names">🔤 Por nombre</button>
+      <button class="seg" data-t="back">${ui('lupa')} Buscar</button>
+      <button class="seg ${bulkInputMode === 'links' ? 'on' : ''}" data-t="links">${ui('enlace')} Por enlaces</button>
+      <button class="seg ${bulkInputMode === 'names' ? 'on' : ''}" data-t="names">${ui('tipo')} Por nombre</button>
     </div>`;
 }
 
 function bulkLinksHtml() {
   return `
-    <div class="sheethead"><h2>Pegar enlaces</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="sheethead"><h2>Pegar enlaces</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     ${bulkModeSegsHtml()}
     <p class="lede">Pega álbumes, canciones, artistas o <strong>playlists enteras</strong> — separados por líneas, espacios o mezclados con texto. Los encuentro todos y me salto los que ya tienes. No hay límite: si pegas miles, los va subiendo por lotes.</p>
     <textarea class="field tall" id="bulkIn" placeholder="https://open.spotify.com/playlist/...
@@ -3392,13 +3553,13 @@ https://open.spotify.com/artist/..."></textarea>
 
     <div class="flabel">De las playlists, guardar…</div>
     <div class="segrow" id="plMode">
-      <button class="seg ${playlistMode === 'tracks' ? 'on' : ''}" data-m="tracks">🎵 Sus canciones</button>
-      <button class="seg ${playlistMode === 'albums' ? 'on' : ''}" data-m="albums">💿 Sus álbumes</button>
+      <button class="seg ${playlistMode === 'tracks' ? 'on' : ''}" data-m="tracks">${ui('nota')} Sus canciones</button>
+      <button class="seg ${playlistMode === 'albums' ? 'on' : ''}" data-m="albums">${ui('disco')} Sus álbumes</button>
     </div>
 
     <div class="btnrow">
       <button class="btn primary wide" id="bulkGo" ${_bulkCorriendo ? 'disabled' : ''}>${_bulkCorriendo ? 'Subiendo…' : 'Añadir al vault'}</button>
-      <button class="btn" id="bulkFileBtn" title="Cargar una lista de enlaces desde un archivo">📄 Archivo</button>
+      <button class="btn" id="bulkFileBtn" title="Cargar una lista de enlaces desde un archivo">${ui('documento')} Archivo</button>
     </div>
     <input type="file" id="bulkFile" accept=".txt,.json,.csv,text/plain,application/json" class="hidden">
     <div id="bulkOut" style="margin-top:14px;font-size:13.5px;color:var(--fg-soft);line-height:1.6;">${_bulkCorriendo ? 'Sigue subiendo lo que pegaste antes de cerrar este panel…' : ''}</div>
@@ -3407,14 +3568,14 @@ https://open.spotify.com/artist/..."></textarea>
 
 function bulkNamesHtml() {
   return `
-    <div class="sheethead"><h2>Añadir por nombre</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="sheethead"><h2>Añadir por nombre</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     ${bulkModeSegsHtml()}
     <p class="lede">Un título por línea. Busco cada uno en Spotify y guardo la coincidencia más probable — <strong>revisa el resultado después</strong>: acierto el título casi siempre, pero no siempre la versión exacta (directo, remaster, banda sonora…). Para eso mejor un enlace.</p>
     <div class="flabel">Buscar cada línea como…</div>
     <div class="segrow" id="bulkNameSeg">
-      <button class="seg ${bulkNameType === 'track' ? 'on' : ''}" data-nt="track">🎵 Canción</button>
-      <button class="seg ${bulkNameType === 'album' ? 'on' : ''}" data-nt="album">💿 Álbum</button>
-      <button class="seg ${bulkNameType === 'artist' ? 'on' : ''}" data-nt="artist">🎤 Artista</button>
+      <button class="seg ${bulkNameType === 'track' ? 'on' : ''}" data-nt="track">${ui('nota')} Canción</button>
+      <button class="seg ${bulkNameType === 'album' ? 'on' : ''}" data-nt="album">${ui('disco')} Álbum</button>
+      <button class="seg ${bulkNameType === 'artist' ? 'on' : ''}" data-nt="artist">${ui('micro')} Artista</button>
     </div>
     <textarea class="field tall" id="bulkNames" placeholder="Bohemian Rhapsody
 Hotel California
@@ -3422,7 +3583,7 @@ Imagine"></textarea>
 
     <div class="btnrow">
       <button class="btn primary wide" id="bulkGo" ${_bulkCorriendo ? 'disabled' : ''}>${_bulkCorriendo ? 'Buscando…' : 'Buscar y añadir'}</button>
-      <button class="btn" id="bulkFileBtn" title="Cargar una lista de títulos desde un archivo">📄 Archivo</button>
+      <button class="btn" id="bulkFileBtn" title="Cargar una lista de títulos desde un archivo">${ui('documento')} Archivo</button>
     </div>
     <input type="file" id="bulkFile" accept=".txt,text/plain" class="hidden">
     <div id="bulkOut" style="margin-top:14px;font-size:13.5px;color:var(--fg-soft);line-height:1.6;">${_bulkCorriendo ? 'Sigue buscando lo que pegaste antes de cerrar este panel…' : ''}</div>
@@ -3485,7 +3646,7 @@ async function runBulk() {
   const go = document.getElementById('bulkGo');
   if (_bulkCorriendo) { out.innerHTML = 'Ya hay una subida en marcha (la empezaste antes de cerrar este panel). Espera a que termine.'; return; }
   if (!isConnected()) {
-    out.innerHTML = 'Este dispositivo aún no está conectado con Spotify. La conexión es por dispositivo: ve a ⚙ Ajustes y conéctate también aquí.';
+    out.innerHTML = 'Este dispositivo aún no está conectado con Spotify. La conexión es por dispositivo: ve a Ajustes y conéctate también aquí.';
     return;
   }
   const text = document.getElementById('bulkIn').value;
@@ -3616,7 +3777,7 @@ async function runBulk() {
   if (fail) bits.push(`${fail} fallaron`);
   if (encoladas) bits.push(`<strong>${encoladas.toLocaleString('es-ES')}</strong> en cola`);
   out.innerHTML = bits.join(' · ')
-    + (bloqueado ? `<br><span style="color:var(--fg-mute);font-size:12.5px;">Spotify ha puesto un límite temporal por tantas peticiones seguidas (parece que va para largo — más de ${tiempoEsperaTexto()}). Lo que falta se ha guardado y esta app lo irá añadiendo sola, poco a poco, cada vez que la abras — no hace falta que hagas nada más. Puedes ver el progreso en ⚙ Ajustes → Cola de importación.</span>` : '')
+    + (bloqueado ? `<br><span style="color:var(--fg-mute);font-size:12.5px;">Spotify ha puesto un límite temporal por tantas peticiones seguidas (parece que va para largo — más de ${tiempoEsperaTexto()}). Lo que falta se ha guardado y esta app lo irá añadiendo sola, poco a poco, cada vez que la abras — no hace falta que hagas nada más. Puedes ver el progreso en Ajustes → Cola de importación.</span>` : '')
     + (notes.length ? `<br><span style="color:var(--fg-mute);font-size:12.5px;">${notes.map(esc).join('<br>')}</span>` : '')
     + (necesitaReconectarPlaylist ? `<div class="btnrow"><button class="btn primary wide" data-reconnect="1">Reconectar con Spotify</button></div>` : '');
   if (added) toast(`${added} añadido${added === 1 ? '' : 's'} al vault`);
@@ -3727,7 +3888,7 @@ async function runBulkByName() {
   const go = document.getElementById('bulkGo');
   if (_bulkCorriendo) { out.innerHTML = 'Ya hay una subida en marcha (la empezaste antes de cerrar este panel). Espera a que termine.'; return; }
   if (!isConnected()) {
-    out.innerHTML = 'Este dispositivo aún no está conectado con Spotify. La conexión es por dispositivo: ve a ⚙ Ajustes y conéctate también aquí.';
+    out.innerHTML = 'Este dispositivo aún no está conectado con Spotify. La conexión es por dispositivo: ve a Ajustes y conéctate también aquí.';
     return;
   }
   const lineas = [...new Set(document.getElementById('bulkNames').value.split('\n').map(s => s.trim()).filter(Boolean))];
@@ -3828,18 +3989,18 @@ async function rellenarDesdeYoutube() {
 function openManualAdd() {
   manualType = 'album';
   showSheet(`
-    <div class="sheethead"><h2>Enlace externo</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="sheethead"><h2>Enlace externo</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     <div class="segrow" id="manSegs">
-      <button class="seg" data-t="back">🔎 Buscar</button>
-      <button class="seg on" data-t="manual">🔗 Externo</button>
+      <button class="seg" data-t="back">${ui('lupa')} Buscar</button>
+      <button class="seg on" data-t="manual">${ui('enlace')} Externo</button>
     </div>
     <p class="lede">Para lo que no está en Spotify: un concierto en YouTube, un disco que solo existe en Bandcamp, SoundCloud… Rellena lo que sepas — luego se edita como cualquier otro elemento del vault. Si pegas un enlace de YouTube, intento rellenar el título y la miniatura por ti.</p>
 
     <div class="flabel">Tipo</div>
     <div class="segrow" id="manType">
-      <button class="seg on" data-mt="album">💿 Álbum</button>
-      <button class="seg" data-mt="track">🎵 Canción</button>
-      <button class="seg" data-mt="artist">🎤 Artista</button>
+      <button class="seg on" data-mt="album">${ui('disco')} Álbum</button>
+      <button class="seg" data-mt="track">${ui('nota')} Canción</button>
+      <button class="seg" data-mt="artist">${ui('micro')} Artista</button>
     </div>
     <input class="field mono" id="manUrl" placeholder="Enlace (YouTube, Bandcamp...) *" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" style="margin-bottom:8px;">
     <input class="field" id="manTitle" placeholder="Título *" style="margin-bottom:8px;">
@@ -3914,12 +4075,12 @@ function aniversarioTexto(it) {
   const b = new Date(2000, hoy.getMonth(), hoy.getDate()).getTime();
   const diffDias = Math.abs(a - b) / 86400000;
   if (Math.min(diffDias, 365 - diffDias) > 3) return null;
-  return `🎉 Hace ${years} año${years === 1 ? '' : 's'}`;
+  return `${ui('confeti')} Hace ${years} año${years === 1 ? '' : 's'}`;
 }
 function repasoTexto(it) {
   if (!it.listened || !it.listenedAt) return null;
   if (Date.now() - it.listenedAt < 180 * 86400000) return null;
-  return `🔁 ${relDate(it.listenedAt)} sin escucharlo`;
+  return `${ui('repetir')} ${relDate(it.listenedAt)} sin escucharlo`;
 }
 
 // el único 5 estrellas de ese artista entre lo que no está archivado —
@@ -3930,7 +4091,7 @@ function esFavoritoUnico(it) {
   const artistaFold = fold(artistsOf(it));
   if (!artistaFold) return null;
   const hayOtro = ITEMS.some(x => x.id !== it.id && !x.archived && x.rating === 5 && fold(artistsOf(x)) === artistaFold);
-  return hayOtro ? null : `⭐ Tu favorito de ${artistsOf(it)}`;
+  return hayOtro ? null : `${ui('estrella')} Tu favorito de ${artistsOf(it)}`;
 }
 
 // cada nombre de artista se enlaza a su ficha SI ese artista ya está
@@ -3959,14 +4120,14 @@ function openDetail(id) {
   if (!it) return;
   const y = yearOf(it);
   showSheet(`
-    <div class="sheethead"><h2>${TYPE_ICON[it.type]} ${TYPE_LABEL[it.type]}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="sheethead"><h2>${TYPE_ICON[it.type]} ${TYPE_LABEL[it.type]}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     <div class="dwrap">
       <div class="dart">${portada(it.coverUrl, TYPE_ICON[it.type], false)}</div>
       <div>
         <h3 class="dtitle">${esc(it.title)}</h3>
         <p class="dartist">${artistLinksHtml(it)}</p>
         <div class="dfacts">
-          ${it.archived ? `<span class="fact">📦 Archivado</span>` : ''}
+          ${it.archived ? `<span class="fact">${ui('archivo')} Archivado</span>` : ''}
           ${y ? `<span class="fact">${y}</span>` : ''}
           ${fmtDur(it.durationMs) ? `<span class="fact">${fmtDur(it.durationMs)}</span>` : ''}
           ${it.albumType ? `<span class="fact">${esc(ALBUM_TYPE_ES[it.albumType] || it.albumType)}</span>` : ''}
@@ -3974,11 +4135,11 @@ function openDetail(id) {
           ${aniversarioTexto(it) ? `<span class="fact">${esc(aniversarioTexto(it))}</span>` : ''}
           ${repasoTexto(it) ? `<span class="fact">${esc(repasoTexto(it))}</span>` : ''}
           ${esFavoritoUnico(it) ? `<span class="fact accent">${esc(esFavoritoUnico(it))}</span>` : ''}
-          ${it.roto ? `<span class="fact" style="color:var(--rust);border-color:color-mix(in srgb, var(--rust) 40%, transparent);">⚠️ Ya no está en Spotify</span>` : ''}
-          ${it.autoAdded ? `<span class="fact" title="Se añadió sola porque sonó en tu Spotify, no la guardaste tú a mano">🤖 Añadida automáticamente</span>` : ''}
+          ${it.roto ? `<span class="fact" style="color:var(--rust);border-color:color-mix(in srgb, var(--rust) 40%, transparent);">${ui('aviso')} Ya no está en Spotify</span>` : ''}
+          ${it.autoAdded ? `<span class="fact" title="Se añadió sola porque sonó en tu Spotify, no la guardaste tú a mano">${ui('robot')} Añadida automáticamente</span>` : ''}
         </div>
         ${it.type !== 'artist' ? `<div class="btnrow">
-          <button class="btn ${it.listened ? 'jade' : ''} wide" id="dListen">${it.listened ? '✓ Ya escuchado' : 'Marcar como escuchado'}</button>
+          <button class="btn ${it.listened ? 'jade' : ''} wide" id="dListen">${it.listened ? `${ui('visto')} Ya escuchado` : 'Marcar como escuchado'}</button>
         </div>` : ''}
       </div>
     </div>
@@ -4003,6 +4164,9 @@ function openDetail(id) {
       </span>
     </div>
     <div id="dMeta">${metaTableHtml(it)}</div>
+    ${bloquePopularidad(it)}
+    ${bloqueDeDonde(it)}
+    ${bloqueEnTuVault(it)}
 
     <div class="flabel" id="secNotas">Notas</div>
     <textarea class="field" id="dNotes" placeholder="¿Por qué lo guardaste? ¿Quién te lo recomendó?">${esc(it.notes || '')}</textarea>
@@ -4013,8 +4177,8 @@ function openDetail(id) {
     <div class="flabel" id="secTags" style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
       <span>Etiquetas</span>
       <span style="display:flex;gap:8px;">
-        <button class="linkbtn" id="dNewTag">＋ Etiqueta</button>
-        <button class="linkbtn" id="dNewCarp">📁 Carpeta</button>
+        <button class="linkbtn" id="dNewTag">${ui('mas')} Etiqueta</button>
+        <button class="linkbtn" id="dNewCarp">${ui('carpeta')} Carpeta</button>
       </span>
     </div>
     <div id="dTags"></div>
@@ -4024,9 +4188,22 @@ function openDetail(id) {
       const genero = it.genres?.[0] || null;
       const ultima = ultimaEscuchaDeArtista(it);
       return `<div class="flabel">En tu vault</div>
-      ${ultima && (Date.now() - ultima) > 90 * 86400000 ? `<p class="lede" style="margin:0 0 6px;">🔁 No escuchas nada suyo desde ${relDate(ultima)}.</p>` : ''}
-      <p class="lede" style="margin:0 0 8px;">${r.misAlbumes.length} álbum${r.misAlbumes.length === 1 ? '' : 'es'} y ${r.misCanciones.length} canción${r.misCanciones.length === 1 ? '' : 'es'} guardados${r.total ? ` · ${r.pct}% escuchado (${r.hechos} de ${r.total})` : ''}</p>
-      ${genero ? `<button class="chip genre" data-goargenre="${esc(fold(genero))}" style="margin-bottom:10px;">🎧 ${esc(genero)}</button>` : ''}
+      ${ultima && (Date.now() - ultima) > 90 * 86400000 ? `<p class="lede" style="margin:0 0 6px;">${ui('repetir')} No escuchas nada suyo desde ${relDate(ultima)}.</p>` : ''}
+      ${(() => {
+        const st = statsArtista(it.title);
+        const c = [];
+        const d = (n, l) => c.push('<div class="minidato"><span class="mdn">' + n + '</span><span class="mdl">' + l + '</span></div>');
+        d(r.misAlbumes.length, r.misAlbumes.length === 1 ? 'álbum' : 'álbumes');
+        d(r.misCanciones.length, r.misCanciones.length === 1 ? 'canción' : 'canciones');
+        if (r.total) d(r.pct + '%', 'escuchado');
+        if (st.plays) d(st.plays.toLocaleString('es-ES'), st.plays === 1 ? 'reproducción' : 'reproducciones');
+        if (st.conNota) d(st.media.toFixed(1), 'nota media');
+        if (st.min && st.max) d(st.min === st.max ? st.min : st.min + '–' + st.max, 'años que abarca');
+        return '<div class="minidatos">' + c.join('') + '</div>';
+      })()}
+      ${(() => { const st = statsArtista(it.title); return st.masOido && st.masOidoN ? `<p class="lede" style="margin:8px 0 0;">Lo que más le has puesto: <strong>${esc(st.masOido.title)}</strong> (${st.masOidoN} ${st.masOidoN === 1 ? 'vez' : 'veces'}).</p>` : ''; })()}
+      ${(() => { const st = statsArtista(it.title); return st.primero ? `<p class="lede" style="margin:4px 0 8px;">Lo primero suyo lo guardaste ${relDate(st.primero)}.</p>` : '<p class="lede" style="margin:0 0 8px;"></p>'; })()}
+      ${genero ? `<button class="chip genre" data-goargenre="${esc(fold(genero))}" style="margin-bottom:10px;">${ui('cascos')} ${esc(genero)}</button>` : ''}
       ${r.mejorValorado ? `<p class="lede" style="margin:0 0 4px;font-weight:600;">Tu mejor valorado suyo</p><div class="list">${relatedRow(r.mejorValorado, false)}</div>` : ''}
       ${r.cronologia.length > 1 ? `<p class="lede" style="margin:10px 0 4px;font-weight:600;">Cronología</p><div class="tlchrono">${r.cronologia.map(x => `<div class="chronorow" data-openrel="${x.id}"><span class="chronoy">${yearOf(x)}</span><span class="chronot">${esc(x.title)}</span></div>`).join('')}</div>` : ''}
       <div class="btnrow"><button class="btn wide" id="dDisco">Ver su discografía</button></div>
@@ -4055,14 +4232,14 @@ function openDetail(id) {
       <div id="dTracks"><p class="lede" style="margin:0;">Cargando canciones…</p></div>`;
     })() : ''}
     <div class="btnrow" id="secMas">
-      <a class="btn primary wide" href="${esc(it.spotifyUrl)}" target="_blank" rel="noopener">${it.manual ? 'Abrir enlace' : 'Abrir en Spotify'} ↗</a>
-      <button class="btn" id="dCopyLink" title="Copiar enlace" aria-label="Copiar enlace">📋</button>
+      <a class="btn primary wide" href="${esc(it.spotifyUrl)}" target="_blank" rel="noopener">${it.manual ? 'Abrir enlace' : 'Abrir en Spotify'} ${ui('fuera')}</a>
+      <button class="btn" id="dCopyLink" title="Copiar enlace" aria-label="Copiar enlace">${ui('portapapeles')}</button>
     </div>
     ${it.type !== 'artist' ? `<div class="btnrow">
-      <button class="btn wide ${it.prioridad ? 'primary' : ''}" id="dPriority">${it.prioridad ? '📌 Quitar de prioritarios' : '📌 Marcar como prioritario'}</button>
+      <button class="btn wide ${it.prioridad ? 'primary' : ''}" id="dPriority">${ui('chincheta')} ${it.prioridad ? 'Quitar de prioritarios' : 'Marcar como prioritario'}</button>
     </div>` : ''}
     <div class="btnrow">
-      <button class="btn wide" id="dArchive">${it.archived ? '📤 Sacar del archivo' : '📦 Archivar'}</button>
+      <button class="btn wide" id="dArchive">${it.archived ? `${ui('sacar')} Sacar del archivo` : `${ui('archivo')} Archivar`}</button>
     </div>
     <div class="btnrow">
       <button class="btn danger wide" id="dDel">Eliminar del vault</button>
@@ -4105,9 +4282,6 @@ function openDetail(id) {
     cargarSimilares(it);
     cargarBioArtista(it);
     cargarRelacionesMusicBrainz(it);
-    document.querySelector('.tlchrono')?.addEventListener('click', e => {
-      const b = e.target.closest('[data-openrel]'); if (b) openDetail(b.dataset.openrel);
-    });
     document.querySelector('[data-goargenre]')?.addEventListener('click', e => {
       PREFS.genre = e.currentTarget.dataset.goargenre; savePrefs(); closeModal(); render();
     });
@@ -4116,11 +4290,11 @@ function openDetail(id) {
   document.querySelector('.dartist')?.addEventListener('click', e => {
     const b = e.target.closest('[data-goartist]'); if (b) openDetail(b.dataset.goartist);
   });
-  document.getElementById('dRelated')?.addEventListener('click', e => {
-    const b = e.target.closest('[data-openrel]'); if (b) openDetail(b.dataset.openrel);
-  });
-  document.getElementById('dEdiciones')?.addEventListener('click', e => {
-    const b = e.target.closest('[data-openrel]'); if (b) openDetail(b.dataset.openrel);
+  /* Una sola delegacion para toda la hoja: vale para relacionados, ediciones,
+     "de donde sale", copias repetidas y lo que venga despues. */
+  document.querySelector('.sheet')?.addEventListener('click', e => {
+    const b = e.target.closest('[data-openrel]');
+    if (b && b.dataset.openrel !== id) openDetail(b.dataset.openrel);
   });
   if (it.coverUrl) {
     const art = document.querySelector('.dart');
@@ -4181,6 +4355,127 @@ function openDetail(id) {
 }
 
 /* ---- metadatos: ver / editar / refrescar ---- */
+/* ============ informacion ampliada de una ficha ============
+   Todo lo de aqui sale de datos que ya estaban guardados: ni una peticion
+   nueva. Lo caro (recorrer 17.000 elementos) se hace solo al abrir una ficha
+   y se cachea por artista mientras no cambie el vault. */
+
+const K_NACIMIENTO = 'mv_nacimiento';
+const anyoNacimiento = () => { const v = +localStorage.getItem(K_NACIMIENTO); return (v >= 1900 && v <= 2100) ? v : null; };
+
+function edadLanzamiento(it) {
+  const y = yearOf(it);
+  if (!y) return null;
+  const anyos = new Date().getFullYear() - y;
+  if (anyos < 0) return null;
+  let s = anyos === 0 ? 'de este año' : anyos === 1 ? 'hace 1 año' : 'hace ' + anyos + ' años';
+  const nac = anyoNacimiento();
+  if (nac) {
+    const tenias = y - nac;
+    if (tenias < 0) s += ' · antes de que nacieras';
+    else if (tenias === 0) s += ' · el año en que naciste';
+    else s += ' · tenías ' + tenias + (tenias === 1 ? ' año' : ' años');
+  }
+  return s;
+}
+
+/* Los numeros de un artista en TU vault. Se cachea por nombre: abrir la ficha
+   de un artista con 300 cosas suyas no puede costar 17.000 comparaciones cada
+   vez que tocas una estrella. */
+let _cacheArt = new Map(), _cacheArtLen = -1;
+function statsArtista(nombre) {
+  if (_cacheArtLen !== ITEMS.length) { _cacheArt = new Map(); _cacheArtLen = ITEMS.length; }
+  const clave = fold(nombre);
+  if (_cacheArt.has(clave)) return _cacheArt.get(clave);
+  let total = 0, escuchados = 0, plays = 0, suma = 0, conNota = 0, min = 0, max = 0, masOido = null, masOidoN = -1, primero = null;
+  for (const x of ITEMS) {
+    if (x.type === 'artist' || x.archived) continue;
+    if (!(x.artists || []).some(a => fold(a) === clave)) continue;
+    total++;
+    if (x.listened) escuchados++;
+    const n = totalPlays(x) + Object.values(x.trackPlays || {}).reduce((s, p) => s + p.length, 0);
+    plays += n;
+    if (n > masOidoN) { masOidoN = n; masOido = x; }
+    if (x.rating > 0) { suma += x.rating; conNota++; }
+    const y = yearOf(x);
+    if (y) { if (!min || y < min) min = y; if (y > max) max = y; }
+    if (!primero || x.dateAdded < primero) primero = x.dateAdded;
+  }
+  const r = { total, escuchados, plays, media: conNota ? suma / conNota : 0, conNota, min, max, masOido, masOidoN, primero };
+  _cacheArt.set(clave, r);
+  return r;
+}
+
+/* En que puesto queda por reproducciones entre todo lo que tienes. Solo se
+   calcula si de verdad tiene reproducciones: si no, la frase no dice nada. */
+let _rankPlays = null, _rankLen = -1;
+function puestoPorPlays(it) {
+  const mias = totalPlays(it);
+  if (!mias) return null;
+  if (!_rankPlays || _rankLen !== ITEMS.length) {
+    _rankPlays = ITEMS.filter(x => x.type !== 'artist' && totalPlays(x) > 0).map(x => totalPlays(x)).sort((a, b) => b - a);
+    _rankLen = ITEMS.length;
+  }
+  const pos = _rankPlays.findIndex(n => n <= mias) + 1;
+  return pos > 0 ? { pos, de: _rankPlays.length } : null;
+}
+
+/* Otras copias de la misma cancion en el vault: la del single, la del album,
+   la del recopilatorio. Util para ver duplicados sin buscarlos a mano. */
+function otrasCopias(it) {
+  if (it.type !== 'track') return [];
+  const t = fold(it.title), a = fold(principalDe(it));
+  return ITEMS.filter(x => x !== it && x.type === 'track' && !x.archived && fold(x.title) === t && fold(principalDe(x)) === a);
+}
+
+/* El bloque visual. Va debajo de los metadatos en todas las fichas. */
+/* El album del que sale una cancion, y el artista, si los tienes guardados.
+   Se busca por id de Spotify primero (exacto) y por nombre despues. */
+function bloqueDeDonde(it) {
+  const filas = [];
+  if (it.type === 'track' && it.albumName) {
+    const alb = itemPorSpotifyId(it.albumId)
+      || ITEMS.find(x => x.type === 'album' && fold(x.title) === fold(it.albumName) && fold(principalDe(x)) === fold(principalDe(it)));
+    if (alb && alb !== it) filas.push(relatedRow(alb, false));
+  }
+  if (it.type !== 'artist') {
+    const nom = fold(principalDe(it));
+    const art = nom ? ITEMS.find(x => x.type === 'artist' && fold(x.title) === nom) : null;
+    if (art) filas.push(relatedRow(art, false));
+  }
+  if (!filas.length) return '';
+  return '<div class="flabel">De dónde sale</div><div class="list">' + filas.join('') + '</div>';
+}
+
+function bloqueEnTuVault(it) {
+  if (it.type === 'artist') return '';
+  const st = statsArtista(principalDe(it));
+  const rank = puestoPorPlays(it);
+  const copias = otrasCopias(it);
+  const propias = totalPlays(it);
+  const cifras = [];
+  const dato = (n, l) => cifras.push('<div class="minidato"><span class="mdn">' + n + '</span><span class="mdl">' + l + '</span></div>');
+  if (propias) dato(propias + (propias >= TOPE_PLAYS ? '+' : ''), propias === 1 ? 'reproducción' : 'reproducciones');
+  if (rank) dato('nº ' + rank.pos, 'de tus ' + rank.de.toLocaleString('es-ES') + ' más oídos');
+  if (it.rating) dato('★'.repeat(it.rating), 'tu nota');
+  if (st.total > 1) dato(st.total.toLocaleString('es-ES'), 'cosas de ' + esc(principalDe(it)));
+  if (st.total > 1 && st.escuchados) dato(Math.round(st.escuchados / st.total * 100) + '%', 'suyo escuchado');
+  if (st.conNota > 1) dato(st.media.toFixed(1), 'nota media suya');
+  if (!cifras.length && !copias.length) return '';
+  return '<div class="flabel">En tu vault</div>'
+    + (cifras.length ? '<div class="minidatos">' + cifras.join('') + '</div>' : '')
+    + (st.min && st.max && st.min !== st.max ? '<p class="lede" style="margin:8px 0 0;">De ' + esc(principalDe(it)) + ' tienes música de ' + st.min + ' a ' + st.max + '.</p>' : '')
+    + (copias.length ? '<p class="lede" style="margin:8px 0 4px;">La misma canción la tienes ' + (copias.length + 1) + ' veces:</p><div class="list">'
+        + copias.slice(0, 5).map(c => relatedRow(c, false)).join('') + '</div>' : '');
+}
+
+/* La popularidad, con barra. Es el dato de Spotify que mas cuesta leer suelto. */
+function bloquePopularidad(it) {
+  if (typeof it.popularity !== 'number') return '';
+  const que = it.type === 'artist' ? 'Cuánto se escucha al artista' : 'Cuánto se escucha esto';
+  return '<div class="flabel">' + que + '</div>' + popularidadHtml(it.popularity)
+    + (it.followers ? '<p class="lede" style="margin:6px 0 0;">' + it.followers.toLocaleString('es-ES') + ' seguidores en Spotify.</p>' : '');
+}
 function metaTableHtml(it) {
   const rows = metaPairs(it);
   return `<dl class="metalist">${rows.map(([k, v]) =>
@@ -4593,6 +4888,246 @@ async function cargarTracksAlbum(it) {
   }
 }
 
+/* ============ ficha de una cancion dentro de un album ============
+   La lista de canciones de un album viene de Spotify en objetos "simplificados":
+   traen titulo, artistas, duracion, numero de pista y poco mas. Lo que falta
+   (popularidad, ISRC) se pide solo cuando abres la cancion, una vez, y se
+   guarda en memoria mientras la app siga abierta. */
+const _pistaExtra = new Map();     // id de Spotify -> objeto completo de /tracks/{id}
+const _pistaLastfm = new Map();    // "artista|cancion" -> datos de Last.fm
+
+/* Un indice de una sola pasada: comprobar 30 pistas contra 17.000 elementos
+   con find() serian medio millon de comparaciones por repintado. */
+let _porSpotifyId = null, _idxSpRef = null, _idxSpLen = -1;
+function itemPorSpotifyId(id) {
+  if (!_porSpotifyId || _idxSpRef !== ITEMS || _idxSpLen !== ITEMS.length) {
+    _porSpotifyId = new Map();
+    for (const x of ITEMS) if (x.spotifyId && !_porSpotifyId.has(x.spotifyId)) _porSpotifyId.set(x.spotifyId, x);
+    _idxSpRef = ITEMS; _idxSpLen = ITEMS.length;
+  }
+  return id ? _porSpotifyId.get(id) : undefined;
+}
+
+/* Si ya la tienes suelta, la ficha buena es la suya. Se busca por id y, si no,
+   por titulo+artista: la misma cancion en otra edicion del album lleva otro id. */
+function pistaEnVault(tr) {
+  const porId = itemPorSpotifyId(tr.id);
+  if (porId) return porId;
+  const nt = fold(tr.name || ''), na = fold((tr.artists || []).map(a => a.name).join(', '));
+  if (!nt) return null;
+  return ITEMS.find(i => i.type === 'track' && fold(i.title) === nt && fold(artistsOf(i)) === na) || null;
+}
+
+/* Una pista de la lista de un album no trae su album dentro: se le pega el del
+   album desde el que la estas mirando, que es exactamente el mismo. */
+function itemDesdePista(alb, tr) {
+  const raw = Object.assign({}, tr, {
+    album: {
+      name: alb.title, id: alb.spotifyId,
+      images: alb.coverUrl ? [{ url: alb.coverUrl }] : [],
+      release_date: alb.releaseDate, album_type: alb.albumType, total_tracks: alb.totalTracks
+    }
+  });
+  const nuevo = makeItem(normalize(raw, 'track'));
+  if (!nuevo.coverUrl) nuevo.coverUrl = alb.coverUrl || null;
+  if (!nuevo.genres && alb.genres?.length) nuevo.genres = alb.genres.slice();
+  if (!nuevo.label && alb.label) nuevo.label = alb.label;
+  const ex = _pistaExtra.get(tr.id);
+  if (ex) {
+    if (typeof ex.popularity === 'number') nuevo.popularity = ex.popularity;
+    if (ex.external_ids?.isrc) nuevo.isrc = ex.external_ids.isrc;
+  }
+  return nuevo;
+}
+
+function openPista(albId, i) {
+  const alb = ITEMS.find(x => x.id === albId);
+  if (!alb) return;
+  const tr = (_tracklistCache && _tracklistCache.albumId === alb.spotifyId) ? _tracklistCache.items[i] : null;
+  if (!tr) { toast('Esa canción ya no está cargada'); return; }
+  const mia = pistaEnVault(tr);
+  if (mia) { openDetail(mia.id); return; }
+  pintarPista(alb, i);
+  if (tr.id && !_pistaExtra.has(tr.id)) cargarPistaExtra(alb, i, tr.id);
+  cargarLastfmPista(alb, i);
+}
+
+/* La popularidad de Spotify es un 0-100 relativo entre todas las canciones del
+   catalogo. Un numero suelto no dice nada, asi que va con barra y con una
+   frase que lo traduzca. */
+function popularidadHtml(n) {
+  if (typeof n !== 'number') return '';
+  const que = n >= 80 ? 'de las más escuchadas del catálogo' : n >= 60 ? 'muy escuchada' : n >= 40 ? 'conocida' : n >= 20 ? 'poco escuchada' : 'casi nadie la escucha';
+  return '<div class="popbox"><div class="popbar"><div class="popfill" style="width:' + n + '%"></div></div>' +
+    '<span class="poptxt">' + n + '/100 · ' + que + '</span></div>';
+}
+
+function pistaMetaPairs(alb, tr) {
+  const p = [];
+  const add = (k, v) => { if (v !== null && v !== undefined && v !== '') p.push([k, v]); };
+  add('Artista', (tr.artists || []).map(a => a.name).join(', '));
+  add('Álbum', alb.title);
+  add('Nº de pista', tr.track_number ? (alb.totalTracks ? tr.track_number + ' de ' + alb.totalTracks : tr.track_number) : null);
+  add('Disco', tr.disc_number && tr.disc_number > 1 ? tr.disc_number : null);
+  add('Duración', fmtDur(tr.duration_ms));
+  add('Lanzamiento del álbum', fmtDate(alb.releaseDate));
+  add('Explícito', tr.explicit === true ? 'Sí' : tr.explicit === false ? 'No' : null);
+  add('Sello', alb.label);
+  const ex = _pistaExtra.get(tr.id);
+  if (ex) { add('ISRC', ex.external_ids?.isrc); }
+  const n = playsDeCancion(alb, tr.name);
+  if (n) add('Reproducciones', n + ' registrada' + (n === 1 ? '' : 's'));
+  add('ID de Spotify', tr.id);
+  return p;
+}
+
+function pintarPista(alb, i) {
+  const tr = _tracklistCache.items[i];
+  const oida = alb.listened || (alb.cancionesEscuchadas || []).includes(tr.name);
+  const rating = (alb.trackRatings || {})[tr.name] || 0;
+  const n = playsDeCancion(alb, tr.name);
+  const y = yearOf(alb);
+  const ex = _pistaExtra.get(tr.id);
+  const url = tr.external_urls?.spotify || alb.spotifyUrl;
+  const total = _tracklistCache.items.length;
+  showSheet(`
+    <div class="sheethead">
+      <button class="iconbtn" id="pBack" title="Volver al álbum" aria-label="Volver al álbum">${ui('atras', 17)}</button>
+      <h2>${ui('nota')} Canción</h2>
+      <button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button>
+    </div>
+    <div class="dwrap">
+      <div class="dart">${portada(alb.coverUrl, TYPE_ICON.track, false)}</div>
+      <div>
+        <h3 class="dtitle">${esc(tr.name || '')}</h3>
+        <p class="dartist">${esc((tr.artists || []).map(a => a.name).join(', '))}</p>
+        <div class="dfacts">
+          ${tr.track_number ? `<span class="fact">Pista ${tr.track_number} de ${alb.totalTracks || total}</span>` : ''}
+          ${fmtDur(tr.duration_ms) ? `<span class="fact">${fmtDur(tr.duration_ms)}</span>` : ''}
+          ${y ? `<span class="fact">${y}</span>` : ''}
+          ${tr.explicit ? '<span class="fact">Explícito</span>' : ''}
+          ${n ? `<span class="fact">${n} reproducci${n === 1 ? 'ón' : 'ones'}</span>` : ''}
+          ${esCanon(alb) ? '<span class="fact accent">De un disco aclamado</span>' : ''}
+          <span class="fact" title="No la tienes guardada aparte">Solo dentro del álbum</span>
+        </div>
+        <div class="btnrow">
+          <button class="btn ${oida ? 'jade' : ''} wide" id="pListen">${oida ? `${ui('visto')} Ya escuchada` : 'Marcar como escuchada'}</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flabel">Tu valoración</div>
+    <div class="starpick" id="pStars">
+      ${[1,2,3,4,5].map(v => `<button data-n="${v}" class="${v <= rating ? 'on' : ''}" aria-label="${v} estrellas">★</button>`).join('')}
+    </div>
+
+    <div class="flabel">Popularidad en Spotify</div>
+    <div id="pPop">${ex ? popularidadHtml(ex.popularity) : '<p class="lede" style="margin:0;">Consultando…</p>'}</div>
+
+    <div class="flabel">Metadatos</div>
+    <div id="pMeta"><dl class="metalist">${pistaMetaPairs(alb, tr).map(([k, v]) =>
+      `<div class="metarow"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></div>
+
+    <div class="flabel">En Last.fm</div>
+    <div id="pLastfm"><p class="lede" style="margin:0;">Buscando…</p></div>
+
+    <div class="flabel">Está en</div>
+    <div class="list"><div class="relrow" id="pAlbum">
+      <div class="relart">${portada(alb.coverUrl, TYPE_ICON.album, true)}</div>
+      <span class="relt">${esc(alb.title)}</span>
+      ${y ? `<span class="rely">${y}</span>` : ''}
+    </div></div>
+
+    <div class="btnrow">
+      <a class="btn primary wide" href="${esc(url)}" target="_blank" rel="noopener">Abrir en Spotify ${ui('fuera')}</a>
+      <button class="btn" id="pCopy" title="Copiar enlace" aria-label="Copiar enlace">${ui('portapapeles')}</button>
+    </div>
+    <div class="btnrow"><button class="btn jade wide" id="pAdd">${ui('mas')} Guardarla suelta en el vault</button></div>
+  `);
+
+  document.getElementById('pBack')?.addEventListener('click', () => openDetail(alb.id));
+  document.getElementById('pAlbum')?.addEventListener('click', () => openDetail(alb.id));
+  document.getElementById('pListen')?.addEventListener('click', () => {
+    toggleCancionEscuchada(alb, tr.name);
+    pintarPista(alb, i);
+    cargarLastfmPista(alb, i);
+  });
+  document.getElementById('pStars')?.addEventListener('click', e => {
+    const b = e.target.closest('button[data-n]'); if (!b) return;
+    const v = +b.dataset.n;
+    alb.trackRatings = alb.trackRatings || {};
+    alb.trackRatings[tr.name] = alb.trackRatings[tr.name] === v ? 0 : v;
+    if (!alb.trackRatings[tr.name]) delete alb.trackRatings[tr.name];
+    alb.touchedAt = Date.now();
+    saveItems();
+    pintarPista(alb, i);
+    cargarLastfmPista(alb, i);
+  });
+  document.getElementById('pCopy')?.addEventListener('click', () => {
+    navigator.clipboard?.writeText(url).then(() => toast('Enlace copiado'), () => toast('No se pudo copiar'));
+  });
+  document.getElementById('pAdd')?.addEventListener('click', () => {
+    const ya = pistaEnVault(tr);
+    if (ya) { toast('Ya la tienes'); openDetail(ya.id); return; }
+    const nuevo = itemDesdePista(alb, tr);
+    /* hereda lo tuyo: si la marcaste escuchada o valorada dentro del album, no
+       tiene sentido que la copia suelta salga en blanco */
+    if (oida) { nuevo.listened = true; nuevo.listenedAt = alb.listenedAt || Date.now(); }
+    if (rating) nuevo.rating = rating;
+    nuevo.touchedAt = Date.now();
+    ITEMS.push(nuevo);
+    saveItems(); render();
+    toast('Guardada en el vault');
+    openDetail(nuevo.id);
+  });
+}
+
+async function cargarPistaExtra(alb, i, id) {
+  try {
+    const t = await spotifyToken();
+    const res = await fetchConReintento429('https://api.spotify.com/v1/tracks/' + id + '?market=ES', t);
+    if (!res.ok) throw new Error('TRACK:' + res.status);
+    const d = await res.json();
+    _pistaExtra.set(id, d);
+    const caja = document.getElementById('pPop');
+    if (caja) caja.innerHTML = popularidadHtml(d.popularity) || '<p class="lede" style="margin:0;">Spotify no da popularidad de esta canción.</p>';
+    const meta = document.getElementById('pMeta');
+    if (meta) meta.innerHTML = '<dl class="metalist">' + pistaMetaPairs(alb, _tracklistCache.items[i]).map(([k, v]) =>
+      '<div class="metarow"><dt>' + esc(k) + '</dt><dd>' + esc(v) + '</dd></div>').join('') + '</dl>';
+  } catch {
+    const caja = document.getElementById('pPop');
+    if (caja) caja.innerHTML = '<p class="lede" style="margin:0;">No se pudo consultar ahora mismo.</p>';
+  }
+}
+
+async function cargarLastfmPista(alb, i) {
+  const caja = document.getElementById('pLastfm');
+  if (!caja) return;
+  const tr = _tracklistCache.items[i];
+  const artista = (tr.artists || [])[0]?.name || principalDe(alb);
+  const clave = fold(artista) + '|' + fold(tr.name || '');
+  const pinta = info => {
+    if (!info) { caja.innerHTML = '<p class="lede" style="margin:0;">Last.fm no tiene ficha de esta canción.</p>'; return; }
+    const cifras = [];
+    if (info.listeners) cifras.push(info.listeners.toLocaleString('es-ES') + ' oyentes');
+    if (info.playcount) cifras.push(info.playcount.toLocaleString('es-ES') + ' escuchas');
+    caja.innerHTML = (cifras.length ? '<p class="lede" style="margin:0 0 6px;">' + cifras.join(' · ') + '</p>' : '')
+      + (info.tags.length ? '<div class="chiprow" style="margin:0 0 6px;">' + info.tags.slice(0, 8).map(t =>
+        '<span class="chip" style="cursor:default;">' + esc(t) + '</span>').join('') + '</div>' : '')
+      + (info.resumen ? '<p class="lede" style="margin:0;">' + esc(info.resumen.slice(0, 420)) + '</p>' : '')
+      || '<p class="lede" style="margin:0;">Last.fm no da más datos de esta canción.</p>';
+  };
+  if (_pistaLastfm.has(clave)) { pinta(_pistaLastfm.get(clave)); return; }
+  const lf = lastfmCfg();
+  if (!lf) { caja.innerHTML = '<p class="lede" style="margin:0;">Pon tu clave de Last.fm en Ajustes y aquí saldrán oyentes, escuchas y etiquetas de cada canción.</p>'; return; }
+  try {
+    const info = await lastfmTrackInfo(artista, tr.name, lf.apiKey);
+    _pistaLastfm.set(clave, info);
+    pinta(info);
+  } catch {
+    caja.innerHTML = '<p class="lede" style="margin:0;">No se pudo consultar Last.fm ahora mismo.</p>';
+  }
+}
 function pintarTracklist(it) {
   const box = document.getElementById('dTracks');
   if (!box || !_tracklistCache || _tracklistCache.albumId !== it.spotifyId) return;
@@ -4604,19 +5139,22 @@ function pintarTracklist(it) {
     <div class="tlprogress-bar"><div class="tlprogress-fill" style="width:${pct}%"></div></div>
     <span class="tlprogress-txt">${hechas} de ${total} escuchadas</span>
   </div>`;
-  box.innerHTML = progreso + `<div class="tracklist">${_tracklistCache.items.map(tr => {
+  box.innerHTML = progreso + `<div class="tracklist">${_tracklistCache.items.map((tr, i) => {
     const oida = it.listened || escuchadas.has(tr.name);
     const n = playsDeCancion(it, tr.name);
     const rating = (it.trackRatings || {})[tr.name] || 0;
+    const mia = pistaEnVault(tr);
     return `<div class="trow${oida ? ' done' : ''}">
       <div class="trmain">
-        <button class="trcheck${oida ? ' on' : ''}" data-trtoggle="${esc(tr.name)}" aria-label="${oida ? 'Marcar pendiente' : 'Marcar escuchada'}">✓</button>
-        <a class="trlink" href="${esc(tr.external_urls?.spotify || it.spotifyUrl)}" target="_blank" rel="noopener">
+        <button class="trcheck${oida ? ' on' : ''}" data-trtoggle="${esc(tr.name)}" aria-label="${oida ? 'Marcar pendiente' : 'Marcar escuchada'}">${ui('visto')}</button>
+        <button class="trlink" data-trpage="${i}" title="Ver la ficha de esta canción">
           <span class="trn">${tr.track_number ?? ''}</span>
           <span class="trt">${esc(tr.name || '')}</span>
-        </a>
+          ${mia ? `<span class="trmine" title="También la tienes guardada suelta">${ui('visto')}</span>` : ''}
+        </button>
         ${n ? `<span class="trplays" title="Reproducciones registradas">${n}×</span>` : ''}
         <span class="trd">${esc(fmtDur(tr.duration_ms) || '')}</span>
+        <a class="trspot" href="${esc(tr.external_urls?.spotify || it.spotifyUrl)}" target="_blank" rel="noopener" title="Abrir en Spotify" aria-label="Abrir en Spotify">${ICO_SPOT}</a>
       </div>
       <div class="trstars" data-trstars="${esc(tr.name)}">
         ${[1,2,3,4,5].map(v => `<button data-n="${v}" class="${v <= rating ? 'on' : ''}" aria-label="${v} estrellas">★</button>`).join('')}
@@ -4624,6 +5162,10 @@ function pintarTracklist(it) {
     </div>`;
   }).join('')}</div>`;
   box.querySelector('.tracklist')?.addEventListener('click', e => {
+    /* El enlace a Spotify es un <a> de verdad: se deja pasar tal cual. */
+    if (e.target.closest('.trspot')) { e.stopPropagation(); return; }
+    const pag = e.target.closest('[data-trpage]');
+    if (pag) { openPista(it.id, +pag.dataset.trpage); return; }
     const s = e.target.closest('.trstars button');
     if (s) {
       const titulo = s.closest('[data-trstars]').dataset.trstars;
@@ -4677,8 +5219,8 @@ async function fetchArtistTopTracks(artistId) {
 async function openDiscography(artist) {
   searchSelMode = false; searchSel = new Set();
   showSheet(`
-    <div class="sheethead"><h2>Discografía</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
-    <p class="lede">Canciones y álbumes de <strong>${esc(artist.title)}</strong>. Toca ＋ para guardarlos en tu vault.</p>
+    <div class="sheethead"><h2>Discografía</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
+    <p class="lede">Canciones y álbumes de <strong>${esc(artist.title)}</strong>. Toca el + para guardarlos en tu vault.</p>
     <div id="discoOut"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
   `);
   const box = document.getElementById('discoOut');
@@ -4743,7 +5285,7 @@ async function openDiscography(artist) {
      haría que ningún artista pareciera nunca completo. */
   const tengo = albums.filter(r => ITEMS.some(x => x.spotifyId === r.spotifyId)).length;
   const resumenFalta = albums.length
-    ? `<p class="lede" style="margin:0 0 10px;">Tienes <strong>${tengo}</strong> de sus <strong>${albums.length}</strong> álbumes${tengo < albums.length ? ` — te faltan ${albums.length - tengo}` : ' — los tienes todos 🎉'}.</p>`
+    ? `<p class="lede" style="margin:0 0 10px;">Tienes <strong>${tengo}</strong> de sus <strong>${albums.length}</strong> álbumes${tengo < albums.length ? ` — te faltan ${albums.length - tengo}` : ' — los tienes todos'}.</p>`
     : '';
 
   const partes = [
@@ -4789,7 +5331,7 @@ function pintarSelectorTags(caja, puestas, filtro) {
       const dentro = tagsDeCarpeta(c.id).filter(t => !puestas.has(t.id));
       if (!dentro.length) return '';
       const abierta = _carpetasSelector.has(c.id);
-      return `<div class="selgrupo"><button class="linkbtn" data-selcarp="${esc(c.id)}">${iconoHtml(c, 13)} ${esc(c.name)} <span class="ct">${dentro.length}</span> ${abierta ? '&#9662;' : '&#9656;'}</button></div>`
+      return `<div class="selgrupo"><button class="linkbtn" data-selcarp="${esc(c.id)}">${iconoHtml(c, 13)} ${esc(c.name)} <span class="ct">${dentro.length}</span> ${abierta ? ui('abajo') : ui('derecha')}</button></div>`
         + (abierta ? `<div class="tagpick">${dentro.map(pastilla).join('')}</div>` : '');
     }).join('');
 }
@@ -4799,7 +5341,7 @@ const _carpetasSelector = new Set();
 function montarSelectorTags(idCaja, puestasFn, alTocar) {
   const raiz = document.getElementById(idCaja);
   if (!raiz) return;
-  raiz.innerHTML = `<div class="buscaart selbusca"><span class="mag">&#128269;</span><input type="text" placeholder="Buscar etiqueta…" autocomplete="off"></div><div class="sellista"></div>`;
+  raiz.innerHTML = `<div class="buscaart selbusca"><span class="mag">${ui('lupa')}</span><input type="text" placeholder="Buscar etiqueta…" autocomplete="off"></div><div class="sellista"></div>`;
   const campo = raiz.querySelector('input'), lista = raiz.querySelector('.sellista');
   const pintar = () => pintarSelectorTags(lista, puestasFn(), campo.value);
   campo.addEventListener('input', pintar);
@@ -4821,7 +5363,7 @@ function renderDiferido() {
 
 function openTagAll() {
   showSheet(`
-    <div class="sheethead"><h2>Todas las etiquetas</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">&#10005;</button></div>
+    <div class="sheethead"><h2>Todas las etiquetas</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     <div id="tagAllSel"></div>
   `);
   montarSelectorTags('tagAllSel', () => new Set(PREFS.tag && PREFS.tag !== 'all' ? [PREFS.tag] : []), id => {
@@ -4834,7 +5376,7 @@ function openTagAll() {
 function openTagPicker(ids) {
   if (!tagsOrdenados().length) { closeModal(); toast('Crea una etiqueta primero en Ajustes'); return; }
   showSheet(`
-    <div class="sheethead"><h2>Etiquetar ${ids.length} elemento${ids.length === 1 ? '' : 's'}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="sheethead"><h2>Etiquetar ${ids.length} elemento${ids.length === 1 ? '' : 's'}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     <p class="lede">Toca una etiqueta para ponérsela a todo lo seleccionado. Si ya la tienen todos, se la quita.</p>
     <div id="bulkTags"></div>
   `);
@@ -5277,6 +5819,23 @@ async function cargarBioArtista(it) {
   }
 }
 
+/* A nivel de cancion Last.fm da oyentes, reproducciones y las etiquetas que
+   le pone la gente: es la unica fuente abierta que tiene datos por pista. */
+async function lastfmTrackInfo(nombreArtista, nombreCancion, apiKey) {
+  const url = 'https://ws.audioscrobbler.com/2.0/?method=track.getinfo&artist=' + encodeURIComponent(nombreArtista) +
+    '&track=' + encodeURIComponent(nombreCancion) + '&autocorrect=1&api_key=' + encodeURIComponent(apiKey) + '&format=json';
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('LASTFM_HTTP:' + res.status);
+  const d = await res.json();
+  if (d.error) { if (d.error === 6) return null; throw new Error('LASTFM_ERR:' + d.error); }
+  const t = d.track;
+  if (!t) return null;
+  const rawTags = t.toptags?.tag;
+  const tags = (Array.isArray(rawTags) ? rawTags : (rawTags ? [rawTags] : [])).map(x => x && x.name).filter(Boolean);
+  const resumen = (t.wiki?.summary || '').replace(/<a[^>]*>[\s\S]*?<\/a>/gi, '').replace(/<[^>]+>/g, '').trim();
+  return { listeners: t.listeners ? +t.listeners : null, playcount: t.playcount ? +t.playcount : null, duracion: t.duration ? +t.duration : null, tags, resumen };
+}
+
 async function lastfmAlbumInfo(nombreAlbum, nombreArtista, apiKey) {
   const url = `https://ws.audioscrobbler.com/2.0/?method=album.getinfo&artist=${encodeURIComponent(nombreArtista)}&album=${encodeURIComponent(nombreAlbum)}&autocorrect=1&api_key=${encodeURIComponent(apiKey)}&format=json`;
   const res = await fetch(url);
@@ -5383,9 +5942,9 @@ function cargarRelacionesMusicBrainz(it) {
         const enVault = ITEMS.find(x => x.type === 'artist' && !x.archived && fold(x.title) === fold(nombre));
         return enVault
           ? `<button class="simchip done" data-openrel="${enVault.id}">✓ ${esc(nombre)}</button>`
-          : `<button class="simchip" data-simadd="${esc(nombre)}">＋ ${esc(nombre)}</button>`;
+          : `<button class="simchip" data-simadd="${esc(nombre)}">${ui('mas')} ${esc(nombre)}</button>`;
       }).join('')}</div>`;
-    box.innerHTML = (info.origen ? `<p class="lede" style="margin:0;">📍 ${esc(info.origen)}</p>` : '')
+    box.innerHTML = (info.origen ? `<p class="lede" style="margin:0;">${ui('alfiler')} ${esc(info.origen)}</p>` : '')
       + grupo('Miembro de', info.bandas) + grupo('También lo conoces como', info.alterEgos);
     box.addEventListener('click', e => {
       const rel = e.target.closest('[data-openrel]');
@@ -5452,7 +6011,7 @@ async function cargarSimilares(it) {
   try {
     const nombres = (await lastfmSimilar(it.title, lf.apiKey, 8)).filter(n => fold(n) !== fold(it.title));
     if (!nombres.length) { box.innerHTML = `<p class="lede" style="margin:0;">Last.fm no tiene sugerencias para este artista.</p>`; return; }
-    box.innerHTML = `<div class="simgrid">${nombres.map(n => `<button class="simchip" data-simadd="${esc(n)}">＋ ${esc(n)}</button>`).join('')}</div>`;
+    box.innerHTML = `<div class="simgrid">${nombres.map(n => `<button class="simchip" data-simadd="${esc(n)}">${ui('mas')} ${esc(n)}</button>`).join('')}</div>`;
     box.querySelector('.simgrid').addEventListener('click', e => {
       const b = e.target.closest('.simchip'); if (!b || b.disabled) return;
       agregarArtistaSimilar(b.dataset.simadd, b);
@@ -5668,7 +6227,7 @@ function openSettings() {
   const gh = read(K_GH, null);
   const lf = lastfmCfg();
   showSheet(`
-    <div class="sheethead"><h2>Ajustes</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="sheethead"><h2>Ajustes</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
 
     <div class="flabel">Conexión con Spotify</div>
     <div class="statusline ${ok ? 'ok' : 'no'}">${ok ? '● Conectado' : '● Sin conectar'}</div>
@@ -5729,7 +6288,7 @@ function openSettings() {
     <div id="tagList">${tagListHtml()}</div>
     <div class="btnrow" style="margin-top:12px;">
       <button class="btn primary wide" id="addTag">＋ Nueva etiqueta</button>
-      <button class="btn" id="addCarpeta" title="Nueva carpeta">📁</button>
+      <button class="btn" id="addCarpeta" title="Nueva carpeta">${ui('carpeta')}</button>
     </div>
 
     <div class="flabel">Sincronizar entre dispositivos</div>
@@ -5743,7 +6302,7 @@ function openSettings() {
     </div>
     <div class="lede" id="ghOut" style="margin-top:6px;">${esc(syncEstadoTexto())}</div>
     ${gh && gh.token && META.lastSyncedAt && (Date.now() - META.lastSyncedAt) >= 30 * 86400000
-      ? `<p class="lede" style="color:var(--rust);margin-top:6px;">⚠️ Este dispositivo lleva ${Math.floor((Date.now() - META.lastSyncedAt) / 86400000)} días sin sincronizar de verdad con GitHub — toca ⟳ o revisa tu conexión.</p>`
+      ? `<p class="lede" style="color:var(--rust);margin-top:6px;">${ui('aviso')} Este dispositivo lleva ${Math.floor((Date.now() - META.lastSyncedAt) / 86400000)} días sin sincronizar de verdad con GitHub — toca ⟳ o revisa tu conexión.</p>`
       : ''}
     ${gh && gh.token ? `
     <div class="btnrow">
@@ -5759,14 +6318,17 @@ function openSettings() {
 
     <div class="flabel">Apariencia</div>
     <div class="btnrow">
-      <button class="btn wide ${autoTemaOn() ? 'jade' : ''}" id="togAutoTema">${autoTemaOn() ? '✓ Oscuro automático por la noche' : 'Tema siempre manual'}</button>
+      <button class="btn wide ${autoTemaOn() ? 'jade' : ''}" id="togAutoTema">${autoTemaOn() ? `${ui('visto')} Oscuro automático por la noche` : 'Tema siempre manual'}</button>
     </div>
     <p class="lede" style="margin:6px 0 12px;">${autoTemaOn()
       ? `Claro de ${HORA_CLARO}:00 a ${HORA_OSCURO}:00 y oscuro el resto. Si le das al botón de la esquina mandas tú hasta el siguiente cambio.`
       : 'El tema solo cambia cuando le das al botón de la esquina.'}</p>
+    <div class="flabel">Tu año de nacimiento</div>
+    <p class="lede" style="margin:0 0 8px;">Solo se usa para una cosa: que cada ficha te diga la edad que tenías cuando salió ese disco. No sale de este dispositivo ni se sincroniza.</p>
+    <input class="field mono" id="anyoNac" type="number" inputmode="numeric" min="1900" max="2100" placeholder="1997" value="${anyoNacimiento() || ''}" style="margin-bottom:14px;">
     <p class="lede">Sin carátulas el vault se lee como una lista de texto, mucho más rápido con miles de elementos. No borra nada.</p>
     <div class="btnrow">
-      <button class="btn wide ${verPortada() ? 'jade' : ''}" id="togCovers">${verPortada() ? '✓ Carátulas visibles' : 'Carátulas ocultas'}</button>
+      <button class="btn wide ${verPortada() ? 'jade' : ''}" id="togCovers">${verPortada() ? `${ui('visto')} Carátulas visibles` : 'Carátulas ocultas'}</button>
     </div>
     ${verPortada() ? `
       <div class="statusline ${sinPortada() ? 'no' : 'ok'}" id="coverStat" style="margin-top:10px;">${
@@ -5778,7 +6340,7 @@ function openSettings() {
       <button class="btn wide ${PREFS.confirmarBorrado ? 'jade' : ''}" id="togConfirm">${PREFS.confirmarBorrado ? '✓ Confirma antes de borrar' : 'Borra directo (con Deshacer)'}</button>
     </div>
     <p class="lede" style="margin:6px 0 12px;">${PREFS.confirmarBorrado ? 'Te pregunta antes de borrar uno o varios elementos a mano.' : 'Borra al momento; el aviso de "Deshacer" sigue ahí por si acaso.'}</p>
-    <div class="btnrow"><button class="btn wide" id="modoPresent">🖼 Modo presentación</button></div>
+    <div class="btnrow"><button class="btn wide" id="modoPresent">${ui('imagen')} Modo presentación</button></div>
     <p class="lede" style="margin:6px 0 12px;">Esconde toda la interfaz y deja solo las carátulas. Sal con Esc o con la ✕ de la esquina.</p>
     <div class="flabel" style="margin-top:0;font-size:10px;">Tamaño de carátula</div>
     <div class="segrow" id="gsizeSeg">
@@ -5817,7 +6379,7 @@ function openSettings() {
       <div class="btnrow"><button class="btn wide" id="quitarSueltas">Quitar ${n.toLocaleString('es-ES')} canciones sueltas</button></div>`;
     })()}
     <div class="btnrow"><button class="btn wide" id="openTrash">Papelera${TRASH.length ? ` (${TRASH.length})` : ''}</button></div>
-    <div class="btnrow"><button class="btn wide" id="openAutoAdded">🤖 Añadidas automáticamente${(() => { const n = ITEMS.filter(i => i.autoAdded && !i.archived).length; return n ? ` (${n})` : ''; })()}</button></div>
+    <div class="btnrow"><button class="btn wide" id="openAutoAdded">${ui('robot')} Añadidas automáticamente${(() => { const n = ITEMS.filter(i => i.autoAdded && !i.archived).length; return n ? ` (${n})` : ''; })()}</button></div>
     <p class="lede" style="margin-top:12px;">Repasa todo contra Spotify de una pasada: rellena los datos que falten (año, sello, duración, carátula…) sin tocar lo que hayas editado a mano, y marca lo que ya no existe allí.</p>
     <div class="statusline ${rotosCount() ? 'no' : 'ok'}" id="revisarStat">${rotosCount() ? `● ${rotosCount()} sin resultado en Spotify` : '● Sin enlaces rotos detectados'}</div>
     <div class="btnrow"><button class="btn wide" id="revisarMeta">${_revisando ? 'Detener' : 'Revisar metadatos y enlaces'}</button></div>
@@ -5833,10 +6395,10 @@ function openSettings() {
     <div class="flabel">Copia de seguridad</div>
     ${gh && gh.token
       ? `<p class="lede">Con la sincronización activada, cada cambio queda también guardado en tu repo de GitHub — no depende solo de este navegador. Y como cada subida es un commit, GitHub guarda el historial completo: si algo se borra por error, siempre puedes recuperar una versión anterior desde ahí.</p>
-         <div class="btnrow"><a class="btn wide" href="${esc(`https://github.com/${gh.repo}/commits/main/${GH_PATH}`)}" target="_blank" rel="noopener">Ver historial en GitHub ↗</a></div>`
+         <div class="btnrow"><a class="btn wide" href="${esc(`https://github.com/${gh.repo}/commits/main/${GH_PATH}`)}" target="_blank" rel="noopener">Ver historial en GitHub ${ui('fuera')}</a></div>`
       : `<p class="lede">Tu vault vive solo en este navegador. Si borras los datos del navegador, se pierde. Activa la sincronización de arriba para tener también una copia en GitHub, o descarga una copia de vez en cuando.</p>`}
     ${!META.lastExportedAt || (Date.now() - META.lastExportedAt) >= 30 * 86400000
-      ? `<p class="lede" style="color:var(--rust);margin:0 0 8px;">⚠️ ${META.lastExportedAt ? `Hace ${Math.floor((Date.now() - META.lastExportedAt) / 86400000)} días que no descargas una copia suelta.` : 'Todavía no has descargado ninguna copia suelta.'}</p>`
+      ? `<p class="lede" style="color:var(--rust);margin:0 0 8px;">${ui('aviso')} ${META.lastExportedAt ? `Hace ${Math.floor((Date.now() - META.lastExportedAt) / 86400000)} días que no descargas una copia suelta.` : 'Todavía no has descargado ninguna copia suelta.'}</p>`
       : `<p class="lede" style="margin:0 0 8px;color:var(--fg-mute);">Última copia descargada: ${relDate(META.lastExportedAt)}.</p>`}
     <div class="btnrow">
       <button class="btn wide" id="expBtn">Descargar copia</button>
@@ -5864,6 +6426,11 @@ function openSettings() {
     openSettings();
   });
 
+  document.getElementById('anyoNac')?.addEventListener('change', e => {
+    const v = parseInt(e.target.value, 10);
+    if (v >= 1900 && v <= 2100) { localStorage.setItem(K_NACIMIENTO, String(v)); toast('Guardado'); }
+    else { localStorage.removeItem(K_NACIMIENTO); if (e.target.value.trim()) toast('Ese año no vale'); }
+  });
   document.getElementById('togAutoTema')?.addEventListener('click', () => {
     const nuevo = autoTemaOn() ? '0' : '1';
     localStorage.setItem(K_AUTOTEMA, nuevo);
@@ -6056,7 +6623,7 @@ const _MOTIVO = {
 function openAnyos() {
   const { corregibles, dudosos } = analizarAnyos();
   if (!corregibles.length && !dudosos.length) {
-    showSheet(`<div class="sheethead"><h2>Años</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">&#10005;</button></div>
+    showSheet(`<div class="sheethead"><h2>Años</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
       <p class="lede">No he encontrado ningún año sospechoso. Bien.</p>`);
     return;
   }
@@ -6073,7 +6640,7 @@ function openAnyos() {
     </div>`;
 
   showSheet(`
-    <div class="sheethead"><h2>Años mal puestos</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">&#10005;</button></div>
+    <div class="sheethead"><h2>Años mal puestos</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     <p class="lede">Spotify no guarda el año en que salió la canción, sino el de la edición que tiene en catálogo. Por eso "My Way" de Sinatra pone 2008 y no 1969.</p>
     ${corregibles.length ? `
       <div class="flabel">${corregibles.length} con el año correcto a mano</div>
@@ -6889,547 +7456,487 @@ const ICO_LAUREL = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="tr
 
 /* Spotify guarda el genero en ingles y suelto: "Big Room", "Edm Trap", "rnb",
    1.497 cadenas distintas en este vault. Sueltas no sirven de nada. Esta tabla
-   las agrupa en cuatro ejes con nombre en castellano:
+   las agrupa en cinco ejes con nombre en castellano:
 
      genero    las familias grandes (Rock, House, Rap...)
-     sub       el subgenero concreto (Big room, Boom bap, Flamenco nuevo...)
+     sub       el subgenero concreto (G-house, Boom bap, Drift phonk...)
      ambiente  para que sirve, no que es (Para el gimnasio, De madrugada...)
-     origen    de donde viene (Espana, Reino Unido, Brasil...)
+     origen    de donde viene (Andalucia, Detroit, Brasil...)
+     decada    el unico que no adivina: sale del ano de lanzamiento
 
    Cada clave se compara por PALABRA ENTERA. Sin eso "rap" saltaria dentro de
    "grape juice" y "trap" haria saltar tambien "rap". */
 const TAXONOMIA = [
+  /* ---------- FAMILIAS (42) ---------- */
   {g:'genero',n:"Electrónica",i:'rayo',c:'#7a5cd6',k:["edm","electronic","electronica","electro","dance","club","rave","dj"]},
-
   {g:'genero',n:"House",i:'disco',c:'#5b8cf0',k:["house"]},
-
   {g:'genero',n:"Techno",i:'engranaje',c:'#4a5568',k:["techno","tekno"]},
-
   {g:'genero',n:"Trance",i:'espiral',c:'#8b7ce8',k:["trance"]},
-
   {g:'genero',n:"Dubstep y bass",i:'onda',c:'#2b9c8a',k:["dubstep","riddim","bass music","brostep","deathstep","drumstep","bassline","melodic bass","bass"]},
-
   {g:'genero',n:"Drum and bass",i:'onda',c:'#c0533f',k:["drum and bass","drum n bass","dnb","jungle","liquid funk","neurofunk","breakcore"]},
-
   {g:'genero',n:"Hardstyle y hardcore",i:'martillo',c:'#b8202e',k:["hardstyle","hardcore techno","gabber","frenchcore","speedcore","uptempo","happy hardcore","rawstyle","hard dance","hard techno"]},
-
   {g:'genero',n:"Rap y hip-hop",i:'microfono',c:'#eb6834',k:["hip hop","hip-hop","hiphop","rap","boom bap","crunk","drill","grime"]},
-
   {g:'genero',n:"Trap",i:'niebla',c:'#8a4a2e',k:["trap","phonk","plugg","rage rap"]},
-
   {g:'genero',n:"Pop",i:'estrella',c:'#e87ba4',k:["pop"]},
-
   {g:'genero',n:"Rock",i:'guitarra',c:'#e34948',k:["rock","rock and roll","rock n roll","rockabilly"]},
-
   {g:'genero',n:"Metal",i:'calavera',c:'#4c4a52',k:["metal","metalcore","djent","doom","grindcore"]},
-
   {g:'genero',n:"Punk",i:'rayo',c:'#d1394f',k:["punk","oi","anarcho"]},
-
   {g:'genero',n:"Indie y alternativo",i:'marcador',c:'#3f9c35',k:["indie","alternative","lo-fi","lofi","bedroom pop","slacker"]},
-
   {g:'genero',n:"R&B y soul",i:'corazon',c:'#2a78d6',k:["rnb","r&b","soul","rhythm and blues","motown","quiet storm","new jack swing"]},
-
   {g:'genero',n:"Funk y disco",i:'disco',c:'#d98c1f',k:["funk","disco","boogie","p-funk","g-funk","hi-nrg"]},
-
-  {g:'genero',n:"Jazz",i:'nota',c:'#1baf7a',k:["jazz","bebop","swing","swing music","big band","bossa nova","fusion"]},
-
+  {g:'genero',n:"Jazz",i:'nota',c:'#1baf7a',k:["jazz","bebop","swing","swing music","big band","bossa nova","fusion","saxophone","sax","trumpet","saxofon","trompeta"]},
   {g:'genero',n:"Blues",i:'onda',c:'#3a5f8a',k:["blues","delta blues","soul blues"]},
-
-  {g:'genero',n:"Clásica",i:'libro',c:'#8a6a4a',k:["classical","clasica","orchestral","orchestra","opera","baroque","romanticism","chamber music","concerto","symphony","early music","contemporary classical"]},
-
+  {g:'genero',n:"Clásica",i:'libro',c:'#8a6a4a',k:["classical","clasica","orchestral","orchestra","opera","baroque","romanticism","chamber music","concerto","symphony","early music","contemporary classical","composer","composers","compositor"]},
   {g:'genero',n:"Country y folk",i:'casa',c:'#a3690f',k:["country","folk","americana","bluegrass","singer-songwriter","cantautor","chanson","trova"]},
-
   {g:'genero',n:"Reggae y dancehall",i:'gota',c:'#3f9c35',k:["reggae","dancehall","ska","dub","ragga","rocksteady","soca"]},
-
   {g:'genero',n:"Latino",i:'copa',c:'#eda100',k:["latin","latino","salsa","bachata","cumbia","merengue","mambo","son cubano","bolero","vallenato","tropical"]},
-
   {g:'genero',n:"Reggaetón y urbano",i:'fuego',c:'#e0563a',k:["reggaeton","urbano latino","dembow","perreo","neoperreo","urbano","pop urbaine"]},
-
   {g:'genero',n:"Regional mexicano",i:'corona',c:'#b5761c',k:["corrido","corridos","banda","ranchera","mariachi","musica mexicana","norteno","sierreno","regional mexican"]},
-
   {g:'genero',n:"Flamenco",i:'abanico',c:'#b03f30',k:["flamenco","rumba","copla","sevillanas","cante"]},
-
-  {g:'genero',n:"Electropop y synth",i:'teclado',c:'#a05cc0',k:["synthpop","synth pop","synthwave","electropop","electroclash","italo disco","italo dance","new wave","hyperpop","indietronica"]},
-
+  {g:'genero',n:"Electropop y synth",i:'teclado',c:'#a05cc0',k:["synthpop","synth pop","synthwave","electropop","electroclash","italo disco","italo dance","new wave","hyperpop","indietronica","synth","moog","synthesizer"]},
   {g:'genero',n:"Ambient y experimental",i:'niebla',c:'#6b7b8c',k:["ambient","experimental","drone","idm","glitch","noise","avant-garde","musique concrete","minimal","new age","downtempo","trip hop","trip-hop"]},
-
   {g:'genero',n:"Bandas sonoras",i:'pelicula',c:'#726858',k:["soundtrack","score","ost","video game","disney","musical","anime"]},
-
   {g:'genero',n:"Gospel y espiritual",i:'casa',c:'#9a7b3f',k:["gospel","worship","christian","spiritual"]},
-
   {g:'genero',n:"Africano",i:'sol',c:'#c98a1f',k:["afrobeat","afrobeats","afro house","amapiano","highlife","afropop"]},
-
   {g:'genero',n:"Brasileño",i:'palmera',c:'#2f9e5e',k:["brazilian","brasil","samba","mpb","forro","pagode","funk carioca","brazilian funk","brazilian bass","brazilian phonk"]},
-
   {g:'genero',n:"Asiático",i:'flor',c:'#d4568a',k:["k-pop","j-pop","j-rock","c-pop","city pop","mandopop","bollywood"]},
-
   {g:'genero',n:"Navidad",i:'arbol',c:'#2f8f4e',k:["christmas","villancicos","navidad","holiday"]},
-
   {g:'genero',n:"Rarezas",i:'estrella',c:'#7f8fa0',k:["comedy","childrens music","parody","spoken word","podcast","meme","novelty"]},
+  {g:'genero',n:"Breaks y garage",i:'onda',c:'#3f8fa8',k:["breakbeat","breaks","big beat","uk garage","2-step","2step","speed garage","future garage","uk funky","bassline","jersey club","baltimore club","ghettotech","juke","footwork","nu skool breaks"]},
+  {g:'genero',n:"Chill y downtempo",i:'nube',c:'#5f8f9c',k:["downtempo","chillout","chill out","chill-out","chillwave","lounge","easy listening","easy-listening","electronic-lounge","balearic","exotica","chill","chillhop"]},
+  {g:'genero',n:"Industrial y gótico",i:'glitch',c:'#55505c',k:["industrial","ebm","darkwave","coldwave","goth","gothic","gothic rock","deathrock","industrial metal","industrial techno","aggrotech","witch house","neofolk","minimal wave"]},
+  {g:'genero',n:"Musicales y teatro",i:'copa',c:'#a05c7a',k:["musicals","musical","broadway","ballet","opera","operetta","zarzuela","show tunes","disney","west end","soundtrack musical"]},
+  {g:'genero',n:"Hyperpop y digital",i:'glitch',c:'#d45cc0',k:["hyperpop","glitchcore","digicore","nightcore","bubblegum bass","pc music","sigilkore","dariacore","sped up"]},
+  {g:'genero',n:"Comedia y parodia",i:'chispa',c:'#c9a227',k:["comedy","parody","novelty","humor","humour","comedia","parodia","funny"]},
+  {g:'genero',n:"Palabra hablada",i:'libro',c:'#7a7060',k:["spoken word","poetry","poesia","audiobook","monologo","skit","slam"]},
+  {g:'genero',n:"Infantil y animación",i:'flor',c:'#3aa8c0',k:["disney","anime","cartoon","childrens music","infantil","pixar","dibujos animados","theme song","themes"]},
 
+  /* ---------- SUBGENEROS (304) ---------- */
   {g:'sub',n:"Big room",i:'onda',c:'#5b8cf0',k:["big room","bigroom"]},
-
   {g:'sub',n:"Progressive house",i:'onda',c:'#5b8cf0',k:["progressive house"]},
-
   {g:'sub',n:"Electro house",i:'onda',c:'#5b8cf0',k:["electro house","electro-house","complextro","dutch house"]},
-
   {g:'sub',n:"Future house",i:'onda',c:'#5b8cf0',k:["future house"]},
-
   {g:'sub',n:"Bass house",i:'onda',c:'#5b8cf0',k:["bass house","g-house","ghouse"]},
-
   {g:'sub',n:"Deep house",i:'onda',c:'#5b8cf0',k:["deep house"]},
-
   {g:'sub',n:"Tech house",i:'onda',c:'#5b8cf0',k:["tech house"]},
-
   {g:'sub',n:"Tropical house",i:'palmera',c:'#5b8cf0',k:["tropical house"]},
-
   {g:'sub',n:"Slap house",i:'onda',c:'#5b8cf0',k:["slap house"]},
-
   {g:'sub',n:"Melodic house",i:'onda',c:'#5b8cf0',k:["melodic house"]},
-
   {g:'sub',n:"Afro house",i:'sol',c:'#5b8cf0',k:["afro house"]},
-
   {g:'sub',n:"Latin house",i:'copa',c:'#5b8cf0',k:["latin house","tribal house"]},
-
   {g:'sub',n:"French house",i:'bandera',c:'#5b8cf0',k:["french house","filter house"]},
-
   {g:'sub',n:"Disco house",i:'disco',c:'#5b8cf0',k:["disco house","nu disco","funky house"]},
-
   {g:'sub',n:"Acid house",i:'gota',c:'#5b8cf0',k:["acid house"]},
-
   {g:'sub',n:"Chicago house",i:'casa',c:'#5b8cf0',k:["chicago house"]},
-
   {g:'sub',n:"Hip house",i:'microfono',c:'#5b8cf0',k:["hip house"]},
-
   {g:'sub',n:"Melbourne bounce",i:'espiral',c:'#5b8cf0',k:["melbourne bounce","bounce"]},
-
   {g:'sub',n:"Rally house",i:'coche',c:'#5b8cf0',k:["rally house"]},
-
   {g:'sub',n:"Minimal techno",i:'engranaje',c:'#4a5568',k:["minimal techno","minimal"]},
-
   {g:'sub',n:"Hard techno",i:'engranaje',c:'#4a5568',k:["hard techno","hypertechno","schranz"]},
-
   {g:'sub',n:"Melodic techno",i:'engranaje',c:'#4a5568',k:["melodic techno"]},
-
   {g:'sub',n:"Acid techno",i:'gota',c:'#4a5568',k:["acid techno","acid"]},
-
   {g:'sub',n:"Detroit techno",i:'engranaje',c:'#4a5568',k:["detroit techno"]},
-
-  {g:'sub',n:"Psytrance",i:'espiral',c:'#8b7ce8',k:["psytrance","psychedelic trance","goa trance","goa"]},
-
+  {g:'sub',n:"Psytrance",i:'espiral',c:'#8b7ce8',k:["psytrance","psychedelic trance","goa trance","goa","darkpsy","psycore","forest psy","full-on"]},
   {g:'sub',n:"Progressive trance",i:'espiral',c:'#8b7ce8',k:["progressive trance"]},
-
   {g:'sub',n:"Uplifting trance",i:'espiral',c:'#8b7ce8',k:["uplifting trance","vocal trance"]},
-
   {g:'sub',n:"Eurodance",i:'disco',c:'#8b7ce8',k:["eurodance","europop"]},
-
   {g:'sub',n:"Riddim",i:'onda',c:'#2b9c8a',k:["riddim"]},
-
   {g:'sub',n:"Deathstep",i:'calavera',c:'#2b9c8a',k:["deathstep","tearout"]},
-
   {g:'sub',n:"Melodic dubstep",i:'onda',c:'#2b9c8a',k:["melodic dubstep","melodic bass"]},
-
   {g:'sub',n:"Chillstep",i:'nube',c:'#2b9c8a',k:["chillstep"]},
-
   {g:'sub',n:"Drumstep",i:'onda',c:'#2b9c8a',k:["drumstep"]},
-
   {g:'sub',n:"Future bass",i:'onda',c:'#2b9c8a',k:["future bass"]},
-
   {g:'sub',n:"Trap electrónico",i:'niebla',c:'#2b9c8a',k:["edm trap","festival trap","hybrid trap"]},
-
   {g:'sub',n:"Moombahton",i:'copa',c:'#2b9c8a',k:["moombahton","moombahcore"]},
-
   {g:'sub',n:"Glitch hop",i:'glitch',c:'#2b9c8a',k:["glitch hop","wonky","neurohop"]},
-
   {g:'sub',n:"Breakbeat",i:'onda',c:'#2b9c8a',k:["breakbeat","big beat","breaks","nu skool breaks"]},
-
   {g:'sub',n:"UK garage",i:'caja',c:'#2b9c8a',k:["uk garage","garage","2-step","uk funky","future garage","speed garage"]},
-
   {g:'sub',n:"Jersey club",i:'espiral',c:'#2b9c8a',k:["jersey club","baltimore club"]},
-
   {g:'sub',n:"Dub techno",i:'gota',c:'#2b9c8a',k:["dub techno"]},
-
-  {g:'sub',n:"Liquid dnb",i:'gota',c:'#c0533f',k:["liquid funk","liquid dnb","liquid drum and bass"]},
-
+  {g:'sub',n:"Liquid dnb",i:'gota',c:'#c0533f',k:["liquid funk","liquid dnb","liquid drum and bass","liquid"]},
   {g:'sub',n:"Neurofunk",i:'rayo',c:'#c0533f',k:["neurofunk","neuro"]},
-
   {g:'sub',n:"Jungle",i:'palmera',c:'#c0533f',k:["jungle","ragga jungle"]},
-
   {g:'sub',n:"Breakcore",i:'glitch',c:'#c0533f',k:["breakcore","digital hardcore"]},
-
   {g:'sub',n:"Gabber",i:'martillo',c:'#b8202e',k:["gabber","gabba"]},
-
   {g:'sub',n:"Frenchcore",i:'martillo',c:'#b8202e',k:["frenchcore"]},
-
   {g:'sub',n:"Speedcore",i:'martillo',c:'#b8202e',k:["speedcore","extratone"]},
-
   {g:'sub',n:"Happy hardcore",i:'sol',c:'#b8202e',k:["happy hardcore","uk hardcore","makina"]},
-
   {g:'sub',n:"Boom bap",i:'microfono',c:'#eb6834',k:["boom bap","old school hip hop","old school","golden age hip hop"]},
-
   {g:'sub',n:"Rap de la Costa Este",i:'microfono',c:'#eb6834',k:["east coast hip hop","east coast","new york hip hop"]},
-
   {g:'sub',n:"Rap de la Costa Oeste",i:'palmera',c:'#eb6834',k:["west coast hip hop","west coast"]},
-
   {g:'sub',n:"Rap sureño",i:'microfono',c:'#eb6834',k:["southern hip hop","dirty south","southern rap","atlanta hip hop","memphis rap","houston rap"]},
-
   {g:'sub',n:"Gangsta rap",i:'calavera',c:'#eb6834',k:["gangsta rap","gangster rap","hardcore hip hop","mafioso rap"]},
-
   {g:'sub',n:"Rap consciente",i:'libro',c:'#eb6834',k:["conscious hip hop","conscious rap","political hip hop","jazz rap"]},
-
   {g:'sub',n:"Rap alternativo",i:'marcador',c:'#eb6834',k:["alternative hip hop","alternative rap","abstract hip hop","underground hip hop","underground hip-hop","experimental hip hop","experimental hip-hop"]},
-
   {g:'sub',n:"Rap melódico",i:'corazon',c:'#eb6834',k:["melodic rap","emo rap","sad rap","cloud rap"]},
-
   {g:'sub',n:"Drill",i:'martillo',c:'#eb6834',k:["drill","uk drill","new york drill","brooklyn drill","chicago drill"]},
-
   {g:'sub',n:"Grime",i:'microfono',c:'#eb6834',k:["grime","uk grime"]},
-
   {g:'sub',n:"Horrorcore",i:'calavera',c:'#eb6834',k:["horrorcore","trap metal","rap metal","rapcore"]},
-
   {g:'sub',n:"Instrumental hip-hop",i:'auriculares',c:'#eb6834',k:["instrumental hip hop","instrumental hip-hop","lofi hip hop","lo-fi hip hop","chillhop"]},
-
   {g:'sub',n:"Rap en español",i:'bandera',c:'#eb6834',k:["spanish hip hop","rap espanol","latin hip hop","rap en espanol","hip hop espanol"]},
-
   {g:'sub',n:"Rap francés",i:'bandera',c:'#eb6834',k:["french rap","french hip hop","rap francais"]},
-
   {g:'sub',n:"Pop rap",i:'estrella',c:'#eb6834',k:["pop rap","country rap","electro hop","crunk","swag"]},
-
   {g:'sub',n:"Trap latino",i:'copa',c:'#8a4a2e',k:["trap latino","latin trap","argentine trap","trap argentino","trap chileno"]},
-
-  {g:'sub',n:"Phonk",i:'niebla',c:'#8a4a2e',k:["phonk","drift phonk","brazilian phonk","house phonk"]},
-
+  {g:'sub',n:"Phonk",i:'niebla',c:'#8a4a2e',k:["phonk","drift phonk","brazilian phonk","house phonk","chopped and screwed","screwed","slowed"]},
   {g:'sub',n:"Rage",i:'fuego',c:'#8a4a2e',k:["rage rap","rage","opium"]},
-
   {g:'sub',n:"Plugg",i:'rayo',c:'#8a4a2e',k:["plugg","pluggnb","plugnb"]},
-
   {g:'sub',n:"Dance pop",i:'disco',c:'#e87ba4',k:["dance-pop","dance pop","pop dance"]},
-
   {g:'sub',n:"Art pop",i:'chispa',c:'#e87ba4',k:["art pop","baroque pop","chamber pop","experimental pop"]},
-
   {g:'sub',n:"Indie pop",i:'marcador',c:'#e87ba4',k:["indie pop","twee pop","jangle pop"]},
-
   {g:'sub',n:"Dream pop",i:'nube',c:'#e87ba4',k:["dream pop","shoegaze","ethereal wave"]},
-
   {g:'sub',n:"Power pop",i:'rayo',c:'#e87ba4',k:["power pop","powerpop"]},
-
   {g:'sub',n:"Pop rock",i:'guitarra',c:'#e87ba4',k:["pop rock","pop-rock","soft rock","aor","yacht rock"]},
-
   {g:'sub',n:"Hyperpop",i:'chispa',c:'#e87ba4',k:["hyperpop","glitchcore","digicore","bubblegum bass","pc music"]},
-
   {g:'sub',n:"Pop latino",i:'copa',c:'#e87ba4',k:["latin pop","pop latino","colombian pop","spanish pop","flamenco pop","mexican pop"]},
-
   {g:'sub',n:"Teen pop",i:'estrella',c:'#e87ba4',k:["teen pop","bubblegum pop","boy band","girl group"]},
-
-  {g:'sub',n:"Eurovisión",i:'microfono',c:'#e87ba4',k:["eurovision"]},
-
+  {g:'sub',n:"Eurovisión",i:'microfono',c:'#e87ba4',k:["eurovision","operacion triunfo","melodifestivalen"]},
   {g:'sub',n:"Soft pop",i:'nube',c:'#e87ba4',k:["soft pop","sophisti-pop","easy listening","adult contemporary"]},
-
   {g:'sub',n:"Classic rock",i:'guitarra',c:'#e34948',k:["classic rock"]},
-
   {g:'sub',n:"Hard rock",i:'guitarra',c:'#e34948',k:["hard rock","glam rock","glam metal","arena rock"]},
-
   {g:'sub',n:"Psicodélico",i:'espiral',c:'#e34948',k:["psychedelic rock","psychedelic","acid rock","neo-psychedelic","krautrock"]},
-
   {g:'sub',n:"Rock progresivo",i:'engranaje',c:'#e34948',k:["progressive rock","prog rock","art rock","canterbury scene","symphonic rock"]},
-
   {g:'sub',n:"Grunge",i:'guitarra',c:'#e34948',k:["grunge","post-grunge"]},
-
   {g:'sub',n:"Britpop",i:'bandera',c:'#e34948',k:["britpop","madchester","baggy"]},
-
   {g:'sub',n:"Indie rock",i:'marcador',c:'#e34948',k:["indie rock","garage rock","post-punk revival"]},
-
   {g:'sub',n:"Post-punk",i:'rayo',c:'#e34948',k:["post-punk","coldwave","cold wave","darkwave","gothic rock","goth","no wave"]},
-
   {g:'sub',n:"Post-rock",i:'niebla',c:'#e34948',k:["post-rock","math rock","slowcore"]},
-
   {g:'sub',n:"Noise rock",i:'rayo',c:'#e34948',k:["noise rock","industrial rock","industrial"]},
-
   {g:'sub',n:"Surf rock",i:'onda',c:'#e34948',k:["surf rock","surf"]},
-
   {g:'sub',n:"Southern rock",i:'casa',c:'#e34948',k:["southern rock","roots rock","heartland rock","swamp rock"]},
-
   {g:'sub',n:"Folk rock",i:'hoja',c:'#e34948',k:["folk rock","country rock","celtic rock"]},
-
-  {g:'sub',n:"Rock en español",i:'bandera',c:'#e34948',k:["rock en espanol","spanish rock","argentine rock","rock catala","mexican rock","rock nacional","latin rock","latin alternative","latin indie"]},
-
+  {g:'sub',n:"Rock en español",i:'bandera',c:'#e34948',k:["rock en espanol","spanish rock","argentine rock","rock catala","mexican rock","rock nacional","latin rock","latin alternative","latin indie","mestizo","patchanka","mestizaje","rock latino"]},
   {g:'sub',n:"Proto-punk",i:'rayo',c:'#e34948',k:["proto-punk","protopunk"]},
-
   {g:'sub',n:"Rockabilly",i:'guitarra',c:'#e34948',k:["rockabilly","rock and roll","rock n roll","doo-wop"]},
-
   {g:'sub',n:"Heavy metal",i:'calavera',c:'#4c4a52',k:["heavy metal","nwobhm","speed metal","power metal"]},
-
   {g:'sub',n:"Thrash metal",i:'calavera',c:'#4c4a52',k:["thrash metal","thrash","crossover thrash"]},
-
   {g:'sub',n:"Death metal",i:'calavera',c:'#4c4a52',k:["death metal","old school death metal","swedish death metal","brutal death metal","technical death metal","melodic death metal","deathcore"]},
-
   {g:'sub',n:"Black metal",i:'calavera',c:'#4c4a52',k:["black metal","blackgaze","atmospheric black metal"]},
-
   {g:'sub',n:"Doom y sludge",i:'niebla',c:'#4c4a52',k:["doom metal","doom","sludge","stoner rock","stoner metal"]},
-
   {g:'sub',n:"Metal alternativo",i:'marcador',c:'#4c4a52',k:["alternative metal","nu metal","metalcore","post-metal","djent","groove metal"]},
-
   {g:'sub',n:"Punk rock",i:'rayo',c:'#d1394f',k:["punk rock","street punk","oi"]},
-
   {g:'sub',n:"Hardcore punk",i:'rayo',c:'#d1394f',k:["hardcore punk","post-hardcore","powerviolence","crust punk","d-beat"]},
-
   {g:'sub',n:"Pop punk",i:'rayo',c:'#d1394f',k:["pop punk","skate punk","emo pop","easycore"]},
-
   {g:'sub',n:"Emo y screamo",i:'corazon',c:'#d1394f',k:["emo","screamo","midwest emo","emo revival"]},
-
   {g:'sub',n:"Ska punk",i:'gota',c:'#d1394f',k:["ska punk","two tone","2 tone"]},
-
   {g:'sub',n:"Classic soul",i:'corazon',c:'#2a78d6',k:["classic soul","southern soul","northern soul","memphis soul","philly soul","deep soul"]},
-
   {g:'sub',n:"Neo soul",i:'corazon',c:'#2a78d6',k:["neo soul","neo-soul","alternative rnb","alternative r&b","prog-rnb"]},
-
   {g:'sub',n:"R&B contemporáneo",i:'corazon',c:'#2a78d6',k:["contemporary r&b","urban contemporary","slow jams","quiet storm","latin r&b","french r&b"]},
-
   {g:'sub',n:"Doo-wop",i:'microfono',c:'#2a78d6',k:["doo-wop","doo wop","vocal group"]},
-
   {g:'sub',n:"Motown",i:'estrella',c:'#2a78d6',k:["motown"]},
-
   {g:'sub',n:"New jack swing",i:'espiral',c:'#2a78d6',k:["new jack swing","swingbeat"]},
-
   {g:'sub',n:"P-funk",i:'disco',c:'#d98c1f',k:["p-funk","funk rock","funk pop","funky"]},
-
   {g:'sub',n:"G-funk",i:'palmera',c:'#d98c1f',k:["g-funk","g funk"]},
-
   {g:'sub',n:"Boogie y disco",i:'disco',c:'#d98c1f',k:["boogie","disco","euro disco","space disco"]},
-
   {g:'sub',n:"Bebop",i:'nota',c:'#1baf7a',k:["bebop","hard bop","post-bop"]},
-
   {g:'sub',n:"Cool jazz",i:'copo',c:'#1baf7a',k:["cool jazz","modal jazz","west coast jazz"]},
-
   {g:'sub',n:"Free jazz",i:'espiral',c:'#1baf7a',k:["free jazz","avant-garde jazz","spiritual jazz"]},
-
   {g:'sub',n:"Jazz fusión",i:'engranaje',c:'#1baf7a',k:["jazz fusion","fusion","jazz-funk","jazz funk","acid jazz","nu jazz"]},
-
   {g:'sub',n:"Jazz vocal",i:'microfono',c:'#1baf7a',k:["vocal jazz","jazz vocal","adult standards","traditional pop","crooner","torch song"]},
-
   {g:'sub',n:"Big band y swing",i:'nota',c:'#1baf7a',k:["big band","swing","swing music","jump blues","dixieland"]},
-
   {g:'sub',n:"Bossa nova",i:'palmera',c:'#1baf7a',k:["bossa nova","samba jazz","latin jazz"]},
-
   {g:'sub',n:"Soul jazz",i:'nota',c:'#1baf7a',k:["soul jazz","organ jazz"]},
-
   {g:'sub',n:"Delta blues",i:'onda',c:'#3a5f8a',k:["delta blues","country blues","acoustic blues","classic blues"]},
-
   {g:'sub',n:"Chicago blues",i:'onda',c:'#3a5f8a',k:["chicago blues","electric blues"]},
-
   {g:'sub',n:"Blues rock",i:'guitarra',c:'#3a5f8a',k:["blues rock","soul blues","british blues"]},
-
   {g:'sub',n:"Barroco",i:'libro',c:'#8a6a4a',k:["baroque","early music","renaissance"]},
-
-  {g:'sub',n:"Ópera",i:'microfono',c:'#8a6a4a',k:["opera","operetta","zarzuela","bel canto"]},
-
+  {g:'sub',n:"Ópera",i:'microfono',c:'#8a6a4a',k:["opera","operetta","zarzuela","bel canto","tenor","soprano","baritono","aria"]},
   {g:'sub',n:"Piano solo",i:'teclado',c:'#8a6a4a',k:["classical piano","solo piano","piano"]},
-
   {g:'sub',n:"Música de cámara",i:'nota',c:'#8a6a4a',k:["chamber music","string quartet","concerto","sonata"]},
-
   {g:'sub',n:"Minimalismo",i:'niebla',c:'#8a6a4a',k:["minimalism","post-minimalism","modern classical","contemporary classical","neoclassical"]},
-
   {g:'sub',n:"Classic country",i:'casa',c:'#a3690f',k:["classic country","outlaw country","honky tonk","nashville sound"]},
-
   {g:'sub',n:"Bluegrass",i:'guitarra',c:'#a3690f',k:["bluegrass","old-time","appalachian"]},
-
   {g:'sub',n:"Cantautor",i:'hoja',c:'#a3690f',k:["singer-songwriter","cantautor","chanson","trova","nueva trova","variete francaise","italian singer-songwriter"]},
-
   {g:'sub',n:"Folk indie",i:'hoja',c:'#a3690f',k:["indie folk","freak folk","contemporary folk","folk pop"]},
-
   {g:'sub',n:"Americana",i:'casa',c:'#a3690f',k:["americana","alt-country","cowpunk"]},
-
   {g:'sub',n:"Roots reggae",i:'hoja',c:'#3f9c35',k:["roots reggae","roots","lovers rock","reggae en espanol"]},
-
   {g:'sub',n:"Dub",i:'gota',c:'#3f9c35',k:["dub","dub poetry"]},
-
   {g:'sub',n:"Dancehall",i:'altavoz',c:'#3f9c35',k:["dancehall","ragga","bashment"]},
-
   {g:'sub',n:"Ska",i:'gota',c:'#3f9c35',k:["ska","rocksteady"]},
-
   {g:'sub',n:"Salsa",i:'nota',c:'#eda100',k:["salsa","salsa dura","son cubano","guaracha","mambo","boogaloo"]},
-
   {g:'sub',n:"Bachata",i:'guitarra',c:'#eda100',k:["bachata"]},
-
   {g:'sub',n:"Cumbia",i:'onda',c:'#eda100',k:["cumbia","cumbia villera","vallenato"]},
-
   {g:'sub',n:"Merengue",i:'copa',c:'#eda100',k:["merengue","merengue tipico"]},
-
-  {g:'sub',n:"Bolero",i:'corazon',c:'#eda100',k:["bolero","bolero son","trio romantico"]},
-
+  {g:'sub',n:"Bolero",i:'corazon',c:'#eda100',k:["bolero","bolero son","trio romantico","boleros"]},
   {g:'sub',n:"Tango",i:'flor',c:'#eda100',k:["tango","milonga","techengue"]},
-
   {g:'sub',n:"Reggaetón clásico",i:'altavoz',c:'#e0563a',k:["old school reggaeton","reggaeton clasico","perreo"]},
-
-  {g:'sub',n:"Neoperreo",i:'chispa',c:'#e0563a',k:["neoperreo","experimental reggaeton"]},
-
+  {g:'sub',n:"Neoperreo",i:'chispa',c:'#e0563a',k:["neoperreo","experimental reggaeton","perreo","malianteo","underground reggaeton"]},
   {g:'sub',n:"Dembow",i:'onda',c:'#e0563a',k:["dembow","dembow dominicano"]},
-
   {g:'sub',n:"Afrobeats",i:'sol',c:'#e0563a',k:["afrobeats","afro pop","afroswing","amapiano"]},
-
   {g:'sub',n:"Corridos tumbados",i:'corona',c:'#b5761c',k:["corridos tumbados","sad sierreno","sierreno","corridos belicos","corrido"]},
-
   {g:'sub',n:"Banda y norteño",i:'nota',c:'#b5761c',k:["banda","norteno","duranguense","mariachi","ranchera"]},
-
   {g:'sub',n:"Flamenco puro",i:'abanico',c:'#b03f30',k:["flamenco","cante jondo","cante"]},
-
   {g:'sub',n:"Flamenco nuevo",i:'chispa',c:'#b03f30',k:["flamenco nuevo","nuevo flamenco","flamenco urbano","flamenco fusion","flamenco pop"]},
-
   {g:'sub',n:"Rumba",i:'guitarra',c:'#b03f30',k:["rumba","rumba catalana","rumba flamenca"]},
-
   {g:'sub',n:"Copla",i:'abanico',c:'#b03f30',k:["copla","cancion espanola","tonadilla"]},
-
   {g:'sub',n:"Synthwave",i:'sol',c:'#a05cc0',k:["synthwave","retrowave","outrun","vaporwave"]},
-
   {g:'sub',n:"New wave",i:'chispa',c:'#a05cc0',k:["new wave","neue deutsche welle","new romantic","minimal wave"]},
-
   {g:'sub',n:"Synthpop",i:'teclado',c:'#a05cc0',k:["synthpop","synth pop","electropop","futurepop"]},
-
   {g:'sub',n:"Italo disco",i:'disco',c:'#a05cc0',k:["italo disco","hi-nrg","italo dance"]},
-
   {g:'sub',n:"Electroclash",i:'chispa',c:'#a05cc0',k:["electroclash","new rave","bloghouse","blog house","dance-punk","alternative dance"]},
-
   {g:'sub',n:"Chiptune",i:'mando',c:'#a05cc0',k:["chiptune","8-bit","bitpop","video game"]},
-
   {g:'sub',n:"Indietronica",i:'marcador',c:'#a05cc0',k:["indietronica","folktronica","electronic rock"]},
-
   {g:'sub',n:"Ambient",i:'niebla',c:'#6b7b8c',k:["ambient","drone","dark ambient","space ambient"]},
-
-  {g:'sub',n:"IDM",i:'glitch',c:'#6b7b8c',k:["idm","braindance","glitch","wonky"]},
-
+  {g:'sub',n:"IDM",i:'glitch',c:'#6b7b8c',k:["idm","braindance","glitch","wonky","ninja tune"]},
   {g:'sub',n:"Trip hop",i:'niebla',c:'#6b7b8c',k:["trip hop","trip-hop","downtempo"]},
-
   {g:'sub',n:"Lo-fi",i:'auriculares',c:'#6b7b8c',k:["lo-fi","lofi","bedroom pop","bedroom"]},
-
   {g:'sub',n:"Musique concrète",i:'espiral',c:'#6b7b8c',k:["musique concrete","tape music","field recording","noise","power electronics"]},
-
   {g:'sub',n:"Plunderphonics",i:'glitch',c:'#6b7b8c',k:["plunderphonics","mashup","sampledelia","bootleg"]},
-
   {g:'sub',n:"New age",i:'flor',c:'#6b7b8c',k:["new age","healing","meditation"]},
+  {g:'sub',n:"Big beat",i:'martillo',c:'#7a5cd6',k:["big beat","bigbeat"]},
+  {g:'sub',n:"Nu disco",i:'disco',c:'#7a5cd6',k:["nu disco","nu-disco","disco funk","future funk"]},
+  {g:'sub',n:"Hi-NRG y eurobeat",i:'rayo',c:'#7a5cd6',k:["hi-nrg","hi nrg","hinrg","eurobeat","italo dance","hands up","handsup"]},
+  {g:'sub',n:"Jumpstyle y hardbass",i:'pesas',c:'#7a5cd6',k:["jumpstyle","hardbass","hard bass","tekstyle","gopnik"]},
+  {g:'sub',n:"Hypertechno",i:'chispa',c:'#7a5cd6',k:["hypertechno","hyper techno"]},
+  {g:'sub',n:"Techengue",i:'copa',c:'#7a5cd6',k:["techengue","cumbiaton","cumbia 420"]},
+  {g:'sub',n:"Tekno y free party",i:'altavoz',c:'#7a5cd6',k:["tekno","free tekno","freetekno","tribe","hardtek","mentalcore"]},
+  {g:'sub',n:"Chillwave y vaporwave",i:'palmera',c:'#7a5cd6',k:["chillwave","vaporwave","future funk","glo-fi"]},
+  {g:'sub',n:"Downtempo",i:'nube',c:'#7a5cd6',k:["downtempo","chillout","chill out","chill-out","electronic-lounge"]},
+  {g:'sub',n:"Nightcore",i:'chispa',c:'#7a5cd6',k:["nightcore","sped up","speed up","spedup"]},
+  {g:'sub',n:"Ghettotech y juke",i:'glitch',c:'#7a5cd6',k:["ghettotech","ghetto house","juke","footwork","ghetto tech"]},
+  {g:'sub',n:"Baltimore club",i:'onda',c:'#7a5cd6',k:["baltimore club","baltimore breaks","bmore"]},
+  {g:'sub',n:"UK funky",i:'disco',c:'#7a5cd6',k:["uk funky","funky house"]},
+  {g:'sub',n:"Bassline y speed garage",i:'onda',c:'#7a5cd6',k:["bassline","speed garage","4x4 garage","niche"]},
+  {g:'sub',n:"Future garage",i:'niebla',c:'#7a5cd6',k:["future garage"]},
+  {g:'sub',n:"Electro swing",i:'teclado',c:'#7a5cd6',k:["electro swing","electroswing","swing house"]},
+  {g:'sub',n:"Afro tech",i:'sol',c:'#7a5cd6',k:["afro tech","afrotech","afro techno"]},
+  {g:'sub',n:"G-house",i:'ciudad',c:'#5b8cf0',k:["g-house","g house","ghouse","gangsta house"]},
+  {g:'sub',n:"Tribal house",i:'martillo',c:'#5b8cf0',k:["tribal house","tribal","tribal tech"]},
+  {g:'sub',n:"Dutch house",i:'bandera',c:'#5b8cf0',k:["dutch house","dirty dutch","fidget house","stutter house"]},
+  {g:'sub',n:"Brazilian bass",i:'palmera',c:'#5b8cf0',k:["brazilian bass","speed house","bass brasileiro"]},
+  {g:'sub',n:"Peak time techno",i:'montana',c:'#4a5568',k:["peak time","peak-time","driving techno"]},
+  {g:'sub',n:"Melodic bass",i:'corazon',c:'#2b9c8a',k:["melodic bass","future riddim","colour bass","color bass","kawaii bass"]},
+  {g:'sub',n:"Brostep y tearout",i:'calavera',c:'#2b9c8a',k:["brostep","tearout","tear out","filthstep","gorestep","filth"]},
+  {g:'sub',n:"Lovestep",i:'corazon',c:'#2b9c8a',k:["lovestep"]},
+  {g:'sub',n:"Techstep y darkstep",i:'calavera',c:'#c0533f',k:["techstep","darkstep","neurostep"]},
+  {g:'sub',n:"Hardcore techno",i:'martillo',c:'#b8202e',k:["hardcore techno","hardtekk","makina","bakalao","mákina"]},
+  {g:'sub',n:"Old school",i:'reloj',c:'#eb6834',k:["old school hip hop","old school rap","golden age hip hop","old school hip-hop"]},
+  {g:'sub',n:"Underground hip-hop",i:'niebla',c:'#eb6834',k:["underground hip hop","underground hip-hop","underground rap","indie rap"]},
+  {g:'sub',n:"Experimental hip-hop",i:'glitch',c:'#eb6834',k:["experimental hip hop","experimental hip-hop","abstract hip hop","art rap","avant-garde hip hop"]},
+  {g:'sub',n:"Cloud rap",i:'nube',c:'#eb6834',k:["cloud rap","cloudrap"]},
+  {g:'sub',n:"Emo rap",i:'gota',c:'#eb6834',k:["emo rap","sad rap","sadboys","sadboy"]},
+  {g:'sub',n:"Crunk",i:'altavoz',c:'#eb6834',k:["crunk","crunkcore","snap music"]},
+  {g:'sub',n:"Hardcore hip-hop",i:'martillo',c:'#eb6834',k:["hardcore hip hop","hardcore rap","hardcore hip-hop"]},
+  {g:'sub',n:"Jazz rap",i:'nota',c:'#eb6834',k:["jazz rap","jazzy hip hop","jazz hop"]},
+  {g:'sub',n:"Turntablism",i:'disco',c:'#eb6834',k:["turntablism","scratch","turntable","dj battle","scratching"]},
+  {g:'sub',n:"Miami bass",i:'palmera',c:'#eb6834',k:["miami bass","booty bass","booty music"]},
+  {g:'sub',n:"Country rap",i:'casa',c:'#eb6834',k:["country rap","hick hop","hick-hop"]},
+  {g:'sub',n:"Hyphy y jerk",i:'coche',c:'#eb6834',k:["hyphy","jerk","jerkin","bay area rap"]},
+  {g:'sub',n:"Mumble rap",i:'niebla',c:'#eb6834',k:["mumble rap"]},
+  {g:'sub',n:"Nederhop",i:'bandera',c:'#eb6834',k:["nederhop","dutch hip hop","nederrap"]},
+  {g:'sub',n:"Drift phonk",i:'coche',c:'#8a4a2e',k:["drift phonk","driftphonk","house phonk"]},
+  {g:'sub',n:"Brazilian phonk",i:'palmera',c:'#8a4a2e',k:["brazilian phonk","funk phonk","phonk brasileiro","krushfunk"]},
+  {g:'sub',n:"Trap argentino",i:'bandera',c:'#8a4a2e',k:["argentine trap","trap argentino","trap arg"]},
+  {g:'sub',n:"Trap metal",i:'calavera',c:'#8a4a2e',k:["trap metal","rage","opium","scream rap"]},
+  {g:'sub',n:"Baroque pop",i:'libro',c:'#e87ba4',k:["baroque pop","chamber pop","orchestral pop"]},
+  {g:'sub',n:"Bedroom pop",i:'luna',c:'#e87ba4',k:["bedroom pop","bedroom"]},
+  {g:'sub',n:"Europop",i:'estrella',c:'#e87ba4',k:["europop","euro pop","euro-pop"]},
+  {g:'sub',n:"Bubblegum y boy bands",i:'chispa',c:'#e87ba4',k:["bubblegum","boy band","boyband","boybands","girl group","bubblegum pop"]},
+  {g:'sub',n:"Standards y crooner",i:'copa',c:'#e87ba4',k:["adult standards","traditional pop","crooner","vocal pop","easy listening","swing pop"]},
+  {g:'sub',n:"K-pop",i:'flor',c:'#e87ba4',k:["k-pop","kpop","korean pop","k-hip hop"]},
+  {g:'sub',n:"J-pop y city pop",i:'flor',c:'#e87ba4',k:["j-pop","jpop","japanese pop","city pop","citypop","shibuya-kei"]},
+  {g:'sub',n:"Schlager",i:'copa',c:'#e87ba4',k:["schlager","volksmusik","deutschpop"]},
+  {g:'sub',n:"Chanson y yé-yé",i:'flor',c:'#e87ba4',k:["chanson","variete francaise","ye-ye","yeye","ye ye","french pop"]},
+  {g:'sub',n:"Balada romántica",i:'corazon',c:'#e87ba4',k:["balada","baladas","balada romantica","romantica","musica romantica","bolero pop"]},
+  {g:'sub',n:"Soft rock",i:'nube',c:'#e34948',k:["soft rock","adult contemporary","mellow rock"]},
+  {g:'sub',n:"Yacht rock",i:'avion',c:'#e34948',k:["yacht rock","smooth rock","west coast sound"]},
+  {g:'sub',n:"Glam rock",i:'estrella',c:'#e34948',k:["glam rock","glam","glitter rock"]},
+  {g:'sub',n:"Art rock",i:'flor',c:'#e34948',k:["art rock","experimental rock","avant-rock"]},
+  {g:'sub',n:"Krautrock",i:'engranaje',c:'#e34948',k:["krautrock","kosmische","kosmische musik","zeuhl"]},
+  {g:'sub',n:"Garage rock",i:'coche',c:'#e34948',k:["garage rock","garage punk","freakbeat"]},
+  {g:'sub',n:"Shoegaze",i:'niebla',c:'#e34948',k:["shoegaze","shoegazing","nu gaze"]},
+  {g:'sub',n:"Math rock",i:'engranaje',c:'#e34948',k:["math rock","midwest emo","post-math"]},
+  {g:'sub',n:"Roots rock",i:'casa',c:'#e34948',k:["roots rock","heartland rock","pub rock"]},
+  {g:'sub',n:"Acid rock",i:'espiral',c:'#e34948',k:["acid rock","space rock","freak folk"]},
+  {g:'sub',n:"Stoner rock",i:'nube',c:'#e34948',k:["stoner rock","desert rock","stoner","stoner metal"]},
+  {g:'sub',n:"Nu metal",i:'calavera',c:'#4c4a52',k:["nu metal","nu-metal","numetal"]},
+  {g:'sub',n:"Rap metal",i:'microfono',c:'#4c4a52',k:["rap metal","rapcore","funk metal","rap rock"]},
+  {g:'sub',n:"Glam metal",i:'estrella',c:'#4c4a52',k:["glam metal","hair metal","sleaze rock","sleaze metal"]},
+  {g:'sub',n:"Power y sinfónico",i:'corona',c:'#4c4a52',k:["power metal","symphonic metal","epic metal"]},
+  {g:'sub',n:"Metalcore",i:'martillo',c:'#4c4a52',k:["metalcore","deathcore","post-hardcore","mathcore"]},
+  {g:'sub',n:"Death metal clásico",i:'calavera',c:'#4c4a52',k:["old school death metal","swedish death metal","melodic death metal","brutal death metal"]},
+  {g:'sub',n:"Groove e industrial",i:'engranaje',c:'#4c4a52',k:["groove metal","industrial metal","nu-industrial"]},
+  {g:'sub',n:"Metal progresivo",i:'espiral',c:'#4c4a52',k:["progressive metal","djent","technical death metal","avant-garde metal"]},
+  {g:'sub',n:"Psychobilly",i:'calavera',c:'#d1394f',k:["psychobilly","horror punk","deathrock"]},
+  {g:'sub',n:"Riot grrrl y queercore",i:'flor',c:'#d1394f',k:["riot grrrl","queercore","riot grrl"]},
+  {g:'sub',n:"Indie latino",i:'palmera',c:'#3f9c35',k:["latin indie","indie latino","latin alternative","rock alternativo","indie espanol"]},
+  {g:'sub',n:"Alternative dance",i:'rayo',c:'#3f9c35',k:["alternative dance","new rave","dance-punk","indie dance","dance punk","madchester"]},
+  {g:'sub',n:"Twee y jangle",i:'flor',c:'#3f9c35',k:["twee pop","jangle pop","twee","c86"]},
+  {g:'sub',n:"Quiet storm",i:'luna',c:'#2a78d6',k:["quiet storm"]},
+  {g:'sub',n:"Slow jams",i:'corazon',c:'#2a78d6',k:["slow jam","slow jams","baby making music"]},
+  {g:'sub',n:"Northern soul",i:'disco',c:'#2a78d6',k:["northern soul","deep soul"]},
+  {g:'sub',n:"Soul blues",i:'gota',c:'#2a78d6',k:["soul blues","southern soul","memphis soul"]},
+  {g:'sub',n:"R&B alternativo",i:'niebla',c:'#2a78d6',k:["alternative rnb","alternative r&b","prog-rnb","pbr&b","indie soul","alt r&b","uk r&b"]},
+  {g:'sub',n:"Rhythm and blues",i:'nota',c:'#2a78d6',k:["rhythm and blues","rhythm & blues","jump blues"]},
+  {g:'sub',n:"Funk carioca",i:'palmera',c:'#d98c1f',k:["funk carioca","brazilian funk","baile funk","funk brasileiro","funk mandelao","funk paulista","passo bem solto"]},
+  {g:'sub',n:"Jazz funk",i:'nota',c:'#d98c1f',k:["jazz funk","jazz-funk","acid jazz"]},
+  {g:'sub',n:"Latin jazz",i:'copa',c:'#1baf7a',k:["latin jazz","afro-cuban jazz","jazz latino"]},
+  {g:'sub',n:"Smooth jazz",i:'nube',c:'#1baf7a',k:["smooth jazz","jazz pop","elevator jazz"]},
+  {g:'sub',n:"Hard bop",i:'nota',c:'#1baf7a',k:["hard bop","post-bop","modal jazz"]},
+  {g:'sub',n:"Ragtime y stride",i:'teclado',c:'#1baf7a',k:["ragtime","stride","dixieland","new orleans jazz"]},
+  {g:'sub',n:"Nu jazz",i:'chispa',c:'#1baf7a',k:["nu jazz","jazztronica","future jazz"]},
+  {g:'sub',n:"Classic blues",i:'reloj',c:'#3a5f8a',k:["classic blues","country blues","acoustic blues","piedmont blues"]},
+  {g:'sub',n:"Orquestal",i:'libro',c:'#8a6a4a',k:["orchestral","orchestra","symphony","symphonic","sinfonia","sinfonico"]},
+  {g:'sub',n:"Concierto",i:'nota',c:'#8a6a4a',k:["concerto","concierto","concerto grosso"]},
+  {g:'sub',n:"Coral",i:'corona',c:'#8a6a4a',k:["choral","chorus","coro","requiem","cantata","gregorian","canto gregoriano"]},
+  {g:'sub',n:"Música antigua",i:'libro',c:'#8a6a4a',k:["early music","renaissance","medieval","musica antigua"]},
+  {g:'sub',n:"Romanticismo",i:'corazon',c:'#8a6a4a',k:["romanticism","romantic era","impressionism","impressionist","impresionismo"]},
+  {g:'sub',n:"Clásica contemporánea",i:'chispa',c:'#8a6a4a',k:["contemporary classical","avant-garde classical","electronic classical","neoclassical","neoclasica"]},
+  {g:'sub',n:"Outlaw country",i:'coche',c:'#a3690f',k:["outlaw country","honky tonk","western","western swing"]},
+  {g:'sub',n:"Country pop",i:'estrella',c:'#a3690f',k:["country pop","country rock","nashville sound","contemporary country"]},
+  {g:'sub',n:"Folk celta",i:'hoja',c:'#a3690f',k:["celtic","celtic folk","irish folk","folk irlandes","celtic punk"]},
+  {g:'sub',n:"Folclore latinoamericano",i:'montana',c:'#a3690f',k:["nueva cancion","folclore","folklore","andean","andina","musica andina","peruvian folk","folclore argentino"]},
+  {g:'sub',n:"Rocksteady",i:'sol',c:'#3f9c35',k:["rocksteady","early reggae","ska jazz"]},
+  {g:'sub',n:"Ragga",i:'altavoz',c:'#3f9c35',k:["ragga","raggamuffin","bashment","ragga jungle"]},
+  {g:'sub',n:"Son cubano",i:'palmera',c:'#eda100',k:["son cubano","son montuno","guaracha","trova cubana","buena vista social club","timba"]},
+  {g:'sub',n:"Trova",i:'guitarra',c:'#eda100',k:["trova","nueva trova","cantautor latino","trovador"]},
+  {g:'sub',n:"Cha-cha-chá y mambo",i:'copa',c:'#eda100',k:["cha cha cha","chachacha","cha-cha-cha","mambo","danzon"]},
+  {g:'sub',n:"Candombe y murga",i:'martillo',c:'#eda100',k:["candombe","murga","milonga"]},
+  {g:'sub',n:"Vallenato y champeta",i:'sol',c:'#eda100',k:["vallenato","champeta","cumbia villera","porro"]},
+  {g:'sub',n:"Electrocumbia",i:'rayo',c:'#eda100',k:["electrocumbia","cumbia electronica","digital cumbia","nu cumbia"]},
+  {g:'sub',n:"RKT y turreo",i:'fuego',c:'#e0563a',k:["rkt","turreo","cumbia 420","turreo argentino"]},
+  {g:'sub',n:"Reggaetón chileno",i:'bandera',c:'#e0563a',k:["reggaeton chileno","trap chileno","perreo chileno"]},
+  {g:'sub',n:"Mariachi",i:'corona',c:'#b5761c',k:["mariachi","son jalisciense","mariachi moderno"]},
+  {g:'sub',n:"Ranchera",i:'copa',c:'#b5761c',k:["ranchera","rancheras","ranchero"]},
+  {g:'sub',n:"Corrido",i:'guitarra',c:'#b5761c',k:["corrido","corridos","corridos belicos","narcocorrido"]},
+  {g:'sub',n:"Tejano",i:'bandera',c:'#b5761c',k:["tejano","tex-mex","conjunto"]},
+  {g:'sub',n:"Flamenco pop",i:'abanico',c:'#b03f30',k:["flamenco pop","pop flamenco","pop andaluz"]},
+  {g:'sub',n:"Flamenco urbano",i:'ciudad',c:'#b03f30',k:["flamenco urbano","flamenco trap","nuevo flamenco urbano"]},
+  {g:'sub',n:"Rumba catalana",i:'guitarra',c:'#b03f30',k:["rumba catalana","rumbapop","tecnorumba","rumba flamenca","catalan rumba"]},
+  {g:'sub',n:"Electropop",i:'teclado',c:'#a05cc0',k:["electropop","electro pop","synth pop moderno"]},
+  {g:'sub',n:"Darkwave",i:'luna',c:'#a05cc0',k:["darkwave","coldwave","minimal wave","ethereal wave"]},
+  {g:'sub',n:"EBM e industrial",i:'engranaje',c:'#a05cc0',k:["ebm","electronic body music","aggrotech","futurepop"]},
+  {g:'sub',n:"Glitch",i:'glitch',c:'#6b7b8c',k:["glitch","glitchtronica","clicks and cuts"]},
+  {g:'sub',n:"Drone y dark ambient",i:'niebla',c:'#6b7b8c',k:["drone","dark ambient","field recording","ambient drone"]},
+  {g:'sub',n:"Noise",i:'altavoz',c:'#6b7b8c',k:["noise","harsh noise","power electronics","noise music"]},
+  {g:'sub',n:"Disney",i:'estrella',c:'#726858',k:["disney","pixar","musical de disney"]},
+  {g:'sub',n:"Anime",i:'flor',c:'#726858',k:["anime","anime ost","j-anime","anisong"]},
+  {g:'sub',n:"Videojuegos",i:'mando',c:'#726858',k:["video game","videogame","game soundtrack","vgm","videojuego","gta","initial d","osu"]},
+  {g:'sub',n:"Villancicos",i:'arbol',c:'#2f8f4e',k:["villancicos","christmas carol","christmas song","navidad","villancico"]},
+  {g:'sub',n:"Afrobeat clásico",i:'sol',c:'#c98a1f',k:["afrobeat","fela","afro-funk"]},
+  {g:'sub',n:"Kuduro y kizomba",i:'sol',c:'#c98a1f',k:["kuduro","kizomba","semba","tarraxinha"]},
+  {g:'sub',n:"Samba y pagode",i:'palmera',c:'#2f9e5e',k:["samba","pagode","samba-rock","samba de roda"]},
+  {g:'sub',n:"MPB y tropicália",i:'flor',c:'#2f9e5e',k:["mpb","musica popular brasileira","tropicalia","tropicalismo"]},
 
+  /* ---------- AMBIENTE (28) ---------- */
   {g:'ambiente',n:"Para reventar",i:'fuego',c:'#e0402e',k:["big room","festival","hardstyle","hardcore","riddim","deathstep","brostep","gabber","frenchcore","speedcore","rawstyle","tearout","uptempo","hard techno","hard dance","crunk","trap metal","thrash","death metal","grindcore"]},
-
   {g:'ambiente',n:"Fiesta",i:'copa',c:'#e8a020',k:["party","dance","club","disco","eurodance","moombahton","jersey club","baltimore club","funk carioca","dembow","perreo","reggaeton","bounce","europop","hi-nrg","italo dance","jackin"]},
-
   {g:'ambiente',n:"Tranquilo",i:'luna',c:'#5b7fa0',k:["chill","chillout","chillstep","ambient","downtempo","lo-fi","lofi","acoustic","soft","easy listening","new age","slowcore","quiet storm","bossa nova","chillhop","sleep","meditation","soft rock","soft pop","bedroom pop"]},
-
   {g:'ambiente',n:"Melancólico",i:'gota',c:'#6a7f94',k:["sad","melancholy","melancholic","emo","shoegaze","slowcore","sadcore","blues","bolero","emo rap","sad rap","sad sierreno","depressive","ballad","elegy","doom"]},
-
   {g:'ambiente',n:"Romántico",i:'corazon',c:'#d4568a',k:["romantic","love","slow jams","quiet storm","bachata","bolero","lovers rock","soul ballad","bailar pegados","trio romantico","sexy"]},
-
   {g:'ambiente',n:"Oscuro",i:'calavera',c:'#3f3a45',k:["dark","darkwave","gothic","goth","horrorcore","black metal","doom","industrial","dark ambient","witch house","cold wave","coldwave","occult","noir"]},
-
   {g:'ambiente',n:"Épico",i:'montana',c:'#8a6a3f',k:["epic","orchestral","symphonic","cinematic","score","soundtrack","trailer","anthem","uplifting","power metal","progressive rock","concerto"]},
-
   {g:'ambiente',n:"Alegre",i:'sol',c:'#e5b520',k:["happy","upbeat","feel good","sunshine","tropical","summer","twee","bubblegum","doo-wop","ska","soca","happy hardcore","disney","villancicos","christmas"]},
-
   {g:'ambiente',n:"Para concentrarse",i:'sol',c:'#7b8ca0',k:["instrumental","ambient","minimal","classical piano","solo piano","study","focus","post-rock","drone","modern classical","neoclassical","chamber music","baroque"]},
-
   {g:'ambiente',n:"Para el gimnasio",i:'pesas',c:'#c4552f',k:["workout","gym","pump","big room","hardstyle","phonk","drift phonk","drill","gangsta rap","hardcore hip hop","rage rap","bass house","hard techno","riddim","brostep"]},
-
   {g:'ambiente',n:"Para conducir",i:'coche',c:'#4a7fa0',k:["driving","road","synthwave","retrowave","outrun","yacht rock","classic rock","aor","rally house","krautrock","motorik"]},
-
   {g:'ambiente',n:"Nostálgico",i:'reloj',c:'#9a7f5f',k:["oldies","nostalgia","retro","classic rock","motown","doo-wop","adult standards","traditional pop","vintage","yacht rock","city pop","copla","vaporwave"]},
-
   {g:'ambiente',n:"Raro y experimental",i:'espiral',c:'#7a5cd6',k:["experimental","avant-garde","outsider","noise","free jazz","musique concrete","glitch","breakcore","hyperpop","deconstructed club","abstract","weirdcore"]},
-
   {g:'ambiente',n:"Viaje psicodélico",i:'nube',c:'#9c5cc0',k:["psychedelic","psytrance","acid","neo-psychedelic","krautrock","space rock","trippy","dub","stoner"]},
-
   {g:'ambiente',n:"Agresivo",i:'rayo',c:'#b8202e',k:["aggressive","angry","rage","hardcore punk","powerviolence","grindcore","screamo","thrash","drill","horrorcore","crust punk","d-beat","noise rock"]},
-
   {g:'ambiente',n:"Callejero",i:'ciudad',c:'#5a6472',k:["street","gangsta rap","gangster rap","drill","grime","trap","boom bap","dirty south","hardcore hip hop","underground hip hop","mafioso rap","g-funk"]},
-
   {g:'ambiente',n:"De verano",i:'palmera',c:'#2fa08a',k:["tropical","summer","beach","surf","reggae","soca","tropical house","afrobeats","bossa nova","samba","cumbia","merengue","balearic"]},
-
   {g:'ambiente',n:"De madrugada",i:'estrella',c:'#4a4a7a',k:["late night","after hours","deep house","minimal techno","dub techno","downtempo","trip hop","ambient","drone","jazz vocal","torch song","slow jams"]},
-
   {g:'ambiente',n:"Bailar pegados",i:'flor',c:'#c05c8a',k:["bailar pegados","slow jams","bachata","bolero","lovers rock","quiet storm","soul ballad","doo-wop","romantic"]},
-
   {g:'ambiente',n:"Coro y voz",i:'microfono',c:'#a0785c',k:["a cappella","choir","vocal","female vocalists","male vocalists","female vocalist","vocal jazz","jazz vocal","vocal group","vocal trance","gospel","opera"]},
-
   {g:'ambiente',n:"Instrumental",i:'auriculares',c:'#7f8fa0',k:["instrumental","instrumental hip hop","instrumental hip-hop","post-rock","score","solo piano","classical piano","guitar","jazz fusion","math rock"]},
-
   {g:'ambiente',n:"Guilty pleasure",i:'ojo',c:'#d4708a',k:["guilty pleasure","eurovision","europop","teen pop","bubblegum pop","boy band","girl group","italo dance","eurodance","disney","novelty"]},
-
   {g:'ambiente',n:"Clásico eterno",i:'corona',c:'#c9a227',k:["classic rock","oldies","classic soul","motown","adult standards","traditional pop","doo-wop","classic blues","golden age hip hop","old school hip hop","standards"]},
-
   {g:'ambiente',n:"Underground",i:'niebla',c:'#6a6a72',k:["underground","underground hip hop","underground hip-hop","experimental","outsider","no wave","lo-fi","anarcho","crust punk","free jazz","harsh noise","abstract"]},
+  {g:'ambiente',n:"Sensual",i:'corazon',c:'#c0407a',k:["sexy","sensual","slow jam","slow jams","quiet storm","baby making music","seductive"]},
+  {g:'ambiente',n:"Festivalero",i:'chispa',c:'#e59020',k:["festival","mainstage","main stage","tomorrowland","rave","anthem","stadium"]},
+  {g:'ambiente',n:"Para llorar",i:'gota',c:'#5a7f9c',k:["sad","sad songs","triste","heartbreak","breakup","crying","tearjerker"]},
+  {g:'ambiente',n:"Motivación",i:'montana',c:'#2f9e7e',k:["motivational","uplifting","feel good","feelgood","inspirational","upbeat"]},
 
-  {g:'origen',n:"España",i:'bandera',c:'#c4342e',k:["spanish","spain","espanol","espana","flamenco","copla","rumba catalana","rock en espanol","spanish pop","spanish rock","spanish hip hop","madrid","barcelona","sevilla","andalucia"]},
-
+  /* ---------- ORIGEN (46) ---------- */
+  {g:'origen',n:"España",i:'bandera',c:'#c4342e',k:["spanish","spain","espanol","espana","flamenco","copla","rumba catalana","rock en espanol","spanish pop","spanish rock","spanish hip hop","madrid","barcelona","sevilla","andalucia","galician","galego","galicia","gallego","basque","euskadi","euskera","vasco","bilbao","espanyol","spanisch","espagnol"]},
   {g:'origen',n:"Cataluña",i:'bandera',c:'#d4903a',k:["catalan","catala","catalunya","rock catala"]},
-
   {g:'origen',n:"Reino Unido",i:'bandera',c:'#2f5fa0',k:["british","uk","england","english","britpop","london","manchester","madchester","scottish","welsh","uk garage","uk drill","uk grime","uk hardcore","uk funky"]},
-
-  {g:'origen',n:"Estados Unidos",i:'bandera',c:'#3a6fb0',k:["american","usa","united states","new york","los angeles","chicago","atlanta","detroit","memphis","houston","compton","florida","virginia","texas","california","seattle","philadelphia","baltimore","new jersey","oakland"]},
-
+  {g:'origen',n:"Estados Unidos",i:'bandera',c:'#3a6fb0',k:["american","usa","united states","new york","los angeles","chicago","atlanta","detroit","memphis","houston","compton","florida","virginia","texas","california","seattle","philadelphia","baltimore","new jersey","oakland","new orleans","nola","louisiana","memphis rap","cleveland","pittsburgh","missouri","north carolina"]},
   {g:'origen',n:"Irlanda",i:'hoja',c:'#2f8f4e',k:["irish","ireland","celtic"]},
-
-  {g:'origen',n:"Francia",i:'bandera',c:'#3f5fa0',k:["french","france","francaise","variete francaise","chanson","french house","french rap","french pop","french r&b"]},
-
+  {g:'origen',n:"Francia",i:'bandera',c:'#3f5fa0',k:["french","france","francaise","variete francaise","chanson","french house","french rap","french pop","french r&b","francais"]},
   {g:'origen',n:"Alemania",i:'bandera',c:'#4a4a52',k:["german","germany","deutsch","krautrock","neue deutsche welle","berlin","hamburg"]},
-
-  {g:'origen',n:"Italia",i:'bandera',c:'#2f8f5e',k:["italian","italy","italia","italo disco","italo dance","italian pop"]},
-
-  {g:'origen',n:"Países Bajos",i:'bandera',c:'#e07f2f',k:["dutch","netherlands","holland","nederpop","dutch house","gabber"]},
-
+  {g:'origen',n:"Italia",i:'bandera',c:'#2f8f5e',k:["italian","italy","italia","italo disco","italo dance","italian pop","italiano"]},
+  {g:'origen',n:"Países Bajos",i:'bandera',c:'#e07f2f',k:["dutch","netherlands","holland","nederpop","dutch house","gabber","hollands","nederhop","nl"]},
   {g:'origen',n:"Suecia",i:'bandera',c:'#3a7fc0',k:["swedish","sweden","swedish death metal","swedish pop"]},
-
-  {g:'origen',n:"Escandinavia",i:'copo',c:'#5a8fb0',k:["norwegian","norway","danish","denmark","finnish","finland","icelandic","iceland","nordic"]},
-
+  {g:'origen',n:"Escandinavia",i:'copo',c:'#5a8fb0',k:["norwegian","norway","danish","denmark","finnish","finland","icelandic","iceland","nordic","suomirap","finlandes"]},
   {g:'origen',n:"Australia",i:'bandera',c:'#2f9e7e',k:["australian","australia","melbourne","sydney","new zealand"]},
-
   {g:'origen',n:"Canadá",i:'hoja',c:'#c4342e',k:["canadian","canada","toronto","montreal","quebec"]},
-
   {g:'origen',n:"Argentina",i:'bandera',c:'#6fa0d0',k:["argentine","argentina","argentino","rock nacional","argentine trap","argentine rock","buenos aires","tango","techengue"]},
-
   {g:'origen',n:"México",i:'bandera',c:'#2f8f5e',k:["mexican","mexico","musica mexicana","mariachi","ranchera","norteno","banda","corridos tumbados","mexican rock","mexican pop","regional mexican"]},
-
   {g:'origen',n:"Colombia",i:'bandera',c:'#e5c020',k:["colombian","colombia","vallenato","champeta","colombian pop"]},
-
   {g:'origen',n:"Puerto Rico",i:'palmera',c:'#3a6fb0',k:["puerto rico","puerto rican","boricua","san juan"]},
-
   {g:'origen',n:"Cuba",i:'palmera',c:'#c4342e',k:["cuban","cuba","son cubano","guaracha","timba","habana"]},
-
   {g:'origen',n:"República Dominicana",i:'palmera',c:'#3a5fa0',k:["dominican","dominicana","dembow dominicano","merengue tipico","bachata"]},
-
   {g:'origen',n:"Chile",i:'bandera',c:'#c4342e',k:["chilean","chile","chileno","reggaeton chileno","trap chileno"]},
-
-  {g:'origen',n:"Brasil",i:'palmera',c:'#2f9e5e',k:["brazilian","brazil","brasil","samba","mpb","forro","pagode","funk carioca","brazilian funk","brazilian bass","brazilian phonk","bossa nova"]},
-
+  {g:'origen',n:"Brasil",i:'palmera',c:'#2f9e5e',k:["brazilian","brazil","brasil","samba","mpb","forro","pagode","funk carioca","brazilian funk","brazilian bass","brazilian phonk","bossa nova","sertanejo","sertanejo universitario","jovem guarda","tropicalia"]},
   {g:'origen',n:"Japón",i:'flor',c:'#d4568a',k:["japanese","japan","j-pop","j-rock","city pop","shibuya-kei","anime"]},
-
   {g:'origen',n:"Corea",i:'flor',c:'#a05cc0',k:["korean","korea","k-pop","k-hip hop","k-rock"]},
-
-  {g:'origen',n:"África",i:'sol',c:'#c98a1f',k:["african","africa","afrobeat","afrobeats","nigerian","nigeria","ghana","south african","amapiano","highlife","mali","senegal","ethiopian"]},
-
+  {g:'origen',n:"África",i:'sol',c:'#c98a1f',k:["african","africa","afrobeat","afrobeats","nigerian","nigeria","ghana","south african","amapiano","highlife","mali","senegal","ethiopian","gqom","gabon","kuduro"]},
   {g:'origen',n:"Jamaica",i:'hoja',c:'#2f8f4e',k:["jamaican","jamaica","reggae","dancehall","rocksteady","ragga","kingston"]},
+  {g:'origen',n:"Rusia y Este",i:'bandera',c:'#5a6472',k:["russian","russia","polish","poland","ukrainian","czech","hungarian","romanian","serbian","balkan","hardbass","lithuanian","latvian","estonian","baltic","ukraine","kosovo","kosovan","albanian","lituano"]},
+  {g:'origen',n:"Andalucía",i:'sol',c:'#d4903a',k:["andalusian","andalucia","andaluz","sevilla","granada","malaga","cadiz","sevillanas"]},
+  {g:'origen',n:"Madrid",i:'ciudad',c:'#c4342e',k:["madrid","movida","movida madrilena","madrileno"]},
+  {g:'origen',n:"Canarias",i:'palmera',c:'#2f9e7e',k:["canarias","canary islands","canario","tenerife","las palmas"]},
+  {g:'origen',n:"Perú",i:'montana',c:'#c4342e',k:["peruvian","peru","peruano","cumbia peruana","chicha"]},
+  {g:'origen',n:"Venezuela",i:'bandera',c:'#e5c020',k:["venezuelan","venezuela","venezolano","caracas"]},
+  {g:'origen',n:"Panamá",i:'palmera',c:'#3a6fb0',k:["panama","panamanian","panameno"]},
+  {g:'origen',n:"Uruguay",i:'bandera',c:'#6fa0d0',k:["uruguayan","uruguay","uruguayo","montevideo","candombe"]},
+  {g:'origen',n:"Bélgica",i:'bandera',c:'#e5c020',k:["belgian","belgium","belgica","new beat","jumpstyle"]},
+  {g:'origen',n:"Grecia y Turquía",i:'sol',c:'#3a7fc0',k:["greek","greece","turkish","turkey","anatolian","anadolu"]},
+  {g:'origen',n:"India",i:'flor',c:'#e07f2f',k:["indian","india","bhangra","bollywood","punjabi","desi"]},
+  {g:'origen',n:"China",i:'flor',c:'#c4342e',k:["chinese","china","mandopop","cantopop","taiwanese"]},
+  {g:'origen',n:"Oriente Medio",i:'luna',c:'#c98a1f',k:["arabic","middle eastern","rai","egyptian","lebanese","israeli","persian","turco"]},
+  {g:'origen',n:"Nueva York",i:'ciudad',c:'#3a6fb0',k:["new york","nyc","brooklyn","bronx","queens","harlem","new york city"]},
+  {g:'origen',n:"California",i:'sol',c:'#e5c020',k:["california","los angeles","west coast","compton","long beach","bay area","oakland","san francisco","hyphy"]},
+  {g:'origen',n:"Atlanta",i:'ciudad',c:'#c98a1f',k:["atlanta","atl","decatur","east atlanta"]},
+  {g:'origen',n:"Chicago",i:'ciudad',c:'#5a6472',k:["chicago","chicago house","chicago drill","chicago blues","windy city"]},
+  {g:'origen',n:"Detroit",i:'engranaje',c:'#4a4a52',k:["detroit","motown","motor city","detroit techno"]},
+  {g:'origen',n:"Miami",i:'palmera',c:'#2fa08a',k:["miami","florida","miami bass","south florida"]},
+  {g:'origen',n:"Texas",i:'coche',c:'#b5761c',k:["texas","houston","austin","texan","screwed up click","dallas"]},
+  {g:'origen',n:"Nueva Orleans",i:'copa',c:'#9a7b3f',k:["new orleans","nola","bounce music","louisiana"]},
 
-  {g:'origen',n:"Rusia y Este",i:'bandera',c:'#5a6472',k:["russian","russia","polish","poland","ukrainian","czech","hungarian","romanian","serbian","balkan","hardbass"]}
+  /* ---------- DECADAS (8) ----------
+     No llevan claves: se resuelven por el ano de lanzamiento, que esta en
+     practicamente todo. Es el unico eje que no adivina nada. */
+  {g:'decada',n:"Antes de 1960",i:'libro',c:'#8a6a4a',d:[1900,1959]},
+  {g:'decada',n:"Años 60",i:'flor',c:'#b5761c',d:[1960,1969]},
+  {g:'decada',n:"Años 70",i:'disco',c:'#d98c1f',d:[1970,1979]},
+  {g:'decada',n:"Años 80",i:'teclado',c:'#a05cc0',d:[1980,1989]},
+  {g:'decada',n:"Años 90",i:'mando',c:'#5b8cf0',d:[1990,1999]},
+  {g:'decada',n:"Años 2000",i:'camara',c:'#2b9c8a',d:[2000,2009]},
+  {g:'decada',n:"Años 2010",i:'auriculares',c:'#3f9c35',d:[2010,2019]},
+  {g:'decada',n:"Años 2020",i:'chispa',c:'#e0563a',d:[2020,2029]}
 ];
 
 const GRUPOS = [
   { id: 'genero',   nombre: 'Géneros',    icon: 'nota',     color: '#a3690f', que: 'Las familias grandes. Con estas solas ya puedes cruzar medio vault.' },
-  { id: 'sub',      nombre: 'Subgéneros', icon: 'marcador', color: '#7a5cd6', que: 'El detalle: Big room, Boom bap, Flamenco nuevo, Trap latino…' },
+  { id: 'sub',      nombre: 'Subgéneros', icon: 'marcador', color: '#7a5cd6', que: 'El detalle fino: G-house, Boom bap, Flamenco urbano, Drift phonk, Northern soul…' },
   { id: 'ambiente', nombre: 'Ambiente',   icon: 'corazon',  color: '#d4568a', que: 'Para qué sirve cada cosa, no qué es. Es el eje que de verdad usas al buscar música.' },
-  { id: 'origen',   nombre: 'Origen',     icon: 'bandera',  color: '#2f8f5e', que: 'De dónde viene. Sale del país que traen las etiquetas de Last.fm, así que cubre menos.' }
+  { id: 'origen',   nombre: 'Origen',     icon: 'bandera',  color: '#2f8f5e', que: 'De dónde viene, hasta el nivel de ciudad o región. Sale del país que traen las etiquetas de Last.fm, así que cubre menos.' },
+  { id: 'decada',   nombre: 'Década',     icon: 'reloj',    color: '#5b8cf0', que: 'La única carpeta que no adivina nada: sale de la fecha de lanzamiento, así que acierta siempre.' }
 ];
 const GRUPO_POR_ID = Object.fromEntries(GRUPOS.map(g => [g.id, g]));
 
 /* Las expresiones se compilan una vez y el resultado se guarda POR CADENA DE
    GENERO, no por elemento: hay 1.497 cadenas distintas y 13.892 elementos, asi
    que cachear por cadena convierte 3,5 segundos en medio. */
+/* Dos familias de etiqueta con motores distintos: las que se resuelven por
+   palabra (420) y las ocho de decada, que se resuelven por el ano. */
+const TAX_GEN = TAXONOMIA.filter(t => t.k);
+const TAX_DEC = TAXONOMIA.filter(t => t.d);
 let _rxListo = false, _tagsPorGenero = null;
 function tagsDeGeneroFold(g) {
   if (!_rxListo) {
-    for (const t of TAXONOMIA) t._rx = t.k.map(k => new RegExp('(^|[^a-z0-9])' + k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '([^a-z0-9]|$)'));
+    for (const t of TAX_GEN) t._rx = t.k.map(k => new RegExp('(^|[^a-z0-9])' + k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '([^a-z0-9]|$)'));
     _rxListo = true;
   }
   if (!_tagsPorGenero) _tagsPorGenero = new Map();
   let r = _tagsPorGenero.get(g);
-  if (r === undefined) { r = TAXONOMIA.filter(t => t._rx.some(x => x.test(g))); _tagsPorGenero.set(g, r); }
+  if (r === undefined) { r = TAX_GEN.filter(t => t._rx.some(x => x.test(g))); _tagsPorGenero.set(g, r); }
   return r;
 }
+/* La decada del ano de lanzamiento, ya corregido si lo corregiste. */
+const tagDecada = it => { const y = yearOf(it); return y ? TAX_DEC.find(t => y >= t.d[0] && y <= t.d[1]) : null; };
 
 /* Los generos de un elemento: los suyos y, si no tiene, los de su artista
    principal cuando esa ficha esta guardada. Eso sube la cobertura del 83% al
@@ -7453,11 +7960,13 @@ function proponerEtiquetas() {
   for (const it of ITEMS) {
     if (it.type === 'artist') continue;
     total++;
-    const gs = generosDe(it);
-    if (!gs.length) { sinGenero++; continue; }
     const suyas = new Set();
-    for (const g of gs) for (const t of tagsDeGeneroFold(fold(g))) suyas.add(t);
-    if (!suyas.size) { sinGenero++; continue; }
+    for (const g of generosDe(it)) for (const t of tagsDeGeneroFold(fold(g))) suyas.add(t);
+    /* "sin genero" sigue contando lo mismo que antes — los que Spotify dejo
+       sin genero ninguno — aunque ahora igualmente reciban su decada. */
+    if (!suyas.size) sinGenero++;
+    const td = tagDecada(it); if (td) suyas.add(td);
+    if (!suyas.size) continue;
     suyas.forEach(t => porTag.get(t).push(it));
   }
   return { porTag, sinGenero, total };
@@ -7467,13 +7976,14 @@ function openAutoTag() {
   const { porTag, sinGenero, total } = proponerEtiquetas();
   const conAlgo = TAXONOMIA.filter(t => porTag.get(t).length);
   if (!conAlgo.length) {
-    showSheet(`<div class="sheethead"><h2>Etiquetar automáticamente</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">&#10005;</button></div>
+    showSheet(`<div class="sheethead"><h2>Etiquetar automáticamente</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
       <p class="lede">Ninguno de tus elementos tiene género reconocible. Prueba antes “Rellenar géneros con Last.fm” en Ajustes.</p>`);
     return;
   }
-  /* Arrancan marcados generos y ambiente: son los dos ejes que se usan a
-     diario. Subgeneros y origen son 196 etiquetas mas, y eso se elige. */
-  const grupoOn = new Set(['genero', 'ambiente']);
+  /* Arrancan marcados generos, ambiente y decada: los tres ejes que se usan a
+     diario y que no se equivocan casi nunca. Subgeneros y origen son 350
+     etiquetas mas, muy finas, y eso se elige a mano. */
+  const grupoOn = new Set(['genero', 'ambiente', 'decada']);
   const apagadas = new Set();          // etiquetas sueltas que ha desmarcado
   const abiertos = new Set();
 
@@ -7486,7 +7996,7 @@ function openAutoTag() {
     return `<button class="crow dentro ${on ? '' : 'apagada'}" data-autotag="${esc(t.n)}">
       <span class="ci"><span class="tgbadge" style="width:26px;height:26px;background:${t.c}22;">${iconoHtml({ colorHex: t.c, icon: t.i }, 15)}</span></span>
       <span class="ct">${esc(t.n)}</span>
-      <span class="cn"><span class="marca">${on ? '&#10003;' : '&#183;'}</span> ${itemsDe(t).length.toLocaleString('es-ES')}</span>
+      <span class="cn"><span class="marca">${on ? ui('visto') : '&#183;'}</span> ${itemsDe(t).length.toLocaleString('es-ES')}</span>
     </button>`;
   };
 
@@ -7502,7 +8012,7 @@ function openAutoTag() {
         <button class="crow ${on ? '' : 'apagada'}" data-autogrupo="${g.id}">
           <span class="ci"><span class="tgbadge" style="width:30px;height:30px;background:${g.color}22;">${iconoHtml({ colorHex: g.color, icon: g.icon }, 18)}</span></span>
           <span class="ct">${g.nombre}<span class="sub2">${tags.length} etiquetas &#183; ${nItems.toLocaleString('es-ES')} elementos</span></span>
-          <span class="cn"><span class="marca">${on ? '&#10003;' : '&#183;'}</span></span>
+          <span class="cn"><span class="marca">${on ? ui('visto') : '&#183;'}</span></span>
         </button>
         <div class="autoque">${g.que} <button class="linkbtn" data-autover="${g.id}">${abierto ? 'Ocultar' : 'Ver las ' + tags.length}</button></div>
         ${abierto ? `<div class="aexp">${tags.slice().sort((a, b) => itemsDe(b).length - itemsDe(a).length).map(filaTagAuto).join('')}</div>` : ''}
@@ -7520,11 +8030,11 @@ function openAutoTag() {
   };
 
   showSheet(`
-    <div class="sheethead"><h2>Etiquetar automáticamente</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">&#10005;</button></div>
-    <p class="lede">Spotify guarda el genero de cada cosa en ingles y suelto &mdash;"Big Room", "Edm Trap", "rnb"&mdash; y asi no sirve de nada. Esto lo traduce a ${TAXONOMIA.length} etiquetas repartidas en cuatro carpetas. Cubre ${(total - sinGenero).toLocaleString('es-ES')} de tus ${total.toLocaleString('es-ES')} elementos.</p>
+    <div class="sheethead"><h2>Etiquetar automáticamente</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
+    <p class="lede">Spotify guarda el género de cada cosa en inglés y suelto &mdash;"Big Room", "Edm Trap", "rnb"&mdash; y así no sirve de nada. Esto lo traduce a ${TAXONOMIA.length} etiquetas repartidas en cinco carpetas. Por género cubre ${(total - sinGenero).toLocaleString('es-ES')} de tus ${total.toLocaleString('es-ES')} elementos; la carpeta de década los cubre todos, porque sale de la fecha y no de adivinar.</p>
     <p class="lede">Solo añade: nunca quita una etiqueta que hayas puesto tú, y pasarlo dos veces no duplica nada.</p>
     <div id="autoCuerpo"></div>
-    <p class="lede">${sinGenero.toLocaleString('es-ES')} elementos se quedan fuera porque Spotify no les dio ningún género.</p>
+    <p class="lede">A ${sinGenero.toLocaleString('es-ES')} elementos Spotify no les dio ningún género, así que de esos solo se sabe la década.</p>
     <div class="btnrow"><button class="btn primary wide" id="autoAplicar"></button></div>
   `);
   pintarCuerpo();
@@ -7591,7 +8101,7 @@ function abrirEditorTag(id, carpeta, alVolver) {   // alVolver: a donde regresar
       `<svg viewBox="0 0 24 24" width="22" height="22" fill="${esc(color)}"><path d="${ICONOS[k]}"/></svg></button>`).join('');
   };
   showSheet(`
-    <div class="sheethead"><h2>${t ? 'Editar' : 'Nueva'} ${esCar ? 'carpeta' : 'etiqueta'}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="sheethead"><h2>${t ? 'Editar' : 'Nueva'} ${esCar ? 'carpeta' : 'etiqueta'}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     <div class="flabel">Nombre</div>
     <input class="field" id="tgName" value="${esc(t ? t.name : '')}" placeholder="${esCar ? 'Por ejemplo: Géneros' : 'Por ejemplo: Para el gimnasio'}" autocomplete="off">
     <div class="flabel">Color</div>
@@ -7655,7 +8165,7 @@ function tagListHtml() {
         <span class="tgbadge" style="width:30px;height:30px;background:${esc(t.colorHex)}22;">${iconoHtml(t, 18)}</span>
         <span class="nm">${esc(t.name)}</span><span class="ct">${cuenta(t.id)}</span>
       </span>
-      <button class="xbtn" data-pin="${esc(t.id)}" aria-label="${t.favorito ? 'Quitar de fijadas' : 'Fijar arriba'}" title="${t.favorito ? 'Quitar de fijadas' : 'Fijar arriba'}">${t.favorito ? '📌' : '📍'}</button>
+      <button class="xbtn" data-pin="${esc(t.id)}" aria-label="${t.favorito ? 'Quitar de fijadas' : 'Fijar arriba'}" title="${t.favorito ? 'Quitar de fijadas' : 'Fijar arriba'}">${t.favorito ? ui('chincheta') : ui('alfiler')}</button>
       <button class="xbtn" data-edit="${esc(t.id)}" aria-label="Editar">✎</button>
     </div>`;
   const sueltas = tagsDeCarpeta(null);
@@ -7818,12 +8328,12 @@ function openDuplicados() {
   const grupos = buscarDuplicados();
   const TOPE = 60;
   showSheet(`
-    <div class="sheethead"><h2>Posibles duplicados</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="sheethead"><h2>Posibles duplicados</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     <p class="lede">Comparo título y artista (ignorando remasters, directos, ediciones especiales…) entre elementos que no comparten el mismo enlace de Spotify. No borro nada por mi cuenta — decides tú cuál te quedas.</p>
     <p class="lede"><strong>Unir</strong> deja una sola ficha, la más completa, y le pasa lo que tengan las otras: escuchado, valoración, notas, etiquetas y reproducciones. <strong>Borrar este</strong> quita esa copia tal cual, con lo que tuviera dentro.</p>
     <div id="dupOut">
       ${!grupos.length
-        ? `<div class="empty" style="padding:24px 8px;"><div class="ico">✨</div><h2>Nada que limpiar</h2><p>No he encontrado títulos y artistas repetidos entre orígenes distintos.</p></div>`
+        ? `<div class="empty" style="padding:24px 8px;"><div class="ico">${ui('destello')}</div><h2>Nada que limpiar</h2><p>No he encontrado títulos y artistas repetidos entre orígenes distintos.</p></div>`
         : grupos.slice(0, TOPE).map((g, gi) => `
           <div class="flabel" style="margin-top:${gi === 0 ? '0' : '18'}px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
             <span>${esc(g[0].title)} — ${esc(artistsOf(g[0]))}</span>
@@ -7892,7 +8402,7 @@ function artistasSinExplorar() {
 function openArtistasSinExplorar() {
   const lista = artistasSinExplorar().sort((a, b) => cmp(sortKey(a.title), sortKey(b.title)));
   showSheet(`
-    <div class="sheethead"><h2>Sin explorar todavía</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="sheethead"><h2>Sin explorar todavía</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     <p class="lede">${lista.length} artista${lista.length === 1 ? '' : 's'} que tienes guardado${lista.length === 1 ? '' : 's'} pero de los que aún no has añadido ningún álbum o canción concreta.</p>
     <div class="list">${lista.map(it => `
       <article class="lrow" data-id="${it.id}">
@@ -7915,7 +8425,7 @@ function albumesAMedias() {
 function openAlbumesAMedias() {
   const lista = albumesAMedias().sort((a, b) => b.dateAdded - a.dateAdded);
   showSheet(`
-    <div class="sheethead"><h2>A medias</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="sheethead"><h2>A medias</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     <p class="lede">${lista.length} álbum${lista.length === 1 ? '' : 'es'} que empezaste pero todavía no terminaste.</p>
     <div class="list">${lista.map(it => {
       const total = (it.trackTitles || []).length;
@@ -7971,7 +8481,7 @@ function capsulaDeHoy() {
 function openCapsula() {
   const lista = capsulaDeHoy();
   showSheet(`
-    <div class="sheethead"><h2>Un día como hoy</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="sheethead"><h2>Un día como hoy</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     <p class="lede">Lo que añadiste un ${new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}, en años anteriores.</p>
     <div class="list">${lista.map(it => `
       <article class="lrow" data-id="${it.id}">
@@ -8093,7 +8603,7 @@ function openHistorial() {
     .map(([et, a, b]) => [et, porHora.slice(a, b).reduce((s, n) => s + n, 0)]).filter(r => r[1]);
 
   showSheet(`
-    <div class="sheethead"><h2>Historial de escucha</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="sheethead"><h2>Historial de escucha</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     ${!escuchados.length ? `<p class="lede">Todavía no hay nada con fecha de escucha. Las fechas se guardan a partir de que marcaste algo (lo marcado antes de esa función no tiene fecha).</p>` : `
     <div class="histgrid">
       <div class="histcell"><div class="histnum">${racha}</div><div class="histlbl">día${racha === 1 ? '' : 's'} de racha</div></div>
@@ -8143,7 +8653,7 @@ async function cargarHistorialSpotify() {
     const items = await fetchRecentlyPlayed(50);
     if (!box.isConnected) return;
     if (!items.length) { box.innerHTML = `<p class="lede" style="margin:0;">Spotify no devuelve reproducciones recientes. Recuerda que solo cuentan las canciones que sonaron 30 segundos o más sin saltarlas — y nunca la que está sonando ahora mismo.</p>`; return; }
-    box.innerHTML = `<p class="lede" style="margin:0 0 8px;">Lo que Spotify dice que has reproducido, más reciente primero. ✓ verde = ya está en tu vault · 🤖 = se añadió sola.</p>
+    box.innerHTML = `<p class="lede" style="margin:0 0 8px;">Lo que Spotify dice que has reproducido, más reciente primero. ✓ verde = ya está en tu vault · ${ui('robot')} = se añadió sola.</p>
       <div class="tracklist">${items.map(({ track, played_at }) => {
         if (!track) return '';
         const suelta = ITEMS.find(x => x.spotifyId === track.id);
@@ -8155,7 +8665,7 @@ async function cargarHistorialSpotify() {
         return `<div class="trow">
           <span class="trcheck ${enVault ? 'on' : ''}" title="${enVault ? 'Ya en tu vault' : 'No está en tu vault'}">${enVault ? '✓' : ''}</span>
           <span class="trlink"><span class="trtwrap">
-            <span class="trt">${esc(track.name || '')}${suelta?.autoAdded ? ' 🤖' : ''}</span>
+            <span class="trt">${esc(track.name || '')}${suelta?.autoAdded ? ' ' + ui('robot') : ''}</span>
             ${artistas ? `<span class="tra">${esc(artistas)}</span>` : ''}
           </span></span>
           <span class="trd">${esc(relDate(new Date(played_at).getTime()))}</span>
@@ -8185,7 +8695,7 @@ function openResumenAnual() {
   const minutos = Math.round(escuchados.reduce((s, i) => s + (i.durationMs || 0), 0) / 60000);
 
   showSheet(`
-    <div class="sheethead"><h2>Tu ${anio}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="sheethead"><h2>Tu ${anio}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     <div class="bigstat">
       <div class="bignum">${anadidos.length}</div>
       <div><div style="font-weight:650;">añadidos este año</div><div class="lede" style="margin:0;">${escuchados.length} marcados como escuchados</div></div>
@@ -8240,13 +8750,13 @@ function openStats() {
   const crecimiento = anyFilter ? null : generoQueMasHaCrecido();
 
   showSheet(`
-    <div class="sheethead"><h2>${anyFilter ? 'Esto en números' : 'Tu vault en números'}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="sheethead"><h2>${anyFilter ? 'Esto en números' : 'Tu vault en números'}</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     ${!anyFilter ? `<div class="btnrow">
-      <button class="btn wide" id="verResumenAnual">🎁 Resumen de ${new Date().getFullYear()}</button>
-      <button class="btn wide" id="verHistorial">🎧 Historial</button>
+      <button class="btn wide" id="verResumenAnual">${ui('regalo')} Resumen de ${new Date().getFullYear()}</button>
+      <button class="btn wide" id="verHistorial">${ui('cascos')} Historial</button>
     </div>` : ''}
     ${anyFilter ? `<p class="lede" style="margin:-8px 0 14px;">Con el filtro que tienes puesto ahora: ${base.length.toLocaleString('es-ES')} de ${ITEMS.length.toLocaleString('es-ES')} elementos.</p>` : ''}
-    ${capsula.length ? `<button class="linkbtn" id="verCapsula" style="display:block;margin-bottom:12px;">📅 Lo que añadiste un día como hoy →</button>` : ''}
+    ${capsula.length ? `<button class="linkbtn" id="verCapsula" style="display:block;margin-bottom:12px;">${ui('calendario')} Lo que añadiste un día como hoy →</button>` : ''}
 
     <div class="bigstat">
       <div class="bignum">${pct}<span class="pctsign">%</span></div>
@@ -8276,7 +8786,7 @@ function openStats() {
 
     ${topGenres.length ? `<div class="flabel">Géneros más frecuentes</div>
     ${bars(topGenres, 'var(--jade)')}
-    ${crecimiento ? `<p class="lede" style="margin:8px 0 0;">📈 <strong>${esc(crecimiento.genero)}</strong> es el que más ha crecido este año (+${crecimiento.delta} desde el año pasado).</p>` : ''}` : ''}
+    ${crecimiento ? `<p class="lede" style="margin:8px 0 0;">${ui('subida')} <strong>${esc(crecimiento.genero)}</strong> es el que más ha crecido este año (+${crecimiento.delta} desde el año pasado).</p>` : ''}` : ''}
 
     ${joyas.length ? `<div class="flabel">Tus joyas ocultas</div>
     <p class="lede" style="margin:0 0 6px;">Les diste 4★ o más y en Spotify apenas las escucha nadie.</p>
@@ -8294,7 +8804,7 @@ function openStats() {
 
     ${!anyFilter && ITEMS.some(i => i.archived) ? `<div class="flabel">Archivado</div>
     <p class="lede" style="margin:0;">${ITEMS.filter(i => i.archived).length} guardado${ITEMS.filter(i => i.archived).length === 1 ? '' : 's'} aparte, fuera de las listas normales.</p>
-    <button class="linkbtn" id="redescubrir" style="display:block;margin-top:6px;">🎲 Redescubrir algo del archivo →</button>` : ''}
+    <button class="linkbtn" id="redescubrir" style="display:block;margin-top:6px;">${ui('dado')} Redescubrir algo del archivo →</button>` : ''}
   `);
 
   document.querySelector('[data-goto]')?.addEventListener('click', e => openDetail(e.currentTarget.dataset.goto));
@@ -8463,7 +8973,7 @@ function openOrdenarEtiqueta() {
 
   const pintar = () => {
     showSheet(`
-      <div class="sheethead"><h2>Ordenar «${esc(t.name)}»</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+      <div class="sheethead"><h2>Ordenar «${esc(t.name)}»</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
       <p class="lede">Coloca los elementos a tu gusto. Para verlo así en la lista, elige el orden «Orden manual» con esta etiqueta puesta.</p>
       <div class="tracklist" id="ordList">
         ${t.orden.map((id, idx) => {
@@ -8492,12 +9002,12 @@ function openOrdenarEtiqueta() {
 function openVistasGuardadas() {
   const vistas = PREFS.vistas || [];
   showSheet(`
-    <div class="sheethead"><h2>Vistas guardadas</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="sheethead"><h2>Vistas guardadas</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     <p class="lede">Combinaciones de filtros con nombre. Guarda la que tengas puesta ahora mismo, o borra las que ya no uses.</p>
     <div class="btnrow"><button class="btn primary wide" id="guardarVista">Guardar los filtros actuales</button></div>
     ${vistas.length ? `<div id="listaVistas">${vistas.map((v, i) => `
       <div class="tagline">
-        <span class="lf">🔖 ${esc(v.nombre)}</span>
+        <span class="lf">${ui('marcapaginas')} ${esc(v.nombre)}</span>
         <button class="xbtn" data-delvista="${i}" aria-label="Eliminar vista">✕</button>
       </div>`).join('')}</div>` : `<p class="lede" style="margin-top:10px;">Todavía no tienes ninguna.</p>`}
   `);
@@ -8513,7 +9023,7 @@ function openGenrePicker() {
   const { freq, label } = generosConFrecuencia();
   const todos = Object.entries(freq).sort((a, b) => label[a[0]].localeCompare(label[b[0]], 'es'));
   showSheet(`
-    <div class="sheethead"><h2>Todos los géneros</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">✕</button></div>
+    <div class="sheethead"><h2>Todos los géneros</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     <input class="field" id="genreSearch" placeholder="Buscar género…" style="margin-bottom:12px;">
     <div class="tagpick" id="genreList">
       ${todos.map(([k, n]) => `<button class="chip genre ${PREFS.genre === k ? 'on' : ''}" data-genre="${esc(k)}">${esc(label[k])} <span class="ct">${n}</span></button>`).join('')}
