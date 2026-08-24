@@ -944,6 +944,8 @@
   .chip.mezexc { border-color: color-mix(in srgb, var(--rust) 45%, transparent); }
   .chip.mezinc svg.ui, .chip.mezexc svg.ui { width: 12px; height: 12px; opacity: .7; }
   .chiprow.mezsel { margin-bottom: 12px; }
+  /* lo archivado se ve, pero un punto mas apagado que el resto */
+  .relrow.esarchivo .relt, .chronorow.esarchivo .chronot { opacity: .62; }
   .revlista { display:flex; flex-direction:column; max-height: 42vh; overflow-y:auto; border:1px solid var(--line); border-radius:14px; padding:4px; margin-bottom:10px; }
   .revfila { display:flex; align-items:center; gap:9px; padding:6px 7px; border-bottom:1px solid var(--line); min-width:0; }
   .revfila:last-child { border-bottom:none; }
@@ -1409,6 +1411,10 @@ const carpetasOrdenadas = () => TAGS.filter(esCarpeta).sort((a, b) => a.name.loc
 /* Etiquetas de una carpeta; sin argumento, las que no están en ninguna. */
 const tagsDeCarpeta = id => tagsOrdenados().filter(t => (t.carpetaId || null) === (id || null));
 let PREFS = Object.assign({ sort: 'added_desc', view: 'grid', type: 'all', status: 'all', tag: 'all', genre: 'all', decade: 'all', covers: false, confirmarBorrado: false, tanda: 120, autoAddEscuchas: false, dur: 'all', vistas: [], gcardSize: 0, pantalla: 'inicio', canon: false }, read(K_PREFS, {}));
+/* El filtro por genero se retiro: ahora eso lo dicen las etiquetas. Puede
+   quedar guardado de antes (o dentro de una vista guardada), y un filtro
+   que no se ve pero esconde resultados es peor que no tenerlo. */
+PREFS.genre = 'all';
 
 /* Al borrar algo hay que dejar constancia: si no, el otro dispositivo lo
    vuelve a subir en la siguiente sincronización y el borrado "revive". */
@@ -1672,7 +1678,7 @@ const colaboradoresDe = it => (it.artists || []).slice(1);
    pared de discos. Es una preferencia, no un borrado: se vuelve a activar en Ajustes. */
 const verPortada = () => PREFS.covers !== false;
 const portada = (url, icono, lazy) =>
-  (verPortada() && url) ? `<img src="${esc(url)}" ${lazy ? 'loading="lazy" ' : ''}alt="">` : icono;
+  (verPortada() && url && !/00-000000-80-0-0/.test(String(url))) ? `<img src="${esc(url)}" ${lazy ? 'loading="lazy" ' : ''}alt="">` : icono;
 // Buscar "camaron" tiene que encontrar "Camarón".
 const _LETRAS_RARAS = [[/ø/g, 'o'], [/æ/g, 'ae'], [/œ/g, 'oe'], [/ß/g, 'ss'], [/đ|ð/g, 'd'], [/ł/g, 'l'], [/þ/g, 'th']];
 const _quitaRaras = s => { for (const [rx, a] of _LETRAS_RARAS) s = s.replace(rx, a); return s; };
@@ -2571,10 +2577,6 @@ function conteosChips() {
   _claveConteos = clave;
   return _conteos;
 }
-function generosConFrecuencia() {
-  const c = conteosChips();
-  return { freq: c.freq, label: c.label };
-}
 
 function renderChips() {
   // los números de los chips reflejan el mismo universo que ve filtered():
@@ -2588,24 +2590,6 @@ function renderChips() {
   // canciones), así que estos chips sí van a verse casi siempre.
   const decades = Object.entries(C.decadas).sort((a, b) => +a[0] - +b[0]);   // cronológico, no por frecuencia
 
-  // Género: Spotify prácticamente ha dejado de rellenar este campo desde
-  // finales de 2024 (es un cambio suyo, documentado por otros desarrolladores,
-  // no algo que dependa de esta app) — así que estos chips solo aparecerán si
-  // alguno de tus artistas todavía conserva géneros, o si editas alguno a mano
-  // desde su ficha (Editar → Géneros), o si usas "Rellenar géneros con Last.fm".
-  const { freq: genreFreq, label: genreLabel } = generosConFrecuencia();
-  // en la fila solo caben unos pocos sin que se vuelva interminable: se
-  // muestran los más repetidos, y un chip "Ver todos" abre la lista completa
-  // — así con Last.fm rellenando cientos de géneros distintos siguen siendo
-  // todos accesibles, solo que no todos de un vistazo en la fila
-  const TOPE_CHIPS_GENERO = 10;
-  const genOrdenPorFreq = Object.entries(genreFreq).sort((a, b) => b[1] - a[1]);
-  let topGenres = genOrdenPorFreq.slice(0, TOPE_CHIPS_GENERO);
-  if (PREFS.genre !== 'all' && !topGenres.some(([k]) => k === PREFS.genre)) {
-    const activo = genOrdenPorFreq.find(([k]) => k === PREFS.genre);
-    if (activo) topGenres = [activo, ...topGenres.slice(0, TOPE_CHIPS_GENERO - 1)];
-  }
-  const hayMasGeneros = genOrdenPorFreq.length > topGenres.length;
 
   const chipsTipo = [
     `<button class="chip ${PREFS.type === 'all' ? 'on' : ''}" data-type="all">Todo <span class="ct">${C.tipos.all}</span></button>`,
@@ -2645,16 +2629,11 @@ function renderChips() {
   const chipsDur = ['corto', 'medio', 'largo'].map(d =>
     `<button class="chip ${PREFS.dur === d ? 'on' : ''}" data-dur="${d}">${ui('crono')} ${DUR_ET[d]}</button>`);
   const chipsVistas = [];   // las vistas guardadas se retiraron: nunca se usaban
-  const chipsGenero = [
-    ...topGenres.map(([k, n]) =>
-      `<button class="chip genre ${PREFS.genre === k ? 'on' : ''}" data-genre="${esc(k)}">${ui('cascos')} ${esc(genreLabel[k])} <span class="ct">${n}</span></button>`),
-    ...(hayMasGeneros ? [`<button class="chip genre" data-genall="1">${ui('cascos')} Ver todos (${genOrdenPorFreq.length})</button>`] : [])
-  ];
 
-  // separadores finos entre grupos: con tipo + década + etiquetas + género la
+  // separadores finos entre grupos: con tipo + duración + década + etiquetas la
   // fila puede crecer mucho, y un separador ayuda a distinguir de un vistazo
   // dónde empieza cada tipo de filtro sin tener que leerlos todos
-  const parts = [chipsVistas, chipsTipo, chipsDur, chipsDecada, chipsTag, chipsGenero]
+  const parts = [chipsVistas, chipsTipo, chipsDur, chipsDecada, chipsTag]
     .filter(grupo => grupo.length)
     .flatMap((grupo, i) => i === 0 ? grupo : ['<span class="chipdiv"></span>', ...grupo]);
   document.getElementById('chips').innerHTML = parts.join('');
@@ -2971,6 +2950,7 @@ function renderInicio() {
       <button class="crow" data-acc="pegar"><span class="ci">${ui('enlace')}</span><span class="ct">Pegar enlaces</span></button>
       <button class="crow" data-acc="azar"><span class="ci">${ui('dado')}</span><span class="ct">Abrir uno al azar</span></button>
       <button class="crow" data-acc="mezcla"><span class="ci">${ui('marcador')}</span><span class="ct">Mezclar etiquetas y sacar una playlist</span></button>
+      <button class="crow" data-acc="favpistas"><span class="ci">${ui('estrella')}</span><span class="ct">Canciones sueltas de tus álbumes</span></button>
       <button class="crow" data-acc="autotag"><span class="ci">${ui('destello')}</span><span class="ct">Etiquetar automáticamente</span></button>
       <button class="crow" data-acc="revision"><span class="ci">${ui('ajustes')}</span><span class="ct">Arreglar el vault</span></button>
       <button class="crow" data-acc="anyos"><span class="ci">${ui('calendario')}</span><span class="ct">Revisar años mal puestos</span></button>
@@ -4114,7 +4094,7 @@ function relacionadosDelArtista(it) {
   const artistaFold = fold(artistsOf(it));
   if (!artistaFold) return [];
   const base = tituloBase(it.title);
-  const otros = ITEMS.filter(x => x.id !== it.id && x.type === 'album' && !x.archived && fold(artistsOf(x)) === artistaFold);
+  const otros = ITEMS.filter(x => x.id !== it.id && x.type === 'album' && fold(artistsOf(x)) === artistaFold);
   return otros.map(x => ({ item: x, otraEdicion: !!base && tituloBase(x.title) === base })).sort((a, b) => {
     if (a.otraEdicion !== b.otraEdicion) return a.otraEdicion ? -1 : 1;
     return (parseInt(String(b.item.releaseDate || '0').slice(0, 4)) || 0) - (parseInt(String(a.item.releaseDate || '0').slice(0, 4)) || 0);
@@ -4122,9 +4102,9 @@ function relacionadosDelArtista(it) {
 }
 function relatedRow(item, esEdicion) {
   const y = yearOf(item);
-  return `<div class="relrow" data-openrel="${item.id}">
+  return `<div class="relrow${item.archived ? ' esarchivo' : ''}" data-openrel="${item.id}">
     <div class="relart">${portada(item.coverUrl, TYPE_ICON[item.type], true)}</div>
-    <span class="relt">${esc(item.title)}${esEdicion ? ' <span class="reltag">· otra edición</span>' : ''}</span>
+    <span class="relt">${esc(item.title)}${esEdicion ? ' <span class="reltag">· otra edición</span>' : ''}${item.archived ? ' <span class="reltag">· archivado</span>' : ''}</span>
     ${y ? `<span class="rely">${y}</span>` : ''}
   </div>`;
 }
@@ -4269,9 +4249,8 @@ function openDetail(id) {
       })()}
       ${(() => { const st = statsArtista(it.title); return st.masOido && st.masOidoN ? `<p class="lede" style="margin:8px 0 0;">Lo que más le has puesto: <strong>${esc(st.masOido.title)}</strong> (${st.masOidoN} ${st.masOidoN === 1 ? 'vez' : 'veces'}).</p>` : ''; })()}
       ${(() => { const st = statsArtista(it.title); return st.primero ? `<p class="lede" style="margin:4px 0 8px;">Lo primero suyo lo guardaste ${relDate(st.primero)}.</p>` : '<p class="lede" style="margin:0 0 8px;"></p>'; })()}
-      ${genero ? `<button class="chip genre" data-goargenre="${esc(fold(genero))}" style="margin-bottom:10px;">${ui('cascos')} ${esc(genero)}</button>` : ''}
       ${r.mejorValorado ? `<p class="lede" style="margin:0 0 4px;font-weight:600;">Tu mejor valorado suyo</p><div class="list">${relatedRow(r.mejorValorado, false)}</div>` : ''}
-      ${r.cronologia.length > 1 ? `<p class="lede" style="margin:10px 0 4px;font-weight:600;">Cronología</p><div class="tlchrono">${r.cronologia.map(x => `<div class="chronorow" data-openrel="${x.id}"><span class="chronoy">${yearOf(x)}</span><span class="chronot">${esc(x.title)}</span></div>`).join('')}</div>` : ''}
+      ${r.cronologia.length > 1 ? `<p class="lede" style="margin:10px 0 4px;font-weight:600;">Cronología</p><div class="tlchrono">${r.cronologia.map(x => `<div class="chronorow${x.archived ? ' esarchivo' : ''}" data-openrel="${x.id}"><span class="chronoy">${yearOf(x)}</span><span class="chronot">${esc(x.title)}${x.archived ? ' <span class="reltag">· archivado</span>' : ''}</span></div>`).join('')}</div>` : ''}
       <div class="btnrow"><button class="btn wide" id="dDisco">Ver su discografía</button></div>
       <div class="flabel">Biografía</div>
       <div id="dArtistBio"><p class="lede" style="margin:0;">Buscando información…</p></div>
@@ -4348,9 +4327,6 @@ function openDetail(id) {
     cargarSimilares(it);
     cargarBioArtista(it);
     cargarRelacionesMusicBrainz(it);
-    document.querySelector('[data-goargenre]')?.addEventListener('click', e => {
-      PREFS.genre = e.currentTarget.dataset.goargenre; savePrefs(); closeModal(); render();
-    });
   }
   if (it.type === 'album' && !it.manual) { cargarTracksAlbum(it); cargarInfoAlbum(it); }
   document.querySelector('.dartist')?.addEventListener('click', e => {
@@ -4455,7 +4431,7 @@ function statsArtista(nombre) {
   if (_cacheArt.has(clave)) return _cacheArt.get(clave);
   let total = 0, escuchados = 0, plays = 0, suma = 0, conNota = 0, min = 0, max = 0, masOido = null, masOidoN = -1, primero = null;
   for (const x of ITEMS) {
-    if (x.type === 'artist' || x.archived) continue;
+    if (x.type === 'artist') continue;   // lo archivado cuenta: ver resumenLocalArtista
     if (!(x.artists || []).some(a => fold(a) === clave)) continue;
     total++;
     if (x.listened) escuchados++;
@@ -5456,17 +5432,17 @@ function tituloLimpio(t) {
   return (s && s.length >= 2) ? s : String(t || '');
 }
 
+/* Una tanda vieja de "rellenar caratulas" guardo la imagen de relleno de
+   Deezer —un asterisco gris— en miles de canciones. No es una portada, es
+   un hueco con extension .jpg, y mientras contara como portada llena nadie
+   iba a buscarles una de verdad. */
+const portadaVacia = u => !u || /00-000000-80-0-0/.test(String(u));
+
 function analizarVault() {
   const titulos = [], portadasMal = [], sinPortada = [];
   /* ids de etiqueta que no corresponden a ninguna etiqueta viva */
   const vivas = new Set(TAGS.map(t => t.id));
   const fantasma = { ids: new Set(), items: [], total: 0, quedarianVacios: 0 };
-  /* indice de albumes para comparar la portada de una cancion con la de su album */
-  const albPorNombre = new Map();
-  for (const a of ITEMS) {
-    if (a.type !== 'album' || a.archived || !a.coverUrl) continue;
-    albPorNombre.set(fold(a.title) + '|' + fold(principalDe(a)), a);
-  }
   const cola = u => String(u || '').replace(/^https?:\/\/[^/]+\//, '');
   for (const it of ITEMS) {
     const ids = it.tagIds;
@@ -5484,11 +5460,15 @@ function analizarVault() {
       if (limpio !== it.title) titulos.push({ it, limpio });
     }
     if (it.type === 'track') {
-      if (!it.coverUrl) { if (it.spotifyUrl) sinPortada.push(it); continue; }
+      if (portadaVacia(it.coverUrl)) { if (it.spotifyUrl) sinPortada.push(it); continue; }
       if (it.portadaRevisada) continue;
-      const alb = itemPorSpotifyId(it.albumId) || (it.albumName ? albPorNombre.get(fold(it.albumName) + '|' + fold(principalDe(it))) : null);
-      if (alb && alb.coverUrl && cola(alb.coverUrl) !== cola(it.coverUrl)) portadasMal.push({ it, alb });
-    } else if (!it.coverUrl && it.spotifyUrl && it.type !== 'playlist') sinPortada.push(it);
+      /* SOLO por su albumId. Antes, si no lo encontraba, buscaba un album
+         con el mismo nombre y le copiaba la portada — pero Spotify publica
+         el mismo disco una vez por mercado y no siempre con la misma
+         imagen, asi que acababa poniendo la de otra edicion. */
+      const alb = itemPorSpotifyId(it.albumId);
+      if (alb && !portadaVacia(alb.coverUrl) && cola(alb.coverUrl) !== cola(it.coverUrl)) portadasMal.push({ it, alb });
+    } else if (portadaVacia(it.coverUrl) && it.spotifyUrl && it.type !== 'playlist') sinPortada.push(it);
   }
   return { titulos, portadasMal, sinPortada, fantasma };
 }
@@ -5539,8 +5519,8 @@ function pintarRevision() {
       : '<p class="lede">Todas las canciones que puedo comparar llevan la portada de su álbum.</p>'}
 
     <div class="flabel">Sin portada</div>
-    ${sinPortada.length ? `<p class="lede" style="margin:0 0 8px;">${sinPortada.length.toLocaleString('es-ES')} elementos no tienen carátula. Las busco en Deezer, que no pide clave y no gasta ni una petición de tu cuota de Spotify. No acierta con todo: comprueba que el artista coincida antes de aceptar una imagen, así que prefiero dejarlo sin portada antes que ponerte la de otro disco.</p>
-      <div class="btnrow"><button class="btn wide" id="revCov">Buscar ${sinPortada.length.toLocaleString('es-ES')} carátulas en Deezer</button></div>
+    ${sinPortada.length ? `<p class="lede" style="margin:0 0 8px;">${sinPortada.length.toLocaleString('es-ES')} elementos no tienen carátula de verdad (contando los que llevan el asterisco gris de relleno). Las busco en iTunes, que no pide clave y no gasta cuota de Spotify. Antes esto iba contra Deezer, que desde el navegador no responde nunca: por eso siempre salían cero. Compruebo que el artista coincida antes de aceptar una imagen — prefiero dejarlo sin portada que ponerte la de otro disco.</p>
+      <div class="btnrow"><button class="btn wide" id="revCov">Buscar ${sinPortada.length.toLocaleString('es-ES')} carátulas en iTunes</button></div>
       <div class="lede" id="revCovEst" style="margin:0;"></div>`
       : '<p class="lede">Todo tiene carátula.</p>'}
 
@@ -5583,51 +5563,68 @@ function pintarRevision() {
   });
   document.getElementById('revDup')?.addEventListener('click', () => openDuplicados());
   document.getElementById('revAnyos')?.addEventListener('click', () => openAnyos());
-  document.getElementById('revCov')?.addEventListener('click', () => portadasDesdeDeezer());
+  document.getElementById('revCov')?.addEventListener('click', () => portadasDesdeItunes());
 }
 
-/* Deezer no pide clave y responde rapido, pero hay que comprobar que el
-   artista coincide: buscando "Thriller" sin mas te devuelve el disco de
-   cualquiera. Mejor quedarse sin portada que poner la equivocada. */
+/* iTunes no pide clave y contesta a una web sin poner pegas. Deezer no: su
+   API no manda la cabecera CORS, asi que el navegador tumbaba todas las
+   peticiones antes de salir y la cuenta final era siempre "0 caratulas
+   nuevas" — no era que no encontrara nada, es que no llegaba a preguntar.
+   Lo que si se conserva de aquello: el artista tiene que coincidir. Buscar
+   "Thriller" a secas devuelve el disco de cualquiera, y una portada
+   equivocada es peor que ninguna. */
+const _itunesGrande = u => String(u || '').replace(/\/\d+x\d+bb\.(jpg|png)$/, '/600x600bb.$1');
 let _buscandoPortadas = false, _pararPortadas = false;
-async function portadasDesdeDeezer() {
+async function _itunesBuscar(entity, termino) {
+  const url = 'https://itunes.apple.com/search?limit=10&media=music&entity=' + entity + '&term=' + encodeURIComponent(termino);
+  const res = await fetch(url);
+  if (!res.ok) return [];
+  return (await res.json()).results || [];
+}
+async function portadasDesdeItunes() {
   if (_buscandoPortadas) { _pararPortadas = true; return; }
   _buscandoPortadas = true; _pararPortadas = false;
+  pedirDespertar();
   const btn = document.getElementById('revCov'), est = document.getElementById('revCovEst');
   if (btn) btn.textContent = 'Detener';
   const lista = _revision.sinPortada.slice();
   let hechos = 0, fallos = 0, sinGuardar = 0;
   const limpia = s => fold(s).replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+  /* varias canciones del mismo disco comparten portada: se pregunta una vez */
+  const yaVisto = new Map();
   try {
     for (let i = 0; i < lista.length; i++) {
       if (_pararPortadas) break;
       const it = lista[i];
       const artista = principalDe(it);
-      const busca = it.type === 'artist' ? it.title : (it.albumName || it.title);
+      const disco = it.albumName || it.title;
+      const clave = fold(artista) + '|' + fold(disco);
       try {
-        const url = it.type === 'artist'
-          ? 'https://api.deezer.com/search/artist?limit=3&q=' + encodeURIComponent(it.title)
-          : 'https://api.deezer.com/search/album?limit=3&q=' + encodeURIComponent('artist:"' + artista + '" album:"' + busca + '"');
-        const res = await fetch(url);
-        if (res.ok) {
-          const d = await res.json();
-          const cand = (d.data || []).find(x => {
-            if (it.type === 'artist') return limpia(x.name) === limpia(it.title);
-            /* el artista tiene que cuadrar: si no, es otro disco con el mismo nombre */
-            return x.artist && limpia(x.artist.name) === limpia(artista);
-          });
-          const img = cand && (cand.cover_xl || cand.cover_big || cand.picture_xl || cand.picture_big);
-          if (img) { it.coverUrl = img; hechos++; if (++sinGuardar >= 20) { saveItems(); sinGuardar = 0; } }
-          else fallos++;
-        } else fallos++;
+        let img = yaVisto.get(clave);
+        if (img === undefined) {
+          img = null;
+          const intentos = [['album', artista + ' ' + disco, disco]];
+          if (it.type === 'track') intentos.push(['song', artista + ' ' + it.title, it.title]);
+          for (const [entity, termino, quiero] of intentos) {
+            const r = await _itunesBuscar(entity, termino);
+            const suyos = r.filter(x => x.artworkUrl100 && limpia(x.artistName) === limpia(artista));
+            const cand = suyos.find(x => limpia(x.collectionName || '') === limpia(quiero) || limpia(x.trackName || '') === limpia(quiero)) || suyos[0];
+            if (cand) { img = _itunesGrande(cand.artworkUrl100); break; }
+            await new Promise(r => setTimeout(r, 120));
+          }
+          yaVisto.set(clave, img);
+        }
+        if (img) { it.coverUrl = img; it.touchedAt = Date.now(); hechos++; if (++sinGuardar >= 20) { saveItems(); sinGuardar = 0; } }
+        else fallos++;
       } catch { fallos++; }
       if (est) est.textContent = (i + 1).toLocaleString('es-ES') + ' de ' + lista.length.toLocaleString('es-ES') + ' · ' + hechos.toLocaleString('es-ES') + ' encontradas, ' + fallos.toLocaleString('es-ES') + ' sin resultado';
-      await new Promise(r => setTimeout(r, 45));   // ~20 por segundo, muy por debajo de lo que aguanta
+      await new Promise(r => setTimeout(r, 200));
     }
   } finally {
     _buscandoPortadas = false;
+    soltarDespertar();
     saveItems(); render();
-    if (btn) btn.textContent = 'Buscar carátulas en Deezer';
+    if (btn) btn.textContent = 'Buscar carátulas en iTunes';
     toast(hechos.toLocaleString('es-ES') + ' carátulas nuevas');
   }
 }
@@ -6094,7 +6091,7 @@ function programarSync() {
   }, 4000);
 }
 
-const sinPortada = () => ITEMS.filter(i => !i.coverUrl && !i.manual && i.type !== 'playlist').length;
+const sinPortada = () => ITEMS.filter(i => portadaVacia(i.coverUrl) && !i.manual && i.type !== 'playlist').length;
 
 /* Pide a Spotify los objetos completos uno a uno y rellena solo lo que falte,
    sin tocar tus ediciones (ver fetchItemsIndividually). */
@@ -6116,7 +6113,7 @@ async function completarPortadas() {
   pedirDespertar();
   if (btn) btn.textContent = 'Detener';
 
-  const faltan = ITEMS.filter(i => !i.coverUrl && i.spotifyId && !i.manual && i.type !== 'playlist');
+  const faltan = ITEMS.filter(i => portadaVacia(i.coverUrl) && i.spotifyId && !i.manual && i.type !== 'playlist');
   let hechos = 0, fallos = 0, bloqueado = false;
 
   try {
@@ -6196,6 +6193,13 @@ async function lastfmToptags(nombreArtista, apiKey, intentos = 3) {
       if (d.error === 6) return [];   // artista sin coincidencia en Last.fm — no es un fallo, simplemente no hay etiquetas
       throw new Error('LASTFM_ERR:' + d.error);
     }
+    /* autocorrect=1 hace falta para las tildes y las mayusculas, pero no se
+       queda ahi: tambien "corrige" un nombre por el de OTRO ARTISTA. Pedir
+       "John Martin" devuelve las etiquetas de "John Martyn". Last.fm dice a
+       quien ha contestado, asi que se comprueba: si no es a quien se le
+       preguntaba, esas etiquetas no valen para nada. */
+    const contesta = d.toptags && d.toptags['@attr'] && d.toptags['@attr'].artist;
+    if (contesta && fold(contesta) !== fold(nombreArtista)) return [];
     // el JSON de Last.fm viene de XML: con una sola etiqueta, "tag" es un objeto
     // suelto en vez de un array de un elemento — hay que contemplar los dos casos
     const raw = d.toptags?.tag;
@@ -6451,7 +6455,9 @@ function ultimaEscuchaDeArtista(it) {
 
 function resumenLocalArtista(it) {
   const artistaFold = fold(it.title);
-  const misCosas = ITEMS.filter(x => x.type !== 'artist' && !x.archived && (x.artists || []).some(a => fold(a) === artistaFold));
+  /* Lo archivado SI cuenta aqui: archivar es sacarlo de la lista del vault,
+     no borrarlo de la historia del artista. */
+  const misCosas = ITEMS.filter(x => x.type !== 'artist' && (x.artists || []).some(a => fold(a) === artistaFold));
   const misAlbumes = misCosas.filter(x => x.type === 'album');
   const misCanciones = misCosas.filter(x => x.type === 'track');
   const hechos = misCosas.filter(x => x.listened).length;
@@ -6743,11 +6749,8 @@ function openSettings() {
     </details>
 
     <div class="flabel">Etiquetas</div>
-    <div id="tagList">${tagListHtml()}</div>
-    <div class="btnrow" style="margin-top:12px;">
-      <button class="btn primary wide" id="addTag">＋ Nueva etiqueta</button>
-      <button class="btn" id="addCarpeta" title="Nueva carpeta">${ui('carpeta')}</button>
-    </div>
+    <p class="lede" style="margin:0 0 10px;">${tagsOrdenados().length.toLocaleString('es-ES')} etiquetas repartidas en ${carpetasOrdenadas().length} carpetas.</p>
+    <div class="btnrow"><button class="btn wide" id="openTags">${ui('etiqueta')} Ver y editar las etiquetas</button></div>
 
     <div class="flabel">Sincronizar entre dispositivos</div>
     <div class="statusline ${gh && gh.token ? 'ok' : 'no'}">${gh && gh.token ? '● Activada' : '● Desactivada'}</div>
@@ -6980,18 +6983,7 @@ function openSettings() {
     aplicarPaleta(s.dataset.pal);
     document.querySelectorAll('#paletteSw .sw').forEach(x => x.classList.toggle('on', x === s));
   });
-  document.getElementById('addTag').addEventListener('click', () => abrirEditorTag(null, false));
-  document.getElementById('addCarpeta').addEventListener('click', () => abrirEditorTag(null, true));
-  document.getElementById('tagList').addEventListener('click', e => {
-    const pin = e.target.closest('[data-pin]');
-    if (pin) {
-      const t = TAGS.find(x => x.id === pin.dataset.pin);
-      if (t) { t.favorito = !t.favorito; saveTags(); render(); openSettings(); }
-      return;
-    }
-    const ed = e.target.closest('[data-edit]');
-    if (ed) abrirEditorTag(ed.dataset.edit);
-  });
+  document.getElementById('openTags')?.addEventListener('click', () => openEtiquetas());
   document.getElementById('expBtn').addEventListener('click', exportBackup);
   document.getElementById('impBtn').addEventListener('click', () => document.getElementById('impFile').click());
   document.getElementById('impFile').addEventListener('change', importBackup);
@@ -8119,7 +8111,7 @@ const TAXONOMIA = [
   {g:'sub',n:"Reggaetón clásico",i:'altavoz',c:'#e0563a',k:["old school reggaeton","reggaeton clasico","perreo"],p:"Reggaetón y urbano"},
   {g:'sub',n:"Neoperreo",i:'chispa',c:'#e0563a',k:["neoperreo","experimental reggaeton","perreo","malianteo","underground reggaeton"],p:"Reggaetón y urbano"},
   {g:'sub',n:"Dembow",i:'onda',c:'#e0563a',k:["dembow","dembow dominicano"],p:"Reggaetón y urbano"},
-  {g:'sub',n:"Afrobeats",i:'sol',c:'#e0563a',k:["afrobeats","afro pop","afroswing","amapiano"],p:"Reggaetón y urbano"},
+  {g:'sub',n:"Afrobeats",i:'sol',c:'#e0563a',k:["afrobeats","afro pop","afroswing","amapiano"],p:"Africano"},
   {g:'sub',n:"Corridos tumbados",i:'corona',c:'#b5761c',k:["corridos tumbados","sad sierreno","sierreno","corridos belicos","corrido"],p:"Regional mexicano"},
   {g:'sub',n:"Banda y norteño",i:'nota',c:'#b5761c',k:["banda","norteno","duranguense","mariachi","ranchera"],p:"Regional mexicano"},
   {g:'sub',n:"Flamenco puro",i:'abanico',c:'#b03f30',k:["flamenco","cante jondo","cante"],p:"Flamenco"},
@@ -8357,8 +8349,8 @@ const TAXONOMIA = [
   {g:'origen',n:"Brasil",i:'palmera',c:'#2f9e5e',k:["brazilian","brazil","brasil","samba","mpb","forro","pagode","funk carioca","brazilian funk","brazilian bass","brazilian phonk","bossa nova","sertanejo","sertanejo universitario","jovem guarda","tropicalia"]},
   {g:'origen',n:"Japón",i:'flor',c:'#d4568a',k:["japanese","japan","j-pop","j-rock","city pop","shibuya-kei","anime"]},
   {g:'origen',n:"Corea",i:'flor',c:'#a05cc0',k:["korean","korea","k-pop","k-hip hop","k-rock"]},
-  {g:'origen',n:"África",i:'sol',c:'#c98a1f',k:["african","africa","afrobeat","afrobeats","nigerian","nigeria","ghana","south african","amapiano","highlife","mali","senegal","ethiopian","gqom","gabon","kuduro"]},
-  {g:'origen',n:"Jamaica",i:'hoja',c:'#2f8f4e',k:["jamaican","jamaica","reggae","dancehall","rocksteady","ragga","kingston"]},
+  {g:'origen',n:"África",i:'sol',c:'#c98a1f',k:["african","africa","nigerian","nigeria","ghanaian","ghana","south african","malian","senegalese","senegal","ethiopian","ethiopia","kenyan","kenya","congolese","angolan","gabon"]},
+  {g:'origen',n:"Jamaica",i:'hoja',c:'#2f8f4e',k:["jamaican","jamaica","rocksteady","kingston","trenchtown"]},
   {g:'origen',n:"Rusia y Este",i:'bandera',c:'#5a6472',k:["russian","russia","polish","poland","ukrainian","czech","hungarian","romanian","serbian","balkan","hardbass","lithuanian","latvian","estonian","baltic","ukraine","kosovo","kosovan","albanian","lituano"]},
   {g:'origen',n:"Andalucía",i:'sol',c:'#d4903a',k:["andalusian","andalucia","andaluz","sevilla","granada","malaga","cadiz","sevillanas"]},
   {g:'origen',n:"Madrid",i:'ciudad',c:'#c4342e',k:["madrid","movida","movida madrilena","madrileno"]},
@@ -8444,7 +8436,16 @@ const ENFRENTADOS = [
   ["Punk","Reggaetón y urbano"],
   ["Navidad","Reggaetón y urbano"],
   ["Ópera","Trap"],
-  ["Ópera","Reggaetón y urbano"]
+  ["Ópera","Reggaetón y urbano"],
+  /* El flamenco y lo africano se cruzan de verdad alguna vez, pero cuando
+     Last.fm pone "Flamenco Pop" primero y "Latin Afrobeats" el ultimo, lo
+     que hay delante es flamenco. Gana el mejor colocado, no los dos. */
+  ["Flamenco","Africano"],
+  ["Flamenco","Country y folk"],
+  ["Flamenco","Metal"],
+  ["Africano","Country y folk"],
+  ["Africano","Metal"],
+  ["Africano","Clásica"]
 ];
 
 const L_MEJORES = `
@@ -10062,9 +10063,48 @@ function abrirEditorTag(id, carpeta, alVolver) {   // alVolver: a donde regresar
   });
 }
 
-function tagListHtml() {
-  if (!TAGS.length) return `<p class="lede" style="margin:0;">Aún no hay etiquetas. Crea una abajo para organizar tu vault.</p>`;
-  const cuenta = id => ITEMS.filter(i => !i.archived && (i.tagIds || []).includes(id)).length;
+/* Su propia pantalla, con buscador: con 500 etiquetas, encontrar una
+   bajando a dedo es imposible. */
+function openEtiquetas() {
+  const pinta = filtro => {
+    const caja = document.getElementById('tagList');
+    if (caja) caja.innerHTML = tagListHtml(filtro);
+  };
+  showSheet(`
+    <div class="sheethead"><h2>Etiquetas</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
+    <p class="lede">${tagsOrdenados().length.toLocaleString('es-ES')} etiquetas en ${carpetasOrdenadas().length} carpetas. Toca una para cambiarle el nombre, el color o el icono.</p>
+    <input class="field" id="tagBuscar" placeholder="Buscar etiqueta…" autocomplete="off" style="margin-bottom:12px;">
+    <div class="btnrow" style="margin-bottom:12px;">
+      <button class="btn primary wide" id="addTag">＋ Nueva etiqueta</button>
+      <button class="btn" id="addCarpeta" title="Nueva carpeta">${ui('carpeta')}</button>
+    </div>
+    <div id="tagList">${tagListHtml()}</div>
+  `);
+  document.getElementById('tagBuscar').addEventListener('input', e => pinta(e.target.value.trim()));
+  document.getElementById('addTag').addEventListener('click', () => abrirEditorTag(null, false, openEtiquetas));
+  document.getElementById('addCarpeta').addEventListener('click', () => abrirEditorTag(null, true, openEtiquetas));
+  document.getElementById('tagList').addEventListener('click', e => {
+    const pin = e.target.closest('[data-pin]');
+    if (pin) {
+      const t = TAGS.find(x => x.id === pin.dataset.pin);
+      if (t) { t.favorito = !t.favorito; saveTags(); render(); openEtiquetas(); }
+      return;
+    }
+    const ed = e.target.closest('[data-edit]');
+    if (ed) abrirEditorTag(ed.dataset.edit, false, openEtiquetas);
+  });
+}
+
+function tagListHtml(filtro) {
+  if (!TAGS.length) return `<p class="lede" style="margin:0;">Aún no hay etiquetas. Crea una arriba para organizar tu vault.</p>`;
+  /* De una sola pasada por el vault, no una por etiqueta: eran nueve
+     millones de comparaciones cada vez que se abria esto. */
+  const conteo = new Map();
+  for (const i of ITEMS) {
+    if (i.archived) continue;
+    for (const id of (i.tagIds || [])) conteo.set(id, (conteo.get(id) || 0) + 1);
+  }
+  const cuenta = id => conteo.get(id) || 0;
   const fila = (t, dentro) => `<div class="tagline ${dentro ? 'dentro' : ''}">
       <span class="lf" data-edit="${esc(t.id)}" style="cursor:pointer;">
         <span class="tgbadge" style="width:30px;height:30px;background:${esc(t.colorHex)}22;">${iconoHtml(t, 18)}</span>
@@ -10073,6 +10113,14 @@ function tagListHtml() {
       <button class="xbtn" data-pin="${esc(t.id)}" aria-label="${t.favorito ? 'Quitar de fijadas' : 'Fijar arriba'}" title="${t.favorito ? 'Quitar de fijadas' : 'Fijar arriba'}">${t.favorito ? ui('chincheta') : ui('alfiler')}</button>
       <button class="xbtn" data-edit="${esc(t.id)}" aria-label="Editar">✎</button>
     </div>`;
+  /* Buscando se pierde el reparto por carpetas a proposito: lo que quieres
+     es la etiqueta, no saber donde estaba guardada. */
+  if (filtro) {
+    const q = fold(filtro);
+    const hay = tagsOrdenados().filter(t => fold(t.name).includes(q));
+    if (!hay.length) return `<p class="lede" style="margin:0;">Ninguna etiqueta se llama así.</p>`;
+    return hay.map(t => fila(t, false)).join('');
+  }
   const sueltas = tagsDeCarpeta(null);
   return carpetasOrdenadas().map(c => `
       <div class="tagcab">${iconoHtml(c, 16)} ${esc(c.name)}
@@ -10218,11 +10266,18 @@ function tituloBase(t) {
     .replace(new RegExp('[\\(\\[]\\s*' + patron.source + '[^\\)\\]]*[\\)\\]]', 'gi'), '')
     .trim();
 }
+/* Una edicion ampliada trae canciones que la normal no tiene: no es la misma
+   cosa dos veces, son dos cosas distintas. tituloBase les quita el "deluxe"
+   para poder emparejarlas en "Otras ediciones de este album" — util alli,
+   pero aqui hacia que se propusiera fundir "Bully" con "Bully - Deluxe", o
+   sea, tirar canciones a la basura. Se separan por eso mismo. */
+const _RX_AMPLIADA = /deluxe|expanded|expandida|anniversar|aniversar|edici[oó]n especial|special edition|complete edition|super\s*deluxe|\+\s*$/i;
+const esEdicionAmpliada = t => _RX_AMPLIADA.test(String(t || ''));
 function buscarDuplicados() {
   const grupos = new Map();
   ITEMS.forEach(it => {
     if (it.archived || it.type === 'artist' || it.type === 'playlist') return;   // esos no aplican aquí
-    const key = it.type + '::' + tituloBase(it.title) + '::' + fold(artistsOf(it));
+    const key = it.type + '::' + tituloBase(it.title) + '::' + fold(artistsOf(it)) + '::' + (esEdicionAmpliada(it.title) ? 'ampliada' : 'normal');
     if (!key || key.startsWith('::')) return;
     if (!grupos.has(key)) grupos.set(key, []);
     grupos.get(key).push(it);
@@ -10270,6 +10325,59 @@ function openDuplicados() {
     const b = e.target.closest('[data-dupdel]'); if (!b) return;
     deleteItems([b.dataset.dupdel]);
     openDuplicados();
+  });
+}
+
+/* Recorre los albumes y saca las canciones concretas que has tocado: las que
+   has puesto (Spotify las va apuntando solo), las que marcaste escuchadas y
+   las que valoraste. Es la respuesta a "esta cancion me gusta, pero la tengo
+   dentro de un disco y no la encuentro por ningun lado". */
+function pistasSueltas() {
+  const out = [];
+  for (const alb of ITEMS) {
+    if (alb.type !== 'album') continue;
+    const notas = alb.trackRatings || {};
+    const puestas = alb.trackPlays || {};
+    const oidas = alb.cancionesEscuchadas || [];
+    const nombres = new Set([...Object.keys(notas), ...Object.keys(puestas), ...oidas]);
+    for (const n of nombres) {
+      const veces = (puestas[n] || []).length;
+      const nota = notas[n] || 0;
+      /* marcarla escuchada sola no basta: eso se hace de una tacada al
+         escuchar el disco entero y llenaria la lista de ruido */
+      if (!veces && !nota) continue;
+      out.push({ alb, nombre: n, veces, nota, ultima: (puestas[n] || []).slice(-1)[0] || 0 });
+    }
+  }
+  return out.sort((a, b) => b.nota - a.nota || b.veces - a.veces || b.ultima - a.ultima);
+}
+
+function openFavPistas() {
+  const lista = pistasSueltas();
+  const conNota = lista.filter(x => x.nota >= 4).length;
+  showSheet(`
+    <div class="sheethead"><h2>Canciones sueltas de tus álbumes</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>` +
+    (lista.length
+      ? `<p class="lede">${lista.length.toLocaleString('es-ES')} canciones concretas de dentro de tus discos: las que has puesto y las que has valorado. No están guardadas sueltas en el vault, viven dentro de su álbum — aquí las tienes todas juntas.${conNota ? ` ${conNota} tienen 4 o 5 estrellas.` : ''}</p>
+        <div class="btnrow"><button class="btn wide" id="favCopiar">${ui('portapapeles')} Copiar la lista</button></div>
+        <div class="list">${lista.map((x, i) => `
+          <article class="lrow" data-favalb="${esc(x.alb.id)}">
+            <div class="lart">${portada(x.alb.coverUrl, TYPE_ICON.track, true)}</div>
+            <div class="linfo">
+              <div class="lt">${esc(x.nombre)}</div>
+              <div class="la">${esc(artistsOf(x.alb))} · ${esc(x.alb.title)}</div>
+            </div>
+            <span class="ct">${x.nota ? '★'.repeat(x.nota) + ' ' : ''}${x.veces ? x.veces + '×' : ''}</span>
+          </article>`).join('')}</div>`
+      : `<div class="empty" style="padding:24px 8px;"><div class="ico">${ui('estrella')}</div><h2>Todavía ninguna</h2>
+        <p>Aquí van a salir las canciones concretas de dentro de tus álbumes: las que Spotify registre que pones, y las que valores tú.</p>
+        <p>Para valorar una: abre un álbum, baja hasta la lista de canciones y toca sus estrellas.</p></div>`));
+  document.getElementById('favCopiar')?.addEventListener('click', () => {
+    const txt = lista.map(x => artistsOf(x.alb) + ' - ' + x.nombre).join(String.fromCharCode(10));
+    navigator.clipboard?.writeText(txt).then(() => toast('Lista copiada'), () => toast('No he podido copiarla'));
+  });
+  document.querySelector('#modalRoot .list')?.addEventListener('click', e => {
+    const c = e.target.closest('[data-favalb]'); if (c) openDetail(c.dataset.favalb);
   });
 }
 
@@ -10792,6 +10900,7 @@ document.getElementById('inicio').addEventListener('click', e => {
     else if (a === 'azar') shuffle();
     else if (a === 'stats') openStats();
     else if (a === 'mezcla') openMezcla();
+    else if (a === 'favpistas') openFavPistas();
     else if (a === 'revision') openRevision();
     else if (a === 'autotag') openAutoTag();
     else if (a === 'anyos') openAnyos();
@@ -10833,7 +10942,6 @@ document.querySelector('.state-strip').addEventListener('click', e => {
 
 document.getElementById('chips').addEventListener('click', e => {
   const b = e.target.closest('.chip'); if (!b) return;
-  if (b.dataset.genall) { openGenrePicker(); return; }
   if (b.dataset.abrirmezcla) {
     /* tocar la aspa quita la mezcla; tocar el resto del chip la abre */
     if (e.target.closest('.quitamez')) { PREFS.mezcla = mezclaVacia(); savePrefs(); render(); toast('Mezcla quitada'); }
@@ -10935,28 +11043,6 @@ function openVistasGuardadas() {
   });
 }
 
-function openGenrePicker() {
-  const { freq, label } = generosConFrecuencia();
-  const todos = Object.entries(freq).sort((a, b) => label[a[0]].localeCompare(label[b[0]], 'es'));
-  showSheet(`
-    <div class="sheethead"><h2>Todos los géneros</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
-    <input class="field" id="genreSearch" placeholder="Buscar género…" style="margin-bottom:12px;">
-    <div class="tagpick" id="genreList">
-      ${todos.map(([k, n]) => `<button class="chip genre ${PREFS.genre === k ? 'on' : ''}" data-genre="${esc(k)}">${esc(label[k])} <span class="ct">${n}</span></button>`).join('')}
-    </div>
-  `);
-  document.getElementById('genreSearch').addEventListener('input', e => {
-    const q = fold(e.target.value.trim());
-    document.querySelectorAll('#genreList .chip').forEach(b => {
-      b.style.display = fold(b.textContent).includes(q) ? '' : 'none';
-    });
-  });
-  document.getElementById('genreList').addEventListener('click', e => {
-    const b = e.target.closest('[data-genre]'); if (!b) return;
-    PREFS.genre = PREFS.genre === b.dataset.genre ? 'all' : b.dataset.genre;
-    savePrefs(); closeModal(); render();
-  });
-}
 
 /* content delegation: open detail, toggle listened, selection, empty-state buttons.
    Va en el <main> completo (no solo #results): el botón "Quitar filtros" de la
