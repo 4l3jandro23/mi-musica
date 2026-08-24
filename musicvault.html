@@ -5575,11 +5575,26 @@ function pintarRevision() {
    equivocada es peor que ninguna. */
 const _itunesGrande = u => String(u || '').replace(/\/\d+x\d+bb\.(jpg|png)$/, '/600x600bb.$1');
 let _buscandoPortadas = false, _pararPortadas = false;
+/* Cuanto se espera entre peticiones. Sube solo si Apple se queja y no vuelve
+   a bajar: mas vale tardar el doble que quedarse a medias. */
+let _itunesEspera = 200;
+/* Devuelve la lista de resultados, o null si no se ha podido preguntar.
+   null y [] NO son lo mismo: [] es "no lo tiene", null es "ahora no me
+   contesta" — y eso hay que volver a intentarlo, no darlo por perdido. */
 async function _itunesBuscar(entity, termino) {
   const url = 'https://itunes.apple.com/search?limit=10&media=music&entity=' + entity + '&term=' + encodeURIComponent(termino);
-  const res = await fetch(url);
-  if (!res.ok) return [];
-  return (await res.json()).results || [];
+  for (let i = 0; i < 4; i++) {
+    let res;
+    try { res = await fetch(url); } catch { await new Promise(r => setTimeout(r, 2000 * (i + 1))); continue; }
+    if (res.status === 403 || res.status === 429) {
+      _itunesEspera = Math.min(2000, Math.round(_itunesEspera * 1.6));
+      await new Promise(r => setTimeout(r, 3000 * (i + 1)));
+      continue;
+    }
+    if (!res.ok) return [];
+    try { return (await res.json()).results || []; } catch { return []; }
+  }
+  return null;
 }
 async function portadasDesdeItunes() {
   if (_buscandoPortadas) { _pararPortadas = true; return; }
@@ -5588,7 +5603,8 @@ async function portadasDesdeItunes() {
   const btn = document.getElementById('revCov'), est = document.getElementById('revCovEst');
   if (btn) btn.textContent = 'Detener';
   const lista = _revision.sinPortada.slice();
-  let hechos = 0, fallos = 0, sinGuardar = 0;
+  let hechos = 0, fallos = 0, pospuestas = 0, sinGuardar = 0;
+  _itunesEspera = 200;
   const limpia = s => fold(s).replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
   /* varias canciones del mismo disco comparten portada: se pregunta una vez */
   const yaVisto = new Map();
@@ -5601,31 +5617,35 @@ async function portadasDesdeItunes() {
       const clave = fold(artista) + '|' + fold(disco);
       try {
         let img = yaVisto.get(clave);
+        let concluido = true;
         if (img === undefined) {
           img = null;
           const intentos = [['album', artista + ' ' + disco, disco]];
           if (it.type === 'track') intentos.push(['song', artista + ' ' + it.title, it.title]);
           for (const [entity, termino, quiero] of intentos) {
             const r = await _itunesBuscar(entity, termino);
+            if (r === null) { concluido = false; break; }   // no ha contestado: no concluir nada
             const suyos = r.filter(x => x.artworkUrl100 && limpia(x.artistName) === limpia(artista));
             const cand = suyos.find(x => limpia(x.collectionName || '') === limpia(quiero) || limpia(x.trackName || '') === limpia(quiero)) || suyos[0];
             if (cand) { img = _itunesGrande(cand.artworkUrl100); break; }
             await new Promise(r => setTimeout(r, 120));
           }
-          yaVisto.set(clave, img);
+          /* solo se apunta si de verdad se pregunto: si no, que se reintente */
+          if (concluido) yaVisto.set(clave, img);
         }
         if (img) { it.coverUrl = img; it.touchedAt = Date.now(); hechos++; if (++sinGuardar >= 20) { saveItems(); sinGuardar = 0; } }
-        else fallos++;
+        else if (concluido) fallos++;
+        else pospuestas++;
       } catch { fallos++; }
-      if (est) est.textContent = (i + 1).toLocaleString('es-ES') + ' de ' + lista.length.toLocaleString('es-ES') + ' · ' + hechos.toLocaleString('es-ES') + ' encontradas, ' + fallos.toLocaleString('es-ES') + ' sin resultado';
-      await new Promise(r => setTimeout(r, 200));
+      if (est) est.textContent = (i + 1).toLocaleString('es-ES') + ' de ' + lista.length.toLocaleString('es-ES') + ' · ' + hechos.toLocaleString('es-ES') + ' encontradas, ' + fallos.toLocaleString('es-ES') + ' sin resultado' + (pospuestas ? ' · ' + pospuestas.toLocaleString('es-ES') + ' para otro rato' : '');
+      await new Promise(r => setTimeout(r, _itunesEspera));
     }
   } finally {
     _buscandoPortadas = false;
     soltarDespertar();
     saveItems(); render();
     if (btn) btn.textContent = 'Buscar carátulas en iTunes';
-    toast(hechos.toLocaleString('es-ES') + ' carátulas nuevas');
+    toast(hechos.toLocaleString('es-ES') + ' carátulas nuevas' + (pospuestas ? ' · ' + pospuestas.toLocaleString('es-ES') + ' se quedaron sin preguntar porque iTunes cortó: vuelve a darle luego' : ''));
   }
 }
 function openMezcla() {
