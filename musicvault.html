@@ -6159,11 +6159,17 @@ async function completarPortadas() {
           const it = porId.get(raw.id);
           if (!it) return;   // no debería pasar — defensivo
           const fresco = normalize(raw, tipo);
+          let cambio = false;
           Object.keys(fresco).forEach(k => {
-            if (fresco[k] != null && fresco[k] !== '' &&
-                (it[k] == null || it[k] === '' ||
-                 (Array.isArray(it[k]) && !it[k].length))) it[k] = fresco[k];
+            /* La portada de relleno de Deezer hay que tratarla como un hueco:
+               si no, se pide el elemento a Spotify y se descarta su caratula
+               buena por no pisar "lo que ya habia" — que era un asterisco. */
+            const hueco = it[k] == null || it[k] === ''
+              || (Array.isArray(it[k]) && !it[k].length)
+              || (k === 'coverUrl' && portadaVacia(it[k]));
+            if (fresco[k] != null && fresco[k] !== '' && hueco) { it[k] = fresco[k]; cambio = true; }
           });
+          if (cambio) it.touchedAt = Date.now();
           hechos++;
           if (++sinGuardar >= 25) { saveItems(); sinGuardar = 0; }
         }
