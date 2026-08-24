@@ -5981,9 +5981,26 @@ function fundir(remoto) {
     ? 'C|' + t.name.toLowerCase()
     : 'T|' + (carpetaLocal || '') + '|' + t.name.toLowerCase();
   const indice = new Map(TAGS.map(t => [claveTag(t, t.carpetaId), t]));
+  /* Y por id, que es la identidad de verdad: el emparejado por nombre es
+     solo para las que se crearon por separado en dos dispositivos. */
+  const porIdLocal = new Map(TAGS.map(t => [t.id, t]));
+
+  /* No pisa nada: solo rellena los huecos que haya de este lado. */
+  const rellenar = (mia, t, carpetaLocal) => {
+    if (!mia.icon && t.icon) mia.icon = t.icon;
+    if (!mia.carpetaId && carpetaLocal) mia.carpetaId = carpetaLocal;
+    if (mia.esCarpeta === undefined && t.esCarpeta) mia.esCarpeta = true;
+    if (mia.id !== t.id) traduce.set(t.id, mia.id);
+  };
 
   const emparejar = t => {
     const carpetaLocal = t.carpetaId ? (traduce.get(t.carpetaId) || t.carpetaId) : null;
+    /* Mismo id = misma etiqueta, se acabo la discusion. Sin esta linea, una
+       copia que dijera colgar de una carpeta que aqui no existe no casaba
+       con ninguna clave y entraba como "nueva" repitiendo un id ya usado:
+       dos objetos con el mismo id son la misma etiqueta pintada dos veces. */
+    const mismoId = porIdLocal.get(t.id);
+    if (mismoId) { rellenar(mismoId, t, carpetaLocal); return; }
     const k = claveTag(t, carpetaLocal);
     const mia = indice.get(k);
     if (!mia) {
@@ -5991,21 +6008,33 @@ function fundir(remoto) {
          dispositivo, y en copia para no tocar el objeto que vino de fuera */
       const copia = Object.assign({}, t);
       if (copia.carpetaId) copia.carpetaId = carpetaLocal;
-      TAGS.push(copia); indice.set(k, copia);
+      TAGS.push(copia); indice.set(k, copia); porIdLocal.set(copia.id, copia);
       return;
     }
     /* Ya la tengo: no la piso, pero SÍ relleno lo que aquí falta. Si eliges el
        icono o la carpeta en el móvil, el PC los adopta en vez de quedarse con
        una etiqueta a medias para siempre — y al revés nunca borra lo tuyo. */
-    if (!mia.icon && t.icon) mia.icon = t.icon;
-    if (!mia.carpetaId && carpetaLocal) mia.carpetaId = carpetaLocal;
-    if (mia.esCarpeta === undefined && t.esCarpeta) mia.esCarpeta = true;
-    if (mia.id !== t.id) traduce.set(t.id, mia.id);
+    rellenar(mia, t, carpetaLocal);
   };
   remotas.filter(t => esCarpeta(t)).forEach(emparejar);
   remotas.filter(t => !esCarpeta(t)).forEach(emparejar);
 
   TAGS = TAGS.filter(t => !tagTombLocal.has(t.id));   // por si la borraron en el otro dispositivo y aquí seguía
+  /* Red de seguridad: de dos objetos con el mismo id se queda el que cuelga
+     de una carpeta que existe de verdad. Salen repetidos en todas las listas
+     y no hay forma de distinguirlos mirandolos. */
+  {
+    const carpetasVivas = new Set(TAGS.filter(esCarpeta).map(t => t.id));
+    const mejor = new Map();
+    for (const t of TAGS) {
+      const previo = mejor.get(t.id);
+      if (!previo) { mejor.set(t.id, t); continue; }
+      const valgo = !t.carpetaId || carpetasVivas.has(t.carpetaId);
+      const valia = !previo.carpetaId || carpetasVivas.has(previo.carpetaId);
+      if (valgo && !valia) mejor.set(t.id, t);
+    }
+    if (mejor.size !== TAGS.length) TAGS = TAGS.filter(t => mejor.get(t.id) === t);
+  }
   /* Red de seguridad: pase lo que pase, un elemento no sale de aquí señalando
      a una etiqueta que no existe. Si algún día vuelve a colarse un id huérfano
      por otro camino, se queda en esta línea en vez de acumularse durante meses. */
