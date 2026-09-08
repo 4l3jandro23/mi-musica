@@ -5631,7 +5631,9 @@ async function portadasDesdeSpotify() {
   _spotEspera = 120;
 
   /* De donde sale la portada de cada cosa: la de una cancion es la de su
-     album; la de un album o un artista, la suya propia. */
+     album; la de un album o un artista, la suya propia. Se pregunta por el id
+     que ya esta guardado, nunca por el nombre: por id no puede salir el disco
+     de otro, que es lo que pasaba buscando por texto. */
   const fuente = it => {
     if (it.type === 'track') return it.albumId ? ['album', it.albumId] : null;
     if (!it.spotifyId) return null;
@@ -5649,45 +5651,89 @@ async function portadasDesdeSpotify() {
     grupos.get(k).items.push(it);
   }
 
-  /* Gratis y sin preguntar a nadie: si ese album ya esta en el vault con
-     portada buena, se copia directamente. */
-  const yaTengo = new Map();
-  for (const a of ITEMS) if (a.spotifyId && !portadaVacia(a.coverUrl)) yaTengo.set(a.spotifyId, a.coverUrl);
-
-  const lista = [...grupos.values()];
+  const total = grupos.size;
   let hechos = 0, fallos = 0, pospuestas = 0, sinGuardar = 0, vistos = 0;
-  const pinta = () => {
+  const pinta = (aviso) => {
     if (!est) return;
-    est.textContent = vistos.toLocaleString('es-ES') + ' de ' + lista.length.toLocaleString('es-ES') + ' discos · '
+    est.textContent = (aviso ? aviso + ' · ' : '')
+      + vistos.toLocaleString('es-ES') + ' de ' + total.toLocaleString('es-ES') + ' discos · '
       + hechos.toLocaleString('es-ES') + ' carátulas puestas'
       + (fallos ? ', ' + fallos.toLocaleString('es-ES') + ' sin portada en Spotify' : '')
       + (pospuestas ? ' · ' + pospuestas.toLocaleString('es-ES') + ' para otro rato' : '');
   };
 
+  /* Guarda cada 40 canciones: si se cierra la pestana a mitad no se pierde
+     todo lo que llevaba hecho. */
+  const aplicar = (g, img) => {
+    if (g.hecho) return;
+    g.hecho = true; vistos++;
+    if (img) {
+      for (const it of g.items) { it.coverUrl = img; it.touchedAt = Date.now(); hechos++; }
+      if ((sinGuardar += g.items.length) >= 40) { saveItems(); sinGuardar = 0; }
+    } else fallos += g.items.length;
+  };
+
   try {
-    for (const g of lista) {
-      if (_pararPortadas) break;
-      let img = yaTengo.get(g.id);
-      if (img === undefined) {
-        img = await _oembedPortada(g.tipo, g.id);
-        if (img === null) { pospuestas += g.items.length; vistos++; pinta(); continue; }
-        yaTengo.set(g.id, img);
+    /* Gratis y sin preguntar a nadie: los discos que ya estan en el vault con
+       portada buena. */
+    const yaTengo = new Map();
+    for (const a of ITEMS) if (a.spotifyId && !portadaVacia(a.coverUrl)) yaTengo.set(a.spotifyId, a.coverUrl);
+    const quedan = [];
+    for (const g of grupos.values()) {
+      const img = yaTengo.get(g.id);
+      if (img) aplicar(g, img); else quedan.push(g);
+    }
+    pinta();
+
+    if (isConnected()) {
+      /* Con la cuenta conectada. Uno a uno porque las peticiones en lote se
+         eliminaron en febrero de 2026, pero con los limites de una cuenta de
+         verdad y con la espera que ya sabe hacer fetchItemsIndividually. */
+      for (const tipo of ['album', 'artist']) {
+        if (_pararPortadas) break;
+        const mios = quedan.filter(g => g.tipo === tipo);
+        if (!mios.length) continue;
+        const porId = new Map(mios.map(g => [g.id, g]));
+        const res = await fetchItemsIndividually(tipo, mios.map(g => g.id),
+          () => pinta('preguntando a Spotify'),
+          () => _pararPortadas,
+          raw => {
+            const g = porId.get(raw && raw.id);
+            if (g) aplicar(g, (raw.images && raw.images[0] && raw.images[0].url) || '');
+          });
+        /* Lo que no contesto: bloqueado se reintenta, lo demas es que ese
+           disco no tiene portada en Spotify. */
+        mios.forEach((g, k) => {
+          if (g.hecho) return;
+          if (res.bloqueados[k]) { g.hecho = true; vistos++; pospuestas += g.items.length; }
+          else aplicar(g, '');
+        });
+        pinta();
+      }
+    } else {
+      /* Sin cuenta conectada: el oEmbed publico, que no pide clave. Aguanta
+         bastante menos ritmo, asi que va de uno en uno y con freno. */
+      for (const g of quedan) {
+        if (_pararPortadas) break;
+        const img = await _oembedPortada(g.tipo, g.id);
+        if (img === null) { g.hecho = true; vistos++; pospuestas += g.items.length; pinta(); continue; }
+        aplicar(g, img);
+        pinta();
         await new Promise(r => setTimeout(r, _spotEspera));
       }
-      vistos++;
-      if (img) {
-        for (const it of g.items) { it.coverUrl = img; it.touchedAt = Date.now(); hechos++; }
-        if ((sinGuardar += g.items.length) >= 40) { saveItems(); sinGuardar = 0; }
-      } else fallos += g.items.length;
-      pinta();
     }
+  } catch (e) {
+    const msg = e && e.message === 'AUTH_FAILED'
+      ? 'Spotify no acepta la conexión: vuelve a conectarla en Ajustes'
+      : 'Se cortó: ' + ((e && e.message) || e);
+    toast(msg);
   } finally {
     _buscandoPortadas = false;
     soltarDespertar();
     saveItems(); render();
     if (btn) btn.textContent = 'Buscar carátulas en Spotify';
     toast(hechos.toLocaleString('es-ES') + ' carátulas nuevas'
-      + (pospuestas ? ' · ' + pospuestas.toLocaleString('es-ES') + ' se quedaron sin preguntar porque Spotify cortó: vuelve a darle luego' : ''));
+      + (pospuestas ? ' · ' + pospuestas.toLocaleString('es-ES') + ' se quedaron sin preguntar porque Spotify frenó: vuelve a darle luego' : ''));
   }
 }
 function openMezcla() {
