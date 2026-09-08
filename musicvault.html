@@ -5519,8 +5519,8 @@ function pintarRevision() {
       : '<p class="lede">Todas las canciones que puedo comparar llevan la portada de su álbum.</p>'}
 
     <div class="flabel">Sin portada</div>
-    ${sinPortada.length ? `<p class="lede" style="margin:0 0 8px;">${sinPortada.length.toLocaleString('es-ES')} elementos no tienen carátula de verdad (contando los que llevan el asterisco gris de relleno). Las busco en iTunes, que no pide clave y no gasta cuota de Spotify. Antes esto iba contra Deezer, que desde el navegador no responde nunca: por eso siempre salían cero. Compruebo que el artista coincida antes de aceptar una imagen — prefiero dejarlo sin portada que ponerte la de otro disco.</p>
-      <div class="btnrow"><button class="btn wide" id="revCov">Buscar ${sinPortada.length.toLocaleString('es-ES')} carátulas en iTunes</button></div>
+    ${sinPortada.length ? `<p class="lede" style="margin:0 0 8px;">${sinPortada.length.toLocaleString('es-ES')} elementos no tienen carátula de verdad (contando los que llevan el asterisco gris de relleno). Las pido a Spotify por el identificador del disco que cada canción ya lleva guardado, así que no puede salir la portada de otro álbum. No pide clave ni gasta la cuota de tu cuenta, y pregunta una sola vez por disco en vez de una por canción.</p>
+      <div class="btnrow"><button class="btn wide" id="revCov">Buscar ${sinPortada.length.toLocaleString('es-ES')} carátulas en Spotify</button></div>
       <div class="lede" id="revCovEst" style="margin:0;"></div>`
       : '<p class="lede">Todo tiene carátula.</p>'}
 
@@ -5563,89 +5563,131 @@ function pintarRevision() {
   });
   document.getElementById('revDup')?.addEventListener('click', () => openDuplicados());
   document.getElementById('revAnyos')?.addEventListener('click', () => openAnyos());
-  document.getElementById('revCov')?.addEventListener('click', () => portadasDesdeItunes());
+  document.getElementById('revCov')?.addEventListener('click', () => portadasDesdeSpotify());
 }
 
-/* iTunes no pide clave y contesta a una web sin poner pegas. Deezer no: su
-   API no manda la cabecera CORS, asi que el navegador tumbaba todas las
-   peticiones antes de salir y la cuenta final era siempre "0 caratulas
-   nuevas" — no era que no encontrara nada, es que no llegaba a preguntar.
-   Lo que si se conserva de aquello: el artista tiene que coincidir. Buscar
-   "Thriller" a secas devuelve el disco de cualquiera, y una portada
-   equivocada es peor que ninguna. */
-const _itunesGrande = u => String(u || '').replace(/\/\d+x\d+bb\.(jpg|png)$/, '/600x600bb.$1');
+/* Spotify publica un oEmbed sin clave que devuelve la caratula de cualquier
+   album o artista. No gasta la cuota de tu cuenta y el navegador puede
+   llamarlo (Deezer no mandaba cabecera CORS: por eso aquello daba siempre
+   cero, no era que no encontrase nada, es que no llegaba a preguntar).
+
+   Y sobre todo: se pregunta por el ID que la cancion ya lleva guardado, no
+   por su nombre. Buscar "Thriller" por texto devuelve el disco de cualquiera;
+   por ID solo puede salir el disco correcto. */
+
+/* La miniatura viene a 300px. El codigo de la imagen es el mismo en todos los
+   tamanos, solo cambia el prefijo, asi que se reescribe al de 640 de siempre.
+   Album y artista tienen prefijos distintos; si aparece uno que no conozco se
+   deja tal cual (300px es peor que 640, pero infinitamente mejor que nada). */
+const _SUBIR = {
+  'ab67616d00001e02': 'ab67616d0000b273',   /* album  300 -> 640 */
+  'ab67616100005174': 'ab6761610000e5eb'    /* artista 320 -> 640 */
+};
+const _oembedGrande = u => {
+  const s = String(u || '');
+  if (!/^https?:\/\//.test(s)) return '';
+  const m = s.match(/\/image\/([a-z0-9]{16})([0-9a-f]+)$/i);
+  const grande = m && _SUBIR[m[1].toLowerCase()];
+  /* Solo se reescribe cuando se sabe a que tamano equivale. Cualquier otra
+     forma (las imagenes de mosaico son un hash suelto, sin prefijo de tamano)
+     se usa tal como la dio Spotify: reescribirla a ciegas la rompe, y
+     descartarla seria tirar una portada perfectamente buena. */
+  return grande ? 'https://i.scdn.co/image/' + grande + m[2] : s;
+};
+
 let _buscandoPortadas = false, _pararPortadas = false;
-/* Cuanto se espera entre peticiones. Sube solo si Apple se queja y no vuelve
-   a bajar: mas vale tardar el doble que quedarse a medias. */
-let _itunesEspera = 200;
-/* Devuelve la lista de resultados, o null si no se ha podido preguntar.
-   null y [] NO son lo mismo: [] es "no lo tiene", null es "ahora no me
-   contesta" — y eso hay que volver a intentarlo, no darlo por perdido. */
-async function _itunesBuscar(entity, termino) {
-  const url = 'https://itunes.apple.com/search?limit=10&media=music&entity=' + entity + '&term=' + encodeURIComponent(termino);
+/* Espera entre peticiones. Sube si Spotify se queja y baja despacio cuando
+   vuelve a ir bien: a ritmo de navegador no corta, a ritmo de robot si. */
+let _spotEspera = 120;
+
+/* Tres respuestas distintas, y la diferencia importa:
+     url  -> portada encontrada
+     ''   -> Spotify contesto y ese album no tiene portada (no se repregunta)
+     null -> ahora no contesta; NO es un fallo, hay que reintentarlo luego */
+async function _oembedPortada(tipo, id) {
+  const url = 'https://open.spotify.com/oembed?url=https://open.spotify.com/' + tipo + '/' + id;
   for (let i = 0; i < 4; i++) {
     let res;
-    try { res = await fetch(url); } catch { await new Promise(r => setTimeout(r, 2000 * (i + 1))); continue; }
-    if (res.status === 403 || res.status === 429) {
-      _itunesEspera = Math.min(2000, Math.round(_itunesEspera * 1.6));
-      await new Promise(r => setTimeout(r, 3000 * (i + 1)));
+    try { res = await fetch(url); } catch { await new Promise(r => setTimeout(r, 1500 * (i + 1))); continue; }
+    if (res.status === 429 || res.status === 403 || res.status >= 500) {
+      _spotEspera = Math.min(3000, Math.round(_spotEspera * 1.7));
+      await new Promise(r => setTimeout(r, 2500 * (i + 1)));
       continue;
     }
-    if (!res.ok) return [];
-    try { return (await res.json()).results || []; } catch { return []; }
+    if (!res.ok) return '';                       /* 404: ya no existe en Spotify */
+    let j; try { j = await res.json(); } catch { return ''; }
+    _spotEspera = Math.max(120, _spotEspera - 20);
+    return _oembedGrande(j && j.thumbnail_url);
   }
   return null;
 }
-async function portadasDesdeItunes() {
+
+async function portadasDesdeSpotify() {
   if (_buscandoPortadas) { _pararPortadas = true; return; }
   _buscandoPortadas = true; _pararPortadas = false;
   pedirDespertar();
   const btn = document.getElementById('revCov'), est = document.getElementById('revCovEst');
   if (btn) btn.textContent = 'Detener';
-  const lista = _revision.sinPortada.slice();
-  let hechos = 0, fallos = 0, pospuestas = 0, sinGuardar = 0;
-  _itunesEspera = 200;
-  const limpia = s => fold(s).replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
-  /* varias canciones del mismo disco comparten portada: se pregunta una vez */
-  const yaVisto = new Map();
+  _spotEspera = 120;
+
+  /* De donde sale la portada de cada cosa: la de una cancion es la de su
+     album; la de un album o un artista, la suya propia. */
+  const fuente = it => {
+    if (it.type === 'track') return it.albumId ? ['album', it.albumId] : null;
+    if (!it.spotifyId) return null;
+    return [it.type === 'artist' ? 'artist' : 'album', it.spotifyId];
+  };
+
+  /* Se agrupa para preguntar UNA vez por disco y repartir la portada entre
+     todas sus canciones: es lo que convierte miles de peticiones en cientos. */
+  const grupos = new Map();
+  for (const it of _revision.sinPortada) {
+    const f = fuente(it);
+    if (!f) continue;
+    const k = f[0] + '/' + f[1];
+    if (!grupos.has(k)) grupos.set(k, { tipo: f[0], id: f[1], items: [] });
+    grupos.get(k).items.push(it);
+  }
+
+  /* Gratis y sin preguntar a nadie: si ese album ya esta en el vault con
+     portada buena, se copia directamente. */
+  const yaTengo = new Map();
+  for (const a of ITEMS) if (a.spotifyId && !portadaVacia(a.coverUrl)) yaTengo.set(a.spotifyId, a.coverUrl);
+
+  const lista = [...grupos.values()];
+  let hechos = 0, fallos = 0, pospuestas = 0, sinGuardar = 0, vistos = 0;
+  const pinta = () => {
+    if (!est) return;
+    est.textContent = vistos.toLocaleString('es-ES') + ' de ' + lista.length.toLocaleString('es-ES') + ' discos · '
+      + hechos.toLocaleString('es-ES') + ' carátulas puestas'
+      + (fallos ? ', ' + fallos.toLocaleString('es-ES') + ' sin portada en Spotify' : '')
+      + (pospuestas ? ' · ' + pospuestas.toLocaleString('es-ES') + ' para otro rato' : '');
+  };
+
   try {
-    for (let i = 0; i < lista.length; i++) {
+    for (const g of lista) {
       if (_pararPortadas) break;
-      const it = lista[i];
-      const artista = principalDe(it);
-      const disco = it.albumName || it.title;
-      const clave = fold(artista) + '|' + fold(disco);
-      try {
-        let img = yaVisto.get(clave);
-        let concluido = true;
-        if (img === undefined) {
-          img = null;
-          const intentos = [['album', artista + ' ' + disco, disco]];
-          if (it.type === 'track') intentos.push(['song', artista + ' ' + it.title, it.title]);
-          for (const [entity, termino, quiero] of intentos) {
-            const r = await _itunesBuscar(entity, termino);
-            if (r === null) { concluido = false; break; }   // no ha contestado: no concluir nada
-            const suyos = r.filter(x => x.artworkUrl100 && limpia(x.artistName) === limpia(artista));
-            const cand = suyos.find(x => limpia(x.collectionName || '') === limpia(quiero) || limpia(x.trackName || '') === limpia(quiero)) || suyos[0];
-            if (cand) { img = _itunesGrande(cand.artworkUrl100); break; }
-            await new Promise(r => setTimeout(r, 120));
-          }
-          /* solo se apunta si de verdad se pregunto: si no, que se reintente */
-          if (concluido) yaVisto.set(clave, img);
-        }
-        if (img) { it.coverUrl = img; it.touchedAt = Date.now(); hechos++; if (++sinGuardar >= 20) { saveItems(); sinGuardar = 0; } }
-        else if (concluido) fallos++;
-        else pospuestas++;
-      } catch { fallos++; }
-      if (est) est.textContent = (i + 1).toLocaleString('es-ES') + ' de ' + lista.length.toLocaleString('es-ES') + ' · ' + hechos.toLocaleString('es-ES') + ' encontradas, ' + fallos.toLocaleString('es-ES') + ' sin resultado' + (pospuestas ? ' · ' + pospuestas.toLocaleString('es-ES') + ' para otro rato' : '');
-      await new Promise(r => setTimeout(r, _itunesEspera));
+      let img = yaTengo.get(g.id);
+      if (img === undefined) {
+        img = await _oembedPortada(g.tipo, g.id);
+        if (img === null) { pospuestas += g.items.length; vistos++; pinta(); continue; }
+        yaTengo.set(g.id, img);
+        await new Promise(r => setTimeout(r, _spotEspera));
+      }
+      vistos++;
+      if (img) {
+        for (const it of g.items) { it.coverUrl = img; it.touchedAt = Date.now(); hechos++; }
+        if ((sinGuardar += g.items.length) >= 40) { saveItems(); sinGuardar = 0; }
+      } else fallos += g.items.length;
+      pinta();
     }
   } finally {
     _buscandoPortadas = false;
     soltarDespertar();
     saveItems(); render();
-    if (btn) btn.textContent = 'Buscar carátulas en iTunes';
-    toast(hechos.toLocaleString('es-ES') + ' carátulas nuevas' + (pospuestas ? ' · ' + pospuestas.toLocaleString('es-ES') + ' se quedaron sin preguntar porque iTunes cortó: vuelve a darle luego' : ''));
+    if (btn) btn.textContent = 'Buscar carátulas en Spotify';
+    toast(hechos.toLocaleString('es-ES') + ' carátulas nuevas'
+      + (pospuestas ? ' · ' + pospuestas.toLocaleString('es-ES') + ' se quedaron sin preguntar porque Spotify cortó: vuelve a darle luego' : ''));
   }
 }
 function openMezcla() {
