@@ -1915,6 +1915,10 @@ const SPOTIFY_SCOPE = 'playlist-read-private playlist-read-collaborative';
    este permiso nuevo de golpe y forzar una reconexión a quien ya tenía
    playlists funcionando. Se piden juntos al conectar, pero se comprueban aparte. */
 const SPOTIFY_SCOPE_RECIENTES = 'user-read-recently-played';
+/* Permiso de escritura, tambien aparte. Es el minimo que existe para poder
+   crear una playlist: no permite borrar ni tocar las que ya tienes, y las
+   que crea nacen privadas. */
+const SPOTIFY_SCOPE_CREAR = 'playlist-modify-private';
 
 /* Manda al usuario a la pantalla de login real de Spotify. Al volver, Spotify
    añade ?code=...&state=... a esta misma URL (por eso hace falta registrar
@@ -1929,7 +1933,7 @@ async function beginSpotifyLogin() {
   const params = new URLSearchParams({
     client_id: c.clientId, response_type: 'code', redirect_uri: REDIRECT_URI,
     code_challenge_method: 'S256', code_challenge: challenge, state,
-    scope: SPOTIFY_SCOPE + ' ' + SPOTIFY_SCOPE_RECIENTES
+    scope: SPOTIFY_SCOPE + ' ' + SPOTIFY_SCOPE_RECIENTES + ' ' + SPOTIFY_SCOPE_CREAR
   });
   location.href = 'https://accounts.spotify.com/authorize?' + params.toString();
 }
@@ -2018,6 +2022,11 @@ function tieneScopeRecientes() {
   const c = loadCreds();
   if (!c || !c.scope) return false;
   return c.scope.split(' ').includes(SPOTIFY_SCOPE_RECIENTES);
+}
+function tieneScopeCrear() {
+  const c = loadCreds();
+  if (!c || !c.scope) return false;
+  return c.scope.split(' ').includes(SPOTIFY_SCOPE_CREAR);
 }
 
 /* Búsquedas de sobra en poco tiempo (escribir rápido, o un rato largo de uso
@@ -2210,6 +2219,27 @@ async function fetchItemsIndividually(tipo, ids, onProgress, shouldStop, onItem)
   resultados.bloqueados = bloqueados;
   resultados.bloqueoDetectado = bloqueoDetectado;
   return resultados;
+}
+
+/* Igual que fetchConReintento429 pero para escribir. Comparte la puerta
+   global de espera: si algo ya se comio un 429, esto espera tambien en vez
+   de ir a chocar contra el mismo limite. */
+async function postSpotify(url, token, cuerpo, intentos = 5) {
+  let res;
+  for (let i = 0; i < intentos; i++) {
+    await esperarTurnoSpotify();
+    res = await fetch(url, {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify(cuerpo)
+    });
+    if (res.status !== 429) { if (res.ok) _429Seguidos = 0; return res; }
+    _429Seguidos++;
+    const seg = +res.headers.get('Retry-After') || Math.pow(2, i);
+    _pausaSpotifyHasta = Math.max(_pausaSpotifyHasta, Date.now() + seg * 1000);
+    if (i === intentos - 1) return res;
+  }
+  return res;
 }
 
 const URL_ONE = /open\.spotify\.com\/(?:intl-[a-z-]+\/)?(album|track|artist)\/([a-zA-Z0-9]+)/i;
@@ -10215,7 +10245,7 @@ function openEtiquetas() {
   };
   showSheet(`
     <div class="sheethead"><h2>Etiquetas</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
-    <p class="lede">${tagsOrdenados().length.toLocaleString('es-ES')} etiquetas en ${carpetasOrdenadas().length} carpetas. Toca una para cambiarle el nombre, el color o el icono.</p>
+    <p class="lede">${tagsOrdenados().length.toLocaleString('es-ES')} etiquetas en ${carpetasOrdenadas().length} carpetas. Toca una para cambiarle el nombre, el color o el icono. El botón ♫ crea en Spotify una playlist privada con las canciones de esa etiqueta.</p>
     <input class="field" id="tagBuscar" placeholder="Buscar etiqueta…" autocomplete="off" style="margin-bottom:12px;">
     <div class="btnrow" style="margin-bottom:12px;">
       <button class="btn primary wide" id="addTag">＋ Nueva etiqueta</button>
@@ -10227,6 +10257,8 @@ function openEtiquetas() {
   document.getElementById('addTag').addEventListener('click', () => abrirEditorTag(null, false, openEtiquetas));
   document.getElementById('addCarpeta').addEventListener('click', () => abrirEditorTag(null, true, openEtiquetas));
   document.getElementById('tagList').addEventListener('click', e => {
+    const spot = e.target.closest('[data-spot]');
+    if (spot) { etiquetaASpotify(spot.dataset.spot); return; }
     const pin = e.target.closest('[data-pin]');
     if (pin) {
       const t = TAGS.find(x => x.id === pin.dataset.pin);
@@ -10243,9 +10275,17 @@ function tagListHtml(filtro) {
   /* De una sola pasada por el vault, no una por etiqueta: eran nueve
      millones de comparaciones cada vez que se abria esto. */
   const conteo = new Map();
+  /* Y aparte las canciones sueltas con enlace, que son las unicas que
+     pueden ir a una playlist: sin esto el boton saldria en etiquetas que
+     solo tienen discos o artistas y al pulsarlo no haria nada. */
+  const conPista = new Map();
   for (const i of ITEMS) {
     if (i.archived) continue;
-    for (const id of (i.tagIds || [])) conteo.set(id, (conteo.get(id) || 0) + 1);
+    const mandable = i.type === 'track' && i.spotifyId;
+    for (const id of (i.tagIds || [])) {
+      conteo.set(id, (conteo.get(id) || 0) + 1);
+      if (mandable) conPista.set(id, (conPista.get(id) || 0) + 1);
+    }
   }
   const cuenta = id => conteo.get(id) || 0;
   const fila = (t, dentro) => `<div class="tagline ${dentro ? 'dentro' : ''}">
@@ -10253,6 +10293,7 @@ function tagListHtml(filtro) {
         <span class="tgbadge" style="width:30px;height:30px;background:${esc(t.colorHex)}22;">${iconoHtml(t, 18)}</span>
         <span class="nm">${esc(t.name)}</span><span class="ct">${cuenta(t.id)}</span>
       </span>
+      ${conPista.get(t.id) ? `<button class="xbtn" data-spot="${esc(t.id)}" aria-label="Crear playlist en Spotify" title="Crear una playlist en Spotify con estas ${conPista.get(t.id).toLocaleString('es-ES')} canciones">♫</button>` : ''}
       <button class="xbtn" data-pin="${esc(t.id)}" aria-label="${t.favorito ? 'Quitar de fijadas' : 'Fijar arriba'}" title="${t.favorito ? 'Quitar de fijadas' : 'Fijar arriba'}">${t.favorito ? ui('chincheta') : ui('alfiler')}</button>
       <button class="xbtn" data-edit="${esc(t.id)}" aria-label="Editar">✎</button>
     </div>`;
@@ -10272,6 +10313,85 @@ function tagListHtml(filtro) {
       ${tagsDeCarpeta(c.id).map(t => fila(t, true)).join('') || '<p class="lede" style="margin:0 0 6px;">Vacía por ahora.</p>'}
     `).join('')
     + (sueltas.length ? (carpetasOrdenadas().length ? `<div class="tagcab">Sin carpeta</div>` : '') + sueltas.map(t => fila(t, false)).join('') : '');
+}
+
+/* Las canciones de una etiqueta que se pueden mandar a Spotify: solo
+   canciones (un album o un artista no van en una playlist), sin las
+   archivadas, y sin repetidas — la misma cancion puede estar guardada dos
+   veces desde dos discos distintos y en la playlist quedaria duplicada. */
+function pistasDeEtiqueta(tagId) {
+  const vistas = new Set();
+  const out = [];
+  for (const i of ITEMS) {
+    if (i.type !== 'track' || i.archived || !i.spotifyId) continue;
+    if (!(i.tagIds || []).includes(tagId)) continue;
+    if (vistas.has(i.spotifyId)) continue;
+    vistas.add(i.spotifyId); out.push(i);
+  }
+  return out;
+}
+
+/* Spotify no admite mas de 10.000 canciones por playlist, y solo deja
+   meterlas de 100 en 100. */
+const TOPE_PLAYLIST = 10000;
+
+let _creandoPlaylist = false;
+async function etiquetaASpotify(tagId) {
+  if (_creandoPlaylist) { toast('Espera, que aún estoy con la anterior'); return; }
+  const t = tagById(tagId);
+  if (!t) return;
+  if (!isConnected()) { toast('Primero conecta Spotify en Ajustes'); return; }
+  if (!tieneScopeCrear()) {
+    toast('Hay que volver a conectar Spotify una vez para darle permiso de crear playlists: Ajustes → Conectar con Spotify');
+    return;
+  }
+  const pistas = pistasDeEtiqueta(tagId);
+  if (!pistas.length) { toast('En «' + t.name + '» no hay canciones sueltas que mandar'); return; }
+  /* Las mas conocidas primero: si hay que cortar por el tope, que se queden
+     las que de verdad va a reconocer. */
+  const orden = pistas.slice().sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+  const van = orden.slice(0, TOPE_PLAYLIST);
+
+  _creandoPlaylist = true;
+  pedirDespertar();
+  toast('Creando «' + t.name + '» con ' + van.length.toLocaleString('es-ES') + ' canciones…');
+  try {
+    const tok = await spotifyToken();
+    const yo = await fetchConReintento429('https://api.spotify.com/v1/me', tok);
+    if (!yo.ok) throw new Error('no he podido leer tu cuenta (' + yo.status + ')');
+    const me = await yo.json();
+
+    const cr = await postSpotify('https://api.spotify.com/v1/users/' + encodeURIComponent(me.id) + '/playlists', tok, {
+      name: t.name,
+      public: false,
+      description: 'Desde MusicVault · etiqueta «' + t.name + '» · ' + van.length + ' canciones'
+    });
+    if (!cr.ok) throw new Error(cr.status === 403
+      ? 'Spotify no da permiso para crear playlists: vuelve a conectar en Ajustes'
+      : 'no ha dejado crear la playlist (' + cr.status + ')');
+    const pl = await cr.json();
+
+    /* De 100 en 100. Si se corta a mitad la playlist se queda con lo que
+       llevara: se avisa con el numero real, no se dice que fue bien. */
+    let metidas = 0;
+    for (let i = 0; i < van.length; i += 100) {
+      const trozo = van.slice(i, i + 100).map(p => 'spotify:track:' + p.spotifyId);
+      const res = await postSpotify('https://api.spotify.com/v1/playlists/' + pl.id + '/tracks', tok, { uris: trozo });
+      if (!res.ok) throw new Error('se cortó al meter la canción ' + (i + 1) + ' (' + res.status + '); en la playlist han quedado ' + metidas.toLocaleString('es-ES'));
+      metidas += trozo.length;
+      toast('«' + t.name + '»: ' + metidas.toLocaleString('es-ES') + ' de ' + van.length.toLocaleString('es-ES') + '…');
+    }
+
+    const recorte = pistas.length > van.length
+      ? ' (de ' + pistas.length.toLocaleString('es-ES') + '; Spotify no admite más de ' + TOPE_PLAYLIST.toLocaleString('es-ES') + ')'
+      : '';
+    toast('Lista «' + t.name + '» creada en Spotify con ' + metidas.toLocaleString('es-ES') + ' canciones' + recorte);
+  } catch (e) {
+    toast('No ha salido: ' + ((e && e.message) || e));
+  } finally {
+    _creandoPlaylist = false;
+    soltarDespertar();
+  }
 }
 
 function exportBackup() {
