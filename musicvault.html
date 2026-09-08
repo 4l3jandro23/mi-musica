@@ -10335,6 +10335,15 @@ function pistasDeEtiqueta(tagId) {
    meterlas de 100 en 100. */
 const TOPE_PLAYLIST = 10000;
 
+/* Spotify explica el motivo en el cuerpo de la respuesta. Sin esto solo se
+   veia el codigo, que para un 403 no distingue entre falta de permiso y
+   endpoint muerto — y eso manda a reconectar a quien ya estaba conectado. */
+async function motivoSpotify(res) {
+  let txt = '';
+  try { const j = await res.json(); txt = (j && j.error && (j.error.message || j.error)) || ''; } catch (e) {}
+  return res.status + (txt ? ': ' + txt : '');
+}
+
 let _creandoPlaylist = false;
 async function etiquetaASpotify(tagId) {
   if (_creandoPlaylist) { toast('Espera, que aún estoy con la anterior'); return; }
@@ -10357,18 +10366,14 @@ async function etiquetaASpotify(tagId) {
   toast('Creando «' + t.name + '» con ' + van.length.toLocaleString('es-ES') + ' canciones…');
   try {
     const tok = await spotifyToken();
-    const yo = await fetchConReintento429('https://api.spotify.com/v1/me', tok);
-    if (!yo.ok) throw new Error('no he podido leer tu cuenta (' + yo.status + ')');
-    const me = await yo.json();
-
-    const cr = await postSpotify('https://api.spotify.com/v1/users/' + encodeURIComponent(me.id) + '/playlists', tok, {
+    /* /me/playlists, no /users/{id}/playlists: eso se elimino en febrero de
+       2026 y devuelve 403 aunque el permiso este bien concedido. */
+    const cr = await postSpotify('https://api.spotify.com/v1/me/playlists', tok, {
       name: t.name,
       public: false,
       description: 'Desde MusicVault · etiqueta «' + t.name + '» · ' + van.length + ' canciones'
     });
-    if (!cr.ok) throw new Error(cr.status === 403
-      ? 'Spotify no da permiso para crear playlists: vuelve a conectar en Ajustes'
-      : 'no ha dejado crear la playlist (' + cr.status + ')');
+    if (!cr.ok) throw new Error('no ha dejado crear la playlist · ' + (await motivoSpotify(cr)));
     const pl = await cr.json();
 
     /* De 100 en 100. Si se corta a mitad la playlist se queda con lo que
@@ -10376,8 +10381,9 @@ async function etiquetaASpotify(tagId) {
     let metidas = 0;
     for (let i = 0; i < van.length; i += 100) {
       const trozo = van.slice(i, i + 100).map(p => 'spotify:track:' + p.spotifyId);
-      const res = await postSpotify('https://api.spotify.com/v1/playlists/' + pl.id + '/tracks', tok, { uris: trozo });
-      if (!res.ok) throw new Error('se cortó al meter la canción ' + (i + 1) + ' (' + res.status + '); en la playlist han quedado ' + metidas.toLocaleString('es-ES'));
+      /* /items, no /tracks: /tracks tambien cayo en el cambio de febrero. */
+      const res = await postSpotify('https://api.spotify.com/v1/playlists/' + pl.id + '/items', tok, { uris: trozo });
+      if (!res.ok) throw new Error('se cortó al meter la canción ' + (i + 1) + ' · ' + (await motivoSpotify(res)) + '; en la playlist han quedado ' + metidas.toLocaleString('es-ES'));
       metidas += trozo.length;
       toast('«' + t.name + '»: ' + metidas.toLocaleString('es-ES') + ' de ' + van.length.toLocaleString('es-ES') + '…');
     }
