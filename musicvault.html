@@ -10723,7 +10723,20 @@ function openDuplicados() {
    has puesto (Spotify las va apuntando solo), las que marcaste escuchadas y
    las que valoraste. Es la respuesta a "esta cancion me gusta, pero la tengo
    dentro de un disco y no la encuentro por ningun lado". */
+/* Compara nombres de cancion de forma tolerante: sin acentos, con el
+   apostrofo y las comillas normalizados y sin dobles espacios. */
+const _mismoNombre = s => fold(s).replace(/[’‘‛`´]/g, "'").replace(/[“”„]/g, '"').replace(/[–—]/g, '-').replace(/\s+/g, ' ').trim();
+
 function pistasSueltas() {
+  /* Las que ya se anadieron al vault como cancion propia dejan de estar
+     "sueltas": siguen dentro del album (de ahi sale su ficha), pero ya tienen
+     donde colgar una etiqueta, que era el problema. Se cruzan por album +
+     nombre porque aqui solo se guarda el nombre, no el id. */
+  const rescatadas = new Set();
+  for (const it of ITEMS) {
+    if (it.type !== 'track' || !it.albumId) continue;
+    rescatadas.add(it.albumId + ' ' + _mismoNombre(it.title));
+  }
   const out = [];
   for (const alb of ITEMS) {
     if (alb.type !== 'album') continue;
@@ -10737,10 +10750,106 @@ function pistasSueltas() {
       /* marcarla escuchada sola no basta: eso se hace de una tacada al
          escuchar el disco entero y llenaria la lista de ruido */
       if (!veces && !nota) continue;
+      if (alb.spotifyId && rescatadas.has(alb.spotifyId + ' ' + _mismoNombre(n))) continue;
       out.push({ alb, nombre: n, veces, nota, ultima: (puestas[n] || []).slice(-1)[0] || 0 });
     }
   }
   return out.sort((a, b) => b.nota - a.nota || b.veces - a.veces || b.ultima - a.ultima);
+}
+
+
+/* Los albumes que tienen canciones sueltas, agrupadas de una sola pasada:
+   recorrer pistasSueltas() una vez por album seria releer el vault entero
+   cincuenta veces para nada. */
+function _albumesConSueltas() {
+  const porAlbum = new Map();
+  for (const x of pistasSueltas()) {
+    if (!x.alb.spotifyId) continue;
+    if (!porAlbum.has(x.alb)) porAlbum.set(x.alb, []);
+    porAlbum.get(x.alb).push(x);
+  }
+  return [...porAlbum].map(([alb, sueltas]) => ({ alb, sueltas }));
+}
+
+let _rescatando = false, _pararRescate = false;
+async function rescatarPistasSueltas() {
+  if (_rescatando) { _pararRescate = true; return; }
+  if (!isConnected()) { toast('Primero conecta Spotify en Ajustes'); return; }
+  _rescatando = true; _pararRescate = false;
+  pedirDespertar();
+  const btn = document.getElementById('favRescate'), est = document.getElementById('favRescateEst');
+  if (btn) btn.textContent = 'Detener';
+
+  const discos = _albumesConSueltas();
+  let creadas = 0, yaEstaban = 0, sinEncontrar = 0, pospuestos = 0, i = 0, sinGuardar = 0;
+  const pinta = () => {
+    if (!est) return;
+    est.textContent = i.toLocaleString('es-ES') + ' de ' + discos.length.toLocaleString('es-ES') + ' discos · '
+      + creadas.toLocaleString('es-ES') + ' canciones añadidas'
+      + (yaEstaban ? ', ' + yaEstaban.toLocaleString('es-ES') + ' ya estaban' : '')
+      + (sinEncontrar ? ', ' + sinEncontrar.toLocaleString('es-ES') + ' no aparecen en el disco' : '')
+      + (pospuestos ? ' · ' + pospuestos.toLocaleString('es-ES') + ' discos para otro rato' : '');
+  };
+
+  try {
+    for (const { alb, sueltas } of discos) {
+      if (_pararRescate) break;
+      let pistas;
+      try { pistas = await fetchAlbumTracks(alb.spotifyId); }
+      catch (e) {
+        /* que Spotify frene NO significa que el disco no tenga esas
+           canciones: se deja para el siguiente intento */
+        pospuestos++; i++; pinta();
+        if (String(e.message).startsWith('RATE_LIMIT')) break;
+        continue;
+      }
+      const porNombre = new Map();
+      for (const p of pistas) if (p && p.id) porNombre.set(_mismoNombre(p.name), p);
+
+      for (const s of sueltas) {
+        const p = porNombre.get(_mismoNombre(s.nombre));
+        if (!p) { sinEncontrar++; continue; }
+        if (ITEMS.some(x => x.type === 'track' && x.spotifyId === p.id)) { yaEstaban++; continue; }
+        /* El objeto que da este endpoint viene "simplificado": no trae ni
+           portada ni datos del album, asi que esos se copian del album al
+           que pertenece, que es de donde salen igualmente. */
+        const nueva = makeItem({
+          spotifyId: p.id, type: 'track', title: p.name,
+          spotifyUrl: (p.external_urls && p.external_urls.spotify) || '',
+          coverUrl: alb.coverUrl || null,
+          releaseDate: alb.releaseDate || null,
+          albumName: alb.title || null, albumId: alb.spotifyId || null,
+          albumType: alb.albumType || null, totalTracks: alb.totalTracks ?? null,
+          label: alb.label || null, genres: null, followers: null, popularity: null,
+          artists: (p.artists || []).map(a => a.name).filter(Boolean).length
+            ? (p.artists || []).map(a => a.name)
+            : (alb.artists || []).slice(),
+          durationMs: p.duration_ms ?? null,
+          explicit: typeof p.explicit === 'boolean' ? p.explicit : null,
+          trackNumber: p.track_number ?? null, discNumber: p.disc_number ?? null,
+          isrc: null
+        });
+        /* la nota que ya le habia puesto no se pierde */
+        if (s.nota) nueva.rating = s.nota;
+        if (s.veces || s.nota) nueva.listened = true;
+        if (s.ultima) nueva.listenedAt = s.ultima;
+        nueva.touchedAt = Date.now();
+        ITEMS.push(nueva); creadas++;
+        if (++sinGuardar >= 25) { saveItems(); sinGuardar = 0; }
+      }
+      i++; pinta();
+    }
+  } catch (e) {
+    toast('Se cortó: ' + ((e && e.message) || e));
+  } finally {
+    _rescatando = false;
+    soltarDespertar();
+    saveItems(); render();
+    if (btn) btn.textContent = 'Añadirlas al vault';
+    toast(creadas.toLocaleString('es-ES') + ' canciones añadidas al vault'
+      + (creadas ? ' — ya se les puede poner etiqueta' : '')
+      + (pospuestos ? ' · ' + pospuestos.toLocaleString('es-ES') + ' discos se quedaron sin preguntar: vuelve a darle luego' : ''));
+  }
 }
 
 function openFavPistas() {
@@ -10750,6 +10859,9 @@ function openFavPistas() {
     <div class="sheethead"><h2>Canciones sueltas de tus álbumes</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>` +
     (lista.length
       ? `<p class="lede">${lista.length.toLocaleString('es-ES')} canciones concretas de dentro de tus discos: las que has puesto y las que has valorado. No están guardadas sueltas en el vault, viven dentro de su álbum — aquí las tienes todas juntas.${conNota ? ` ${conNota} tienen 4 o 5 estrellas.` : ''}</p>
+        <p class="lede" style="margin:0 0 8px;">Viven dentro de su álbum, así que no se les puede poner etiqueta y no entran en las playlists que creas desde una etiqueta. Puedo añadirlas al vault como canciones de verdad, conservando la nota que les hayas puesto.</p>
+        <div class="btnrow"><button class="btn primary wide" id="favRescate">Añadirlas al vault</button></div>
+        <div class="lede" id="favRescateEst" style="margin:0 0 10px;"></div>
         <div class="btnrow"><button class="btn wide" id="favCopiar">${ui('portapapeles')} Copiar la lista</button></div>
         <div class="list">${lista.map((x, i) => `
           <article class="lrow" data-favalb="${esc(x.alb.id)}">
@@ -10763,6 +10875,7 @@ function openFavPistas() {
       : `<div class="empty" style="padding:24px 8px;"><div class="ico">${ui('estrella')}</div><h2>Todavía ninguna</h2>
         <p>Aquí van a salir las canciones concretas de dentro de tus álbumes: las que Spotify registre que pones, y las que valores tú.</p>
         <p>Para valorar una: abre un álbum, baja hasta la lista de canciones y toca sus estrellas.</p></div>`));
+  document.getElementById('favRescate')?.addEventListener('click', () => rescatarPistasSueltas());
   document.getElementById('favCopiar')?.addEventListener('click', () => {
     const txt = lista.map(x => artistsOf(x.alb) + ' - ' + x.nombre).join(String.fromCharCode(10));
     navigator.clipboard?.writeText(txt).then(() => toast('Lista copiada'), () => toast('No he podido copiarla'));
