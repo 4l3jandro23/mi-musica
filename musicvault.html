@@ -2375,6 +2375,10 @@ function metaPairs(it) {
     const edad = edadLanzamiento(it);
     if (edad) add('Antigüedad', edad);
   }
+  /* El ano que se guarda es el de la edicion que tienes; este es el del
+     disco tal como salio la primera vez. Se ensenan los dos porque los dos
+     son ciertos: Abbey Road es de 1969 y esta remasterizacion de 2019. */
+  if (it.anyoOriginal) add('Álbum original', it.anyoOriginal + ' · esta edición es de ' + yearOf(it));
   if (it.releaseDateOrig) add('Año que daba Spotify', fmtDate(it.releaseDateOrig) + ' (corregido)');
   add('ISRC', it.isrc);
   add('Guardado', `${new Date(it.dateAdded).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })} (${relDate(it.dateAdded)})`);
@@ -7236,6 +7240,118 @@ function analizarAnyos() {
   return { corregibles: todas.filter(s => s.sugerido), dudosos: todas.filter(s => !s.sugerido) };
 }
 
+/* Quita la coletilla de edicion para poder buscar el disco de verdad:
+   "Abbey Road (Super Deluxe Edition)" -> "Abbey Road". */
+const _RX_COLETILLA = /remaster|remasteriz|reissue|anniversar|anivers|legacy|deluxe|expanded|expandida|edition|edici[oó]n|super\s*deluxe|bonus track|collector|the ultimate|mono|stereo|version/i;
+function _tituloSinEdicion(t) {
+  let s = String(t || '');
+  /* parentesis o corchetes que hablen de la edicion */
+  s = s.replace(/[([][^)\]]*[)\]]/g, m => _RX_COLETILLA.test(m) ? '' : m);
+  /* o lo que venga detras de un guion largo: "Algo - 2011 Remaster" */
+  s = s.replace(/\s+[-–—]\s+[^-–—]*$/, m => _RX_COLETILLA.test(m) ? '' : m);
+  return s.replace(/\s+/g, ' ').trim();
+}
+
+/* Devuelve el ano de la primera edicion, o null si no se ha podido
+   preguntar (que NO es lo mismo que "no lo tiene": null se reintenta,
+   0 significa preguntado y sin respuesta buena). */
+async function _mbAnyoOriginal(titulo, artista, anyoActual) {
+  const limpio = _tituloSinEdicion(titulo);
+  if (!limpio || !artista) return 0;
+  const q = 'releasegroup:"' + limpio.replace(/"/g, '') + '" AND artist:"' + String(artista).replace(/"/g, '') + '"';
+  const url = 'https://musicbrainz.org/ws/2/release-group/?query=' + encodeURIComponent(q) + '&fmt=json&limit=8';
+  let res;
+  try { res = await fetch(url, { headers: { Accept: 'application/json' } }); }
+  catch (e) { return null; }
+  /* Ninguno de estos es "ese disco no existe", y confundirlos fue el fallo que
+     ya cometi con iTunes y con Spotify: 503 es servidor ocupado, 429 son
+     demasiadas peticiones y 403 es que MusicBrainz esta frenando a quien no se
+     identifica. Los tres se reintentan; solo un 404 o una respuesta ilegible
+     cuentan como "preguntado y no hay". */
+  if (res.status === 503 || res.status === 429 || res.status === 403 || res.status >= 500) return null;
+  if (!res.ok) return 0;
+  let j; try { j = await res.json(); } catch (e) { return 0; }
+
+  /* MusicBrainz escribe los titulos con tipografia fina: "Sgt. Pepper’s" con
+     apostrofo curvo, donde Spotify pone el recto. Comparando tal cual, ese
+     disco no casaba con el suyo y se quedaba sin ano. Lo mismo con las
+     comillas y los guiones largos. */
+  const _mismaPunt = s => fold(s).replace(/[’‘‛`´]/g, "'").replace(/[“”„]/g, '"').replace(/[–—]/g, '-').replace(/\s+/g, ' ').trim();
+  const quiero = _mismaPunt(limpio);
+  const buenos = (j['release-groups'] || []).filter(g => {
+    if (_mismaPunt(g.title || '') !== quiero) return false;        /* homonimos fuera */
+    if ((g['primary-type'] || '') !== 'Album') return false;       /* ni EP ni single */
+    if ((g['secondary-types'] || []).length) return false;         /* ni recopilatorio, directo o remix */
+    return (g.score || 0) >= 90;
+  });
+  let mejor = 0;
+  for (const g of buenos) {
+    const m = String(g['first-release-date'] || '').match(/^(\d{4})/);
+    if (!m) continue;
+    const y = +m[1];
+    if (y < 1900) continue;
+    if (!mejor || y < mejor) mejor = y;                            /* la mas antigua */
+  }
+  /* si no es anterior a lo que ya hay, no es el original de nada */
+  return (mejor && anyoActual && mejor < anyoActual) ? mejor : 0;
+}
+
+/* Los discos con pinta de reedicion a los que falta preguntar. Se agrupan
+   por disco: todas las canciones de un album comparten el ano original. */
+function _reediciones() {
+  const g = new Map();
+  for (const it of ITEMS) {
+    if (it.archived || it.type === 'artist' || it.type === 'playlist') continue;
+    if (it.anyoOriginal !== undefined) continue;                   /* ya preguntado */
+    const nombre = it.type === 'track' ? (it.albumName || '') : it.title;
+    if (!_RX_REEDICION.test(nombre)) continue;
+    const y = _anyoDe(it); if (!y) continue;
+    const clave = (it.type === 'track' ? it.albumId : it.spotifyId) || ('x' + it.id);
+    if (!g.has(clave)) g.set(clave, { nombre, artista: principalDe(it), anyo: y, items: [] });
+    g.get(clave).items.push(it);
+  }
+  return [...g.values()];
+}
+
+let _buscandoAnyos = false, _pararAnyos = false;
+async function buscarAnyosOriginales() {
+  if (_buscandoAnyos) { _pararAnyos = true; return; }
+  _buscandoAnyos = true; _pararAnyos = false;
+  pedirDespertar();
+  const btn = document.getElementById('anyoMB'), est = document.getElementById('anyoMBEst');
+  if (btn) btn.textContent = 'Detener';
+  const lista = _reediciones();
+  let hallados = 0, sin = 0, pospuestos = 0, i = 0, sinGuardar = 0;
+  try {
+    for (const g of lista) {
+      if (_pararAnyos) break;
+      const y = await _mbAnyoOriginal(g.nombre, g.artista, g.anyo);
+      if (y === null) pospuestos++;
+      else {
+        /* 0 tambien se apunta: es "preguntado y no hay", para no volver
+           a preguntar lo mismo cada vez que se abre la pantalla */
+        for (const it of g.items) { it.anyoOriginal = y || 0; it.touchedAt = Date.now(); }
+        if (y) hallados++; else sin++;
+        if ((sinGuardar += g.items.length) >= 30) { saveItems(); sinGuardar = 0; }
+      }
+      i++;
+      if (est) est.textContent = i.toLocaleString('es-ES') + ' de ' + lista.length.toLocaleString('es-ES')
+        + ' · ' + hallados.toLocaleString('es-ES') + ' con año original'
+        + (sin ? ', ' + sin.toLocaleString('es-ES') + ' sin dato fiable' : '')
+        + (pospuestos ? ' · ' + pospuestos.toLocaleString('es-ES') + ' para otro rato' : '');
+      /* MusicBrainz pide como mucho una peticion por segundo */
+      await new Promise(r => setTimeout(r, 1100));
+    }
+  } finally {
+    _buscandoAnyos = false;
+    soltarDespertar();
+    saveItems(); render();
+    if (btn) btn.textContent = 'Buscar el año del disco original';
+    toast(hallados.toLocaleString('es-ES') + ' discos con su año original'
+      + (pospuestos ? ' · ' + pospuestos.toLocaleString('es-ES') + ' se quedaron sin preguntar (MusicBrainz estaba ocupado): vuelve a darle luego' : ''));
+  }
+}
+
 const _MOTIVO = {
   'reedicion': 'el año es el de una remasterización',
   'copia-anterior': 'tienes el original con otro año',
@@ -7265,6 +7381,11 @@ function openAnyos() {
   showSheet(`
     <div class="sheethead"><h2>Años mal puestos</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     <p class="lede">Spotify no guarda el año en que salió la canción, sino el de la edición que tiene en catálogo. Por eso "My Way" de Sinatra pone 2008 y no 1969.</p>
+    ${(() => { const n = _reediciones().length; return n ? `
+      <div class="flabel">Remasterizaciones y ediciones especiales</div>
+      <p class="lede" style="margin:0 0 8px;">${n.toLocaleString('es-ES')} discos tuyos son una reedición. Puedo preguntarle a MusicBrainz en qué año salió el disco original y guardarlo al lado, sin tocar el año de tu edición: Abbey Road quedaría como 1969, y esta edición de 2019.</p>
+      <div class="btnrow"><button class="btn wide" id="anyoMB">Buscar el año del disco original</button></div>
+      <div class="lede" id="anyoMBEst" style="margin:0 0 18px;"></div>` : ''; })()}
     ${corregibles.length ? `
       <div class="flabel">${corregibles.length} con el año correcto a mano</div>
       <p class="lede" style="margin:0 0 10px;">De estos tienes otra copia en el vault con un año anterior, así que el bueno lo sé sin preguntar a nadie.</p>
@@ -7279,6 +7400,7 @@ function openAnyos() {
       <div class="btnrow"><button class="btn wide" id="anyoManual">Guardar los que haya escrito</button></div>` : ''}
   `);
 
+  document.getElementById('anyoMB')?.addEventListener('click', () => buscarAnyosOriginales());
   document.getElementById('anyoAplicar')?.addEventListener('click', () => {
     let n = 0;
     for (const s of corregibles) {
