@@ -1919,6 +1919,9 @@ const SPOTIFY_SCOPE_RECIENTES = 'user-read-recently-played';
    crear una playlist: no permite borrar ni tocar las que ya tienes, y las
    que crea nacen privadas. */
 const SPOTIFY_SCOPE_CREAR = 'playlist-modify-private';
+/* Para escribir en "Me gusta". Aparte, como los demas, para no invalidar
+   de golpe la conexion de quien ya tenia lo anterior funcionando. */
+const SPOTIFY_SCOPE_BIBLIO = 'user-library-modify';
 
 /* Manda al usuario a la pantalla de login real de Spotify. Al volver, Spotify
    añade ?code=...&state=... a esta misma URL (por eso hace falta registrar
@@ -1933,7 +1936,7 @@ async function beginSpotifyLogin() {
   const params = new URLSearchParams({
     client_id: c.clientId, response_type: 'code', redirect_uri: REDIRECT_URI,
     code_challenge_method: 'S256', code_challenge: challenge, state,
-    scope: SPOTIFY_SCOPE + ' ' + SPOTIFY_SCOPE_RECIENTES + ' ' + SPOTIFY_SCOPE_CREAR
+    scope: SPOTIFY_SCOPE + ' ' + SPOTIFY_SCOPE_RECIENTES + ' ' + SPOTIFY_SCOPE_CREAR + ' ' + SPOTIFY_SCOPE_BIBLIO
   });
   location.href = 'https://accounts.spotify.com/authorize?' + params.toString();
 }
@@ -2027,6 +2030,11 @@ function tieneScopeCrear() {
   const c = loadCreds();
   if (!c || !c.scope) return false;
   return c.scope.split(' ').includes(SPOTIFY_SCOPE_CREAR);
+}
+function tieneScopeBiblioteca() {
+  const c = loadCreds();
+  if (!c || !c.scope) return false;
+  return c.scope.split(' ').includes(SPOTIFY_SCOPE_BIBLIO);
 }
 
 /* Búsquedas de sobra en poco tiempo (escribir rápido, o un rato largo de uso
@@ -2219,6 +2227,21 @@ async function fetchItemsIndividually(tipo, ids, onProgress, shouldStop, onItem)
   resultados.bloqueados = bloqueados;
   resultados.bloqueoDetectado = bloqueoDetectado;
   return resultados;
+}
+
+/* PUT, para "Me gusta". No lleva cuerpo: las canciones van en la URL. */
+async function putSpotify(url, token, intentos = 5) {
+  let res;
+  for (let i = 0; i < intentos; i++) {
+    await esperarTurnoSpotify();
+    res = await fetch(url, { method: 'PUT', headers: { Authorization: 'Bearer ' + token } });
+    if (res.status !== 429) { if (res.ok) _429Seguidos = 0; return res; }
+    _429Seguidos++;
+    const seg = +res.headers.get('Retry-After') || Math.pow(2, i);
+    _pausaSpotifyHasta = Math.max(_pausaSpotifyHasta, Date.now() + seg * 1000);
+    if (i === intentos - 1) return res;
+  }
+  return res;
 }
 
 /* Igual que fetchConReintento429 pero para escribir. Comparte la puerta
@@ -2989,6 +3012,7 @@ function renderInicio() {
       <button class="crow" data-acc="revision"><span class="ci">${ui('ajustes')}</span><span class="ct">Arreglar el vault</span></button>
       <button class="crow" data-acc="anyos"><span class="ci">${ui('calendario')}</span><span class="ct">Revisar años mal puestos</span></button>
       <button class="crow" data-acc="lote"><span class="ci">${ui('lapiz')}</span><span class="ct">Editar en lote</span></button>
+      <button class="crow" data-acc="megusta"><span class="ci">${ui('corazon')}</span><span class="ct">Devolver todo a «Me gusta» de Spotify</span></button>
       <button class="crow" data-acc="stats"><span class="ci">${ui('barras')}</span><span class="ct">Estadísticas</span></button>
     </div>
 
@@ -10522,6 +10546,114 @@ async function etiquetaASpotify(tagId) {
   }
 }
 
+/* Las canciones del vault que se pueden devolver a Spotify, de la mas
+   antigua a la mas reciente: "Me gusta" ordena por fecha de guardado, asi
+   que mandandolas en ese orden queda arriba lo ultimo que anadio, como
+   estaba antes, en vez de en un orden cualquiera. */
+function cancionesParaBiblioteca() {
+  const vistas = new Set();
+  const out = [];
+  for (const i of ITEMS) {
+    if (i.type !== 'track' || i.archived || !i.spotifyId) continue;
+    if (vistas.has(i.spotifyId)) continue;
+    vistas.add(i.spotifyId); out.push(i);
+  }
+  return out.sort((a, b) => (a.dateAdded || 0) - (b.dateAdded || 0));
+}
+
+const TOPE_BIBLIO = 40;   /* maximo de Spotify por peticion */
+let _devolviendo = false, _pararDevolver = false;
+
+async function devolverAMeGusta() {
+  if (_devolviendo) { _pararDevolver = true; return; }
+  if (!isConnected()) { toast('Primero conecta Spotify en Ajustes'); return; }
+  if (!tieneScopeBiblioteca()) {
+    toast('Hay que volver a conectar Spotify una vez para darle permiso sobre tu biblioteca: Ajustes → Conectar con Spotify');
+    return;
+  }
+  const todas = cancionesParaBiblioteca();
+  if (!todas.length) { toast('No hay canciones que devolver'); return; }
+
+  _devolviendo = true; _pararDevolver = false;
+  pedirDespertar();
+  const btn = document.getElementById('mgIr'), est = document.getElementById('mgEst');
+  if (btn) btn.textContent = 'Detener';
+
+  let yaEstaban = 0, anadidas = 0, revisadas = 0, pendientes = 0;
+  const pinta = fase => {
+    if (!est) return;
+    est.textContent = fase + ' · ' + revisadas.toLocaleString('es-ES') + ' de ' + todas.length.toLocaleString('es-ES')
+      + ' · ' + anadidas.toLocaleString('es-ES') + ' devueltas'
+      + (yaEstaban ? ', ' + yaEstaban.toLocaleString('es-ES') + ' ya las tenías' : '')
+      + (pendientes ? ' · ' + pendientes.toLocaleString('es-ES') + ' para otro rato' : '');
+  };
+
+  try {
+    for (let i = 0; i < todas.length; i += TOPE_BIBLIO) {
+      if (_pararDevolver) break;
+      const trozo = todas.slice(i, i + TOPE_BIBLIO);
+      const tok = await spotifyToken();
+      const uris = trozo.map(t => 'spotify:track:' + t.spotifyId).join(',');
+
+      /* Primero cuales YA estan. Volver a guardar una que ya tenias le
+         cambia la fecha de anadido y te reordena "Me gusta" entero: eso
+         seria cargarse justo la memoria que quiere recuperar. */
+      let faltan = trozo;
+      const cont = await fetchConReintento429('https://api.spotify.com/v1/me/library/contains?uris=' + encodeURIComponent(uris), tok);
+      if (cont.status === 429) { pendientes += trozo.length; revisadas += trozo.length; pinta('esperando a Spotify'); continue; }
+      if (cont.status === 401 || cont.status === 403) {
+        throw new Error('Spotify no da permiso sobre tu biblioteca · ' + (await motivoSpotify(cont)));
+      }
+      if (cont.ok) {
+        let tiene = null;
+        try { tiene = await cont.json(); } catch (e) {}
+        if (Array.isArray(tiene) && tiene.length === trozo.length) {
+          faltan = trozo.filter((t, k) => !tiene[k]);
+          yaEstaban += trozo.length - faltan.length;
+        }
+        /* si la respuesta no viene con la forma esperada se mandan todas:
+           es peor dejarselas fuera que reordenarle unas cuantas */
+      }
+
+      if (faltan.length) {
+        const q = encodeURIComponent(faltan.map(t => 'spotify:track:' + t.spotifyId).join(','));
+        const res = await putSpotify('https://api.spotify.com/v1/me/library?uris=' + q, tok);
+        if (res.ok) anadidas += faltan.length;
+        else if (res.status === 401 || res.status === 403) {
+          throw new Error('Spotify no da permiso sobre tu biblioteca · ' + (await motivoSpotify(res)));
+        } else pendientes += faltan.length;   /* 429 u otro: se reintenta al volver a darle */
+      }
+      revisadas += trozo.length;
+      pinta('devolviendo');
+    }
+  } catch (e) {
+    toast('Se cortó: ' + ((e && e.message) || e));
+  } finally {
+    _devolviendo = false;
+    soltarDespertar();
+    if (btn) btn.textContent = 'Devolver todo a «Me gusta»';
+    toast(anadidas.toLocaleString('es-ES') + ' canciones devueltas a «Me gusta»'
+      + (yaEstaban ? ' · ' + yaEstaban.toLocaleString('es-ES') + ' ya las tenías' : '')
+      + (pendientes ? ' · ' + pendientes.toLocaleString('es-ES') + ' se quedaron sin poner: vuelve a darle luego' : ''));
+  }
+}
+
+function openMeGusta() {
+  const todas = cancionesParaBiblioteca();
+  const desde = todas.length && todas[0].dateAdded ? new Date(todas[0].dateAdded).getFullYear() : null;
+  const peticiones = Math.ceil(todas.length / TOPE_BIBLIO) * 2;
+  showSheet(`
+    <div class="sheethead"><h2>Devolver todo a Spotify</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
+    <p class="lede">Tu vault tiene <b>${todas.length.toLocaleString('es-ES')} canciones</b>${desde ? ' guardadas desde ' + desde : ''}. Esto las devuelve a <b>«Me gusta»</b> de Spotify, que es tu biblioteca de verdad. No tiene tope desde 2020, así que caben todas: no hay que partirlas en dos como pasaría con una playlist.</p>
+    <p class="lede">De cada tanda pregunta primero cuáles ya tienes, y esas las deja en paz. Volver a guardarlas les cambiaría la fecha y te reordenaría «Me gusta» entero, que es justo lo que no quieres perder.</p>
+    <p class="lede">Va de 40 en 40, el máximo que admite Spotify: unas ${peticiones.toLocaleString('es-ES')} peticiones. Puedes pararlo cuando quieras y seguir otro día — lo que ya esté puesto no se vuelve a tocar.</p>
+    <div class="btnrow"><button class="btn primary wide" id="mgIr">Devolver todo a «Me gusta»</button></div>
+    <div class="lede" id="mgEst" style="margin:10px 0 0;"></div>
+    <p class="lede" style="margin-top:18px;">Para deshacerlo habría que quitar los «me gusta» a mano en Spotify, así que piénsalo antes de empezar.</p>
+  `);
+  document.getElementById('mgIr')?.addEventListener('click', () => devolverAMeGusta());
+}
+
 function exportBackup() {
   const blob = new Blob([JSON.stringify({ app: 'MusicVault', version: 1, exportedAt: new Date().toISOString(), items: ITEMS, tags: TAGS }, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
@@ -11405,6 +11537,7 @@ document.getElementById('inicio').addEventListener('click', e => {
     else if (a === 'stats') openStats();
     else if (a === 'mezcla') openMezcla();
     else if (a === 'favpistas') openFavPistas();
+    else if (a === 'megusta') openMeGusta();
     else if (a === 'revision') openRevision();
     else if (a === 'autotag') openAutoTag();
     else if (a === 'anyos') openAnyos();
