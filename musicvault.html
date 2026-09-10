@@ -1919,9 +1919,12 @@ const SPOTIFY_SCOPE_RECIENTES = 'user-read-recently-played';
    crear una playlist: no permite borrar ni tocar las que ya tienes, y las
    que crea nacen privadas. */
 const SPOTIFY_SCOPE_CREAR = 'playlist-modify-private';
-/* Para escribir en "Me gusta". Aparte, como los demas, para no invalidar
-   de golpe la conexion de quien ya tenia lo anterior funcionando. */
-const SPOTIFY_SCOPE_BIBLIO = 'user-library-modify';
+/* Para "Me gusta" hacen falta LOS DOS: modify para anadir, y read para
+   preguntar antes cuales ya estan guardadas (/me/library/contains es de
+   lectura). Pedir solo modify da un 403 "Insufficient client scope" en la
+   primera consulta, que es lo que paso. Aparte de los demas permisos, como
+   siempre, para no invalidar una conexion que ya funcionaba. */
+const SPOTIFY_SCOPE_BIBLIO = 'user-library-read user-library-modify';
 
 /* Manda al usuario a la pantalla de login real de Spotify. Al volver, Spotify
    añade ?code=...&state=... a esta misma URL (por eso hace falta registrar
@@ -2034,7 +2037,27 @@ function tieneScopeCrear() {
 function tieneScopeBiblioteca() {
   const c = loadCreds();
   if (!c || !c.scope) return false;
-  return c.scope.split(' ').includes(SPOTIFY_SCOPE_BIBLIO);
+  const got = new Set(c.scope.split(' ').filter(Boolean));
+  return SPOTIFY_SCOPE_BIBLIO.split(' ').every(s => got.has(s));
+}
+
+/* Todos los permisos que la app usa hoy, con su nombre en cristiano. Antes
+   Ajustes solo miraba dos de ellos, asi que cuando anadi los de crear
+   playlists y biblioteca no avisaba de que faltaban: el fallo aparecia mas
+   tarde, como un 403 sin explicacion, al pulsar el boton. */
+const SPOTIFY_PERMISOS = [
+  { s: 'playlist-read-private', q: 'leer tus playlists privadas' },
+  { s: 'playlist-read-collaborative', q: 'leer las playlists colaborativas' },
+  { s: 'user-read-recently-played', q: 'ver tu historial real de reproducción' },
+  { s: 'playlist-modify-private', q: 'crear playlists desde tus etiquetas' },
+  { s: 'user-library-read', q: 'saber qué canciones ya tienes en «Me gusta»' },
+  { s: 'user-library-modify', q: 'devolver canciones a «Me gusta»' }
+];
+function permisosQueFaltan() {
+  const c = loadCreds();
+  if (!c || !c.scope) return SPOTIFY_PERMISOS.slice();
+  const got = new Set(c.scope.split(' ').filter(Boolean));
+  return SPOTIFY_PERMISOS.filter(p => !got.has(p.s));
 }
 
 /* Búsquedas de sobra en poco tiempo (escribir rápido, o un rato largo de uso
@@ -6902,20 +6925,19 @@ function openSettings() {
     <input class="field mono" id="redirectUri" value="${esc(REDIRECT_URI)}" readonly style="margin-bottom:8px;" onclick="this.select()">
     ${(() => {
       if (!ok) return '';
-      const faltan = [];
-      if (!tieneScopePlaylists()) faltan.push('leer playlists (sobre todo las tuyas, que suelen ser privadas)');
-      if (!tieneScopeRecientes()) faltan.push('tu historial real de reproducción');
+      const faltan = permisosQueFaltan();
       if (!faltan.length) return '';
-      return `<p class="lede" style="color:var(--rust);">Esta conexión es de antes de añadir ${faltan.join(' y ')} y no tiene ese permiso. El resto sigue funcionando igual mientras tanto.</p>`;
+      return `<p class="lede" style="color:var(--rust);">A esta conexión le ${faltan.length === 1 ? 'falta un permiso' : 'faltan ' + faltan.length + ' permisos'}, porque se hizo antes de que existieran. Lo demás sigue funcionando igual mientras tanto.</p>
+        <ul class="lede" style="margin:0 0 10px 18px;padding:0;">${faltan.map(p => '<li>' + esc(p.q) + '</li>').join('')}</ul>`;
     })()}
     <div class="btnrow">
       ${!ok
         ? `<button class="btn primary wide" id="saveCreds">Guardar y conectar con Spotify</button>`
-        : (!tieneScopePlaylists() || !tieneScopeRecientes())
-          ? `<button class="btn primary wide" id="reconnectSpotify">Reconectar (añadir permiso${!tieneScopePlaylists() && !tieneScopeRecientes() ? 's' : ''} nuevo${!tieneScopePlaylists() && !tieneScopeRecientes() ? 's' : ''})</button>`
+        : permisosQueFaltan().length
+          ? `<button class="btn primary wide" id="reconnectSpotify">Reconectar (añadir ${permisosQueFaltan().length === 1 ? 'el permiso que falta' : 'los ' + permisosQueFaltan().length + ' permisos que faltan'})</button>`
           : `<button class="btn wide" id="disconnectSpotify">Desconectar</button>`}
     </div>
-    ${ok && (!tieneScopePlaylists() || !tieneScopeRecientes()) ? `<div class="btnrow"><button class="btn wide" id="disconnectSpotify">Desconectar sin más</button></div>` : ''}
+    ${ok && permisosQueFaltan().length ? `<div class="btnrow"><button class="btn wide" id="disconnectSpotify">Desconectar sin más</button></div>` : ''}
 
     <div class="flabel">Historial real de escucha</div>
     <p class="lede">En vez de marcar tú "escuchado" a mano, esto lo detecta solo cuando reproduces algo en Spotify (guardado como canción suelta, o dentro de un álbum que ya tienes). Solo pilla lo reciente — Spotify no da el historial completo, así que no sirve para rellenar lo de antes de activarlo.</p>
