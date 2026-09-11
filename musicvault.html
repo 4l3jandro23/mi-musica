@@ -10683,6 +10683,106 @@ async function devolverAMeGusta(soloTipo) {
   }
 }
 
+/* Las canciones de dentro de un album. Se quedan guardadas en el propio
+   album para no volver a pedirlas: Spotify las da de 10 en 10, asi que
+   repetir esto son 1.574 peticiones tiradas. */
+async function _idsDelAlbum(alb) {
+  /* Vacia tambien vale: significa preguntado y sin resultado. Exigiendo
+     que tuviera elementos se volvia a pedir en cada pasada. */
+  if (Array.isArray(alb.trackIds)) return alb.trackIds;
+  const pistas = await fetchAlbumTracks(alb.spotifyId);   /* lanza RATE_LIMIT si frena */
+  const ids = pistas.map(p => p && p.id).filter(Boolean);
+  /* Se guarda aunque venga vacia: fetchAlbumTracks lanza excepcion si
+     Spotify no contesta, asi que una lista vacia es una respuesta buena
+     (un disco retirado del catalogo). Sin esto se volvia a preguntar por
+     el en cada pasada, para siempre. */
+  alb.trackIds = ids;
+  /* de paso, los titulos si aun no estaban: sale gratis y sirve para la
+     ficha del disco sin tener que volver a preguntar */
+  if (!Array.isArray(alb.trackTitles) || !alb.trackTitles.length) {
+    const nombres = pistas.map(p => p && p.name).filter(Boolean);
+    if (nombres.length) alb.trackTitles = nombres;
+  }
+  alb.touchedAt = Date.now();
+  return ids;
+}
+
+async function pistasDeAlbumesASpotify() {
+  if (_devolviendo) { _pararDevolver = true; return; }
+  if (!isConnected()) { toast('Primero conecta Spotify en Ajustes'); return; }
+  if (!tieneScopeBiblioteca()) {
+    toast('Hay que volver a conectar Spotify una vez para darle permiso sobre tu biblioteca: Ajustes → Conectar con Spotify');
+    return;
+  }
+  const discos = albumesParaBiblioteca();
+  if (!discos.length) { toast('No hay álbumes guardados'); return; }
+
+  _devolviendo = true; _pararDevolver = false;
+  pedirDespertar();
+  const btn = document.getElementById('mgPistas'), est = document.getElementById('mgEst');
+  const textoBoton = btn ? btn.textContent : '';
+  if (btn) btn.textContent = 'Detener';
+
+  let discosVistos = 0, discosSinPedir = 0, sinGuardar = 0;
+  const ids = [];
+  const suma = { anadidos: 0, yaEstaban: 0, pendientes: 0 };
+  try {
+    /* ---- fase 1: las listas de canciones ---- */
+    for (const alb of discos) {
+      if (_pararDevolver) break;
+      try {
+        const suyas = await _idsDelAlbum(alb);
+        for (const id of suyas) ids.push(id);
+        if (++sinGuardar >= 25) { saveItems(); sinGuardar = 0; }
+      } catch (e) {
+        /* que Spotify frene no es "ese disco no tiene canciones" */
+        discosSinPedir++;
+        if (String((e && e.message) || '').startsWith('RATE_LIMIT')) { discosVistos++; break; }
+      }
+      discosVistos++;
+      if (est) est.textContent = 'pidiendo las listas · ' + discosVistos.toLocaleString('es-ES') + ' de '
+        + discos.length.toLocaleString('es-ES') + ' discos · ' + ids.length.toLocaleString('es-ES') + ' canciones encontradas';
+    }
+    saveItems();
+
+    /* ---- fase 2: guardarlas en la biblioteca ---- */
+    const unicas = [...new Set(ids)].map(id => ({ spotifyId: id }));
+    if (unicas.length && !_pararDevolver) {
+      const r = await _devolverLote(unicas, 'track', (parcial, fase) => {
+        if (!est) return;
+        est.textContent = fase + ' · ' + parcial.revisados.toLocaleString('es-ES') + ' de ' + unicas.length.toLocaleString('es-ES')
+          + ' · ' + parcial.anadidos.toLocaleString('es-ES') + ' añadidas'
+          + (parcial.yaEstaban ? ', ' + parcial.yaEstaban.toLocaleString('es-ES') + ' ya las tenías' : '')
+          + (parcial.pendientes ? ' · ' + parcial.pendientes.toLocaleString('es-ES') + ' para otro rato' : '');
+      });
+      suma.anadidos = r.anadidos; suma.yaEstaban = r.yaEstaban; suma.pendientes = r.pendientes;
+    }
+  } catch (e) {
+    toast('Se cortó: ' + ((e && e.message) || e));
+  } finally {
+    _devolviendo = false;
+    soltarDespertar();
+    saveItems(); render();
+    if (btn) btn.textContent = textoBoton || 'Añadir las canciones de dentro de los álbumes';
+    toast(suma.anadidos.toLocaleString('es-ES') + ' canciones de tus álbumes añadidas a «Me gusta»'
+      + (suma.yaEstaban ? ' · ' + suma.yaEstaban.toLocaleString('es-ES') + ' ya las tenías' : '')
+      + (suma.pendientes || discosSinPedir
+        ? ' · quedó algo sin preguntar' + (discosSinPedir ? ' (' + discosSinPedir.toLocaleString('es-ES') + ' discos)' : '') + ': vuelve a darle luego'
+        : ''));
+  }
+}
+
+/* Cuantas canciones hay dentro de los albumes guardados. Se usa la lista
+   real si ya se pidio, y si no el numero que dice Spotify que tiene el
+   disco — es una estimacion hasta que se piden de verdad. */
+function cancionesDeAlbumes() {
+  let n = 0;
+  for (const a of albumesParaBiblioteca()) {
+    n += Array.isArray(a.trackIds) && a.trackIds.length ? a.trackIds.length : (a.totalTracks || 0);
+  }
+  return n;
+}
+
 function openMeGusta() {
   const cs = cancionesParaBiblioteca(), as = albumesParaBiblioteca();
   const arts = ITEMS.filter(i => i.type === 'artist' && !i.archived && i.spotifyId).length;
@@ -10699,12 +10799,19 @@ function openMeGusta() {
       <button class="btn wide" id="mgSoloAlbumes">Solo los álbumes</button>
     </div>
     <div class="lede" id="mgEst" style="margin:10px 0 0;"></div>
+
+    <div class="flabel" style="margin-top:22px;">Las canciones de dentro de tus álbumes</div>
+    <p class="lede">Guardar un disco no mete sus canciones en «Me gusta»: quedan dentro del disco. Esto las añade una a una — <b>${cancionesDeAlbumes().toLocaleString('es-ES')} canciones</b> repartidas en tus ${as.length.toLocaleString('es-ES')} álbumes.</p>
+    <p class="lede">Entra todo lo que haya en cada disco, interludios incluidos, y tu «Me gusta» se iría a unas ${(cs.length + cancionesDeAlbumes()).toLocaleString('es-ES')} canciones. No se guardan en el vault, solo en Spotify: meterlas aquí engordaría el fichero casi 9 MB para nada.</p>
+    <p class="lede">Es lo más lento de todo, porque Spotify da las listas de canciones de 10 en 10: unas ${(Math.ceil(cancionesDeAlbumes() / 10) + Math.ceil(cancionesDeAlbumes() / 40) * 2).toLocaleString('es-ES')} peticiones. Se puede parar y seguir otro día: las listas ya pedidas quedan guardadas y no se vuelven a pedir.</p>
+    <div class="btnrow"><button class="btn wide" id="mgPistas">Añadir las canciones de dentro de los álbumes</button></div>
     <p class="lede" style="margin-top:18px;">Tus <b>${arts.toLocaleString('es-ES')} artistas</b> no se pueden devolver: Spotify quitó en febrero de 2026 la forma de seguir artistas desde fuera, y la que la reemplaza no los admite. Si algún día vuelve, se añade aquí.</p>
     <p class="lede">Para deshacerlo habría que quitarlos a mano en Spotify, así que piénsalo antes de empezar.</p>
   `);
   document.getElementById('mgIr')?.addEventListener('click', () => devolverAMeGusta());
   document.getElementById('mgSoloCanciones')?.addEventListener('click', () => devolverAMeGusta('track'));
   document.getElementById('mgSoloAlbumes')?.addEventListener('click', () => devolverAMeGusta('album'));
+  document.getElementById('mgPistas')?.addEventListener('click', () => pistasDeAlbumesASpotify());
 }
 
 function exportBackup() {
