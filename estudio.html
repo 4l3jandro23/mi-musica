@@ -339,7 +339,8 @@
   .pane { display: flex; flex-direction: column; min-height: 0; min-width: 0; }
   .pane.src { border-right: 1px solid var(--line); background: var(--surface); }
   .paneHead { padding: 10px 12px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 9px; }
-  .paneHead .line { display: flex; align-items: center; gap: 8px; }
+  /* que los botones bajen de fila en vez de salirse de la pantalla en el movil */
+  .paneHead .line { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .grow { flex: 1; min-width: 0; }
   .tabs { display: none; }
 
@@ -471,8 +472,47 @@
   .hist { display: flex; align-items: flex-end; gap: 2px; height: 70px; margin: 8px 0; }
   .hist .b { flex: 1; background: var(--amber); border-radius: 3px 3px 0 0; min-height: 2px; opacity: .85; }
 
+  /* ===================== pantalla de inicio ===================== */
+  .pantalla { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+  .inicio { flex: 1; overflow: auto; -webkit-overflow-scrolling: touch; }
+  .iwrap { max-width: 900px; margin: 0 auto; padding: 26px 18px calc(env(safe-area-inset-bottom) + 40px); }
+  .iwrap h1 { font-size: 27px; letter-spacing: -0.5px; margin: 6px 0 8px; }
+  .lede.grande { font-size: 15.5px; max-width: 620px; }
+  .recetas { display: grid; grid-template-columns: repeat(auto-fill, minmax(258px, 1fr)); gap: 12px; margin-top: 22px; }
+  .receta {
+    display: flex; gap: 13px; align-items: flex-start; text-align: left;
+    background: var(--surface); border: 1px solid var(--line-firm); border-radius: 16px;
+    padding: 16px 17px; cursor: pointer; box-shadow: var(--shadow-sm);
+    transition: transform .14s var(--ease-out), border-color .15s, box-shadow .2s;
+    -webkit-tap-highlight-color: transparent; width: 100%;
+  }
+  .receta:hover { border-color: var(--amber); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .receta:active { transform: scale(0.985); }
+  .receta .ri { font-size: 25px; line-height: 1; flex: none; }
+  .receta .rt { display: block; font-size: 15.5px; font-weight: 700; margin-bottom: 3px; }
+  .receta .rd { display: block; font-size: 13px; color: var(--fg-mute); line-height: 1.4; }
+  .receta.ancha { grid-column: 1 / -1; border-style: dashed; }
+
+  .comofunciona { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin-top: 34px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .cf { display: flex; gap: 11px; align-items: flex-start; font-size: 13px; color: var(--fg-mute); line-height: 1.45; }
+  .cf b { color: var(--fg); font-size: 13.5px; }
+  .cf .n, .pasoTit .n {
+    flex: none; width: 23px; height: 23px; border-radius: 50%; background: var(--amber); color: var(--on-amber);
+    display: inline-flex; align-items: center; justify-content: center; font-size: 12.5px; font-weight: 800;
+  }
+  .pasoTit { display: flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 700; }
+  .buscador { padding: 11px 13px; font-size: 15px; }
+
+  .previa { border: 1px solid var(--line-firm); border-radius: 13px; padding: 13px 15px; background: var(--surface-2); margin-top: 18px; font-size: 14px; }
+  .previa b { font-size: 16px; }
+  .qcaja { max-height: 210px; overflow: auto; margin-top: 8px; }
+  .avisoSp { display: flex; align-items: center; gap: 9px; padding: 9px 12px; background: var(--amber-soft); border-bottom: 1px solid var(--line); font-size: 13px; }
+  .avisoSp button { flex: none; }
+
   /* ===================== movil ===================== */
   @media (max-width: 900px) {
+    .iwrap h1 { font-size: 23px; }
+    .recetas { grid-template-columns: 1fr; }
     .panes { grid-template-columns: 1fr; }
     .pane.src { border-right: 0; }
     .pane[data-off="1"] { display: none; }
@@ -489,18 +529,38 @@
 <body>
 
 <div class="top">
+  <button class="btn ghost ico" id="bVolverInicio" title="Empezar otra playlist" hidden>&#8592;</button>
   <div class="logo">&#127899;&#65039; <span>Estudio</span></div>
-  <input class="pname" id="pname" value="Playlist nueva" spellcheck="false" aria-label="Nombre de la lista">
+  <input class="pname" id="pname" value="Playlist nueva" spellcheck="false" aria-label="Nombre de la lista" hidden>
+  <span class="grow"></span>
   <span class="dot" id="dot" title="Spotify"></span>
   <button class="btn ghost ico" id="bProy" title="Mis borradores">&#128193;</button>
-  <button class="btn ghost ico" id="bAyuda" title="Ayuda y atajos">?</button>
+  <button class="btn ghost ico" id="bAyuda" title="Ayuda">?</button>
   <a class="btn ghost ico" href="musicvault.html" title="Volver a MusicVault">&#8617;</a>
 </div>
 
+<!-- ======================= PANTALLA 1: por dónde empiezo ======================= -->
+<section class="inicio" id="inicio">
+  <div class="iwrap">
+    <h1>¿Qué playlist montamos?</h1>
+    <p class="lede grande">Elige por dónde empezar y te la dejo montada. Después puedes cambiar lo que quieras — <b>en Spotify no se toca nada hasta que le das a guardar</b>.</p>
+    <div id="reanuda"></div>
+    <div class="recetas" id="recetas"></div>
+    <div class="comofunciona">
+      <div class="cf"><span class="n">1</span><div><b>Eliges de dónde salen</b><br>tu vault, tus playlists, o buscando en todo Spotify</div></div>
+      <div class="cf"><span class="n">2</span><div><b>Se ordena y se recorta</b><br>mezclar sin repetir artista, quitar repetidas, ajustar a una hora…</div></div>
+      <div class="cf"><span class="n">3</span><div><b>Se guarda en Spotify</b><br>nueva o encima de una que ya tengas, en el orden exacto</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PANTALLA 2: el editor ======================= -->
+<div class="pantalla" id="editor" hidden>
+
 <div class="tabs">
   <div class="seg" id="tabs">
-    <button data-tab="src" class="on">Añadir</button>
-    <button data-tab="list">Mi lista <span id="tabN"></span></button>
+    <button data-tab="src" class="on">1 · Añadir canciones</button>
+    <button data-tab="list">2 · Tu playlist <span id="tabN"></span></button>
   </div>
 </div>
 
@@ -509,17 +569,19 @@
   <!-- ============ panel izquierdo: de donde salen las canciones ============ -->
   <section class="pane src" id="paneSrc">
     <div class="paneHead">
+      <div class="pasoTit"><span class="n">1</span> De dónde saco canciones</div>
+      <input class="field buscador" id="qTodo" placeholder="Busca una canción, un artista o un disco…" autocomplete="off">
       <div class="chips" id="origenes">
         <button class="chip on" data-o="vault">Tu vault</button>
+        <button class="chip" data-o="buscar">Todo Spotify</button>
         <button class="chip" data-o="playlists">Tus playlists</button>
         <button class="chip" data-o="megusta">Me gusta</button>
-        <button class="chip" data-o="buscar">Buscar</button>
-        <button class="chip" data-o="enlace">Enlace</button>
-        <button class="chip" data-o="top">Más escuchado</button>
+        <button class="chip" data-o="enlace">Un enlace</button>
+        <button class="chip" data-o="top">Lo que más oyes</button>
       </div>
       <div id="srcTools"></div>
     </div>
-    <div id="srcFiltros" class="fscroll" style="flex:0 1 auto;"></div>
+    <div id="srcFiltros" class="fscroll"></div>
     <div class="vwrap" id="srcList"><div class="vspacer"></div></div>
     <div class="selbar" id="srcBar"></div>
   </section>
@@ -528,18 +590,20 @@
   <section class="pane" id="paneList" data-off="1">
     <div class="paneHead">
       <div class="line">
-        <button class="btn sm" id="mOrden">Ordenar</button>
-        <button class="btn sm" id="mMezcla">Mezclar</button>
-        <button class="btn sm" id="mLimpiar">Limpiar</button>
-        <button class="btn sm" id="mRecorte">Recortar</button>
-        <span class="grow"></span>
+        <div class="pasoTit grow"><span class="n">2</span> Tu playlist</div>
         <button class="btn ghost ico" id="bUndo" title="Deshacer">&#8630;</button>
         <button class="btn ghost ico" id="bRedo" title="Rehacer">&#8631;</button>
       </div>
+      <input class="field" id="pname2" placeholder="Ponle nombre…" spellcheck="false">
       <div class="line">
-        <input class="field" id="qLista" placeholder="Buscar dentro de la lista…" style="padding:7px 11px;font-size:14px;">
-        <button class="btn sm" id="bSelTodo">Seleccionar</button>
+        <button class="btn sm" id="mOrden">Ordenar</button>
+        <button class="btn sm" id="mMezcla">Mezclar</button>
+        <button class="btn sm" id="mLimpiar">Quitar…</button>
+        <button class="btn sm" id="mRecorte">Acortar</button>
+        <span class="grow"></span>
+        <button class="btn sm ghost" id="bSelTodo">Marcar</button>
       </div>
+      <input class="field" id="qLista" placeholder="Buscar dentro de tu playlist…" style="padding:7px 11px;font-size:14px;">
     </div>
     <div class="vwrap" id="lst"><div class="vspacer"></div></div>
     <div class="selbar" id="selbar" hidden></div>
@@ -550,6 +614,7 @@
     </div>
   </section>
 
+</div>
 </div>
 
 <div class="toasts" id="toasts"></div>
@@ -1355,12 +1420,37 @@ function activarArrastre(wrap, obtener, mover) {
 
 /* ============================================================
    PANEL DE LA IZQUIERDA: DE DONDE SALEN LAS CANCIONES
+   ------------------------------------------------------------
+   Hay un solo buscador arriba, y lo que hace depende del origen
+   elegido: filtrar tu vault, buscar en todo Spotify, o filtrar lo
+   que ya has cargado. Tener un buscador distinto por pantalla era
+   justo lo que hacia que no se encontrase el de Spotify.
    ============================================================ */
 let LF = null, LL = null;      // lista fuente / lista final
 let vaultModo = 'canciones';   // 'canciones' | 'discos'
 let ultimaBusqueda = { q: '', offset: 0, total: 0 };
 
 const enFuenteSel = p => S.selF.has(p.id || p._albId);
+
+/* ---- el buscador compartido de arriba ---- */
+let _alEscribir = null, _alEnter = null, _tBuscar = null;
+function ponerBuscador(placeholder, alEscribir, alEnter, valorInicial) {
+  const el = $('#qTodo');
+  el.placeholder = placeholder || 'Buscar…';
+  el.value = valorInicial || '';
+  _alEscribir = alEscribir || null;
+  _alEnter = alEnter || null;
+  el.hidden = !alEscribir && !alEnter;
+}
+function cablearBuscador() {
+  const el = $('#qTodo');
+  el.oninput = () => {
+    clearTimeout(_tBuscar);
+    const v = el.value;
+    if (_alEscribir) _tBuscar = setTimeout(() => _alEscribir(v), 160);
+  };
+  el.onkeydown = e => { if (e.key === 'Enter' && _alEnter) { e.preventDefault(); _alEnter(el.value.trim()); } };
+}
 
 function pintarFuente(arr, mantener) {
   S.fuente = arr;
@@ -1371,13 +1461,12 @@ function pintarFuente(arr, mantener) {
 function pintarBarraFuente() {
   const n = S.fuente.length, k = S.selF.size;
   const bar = $('#srcBar');
-  if (!n) { bar.innerHTML = '<span class="tiny mute">Nada que añadir todavía</span>'; return; }
+  if (!n) { bar.innerHTML = '<span class="tiny mute">Aquí saldrá lo que encuentres</span>'; return; }
   const esDisco = vaultModo === 'discos' && S.origen === 'vault';
   bar.innerHTML =
-    '<button class="btn pri sm" id="addTodas">Añadir ' + (esDisco ? 'los ' : 'las ') + num(n) + '</button>' +
-    (k ? '<button class="btn sm" id="addSel">Añadir ' + num(k) + ' marcadas</button><button class="btn ghost sm" id="limpSel">Quitar marcas</button>' : '') +
-    '<span class="grow"></span>' +
-    '<span class="tiny mute">' + num(n) + (esDisco ? ' discos' : ' canciones') + '</span>';
+    '<button class="btn pri sm" id="addTodas">Añadir ' + (esDisco ? 'los ' : 'las ') + num(n) + ' a tu playlist</button>' +
+    (k ? '<button class="btn sm" id="addSel">Solo las ' + num(k) + ' marcadas</button><button class="btn ghost sm" id="limpSel">Quitar marcas</button>' : '') +
+    '<span class="grow"></span>';
   const a = $('#addTodas'); if (a) a.onclick = () => anadirALista(S.fuente);
   const b = $('#addSel'); if (b) b.onclick = () => anadirALista(S.fuente.filter(enFuenteSel));
   const c = $('#limpSel'); if (c) c.onclick = () => { S.selF.clear(); LF.refresca(); pintarBarraFuente(); };
@@ -1404,7 +1493,7 @@ async function anadirALista(pistas) {
   const antes = S.lista.length;
   for (const p of sueltas) S.lista.push(conKey(p));
   trasCambio();
-  toast(num(S.lista.length - antes) + ' añadidas · ' + num(S.lista.length) + ' en la lista');
+  toast(num(S.lista.length - antes) + ' añadidas · ' + num(S.lista.length) + ' en tu playlist');
   if (F.ocultarPuestas && S.origen === 'vault') refrescarFuente(true);
 }
 
@@ -1430,9 +1519,25 @@ async function pistasDelDisco(d) {
 /* ---------------- refrescar segun el origen elegido ---------------- */
 function refrescarFuente(mantener) {
   if (S.origen !== 'vault') return;
-  if (vaultModo === 'discos') { pintarFuente(discosFiltrados(), mantener); return; }
+  if (vaultModo === 'discos') { pintarFuente(discosFiltrados(), mantener); avisoBuscarSpotify(); return; }
   pintarFuente(aplicarFiltros(), mantener);
-  const c = $('#cntFiltros'); if (c) c.textContent = filtrosActivos() || '';
+  avisoBuscarSpotify();
+}
+
+/* Si buscas algo en tu vault y sale poco o nada, lo normal es que quieras
+   buscarlo en Spotify. Antes habia que saber que existia otra pestaña. */
+function avisoBuscarSpotify() {
+  const viejo = $('#avisoSp'); if (viejo) viejo.remove();
+  const q = F.texto.trim();
+  if (!q || S.fuente.length > 12) return;
+  const cont = $('#srcList');
+  const d = document.createElement('div');
+  d.className = 'avisoSp';
+  d.id = 'avisoSp';
+  d.innerHTML = '<span class="grow">' + (S.fuente.length ? '¿No está lo que buscas?' : 'En tu vault no hay nada así.') +
+    '</span><button class="btn sm pri" id="irSp">Buscar «' + esc(q.length > 18 ? q.slice(0, 18) + '…' : q) + '» en Spotify</button>';
+  cont.parentNode.insertBefore(d, cont);
+  $('#irSp').onclick = () => ponerOrigen('buscar', q);
 }
 
 function discosFiltrados() {
@@ -1465,41 +1570,36 @@ function discosFiltrados() {
 }
 
 /* ---------------- cambio de origen ---------------- */
-function ponerOrigen(o) {
+function ponerOrigen(o, textoInicial) {
   S.origen = o;
   S.selF.clear();
   $$('#origenes .chip').forEach(c => c.classList.toggle('on', c.dataset.o === o));
+  const av = $('#avisoSp'); if (av) av.remove();
   $('#srcFiltros').innerHTML = '';
   $('#srcTools').innerHTML = '';
   pintarFuente([]);
-  if (o === 'vault') return uiVault();
+  if (o === 'vault') return uiVault(textoInicial);
   if (o === 'playlists') return uiPlaylists();
   if (o === 'megusta') return uiMeGusta();
-  if (o === 'buscar') return uiBuscar();
+  if (o === 'buscar') return uiBuscar(textoInicial);
   if (o === 'enlace') return uiEnlace();
   if (o === 'top') return uiTop();
 }
 
 /* ============ origen: VAULT ============ */
-function uiVault() {
+function uiVault(textoInicial) {
+  if (textoInicial != null) F.texto = textoInicial;
+  ponerBuscador('Busca en tus ' + num(V.pistas.length) + ' canciones…', v => { F.texto = v; refrescarFuente(); }, null, F.texto);
   $('#srcTools').innerHTML =
     '<div class="line">' +
     '<div class="seg" id="vmodo"><button data-m="canciones" class="' + (vaultModo === 'canciones' ? 'on' : '') + '">Canciones</button>' +
-    '<button data-m="discos" class="' + (vaultModo === 'discos' ? 'on' : '') + '">Discos</button></div>' +
+    '<button data-m="discos" class="' + (vaultModo === 'discos' ? 'on' : '') + '">Discos enteros</button></div>' +
     '<span class="grow"></span>' +
     '<button class="btn sm ghost" id="ordFuente">Orden</button>' +
-    '</div>' +
-    '<input class="field" id="qVault" placeholder="Título, artista o álbum…" value="' + esc(F.texto) + '" style="padding:8px 11px;">';
+    '</div>';
   $$('#vmodo button').forEach(b => b.onclick = () => { vaultModo = b.dataset.m; uiVault(); });
-  $('#ordFuente').onclick = e => menu(e.currentTarget, Object.keys(NOMBRE_ORDEN).map(k => ({
-    t: (F.orden === k ? '• ' : '') + NOMBRE_ORDEN[k], f: () => { F.orden = k; refrescarFuente(); }
-  })));
-  let t = null;
-  $('#qVault').oninput = e => {
-    clearTimeout(t);
-    const v = e.target.value;
-    t = setTimeout(() => { F.texto = v; refrescarFuente(); }, 160);
-  };
+  $('#ordFuente').onclick = e => menu(e.currentTarget, [{ cab: 'Ordenar lo que sale' }].concat(
+    Object.keys(NOMBRE_ORDEN).map(k => ({ t: (F.orden === k ? '• ' : '') + NOMBRE_ORDEN[k], f: () => { F.orden = k; refrescarFuente(); } }))));
   pintarFiltros();
   refrescarFuente();
 }
@@ -1507,9 +1607,9 @@ function uiVault() {
 function pintarFiltros() {
   const arb = arbolTags();
   const H = [];
-  H.push('<details class="fgroup" open><summary>Etiquetas <span class="cnt" id="cntTags"></span></summary><div class="fbody">');
+  H.push('<details class="fgroup" open><summary>Filtrar por etiqueta <span class="cnt" id="cntTags"></span></summary><div class="fbody">');
   H.push('<div class="seg" id="modoTags" style="margin-bottom:8px;"><button data-v="algo" class="' + (F.modoTags === 'algo' ? 'on' : '') + '">Alguna</button><button data-v="todas" class="' + (F.modoTags === 'todas' ? 'on' : '') + '">Todas a la vez</button></div>');
-  H.push('<p class="lede tiny">Una vez = la incluye. Dos veces = la descarta.</p>');
+  H.push('<p class="lede tiny">Un toque la incluye. Otro toque la descarta.</p>');
   H.push('<div class="tagtree">');
   for (const g of arb) {
     H.push('<div class="folder">' + esc(g.carpeta.name) + '</div>');
@@ -1562,7 +1662,7 @@ function pintarFiltros() {
       '<div class="flabel" style="margin-top:14px;">Explícito</div><div class="seg" id="fExp">' +
       [['todo', 'Da igual'], ['sin', 'Sin tacos'], ['solo', 'Solo explícitas']].map(x => '<button data-v="' + x[0] + '" class="' + (F.explicito === x[0] ? 'on' : '') + '">' + x[1] + '</button>').join('') + '</div>' +
       '<label class="sw" style="margin-top:10px;"><input type="checkbox" id="fSinTag"' + (F.sinEtiquetar ? ' checked' : '') + '> Solo las que no tienen etiqueta</label>' : '') +
-    '<label class="sw"><input type="checkbox" id="fOcultar"' + (F.ocultarPuestas ? ' checked' : '') + '> Esconder lo que ya está en la lista</label>' +
+    '<label class="sw"><input type="checkbox" id="fOcultar"' + (F.ocultarPuestas ? ' checked' : '') + '> Esconder lo que ya está en tu playlist</label>' +
     '<div class="btnrow" style="margin-top:12px;"><button class="btn sm" id="limpiarF">Quitar todos los filtros</button></div>' +
     '</div></details>');
 
@@ -1620,19 +1720,19 @@ function cablearFiltros() {
   enlaza('popMin', 'popMin'); enlaza('popMax', 'popMax');
 
   F$.querySelectorAll('[data-anyos]').forEach(b => b.onclick = () => {
-    const [a, z] = b.dataset.anyos.split(',').map(Number);
+    const a = +b.dataset.anyos.split(',')[0], z = +b.dataset.anyos.split(',')[1];
     F.anyoMin = a; F.anyoMax = z;
     $('#anyoMin').value = a; $('#anyoMax').value = z;
     cambia();
   });
   F$.querySelectorAll('[data-seg]').forEach(b => b.onclick = () => {
-    const [a, z] = b.dataset.seg.split(',').map(Number);
+    const a = +b.dataset.seg.split(',')[0], z = +b.dataset.seg.split(',')[1];
     F.segMin = a || null; F.segMax = z || null;
     $('#segMin').value = a || ''; $('#segMax').value = z || '';
     cambia();
   });
   F$.querySelectorAll('[data-pop]').forEach(b => b.onclick = () => {
-    const [a, z] = b.dataset.pop.split(',').map(Number);
+    const a = +b.dataset.pop.split(',')[0], z = +b.dataset.pop.split(',')[1];
     F.popMin = a; F.popMax = z;
     $('#popMin').value = a; $('#popMax').value = z;
     cambia();
@@ -1658,7 +1758,12 @@ function cablearFiltros() {
   const st = $('#fSinTag'); if (st) st.onchange = () => { F.sinEtiquetar = st.checked; cambia(); };
   const oc = $('#fOcultar'); if (oc) oc.onchange = () => { F.ocultarPuestas = oc.checked; cambia(); };
   const lf = $('#limpiarF');
-  if (lf) lf.onclick = () => { Object.assign(F, JSON.parse(JSON.stringify(F_LIMPIO))); uiVault(); toast('Filtros quitados'); };
+  if (lf) lf.onclick = () => {
+    const texto = F.texto;
+    Object.assign(F, JSON.parse(JSON.stringify(F_LIMPIO)));
+    F.texto = texto;
+    uiVault(); toast('Filtros quitados');
+  };
   const c = $('#cntTags'); if (c) c.textContent = (F.tags.length + F.tagsNo.length) || '';
   const g = $('#cntGen'); if (g) g.textContent = (F.generos.length + F.generosNo.length) || '';
 }
@@ -1667,7 +1772,7 @@ function cablearFiltros() {
 let _misPl = null;
 async function uiPlaylists() {
   if (!exigeConexion()) return;
-  $('#srcTools').innerHTML = '<input class="field" id="qPl" placeholder="Buscar entre tus playlists…" style="padding:8px 11px;">';
+  ponerBuscador('Busca entre tus playlists…', () => pintaMisPl());
   const cont = $('#srcFiltros');
   cont.innerHTML = '<div class="fbody"><p class="lede">Cargando tus playlists…</p></div>';
   try {
@@ -1676,37 +1781,39 @@ async function uiPlaylists() {
     cont.innerHTML = '<div class="fbody"><p class="lede">No se han podido leer: ' + esc(e.message) + '</p></div>';
     return;
   }
-  const pinta = () => {
-    const q = fold(($('#qPl') || {}).value || '');
-    const yo = (leer(K_CREDS, {}) || {}).userId;
-    const lista = _misPl.filter(p => p && (!q || fold(p.name).indexOf(q) >= 0));
-    cont.innerHTML = '<div class="fbody">' + (lista.length ? lista.map(p => {
-      const n = (p.items && p.items.total) != null ? p.items.total : ((p.tracks && p.tracks.total) || 0);
-      const img = (p.images || [])[0];
-      return '<div class="card" data-pl="' + esc(p.id) + '" style="display:flex;gap:11px;align-items:center;cursor:pointer;padding:9px 11px;">' +
-        (img ? '<img src="' + esc(img.url) + '" style="width:44px;height:44px;border-radius:7px;object-fit:cover;flex:none;">' : '<div style="width:44px;height:44px;border-radius:7px;background:var(--surface-2);flex:none;"></div>') +
-        '<div class="grow" style="min-width:0;"><div class="ct nowrap">' + esc(p.name) + '</div>' +
-        '<div class="tiny mute">' + num(n) + ' canciones' + (p.public ? ' · pública' : '') + (p.collaborative ? ' · colaborativa' : '') + '</div></div></div>';
-    }).join('') : '<p class="lede">Ninguna coincide.</p>') + '</div>';
-    cont.querySelectorAll('[data-pl]').forEach(c => c.onclick = () => abrirPlaylist(c.dataset.pl));
-  };
-  pinta();
-  $('#qPl').oninput = pinta;
+  pintaMisPl();
+}
+function pintaMisPl() {
+  if (S.origen !== 'playlists' || !_misPl) return;
+  const cont = $('#srcFiltros');
+  const q = fold($('#qTodo').value || '');
+  const lista = _misPl.filter(p => p && (!q || fold(p.name).indexOf(q) >= 0));
+  cont.innerHTML = '<div class="fbody">' + (lista.length ? lista.map(p => {
+    const n = (p.items && p.items.total) != null ? p.items.total : ((p.tracks && p.tracks.total) || 0);
+    const img = (p.images || [])[0];
+    return '<div class="card" data-pl="' + esc(p.id) + '" style="display:flex;gap:11px;align-items:center;cursor:pointer;padding:9px 11px;">' +
+      (img ? '<img src="' + esc(img.url) + '" style="width:44px;height:44px;border-radius:7px;object-fit:cover;flex:none;">' : '<div style="width:44px;height:44px;border-radius:7px;background:var(--surface-2);flex:none;"></div>') +
+      '<div class="grow" style="min-width:0;"><div class="ct nowrap">' + esc(p.name) + '</div>' +
+      '<div class="tiny mute">' + num(n) + ' canciones' + (p.public ? ' · pública' : '') + (p.collaborative ? ' · colaborativa' : '') + '</div></div></div>';
+  }).join('') : '<p class="lede">Ninguna coincide.</p>') + '</div>';
+  cont.querySelectorAll('[data-pl]').forEach(c => c.onclick = () => abrirPlaylist(c.dataset.pl));
 }
 
-async function abrirPlaylist(id) {
-  const pl = _misPl.find(p => p.id === id);
+async function abrirPlaylist(id, comoBase) {
+  const pl = _misPl ? _misPl.find(p => p.id === id) : null;
   const av = toast('Leyendo «' + (pl ? pl.name : id) + '»…', 120000);
   try {
     const pistas = await pistasDePlaylist(id, (n, t) => { av.textContent = 'Leyendo «' + (pl ? pl.name : '') + '»… ' + num(n) + (t ? ' de ' + num(t) : ''); });
     av.remove();
+    if (comoBase) { usarComoBase(pl, pistas); return; }
     pintarFuente(pistas);
-    $('#srcTools').insertAdjacentHTML('beforeend',
-      '<div class="btnrow" style="margin-top:8px;"><button class="btn sm pri" id="usarBase">Editar esta playlist</button>' +
-      '<button class="btn sm" id="volverPl">‹ Volver</button></div>');
+    $('#srcFiltros').innerHTML = '';
+    $('#srcTools').innerHTML =
+      '<div class="btnrow"><button class="btn sm pri" id="usarBase">Editar esta playlist entera</button>' +
+      '<button class="btn sm" id="volverPl">‹ Volver a la lista</button></div>';
+    ponerBuscador('Filtra dentro de «' + (pl ? pl.name : '') + '»…', () => filtraFuenteCargada(pistas));
     $('#volverPl').onclick = () => uiPlaylists();
     $('#usarBase').onclick = () => usarComoBase(pl, pistas);
-    $('#srcFiltros').innerHTML = '';
   } catch (e) {
     av.remove();
     toast('No se ha podido leer: ' + e.message);
@@ -1722,12 +1829,13 @@ function usarComoBase(pl, pistas) {
     S.publica = !!(pl && pl.public);
     S.destino = pl ? { id: pl.id, name: pl.name } : null;
     S.proyectoId = null;
-    $('#pname').value = S.nombre;
+    ponerNombre(S.nombre);
+    verPantalla('editor');
     trasCambio();
     verPanel('list');
-    toast('Editando «' + S.nombre + '» · ' + num(S.lista.length) + ' canciones. Nada cambia en Spotify hasta que guardes.');
+    toast('Editando «' + S.nombre + '» · ' + num(S.lista.length) + ' canciones. En Spotify no cambia nada hasta que guardes.');
   };
-  if (S.lista.length) preguntar('Cambiar de lista', 'Tu lista actual tiene <b>' + num(S.lista.length) + ' canciones</b> y se sustituirá por el contenido de «' + esc(pl ? pl.name : '') + '». Puedes deshacerlo después.', 'Sustituir', hacer);
+  if (S.lista.length) preguntar('Cambiar de lista', 'Lo que tienes ahora (<b>' + num(S.lista.length) + ' canciones</b>) se sustituye por el contenido de «' + esc(pl ? pl.name : '') + '». Se puede deshacer.', 'Sustituir', hacer);
   else hacer();
 }
 
@@ -1736,7 +1844,8 @@ let _meGusta = null;
 async function uiMeGusta() {
   if (!exigeConexion()) return;
   if (!tieneScope('user-library-read')) return faltaPermiso('user-library-read');
-  if (_meGusta) { pintarFuente(_meGusta); ordenFuenteSimple(); return; }
+  if (_meGusta) { pintarFuente(_meGusta); ponerBuscador('Filtra dentro de tus «Me gusta»…', () => filtraFuenteCargada(_meGusta)); return; }
+  ponerBuscador('', null, null);
   $('#srcFiltros').innerHTML = '<div class="fbody"><p class="lede">Tus «Me gusta» pueden ser muchos miles: se bajan de 50 en 50 y se quedan cargados mientras no recargues la página.</p>' +
     '<button class="btn pri wide" id="cargarMG">Cargar mis «Me gusta»</button><div id="mgProg"></div></div>';
   $('#cargarMG').onclick = async () => {
@@ -1746,7 +1855,7 @@ async function uiMeGusta() {
       _meGusta = await pistasMeGusta((n, t) => { p.innerHTML = '<div class="barra"><i style="width:' + (t ? Math.round(n / t * 100) : 0) + '%"></i></div><p class="lede tiny">' + num(n) + (t ? ' de ' + num(t) : '') + '</p>'; });
       $('#srcFiltros').innerHTML = '';
       pintarFuente(_meGusta);
-      ordenFuenteSimple();
+      ponerBuscador('Filtra dentro de tus «Me gusta»…', () => filtraFuenteCargada(_meGusta));
       toast(num(_meGusta.length) + ' canciones de «Me gusta»');
     } catch (e) {
       p.innerHTML = '<p class="lede">Se cortó: ' + esc(e.message) + '</p>';
@@ -1755,65 +1864,55 @@ async function uiMeGusta() {
   };
 }
 
-/* buscador + orden para las fuentes que no son el vault */
-function ordenFuenteSimple(base) {
-  const todo = base || S.fuente.slice();
-  const orig = todo.slice();
-  $('#srcTools').innerHTML =
-    '<div class="line"><input class="field grow" id="qSimple" placeholder="Filtrar aquí dentro…" style="padding:8px 11px;">' +
-    '<button class="btn sm ghost" id="ordSimple">Orden</button></div>';
-  let orden = null;
-  const pinta = () => {
-    const q = fold(($('#qSimple') || {}).value || '').split(/\s+/).filter(Boolean);
-    let arr = q.length ? orig.filter(p => casaTexto(p, q)) : orig.slice();
-    if (orden) arr = ordenar(arr, orden);
-    pintarFuente(arr, true);
-  };
-  $('#qSimple').oninput = pinta;
-  $('#ordSimple').onclick = e => menu(e.currentTarget, [{ cab: 'Ordenar' }, { t: 'Como vienen', f: () => { orden = null; pinta(); } }].concat(
-    Object.keys(NOMBRE_ORDEN).map(k => ({ t: NOMBRE_ORDEN[k], f: () => { orden = k; pinta(); } }))));
+/* filtra con el buscador de arriba lo que ya se ha traido de Spotify */
+function filtraFuenteCargada(base) {
+  const q = fold($('#qTodo').value || '').split(/\s+/).filter(Boolean);
+  pintarFuente(q.length ? base.filter(p => casaTexto(p, q)) : base.slice(), true);
 }
 
-/* ============ origen: BUSCAR ============ */
-function uiBuscar() {
+/* ============ origen: TODO SPOTIFY ============ */
+function uiBuscar(textoInicial) {
   if (!exigeConexion()) return;
+  ponerBuscador('Escribe y pulsa Intro para buscar en Spotify…', null, q => lanzarBusqueda(q, false), textoInicial || '');
   $('#srcTools').innerHTML =
-    '<div class="line"><input class="field grow" id="qSp" placeholder="Buscar en todo Spotify…" enterkeyhint="search" style="padding:8px 11px;">' +
-    '<button class="btn sm pri" id="bSp">Buscar</button></div>' +
-    '<p class="lede tiny">Spotify solo da 10 resultados por vez desde febrero de 2026; con «Ver más» se piden los siguientes.</p>';
-  const lanza = async (mas) => {
-    const q = $('#qSp').value.trim();
-    if (!q) return;
-    if (!mas) { ultimaBusqueda = { q: q, offset: 0, total: 0 }; pintarFuente([]); }
-    try {
-      const r = await buscarPistas(q, ultimaBusqueda.offset);
-      ultimaBusqueda.total = r.total;
-      ultimaBusqueda.offset += r.pistas.length;
-      pintarFuente(mas ? S.fuente.concat(r.pistas) : r.pistas, !!mas);
-      const bar = $('#srcBar');
-      if (ultimaBusqueda.offset < r.total && r.pistas.length) {
-        bar.insertAdjacentHTML('beforeend', '<button class="btn sm" id="masSp">Ver más (' + num(r.total - ultimaBusqueda.offset) + ')</button>');
-        $('#masSp').onclick = () => lanza(true);
-      }
-    } catch (e) { toast('La búsqueda ha fallado: ' + e.message); }
-  };
-  $('#bSp').onclick = () => lanza(false);
-  $('#qSp').onkeydown = e => { if (e.key === 'Enter') lanza(false); };
-  $('#qSp').focus();
+    '<div class="btnrow"><button class="btn sm pri" id="bSp">Buscar en Spotify</button></div>' +
+    '<p class="lede tiny">Aquí sale todo el catálogo, esté o no en tu vault. Spotify da 10 de golpe: con «Ver más» pide los siguientes.</p>';
+  $('#bSp').onclick = () => lanzarBusqueda($('#qTodo').value.trim(), false);
+  if (textoInicial) lanzarBusqueda(textoInicial, false);
+  else $('#qTodo').focus();
 }
 
-/* ============ origen: ENLACE ============ */
+async function lanzarBusqueda(q, mas) {
+  if (!q) return;
+  if (!mas) { ultimaBusqueda = { q: q, offset: 0, total: 0 }; pintarFuente([]); }
+  const av = toast('Buscando «' + q + '»…', 30000);
+  try {
+    const r = await buscarPistas(q, ultimaBusqueda.offset);
+    av.remove();
+    ultimaBusqueda.total = r.total;
+    ultimaBusqueda.offset += r.pistas.length;
+    pintarFuente(mas ? S.fuente.concat(r.pistas) : r.pistas, !!mas);
+    if (!r.pistas.length && !mas) { toast('Spotify no encuentra nada con «' + q + '»'); return; }
+    if (ultimaBusqueda.offset < r.total) {
+      $('#srcBar').insertAdjacentHTML('beforeend', '<button class="btn sm" id="masSp">Ver más (' + num(r.total - ultimaBusqueda.offset) + ')</button>');
+      $('#masSp').onclick = () => lanzarBusqueda(q, true);
+    }
+  } catch (e) { av.remove(); toast('La búsqueda ha fallado: ' + e.message); }
+}
+
+/* ============ origen: UN ENLACE ============ */
 function uiEnlace() {
   if (!exigeConexion()) return;
+  ponerBuscador('', null, null);
   $('#srcFiltros').innerHTML =
-    '<div class="fbody"><p class="lede">Pega el enlace (o el URI) de una canción, un disco o una playlist. Sirve lo que copias desde la app de Spotify con «Compartir».</p>' +
+    '<div class="fbody"><p class="lede">Pega el enlace de una canción, un disco o una playlist — lo que copias en Spotify con «Compartir».</p>' +
     '<textarea class="field" id="urlSp" placeholder="https://open.spotify.com/album/…"></textarea>' +
     '<button class="btn pri wide" id="bUrl" style="margin-top:9px;">Traer las canciones</button></div>';
   $('#bUrl').onclick = async () => {
     const t = $('#urlSp').value.trim();
     const m = /(track|album|playlist)[/:]([A-Za-z0-9]{22})/.exec(t);
     if (!m) { toast('No reconozco ese enlace. Tiene que ser de una canción, un disco o una playlist.'); return; }
-    const [, tipo, id] = m;
+    const tipo = m[1], id = m[2];
     const av = toast('Trayendo…', 60000);
     try {
       let pistas = [];
@@ -1824,7 +1923,7 @@ function uiEnlace() {
       if (!pistas.length) { toast('Ahí no hay canciones que se puedan añadir'); return; }
       $('#srcFiltros').innerHTML = '';
       pintarFuente(pistas);
-      ordenFuenteSimple();
+      ponerBuscador('Filtra lo que has traído…', () => filtraFuenteCargada(pistas));
       toast(num(pistas.length) + ' canciones traídas');
     } catch (e) {
       av.remove();
@@ -1833,10 +1932,11 @@ function uiEnlace() {
   };
 }
 
-/* ============ origen: MÁS ESCUCHADO ============ */
+/* ============ origen: LO QUE MÁS OYES ============ */
 function uiTop() {
   if (!exigeConexion()) return;
   if (!tieneScope('user-top-read')) return faltaPermiso('user-top-read');
+  ponerBuscador('', null, null);
   $('#srcFiltros').innerHTML =
     '<div class="fbody"><div class="seg" id="topRango"><button data-v="short_term" class="on">Último mes</button><button data-v="medium_term">6 meses</button><button data-v="long_term">Siempre</button></div>' +
     '<button class="btn pri wide" id="bTop" style="margin-top:10px;">Traer lo que más escuchas</button></div>';
@@ -1849,7 +1949,7 @@ function uiTop() {
       av.remove();
       $('#srcFiltros').innerHTML = '';
       pintarFuente(pistas);
-      ordenFuenteSimple();
+      ponerBuscador('Filtra lo que has traído…', () => filtraFuenteCargada(pistas));
       toast(num(pistas.length) + ' canciones');
     } catch (e) { av.remove(); toast('No se ha podido: ' + e.message); }
   };
@@ -1858,20 +1958,20 @@ function uiTop() {
 /* ---------------- avisos de conexion ---------------- */
 function exigeConexion() {
   if (conectado()) return true;
+  ponerBuscador('', null, null);
   $('#srcFiltros').innerHTML =
     '<div class="fbody"><p class="lede">Para esto hace falta tu cuenta de Spotify. La conexión se abre desde MusicVault (es la página registrada en Spotify); luego vuelves aquí y ya está.</p>' +
     '<a class="btn pri wide" href="musicvault.html?conectar=estudio">Conectar con Spotify</a>' +
-    '<p class="lede tiny" style="margin-top:10px;">Mientras tanto puedes montar la lista con tu vault, que funciona sin conexión.</p></div>';
+    '<p class="lede tiny" style="margin-top:10px;">Mientras tanto puedes montar la playlist con tu vault, que funciona sin conexión.</p></div>';
   return false;
 }
 function faltaPermiso(s) {
   const p = PERMISOS.find(x => x.s === s);
+  ponerBuscador('', null, null);
   $('#srcFiltros').innerHTML =
     '<div class="fbody"><p class="lede">Falta un permiso: <b>' + esc(p ? p.q : s) + '</b>. Se concede volviendo a conectar una vez — los permisos de un token no cambian solos.</p>' +
     '<a class="btn pri wide" href="musicvault.html?conectar=estudio">Volver a conectar</a></div>';
 }
-
-
 /* ============================================================
    LA LISTA QUE ESTAS MONTANDO
    ============================================================ */
@@ -2155,7 +2255,12 @@ function partirEnVarias(n) {
     trozos.map((t, i) => '<div class="card"><div class="ct">' + esc(S.nombre) + ' (' + (i + 1) + ')</div><div class="tiny mute">' + num(t.length) + ' canciones · ' + durLarga(t.reduce((s, p) => s + (p.ms || 0), 0)) + '</div></div>').join('') +
     '<div class="btnrow" style="margin-top:14px;"><button class="btn pri wide" id="pOk">Crearlas todas</button></div>',
     (sh, cerrar) => {
-      sh.querySelector('#pOk').onclick = () => { cerrar(); crearVarias(trozos); };
+      sh.querySelector('#pOk').onclick = () => {
+        cerrar();
+        crearPlaylistsLote(trozos.map((t, i) => ({
+          nombre: S.nombre + ' (' + (i + 1) + ')', descripcion: S.descripcion, publica: S.publica, pistas: t
+        })));
+      };
     });
 }
 
@@ -2191,7 +2296,7 @@ function abrirGuardar() {
     '<div class="flabel">Nombre</div><input class="field" id="gNombre" value="' + esc(S.nombre) + '">' +
     '<div class="flabel" style="margin-top:12px;">Descripción</div><textarea class="field" id="gDesc" placeholder="Opcional">' + esc(S.descripcion) + '</textarea>' +
     '<label class="sw" style="margin-top:8px;"><input type="checkbox" id="gPub"' + (S.publica ? ' checked' : '') + '> Que la vea todo el mundo</label>' +
-    (puedePortada ? '<label class="sw"><input type="checkbox" id="gPortada"> Ponerle de portada un mosaico con las primeras carátulas</label>' : '') +
+    (puedePortada ? '<label class="sw"><input type="checkbox" id="gPortada" checked> Ponerle una portada hecha con las primeras carátulas</label>' : '') +
     '</div>' +
     '<div id="gExistente" hidden></div>' +
     '<div id="gProg"></div>' +
@@ -2250,7 +2355,7 @@ function abrirGuardar() {
         S.nombre = (sh.querySelector('#gNombre').value || 'Playlist').trim();
         S.descripcion = sh.querySelector('#gDesc').value.trim();
         S.publica = sh.querySelector('#gPub').checked;
-        $('#pname').value = S.nombre;
+        ponerNombre(S.nombre);
         const portada = !!(sh.querySelector('#gPortada') && sh.querySelector('#gPortada').checked);
         btn.disabled = true;
         const prog = sh.querySelector('#gProg');
@@ -2331,30 +2436,52 @@ async function escribirEnSpotify(o) {
   return { id: id, nombre: nombre, total: (o.donde === 'existente' && o.modo === 'anadir') ? aEscribir.length + saltadas : S.lista.length, saltadas: saltadas, avisoPortada: avisoPortada };
 }
 
-async function crearVarias(trozos) {
-  const av = toast('Creando ' + trozos.length + ' playlists…', 300000);
+/* Crea varias playlists de una tacada. Lo usan «partir en dos» y «organizar
+   mi Spotify de golpe». Si se corta a mitad, las que ya estaban creadas se
+   quedan hechas y se dice cuáles: nada se pierde a medias sin avisar. */
+async function crearPlaylistsLote(defs) {
+  if (!defs.length) return;
   reanudar();
   const hechas = [];
+  let cerrar = null;
+  const ver = (txt, pct) => {
+    const p = document.getElementById('lotePrg');
+    if (p) p.innerHTML = '<div class="barra"><i style="width:' + pct + '%"></i></div><p class="lede tiny">' + esc(txt) + '</p>';
+  };
+  cerrar = hoja('Creando ' + defs.length + ' playlist' + (defs.length > 1 ? 's' : ''),
+    '<div id="lotePrg"></div><div class="btnrow" style="margin-top:10px;"><button class="btn danger" id="loteStop">Detener</button></div>',
+    sh => { sh.querySelector('#loteStop').onclick = pararTodo; });
   try {
-    for (let t = 0; t < trozos.length; t++) {
-      const nombre = S.nombre + ' (' + (t + 1) + ')';
-      const pl = await crearPlaylist(nombre, S.descripcion, S.publica);
-      const uris = urisDe(trozos[t]);
+    for (let t = 0; t < defs.length; t++) {
+      const d = defs[t];
+      /* Se mira ANTES de crearla: si has dado a Detener, mejor no dejar en tu
+         Spotify una playlist recién creada y vacía. */
+      if (_parar) throw new Error('DETENIDO');
+      ver('Creando «' + d.nombre + '»… (' + (t + 1) + ' de ' + defs.length + ')', Math.round(t / defs.length * 100));
+      const pl = await crearPlaylist(d.nombre, d.descripcion || '', !!d.publica);
+      const uris = urisDe(d.pistas);
       for (let i = 0; i < uris.length; i += TOPE_URIS) {
         if (_parar) throw new Error('DETENIDO');
-        av.textContent = 'Playlist ' + (t + 1) + ' de ' + trozos.length + ' · ' + num(Math.min(i + TOPE_URIS, uris.length)) + ' de ' + num(uris.length);
+        const espera = esperaPendiente();
+        ver(espera ? 'Spotify ha frenado · esperando ' + tiempoEspera() + '…'
+          : '«' + d.nombre + '» · ' + num(Math.min(i + TOPE_URIS, uris.length)) + ' de ' + num(uris.length) + ' canciones',
+          Math.round((t + i / Math.max(1, uris.length)) / defs.length * 100));
         const lote = uris.slice(i, i + TOPE_URIS);
         if (i === 0) await reemplazarPistas(pl.id, lote); else await anadirPistas(pl.id, lote);
       }
-      hechas.push(pl);
+      hechas.push({ id: pl.id, name: d.nombre, n: uris.length });
     }
-    av.remove();
-    hoja('Listo', '<p class="lede">' + hechas.length + ' playlists creadas:</p>' +
-      hechas.map(p => '<div class="card"><a href="https://open.spotify.com/playlist/' + esc(p.id) + '" target="_blank" rel="noopener">' + esc(p.name) + '</a></div>').join(''));
+    if (cerrar) cerrar();
+    hoja('Listo', '<p class="lede">' + hechas.length + ' playlist' + (hechas.length > 1 ? 's creadas' : ' creada') + ' en tu Spotify:</p>' +
+      hechas.map(p => '<div class="card" style="display:flex;gap:10px;align-items:center;"><div class="grow"><div class="ct">' + esc(p.name) + '</div>' +
+        '<div class="tiny mute">' + num(p.n) + ' canciones</div></div>' +
+        '<a class="btn sm" href="https://open.spotify.com/playlist/' + esc(p.id) + '" target="_blank" rel="noopener">Abrir</a></div>').join(''));
   } catch (e) {
-    av.remove();
-    toast('Se cortó tras ' + hechas.length + ': ' + e.message);
-  }
+    if (cerrar) cerrar();
+    toast(hechas.length
+      ? 'Se cortó después de crear ' + hechas.length + ': ' + e.message + '. Las creadas se quedan.'
+      : 'No se ha podido: ' + e.message, 9000);
+  } finally { reanudar(); }
 }
 
 /* ---------------- portada de mosaico ----------------
@@ -2419,7 +2546,7 @@ function restaurar(d) {
   S.destino = d.destino || null;
   S.lista = (d.pistas || []).map(a => conKey(descomprime(a)));
   S.sel.clear(); S.undo.length = 0; S.redo.length = 0;
-  $('#pname').value = S.nombre;
+  ponerNombre(S.nombre);
   trasCambio();
 }
 
@@ -2508,27 +2635,437 @@ function abrirStats() {
    AYUDA
    ============================================================ */
 function abrirAyuda() {
-  const c = cred();
   const faltan = permisosQueFaltan();
-  hoja('El Estudio',
-    '<p class="lede">Montas la lista a la izquierda y la ves a la derecha. Nada se toca en Spotify hasta que le das a <b>Guardar</b>.</p>' +
-    '<h3>De dónde sacar canciones</h3>' +
-    '<p class="lede"><b>Tu vault</b> es lo que Spotify no te deja hacer: filtrar tus ' + num(V.pistas.length) + ' canciones por etiqueta, género, año, duración, popularidad, estrellas o si ya las escuchaste. También tienes tus playlists, tus «Me gusta», la búsqueda, un enlace pegado y lo que más escuchas.</p>' +
+  hoja('Cómo funciona el Estudio',
+    '<h3>En tres pasos</h3>' +
+    '<p class="lede"><b>1.</b> En la pantalla de inicio eliges una receta («por etiquetas», «de un artista»…) y te sale la playlist ya montada. Si prefieres ir a mano, «empezar en blanco».<br>' +
+    '<b>2.</b> En el editor la retocas: quitar, reordenar, mezclar, recortar. Todo se puede deshacer.<br>' +
+    '<b>3.</b> «Guardar en Spotify». <b>Hasta ese momento en Spotify no cambia absolutamente nada.</b></p>' +
+    '<h3>Meter canciones que NO están en tu vault</h3>' +
+    '<p class="lede">En el editor, el buscador de arriba: con <b>Tu vault</b> busca entre lo tuyo, y con <b>Todo Spotify</b> busca en el catálogo entero y lo añades igual. Si buscas algo en tu vault y no aparece, sale solo un botón para buscarlo en Spotify. También puedes pegar un enlace de una canción, un disco o una playlist.</p>' +
+    '<h3>Para que tu Spotify quede bien ordenado</h3>' +
+    '<p class="lede">· Playlists de <b>40 a 80 canciones</b> se escuchan enteras; una de 3.000 no la oye nadie.<br>' +
+    '· <b>Organizar mi Spotify de golpe</b> (en el inicio) crea una playlist por cada etiqueta que marques. Con un prefijo igual en todas («MV · ») te salen juntas y ordenadas.<br>' +
+    '· Las recetas ya reparten los artistas por toda la lista, así que no te salen tres del mismo seguidas.<br>' +
+    '· Al guardar se le pone una portada hecha con las carátulas: así las distingues de un vistazo.</p>' +
     '<h3>Trucos</h3>' +
-    '<p class="lede">· En las etiquetas, <b>un toque incluye y dos descarta</b>.<br>' +
-    '· <b>Mezclar separando artistas</b> reparte cada artista por toda la lista, que es lo que el aleatorio de Spotify no hace.<br>' +
-    '· <b>Ajustar a X minutos</b> arma una lista que dure justo lo que necesitas.<br>' +
-    '· <b>Comparar con lo cargado a la izquierda</b> te deja restar una playlist de otra, o quedarte con lo que tienen en común.<br>' +
-    '· Arrastra por el asa de la izquierda; si tienes varias marcadas, se mueven todas juntas.</p>' +
-    '<h3>Atajos</h3>' +
+    '<p class="lede">· En las etiquetas, <b>un toque incluye y otro descarta</b>.<br>' +
+    '· <b>Acortar → ajustar a X minutos</b> arma una lista que dure justo lo que necesitas.<br>' +
+    '· <b>Quitar… → comparar con lo cargado a la izquierda</b> resta una playlist de otra, o te deja lo que tienen en común.<br>' +
+    '· Arrastra por el asa de la izquierda; si tienes varias marcadas, se mueven todas juntas.<br>' +
+    '· La carpeta de arriba guarda borradores; y lo que tengas a medias se recupera solo aunque cierres.</p>' +
+    '<h3>Atajos de teclado</h3>' +
     '<p class="lede"><span class="kbd">Ctrl</span>+<span class="kbd">Z</span> deshacer · <span class="kbd">Ctrl</span>+<span class="kbd">Mayús</span>+<span class="kbd">Z</span> rehacer · <span class="kbd">Ctrl</span>+<span class="kbd">S</span> guardar · <span class="kbd">Supr</span> quitar las marcadas · <span class="kbd">Esc</span> cerrar</p>' +
-    '<h3>Estado</h3>' +
+    '<h3>Cómo está la cosa</h3>' +
     '<p class="lede">Vault: <b>' + num(V.pistas.length) + '</b> canciones y <b>' + num(V.albumes.length) + '</b> discos (' + esc(V.origen || 'sin cargar') + ').<br>' +
-    'Spotify: <b>' + (conectado() ? 'conectado' : 'sin conectar') + '</b>' + (c && c.scope ? '' : '') + '.' +
-    (faltan.length ? '<br>Permisos que faltan: ' + faltan.map(p => esc(p.q)).join(', ') + '. Se arreglan volviendo a conectar desde MusicVault.' : '<br>Todos los permisos concedidos.') + '</p>' +
-    '<h3>Lo que no se puede</h3>' +
-    '<p class="lede">Spotify quitó cosas en febrero de 2026: una playlist de otra persona ya no deja leer su contenido, la búsqueda da 10 resultados por vez y una playlist admite 10.000 canciones como mucho (por eso existe «partir en dos»).</p>' +
+    'Spotify: <b>' + (conectado() ? 'conectado' : 'sin conectar') + '</b>.' +
+    (faltan.length ? '<br>Faltan permisos para: ' + faltan.map(p => esc(p.q)).join(', ') + '. Se arregla volviendo a conectar una vez.' : '<br>Todos los permisos concedidos.') + '</p>' +
+    '<h3>Lo que Spotify ya no deja</h3>' +
+    '<p class="lede">Desde febrero de 2026: no se puede leer el contenido de una playlist de otra persona, la búsqueda da 10 resultados por vez, y una playlist admite 10.000 canciones como mucho (por eso existe «partir en dos»).</p>' +
     (faltan.length ? '<div class="btnrow" style="margin-top:14px;"><a class="btn pri" href="musicvault.html?conectar=estudio">Volver a conectar Spotify</a></div>' : ''));
+}
+
+
+/* ============================================================
+   RECETAS  ·  la pantalla de inicio
+   ------------------------------------------------------------
+   Un editor en blanco con veinte botones no dice por donde
+   empezar. Aqui se elige una INTENCION ("una de gimnasio", "de
+   un artista", "lo que no he escuchado") y la playlist sale ya
+   montada y ordenada; el editor queda para retocar, no para
+   construir desde cero.
+   ============================================================ */
+
+/* Una playlist "buena" no es una lista de canciones al azar: tiene un tamaño
+   escuchable, un orden que no repite artista y un nombre que se entiende de un
+   vistazo. Estos son los valores por defecto de todas las recetas. */
+const TAM_OPS = [
+  { v: '25', t: '25 canciones' },
+  { v: '50', t: '50 canciones', on: true },
+  { v: '100', t: '100 canciones' },
+  { v: '60m', t: '1 hora' },
+  { v: '120m', t: '2 horas' },
+  { v: 'todas', t: 'Todas' }
+];
+const CRIT_OPS = [
+  { v: 'azar', t: 'Variado', on: true },
+  { v: 'conocidas', t: 'Lo más conocido' },
+  { v: 'raras', t: 'Joyas ocultas' },
+  { v: 'nuevas', t: 'Lo que no he escuchado' }
+];
+
+/* Elige QUE entra y CUANTO, y despues reparte los artistas por toda la lista. */
+function armar(pool, tam, criterio) {
+  let arr = pool.slice();
+  if (criterio === 'nuevas') { const sin = arr.filter(p => !p.listened); if (sin.length) arr = sin; }
+  if (criterio === 'conocidas') arr.sort((a, b) => (b.pop == null ? -1 : b.pop) - (a.pop == null ? -1 : a.pop));
+  else if (criterio === 'raras') arr.sort((a, b) => (a.pop == null ? 999 : a.pop) - (b.pop == null ? 999 : b.pop));
+  else arr = mezclar(arr);
+
+  if (tam && tam !== 'todas') {
+    if (String(tam).slice(-1) === 'm') {
+      const tope = parseInt(tam, 10) * 60000;
+      const out = [];
+      let ms = 0;
+      for (const p of arr) {
+        if (ms + (p.ms || 0) > tope) continue;
+        out.push(p); ms += (p.ms || 0);
+        if (ms >= tope - 20000) break;
+      }
+      arr = out;
+    } else {
+      arr = arr.slice(0, parseInt(tam, 10) || 50);
+    }
+  }
+  /* el orden final siempre reparte artistas: es lo que hace que se pueda
+     escuchar entera sin que salgan tres del mismo seguidas */
+  return mezclaRepartida(arr);
+}
+
+const hoyTxt = () => new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+
+function montarDesdeReceta(pistas, nombre, quees) {
+  if (!pistas.length) { toast('Con eso no sale ninguna canción'); return; }
+  marcar();
+  S.lista = pistas.map(conKey);
+  S.destino = null;
+  S.proyectoId = null;
+  S.descripcion = quees + ' · Montada con MusicVault el ' + hoyTxt();
+  ponerNombre(nombre);
+  verPantalla('editor');
+  trasCambio();
+  verPanel('list');
+  toast(num(pistas.length) + ' canciones listas. Retoca lo que quieras y dale a Guardar.');
+}
+
+/* ---------------- piezas de los asistentes ---------------- */
+function chipsHtml(id, ops, multi) {
+  return '<div class="chips" data-grupo="' + id + '" data-multi="' + (multi ? 1 : 0) + '">' +
+    ops.map(o => '<button class="chip' + (o.on ? ' on' : '') + '" data-v="' + esc(o.v) + '">' + esc(o.t) +
+      (o.n != null ? ' <b>' + num(o.n) + '</b>' : '') + '</button>').join('') + '</div>';
+}
+const valores = (sh, id) => [...sh.querySelectorAll('[data-grupo="' + id + '"] .chip.on')].map(b => b.dataset.v);
+const valor1 = (sh, id) => valores(sh, id)[0] || '';
+
+function asistente(titulo, cuerpo, calcular, montar, textoBoton) {
+  hoja(titulo, cuerpo +
+    '<div class="previa" id="rPrev"></div>' +
+    '<div class="btnrow" style="margin-top:14px;"><button class="btn pri wide" id="rOk">' + (textoBoton || 'Montar la playlist') + '</button></div>',
+    (sh, cerrar) => {
+      let ultimo = [];
+      const refrescar = () => {
+        ultimo = calcular(sh) || [];
+        const ms = ultimo.reduce((s, p) => s + (p.ms || 0), 0);
+        const art = new Set(); for (const p of ultimo) if (p.artists[0]) art.add(p.artists[0]);
+        $('#rPrev').innerHTML = ultimo.length
+          ? '<b>' + num(ultimo.length) + ' canciones</b> · ' + durLarga(ms) + ' · ' + num(art.size) + ' artistas'
+          : '<span class="mute">Con eso no sale ninguna canción. Prueba a quitar alguna condición.</span>';
+        $('#rOk').disabled = !ultimo.length;
+      };
+      sh.querySelectorAll('[data-grupo]').forEach(g => {
+        g.querySelectorAll('.chip').forEach(b => b.onclick = () => {
+          if (g.dataset.multi === '1') b.classList.toggle('on');
+          else g.querySelectorAll('.chip').forEach(x => x.classList.toggle('on', x === b));
+          refrescar();
+        });
+      });
+      sh.querySelectorAll('input,textarea,select').forEach(i => { i.oninput = refrescar; });
+      refrescar();
+      $('#rOk').onclick = () => { const r = ultimo; cerrar(); montar(sh, r); };
+    });
+}
+
+/* Lista de etiquetas con buscador, para elegir varias. */
+function cajaEtiquetas(id, cuantasSugeridas) {
+  const arb = arbolTags();
+  const H = ['<input class="field" id="qTag' + id + '" placeholder="Busca una etiqueta…" style="padding:8px 11px;margin-bottom:8px;">',
+    '<div class="chips qcaja" data-grupo="' + id + '" data-multi="1">'];
+  for (const g of arb) {
+    for (const h of g.hijas) {
+      const n = V.cuentaTag.get(h.id) || 0;
+      if (!n) continue;
+      H.push('<button class="chip" data-v="' + esc(h.id) + '" data-carp="' + esc(fold(g.carpeta.name)) + '" data-nom="' + esc(fold(h.name)) + '">' +
+        esc(h.name) + ' <b>' + num(n) + '</b></button>');
+    }
+  }
+  H.push('</div>');
+  return H.join('');
+}
+function cablearCajaEtiquetas(sh, id) {
+  const q = sh.querySelector('#qTag' + id);
+  if (!q) return;
+  q.oninput = () => {
+    const t = fold(q.value);
+    sh.querySelectorAll('[data-grupo="' + id + '"] .chip').forEach(b => {
+      b.hidden = !!t && b.dataset.nom.indexOf(t) < 0 && b.dataset.carp.indexOf(t) < 0 && !b.classList.contains('on');
+    });
+  };
+}
+const nombresTags = ids => ids.map(i => { const t = tagPorId(i); return t ? t.name : ''; }).filter(Boolean);
+
+/* ---------------- receta: por etiquetas ---------------- */
+function recEtiquetas() {
+  const cuerpo =
+    '<div class="flabel">¿De qué? (elige una o varias)</div>' + cajaEtiquetas('tg') +
+    '<div class="flabel" style="margin-top:16px;">¿Cuántas?</div>' + chipsHtml('tam', TAM_OPS) +
+    '<div class="flabel" style="margin-top:16px;">¿Qué entra?</div>' + chipsHtml('crit', CRIT_OPS);
+  asistente('Una playlist por etiquetas', cuerpo,
+    sh => {
+      const tags = valores(sh, 'tg');
+      if (!tags.length) return [];
+      const pool = V.pistas.filter(p => tags.some(t => p.tagIds.indexOf(t) >= 0));
+      return armar(pool, valor1(sh, 'tam'), valor1(sh, 'crit'));
+    },
+    (sh, pistas) => {
+      const nom = nombresTags(valores(sh, 'tg'));
+      montarDesdeReceta(pistas, nom.slice(0, 3).join(' · ') + (nom.length > 3 ? ' y más' : ''), 'Etiquetas: ' + nom.join(', '));
+    });
+  cablearCajaEtiquetas($('#sheet'), 'tg');
+}
+
+/* ---------------- receta: de un artista ---------------- */
+function recArtista() {
+  const cuenta = new Map();
+  for (const p of V.pistas) for (const a of p.artists) cuenta.set(a, (cuenta.get(a) || 0) + 1);
+  const top = [...cuenta.entries()].sort((a, b) => b[1] - a[1]);
+  const cuerpo =
+    '<div class="flabel">¿Qué artista?</div>' +
+    '<input class="field" id="qArt" placeholder="Escribe su nombre…" autocomplete="off">' +
+    '<div class="chips qcaja" data-grupo="art" data-multi="1" id="cajaArt"></div>' +
+    '<div class="flabel" style="margin-top:16px;">¿Cuántas?</div>' + chipsHtml('tam', TAM_OPS) +
+    '<div class="flabel" style="margin-top:16px;">¿Qué entra?</div>' + chipsHtml('crit', CRIT_OPS);
+  asistente('Una playlist de un artista', cuerpo,
+    sh => {
+      const arts = valores(sh, 'art').map(fold);
+      if (!arts.length) return [];
+      const pool = V.pistas.filter(p => p.artists.some(a => arts.indexOf(fold(a)) >= 0));
+      return armar(pool, valor1(sh, 'tam'), valor1(sh, 'crit'));
+    },
+    (sh, pistas) => {
+      const nom = valores(sh, 'art');
+      montarDesdeReceta(pistas, nom.slice(0, 2).join(' + '), 'Lo que tienes de ' + nom.join(', '));
+    });
+
+  const sh = $('#sheet');
+  const caja = sh.querySelector('#cajaArt');
+  const pinta = () => {
+    const q = fold(sh.querySelector('#qArt').value);
+    const elegidos = new Set(valores(sh, 'art'));
+    const lista = top.filter(a => !q || fold(a[0]).indexOf(q) >= 0).slice(0, 40);
+    for (const a of top) if (elegidos.has(a[0]) && lista.indexOf(a) < 0) lista.unshift(a);
+    caja.innerHTML = lista.map(a => '<button class="chip' + (elegidos.has(a[0]) ? ' on' : '') + '" data-v="' + esc(a[0]) + '">' + esc(a[0]) + ' <b>' + num(a[1]) + '</b></button>').join('')
+      || '<span class="tiny mute">Ningún artista tuyo se llama así</span>';
+    caja.querySelectorAll('.chip').forEach(b => b.onclick = () => { b.classList.toggle('on'); sh.querySelector('#qArt').dispatchEvent(new Event('input')); });
+  };
+  sh.querySelector('#qArt').addEventListener('input', pinta);
+  pinta();
+}
+
+/* ---------------- receta: de una época ---------------- */
+function recEpoca() {
+  const dec = new Map();
+  for (const p of V.pistas) if (p.year) { const d = Math.floor(p.year / 10) * 10; dec.set(d, (dec.get(d) || 0) + 1); }
+  const ops = [...dec.entries()].sort((a, b) => a[0] - b[0]).filter(d => d[1] >= 10)
+    .map(d => ({ v: String(d[0]), t: d[0] + 's', n: d[1] }));
+  const cuerpo =
+    '<div class="flabel">¿Qué época?</div>' + chipsHtml('dec', ops, true) +
+    '<p class="lede tiny">O afina los años a mano:</p>' +
+    '<div class="rango"><input class="field n" id="aMin" inputmode="numeric" placeholder="desde"><span class="mute">—</span><input class="field n" id="aMax" inputmode="numeric" placeholder="hasta"></div>' +
+    '<div class="flabel" style="margin-top:16px;">¿Cuántas?</div>' + chipsHtml('tam', TAM_OPS) +
+    '<div class="flabel" style="margin-top:16px;">¿Qué entra?</div>' + chipsHtml('crit', CRIT_OPS);
+  asistente('Una playlist de una época', cuerpo,
+    sh => {
+      const decs = valores(sh, 'dec').map(Number);
+      const a = parseInt(sh.querySelector('#aMin').value, 10), z = parseInt(sh.querySelector('#aMax').value, 10);
+      let pool = [];
+      if (!isNaN(a) || !isNaN(z)) pool = V.pistas.filter(p => p.year && (isNaN(a) || p.year >= a) && (isNaN(z) || p.year <= z));
+      else if (decs.length) pool = V.pistas.filter(p => p.year && decs.indexOf(Math.floor(p.year / 10) * 10) >= 0);
+      return armar(pool, valor1(sh, 'tam'), valor1(sh, 'crit'));
+    },
+    (sh, pistas) => {
+      const decs = valores(sh, 'dec').map(Number).sort((x, y) => x - y);
+      const a = parseInt(sh.querySelector('#aMin').value, 10), z = parseInt(sh.querySelector('#aMax').value, 10);
+      const nombre = (!isNaN(a) || !isNaN(z)) ? ((isNaN(a) ? '' : a) + '–' + (isNaN(z) ? '' : z))
+        : decs.map(d => d + 's').join(' + ');
+      montarDesdeReceta(pistas, nombre, 'Música de ' + nombre);
+    });
+}
+
+/* ---------------- receta: lo que no has escuchado ---------------- */
+function recPendientes() {
+  const sinOir = V.pistas.filter(p => !p.listened);
+  const cuerpo =
+    '<p class="lede">Tienes <b>' + num(sinOir.length) + ' canciones guardadas que todavía no has escuchado</b>. Esto es justo para lo que nació el vault.</p>' +
+    '<div class="flabel" style="margin-top:14px;">¿De alguna etiqueta en concreto? (opcional)</div>' + cajaEtiquetas('tg2') +
+    '<div class="flabel" style="margin-top:16px;">¿Cuántas?</div>' + chipsHtml('tam', TAM_OPS);
+  asistente('Lo que tienes pendiente', cuerpo,
+    sh => {
+      const tags = valores(sh, 'tg2');
+      const pool = tags.length ? sinOir.filter(p => tags.some(t => p.tagIds.indexOf(t) >= 0)) : sinOir;
+      return armar(pool, valor1(sh, 'tam'), 'azar');
+    },
+    (sh, pistas) => {
+      const nom = nombresTags(valores(sh, 'tg2'));
+      montarDesdeReceta(pistas, nom.length ? 'Pendientes · ' + nom[0] : 'Pendientes de escuchar', 'Guardadas y todavía sin escuchar');
+    });
+  cablearCajaEtiquetas($('#sheet'), 'tg2');
+}
+
+/* ---------------- receta: buscando en Spotify ---------------- */
+function recSpotify() {
+  verPantalla('editor');
+  verPanel('src');
+  ponerOrigen('buscar');
+  if (!S.lista.length) ponerNombre('Playlist nueva');
+}
+function recEditar() {
+  verPantalla('editor');
+  verPanel('src');
+  ponerOrigen('playlists');
+}
+function recBlanco() {
+  verPantalla('editor');
+  verPanel('src');
+  ponerOrigen('vault');
+  if (!S.lista.length) ponerNombre('Playlist nueva');
+}
+
+/* ============================================================
+   ORGANIZAR SPOTIFY DE GOLPE
+   ------------------------------------------------------------
+   Una playlist por etiqueta, todas de una tacada. Es lo unico que
+   convierte 12.000 canciones sueltas en algo navegable de verdad.
+   Se enseña ANTES lo que se va a crear y se puede quitar lo que no
+   interese: crear cuarenta playlists sin mirar seria peor que no
+   tener ninguna.
+   ============================================================ */
+function recColeccion() {
+  if (!conectado()) {
+    hoja('Organizar tu Spotify', '<p class="lede">Hace falta la cuenta de Spotify conectada. Se hace desde MusicVault y vuelves aquí.</p>' +
+      '<a class="btn pri wide" href="musicvault.html?conectar=estudio">Conectar con Spotify</a>');
+    return;
+  }
+  const arb = arbolTags();
+  const carpetas = arb.map(g => ({ v: g.carpeta.id || 'sueltas', t: g.carpeta.name, n: g.hijas.length }));
+  const cuerpo =
+    '<p class="lede">Crea <b>una playlist por cada etiqueta</b> que elijas. Es la forma rápida de que tu Spotify deje de ser una lista infinita.</p>' +
+    '<div class="flabel" style="margin-top:14px;">¿De qué carpeta?</div>' +
+    chipsHtml('carp', carpetas.map((c, i) => Object.assign({}, c, { on: i === 0 }))) +
+    '<div class="flabel" style="margin-top:16px;">Etiquetas que se convertirán en playlist</div>' +
+    '<p class="lede tiny">Se marcan solas las que tienen suficientes canciones. Toca para quitar o poner.</p>' +
+    '<div class="chips qcaja" data-grupo="tags" data-multi="1" id="cajaCol"></div>' +
+    '<div class="flabel" style="margin-top:16px;">Como mucho, por playlist</div>' + chipsHtml('tam', [
+      { v: '50', t: '50 canciones' }, { v: '100', t: '100', on: true }, { v: '200', t: '200' }, { v: 'todas', t: 'Todas' }
+    ]) +
+    '<div class="flabel" style="margin-top:16px;">Delante del nombre (opcional)</div>' +
+    '<input class="field" id="prefijo" placeholder="por ejemplo:  MV · " maxlength="12">' +
+    '<p class="lede tiny">Un prefijo igual en todas hace que salgan juntas y ordenadas en tu Spotify.</p>';
+
+  hoja('Organizar tu Spotify de golpe', cuerpo +
+    '<div class="previa" id="cPrev"></div>' +
+    '<div class="btnrow" style="margin-top:14px;"><button class="btn pri wide" id="cOk">Crear las playlists</button></div>',
+    (sh, cerrar) => {
+      const caja = sh.querySelector('#cajaCol');
+      let carpeta = carpetas[0].v;
+      const pintaTags = () => {
+        const g = arb.find(x => (x.carpeta.id || 'sueltas') === carpeta);
+        const hijas = (g ? g.hijas : []).map(h => ({ h: h, n: V.cuentaTag.get(h.id) || 0 }))
+          .filter(x => x.n > 0).sort((a, b) => b.n - a.n);
+        caja.innerHTML = hijas.map(x =>
+          '<button class="chip' + (x.n >= 20 ? ' on' : '') + '" data-v="' + esc(x.h.id) + '">' + esc(x.h.name) + ' <b>' + num(x.n) + '</b></button>').join('')
+          || '<span class="tiny mute">Esa carpeta no tiene etiquetas con canciones</span>';
+        caja.querySelectorAll('.chip').forEach(b => b.onclick = () => { b.classList.toggle('on'); previa(); });
+        previa();
+      };
+      const plan = () => {
+        const tam = valor1(sh, 'tam');
+        const pre = sh.querySelector('#prefijo').value;
+        return valores(sh, 'tags').map(id => {
+          const t = tagPorId(id);
+          const pool = V.pistas.filter(p => p.tagIds.indexOf(id) >= 0);
+          const pistas = armar(pool, tam, 'azar');
+          return { nombre: pre + (t ? t.name : '?'), descripcion: 'Etiqueta «' + (t ? t.name : '') + '» · MusicVault, ' + hoyTxt(), pistas: pistas };
+        }).filter(x => x.pistas.length);
+      };
+      let ultimoPlan = [];
+      const previa = () => {
+        ultimoPlan = plan();
+        const total = ultimoPlan.reduce((n, x) => n + x.pistas.length, 0);
+        sh.querySelector('#cPrev').innerHTML = ultimoPlan.length
+          ? '<b>' + ultimoPlan.length + ' playlists</b> · ' + num(total) + ' canciones en total<div class="tiny mute" style="margin-top:6px;">' +
+            ultimoPlan.slice(0, 8).map(x => esc(x.nombre) + ' (' + x.pistas.length + ')').join(' · ') + (ultimoPlan.length > 8 ? ' …' : '') + '</div>'
+          : '<span class="mute">No has marcado ninguna etiqueta.</span>';
+        sh.querySelector('#cOk').disabled = !ultimoPlan.length;
+        sh.querySelector('#cOk').textContent = ultimoPlan.length ? 'Crear las ' + ultimoPlan.length + ' playlists' : 'Crear las playlists';
+      };
+      sh.querySelectorAll('[data-grupo="carp"] .chip').forEach(b => b.onclick = () => {
+        sh.querySelectorAll('[data-grupo="carp"] .chip').forEach(x => x.classList.toggle('on', x === b));
+        carpeta = b.dataset.v;
+        pintaTags();
+      });
+      sh.querySelectorAll('[data-grupo="tam"] .chip').forEach(b => b.onclick = () => {
+        sh.querySelectorAll('[data-grupo="tam"] .chip').forEach(x => x.classList.toggle('on', x === b));
+        previa();
+      });
+      sh.querySelector('#prefijo').oninput = previa;
+      pintaTags();
+      sh.querySelector('#cOk').onclick = () => {
+        const p = ultimoPlan;
+        cerrar();
+        preguntar('Crear ' + p.length + ' playlists',
+          'Se van a crear <b>' + p.length + ' playlists nuevas</b> en tu Spotify con ' + num(p.reduce((n, x) => n + x.pistas.length, 0)) + ' canciones. No se borra ni se toca nada de lo que ya tienes.',
+          'Adelante', () => crearPlaylistsLote(p));
+      };
+    });
+}
+
+/* ---------------- el inicio ---------------- */
+const RECETAS = [
+  { i: '&#127991;&#65039;', t: 'Por etiquetas', d: 'Gimnasio, Melancólico, Fiesta… de lo que ya tienes guardado', f: recEtiquetas, vault: true },
+  { i: '&#127908;', t: 'De un artista', d: 'Todo lo suyo que tengas, o solo lo mejor', f: recArtista, vault: true },
+  { i: '&#128197;', t: 'De una época', d: 'Una década, unos años concretos', f: recEpoca, vault: true },
+  { i: '&#127925;', t: 'Lo que no has escuchado', d: 'Lo que guardaste y nunca llegó a sonar', f: recPendientes, vault: true },
+  { i: '&#128269;', t: 'Buscando en Spotify', d: 'Canciones que NO están en tu vault: busca y ve añadiendo', f: recSpotify },
+  { i: '&#9999;&#65039;', t: 'Arreglar una que ya tengo', d: 'Ordenar, quitar repetidas, recortar una playlist tuya', f: recEditar },
+  { i: '&#128193;', t: 'Organizar mi Spotify de golpe', d: 'Una playlist por cada etiqueta que elijas, todas de una vez', f: recColeccion, ancha: true },
+  { i: '&#11036;', t: 'Empezar en blanco', d: 'El editor entero, sin ayudas', f: recBlanco }
+];
+
+function pintarInicio() {
+  $('#recetas').innerHTML = RECETAS.map((r, i) =>
+    '<button class="receta' + (r.ancha ? ' ancha' : '') + '" data-r="' + i + '">' +
+    '<span class="ri">' + r.i + '</span><span><span class="rt">' + r.t + '</span>' +
+    '<span class="rd">' + r.d + '</span></span></button>').join('');
+  $$('#recetas .receta').forEach(b => b.onclick = () => {
+    const r = RECETAS[+b.dataset.r];
+    if (r.vault && !V.pistas.length) { toast('Tu vault todavía no ha cargado'); return; }
+    r.f();
+  });
+  const box = $('#reanuda');
+  if (S.lista.length) {
+    box.innerHTML = '<div class="card" style="border-color:var(--amber);display:flex;gap:11px;align-items:center;">' +
+      '<div class="grow"><div class="ct">Tienes «' + esc(S.nombre) + '» a medias</div>' +
+      '<div class="tiny mute">' + num(S.lista.length) + ' canciones · ' + durLarga(S.lista.reduce((s, p) => s + (p.ms || 0), 0)) + '</div></div>' +
+      '<button class="btn pri sm" id="seguir">Seguir con ella</button></div>';
+    $('#seguir').onclick = () => { verPantalla('editor'); verPanel('list'); };
+  } else box.innerHTML = '';
+}
+
+function verPantalla(cual) {
+  const enInicio = cual === 'inicio';
+  $('#inicio').hidden = !enInicio;
+  $('#editor').hidden = enInicio;
+  $('#bVolverInicio').hidden = enInicio;
+  $('#pname').hidden = enInicio;
+  if (enInicio) pintarInicio();
+  else { LF.refresca(); LL.refresca(); }
+}
+
+function ponerNombre(n) {
+  S.nombre = n || 'Playlist nueva';
+  $('#pname').value = S.nombre;
+  const b = $('#pname2'); if (b) b.value = S.nombre;
+  guardarActual();
 }
 
 /* ============================================================
@@ -2572,7 +3109,7 @@ function arrancar() {
     alBoton: p => anadirALista([p]),
     vacio: () => S.origen === 'vault'
       ? '<div class="big">&#127925;</div>No hay nada con esos filtros.<br><span class="tiny">Prueba a quitar alguno.</span>'
-      : '<div class="big">&#128269;</div>Elige o carga algo arriba.'
+      : '<div class="big">&#128269;</div>Busca arriba, o carga algo desde los botones.'
   });
 
   LL = crearLista($('#lst'), {
@@ -2581,12 +3118,15 @@ function arrancar() {
     icono: () => '&#10005;',
     alClick: clickLista,
     alBoton: p => { marcar(); S.lista = S.lista.filter(x => x._k !== p._k); trasCambio(); },
-    vacio: () => '<div class="big">&#127911;</div>Tu lista está vacía.<br><span class="tiny">Ve a «Añadir» y empieza a meter canciones.</span>'
+    vacio: () => '<div class="big">&#127911;</div>Todavía no has metido nada.<br><span class="tiny">Vete a «1 · Añadir canciones», o vuelve atrás y elige una receta.</span>'
   });
   activarArrastre($('#lst'), () => vistaLista(), moverArrastre);
 
+  cablearBuscador();
   $$('#origenes .chip').forEach(c => c.onclick = () => ponerOrigen(c.dataset.o));
   $$('#tabs button').forEach(b => b.onclick = () => verPanel(b.dataset.tab));
+  $('#bVolverInicio').onclick = () => verPantalla('inicio');
+  $('#pname2').oninput = e => { S.nombre = e.target.value; $('#pname').value = S.nombre; guardarActual(); };
   $('#mOrden').onclick = menuOrden;
   $('#mMezcla').onclick = menuMezcla;
   $('#mLimpiar').onclick = menuLimpiar;
@@ -2597,7 +3137,7 @@ function arrancar() {
   $('#bStats').onclick = abrirStats;
   $('#bProy').onclick = abrirProyectos;
   $('#bAyuda').onclick = abrirAyuda;
-  $('#pname').oninput = e => { S.nombre = e.target.value; guardarActual(); };
+  $('#pname').oninput = e => { S.nombre = e.target.value; $('#pname2').value = S.nombre; guardarActual(); };
   $('#bSelTodo').onclick = e => menu(e.currentTarget, [
     { t: 'Marcar todas', f: () => { vistaLista().forEach(p => S.sel.add(p._k)); LL.refresca(); pintarSelbar(); } },
     { t: 'Desmarcar', f: () => { S.sel.clear(); LL.refresca(); pintarSelbar(); } },
@@ -2625,11 +3165,15 @@ function arrancar() {
   puntoConexion();
   const d = leer(K_ACTUAL, null);
   if (d && d.pistas && d.pistas.length) restaurar(d); else trasCambio();
-  verPanel(innerWidth > 900 ? 'list' : 'src');
+  verPanel('list');
+  /* Siempre se empieza por las recetas, incluso con algo a medias: ahí arriba
+     sale «sigue con ella». Caer de golpe en el editor es justo lo que hacía
+     que no se entendiera por dónde se empieza. */
+  verPantalla('inicio');
 
   cargarVault().then(() => {
     ponerOrigen('vault');
-    if (!leer(K_ACTUAL, null) && !S.lista.length) verPanel(innerWidth > 900 ? 'list' : 'src');
+    pintarInicio();
   });
 }
 arrancar();
