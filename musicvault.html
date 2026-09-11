@@ -1883,6 +1883,7 @@ function toast(msg, actionLabel, actionFn, ms = 5000) {
    propio, así que sigue siendo seguro pegar solo el Client ID aquí. */
 const REDIRECT_URI = location.origin + location.pathname;
 const K_PKCE = 'musicvault_pkce_v1';   // verifier+state durante la ida y vuelta a Spotify
+const K_VOLVER = 'musicvault_volver_v1';   // pagina a la que regresar tras conectar
 
 function b64url(bytes) {
   let bin = '';
@@ -1925,6 +1926,10 @@ const SPOTIFY_SCOPE_CREAR = 'playlist-modify-private';
    primera consulta, que es lo que paso. Aparte de los demas permisos, como
    siempre, para no invalidar una conexion que ya funcionaba. */
 const SPOTIFY_SCOPE_BIBLIO = 'user-library-read user-library-modify';
+/* Los que necesita el Estudio de Playlists (estudio.html) y aqui no se
+   usaban: tocar playlists publicas, ponerles portada y ver tu top. Se
+   piden desde aqui porque esta es la pagina registrada en Spotify. */
+const SPOTIFY_SCOPE_ESTUDIO = 'playlist-modify-public ugc-image-upload user-top-read';
 
 /* Manda al usuario a la pantalla de login real de Spotify. Al volver, Spotify
    añade ?code=...&state=... a esta misma URL (por eso hace falta registrar
@@ -1939,7 +1944,7 @@ async function beginSpotifyLogin() {
   const params = new URLSearchParams({
     client_id: c.clientId, response_type: 'code', redirect_uri: REDIRECT_URI,
     code_challenge_method: 'S256', code_challenge: challenge, state,
-    scope: SPOTIFY_SCOPE + ' ' + SPOTIFY_SCOPE_RECIENTES + ' ' + SPOTIFY_SCOPE_CREAR + ' ' + SPOTIFY_SCOPE_BIBLIO
+    scope: SPOTIFY_SCOPE + ' ' + SPOTIFY_SCOPE_RECIENTES + ' ' + SPOTIFY_SCOPE_CREAR + ' ' + SPOTIFY_SCOPE_BIBLIO + ' ' + SPOTIFY_SCOPE_ESTUDIO
   });
   location.href = 'https://accounts.spotify.com/authorize?' + params.toString();
 }
@@ -1950,6 +1955,15 @@ async function beginSpotifyLogin() {
    ni reprocesarlo si se recarga la página. */
 async function handleSpotifyRedirect() {
   const qs = new URLSearchParams(location.search);
+  /* El Estudio de Playlists no puede abrir el login por su cuenta: Spotify
+     solo vuelve a una URL registrada, y la registrada es esta. Asi que nos
+     manda aqui, se conecta de la forma de siempre y se regresa alli. */
+  if (qs.get('conectar') === 'estudio') {
+    sessionStorage.setItem(K_VOLVER, 'estudio.html');
+    history.replaceState({}, '', location.pathname);
+    await beginSpotifyLogin();
+    return;
+  }
   const code = qs.get('code'), state = qs.get('state'), err = qs.get('error');
   if (!code && !err) return;
   history.replaceState({}, '', location.pathname);
@@ -1980,6 +1994,11 @@ async function handleSpotifyRedirect() {
       refreshToken: d.refresh_token, expiresAt: Date.now() + (d.expires_in - 60) * 1000,
       scope: d.scope || ''   // permisos que Spotify concedió de verdad, para saber si faltan
     });
+    /* Solo se acepta volver a una pagina conocida: nada de mandar al
+       usuario a donde diga la URL. */
+    const volver = sessionStorage.getItem(K_VOLVER);
+    sessionStorage.removeItem(K_VOLVER);
+    if (volver === 'estudio.html') { location.href = 'estudio.html'; return; }
     toast('Conectado con Spotify');
   } catch (e) {
     toast('No se pudo completar la conexión con Spotify (' + (e.message || 'error') + ').');
@@ -2051,7 +2070,10 @@ const SPOTIFY_PERMISOS = [
   { s: 'user-read-recently-played', q: 'ver tu historial real de reproducción' },
   { s: 'playlist-modify-private', q: 'crear playlists desde tus etiquetas' },
   { s: 'user-library-read', q: 'saber qué canciones ya tienes en «Me gusta»' },
-  { s: 'user-library-modify', q: 'devolver canciones a «Me gusta»' }
+  { s: 'user-library-modify', q: 'devolver canciones a «Me gusta»' },
+  { s: 'playlist-modify-public', q: 'editar playlists públicas desde el Estudio' },
+  { s: 'ugc-image-upload', q: 'ponerle portada a una playlist' },
+  { s: 'user-top-read', q: 'usar lo que más escuchas como fuente' }
 ];
 function permisosQueFaltan() {
   const c = loadCreds();
@@ -3047,6 +3069,7 @@ function renderInicio() {
       <button class="crow" data-acc="anyos"><span class="ci">${ui('calendario')}</span><span class="ct">Revisar años mal puestos</span></button>
       <button class="crow" data-acc="lote"><span class="ci">${ui('lapiz')}</span><span class="ct">Editar en lote</span></button>
       <button class="crow" data-acc="megusta"><span class="ci">${ui('corazon')}</span><span class="ct">Devolver todo a «Me gusta» de Spotify</span></button>
+      <button class="crow" data-acc="estudio"><span class="ci">${ui('ordenar')}</span><span class="ct">Estudio de playlists</span></button>
       <button class="crow" data-acc="stats"><span class="ci">${ui('barras')}</span><span class="ct">Estadísticas</span></button>
     </div>
 
@@ -11721,6 +11744,7 @@ document.getElementById('inicio').addEventListener('click', e => {
     else if (a === 'mezcla') openMezcla();
     else if (a === 'favpistas') openFavPistas();
     else if (a === 'megusta') openMeGusta();
+    else if (a === 'estudio') location.href = 'estudio.html';
     else if (a === 'revision') openRevision();
     else if (a === 'autotag') openAutoTag();
     else if (a === 'anyos') openAnyos();
