@@ -2072,10 +2072,21 @@ function permisosQueFaltan() {
    y enseñando el aviso. Esta puerta global hace que, en cuanto una petición se
    come el castigo, TODAS las demás esperen a que pase. */
 let _pausaSpotifyHasta = 0;
+/* Se pone a true cuando el usuario pulsa Detener en algo largo: sin esto,
+   una espera de media hora se la come entera aunque le hayas dado. */
+let _pararEsperas = false;
+/* A trozos de un segundo, releyendo la pausa cada vuelta (puede crecer si
+   otra peticion se come otro 429). Antes era un unico sueno largo: durante
+   ese rato la app parecia colgada y Detener no servia de nada. */
 const esperarTurnoSpotify = async () => {
-  const falta = _pausaSpotifyHasta - Date.now();
-  if (falta > 0) await new Promise(r => setTimeout(r, falta));
+  let falta = _pausaSpotifyHasta - Date.now();
+  while (falta > 0 && !_pararEsperas) {
+    await new Promise(r => setTimeout(r, Math.min(falta, 1000)));
+    falta = _pausaSpotifyHasta - Date.now();
+  }
 };
+/* Cuanto falta de la pausa actual, en segundos. 0 si no hay ninguna. */
+const esperaPendiente = () => Math.max(0, Math.ceil((_pausaSpotifyHasta - Date.now()) / 1000));
 
 /* Si Spotify pide esperar 20s o más, no es el típico "escribiste muy rápido
    en el buscador" — es un bloqueo en serio (pasa sobre todo importando cientos
@@ -10637,7 +10648,7 @@ async function _devolverLote(lista, tipoUri, alAvanzar) {
 }
 
 async function devolverAMeGusta(soloTipo) {
-  if (_devolviendo) { _pararDevolver = true; return; }
+  if (_devolviendo) { _pararDevolver = true; _pararEsperas = true; return; }
   if (!isConnected()) { toast('Primero conecta Spotify en Ajustes'); return; }
   if (!tieneScopeBiblioteca()) {
     toast('Hay que volver a conectar Spotify una vez para darle permiso sobre tu biblioteca: Ajustes → Conectar con Spotify');
@@ -10649,7 +10660,7 @@ async function devolverAMeGusta(soloTipo) {
   const total = tandas.reduce((n, t) => n + t.lista.length, 0);
   if (!total) { toast('No hay nada que devolver'); return; }
 
-  _devolviendo = true; _pararDevolver = false;
+  _devolviendo = true; _pararDevolver = false; _pararEsperas = false;
   pedirDespertar();
   const btn = document.getElementById('mgIr'), est = document.getElementById('mgEst');
   const textoBoton = btn ? btn.textContent : '';
@@ -10708,7 +10719,7 @@ async function _idsDelAlbum(alb) {
 }
 
 async function pistasDeAlbumesASpotify() {
-  if (_devolviendo) { _pararDevolver = true; return; }
+  if (_devolviendo) { _pararDevolver = true; _pararEsperas = true; return; }
   if (!isConnected()) { toast('Primero conecta Spotify en Ajustes'); return; }
   if (!tieneScopeBiblioteca()) {
     toast('Hay que volver a conectar Spotify una vez para darle permiso sobre tu biblioteca: Ajustes → Conectar con Spotify');
@@ -10717,19 +10728,28 @@ async function pistasDeAlbumesASpotify() {
   const discos = albumesParaBiblioteca();
   if (!discos.length) { toast('No hay álbumes guardados'); return; }
 
-  _devolviendo = true; _pararDevolver = false;
+  _devolviendo = true; _pararDevolver = false; _pararEsperas = false;
   pedirDespertar();
   const btn = document.getElementById('mgPistas'), est = document.getElementById('mgEst');
   const textoBoton = btn ? btn.textContent : '';
   if (btn) btn.textContent = 'Detener';
 
-  let discosVistos = 0, discosSinPedir = 0, sinGuardar = 0;
+  let discosVistos = 0, discosSinPedir = 0, sinGuardar = 0, frenazoLargo = false;
   const ids = [];
   const suma = { anadidos: 0, yaEstaban: 0, pendientes: 0 };
   try {
     /* ---- fase 1: las listas de canciones ---- */
     for (const alb of discos) {
       if (_pararDevolver) break;
+      /* Si Spotify ha pedido esperar un buen rato, no tiene sentido
+         quedarse aqui dormido: se para y se dice cuando volver. Lo
+         pedido hasta ahora ya esta guardado en cada album. */
+      const espera = esperaPendiente();
+      if (espera > 90) { frenazoLargo = true; break; }
+      if (espera > 0 && est) {
+        est.textContent = 'Spotify ha frenado · esperando ' + tiempoEsperaTexto()
+          + ' · ' + discosVistos.toLocaleString('es-ES') + ' de ' + discos.length.toLocaleString('es-ES') + ' discos';
+      }
       try {
         const suyas = await _idsDelAlbum(alb);
         for (const id of suyas) ids.push(id);
@@ -10764,11 +10784,14 @@ async function pistasDeAlbumesASpotify() {
     soltarDespertar();
     saveItems(); render();
     if (btn) btn.textContent = textoBoton || 'Añadir las canciones de dentro de los álbumes';
+    const faltanDiscos = discos.length - discosVistos;
     toast(suma.anadidos.toLocaleString('es-ES') + ' canciones de tus álbumes añadidas a «Me gusta»'
       + (suma.yaEstaban ? ' · ' + suma.yaEstaban.toLocaleString('es-ES') + ' ya las tenías' : '')
-      + (suma.pendientes || discosSinPedir
-        ? ' · quedó algo sin preguntar' + (discosSinPedir ? ' (' + discosSinPedir.toLocaleString('es-ES') + ' discos)' : '') + ': vuelve a darle luego'
-        : ''));
+      + (frenazoLargo
+        ? ' · Spotify ha frenado en seco: quedan ' + faltanDiscos.toLocaleString('es-ES') + ' discos. Vuelve a darle en ' + tiempoEsperaTexto() + ' — lo pedido no se pierde'
+        : (suma.pendientes || discosSinPedir || faltanDiscos
+          ? ' · quedó algo sin preguntar' + (faltanDiscos ? ' (' + faltanDiscos.toLocaleString('es-ES') + ' discos)' : '') + ': vuelve a darle luego'
+          : '')));
   }
 }
 
