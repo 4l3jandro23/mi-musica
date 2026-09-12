@@ -1130,6 +1130,18 @@
   .crow.apagada .marca { color: var(--fg-mute); }
   .autoque { padding: 0 14px 12px; font-size: 12.5px; line-height: 1.45; color: var(--fg-mute); }
 
+  .interpreta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 8px 0 2px; }
+  .interpreta .ilabel { font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--fg-mute); margin-right: 2px; }
+  .ipart { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; padding: 5px 10px; border-radius: 999px;
+           border: 1px solid var(--line); background: var(--card); color: var(--fg); cursor: pointer; }
+  .ipart:hover { border-color: var(--accent); color: var(--accent); }
+  .ipart .ui { width: 13px; height: 13px; opacity: .55; }
+  .ipart.txt { cursor: default; color: var(--fg-mute); background: transparent; border-style: dashed; }
+  .ipart.txt:hover { border-color: var(--line); color: var(--fg-mute); }
+  .ejemplos { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 6px; }
+  .ejemplo { font-size: 13px; padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line);
+             background: var(--card); color: var(--fg); cursor: pointer; text-align: left; }
+  .ejemplo:hover { border-color: var(--accent); color: var(--accent); }
   .anyolista { max-height: 44vh; overflow-y: auto; overscroll-behavior: contain; border: 1px solid var(--line); border-radius: 14px; }
   .anyofila { display:flex; align-items:center; gap: 11px; padding: 9px 11px; border-bottom: 1px solid var(--line); }
   .anyofila:last-child { border-bottom: none; }
@@ -1312,7 +1324,7 @@
     <div class="toolbar-row">
       <div class="searchwrap">
         <span class="mag"><svg class="ui" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
-        <input type="text" id="q" placeholder="Buscar en tu vault..." autocomplete="off">
+        <input type="text" id="q" placeholder="Busca o pregunta: canciones de los 90 sin escuchar" autocomplete="off">
       </div>
       <select class="ctl" id="sortSel" aria-label="Ordenar por">
         <option value="added_desc">Añadido ↓</option>
@@ -1330,6 +1342,7 @@
       </select>
       <button class="iconbtn" id="viewBtn" title="Cambiar vista" aria-label="Cambiar vista"><svg class="ui" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7.5" height="7.5" x="3" y="3" rx="1.6"/><rect width="7.5" height="7.5" x="13.5" y="3" rx="1.6"/><rect width="7.5" height="7.5" x="13.5" y="13.5" rx="1.6"/><rect width="7.5" height="7.5" x="3" y="13.5" rx="1.6"/></svg></button>
     </div>
+    <div class="interpreta" id="interpreta" hidden></div>
     <div class="chiprow" id="chips"></div>
   </div>
 
@@ -2543,7 +2556,14 @@ function cumpleMezcla(it) {
 }
 
 function filtered() {
-  const q = fold(document.getElementById('q').value.trim());
+  /* La caja de buscar entiende frases enteras: "canciones de los 90 sin
+     escuchar". Lo que no sepa colocar se busca como texto, igual que antes,
+     así que escribir el nombre de algo sigue funcionando exactamente igual. */
+  const _crudo = document.getElementById('q').value.trim();
+  CONSULTA = _crudo ? interpretar(_crudo) : null;
+  if (CONSULTA && !CONSULTA.partes.length) CONSULTA = null;
+  const q = fold(CONSULTA ? CONSULTA.resto : _crudo);
+  const _verArchivadas = !!(CONSULTA && CONSULTA.partes.some(p => p.t === 'archivado'));
   // índice álbum → títulos de sus canciones guardadas, para que buscar el
   // nombre de una canción también encuentre el álbum al que pertenece cuando
   // esa canción está guardada como elemento suelto. Para los álbumes cuya
@@ -2563,7 +2583,7 @@ function filtered() {
   let out = ITEMS.filter(it => {
     // archivar no es borrar: se queda en el vault (cuenta en "En el vault"),
     // pero se aparta de todas las listas normales — solo aparece bajo "Archivado"
-    if (PREFS.status === 'archived') { if (!it.archived) return false; }
+    if (PREFS.status === 'archived' || _verArchivadas) { if (!it.archived) return false; }
     else if (it.archived) return false;
     if (PREFS.type !== 'all' && it.type !== PREFS.type) return false;
     if (PREFS.canon && !esCanon(it)) return false;
@@ -2574,6 +2594,7 @@ function filtered() {
        tiene ninguna, que es justo por donde se empieza a ordenar un vault. */
     if (PREFS.tag === 'none') { if ((it.tagIds || []).length) return false; }
     else if (PREFS.tag !== 'all' && !(it.tagIds || []).includes(PREFS.tag)) return false;
+    if (!cumpleConsulta(it, CONSULTA)) return false;
     if (!cumpleMezcla(it)) return false;
     if (PREFS.genre !== 'all' && !(it.genres || []).some(g => fold(g) === PREFS.genre)) return false;
     if (PREFS.decade !== 'all') { const y = yearOf(it); if (!y || Math.floor(y / 10) * 10 !== +PREFS.decade) return false; }
@@ -2606,9 +2627,309 @@ function filtered() {
   // segunda pasada estable: lo prioritario sube arriba del todo sin
   // desordenar nada dentro de cada grupo, sea cual sea el criterio elegido
   out.sort((a, b) => (b.prioridad ? 1 : 0) - (a.prioridad ? 1 : 0));
-  return out;
+  return aplicarOrdenConsulta(out, CONSULTA);
 }
 
+/* ============ preguntarle al vault en cristiano ============
+   El problema de tener 17.000 elementos no es el tamaño: es que para ver algo
+   concreto había que ir componiendo filtros a mano (tipo + década + etiqueta +
+   estado + orden), y eso solo lo hace quien se sabe la app de memoria.
+   Aquí se escribe la frase y ya: "canciones de los 90 sin escuchar".
+
+   Todo es local — ni red, ni claves, ni esperas. Lo que entiende sale del
+   propio vault: tus etiquetas, tus géneros y tus artistas de verdad. */
+
+const _SIN_TILDES = s => fold(s).replace(/[^a-z0-9ñ ]+/g, ' ').replace(/\s+/g, ' ').trim();
+
+/* Palabras que nunca son un nombre: si no se apartan, "de" o "los" acaban
+   casando con algún artista raro y el filtro se vuelve loco. */
+const _RELLENO = new Set(('de del la el los las un una unos unas que con en y o mi mis tus tu para por mas muy todo toda todos todas ' +
+  'algun alguna algunos algunas ponme dame quiero busca buscar buscame ensename ver saca sacame hay tengo tenga sean son ' +
+  'estilo tipo genero musica cosas algo cual cuales como quiero').split(' '));
+
+/* Frases que siempre son una orden, pase lo que pase: aunque exista un género
+   o un artista que se llame así, aquí mandan. Sin esto, el ruido del catálogo
+   de Spotify puede secuestrar la frase. */
+const _FRASES_MANDO = new Set(['lo mejor', 'mejores', 'al azar', 'sin escuchar', 'escuchadas', 'escuchada',
+  'mas populares', 'mas conocidas', 'mas nuevas', 'mas antiguas', 'canciones', 'cancion', 'albumes', 'album',
+  'discos', 'disco', 'artistas', 'artista', 'cortas', 'largas', 'repetidas', 'duplicadas', 'favoritas',
+  'pendientes', 'archivadas', 'sin etiquetas', 'sin etiquetar', 'aleatorio', 'random']);
+
+/* Vocabulario sacado de tus datos, no inventado. Se calcula una vez y se tira
+   cuando cambian los elementos o las etiquetas. */
+let _vocabCache = null, _vocabFirma = '';
+function vocabulario() {
+  const firma = ITEMS.length + '|' + _versionItems + '|' + TAGS.length + '|' + _versionTags;
+  if (_vocabCache && _vocabFirma === firma) return _vocabCache;
+  const tags = new Map(), generos = new Map(), artistas = new Map();
+  for (const t of TAGS) {
+    if (t.esCarpeta) continue;
+    const k = _SIN_TILDES(t.name);
+    if (k.length >= 3 && !tags.has(k)) tags.set(k, t);
+  }
+  const cuentaGen = new Map();
+  for (const it of ITEMS) {
+    for (const g of (it.genres || [])) {
+      const k = _SIN_TILDES(g);
+      if (k.length >= 3) cuentaGen.set(k, (cuentaGen.get(k) || 0) + 1);
+    }
+    for (const a of (it.artists || [])) {
+      const k = _SIN_TILDES(a);
+      if (k.length >= 3 && !artistas.has(k)) artistas.set(k, a);
+    }
+  }
+  /* De las 2.104 cadenas de género que traen Spotify y Last.fm, 1.063 tocan
+     menos de tres elementos: son ruido ("18100", "gordo ingles", "yes"...) y
+     una de ellas es literalmente "lo mejor", que secuestraba la frase "lo
+     mejor de los 80" y la convertía en un filtro de género con un resultado.
+     Misma regla que ya usa la taxonomía: por debajo de tres, fuera. */
+  for (const [k, n] of cuentaGen) if (n >= 3 && !_FRASES_MANDO.has(k)) generos.set(k, k);
+  _vocabCache = { tags, generos, artistas };
+  _vocabFirma = firma;
+  return _vocabCache;
+}
+
+/* Conjuntos que cuestan un recorrido entero: se calculan solo si la pregunta
+   los pide, y se guardan hasta que cambie el vault. */
+let _conjCache = {}, _conjFirma = '';
+function conjunto(nombre) {
+  const firma = ITEMS.length + '|' + _versionItems + '|' + _versionTags;
+  if (_conjFirma !== firma) { _conjCache = {}; _conjFirma = firma; }
+  if (_conjCache[nombre]) return _conjCache[nombre];
+  const s = new Set();
+  if (nombre === 'repetida') {
+    /* mismo artista y título idéntico, y ninguna de las dos es un remix ni un
+       directo: entonces sí es la misma canción metida dos veces */
+    const g = new Map();
+    for (const it of ITEMS) {
+      if (it.type === 'artist' || it.archived) continue;
+      const k = fold((it.artists || [])[0] || '') + '|' + fold(it.title).replace(/\s*[-(\[].*$/, '').trim();
+      if (!g.has(k)) g.set(k, []);
+      g.get(k).push(it);
+    }
+    for (const l of g.values()) {
+      if (l.length < 2) continue;
+      if (new Set(l.map(x => fold(x.title))).size !== 1) continue;
+      if (l.some(x => _RX_OTRA_VERSION.test(x.title))) continue;
+      l.forEach(x => s.add(x.id));
+    }
+  } else if (nombre === 'anyodudoso') {
+    /* Si de un artista tienes ocho temas de los 70 y uno pone 2020, ese 2020
+       es la reedición: el propio vault hace de testigo. Detecta cosas que
+       mirar el nombre del disco no pilla — "Curtis Mayfield · Move On Up"
+       pone 2020 y su disco no dice "remaster" por ningún lado. */
+    const porArt = new Map();
+    for (const it of ITEMS) {
+      /* solo canciones: en un recopilatorio el año del DISCO sí es el año en
+         que salió ese disco, así que "The Beatles · 1 (2000)" no es un fallo */
+      if (it.type !== 'track' || it.archived || !yearOf(it)) continue;
+      const k = fold((it.artists || [])[0] || '');
+      if (!porArt.has(k)) porArt.set(k, []);
+      porArt.get(k).push(it);
+    }
+    for (const l of porArt.values()) {
+      if (l.length < 3) continue;
+      const ys = l.map(yearOf).sort((a, b) => a - b);
+      const med = ys[Math.floor(ys.length / 2)];
+      if (med > 2004) continue;
+      for (const it of l) {
+        /* un remix de 2021 de un tema del 79 SÍ es de 2021: no es un fallo */
+        if (_RX_OTRA_VERSION.test(it.title)) continue;
+        if (yearOf(it) - med >= 12) s.add(it.id);
+      }
+    }
+  }
+  _conjCache[nombre] = s;
+  return s;
+}
+
+const _RX_OTRA_VERSION = /(remix|\bmix\b|\bedit\b|live|en vivo|directo|ac[uú]stic|acoustic|instrumental|karaoke|cover|reprise|demo|extended|bootleg|rework|versi[oó]n|version)/i;
+
+const _DECADAS_PALABRA = { cincuenta: 1950, sesenta: 1960, setenta: 1970, ochenta: 1980, noventa: 1990 };
+
+/* ---- el intérprete ----
+   Devuelve los trozos que ha entendido y lo que no ha sabido colocar, que se
+   busca como texto normal. Nunca falla: si no entiende nada se comporta como
+   el buscador de toda la vida. */
+function interpretar(txt) {
+  let s = _SIN_TILDES(txt);
+  const partes = [];
+  let orden = null, limite = null;
+  const quita = rx => { s = s.replace(rx, ' ').replace(/\s+/g, ' ').trim(); };
+  const mete = p => { partes.push(p); };
+
+  /* --- 1. TUS nombres, antes que nada ---
+     Va primero a propósito: tienes etiquetas que se llaman "Años 90" o
+     "EDM: trance de los 2000", y si el detector de décadas corriera antes se
+     comería el número y la etiqueta no llegaría a reconocerse nunca.
+     Se prueban las tres listas a la vez y gana el trozo MÁS LARGO, para que
+     "daft punk" (artista) gane a "punk" (etiqueta). */
+  const V = vocabulario();
+  for (let vuelta = 0; vuelta < 8 && s; vuelta++) {
+    const pal = s.split(' ').filter(Boolean);
+    let mejor = null;
+    for (let n = Math.min(6, pal.length); n >= 1 && !mejor; n--) {
+      for (let i = 0; i + n <= pal.length && !mejor; i++) {
+        const frag = pal.slice(i, i + n).join(' ');
+        if (frag.length < 3) continue;
+        if (_FRASES_MANDO.has(frag)) continue;
+        if (frag.split(' ').every(w => _RELLENO.has(w))) continue;
+        if (V.tags.has(frag)) mejor = { i, n, p: { t: 'tag', id: V.tags.get(frag).id, q: V.tags.get(frag).name } };
+        else if (V.artistas.has(frag)) mejor = { i, n, p: { t: 'artista', v: frag, q: V.artistas.get(frag) } };
+        else if (V.generos.has(frag)) mejor = { i, n, p: { t: 'genero', v: frag, q: frag } };
+      }
+    }
+    if (!mejor) break;
+    mete(mejor.p);
+    pal.splice(mejor.i, mejor.n);
+    s = pal.join(' ');
+  }
+
+  /* --- 2. cómo las quieres ordenadas ---
+     "lo mejor" se lee como "lo más conocido", no como "lo que tengo con 4 o 5
+     estrellas": solo tienes 8 cosas valoradas, así que por estrellas la
+     respuesta sería casi siempre una lista vacía. Para eso está "mis
+     favoritas", que sí dice explícitamente que hablas de tus notas. */
+  if (/\b(mas populares?|mas conocidas?|mas sonadas?|populares|lo mejor|mejores)\b/.test(s)) { orden = 'pop'; quita(/\b(mas populares?|mas conocidas?|mas sonadas?|populares|lo mejor|mejores)\b/); }
+  else if (/\b(mas raras?|menos conocidas?|desconocidas?)\b/.test(s)) { orden = 'raras'; quita(/\b(mas raras?|menos conocidas?|desconocidas?)\b/); }
+  else if (/\b(mas nuevas?|mas recientes?|recientes)\b/.test(s)) { orden = 'nuevas'; quita(/\b(mas nuevas?|mas recientes?|recientes)\b/); }
+  else if (/\b(mas (?:antiguas?|viejas?)|antiguas?)\b/.test(s)) { orden = 'viejas'; quita(/\b(mas (?:antiguas?|viejas?)|antiguas?)\b/); }
+  else if (/\b(al azar|aleatorio|random|sorpresa)\b/.test(s)) { orden = 'azar'; quita(/\b(al azar|aleatorio|random|sorpresa)\b/); }
+
+  /* --- 3. años ---
+     El orden importa: rangos, luego décadas, luego un año suelto. Y "2020"
+     solo es una década si lo dices como década ("los 2020", "2020s"); si no,
+     es el año 2020 y nada más. Sin esta distinción "canciones de 2020" sacaba
+     toda la década y parecía que el filtro estaba roto. */
+  let m = s.match(/\bentre (?:el )?(\d{4}) y (?:el )?(\d{4})\b/) || s.match(/\bde (?:el |los )?(\d{4}) a (?:el |los )?(\d{4})\b/);
+  if (m) { mete({ t: 'anyo', min: +m[1], max: +m[2], q: 'de ' + m[1] + ' a ' + m[2] }); quita(m[0]); }
+  m = s.match(/\b(?:antes de|hasta)(?: el| los)? (\d{4})\b/);
+  if (m) { mete({ t: 'anyo', min: 0, max: +m[1], q: 'antes de ' + m[1] }); quita(m[0]); }
+  m = s.match(/\b(?:despues de|desde|a partir de)(?: el| los)? (\d{4})\b/);
+  if (m) { mete({ t: 'anyo', min: +m[1], max: 9999, q: 'desde ' + m[1] }); quita(m[0]); }
+
+  const decada = d => { mete({ t: 'anyo', min: d, max: d + 9, q: 'los ' + (d >= 2000 ? d : String(d).slice(2)) }); };
+  let hayDecada = false;
+  /* "los 90", "años 80", "los 2000" */
+  m = s.match(/\b(?:los|anos|years)\s+((?:19|20)?\d0)\b/);
+  if (m) { let d = +m[1]; if (d < 100) d = d >= 30 ? 1900 + d : 2000 + d; if (d >= 1890 && d <= 2030) { decada(d); hayDecada = true; quita(m[0]); } }
+  /* "90s", "1990s", "2010s" */
+  if (!hayDecada) { m = s.match(/\b((?:19|20)?\d0)s\b/); if (m) { let d = +m[1]; if (d < 100) d = d >= 30 ? 1900 + d : 2000 + d; if (d >= 1890 && d <= 2030) { decada(d); hayDecada = true; quita(m[0]); } } }
+  /* "los noventa" */
+  if (!hayDecada) for (const k in _DECADAS_PALABRA) if (new RegExp('\\b' + k + '\\b').test(s)) { decada(_DECADAS_PALABRA[k]); hayDecada = true; quita(new RegExp('\\b' + k + '\\b')); break; }
+  /* un año suelto: "de 1985", "en 2020" */
+  if (!hayDecada) {
+    m = s.match(/\b(?:de|del|en|ano)\s+((?:19|20)\d{2})\b/) || s.match(/\b((?:19|20)\d{2})\b/);
+    if (m) { const y = +m[1]; mete({ t: 'anyo', min: y, max: y, q: 'de ' + y }); quita(m[0]); }
+  }
+
+  /* --- 4. cuántas quieres ---
+     Después de los años, o "los 90" se leería como "dame 90". */
+  m = s.match(/\b(?:las|los|solo|dame|primeras?)\s+(\d{1,4})\b/) || s.match(/^(\d{1,3})\b/);
+  if (m && +m[1] >= 1 && +m[1] <= 2000) { limite = +m[1]; quita(m[0]); }
+
+  /* --- 5. estado --- */
+  if (/\b(sin escuchar|no escuchadas?|que no he escuchado|pendientes?|por escuchar)\b/.test(s)) { mete({ t: 'escuchado', v: false, q: 'sin escuchar' }); quita(/\b(sin escuchar|no escuchadas?|que no he escuchado|pendientes?|por escuchar)\b/); }
+  else if (/\b(ya )?escuchadas?\b|\bque he escuchado\b|\boidas?\b/.test(s)) { mete({ t: 'escuchado', v: true, q: 'escuchadas' }); quita(/\b(ya )?escuchadas?\b|\bque he escuchado\b|\boidas?\b/); }
+  if (/\barchivad[oa]s?\b/.test(s)) { mete({ t: 'archivado', q: 'archivadas' }); quita(/\barchivad[oa]s?\b/); }
+
+  /* --- 6. estrellas --- */
+  m = s.match(/\b([1-5])\s*estrellas?\b/);
+  if (m) { mete({ t: 'estrellas', min: +m[1], q: m[1] + ' estrellas o más' }); quita(m[0]); }
+  else if (/\b(mis )?favorit[oa]s?\b/.test(s)) { mete({ t: 'estrellas', min: 4, q: 'tus favoritas' }); quita(/\b(mis )?favorit[oa]s?\b/); }
+
+  /* --- 7. duración --- */
+  m = s.match(/\b(?:menos de|menores de) (\d{1,3}) minutos?\b/);
+  if (m) { mete({ t: 'dur', max: +m[1] * 60000, q: 'menos de ' + m[1] + ' minutos' }); quita(m[0]); }
+  m = s.match(/\b(?:mas de|mayores de) (\d{1,3}) minutos?\b/);
+  if (m) { mete({ t: 'dur', min: +m[1] * 60000, q: 'más de ' + m[1] + ' minutos' }); quita(m[0]); }
+  if (/\b(cortas?|cortitas?)\b/.test(s)) { mete({ t: 'dur', max: 180000, q: 'cortas' }); quita(/\b(cortas?|cortitas?)\b/); }
+  if (/\blargas?\b/.test(s)) { mete({ t: 'dur', min: 360000, q: 'largas' }); quita(/\blargas?\b/); }
+
+  /* --- 8. tipo --- */
+  if (/\b(canciones?|temas?|tracks?)\b/.test(s)) { mete({ t: 'tipo', v: 'track', q: 'canciones' }); quita(/\b(canciones?|temas?|tracks?)\b/); }
+  else if (/\b(albumes?|album|discos?|lps?)\b/.test(s)) { mete({ t: 'tipo', v: 'album', q: 'álbumes' }); quita(/\b(albumes?|album|discos?|lps?)\b/); }
+  else if (/\b(artistas?|grupos?|bandas?)\b/.test(s)) { mete({ t: 'tipo', v: 'artist', q: 'artistas' }); quita(/\b(artistas?|grupos?|bandas?)\b/); }
+
+  /* --- 9. listas especiales --- */
+  if (/\bsin etiquet\w*\b|\bsin clasificar\b|\bsin ordenar\b/.test(s)) { mete({ t: 'sinTags', q: 'sin etiquetas' }); quita(/\bsin etiquet\w*\b|\bsin clasificar\b|\bsin ordenar\b/); }
+  if (/\brepetid[ao]s?\b|\bduplicad[ao]s?\b/.test(s)) { mete({ t: 'conj', c: 'repetida', q: 'repetidas' }); quita(/\brepetid[ao]s?\b|\bduplicad[ao]s?\b/); }
+  if (/\bano dudoso\b|\banos? mal\b|\bfecha mal\b|\bano raro\b|\bano dudos[ao]s?\b/.test(s)) { mete({ t: 'conj', c: 'anyodudoso', q: 'con el año dudoso' }); quita(/\bano dudoso\b|\banos? mal\b|\bfecha mal\b|\bano raro\b|\bano dudos[ao]s?\b/); }
+  if (/\bexplicit\w*\b|\bcon tacos\b/.test(s)) { mete({ t: 'explicito', q: 'explícitas' }); quita(/\bexplicit\w*\b|\bcon tacos\b/); }
+  if (/\baclamad[ao]s?\b|\bcanon\b|\bimprescindibles?\b/.test(s)) { mete({ t: 'canon', q: 'aclamados' }); quita(/\baclamad[ao]s?\b|\bcanon\b|\bimprescindibles?\b/); }
+  /* "samples" son las de la etiqueta que ya existe, no un invento aparte */
+  if (/\bsampl\w*\b|\bbreaks?\b/.test(s)) {
+    const tg = TAGS.find(t => !t.esCarpeta && /sampleada/i.test(t.name));
+    if (tg) { mete({ t: 'tag', id: tg.id, q: tg.name }); quita(/\bsampl\w*\b|\bbreaks?\b/); }
+  }
+
+  /* --- 10. lo que sobre, a buscar como texto --- */
+  s = s.split(' ').filter(w => w && !_RELLENO.has(w)).join(' ');
+  return { partes, resto: s.trim(), orden, limite, original: txt };
+}
+
+/* ¿este elemento cumple lo que has pedido? */
+function cumpleConsulta(it, C) {
+  if (!C || !C.partes.length) return true;
+  for (const p of C.partes) {
+    switch (p.t) {
+      case 'anyo': { const y = yearOf(it); if (!y || y < p.min || y > p.max) return false; break; }
+      case 'escuchado': if (it.type === 'artist' || !!it.listened !== p.v) return false; break;
+      case 'archivado': if (!it.archived) return false; break;
+      case 'estrellas': if ((it.rating || 0) < p.min) return false; break;
+      case 'dur': {
+        const ms = it.type === 'album' ? it.totalDurationMs : it.durationMs;
+        if (!ms) return false;
+        if (p.min && ms < p.min) return false;
+        if (p.max && ms > p.max) return false;
+        break;
+      }
+      case 'tipo': if (it.type !== p.v) return false; break;
+      case 'sinTags': if ((it.tagIds || []).length) return false; break;
+      case 'conj': if (!conjunto(p.c).has(it.id)) return false; break;
+      case 'explicito': if (!it.explicit) return false; break;
+      case 'canon': if (!esCanon(it)) return false; break;
+      case 'tag': if (!(it.tagIds || []).includes(p.id)) return false; break;
+      case 'artista': if (!(it.artists || []).some(a => _SIN_TILDES(a) === p.v)) return false; break;
+      case 'genero': if (!(it.genres || []).some(g => _SIN_TILDES(g) === p.v)) return false; break;
+    }
+  }
+  return true;
+}
+
+/* Ordena y recorta si la frase lo pedía. */
+function aplicarOrdenConsulta(rows, C) {
+  if (!C) return rows;
+  if (C.orden) {
+    const r = rows.slice();
+    if (C.orden === 'pop') r.sort((a, b) => (b.popularity ?? -1) - (a.popularity ?? -1));
+    else if (C.orden === 'raras') r.sort((a, b) => (a.popularity ?? 999) - (b.popularity ?? 999));
+    else if (C.orden === 'nuevas') r.sort((a, b) => yearOf(b) - yearOf(a));
+    else if (C.orden === 'viejas') r.sort((a, b) => (yearOf(a) || 9999) - (yearOf(b) || 9999));
+    else if (C.orden === 'azar') for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [r[i], r[j]] = [r[j], r[i]]; }
+    rows = r;
+  }
+  if (C.limite) rows = rows.slice(0, C.limite);
+  return rows;
+}
+
+/* Los ejemplos de la pantalla de inicio. No están de adorno: son la única
+   forma de que se sepa que esto existe y hasta dónde llega. */
+const EJEMPLOS_CONSULTA = [
+  'canciones de los 90 sin escuchar',
+  'lo mejor de los 80',
+  'álbumes que no he escuchado',
+  'canciones sin etiquetas',
+  'las 50 más populares sin escuchar',
+  'rock de los 70 al azar',
+  'canciones cortas sin escuchar',
+  'canciones repetidas',
+  'canciones con el año dudoso',
+  'sampleadas'
+];
+
+let CONSULTA = null;
+
 /* ============ selection ============ */
 let selMode = false;
 let selected = new Set();
@@ -2860,6 +3181,7 @@ function render() {
   }
 
   const rows = filtered();
+  renderInterpreta();
   renderIndiceAZ(rows);
   const anyFilter = PREFS.type !== 'all' || PREFS.status !== 'all' || PREFS.tag !== 'all' || PREFS.genre !== 'all' || PREFS.decade !== 'all' || PREFS.dur !== 'all' || mezclaActiva() || document.getElementById('q').value.trim();
   // con un vault grande, filtrar (p. ej. "álbumes de los 70") y no poder
@@ -2904,6 +3226,43 @@ function render() {
     + (restan > 0
       ? `<button class="btn vermas" data-more="1">Ver más — quedan ${restan.toLocaleString('es-ES')}</button>`
       : '');
+}
+
+/* Enseña lo que ha entendido de tu frase, en trozos que se pueden quitar de
+   uno en uno. Sin esto parecería magia negra: escribes algo, salen otras cosas
+   y no sabes por qué. */
+function renderInterpreta() {
+  const box = document.getElementById('interpreta');
+  if (!box) return;
+  if (!CONSULTA || !CONSULTA.partes.length) { box.hidden = true; box.innerHTML = ''; return; }
+  box.hidden = false;
+  const trozos = CONSULTA.partes.map((p, i) =>
+    '<button class="ipart" data-quitar="' + i + '" title="Quitar esto">' + esc(p.q) + ' ' + ui('cerrar') + '</button>');
+  if (CONSULTA.resto) trozos.push('<span class="ipart txt">texto: «' + esc(CONSULTA.resto) + '»</span>');
+  if (CONSULTA.orden) trozos.push('<span class="ipart txt">' + ({ pop: 'las más populares primero', raras: 'las más raras primero', nuevas: 'las más nuevas primero', viejas: 'las más antiguas primero', azar: 'al azar' })[CONSULTA.orden] + '</span>');
+  if (CONSULTA.limite) trozos.push('<span class="ipart txt">solo ' + CONSULTA.limite + '</span>');
+  box.innerHTML = '<span class="ilabel">He entendido</span>' + trozos.join('');
+  box.querySelectorAll('[data-quitar]').forEach(b => b.onclick = () => {
+    const campo = document.getElementById('q');
+    campo.value = frasePartes(CONSULTA, +b.dataset.quitar);
+    render();
+  });
+}
+
+/* Vuelve a escribir la frase a partir de los trozos que quedan, en vez de
+   recortar el texto original a tijeretazos. Antes, quitar "los 90" de
+   "canciones de los 90 sin escuchar" dejaba "canciones de los sin escuchar":
+   el resultado era correcto pero la caja parecia rota.
+
+   Funciona porque cada trozo se escribe con la misma etiqueta que el
+   interprete sabe volver a leer ("los 90", "sin escuchar", "menos de 3
+   minutos"), asi que la frase reconstruida se interpreta igual. */
+function frasePartes(C, quitar) {
+  const trozos = C.partes.filter((_, i) => i !== quitar).map(p => p.q);
+  if (C.limite) trozos.unshift('las ' + C.limite);
+  if (C.orden) trozos.push({ pop: 'mas populares', raras: 'mas raras', nuevas: 'mas nuevas', viejas: 'mas antiguas', azar: 'al azar' }[C.orden]);
+  if (C.resto) trozos.push(C.resto);
+  return trozos.join(' ');
 }
 
 /* ============ pantalla de inicio ============ */
@@ -3057,6 +3416,12 @@ function renderInicio() {
       <button class="tile t1" data-ira="pending"><div class="top"><span class="ico">${ui('circulo')}</span><span class="n">${(contables.length - escuchados).toLocaleString('es-ES')}</span></div><div class="l">Pendientes</div></button>
     </div>
 
+    <h2>Pregúntale a tu vault</h2>
+    <p class="lede" style="margin:-2px 0 10px;">Escribe lo que quieras ver, en cristiano. Sin filtros ni menús.</p>
+    <div class="ejemplos">
+      ${EJEMPLOS_CONSULTA.map(e => '<button class="ejemplo" data-preg="' + esc(e) + '">' + esc(e) + '</button>').join('')}
+    </div>
+
     <h2>Acciones</h2>
     <div class="card">
       <button class="crow" data-acc="buscar"><span class="ci">${ui('lupa')}</span><span class="ct">Buscar en Spotify</span></button>
@@ -3067,6 +3432,7 @@ function renderInicio() {
       <button class="crow" data-acc="autotag"><span class="ci">${ui('destello')}</span><span class="ct">Etiquetar automáticamente</span></button>
       <button class="crow" data-acc="revision"><span class="ci">${ui('ajustes')}</span><span class="ct">Arreglar el vault</span></button>
       <button class="crow" data-acc="anyos"><span class="ci">${ui('calendario')}</span><span class="ct">Revisar años mal puestos</span></button>
+      <button class="crow" data-acc="samples"><span class="ci">${ui('destello')}</span><span class="ct">Ver de dónde salen los samples</span></button>
       <button class="crow" data-acc="lote"><span class="ci">${ui('lapiz')}</span><span class="ct">Editar en lote</span></button>
       <button class="crow" data-acc="megusta"><span class="ci">${ui('corazon')}</span><span class="ct">Devolver todo a «Me gusta» de Spotify</span></button>
       <button class="crow" data-acc="estudio"><span class="ci">${ui('ordenar')}</span><span class="ct">Estudio de playlists</span></button>
@@ -10148,15 +10514,39 @@ function idxListas() {
 /* Una sola pasada por elemento: normalizar el titulo es caro y hacerlo una
    vez por lista multiplicaba por seis el coste de etiquetar. */
 function listasDe(it) {
-  const idx = idxListas();
+  const idx = idxListas(), porA = idxListasPorArtista();
   const t = obraDe(it.title);
   if (!t) return null;
   let r = null;
   for (const a of (it.artists || [])) {
-    const s = idx.get(obraDe(a) + '|' + t);
+    const fa = obraDe(a);
+    const s = idx.get(fa + '|' + t);
     if (s) { r = r || new Set(); s.forEach(x => r.add(x)); }
+    /* y si no cuadra clavado, vale que el título EMPIECE por el de la lista,
+       pero por palabra entera: "Fame" no puede colarse en "Family Affair" */
+    const cand = porA.get(fa);
+    if (!cand) continue;
+    for (const [obra, listas] of cand) {
+      if (obra.length < 5 || obra === t) continue;
+      if (t.startsWith(obra + ' ')) { r = r || new Set(); listas.forEach(x => r.add(x)); }
+    }
   }
   return r;
+}
+
+/* Las mismas entradas agrupadas por artista, para mirar solo las suyas en vez
+   de recorrer las de todas las listas por cada elemento del vault. */
+let _idxListasArt = null;
+function idxListasPorArtista() {
+  if (_idxListasArt) return _idxListasArt;
+  _idxListasArt = new Map();
+  for (const [k, listas] of idxListas()) {
+    const c = k.indexOf('|');
+    const a = k.slice(0, c), obra = k.slice(c + 1);
+    if (!_idxListasArt.has(a)) _idxListasArt.set(a, []);
+    _idxListasArt.get(a).push([obra, listas]);
+  }
+  return _idxListasArt;
 }
 let _rxListo = false, _tagsPorGenero = null;
 function tagsDeGeneroFold(g) {
@@ -11748,7 +12138,29 @@ document.getElementById('inicio').addEventListener('click', e => {
     else if (a === 'revision') openRevision();
     else if (a === 'autotag') openAutoTag();
     else if (a === 'anyos') openAnyos();
+    else if (a === 'samples') {
+      const tg = TAGS.find(t => !t.esCarpeta && /sampleada/i.test(t.name));
+      if (!tg) { toast('Esa etiqueta no existe todavía'); return; }
+      if (!ITEMS.some(x => (x.tagIds || []).includes(tg.id))) {
+        toast('Todavía no la tiene ninguna: pásale «Etiquetar automáticamente»', 'Ir', openAutoTag);
+        return;
+      }
+      PREFS.type = 'all'; PREFS.status = 'all'; PREFS.genre = 'all';
+      PREFS.decade = 'all'; PREFS.dur = 'all'; PREFS.tag = tg.id;
+      document.getElementById('q').value = '';
+      irAPantalla('lista');
+    }
     else if (a === 'lote') { irAPantalla('lista'); setSelMode(true); }
+    return;
+  }
+  /* los ejemplos de Inicio escriben la pregunta en el buscador y te llevan
+     a la lista: se aprende viendo lo que pasa, no leyendo instrucciones */
+  const preg = e.target.closest('[data-preg]');
+  if (preg) {
+    PREFS.type = 'all'; PREFS.genre = 'all'; PREFS.decade = 'all';
+    PREFS.dur = 'all'; PREFS.status = 'all'; PREFS.tag = 'all';
+    document.getElementById('q').value = preg.dataset.preg;
+    irAPantalla('lista');
     return;
   }
   const carp = e.target.closest('[data-carp]');
