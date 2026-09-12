@@ -7629,7 +7629,7 @@ function openSettings() {
    otra version, pero su ano SI es el suyo: el remix salio de verdad ese ano.
    Solo son sospechosas las reediciones de la misma grabacion. */
 const _RX_REEDICION = /remaster|remasteriz|reissue|anniversar|anivers|deluxe|expanded|legacy|edicion|edition|the ultimate|archive collection|collector/i;
-const _RX_REMIX = /remix|rework|bootleg|\bvip\b|\bflip\b|\bedit\b|\bmix\b|live|en vivo|acoustic|acustic|instrumental|version|cover|demo|session/i;
+const _RX_REMIX = /remix|rework|bootleg|\bvip\b|\bflip\b|\bedit\b|\bmix\b|live|en vivo|en directo|\bdirecto\b|en concierto|acoustic|acustic|instrumental|version|cover|demo|session/i;
 const _RX_ANYO_REED = /(?:^|[^\d])(19\d{2}|20\d{2})\s*(?:remaster|remasteriz|remix|mix|edition|version|edicion)|(?:remaster|remasteriz|reissue|edition|edicion|version)[^\d]{0,12}(19\d{2}|20\d{2})/i;
 const _RX_RECOP = /greatest hits|best of|the essential|antolog|coleccion|colecci|grandes exitos|the hits|hits collection|definitiva|lo mejor de|the very best|exitos eternos|anthology/i;
 const _anyoDe = it => { const m = String(it.releaseDate || '').match(/^(\d{4})/); return m ? +m[1] : null; };
@@ -7682,8 +7682,60 @@ function analizarAnyos() {
     const y = _anyoDe(it); if (!y || !_RX_RECOP.test(it.albumName || '')) continue;
     marcar(it, y, null, 'recopilatorio');
   }
+  /* 4 — el ano cae en un hueco donde ese artista no existia.
+     Si de Billie Holiday tienes veinte temas de los 50 y uno pone 2020, ese
+     2020 es la reedicion: murio en 1959.
+
+     Lo que NO vale es comparar contra la media del artista, que es lo primero
+     que se probo: Bowie tiene cosas de 1969 a 2016, asi que "Little Wonder"
+     (1997, correcto) salia marcado como fallo. Igual "We Didn't Start the
+     Fire" de Billy Joel. Marcar como error un ano que esta bien es peor que
+     no detectarlo, porque le haces desconfiar de todo lo demas.
+
+     Lo que si vale es mirar el HUECO: se ordenan los anos de ese artista y
+     solo se marca si entre este y el anterior suyo no hay absolutamente
+     nada. Bowie tiene 1995 y 1997 pegados, asi que no se toca; Billie
+     Holiday salta de 1958 a 2020 y ahi si.
+
+     No lleva ano sugerido a proposito: se sabe que esta mal, no cual es el
+     bueno, y meter uno inventado seria peor. Los remixes y directos se
+     saltan, que esos SI son nuevos de verdad. */
+  {
+    const porArt = new Map();
+    for (const it of ITEMS) {
+      if (it.type !== 'track' || it.archived || !_anyoDe(it)) continue;
+      const k = fold(principalDe(it));
+      if (!porArt.has(k)) porArt.set(k, []);
+      porArt.get(k).push(it);
+    }
+    for (const l of porArt.values()) {
+      /* con menos de tres el vault no puede hacer de testigo de nada: de
+         Curtis Mayfield solo hay "Move On Up" (dice 2020, es de 1970) y no
+         hay forma de saberlo mirando solo lo que tienes */
+      if (l.length < 3) continue;
+      const ys = [...new Set(l.map(_anyoDe))].sort((a, b) => a - b);
+      if (ys[0] > 2000) continue;            /* artista moderno: nada que mirar */
+      for (const it of l) {
+        if (yaRevisado(it) || sos.has(it.id)) continue;
+        if (_RX_REMIX.test(_sufijo(it.title))) continue;
+        const y = _anyoDe(it);
+        let previo = 0;
+        for (const o of ys) { if (o < y) previo = o; else break; }
+        if (!previo) continue;               /* es el mas antiguo suyo */
+        if (y - previo >= 15) marcar(it, y, null, 'fuera-de-epoca');
+      }
+    }
+  }
   const todas = [...sos.values()];
-  return { corregibles: todas.filter(s => s.sugerido), dudosos: todas.filter(s => !s.sugerido) };
+  /* La hoja solo pinta los primeros 150, asi que el orden decide lo que se ve.
+     Delante lo que no se puede encontrar de ninguna otra forma (un ano
+     imposible, o uno que cae en un hueco de la carrera del artista) y detras
+     lo que ya se nota solo con leer el nombre del disco. Sin esto, de 116
+     detecciones nuevas se veian dos. */
+  const _PRIO = { 'imposible': 0, 'fuera-de-epoca': 1, 'reedicion': 2, 'recopilatorio': 3 };
+  const dudosos = todas.filter(s => !s.sugerido)
+    .sort((a, b) => (_PRIO[a.motivo] ?? 9) - (_PRIO[b.motivo] ?? 9) || b.y - a.y);
+  return { corregibles: todas.filter(s => s.sugerido), dudosos };
 }
 
 /* Quita la coletilla de edicion para poder buscar el disco de verdad:
@@ -7802,7 +7854,8 @@ const _MOTIVO = {
   'reedicion': 'el año es el de una remasterización',
   'copia-anterior': 'tienes el original con otro año',
   'recopilatorio': 'sale en un recopilatorio',
-  'imposible': 'año imposible'
+  'imposible': 'año imposible',
+  'fuera-de-epoca': 'no encaja con el resto de ese artista'
 };
 
 function openAnyos() {
