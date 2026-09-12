@@ -1130,6 +1130,8 @@
   .crow.apagada .marca { color: var(--fg-mute); }
   .autoque { padding: 0 14px 12px; font-size: 12.5px; line-height: 1.45; color: var(--fg-mute); }
 
+  .anyobarra { height: 6px; border-radius: 999px; background: var(--line); overflow: hidden; margin: 2px 0 12px; }
+  .anyobarra > div { height: 100%; width: 0; border-radius: 999px; background: var(--accent); transition: width .3s ease; }
   .interpreta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 8px 0 2px; }
   .interpreta .ilabel { font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--fg-mute); margin-right: 2px; }
   .ipart { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; padding: 5px 10px; border-radius: 999px;
@@ -1696,7 +1698,9 @@ const portada = (url, icono, lazy) =>
 const _LETRAS_RARAS = [[/ø/g, 'o'], [/æ/g, 'ae'], [/œ/g, 'oe'], [/ß/g, 'ss'], [/đ|ð/g, 'd'], [/ł/g, 'l'], [/þ/g, 'th']];
 const _quitaRaras = s => { for (const [rx, a] of _LETRAS_RARAS) s = s.replace(rx, a); return s; };
 const fold = s => _quitaRaras(String(s || '').toLowerCase()).normalize('NFD').replace(/[̀-ͯ]/g, '');
-const yearOf = it => (it.releaseDate ? parseInt(String(it.releaseDate).slice(0, 4), 10) : 0) || 0;
+const yearOf = it => (it && it.anyoReal > 0)
+  ? it.anyoReal
+  : ((it.releaseDate ? parseInt(String(it.releaseDate).slice(0, 4), 10) : 0) || 0);
 // Para ordenar como una discoteca de verdad: "The Beatles" va por la B.
 const sortKey = s => String(s || '').toLowerCase().replace(/^(the|los|las|el|la|a|an)\s+/, '').replace(/^[^\p{L}\p{N}]+/u, '').trim();
 /* localeCompare construye un comparador nuevo en CADA llamada, y ordenar el
@@ -6474,8 +6478,12 @@ const marcaCambio = it => Math.max(
    que desmarcar como escuchado o quitar una etiqueta siga funcionando. */
 function unirHistoriales(gana, pierde) {
   const hayPlays = pierde.plays && pierde.plays.length;
-  if (!hayPlays && !pierde.trackPlays) return gana;
+  /* El ano verificado no es una preferencia suya: o se sabe o no se sabe. El
+     que lo tenga se lo pasa al otro, aunque pierda el resto del conflicto. */
+  const traeAnyo = pierde.anyoReal !== undefined && gana.anyoReal === undefined;
+  if (!hayPlays && !pierde.trackPlays && !traeAnyo) return gana;
   const out = Object.assign({}, gana);
+  if (traeAnyo) out.anyoReal = pierde.anyoReal;
   if (hayPlays) {
     const p = [...new Set((gana.plays || []).concat(pierde.plays))].sort((a, b) => a - b);
     out.plays = p.length > TOPE_PLAYS ? [p[0]].concat(p.slice(p.length - (TOPE_PLAYS - 1))) : p;
@@ -7632,7 +7640,10 @@ const _RX_REEDICION = /remaster|remasteriz|reissue|anniversar|anivers|deluxe|exp
 const _RX_REMIX = /remix|rework|bootleg|\bvip\b|\bflip\b|\bedit\b|\bmix\b|live|en vivo|en directo|\bdirecto\b|en concierto|acoustic|acustic|instrumental|version|cover|demo|session/i;
 const _RX_ANYO_REED = /(?:^|[^\d])(19\d{2}|20\d{2})\s*(?:remaster|remasteriz|remix|mix|edition|version|edicion)|(?:remaster|remasteriz|reissue|edition|edicion|version)[^\d]{0,12}(19\d{2}|20\d{2})/i;
 const _RX_RECOP = /greatest hits|best of|the essential|antolog|coleccion|colecci|grandes exitos|the hits|hits collection|definitiva|lo mejor de|the very best|exitos eternos|anthology/i;
-const _anyoDe = it => { const m = String(it.releaseDate || '').match(/^(\d{4})/); return m ? +m[1] : null; };
+const _anyoDe = it => {
+  if (it && it.anyoReal > 0) return it.anyoReal;
+  const m = String(it.releaseDate || '').match(/^(\d{4})/); return m ? +m[1] : null;
+};
 const _baseTit = s => fold(s).replace(/\s*[-(\[].*$/, '').trim();
 const _sufijo = s => { const i = fold(s).search(/[-(\[]/); return i < 0 ? '' : fold(s).slice(i); };
 function _anyoReedicion(s) { const m = (s || '').match(_RX_ANYO_REED); return m ? +(m[1] || m[2]) : null; }
@@ -7850,6 +7861,222 @@ async function buscarAnyosOriginales() {
   }
 }
 
+/* ============ el año exacto de cada canción ============
+   Spotify no guarda cuándo salió la canción, sino cuándo salió la edición que
+   tiene en catálogo. Por eso "Blue Moon" de Billie Holiday pone 2020 y "Every
+   Breath You Take" pone 2024.
+
+   La única base que sabe cuándo se publicó por primera vez una GRABACIÓN es
+   MusicBrainz, y va a una petición por segundo (y aun así contesta 503 a
+   ratos). Son horas. Por eso esto es un trabajo que se puede parar y seguir
+   donde iba: la respuesta se guarda en cada elemento, así que cerrar la
+   pestaña no pierde nada.
+
+   Lo que NO hace, a propósito:
+   - No toca `releaseDate`. Ese es su dato y se queda como está; el año bueno
+     va aparte, en `anyoReal`, y es el que enseña la app.
+   - No toca `touchedAt`. Marcar 11.000 elementos como "editados por él"
+     reviviría todo lo que hubiera borrado en otro dispositivo (ver fundir()).
+     Para que el dato viaje entre dispositivos está unirHistoriales, que es
+     donde van las cosas que solo crecen. */
+
+/* Un año verificado manda sobre la fecha de Spotify. Con esto, las décadas,
+   los filtros, el orden y "canciones de los 90" pasan a ser ciertos. */
+const anyoBueno = it => (it && it.anyoReal > 0) ? it.anyoReal : 0;
+
+/* Misma limpieza de puntuación fina que ya se usa con los discos: MusicBrainz
+   escribe "Sgt. Pepper’s" con apóstrofo curvo y Spotify con el recto. */
+const _mismaPunt = s => fold(s).replace(/[’‘‛`´]/g, "'").replace(/[“”„]/g, '"')
+  .replace(/[–—]/g, '-').replace(/\s+/g, ' ').trim();
+
+/* Quita lo que Spotify le cuelga al título para poder buscar la grabación:
+   "Africa - 2020 Remaster", "Billie Jean (feat. X)". */
+function _tituloGrabacion(t) {
+  let s = String(t || '');
+  s = s.replace(/\s*[([][^)\]]*(feat|ft|with|remaster|remasteriz|mono|stereo|bonus|deluxe|anniversary|from|soundtrack|restored|edition|edicion)[^)\]]*[)\]]/ig, '');
+  s = s.replace(/\s+[-–—]\s+[^-–—]*$/, m =>
+    /(remaster|remasteriz|mono|stereo|version|versi[oó]n|restored|edition|edici[oó]n|\d{4}\s*mix|re-?issue|anniversar)/i.test(m) ? '' : m);
+  return s.replace(/\s+/g, ' ').trim();
+}
+
+/* Le pregunta a MusicBrainz cuándo se grabó esto por primera vez.
+   Devuelve un año, 0 ("preguntado y no hay nada fiable") o null ("no se ha
+   podido preguntar"), que son tres cosas distintas: confundirlas haría que una
+   caída de MusicBrainz se guardara como "esta canción no tiene año". */
+async function _mbAnyoGrabacion(titulo, artista, anyoActual) {
+  const limpio = _tituloGrabacion(titulo);
+  if (!limpio || !artista) return 0;
+  const q = 'artist:"' + String(artista).replace(/"/g, '') + '" AND recording:"' + limpio.replace(/"/g, '') + '"';
+  /* 100 y no 25, que es el maximo que deja MusicBrainz y cuesta exactamente
+     lo mismo: una peticion. De "Jailhouse Rock" hay 386 grabaciones y no
+     vienen ordenadas por fecha — con 25 la mas antigua que salia era de 1973
+     y con 100 sale la de 1957, que es la buena. */
+  const url = 'https://musicbrainz.org/ws/2/recording/?query=' + encodeURIComponent(q) + '&fmt=json&limit=100';
+  let res;
+  try { res = await fetch(url, { headers: { Accept: 'application/json' } }); }
+  catch (e) { return null; }
+  if (res.status === 503 || res.status === 429 || res.status === 403 || res.status >= 500) return null;
+  if (!res.ok) return 0;
+  let j; try { j = await res.json(); } catch (e) { return 0; }
+
+  const quiero = _mismaPunt(limpio), quienEs = _mismaPunt(artista);
+  let mejor = 0;
+  for (const r of (j.recordings || [])) {
+    if ((r.score || 0) < 90) continue;
+    /* el título tiene que ser ESE, no otro que empiece igual */
+    if (_mismaPunt(r.title || '') !== quiero) continue;
+    /* y el artista el mismo, no un homónimo ni quien versionó el tema */
+    const cred = (r['artist-credit'] || []).map(c => _mismaPunt(c.name || '')).join(' ');
+    if (!cred.includes(quienEs) && !quienEs.includes(cred)) continue;
+    const m = String(r['first-release-date'] || '').match(/^(\d{4})/);
+    if (!m) continue;
+    const y = +m[1];
+    if (y < 1900) continue;
+    /* la más antigua de todas: el primer resultado NO vale.
+       Probado en vivo: "Good Times" de Chic da 1996 en el primero y 1979 en el
+       bueno; "Amen, Brother" da 2003 y 1969. */
+    if (!mejor || y < mejor) mejor = y;
+  }
+  /* Si no es anterior a lo que ya hay, no aporta: un "original" posterior a la
+     edición que tienes no existe. Asi tampoco se estropea nada que ya esté bien. */
+  return (mejor && anyoActual && mejor < anyoActual) ? mejor : 0;
+}
+
+/* Cuánto cuesta de verdad cada pregunta, medido en vivo desde el navegador:
+   la respuesta tarda ~0,9 s, pero MusicBrainz suelta un 503 en un tercio largo
+   de los intentos y hay que repetir. Sale a unos 3,4 s por canción. */
+const SEG_POR_PREGUNTA = 3.4;
+
+/* La cola de trabajo, en el orden en que conviene preguntarla.
+   Se agrupa por artista+obra para que las repetidas gasten una sola petición.
+   Con `soloDudosas` se queda solo con lo que tiene papeletas de estar mal: lo
+   que huele a reedición y lo anterior a 2010. Lo de 2010 en adelante son tres
+   cuartas partes de la cola y casi nunca cambia — en una muestra al azar no
+   falló ni una. No merece la pena tenerte el móvil siete horas para eso. */
+function _colaAnyosExactos(soloDudosas) {
+  const g = new Map();
+  for (const it of ITEMS) {
+    if (it.type !== 'track' || it.archived) continue;
+    if (it.anyoReal !== undefined) continue;              /* ya preguntado */
+    /* un remix o un directo de 2021 de un tema del 79 SÍ es de 2021 */
+    if (_RX_REMIX.test(_sufijo(it.title))) continue;
+    const y = _anyoDe(it); if (!y) continue;
+    const art = principalDe(it); if (!art) continue;
+    const k = fold(art) + '|' + fold(_tituloGrabacion(it.title));
+    if (!g.has(k)) g.set(k, { titulo: _tituloGrabacion(it.title), artista: art, anyo: y, items: [], pistas: '' });
+    const e = g.get(k);
+    e.items.push(it);
+    if (y < e.anyo) e.anyo = y;    /* se pregunta contra la más antigua que tenga */
+    /* Para decidir el orden hace falta el título SIN limpiar y el nombre del
+       disco: la coletilla ("- 2011 Remaster", "Greatest Hits") es justo la
+       pista de que el año está mal, y _tituloGrabacion acaba de quitarla.
+       Mirando el título ya limpio, el grupo de "huele a reedición" salía casi
+       vacío y el trabajo empezaba por donde menos falta hacía. */
+    e.pistas += ' ' + it.title + ' ' + (it.albumName || '');
+  }
+  /* Primero lo que huele a reedición, luego lo anterior a 2010 y al final lo
+     moderno, que casi siempre ya está bien. Así la primera hora es la que más
+     cambia y puede parar cuando quiera. */
+  const prio = e => {
+    if (_RX_REEDICION.test(e.pistas) || _RX_RECOP.test(e.pistas)) return 0;
+    if (e.anyo >= 2010) return 2;
+    return 1;
+  };
+  let l = [...g.values()];
+  if (soloDudosas) l = l.filter(e => prio(e) < 2);
+  /* Dentro de cada grupo, primero los años MÁS TARDÍOS. Un tema que pone 2005
+     tiene muchas más papeletas de ser una reedición que uno que pone 1928:
+     el de 1928 nadie lo ha vuelto a publicar con fecha nueva. Ordenando al
+     revés, el trabajo empezaba por lo más antiguo, que es lo que ya está bien. */
+  return l.sort((a, b) => prio(a) - prio(b) || b.anyo - a.anyo);
+}
+
+let _anyosEnMarcha = false, _pararAnyosExactos = false;
+
+async function ponerAnyosExactos(soloDudosas) {
+  if (_anyosEnMarcha) { _pararAnyosExactos = true; return; }
+  _anyosEnMarcha = true; _pararAnyosExactos = false;
+  pedirDespertar();
+  const btn = document.getElementById(soloDudosas ? 'anyoExactoBtn' : 'anyoExactoTodo');
+  const otro = document.getElementById(soloDudosas ? 'anyoExactoTodo' : 'anyoExactoBtn');
+  const est = document.getElementById('anyoExactoEst');
+  const barra = document.getElementById('anyoExactoBarra');
+  if (btn) btn.textContent = 'Detener';
+  if (otro) otro.disabled = true;
+
+  const cola = _colaAnyosExactos(soloDudosas);
+  const total = cola.length;
+  let i = 0, cambiados = 0, iguales = 0, sinGuardar = 0, seguidosMal = 0, espera = 1100;
+  const t0 = Date.now();
+  const pinta = () => {
+    if (barra) barra.style.width = total ? (100 * i / total).toFixed(1) + '%' : '0%';
+    if (!est) return;
+    const queda = i > 4 ? Math.round((Date.now() - t0) / i * (total - i) / 1000) : 0;
+    est.textContent = i.toLocaleString('es-ES') + ' de ' + total.toLocaleString('es-ES')
+      + ' · ' + cambiados.toLocaleString('es-ES') + ' con año nuevo'
+      + (iguales ? ', ' + iguales.toLocaleString('es-ES') + ' ya estaban bien' : '')
+      + (queda ? ' · queda ' + (queda > 3600 ? Math.floor(queda / 3600) + ' h ' + Math.round((queda % 3600) / 60) + ' min' : Math.ceil(queda / 60) + ' min') : '');
+  };
+
+  try {
+    /* Con índice y no con for-of: cuando MusicBrainz dice "estoy ocupado" hay
+       que repetir ESA misma, no saltar a la siguiente. Saltándola se quedaba
+       sin preguntar para siempre, porque la cola solo trae las que no tienen
+       respuesta y esa se habría dado por vista. */
+    let k = 0;
+    while (k < cola.length) {
+      if (_pararAnyosExactos) break;
+      const e = cola[k];
+      const y = await _mbAnyoGrabacion(e.titulo, e.artista, e.anyo);
+      if (y === null) {
+        /* No se apunta nada: "no he podido preguntar" no es "no hay año".
+
+           La espera sube poco a poco y con tope bajo, no al doble cada vez.
+           Medido en vivo: MusicBrainz suelta un 503 a la tercera petición más
+           o menos SIEMPRE, vayas rápido o despacio (a 1,1 s falla el 33%; a
+           1,6 s falla el 36% y encima tardas más). O sea que no es que le
+           estemos apretando: está ocupado y ya. Con esperas que se doblaban
+           hasta 30 s, un 503 suelto costaba medio minuto por las buenas. */
+        seguidosMal++;
+        espera = Math.min(1100 + 600 * seguidosMal, 6000);
+        if (seguidosMal >= 10) {
+          toast('MusicBrainz no contesta. Lo dejo aquí; vuelve a darle luego y sigo donde iba.');
+          break;
+        }
+        await new Promise(r => setTimeout(r, espera));
+        continue;                       /* misma k: se repite esta */
+      }
+      seguidosMal = 0; espera = 1100;
+      /* el 0 también se guarda: es "preguntado y no hay", para no repetirlo */
+      for (const it of e.items) it.anyoReal = y || 0;
+      if (y) cambiados++; else iguales++;
+      if ((sinGuardar += e.items.length) >= 30) { saveItems(); sinGuardar = 0; }
+      k++; i++; pinta();
+      await new Promise(r => setTimeout(r, espera));
+    }
+  } finally {
+    _anyosEnMarcha = false;
+    soltarDespertar();
+    saveItems();
+    invalidarConteos();
+    render();
+    if (otro) otro.disabled = false;
+    if (btn) btn.textContent = _colaAnyosExactos(soloDudosas).length ? 'Seguir donde iba' : 'Ya están todas';
+    pinta();
+    toast(cambiados ? cambiados.toLocaleString('es-ES') + ' canciones con su año de verdad' : 'Ninguna ha cambiado esta vez',
+      cambiados ? 'Ver cuáles' : null,
+      cambiados ? () => { PREFS.pantalla = 'vault'; document.getElementById('q').value = 'año corregido'; irAPantalla('lista'); } : null);
+  }
+}
+
+/* Para el detalle: de donde sale el ano que se esta ensenando. */
+function _pieAnyo(it) {
+  if (!(it && it.anyoReal > 0)) return '';
+  const sp = (it.releaseDate ? parseInt(String(it.releaseDate).slice(0, 4), 10) : 0) || 0;
+  if (!sp || sp === it.anyoReal) return '';
+  return 'Año de la grabación según MusicBrainz. Spotify dice ' + sp + ', que es el de la edición que tiene en catálogo.';
+}
+
 const _MOTIVO = {
   'reedicion': 'el año es el de una remasterización',
   'copia-anterior': 'tienes el original con otro año',
@@ -7880,6 +8107,27 @@ function openAnyos() {
   showSheet(`
     <div class="sheethead"><h2>Años mal puestos</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     <p class="lede">Spotify no guarda el año en que salió la canción, sino el de la edición que tiene en catálogo. Por eso "My Way" de Sinatra pone 2008 y no 1969.</p>
+    ${(() => {
+      const todas = _colaAnyosExactos().length;
+      const dudosas = _colaAnyosExactos(true).length;
+      const hechas = ITEMS.filter(x => x.type === 'track' && x.anyoReal !== undefined).length;
+      const arregladas = ITEMS.filter(x => x.type === 'track' && x.anyoReal > 0).length;
+      const rato = n => {
+        const s = Math.round(n * SEG_POR_PREGUNTA);
+        return s > 3600 ? Math.floor(s / 3600) + ' h ' + Math.round((s % 3600) / 60) + ' min' : Math.ceil(s / 60) + ' min';
+      };
+      if (!todas) return '<div class="flabel">El año exacto de cada canción</div><p class="lede">Ya están todas preguntadas.</p>';
+      return `
+      <div class="flabel">El año exacto de cada canción</div>
+      <p class="lede" style="margin:0 0 10px;">Le pregunto a MusicBrainz en qué año se grabó cada una por primera vez. Va a una petición por segundo y encima falla un tercio de las veces, así que esto son horas — pero <b>se puede parar y seguir otro día por donde iba</b>, y lo que lleve hecho no se pierde.</p>
+      ${hechas ? '<p class="lede" style="margin:0 0 10px;">Llevas <b>' + arregladas.toLocaleString('es-ES') + '</b> canciones con su año de verdad, de ' + hechas.toLocaleString('es-ES') + ' comprobadas.</p>' : ''}
+      <div class="anyobarra"><div id="anyoExactoBarra"></div></div>
+      <div class="btnrow"><button class="btn primary wide" id="anyoExactoBtn">Solo lo que falla · ${dudosas.toLocaleString('es-ES')} · ${rato(dudosas)}</button></div>
+      <p class="lede" style="margin:6px 0 10px;">Lo que huele a reedición y todo lo anterior a 2010. Aquí está prácticamente todo lo que está mal.</p>
+      <div class="btnrow"><button class="btn wide" id="anyoExactoTodo">Todas · ${todas.toLocaleString('es-ES')} · ${rato(todas)}</button></div>
+      <p class="lede" style="margin:6px 0 18px;">Incluye las ${(todas - dudosas).toLocaleString('es-ES')} de 2010 en adelante. En una muestra al azar no falló ninguna de esas, así que son muchas horas para cambiar poco.</p>
+      <div class="lede" id="anyoExactoEst" style="margin:0 0 18px;"></div>`;
+    })()}
     ${(() => { const n = _reediciones().length; return n ? `
       <div class="flabel">Remasterizaciones y ediciones especiales</div>
       <p class="lede" style="margin:0 0 8px;">${n.toLocaleString('es-ES')} discos tuyos son una reedición. Puedo preguntarle a MusicBrainz en qué año salió el disco original y guardarlo al lado, sin tocar el año de tu edición: Abbey Road quedaría como 1969, y esta edición de 2019.</p>
@@ -7900,6 +8148,8 @@ function openAnyos() {
   `);
 
   document.getElementById('anyoMB')?.addEventListener('click', () => buscarAnyosOriginales());
+  document.getElementById('anyoExactoBtn')?.addEventListener('click', () => ponerAnyosExactos(true));
+  document.getElementById('anyoExactoTodo')?.addEventListener('click', () => ponerAnyosExactos(false));
   document.getElementById('anyoAplicar')?.addEventListener('click', () => {
     let n = 0;
     for (const s of corregibles) {
