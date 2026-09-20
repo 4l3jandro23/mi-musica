@@ -2634,306 +2634,306 @@ function filtered() {
   return aplicarOrdenConsulta(out, CONSULTA);
 }
 
-/* ============ preguntarle al vault en cristiano ============
-   El problema de tener 17.000 elementos no es el tamaño: es que para ver algo
-   concreto había que ir componiendo filtros a mano (tipo + década + etiqueta +
-   estado + orden), y eso solo lo hace quien se sabe la app de memoria.
-   Aquí se escribe la frase y ya: "canciones de los 90 sin escuchar".
-
-   Todo es local — ni red, ni claves, ni esperas. Lo que entiende sale del
-   propio vault: tus etiquetas, tus géneros y tus artistas de verdad. */
-
-const _SIN_TILDES = s => fold(s).replace(/[^a-z0-9ñ ]+/g, ' ').replace(/\s+/g, ' ').trim();
-
-/* Palabras que nunca son un nombre: si no se apartan, "de" o "los" acaban
-   casando con algún artista raro y el filtro se vuelve loco. */
-const _RELLENO = new Set(('de del la el los las un una unos unas que con en y o mi mis tus tu para por mas muy todo toda todos todas ' +
-  'algun alguna algunos algunas ponme dame quiero busca buscar buscame ensename ver saca sacame hay tengo tenga sean son ' +
-  'estilo tipo genero musica cosas algo cual cuales como quiero').split(' '));
-
-/* Frases que siempre son una orden, pase lo que pase: aunque exista un género
-   o un artista que se llame así, aquí mandan. Sin esto, el ruido del catálogo
-   de Spotify puede secuestrar la frase. */
-const _FRASES_MANDO = new Set(['lo mejor', 'mejores', 'al azar', 'sin escuchar', 'escuchadas', 'escuchada',
-  'mas populares', 'mas conocidas', 'mas nuevas', 'mas antiguas', 'canciones', 'cancion', 'albumes', 'album',
-  'discos', 'disco', 'artistas', 'artista', 'cortas', 'largas', 'repetidas', 'duplicadas', 'favoritas',
-  'pendientes', 'archivadas', 'sin etiquetas', 'sin etiquetar', 'aleatorio', 'random']);
-
-/* Vocabulario sacado de tus datos, no inventado. Se calcula una vez y se tira
-   cuando cambian los elementos o las etiquetas. */
-let _vocabCache = null, _vocabFirma = '';
-function vocabulario() {
-  const firma = ITEMS.length + '|' + _versionItems + '|' + TAGS.length + '|' + _versionTags;
-  if (_vocabCache && _vocabFirma === firma) return _vocabCache;
-  const tags = new Map(), generos = new Map(), artistas = new Map();
-  for (const t of TAGS) {
-    if (t.esCarpeta) continue;
-    const k = _SIN_TILDES(t.name);
-    if (k.length >= 3 && !tags.has(k)) tags.set(k, t);
-  }
-  const cuentaGen = new Map();
-  for (const it of ITEMS) {
-    for (const g of (it.genres || [])) {
-      const k = _SIN_TILDES(g);
-      if (k.length >= 3) cuentaGen.set(k, (cuentaGen.get(k) || 0) + 1);
-    }
-    for (const a of (it.artists || [])) {
-      const k = _SIN_TILDES(a);
-      if (k.length >= 3 && !artistas.has(k)) artistas.set(k, a);
-    }
-  }
-  /* De las 2.104 cadenas de género que traen Spotify y Last.fm, 1.063 tocan
-     menos de tres elementos: son ruido ("18100", "gordo ingles", "yes"...) y
-     una de ellas es literalmente "lo mejor", que secuestraba la frase "lo
-     mejor de los 80" y la convertía en un filtro de género con un resultado.
-     Misma regla que ya usa la taxonomía: por debajo de tres, fuera. */
-  for (const [k, n] of cuentaGen) if (n >= 3 && !_FRASES_MANDO.has(k)) generos.set(k, k);
-  _vocabCache = { tags, generos, artistas };
-  _vocabFirma = firma;
-  return _vocabCache;
-}
-
-/* Conjuntos que cuestan un recorrido entero: se calculan solo si la pregunta
-   los pide, y se guardan hasta que cambie el vault. */
-let _conjCache = {}, _conjFirma = '';
-function conjunto(nombre) {
-  const firma = ITEMS.length + '|' + _versionItems + '|' + _versionTags;
-  if (_conjFirma !== firma) { _conjCache = {}; _conjFirma = firma; }
-  if (_conjCache[nombre]) return _conjCache[nombre];
-  const s = new Set();
-  if (nombre === 'repetida') {
-    /* mismo artista y título idéntico, y ninguna de las dos es un remix ni un
-       directo: entonces sí es la misma canción metida dos veces */
-    const g = new Map();
-    for (const it of ITEMS) {
-      if (it.type === 'artist' || it.archived) continue;
-      const k = fold((it.artists || [])[0] || '') + '|' + fold(it.title).replace(/\s*[-(\[].*$/, '').trim();
-      if (!g.has(k)) g.set(k, []);
-      g.get(k).push(it);
-    }
-    for (const l of g.values()) {
-      if (l.length < 2) continue;
-      if (new Set(l.map(x => fold(x.title))).size !== 1) continue;
-      if (l.some(x => _RX_OTRA_VERSION.test(x.title))) continue;
-      l.forEach(x => s.add(x.id));
-    }
-  } else if (nombre === 'anyodudoso') {
-    /* Si de un artista tienes ocho temas de los 70 y uno pone 2020, ese 2020
-       es la reedición: el propio vault hace de testigo. Detecta cosas que
-       mirar el nombre del disco no pilla — "Curtis Mayfield · Move On Up"
-       pone 2020 y su disco no dice "remaster" por ningún lado. */
-    const porArt = new Map();
-    for (const it of ITEMS) {
-      /* solo canciones: en un recopilatorio el año del DISCO sí es el año en
-         que salió ese disco, así que "The Beatles · 1 (2000)" no es un fallo */
-      if (it.type !== 'track' || it.archived || !yearOf(it)) continue;
-      const k = fold((it.artists || [])[0] || '');
-      if (!porArt.has(k)) porArt.set(k, []);
-      porArt.get(k).push(it);
-    }
-    for (const l of porArt.values()) {
-      if (l.length < 3) continue;
-      const ys = l.map(yearOf).sort((a, b) => a - b);
-      const med = ys[Math.floor(ys.length / 2)];
-      if (med > 2004) continue;
-      for (const it of l) {
-        /* un remix de 2021 de un tema del 79 SÍ es de 2021: no es un fallo */
-        if (_RX_OTRA_VERSION.test(it.title)) continue;
-        if (yearOf(it) - med >= 12) s.add(it.id);
-      }
-    }
-  }
-  _conjCache[nombre] = s;
-  return s;
-}
-
-const _RX_OTRA_VERSION = /(remix|\bmix\b|\bedit\b|live|en vivo|directo|ac[uú]stic|acoustic|instrumental|karaoke|cover|reprise|demo|extended|bootleg|rework|versi[oó]n|version)/i;
-
-const _DECADAS_PALABRA = { cincuenta: 1950, sesenta: 1960, setenta: 1970, ochenta: 1980, noventa: 1990 };
-
-/* ---- el intérprete ----
-   Devuelve los trozos que ha entendido y lo que no ha sabido colocar, que se
-   busca como texto normal. Nunca falla: si no entiende nada se comporta como
-   el buscador de toda la vida. */
-function interpretar(txt) {
-  let s = _SIN_TILDES(txt);
-  const partes = [];
-  let orden = null, limite = null;
-  const quita = rx => { s = s.replace(rx, ' ').replace(/\s+/g, ' ').trim(); };
-  const mete = p => { partes.push(p); };
-
-  /* --- 1. TUS nombres, antes que nada ---
-     Va primero a propósito: tienes etiquetas que se llaman "Años 90" o
-     "EDM: trance de los 2000", y si el detector de décadas corriera antes se
-     comería el número y la etiqueta no llegaría a reconocerse nunca.
-     Se prueban las tres listas a la vez y gana el trozo MÁS LARGO, para que
-     "daft punk" (artista) gane a "punk" (etiqueta). */
-  const V = vocabulario();
-  for (let vuelta = 0; vuelta < 8 && s; vuelta++) {
-    const pal = s.split(' ').filter(Boolean);
-    let mejor = null;
-    for (let n = Math.min(6, pal.length); n >= 1 && !mejor; n--) {
-      for (let i = 0; i + n <= pal.length && !mejor; i++) {
-        const frag = pal.slice(i, i + n).join(' ');
-        if (frag.length < 3) continue;
-        if (_FRASES_MANDO.has(frag)) continue;
-        if (frag.split(' ').every(w => _RELLENO.has(w))) continue;
-        if (V.tags.has(frag)) mejor = { i, n, p: { t: 'tag', id: V.tags.get(frag).id, q: V.tags.get(frag).name } };
-        else if (V.artistas.has(frag)) mejor = { i, n, p: { t: 'artista', v: frag, q: V.artistas.get(frag) } };
-        else if (V.generos.has(frag)) mejor = { i, n, p: { t: 'genero', v: frag, q: frag } };
-      }
-    }
-    if (!mejor) break;
-    mete(mejor.p);
-    pal.splice(mejor.i, mejor.n);
-    s = pal.join(' ');
-  }
-
-  /* --- 2. cómo las quieres ordenadas ---
-     "lo mejor" se lee como "lo más conocido", no como "lo que tengo con 4 o 5
-     estrellas": solo tienes 8 cosas valoradas, así que por estrellas la
-     respuesta sería casi siempre una lista vacía. Para eso está "mis
-     favoritas", que sí dice explícitamente que hablas de tus notas. */
-  if (/\b(mas populares?|mas conocidas?|mas sonadas?|populares|lo mejor|mejores)\b/.test(s)) { orden = 'pop'; quita(/\b(mas populares?|mas conocidas?|mas sonadas?|populares|lo mejor|mejores)\b/); }
-  else if (/\b(mas raras?|menos conocidas?|desconocidas?)\b/.test(s)) { orden = 'raras'; quita(/\b(mas raras?|menos conocidas?|desconocidas?)\b/); }
-  else if (/\b(mas nuevas?|mas recientes?|recientes)\b/.test(s)) { orden = 'nuevas'; quita(/\b(mas nuevas?|mas recientes?|recientes)\b/); }
-  else if (/\b(mas (?:antiguas?|viejas?)|antiguas?)\b/.test(s)) { orden = 'viejas'; quita(/\b(mas (?:antiguas?|viejas?)|antiguas?)\b/); }
-  else if (/\b(al azar|aleatorio|random|sorpresa)\b/.test(s)) { orden = 'azar'; quita(/\b(al azar|aleatorio|random|sorpresa)\b/); }
-
-  /* --- 3. años ---
-     El orden importa: rangos, luego décadas, luego un año suelto. Y "2020"
-     solo es una década si lo dices como década ("los 2020", "2020s"); si no,
-     es el año 2020 y nada más. Sin esta distinción "canciones de 2020" sacaba
-     toda la década y parecía que el filtro estaba roto. */
-  let m = s.match(/\bentre (?:el )?(\d{4}) y (?:el )?(\d{4})\b/) || s.match(/\bde (?:el |los )?(\d{4}) a (?:el |los )?(\d{4})\b/);
-  if (m) { mete({ t: 'anyo', min: +m[1], max: +m[2], q: 'de ' + m[1] + ' a ' + m[2] }); quita(m[0]); }
-  m = s.match(/\b(?:antes de|hasta)(?: el| los)? (\d{4})\b/);
-  if (m) { mete({ t: 'anyo', min: 0, max: +m[1], q: 'antes de ' + m[1] }); quita(m[0]); }
-  m = s.match(/\b(?:despues de|desde|a partir de)(?: el| los)? (\d{4})\b/);
-  if (m) { mete({ t: 'anyo', min: +m[1], max: 9999, q: 'desde ' + m[1] }); quita(m[0]); }
-
-  const decada = d => { mete({ t: 'anyo', min: d, max: d + 9, q: 'los ' + (d >= 2000 ? d : String(d).slice(2)) }); };
-  let hayDecada = false;
-  /* "los 90", "años 80", "los 2000" */
-  m = s.match(/\b(?:los|anos|years)\s+((?:19|20)?\d0)\b/);
-  if (m) { let d = +m[1]; if (d < 100) d = d >= 30 ? 1900 + d : 2000 + d; if (d >= 1890 && d <= 2030) { decada(d); hayDecada = true; quita(m[0]); } }
-  /* "90s", "1990s", "2010s" */
-  if (!hayDecada) { m = s.match(/\b((?:19|20)?\d0)s\b/); if (m) { let d = +m[1]; if (d < 100) d = d >= 30 ? 1900 + d : 2000 + d; if (d >= 1890 && d <= 2030) { decada(d); hayDecada = true; quita(m[0]); } } }
-  /* "los noventa" */
-  if (!hayDecada) for (const k in _DECADAS_PALABRA) if (new RegExp('\\b' + k + '\\b').test(s)) { decada(_DECADAS_PALABRA[k]); hayDecada = true; quita(new RegExp('\\b' + k + '\\b')); break; }
-  /* un año suelto: "de 1985", "en 2020" */
-  if (!hayDecada) {
-    m = s.match(/\b(?:de|del|en|ano)\s+((?:19|20)\d{2})\b/) || s.match(/\b((?:19|20)\d{2})\b/);
-    if (m) { const y = +m[1]; mete({ t: 'anyo', min: y, max: y, q: 'de ' + y }); quita(m[0]); }
-  }
-
-  /* --- 4. cuántas quieres ---
-     Después de los años, o "los 90" se leería como "dame 90". */
-  m = s.match(/\b(?:las|los|solo|dame|primeras?)\s+(\d{1,4})\b/) || s.match(/^(\d{1,3})\b/);
-  if (m && +m[1] >= 1 && +m[1] <= 2000) { limite = +m[1]; quita(m[0]); }
-
-  /* --- 5. estado --- */
-  if (/\b(sin escuchar|no escuchadas?|que no he escuchado|pendientes?|por escuchar)\b/.test(s)) { mete({ t: 'escuchado', v: false, q: 'sin escuchar' }); quita(/\b(sin escuchar|no escuchadas?|que no he escuchado|pendientes?|por escuchar)\b/); }
-  else if (/\b(ya )?escuchadas?\b|\bque he escuchado\b|\boidas?\b/.test(s)) { mete({ t: 'escuchado', v: true, q: 'escuchadas' }); quita(/\b(ya )?escuchadas?\b|\bque he escuchado\b|\boidas?\b/); }
-  if (/\barchivad[oa]s?\b/.test(s)) { mete({ t: 'archivado', q: 'archivadas' }); quita(/\barchivad[oa]s?\b/); }
-
-  /* --- 6. estrellas --- */
-  m = s.match(/\b([1-5])\s*estrellas?\b/);
-  if (m) { mete({ t: 'estrellas', min: +m[1], q: m[1] + ' estrellas o más' }); quita(m[0]); }
-  else if (/\b(mis )?favorit[oa]s?\b/.test(s)) { mete({ t: 'estrellas', min: 4, q: 'tus favoritas' }); quita(/\b(mis )?favorit[oa]s?\b/); }
-
-  /* --- 7. duración --- */
-  m = s.match(/\b(?:menos de|menores de) (\d{1,3}) minutos?\b/);
-  if (m) { mete({ t: 'dur', max: +m[1] * 60000, q: 'menos de ' + m[1] + ' minutos' }); quita(m[0]); }
-  m = s.match(/\b(?:mas de|mayores de) (\d{1,3}) minutos?\b/);
-  if (m) { mete({ t: 'dur', min: +m[1] * 60000, q: 'más de ' + m[1] + ' minutos' }); quita(m[0]); }
-  if (/\b(cortas?|cortitas?)\b/.test(s)) { mete({ t: 'dur', max: 180000, q: 'cortas' }); quita(/\b(cortas?|cortitas?)\b/); }
-  if (/\blargas?\b/.test(s)) { mete({ t: 'dur', min: 360000, q: 'largas' }); quita(/\blargas?\b/); }
-
-  /* --- 8. tipo --- */
-  if (/\b(canciones?|temas?|tracks?)\b/.test(s)) { mete({ t: 'tipo', v: 'track', q: 'canciones' }); quita(/\b(canciones?|temas?|tracks?)\b/); }
-  else if (/\b(albumes?|album|discos?|lps?)\b/.test(s)) { mete({ t: 'tipo', v: 'album', q: 'álbumes' }); quita(/\b(albumes?|album|discos?|lps?)\b/); }
-  else if (/\b(artistas?|grupos?|bandas?)\b/.test(s)) { mete({ t: 'tipo', v: 'artist', q: 'artistas' }); quita(/\b(artistas?|grupos?|bandas?)\b/); }
-
-  /* --- 9. listas especiales --- */
-  if (/\bsin etiquet\w*\b|\bsin clasificar\b|\bsin ordenar\b/.test(s)) { mete({ t: 'sinTags', q: 'sin etiquetas' }); quita(/\bsin etiquet\w*\b|\bsin clasificar\b|\bsin ordenar\b/); }
-  if (/\brepetid[ao]s?\b|\bduplicad[ao]s?\b/.test(s)) { mete({ t: 'conj', c: 'repetida', q: 'repetidas' }); quita(/\brepetid[ao]s?\b|\bduplicad[ao]s?\b/); }
-  if (/\bano dudoso\b|\banos? mal\b|\bfecha mal\b|\bano raro\b|\bano dudos[ao]s?\b/.test(s)) { mete({ t: 'conj', c: 'anyodudoso', q: 'con el año dudoso' }); quita(/\bano dudoso\b|\banos? mal\b|\bfecha mal\b|\bano raro\b|\bano dudos[ao]s?\b/); }
-  if (/\bexplicit\w*\b|\bcon tacos\b/.test(s)) { mete({ t: 'explicito', q: 'explícitas' }); quita(/\bexplicit\w*\b|\bcon tacos\b/); }
-  if (/\baclamad[ao]s?\b|\bcanon\b|\bimprescindibles?\b/.test(s)) { mete({ t: 'canon', q: 'aclamados' }); quita(/\baclamad[ao]s?\b|\bcanon\b|\bimprescindibles?\b/); }
-  /* "samples" son las de la etiqueta que ya existe, no un invento aparte */
-  if (/\bsampl\w*\b|\bbreaks?\b/.test(s)) {
-    const tg = TAGS.find(t => !t.esCarpeta && /sampleada/i.test(t.name));
-    if (tg) { mete({ t: 'tag', id: tg.id, q: tg.name }); quita(/\bsampl\w*\b|\bbreaks?\b/); }
-  }
-
-  /* --- 10. lo que sobre, a buscar como texto --- */
-  s = s.split(' ').filter(w => w && !_RELLENO.has(w)).join(' ');
-  return { partes, resto: s.trim(), orden, limite, original: txt };
-}
-
-/* ¿este elemento cumple lo que has pedido? */
-function cumpleConsulta(it, C) {
-  if (!C || !C.partes.length) return true;
-  for (const p of C.partes) {
-    switch (p.t) {
-      case 'anyo': { const y = yearOf(it); if (!y || y < p.min || y > p.max) return false; break; }
-      case 'escuchado': if (it.type === 'artist' || !!it.listened !== p.v) return false; break;
-      case 'archivado': if (!it.archived) return false; break;
-      case 'estrellas': if ((it.rating || 0) < p.min) return false; break;
-      case 'dur': {
-        const ms = it.type === 'album' ? it.totalDurationMs : it.durationMs;
-        if (!ms) return false;
-        if (p.min && ms < p.min) return false;
-        if (p.max && ms > p.max) return false;
-        break;
-      }
-      case 'tipo': if (it.type !== p.v) return false; break;
-      case 'sinTags': if ((it.tagIds || []).length) return false; break;
-      case 'conj': if (!conjunto(p.c).has(it.id)) return false; break;
-      case 'explicito': if (!it.explicit) return false; break;
-      case 'canon': if (!esCanon(it)) return false; break;
-      case 'tag': if (!(it.tagIds || []).includes(p.id)) return false; break;
-      case 'artista': if (!(it.artists || []).some(a => _SIN_TILDES(a) === p.v)) return false; break;
-      case 'genero': if (!(it.genres || []).some(g => _SIN_TILDES(g) === p.v)) return false; break;
-    }
-  }
-  return true;
-}
-
-/* Ordena y recorta si la frase lo pedía. */
-function aplicarOrdenConsulta(rows, C) {
-  if (!C) return rows;
-  if (C.orden) {
-    const r = rows.slice();
-    if (C.orden === 'pop') r.sort((a, b) => (b.popularity ?? -1) - (a.popularity ?? -1));
-    else if (C.orden === 'raras') r.sort((a, b) => (a.popularity ?? 999) - (b.popularity ?? 999));
-    else if (C.orden === 'nuevas') r.sort((a, b) => yearOf(b) - yearOf(a));
-    else if (C.orden === 'viejas') r.sort((a, b) => (yearOf(a) || 9999) - (yearOf(b) || 9999));
-    else if (C.orden === 'azar') for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [r[i], r[j]] = [r[j], r[i]]; }
-    rows = r;
-  }
-  if (C.limite) rows = rows.slice(0, C.limite);
-  return rows;
-}
-
-/* Los ejemplos de la pantalla de inicio. No están de adorno: son la única
-   forma de que se sepa que esto existe y hasta dónde llega. */
-const EJEMPLOS_CONSULTA = [
-  'canciones de los 90 sin escuchar',
-  'lo mejor de los 80',
-  'álbumes que no he escuchado',
-  'canciones sin etiquetas',
-  'las 50 más populares sin escuchar',
-  'rock de los 70 al azar',
-  'canciones cortas sin escuchar',
-  'canciones repetidas',
-  'canciones con el año dudoso',
-  'sampleadas'
-];
-
-let CONSULTA = null;
-
+/* ============ preguntarle al vault en cristiano ============
+   El problema de tener 17.000 elementos no es el tamaño: es que para ver algo
+   concreto había que ir componiendo filtros a mano (tipo + década + etiqueta +
+   estado + orden), y eso solo lo hace quien se sabe la app de memoria.
+   Aquí se escribe la frase y ya: "canciones de los 90 sin escuchar".
+
+   Todo es local — ni red, ni claves, ni esperas. Lo que entiende sale del
+   propio vault: tus etiquetas, tus géneros y tus artistas de verdad. */
+
+const _SIN_TILDES = s => fold(s).replace(/[^a-z0-9ñ ]+/g, ' ').replace(/\s+/g, ' ').trim();
+
+/* Palabras que nunca son un nombre: si no se apartan, "de" o "los" acaban
+   casando con algún artista raro y el filtro se vuelve loco. */
+const _RELLENO = new Set(('de del la el los las un una unos unas que con en y o mi mis tus tu para por mas muy todo toda todos todas ' +
+  'algun alguna algunos algunas ponme dame quiero busca buscar buscame ensename ver saca sacame hay tengo tenga sean son ' +
+  'estilo tipo genero musica cosas algo cual cuales como quiero').split(' '));
+
+/* Frases que siempre son una orden, pase lo que pase: aunque exista un género
+   o un artista que se llame así, aquí mandan. Sin esto, el ruido del catálogo
+   de Spotify puede secuestrar la frase. */
+const _FRASES_MANDO = new Set(['lo mejor', 'mejores', 'al azar', 'sin escuchar', 'escuchadas', 'escuchada',
+  'mas populares', 'mas conocidas', 'mas nuevas', 'mas antiguas', 'canciones', 'cancion', 'albumes', 'album',
+  'discos', 'disco', 'artistas', 'artista', 'cortas', 'largas', 'repetidas', 'duplicadas', 'favoritas',
+  'pendientes', 'archivadas', 'sin etiquetas', 'sin etiquetar', 'aleatorio', 'random']);
+
+/* Vocabulario sacado de tus datos, no inventado. Se calcula una vez y se tira
+   cuando cambian los elementos o las etiquetas. */
+let _vocabCache = null, _vocabFirma = '';
+function vocabulario() {
+  const firma = ITEMS.length + '|' + _versionItems + '|' + TAGS.length + '|' + _versionTags;
+  if (_vocabCache && _vocabFirma === firma) return _vocabCache;
+  const tags = new Map(), generos = new Map(), artistas = new Map();
+  for (const t of TAGS) {
+    if (t.esCarpeta) continue;
+    const k = _SIN_TILDES(t.name);
+    if (k.length >= 3 && !tags.has(k)) tags.set(k, t);
+  }
+  const cuentaGen = new Map();
+  for (const it of ITEMS) {
+    for (const g of (it.genres || [])) {
+      const k = _SIN_TILDES(g);
+      if (k.length >= 3) cuentaGen.set(k, (cuentaGen.get(k) || 0) + 1);
+    }
+    for (const a of (it.artists || [])) {
+      const k = _SIN_TILDES(a);
+      if (k.length >= 3 && !artistas.has(k)) artistas.set(k, a);
+    }
+  }
+  /* De las 2.104 cadenas de género que traen Spotify y Last.fm, 1.063 tocan
+     menos de tres elementos: son ruido ("18100", "gordo ingles", "yes"...) y
+     una de ellas es literalmente "lo mejor", que secuestraba la frase "lo
+     mejor de los 80" y la convertía en un filtro de género con un resultado.
+     Misma regla que ya usa la taxonomía: por debajo de tres, fuera. */
+  for (const [k, n] of cuentaGen) if (n >= 3 && !_FRASES_MANDO.has(k)) generos.set(k, k);
+  _vocabCache = { tags, generos, artistas };
+  _vocabFirma = firma;
+  return _vocabCache;
+}
+
+/* Conjuntos que cuestan un recorrido entero: se calculan solo si la pregunta
+   los pide, y se guardan hasta que cambie el vault. */
+let _conjCache = {}, _conjFirma = '';
+function conjunto(nombre) {
+  const firma = ITEMS.length + '|' + _versionItems + '|' + _versionTags;
+  if (_conjFirma !== firma) { _conjCache = {}; _conjFirma = firma; }
+  if (_conjCache[nombre]) return _conjCache[nombre];
+  const s = new Set();
+  if (nombre === 'repetida') {
+    /* mismo artista y título idéntico, y ninguna de las dos es un remix ni un
+       directo: entonces sí es la misma canción metida dos veces */
+    const g = new Map();
+    for (const it of ITEMS) {
+      if (it.type === 'artist' || it.archived) continue;
+      const k = fold((it.artists || [])[0] || '') + '|' + fold(it.title).replace(/\s*[-(\[].*$/, '').trim();
+      if (!g.has(k)) g.set(k, []);
+      g.get(k).push(it);
+    }
+    for (const l of g.values()) {
+      if (l.length < 2) continue;
+      if (new Set(l.map(x => fold(x.title))).size !== 1) continue;
+      if (l.some(x => _RX_OTRA_VERSION.test(x.title))) continue;
+      l.forEach(x => s.add(x.id));
+    }
+  } else if (nombre === 'anyodudoso') {
+    /* Si de un artista tienes ocho temas de los 70 y uno pone 2020, ese 2020
+       es la reedición: el propio vault hace de testigo. Detecta cosas que
+       mirar el nombre del disco no pilla — "Curtis Mayfield · Move On Up"
+       pone 2020 y su disco no dice "remaster" por ningún lado. */
+    const porArt = new Map();
+    for (const it of ITEMS) {
+      /* solo canciones: en un recopilatorio el año del DISCO sí es el año en
+         que salió ese disco, así que "The Beatles · 1 (2000)" no es un fallo */
+      if (it.type !== 'track' || it.archived || !yearOf(it)) continue;
+      const k = fold((it.artists || [])[0] || '');
+      if (!porArt.has(k)) porArt.set(k, []);
+      porArt.get(k).push(it);
+    }
+    for (const l of porArt.values()) {
+      if (l.length < 3) continue;
+      const ys = l.map(yearOf).sort((a, b) => a - b);
+      const med = ys[Math.floor(ys.length / 2)];
+      if (med > 2004) continue;
+      for (const it of l) {
+        /* un remix de 2021 de un tema del 79 SÍ es de 2021: no es un fallo */
+        if (_RX_OTRA_VERSION.test(it.title)) continue;
+        if (yearOf(it) - med >= 12) s.add(it.id);
+      }
+    }
+  }
+  _conjCache[nombre] = s;
+  return s;
+}
+
+const _RX_OTRA_VERSION = /(remix|\bmix\b|\bedit\b|live|en vivo|directo|ac[uú]stic|acoustic|instrumental|karaoke|cover|reprise|demo|extended|bootleg|rework|versi[oó]n|version)/i;
+
+const _DECADAS_PALABRA = { cincuenta: 1950, sesenta: 1960, setenta: 1970, ochenta: 1980, noventa: 1990 };
+
+/* ---- el intérprete ----
+   Devuelve los trozos que ha entendido y lo que no ha sabido colocar, que se
+   busca como texto normal. Nunca falla: si no entiende nada se comporta como
+   el buscador de toda la vida. */
+function interpretar(txt) {
+  let s = _SIN_TILDES(txt);
+  const partes = [];
+  let orden = null, limite = null;
+  const quita = rx => { s = s.replace(rx, ' ').replace(/\s+/g, ' ').trim(); };
+  const mete = p => { partes.push(p); };
+
+  /* --- 1. TUS nombres, antes que nada ---
+     Va primero a propósito: tienes etiquetas que se llaman "Años 90" o
+     "EDM: trance de los 2000", y si el detector de décadas corriera antes se
+     comería el número y la etiqueta no llegaría a reconocerse nunca.
+     Se prueban las tres listas a la vez y gana el trozo MÁS LARGO, para que
+     "daft punk" (artista) gane a "punk" (etiqueta). */
+  const V = vocabulario();
+  for (let vuelta = 0; vuelta < 8 && s; vuelta++) {
+    const pal = s.split(' ').filter(Boolean);
+    let mejor = null;
+    for (let n = Math.min(6, pal.length); n >= 1 && !mejor; n--) {
+      for (let i = 0; i + n <= pal.length && !mejor; i++) {
+        const frag = pal.slice(i, i + n).join(' ');
+        if (frag.length < 3) continue;
+        if (_FRASES_MANDO.has(frag)) continue;
+        if (frag.split(' ').every(w => _RELLENO.has(w))) continue;
+        if (V.tags.has(frag)) mejor = { i, n, p: { t: 'tag', id: V.tags.get(frag).id, q: V.tags.get(frag).name } };
+        else if (V.artistas.has(frag)) mejor = { i, n, p: { t: 'artista', v: frag, q: V.artistas.get(frag) } };
+        else if (V.generos.has(frag)) mejor = { i, n, p: { t: 'genero', v: frag, q: frag } };
+      }
+    }
+    if (!mejor) break;
+    mete(mejor.p);
+    pal.splice(mejor.i, mejor.n);
+    s = pal.join(' ');
+  }
+
+  /* --- 2. cómo las quieres ordenadas ---
+     "lo mejor" se lee como "lo más conocido", no como "lo que tengo con 4 o 5
+     estrellas": solo tienes 8 cosas valoradas, así que por estrellas la
+     respuesta sería casi siempre una lista vacía. Para eso está "mis
+     favoritas", que sí dice explícitamente que hablas de tus notas. */
+  if (/\b(mas populares?|mas conocidas?|mas sonadas?|populares|lo mejor|mejores)\b/.test(s)) { orden = 'pop'; quita(/\b(mas populares?|mas conocidas?|mas sonadas?|populares|lo mejor|mejores)\b/); }
+  else if (/\b(mas raras?|menos conocidas?|desconocidas?)\b/.test(s)) { orden = 'raras'; quita(/\b(mas raras?|menos conocidas?|desconocidas?)\b/); }
+  else if (/\b(mas nuevas?|mas recientes?|recientes)\b/.test(s)) { orden = 'nuevas'; quita(/\b(mas nuevas?|mas recientes?|recientes)\b/); }
+  else if (/\b(mas (?:antiguas?|viejas?)|antiguas?)\b/.test(s)) { orden = 'viejas'; quita(/\b(mas (?:antiguas?|viejas?)|antiguas?)\b/); }
+  else if (/\b(al azar|aleatorio|random|sorpresa)\b/.test(s)) { orden = 'azar'; quita(/\b(al azar|aleatorio|random|sorpresa)\b/); }
+
+  /* --- 3. años ---
+     El orden importa: rangos, luego décadas, luego un año suelto. Y "2020"
+     solo es una década si lo dices como década ("los 2020", "2020s"); si no,
+     es el año 2020 y nada más. Sin esta distinción "canciones de 2020" sacaba
+     toda la década y parecía que el filtro estaba roto. */
+  let m = s.match(/\bentre (?:el )?(\d{4}) y (?:el )?(\d{4})\b/) || s.match(/\bde (?:el |los )?(\d{4}) a (?:el |los )?(\d{4})\b/);
+  if (m) { mete({ t: 'anyo', min: +m[1], max: +m[2], q: 'de ' + m[1] + ' a ' + m[2] }); quita(m[0]); }
+  m = s.match(/\b(?:antes de|hasta)(?: el| los)? (\d{4})\b/);
+  if (m) { mete({ t: 'anyo', min: 0, max: +m[1], q: 'antes de ' + m[1] }); quita(m[0]); }
+  m = s.match(/\b(?:despues de|desde|a partir de)(?: el| los)? (\d{4})\b/);
+  if (m) { mete({ t: 'anyo', min: +m[1], max: 9999, q: 'desde ' + m[1] }); quita(m[0]); }
+
+  const decada = d => { mete({ t: 'anyo', min: d, max: d + 9, q: 'los ' + (d >= 2000 ? d : String(d).slice(2)) }); };
+  let hayDecada = false;
+  /* "los 90", "años 80", "los 2000" */
+  m = s.match(/\b(?:los|anos|years)\s+((?:19|20)?\d0)\b/);
+  if (m) { let d = +m[1]; if (d < 100) d = d >= 30 ? 1900 + d : 2000 + d; if (d >= 1890 && d <= 2030) { decada(d); hayDecada = true; quita(m[0]); } }
+  /* "90s", "1990s", "2010s" */
+  if (!hayDecada) { m = s.match(/\b((?:19|20)?\d0)s\b/); if (m) { let d = +m[1]; if (d < 100) d = d >= 30 ? 1900 + d : 2000 + d; if (d >= 1890 && d <= 2030) { decada(d); hayDecada = true; quita(m[0]); } } }
+  /* "los noventa" */
+  if (!hayDecada) for (const k in _DECADAS_PALABRA) if (new RegExp('\\b' + k + '\\b').test(s)) { decada(_DECADAS_PALABRA[k]); hayDecada = true; quita(new RegExp('\\b' + k + '\\b')); break; }
+  /* un año suelto: "de 1985", "en 2020" */
+  if (!hayDecada) {
+    m = s.match(/\b(?:de|del|en|ano)\s+((?:19|20)\d{2})\b/) || s.match(/\b((?:19|20)\d{2})\b/);
+    if (m) { const y = +m[1]; mete({ t: 'anyo', min: y, max: y, q: 'de ' + y }); quita(m[0]); }
+  }
+
+  /* --- 4. cuántas quieres ---
+     Después de los años, o "los 90" se leería como "dame 90". */
+  m = s.match(/\b(?:las|los|solo|dame|primeras?)\s+(\d{1,4})\b/) || s.match(/^(\d{1,3})\b/);
+  if (m && +m[1] >= 1 && +m[1] <= 2000) { limite = +m[1]; quita(m[0]); }
+
+  /* --- 5. estado --- */
+  if (/\b(sin escuchar|no escuchadas?|que no he escuchado|pendientes?|por escuchar)\b/.test(s)) { mete({ t: 'escuchado', v: false, q: 'sin escuchar' }); quita(/\b(sin escuchar|no escuchadas?|que no he escuchado|pendientes?|por escuchar)\b/); }
+  else if (/\b(ya )?escuchadas?\b|\bque he escuchado\b|\boidas?\b/.test(s)) { mete({ t: 'escuchado', v: true, q: 'escuchadas' }); quita(/\b(ya )?escuchadas?\b|\bque he escuchado\b|\boidas?\b/); }
+  if (/\barchivad[oa]s?\b/.test(s)) { mete({ t: 'archivado', q: 'archivadas' }); quita(/\barchivad[oa]s?\b/); }
+
+  /* --- 6. estrellas --- */
+  m = s.match(/\b([1-5])\s*estrellas?\b/);
+  if (m) { mete({ t: 'estrellas', min: +m[1], q: m[1] + ' estrellas o más' }); quita(m[0]); }
+  else if (/\b(mis )?favorit[oa]s?\b/.test(s)) { mete({ t: 'estrellas', min: 4, q: 'tus favoritas' }); quita(/\b(mis )?favorit[oa]s?\b/); }
+
+  /* --- 7. duración --- */
+  m = s.match(/\b(?:menos de|menores de) (\d{1,3}) minutos?\b/);
+  if (m) { mete({ t: 'dur', max: +m[1] * 60000, q: 'menos de ' + m[1] + ' minutos' }); quita(m[0]); }
+  m = s.match(/\b(?:mas de|mayores de) (\d{1,3}) minutos?\b/);
+  if (m) { mete({ t: 'dur', min: +m[1] * 60000, q: 'más de ' + m[1] + ' minutos' }); quita(m[0]); }
+  if (/\b(cortas?|cortitas?)\b/.test(s)) { mete({ t: 'dur', max: 180000, q: 'cortas' }); quita(/\b(cortas?|cortitas?)\b/); }
+  if (/\blargas?\b/.test(s)) { mete({ t: 'dur', min: 360000, q: 'largas' }); quita(/\blargas?\b/); }
+
+  /* --- 8. tipo --- */
+  if (/\b(canciones?|temas?|tracks?)\b/.test(s)) { mete({ t: 'tipo', v: 'track', q: 'canciones' }); quita(/\b(canciones?|temas?|tracks?)\b/); }
+  else if (/\b(albumes?|album|discos?|lps?)\b/.test(s)) { mete({ t: 'tipo', v: 'album', q: 'álbumes' }); quita(/\b(albumes?|album|discos?|lps?)\b/); }
+  else if (/\b(artistas?|grupos?|bandas?)\b/.test(s)) { mete({ t: 'tipo', v: 'artist', q: 'artistas' }); quita(/\b(artistas?|grupos?|bandas?)\b/); }
+
+  /* --- 9. listas especiales --- */
+  if (/\bsin etiquet\w*\b|\bsin clasificar\b|\bsin ordenar\b/.test(s)) { mete({ t: 'sinTags', q: 'sin etiquetas' }); quita(/\bsin etiquet\w*\b|\bsin clasificar\b|\bsin ordenar\b/); }
+  if (/\brepetid[ao]s?\b|\bduplicad[ao]s?\b/.test(s)) { mete({ t: 'conj', c: 'repetida', q: 'repetidas' }); quita(/\brepetid[ao]s?\b|\bduplicad[ao]s?\b/); }
+  if (/\bano dudoso\b|\banos? mal\b|\bfecha mal\b|\bano raro\b|\bano dudos[ao]s?\b/.test(s)) { mete({ t: 'conj', c: 'anyodudoso', q: 'con el año dudoso' }); quita(/\bano dudoso\b|\banos? mal\b|\bfecha mal\b|\bano raro\b|\bano dudos[ao]s?\b/); }
+  if (/\bexplicit\w*\b|\bcon tacos\b/.test(s)) { mete({ t: 'explicito', q: 'explícitas' }); quita(/\bexplicit\w*\b|\bcon tacos\b/); }
+  if (/\baclamad[ao]s?\b|\bcanon\b|\bimprescindibles?\b/.test(s)) { mete({ t: 'canon', q: 'aclamados' }); quita(/\baclamad[ao]s?\b|\bcanon\b|\bimprescindibles?\b/); }
+  /* "samples" son las de la etiqueta que ya existe, no un invento aparte */
+  if (/\bsampl\w*\b|\bbreaks?\b/.test(s)) {
+    const tg = TAGS.find(t => !t.esCarpeta && /sampleada/i.test(t.name));
+    if (tg) { mete({ t: 'tag', id: tg.id, q: tg.name }); quita(/\bsampl\w*\b|\bbreaks?\b/); }
+  }
+
+  /* --- 10. lo que sobre, a buscar como texto --- */
+  s = s.split(' ').filter(w => w && !_RELLENO.has(w)).join(' ');
+  return { partes, resto: s.trim(), orden, limite, original: txt };
+}
+
+/* ¿este elemento cumple lo que has pedido? */
+function cumpleConsulta(it, C) {
+  if (!C || !C.partes.length) return true;
+  for (const p of C.partes) {
+    switch (p.t) {
+      case 'anyo': { const y = yearOf(it); if (!y || y < p.min || y > p.max) return false; break; }
+      case 'escuchado': if (it.type === 'artist' || !!it.listened !== p.v) return false; break;
+      case 'archivado': if (!it.archived) return false; break;
+      case 'estrellas': if ((it.rating || 0) < p.min) return false; break;
+      case 'dur': {
+        const ms = it.type === 'album' ? it.totalDurationMs : it.durationMs;
+        if (!ms) return false;
+        if (p.min && ms < p.min) return false;
+        if (p.max && ms > p.max) return false;
+        break;
+      }
+      case 'tipo': if (it.type !== p.v) return false; break;
+      case 'sinTags': if ((it.tagIds || []).length) return false; break;
+      case 'conj': if (!conjunto(p.c).has(it.id)) return false; break;
+      case 'explicito': if (!it.explicit) return false; break;
+      case 'canon': if (!esCanon(it)) return false; break;
+      case 'tag': if (!(it.tagIds || []).includes(p.id)) return false; break;
+      case 'artista': if (!(it.artists || []).some(a => _SIN_TILDES(a) === p.v)) return false; break;
+      case 'genero': if (!(it.genres || []).some(g => _SIN_TILDES(g) === p.v)) return false; break;
+    }
+  }
+  return true;
+}
+
+/* Ordena y recorta si la frase lo pedía. */
+function aplicarOrdenConsulta(rows, C) {
+  if (!C) return rows;
+  if (C.orden) {
+    const r = rows.slice();
+    if (C.orden === 'pop') r.sort((a, b) => (b.popularity ?? -1) - (a.popularity ?? -1));
+    else if (C.orden === 'raras') r.sort((a, b) => (a.popularity ?? 999) - (b.popularity ?? 999));
+    else if (C.orden === 'nuevas') r.sort((a, b) => yearOf(b) - yearOf(a));
+    else if (C.orden === 'viejas') r.sort((a, b) => (yearOf(a) || 9999) - (yearOf(b) || 9999));
+    else if (C.orden === 'azar') for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [r[i], r[j]] = [r[j], r[i]]; }
+    rows = r;
+  }
+  if (C.limite) rows = rows.slice(0, C.limite);
+  return rows;
+}
+
+/* Los ejemplos de la pantalla de inicio. No están de adorno: son la única
+   forma de que se sepa que esto existe y hasta dónde llega. */
+const EJEMPLOS_CONSULTA = [
+  'canciones de los 90 sin escuchar',
+  'lo mejor de los 80',
+  'álbumes que no he escuchado',
+  'canciones sin etiquetas',
+  'las 50 más populares sin escuchar',
+  'rock de los 70 al azar',
+  'canciones cortas sin escuchar',
+  'canciones repetidas',
+  'canciones con el año dudoso',
+  'sampleadas'
+];
+
+let CONSULTA = null;
+
 /* ============ selection ============ */
 let selMode = false;
 let selected = new Set();
@@ -7861,214 +7861,214 @@ async function buscarAnyosOriginales() {
   }
 }
 
-/* ============ el año exacto de cada canción ============
-   Spotify no guarda cuándo salió la canción, sino cuándo salió la edición que
-   tiene en catálogo. Por eso "Blue Moon" de Billie Holiday pone 2020 y "Every
-   Breath You Take" pone 2024.
-
-   La única base que sabe cuándo se publicó por primera vez una GRABACIÓN es
-   MusicBrainz, y va a una petición por segundo (y aun así contesta 503 a
-   ratos). Son horas. Por eso esto es un trabajo que se puede parar y seguir
-   donde iba: la respuesta se guarda en cada elemento, así que cerrar la
-   pestaña no pierde nada.
-
-   Lo que NO hace, a propósito:
-   - No toca `releaseDate`. Ese es su dato y se queda como está; el año bueno
-     va aparte, en `anyoReal`, y es el que enseña la app.
-   - No toca `touchedAt`. Marcar 11.000 elementos como "editados por él"
-     reviviría todo lo que hubiera borrado en otro dispositivo (ver fundir()).
-     Para que el dato viaje entre dispositivos está unirHistoriales, que es
-     donde van las cosas que solo crecen. */
-
-/* Un año verificado manda sobre la fecha de Spotify. Con esto, las décadas,
-   los filtros, el orden y "canciones de los 90" pasan a ser ciertos. */
-const anyoBueno = it => (it && it.anyoReal > 0) ? it.anyoReal : 0;
-
-/* Misma limpieza de puntuación fina que ya se usa con los discos: MusicBrainz
-   escribe "Sgt. Pepper’s" con apóstrofo curvo y Spotify con el recto. */
-const _mismaPunt = s => fold(s).replace(/[’‘‛`´]/g, "'").replace(/[“”„]/g, '"')
-  .replace(/[–—]/g, '-').replace(/\s+/g, ' ').trim();
-
-/* Quita lo que Spotify le cuelga al título para poder buscar la grabación:
-   "Africa - 2020 Remaster", "Billie Jean (feat. X)". */
-function _tituloGrabacion(t) {
-  let s = String(t || '');
-  s = s.replace(/\s*[([][^)\]]*(feat|ft|with|remaster|remasteriz|mono|stereo|bonus|deluxe|anniversary|from|soundtrack|restored|edition|edicion)[^)\]]*[)\]]/ig, '');
-  s = s.replace(/\s+[-–—]\s+[^-–—]*$/, m =>
-    /(remaster|remasteriz|mono|stereo|version|versi[oó]n|restored|edition|edici[oó]n|\d{4}\s*mix|re-?issue|anniversar)/i.test(m) ? '' : m);
-  return s.replace(/\s+/g, ' ').trim();
-}
-
-/* Le pregunta a MusicBrainz cuándo se grabó esto por primera vez.
-   Devuelve un año, 0 ("preguntado y no hay nada fiable") o null ("no se ha
-   podido preguntar"), que son tres cosas distintas: confundirlas haría que una
-   caída de MusicBrainz se guardara como "esta canción no tiene año". */
-async function _mbAnyoGrabacion(titulo, artista, anyoActual) {
-  const limpio = _tituloGrabacion(titulo);
-  if (!limpio || !artista) return 0;
-  const q = 'artist:"' + String(artista).replace(/"/g, '') + '" AND recording:"' + limpio.replace(/"/g, '') + '"';
-  /* 100 y no 25, que es el maximo que deja MusicBrainz y cuesta exactamente
-     lo mismo: una peticion. De "Jailhouse Rock" hay 386 grabaciones y no
-     vienen ordenadas por fecha — con 25 la mas antigua que salia era de 1973
-     y con 100 sale la de 1957, que es la buena. */
-  const url = 'https://musicbrainz.org/ws/2/recording/?query=' + encodeURIComponent(q) + '&fmt=json&limit=100';
-  let res;
-  try { res = await fetch(url, { headers: { Accept: 'application/json' } }); }
-  catch (e) { return null; }
-  if (res.status === 503 || res.status === 429 || res.status === 403 || res.status >= 500) return null;
-  if (!res.ok) return 0;
-  let j; try { j = await res.json(); } catch (e) { return 0; }
-
-  const quiero = _mismaPunt(limpio), quienEs = _mismaPunt(artista);
-  let mejor = 0;
-  for (const r of (j.recordings || [])) {
-    if ((r.score || 0) < 90) continue;
-    /* el título tiene que ser ESE, no otro que empiece igual */
-    if (_mismaPunt(r.title || '') !== quiero) continue;
-    /* y el artista el mismo, no un homónimo ni quien versionó el tema */
-    const cred = (r['artist-credit'] || []).map(c => _mismaPunt(c.name || '')).join(' ');
-    if (!cred.includes(quienEs) && !quienEs.includes(cred)) continue;
-    const m = String(r['first-release-date'] || '').match(/^(\d{4})/);
-    if (!m) continue;
-    const y = +m[1];
-    if (y < 1900) continue;
-    /* la más antigua de todas: el primer resultado NO vale.
-       Probado en vivo: "Good Times" de Chic da 1996 en el primero y 1979 en el
-       bueno; "Amen, Brother" da 2003 y 1969. */
-    if (!mejor || y < mejor) mejor = y;
-  }
-  /* Si no es anterior a lo que ya hay, no aporta: un "original" posterior a la
-     edición que tienes no existe. Asi tampoco se estropea nada que ya esté bien. */
-  return (mejor && anyoActual && mejor < anyoActual) ? mejor : 0;
-}
-
-/* Cuánto cuesta de verdad cada pregunta, medido en vivo desde el navegador:
-   la respuesta tarda ~0,9 s, pero MusicBrainz suelta un 503 en un tercio largo
-   de los intentos y hay que repetir. Sale a unos 3,4 s por canción. */
-const SEG_POR_PREGUNTA = 3.4;
-
-/* La cola de trabajo, en el orden en que conviene preguntarla.
-   Se agrupa por artista+obra para que las repetidas gasten una sola petición.
-   Con `soloDudosas` se queda solo con lo que tiene papeletas de estar mal: lo
-   que huele a reedición y lo anterior a 2010. Lo de 2010 en adelante son tres
-   cuartas partes de la cola y casi nunca cambia — en una muestra al azar no
-   falló ni una. No merece la pena tenerte el móvil siete horas para eso. */
-function _colaAnyosExactos(soloDudosas) {
-  const g = new Map();
-  for (const it of ITEMS) {
-    if (it.type !== 'track' || it.archived) continue;
-    if (it.anyoReal !== undefined) continue;              /* ya preguntado */
-    /* un remix o un directo de 2021 de un tema del 79 SÍ es de 2021 */
-    if (_RX_REMIX.test(_sufijo(it.title))) continue;
-    const y = _anyoDe(it); if (!y) continue;
-    const art = principalDe(it); if (!art) continue;
-    const k = fold(art) + '|' + fold(_tituloGrabacion(it.title));
-    if (!g.has(k)) g.set(k, { titulo: _tituloGrabacion(it.title), artista: art, anyo: y, items: [], pistas: '' });
-    const e = g.get(k);
-    e.items.push(it);
-    if (y < e.anyo) e.anyo = y;    /* se pregunta contra la más antigua que tenga */
-    /* Para decidir el orden hace falta el título SIN limpiar y el nombre del
-       disco: la coletilla ("- 2011 Remaster", "Greatest Hits") es justo la
-       pista de que el año está mal, y _tituloGrabacion acaba de quitarla.
-       Mirando el título ya limpio, el grupo de "huele a reedición" salía casi
-       vacío y el trabajo empezaba por donde menos falta hacía. */
-    e.pistas += ' ' + it.title + ' ' + (it.albumName || '');
-  }
-  /* Primero lo que huele a reedición, luego lo anterior a 2010 y al final lo
-     moderno, que casi siempre ya está bien. Así la primera hora es la que más
-     cambia y puede parar cuando quiera. */
-  const prio = e => {
-    if (_RX_REEDICION.test(e.pistas) || _RX_RECOP.test(e.pistas)) return 0;
-    if (e.anyo >= 2010) return 2;
-    return 1;
-  };
-  let l = [...g.values()];
-  if (soloDudosas) l = l.filter(e => prio(e) < 2);
-  /* Dentro de cada grupo, primero los años MÁS TARDÍOS. Un tema que pone 2005
-     tiene muchas más papeletas de ser una reedición que uno que pone 1928:
-     el de 1928 nadie lo ha vuelto a publicar con fecha nueva. Ordenando al
-     revés, el trabajo empezaba por lo más antiguo, que es lo que ya está bien. */
-  return l.sort((a, b) => prio(a) - prio(b) || b.anyo - a.anyo);
-}
-
-let _anyosEnMarcha = false, _pararAnyosExactos = false;
-
-async function ponerAnyosExactos(soloDudosas) {
-  if (_anyosEnMarcha) { _pararAnyosExactos = true; return; }
-  _anyosEnMarcha = true; _pararAnyosExactos = false;
-  pedirDespertar();
-  const btn = document.getElementById(soloDudosas ? 'anyoExactoBtn' : 'anyoExactoTodo');
-  const otro = document.getElementById(soloDudosas ? 'anyoExactoTodo' : 'anyoExactoBtn');
-  const est = document.getElementById('anyoExactoEst');
-  const barra = document.getElementById('anyoExactoBarra');
-  if (btn) btn.textContent = 'Detener';
-  if (otro) otro.disabled = true;
-
-  const cola = _colaAnyosExactos(soloDudosas);
-  const total = cola.length;
-  let i = 0, cambiados = 0, iguales = 0, sinGuardar = 0, seguidosMal = 0, espera = 1100;
-  const t0 = Date.now();
-  const pinta = () => {
-    if (barra) barra.style.width = total ? (100 * i / total).toFixed(1) + '%' : '0%';
-    if (!est) return;
-    const queda = i > 4 ? Math.round((Date.now() - t0) / i * (total - i) / 1000) : 0;
-    est.textContent = i.toLocaleString('es-ES') + ' de ' + total.toLocaleString('es-ES')
-      + ' · ' + cambiados.toLocaleString('es-ES') + ' con año nuevo'
-      + (iguales ? ', ' + iguales.toLocaleString('es-ES') + ' ya estaban bien' : '')
-      + (queda ? ' · queda ' + (queda > 3600 ? Math.floor(queda / 3600) + ' h ' + Math.round((queda % 3600) / 60) + ' min' : Math.ceil(queda / 60) + ' min') : '');
-  };
-
-  try {
-    /* Con índice y no con for-of: cuando MusicBrainz dice "estoy ocupado" hay
-       que repetir ESA misma, no saltar a la siguiente. Saltándola se quedaba
-       sin preguntar para siempre, porque la cola solo trae las que no tienen
-       respuesta y esa se habría dado por vista. */
-    let k = 0;
-    while (k < cola.length) {
-      if (_pararAnyosExactos) break;
-      const e = cola[k];
-      const y = await _mbAnyoGrabacion(e.titulo, e.artista, e.anyo);
-      if (y === null) {
-        /* No se apunta nada: "no he podido preguntar" no es "no hay año".
-
-           La espera sube poco a poco y con tope bajo, no al doble cada vez.
-           Medido en vivo: MusicBrainz suelta un 503 a la tercera petición más
-           o menos SIEMPRE, vayas rápido o despacio (a 1,1 s falla el 33%; a
-           1,6 s falla el 36% y encima tardas más). O sea que no es que le
-           estemos apretando: está ocupado y ya. Con esperas que se doblaban
-           hasta 30 s, un 503 suelto costaba medio minuto por las buenas. */
-        seguidosMal++;
-        espera = Math.min(1100 + 600 * seguidosMal, 6000);
-        if (seguidosMal >= 10) {
-          toast('MusicBrainz no contesta. Lo dejo aquí; vuelve a darle luego y sigo donde iba.');
-          break;
-        }
-        await new Promise(r => setTimeout(r, espera));
-        continue;                       /* misma k: se repite esta */
-      }
-      seguidosMal = 0; espera = 1100;
-      /* el 0 también se guarda: es "preguntado y no hay", para no repetirlo */
-      for (const it of e.items) it.anyoReal = y || 0;
-      if (y) cambiados++; else iguales++;
-      if ((sinGuardar += e.items.length) >= 30) { saveItems(); sinGuardar = 0; }
-      k++; i++; pinta();
-      await new Promise(r => setTimeout(r, espera));
-    }
-  } finally {
-    _anyosEnMarcha = false;
-    soltarDespertar();
-    saveItems();
-    invalidarConteos();
-    render();
-    if (otro) otro.disabled = false;
-    if (btn) btn.textContent = _colaAnyosExactos(soloDudosas).length ? 'Seguir donde iba' : 'Ya están todas';
-    pinta();
-    toast(cambiados ? cambiados.toLocaleString('es-ES') + ' canciones con su año de verdad' : 'Ninguna ha cambiado esta vez',
-      cambiados ? 'Ver cuáles' : null,
-      cambiados ? () => { PREFS.pantalla = 'vault'; document.getElementById('q').value = 'año corregido'; irAPantalla('lista'); } : null);
-  }
-}
-
+/* ============ el año exacto de cada canción ============
+   Spotify no guarda cuándo salió la canción, sino cuándo salió la edición que
+   tiene en catálogo. Por eso "Blue Moon" de Billie Holiday pone 2020 y "Every
+   Breath You Take" pone 2024.
+
+   La única base que sabe cuándo se publicó por primera vez una GRABACIÓN es
+   MusicBrainz, y va a una petición por segundo (y aun así contesta 503 a
+   ratos). Son horas. Por eso esto es un trabajo que se puede parar y seguir
+   donde iba: la respuesta se guarda en cada elemento, así que cerrar la
+   pestaña no pierde nada.
+
+   Lo que NO hace, a propósito:
+   - No toca `releaseDate`. Ese es su dato y se queda como está; el año bueno
+     va aparte, en `anyoReal`, y es el que enseña la app.
+   - No toca `touchedAt`. Marcar 11.000 elementos como "editados por él"
+     reviviría todo lo que hubiera borrado en otro dispositivo (ver fundir()).
+     Para que el dato viaje entre dispositivos está unirHistoriales, que es
+     donde van las cosas que solo crecen. */
+
+/* Un año verificado manda sobre la fecha de Spotify. Con esto, las décadas,
+   los filtros, el orden y "canciones de los 90" pasan a ser ciertos. */
+const anyoBueno = it => (it && it.anyoReal > 0) ? it.anyoReal : 0;
+
+/* Misma limpieza de puntuación fina que ya se usa con los discos: MusicBrainz
+   escribe "Sgt. Pepper’s" con apóstrofo curvo y Spotify con el recto. */
+const _mismaPunt = s => fold(s).replace(/[’‘‛`´]/g, "'").replace(/[“”„]/g, '"')
+  .replace(/[–—]/g, '-').replace(/\s+/g, ' ').trim();
+
+/* Quita lo que Spotify le cuelga al título para poder buscar la grabación:
+   "Africa - 2020 Remaster", "Billie Jean (feat. X)". */
+function _tituloGrabacion(t) {
+  let s = String(t || '');
+  s = s.replace(/\s*[([][^)\]]*(feat|ft|with|remaster|remasteriz|mono|stereo|bonus|deluxe|anniversary|from|soundtrack|restored|edition|edicion)[^)\]]*[)\]]/ig, '');
+  s = s.replace(/\s+[-–—]\s+[^-–—]*$/, m =>
+    /(remaster|remasteriz|mono|stereo|version|versi[oó]n|restored|edition|edici[oó]n|\d{4}\s*mix|re-?issue|anniversar)/i.test(m) ? '' : m);
+  return s.replace(/\s+/g, ' ').trim();
+}
+
+/* Le pregunta a MusicBrainz cuándo se grabó esto por primera vez.
+   Devuelve un año, 0 ("preguntado y no hay nada fiable") o null ("no se ha
+   podido preguntar"), que son tres cosas distintas: confundirlas haría que una
+   caída de MusicBrainz se guardara como "esta canción no tiene año". */
+async function _mbAnyoGrabacion(titulo, artista, anyoActual) {
+  const limpio = _tituloGrabacion(titulo);
+  if (!limpio || !artista) return 0;
+  const q = 'artist:"' + String(artista).replace(/"/g, '') + '" AND recording:"' + limpio.replace(/"/g, '') + '"';
+  /* 100 y no 25, que es el maximo que deja MusicBrainz y cuesta exactamente
+     lo mismo: una peticion. De "Jailhouse Rock" hay 386 grabaciones y no
+     vienen ordenadas por fecha — con 25 la mas antigua que salia era de 1973
+     y con 100 sale la de 1957, que es la buena. */
+  const url = 'https://musicbrainz.org/ws/2/recording/?query=' + encodeURIComponent(q) + '&fmt=json&limit=100';
+  let res;
+  try { res = await fetch(url, { headers: { Accept: 'application/json' } }); }
+  catch (e) { return null; }
+  if (res.status === 503 || res.status === 429 || res.status === 403 || res.status >= 500) return null;
+  if (!res.ok) return 0;
+  let j; try { j = await res.json(); } catch (e) { return 0; }
+
+  const quiero = _mismaPunt(limpio), quienEs = _mismaPunt(artista);
+  let mejor = 0;
+  for (const r of (j.recordings || [])) {
+    if ((r.score || 0) < 90) continue;
+    /* el título tiene que ser ESE, no otro que empiece igual */
+    if (_mismaPunt(r.title || '') !== quiero) continue;
+    /* y el artista el mismo, no un homónimo ni quien versionó el tema */
+    const cred = (r['artist-credit'] || []).map(c => _mismaPunt(c.name || '')).join(' ');
+    if (!cred.includes(quienEs) && !quienEs.includes(cred)) continue;
+    const m = String(r['first-release-date'] || '').match(/^(\d{4})/);
+    if (!m) continue;
+    const y = +m[1];
+    if (y < 1900) continue;
+    /* la más antigua de todas: el primer resultado NO vale.
+       Probado en vivo: "Good Times" de Chic da 1996 en el primero y 1979 en el
+       bueno; "Amen, Brother" da 2003 y 1969. */
+    if (!mejor || y < mejor) mejor = y;
+  }
+  /* Si no es anterior a lo que ya hay, no aporta: un "original" posterior a la
+     edición que tienes no existe. Asi tampoco se estropea nada que ya esté bien. */
+  return (mejor && anyoActual && mejor < anyoActual) ? mejor : 0;
+}
+
+/* Cuánto cuesta de verdad cada pregunta, medido en vivo desde el navegador:
+   la respuesta tarda ~0,9 s, pero MusicBrainz suelta un 503 en un tercio largo
+   de los intentos y hay que repetir. Sale a unos 3,4 s por canción. */
+const SEG_POR_PREGUNTA = 3.4;
+
+/* La cola de trabajo, en el orden en que conviene preguntarla.
+   Se agrupa por artista+obra para que las repetidas gasten una sola petición.
+   Con `soloDudosas` se queda solo con lo que tiene papeletas de estar mal: lo
+   que huele a reedición y lo anterior a 2010. Lo de 2010 en adelante son tres
+   cuartas partes de la cola y casi nunca cambia — en una muestra al azar no
+   falló ni una. No merece la pena tenerte el móvil siete horas para eso. */
+function _colaAnyosExactos(soloDudosas) {
+  const g = new Map();
+  for (const it of ITEMS) {
+    if (it.type !== 'track' || it.archived) continue;
+    if (it.anyoReal !== undefined) continue;              /* ya preguntado */
+    /* un remix o un directo de 2021 de un tema del 79 SÍ es de 2021 */
+    if (_RX_REMIX.test(_sufijo(it.title))) continue;
+    const y = _anyoDe(it); if (!y) continue;
+    const art = principalDe(it); if (!art) continue;
+    const k = fold(art) + '|' + fold(_tituloGrabacion(it.title));
+    if (!g.has(k)) g.set(k, { titulo: _tituloGrabacion(it.title), artista: art, anyo: y, items: [], pistas: '' });
+    const e = g.get(k);
+    e.items.push(it);
+    if (y < e.anyo) e.anyo = y;    /* se pregunta contra la más antigua que tenga */
+    /* Para decidir el orden hace falta el título SIN limpiar y el nombre del
+       disco: la coletilla ("- 2011 Remaster", "Greatest Hits") es justo la
+       pista de que el año está mal, y _tituloGrabacion acaba de quitarla.
+       Mirando el título ya limpio, el grupo de "huele a reedición" salía casi
+       vacío y el trabajo empezaba por donde menos falta hacía. */
+    e.pistas += ' ' + it.title + ' ' + (it.albumName || '');
+  }
+  /* Primero lo que huele a reedición, luego lo anterior a 2010 y al final lo
+     moderno, que casi siempre ya está bien. Así la primera hora es la que más
+     cambia y puede parar cuando quiera. */
+  const prio = e => {
+    if (_RX_REEDICION.test(e.pistas) || _RX_RECOP.test(e.pistas)) return 0;
+    if (e.anyo >= 2010) return 2;
+    return 1;
+  };
+  let l = [...g.values()];
+  if (soloDudosas) l = l.filter(e => prio(e) < 2);
+  /* Dentro de cada grupo, primero los años MÁS TARDÍOS. Un tema que pone 2005
+     tiene muchas más papeletas de ser una reedición que uno que pone 1928:
+     el de 1928 nadie lo ha vuelto a publicar con fecha nueva. Ordenando al
+     revés, el trabajo empezaba por lo más antiguo, que es lo que ya está bien. */
+  return l.sort((a, b) => prio(a) - prio(b) || b.anyo - a.anyo);
+}
+
+let _anyosEnMarcha = false, _pararAnyosExactos = false;
+
+async function ponerAnyosExactos(soloDudosas) {
+  if (_anyosEnMarcha) { _pararAnyosExactos = true; return; }
+  _anyosEnMarcha = true; _pararAnyosExactos = false;
+  pedirDespertar();
+  const btn = document.getElementById(soloDudosas ? 'anyoExactoBtn' : 'anyoExactoTodo');
+  const otro = document.getElementById(soloDudosas ? 'anyoExactoTodo' : 'anyoExactoBtn');
+  const est = document.getElementById('anyoExactoEst');
+  const barra = document.getElementById('anyoExactoBarra');
+  if (btn) btn.textContent = 'Detener';
+  if (otro) otro.disabled = true;
+
+  const cola = _colaAnyosExactos(soloDudosas);
+  const total = cola.length;
+  let i = 0, cambiados = 0, iguales = 0, sinGuardar = 0, seguidosMal = 0, espera = 1100;
+  const t0 = Date.now();
+  const pinta = () => {
+    if (barra) barra.style.width = total ? (100 * i / total).toFixed(1) + '%' : '0%';
+    if (!est) return;
+    const queda = i > 4 ? Math.round((Date.now() - t0) / i * (total - i) / 1000) : 0;
+    est.textContent = i.toLocaleString('es-ES') + ' de ' + total.toLocaleString('es-ES')
+      + ' · ' + cambiados.toLocaleString('es-ES') + ' con año nuevo'
+      + (iguales ? ', ' + iguales.toLocaleString('es-ES') + ' ya estaban bien' : '')
+      + (queda ? ' · queda ' + (queda > 3600 ? Math.floor(queda / 3600) + ' h ' + Math.round((queda % 3600) / 60) + ' min' : Math.ceil(queda / 60) + ' min') : '');
+  };
+
+  try {
+    /* Con índice y no con for-of: cuando MusicBrainz dice "estoy ocupado" hay
+       que repetir ESA misma, no saltar a la siguiente. Saltándola se quedaba
+       sin preguntar para siempre, porque la cola solo trae las que no tienen
+       respuesta y esa se habría dado por vista. */
+    let k = 0;
+    while (k < cola.length) {
+      if (_pararAnyosExactos) break;
+      const e = cola[k];
+      const y = await _mbAnyoGrabacion(e.titulo, e.artista, e.anyo);
+      if (y === null) {
+        /* No se apunta nada: "no he podido preguntar" no es "no hay año".
+
+           La espera sube poco a poco y con tope bajo, no al doble cada vez.
+           Medido en vivo: MusicBrainz suelta un 503 a la tercera petición más
+           o menos SIEMPRE, vayas rápido o despacio (a 1,1 s falla el 33%; a
+           1,6 s falla el 36% y encima tardas más). O sea que no es que le
+           estemos apretando: está ocupado y ya. Con esperas que se doblaban
+           hasta 30 s, un 503 suelto costaba medio minuto por las buenas. */
+        seguidosMal++;
+        espera = Math.min(1100 + 600 * seguidosMal, 6000);
+        if (seguidosMal >= 10) {
+          toast('MusicBrainz no contesta. Lo dejo aquí; vuelve a darle luego y sigo donde iba.');
+          break;
+        }
+        await new Promise(r => setTimeout(r, espera));
+        continue;                       /* misma k: se repite esta */
+      }
+      seguidosMal = 0; espera = 1100;
+      /* el 0 también se guarda: es "preguntado y no hay", para no repetirlo */
+      for (const it of e.items) it.anyoReal = y || 0;
+      if (y) cambiados++; else iguales++;
+      if ((sinGuardar += e.items.length) >= 30) { saveItems(); sinGuardar = 0; }
+      k++; i++; pinta();
+      await new Promise(r => setTimeout(r, espera));
+    }
+  } finally {
+    _anyosEnMarcha = false;
+    soltarDespertar();
+    saveItems();
+    invalidarConteos();
+    render();
+    if (otro) otro.disabled = false;
+    if (btn) btn.textContent = _colaAnyosExactos(soloDudosas).length ? 'Seguir donde iba' : 'Ya están todas';
+    pinta();
+    toast(cambiados ? cambiados.toLocaleString('es-ES') + ' canciones con su año de verdad' : 'Ninguna ha cambiado esta vez',
+      cambiados ? 'Ver cuáles' : null,
+      cambiados ? () => { PREFS.pantalla = 'vault'; document.getElementById('q').value = 'año corregido'; irAPantalla('lista'); } : null);
+  }
+}
+
 /* Para el detalle: de donde sale el ano que se esta ensenando. */
 function _pieAnyo(it) {
   if (!(it && it.anyoReal > 0)) return '';
@@ -11307,7 +11307,7 @@ function paraBiblioteca(tipo) {
   const vistas = new Set();
   const out = [];
   for (const i of ITEMS) {
-    if (i.type !== tipo || i.archived || !i.spotifyId) continue;
+    if (i.type !== tipo || !i.spotifyId) continue;   /* lo archivado tambien: Me gusta es todo */
     if (vistas.has(i.spotifyId)) continue;
     vistas.add(i.spotifyId); out.push(i);
   }
