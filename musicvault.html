@@ -7483,6 +7483,10 @@ function openSettings() {
       <button class="btn wide" id="purgeAlbum" ${cuenta('album') ? '' : 'disabled'}>Borrar ${cuenta('album').toLocaleString('es-ES')} álbumes</button>
       <button class="btn wide" id="purgeArtist" ${cuenta('artist') ? '' : 'disabled'}>Borrar ${cuenta('artist').toLocaleString('es-ES')} artistas</button>
     </div>
+    <div class="btnrow">
+      <button class="btn wide danger" id="purgeTrack" ${cuenta('track') ? '' : 'disabled'}>Borrar ${cuenta('track').toLocaleString('es-ES')} canciones</button>
+    </div>
+    <p class="lede" style="margin:2px 0 0;font-size:12px;">Antes de borrar las canciones se descarga una copia de seguridad aparte, y hay que escribir "borrar" para confirmarlo — son demasiadas para fiarlo solo al aviso de Deshacer.</p>
 
     <div class="flabel">Copia de seguridad</div>
     ${gh && gh.token
@@ -7560,6 +7564,15 @@ function openSettings() {
   };
   document.getElementById('purgeAlbum').addEventListener('click', () => purgar('album', 'álbumes'));
   document.getElementById('purgeArtist').addEventListener('click', () => purgar('artist', 'artistas'));
+  document.getElementById('purgeTrack')?.addEventListener('click', () => {
+    const victimas = ITEMS.filter(i => i.type === 'track');
+    if (!victimas.length) return;
+    const escrito = prompt(`Vas a borrar ${victimas.length.toLocaleString('es-ES')} canciones del vault (no toca tus álbumes ni artistas, y tampoco tu Spotify).\n\nSe descarga antes una copia de seguridad. Escribe BORRAR para confirmarlo.`);
+    if ((escrito || '').trim().toLowerCase() !== 'borrar') return;
+    exportBackup();
+    deleteItems(victimas.map(i => i.id));
+    openSettings();
+  });
 
   document.getElementById('ghSave').addEventListener('click', async () => {
     const repo = document.getElementById('ghRepo').value.trim().replace(/^https?:\/\/github\.com\//, '').replace(/\.git$/, '');
