@@ -258,6 +258,7 @@
     <label class="chk"><input type="checkbox" id="pat-blanco"> Símbolos y logo en blanco (si no, en negro)</label>
     <label class="chk"><input type="checkbox" id="pat-fondo"> Con un círculo detrás</label>
     <label class="rango">Tamaño <input type="range" id="pat-tam" min="30" max="140" step="2"></label>
+    <label class="rango">Separación <input type="range" id="pat-sep" min="1.4" max="3.6" step="0.05"></label>
   </div>
 
   <label class="tit" for="borde">Texto alrededor del borde</label>
@@ -362,7 +363,7 @@ const escribir = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); r
 const aj = Object.assign({
   texto: 'SALSA', mayus: true, disco: 'orig', cinta: 'orig', discoOtro: '#ff7a00', cintaOtro: '#7a4dd8',
   acabado: 'cd', patOn: false, patEmoji: '♫', patLogo: false, patTam: 62, patFondo: true, patBlanco: true,
-  borde: '', grande: '', grandePos: 'izq', estilo: 'relieve'
+  borde: '', grande: '', grandePos: 'izq', estilo: 'relieve', patSep: 2.25
 }, leer(K_AJUSTES, {}));
 
 let toastT;
@@ -540,7 +541,7 @@ const ZONAS = {
    diseño anterior (un texto de borde olvidado, un dibujo, etc.). */
 const DISENO_BASE = {
   acabado: 'cd', disco: 'orig', cinta: 'orig', patOn: false, patLogo: false, patEmoji: '♫',
-  patTam: 62, patFondo: true, patBlanco: true, borde: '', grande: '', grandePos: 'izq', estilo: 'relieve'
+  patTam: 62, patSep: 2.25, patFondo: true, patBlanco: true, borde: '', grande: '', grandePos: 'izq', estilo: 'relieve'
 };
 const CLAVES_DISENO = Object.keys(DISENO_BASE).concat(['discoOtro', 'cintaOtro']);
 /* {T} en el borde o el texto grande = el texto de la cinta */
@@ -695,7 +696,7 @@ function sprite(g, tam, blanco) {
   return c;
 }
 function dibujarPatron(x, st) {
-  const tam = st.patTam, paso = tam * 2.25;
+  const tam = st.patTam, paso = tam * (st.patSep || 2.25);
   const usarLogo = st.patLogo && logoImg;
   const lista = simbolos(st.patEmoji);
   if (!usarLogo && !lista.length) return;
@@ -917,7 +918,7 @@ function montarChips(cont, lista, clave, alCambiar) {
 }
 
 /* casillas y campos de texto: se enlazan con su clave de ajustes */
-const CAMPOS = [['texto', 'texto'], ['pat-emoji', 'patEmoji'], ['borde', 'borde'], ['grande', 'grande'], ['pat-tam', 'patTam']];
+const CAMPOS = [['texto', 'texto'], ['pat-emoji', 'patEmoji'], ['borde', 'borde'], ['grande', 'grande'], ['pat-tam', 'patTam'], ['pat-sep', 'patSep']];
 const CASILLAS = [['mayus', 'mayus'], ['pat-on', 'patOn'], ['pat-logo', 'patLogo'], ['pat-blanco', 'patBlanco'], ['pat-fondo', 'patFondo']];
 CAMPOS.forEach(([id, k]) => $(id).addEventListener('input', e => {
   aj[k] = e.target.type === 'range' ? +e.target.value : e.target.value;
@@ -1047,11 +1048,13 @@ const TEMAS = [
       { disco: 'amarillo', cinta: 'rojo', patOn: true, patEmoji: '🌺', patTam: 48, patFondo: false }
     ] },
   { claves: ['flamenco', 'andalu', 'sevilla', 'granada', 'rumba', 'copla', 'feria', 'rociero', 'cadiz'],
-    nota: 'Flamenco: rojo, negro y claveles.',
+    nota: 'Flamenco: lunares de traje de flamenca, rojo, negro y claveles.',
     ideas: [
-      { disco: 'rojo', cinta: 'negro', patOn: true, patEmoji: '🌹', patTam: 48, patFondo: false },
-      { acabado: 'vinilo', cinta: 'rojo', borde: '¡OLÉ!', estilo: 'blanco' },
-      { disco: 'negro', cinta: 'rojo', patOn: true, patEmoji: '●', patTam: 34, patFondo: false }
+      { disco: 'rojo', cinta: 'negro', patOn: true, patEmoji: '●', patTam: 92, patSep: 1.6, patFondo: false, patBlanco: true },
+      { disco: 'otro', discoOtro: '#efe8da', cinta: 'rojo', patOn: true, patEmoji: '●', patTam: 92, patSep: 1.6, patFondo: false, patBlanco: false },
+      { disco: 'negro', cinta: 'rojo', patOn: true, patEmoji: '🌹', patTam: 52, patFondo: false },
+      { acabado: 'vinilo', cinta: 'rojo', borde: '¡OLÉ! · {T}', estilo: 'blanco' },
+      { disco: 'amarillo', cinta: 'rojo', patOn: true, patEmoji: '💃', patTam: 52, patFondo: false }
     ] },
   { claves: ['techno', 'electro', 'house', 'edm', 'rave', 'trance', 'dj ', 'synth'],
     nota: 'Electrónica: metal, neón y geometría.',
