@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Portadas">
+<meta name="theme-color" content="#14100d">
+<link rel="manifest" href="portadas.webmanifest">
+<link rel="apple-touch-icon" href="portadas/icono-180.png">
+<link rel="icon" href="favicon-32.png" sizes="32x32">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=block" rel="stylesheet">
+<title>Portadas de Playlist</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #14100d;
+    --surface: #1e1915;
+    --surface-2: #2a231d;
+    --line: #3a3029;
+    --fg: #f3ece2;
+    --fg-mute: #a99c8c;
+    --acc: #e8913a;
+    --acc-fg: #1a0f05;
+    --ok: #7fc98a;
+    --err: #ef8a7a;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; background: var(--bg); color: var(--fg); }
+  body {
+    font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding: calc(env(safe-area-inset-top) + 12px) 16px calc(env(safe-area-inset-bottom) + 28px);
+    max-width: 560px; margin: 0 auto;
+  }
+  header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  header a { color: var(--fg-mute); text-decoration: none; font-size: 22px; line-height: 1; padding: 4px 6px 4px 0; }
+  h1 { font-size: 20px; margin: 0; font-weight: 700; letter-spacing: -.01em; }
+
+  .lienzo { position: relative; border-radius: 10px; overflow: hidden; background: #fff; aspect-ratio: 1; box-shadow: 0 8px 30px rgba(0,0,0,.45); }
+  .lienzo canvas { display: block; width: 100%; height: 100%; }
+  .lienzo .cargando { position: absolute; inset: 0; display: grid; place-items: center; color: #555; font-size: 14px; background: #f4f4f4; }
+
+  label.tit { display: block; font-size: 12.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--fg-mute); margin: 18px 0 8px; }
+  .texto { display: flex; gap: 8px; }
+  .texto input[type=text] {
+    flex: 1; min-width: 0; font: 600 18px/1.2 inherit; font-family: inherit;
+    background: var(--surface); color: var(--fg); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px;
+  }
+  .texto input[type=text]:focus { outline: 2px solid var(--acc); outline-offset: -1px; }
+  .chk { display: flex; align-items: center; gap: 8px; margin-top: 8px; color: var(--fg-mute); font-size: 14px; }
+  .chk input { width: 18px; height: 18px; accent-color: var(--acc); }
+
+  .paleta { display: flex; flex-wrap: wrap; gap: 10px; }
+  .muestra {
+    width: 42px; height: 42px; border-radius: 50%; border: 2px solid transparent; padding: 0; cursor: pointer;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.15); position: relative;
+  }
+  .muestra[aria-pressed=true] { border-color: var(--fg); box-shadow: 0 0 0 2px var(--bg) inset; }
+  .muestra.cinta { border-radius: 8px; }
+  .muestra.otro { background: conic-gradient(#f44, #fd4, #4d6, #4bf, #a5f, #f4a, #f44); overflow: hidden; }
+  .muestra.otro input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+  .nombre-color { font-size: 13px; color: var(--fg-mute); margin-top: 6px; min-height: 1.2em; }
+
+  .acciones { display: grid; gap: 10px; margin-top: 24px; }
+  .btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+    font: 600 16px/1 inherit; font-family: inherit; padding: 15px; border-radius: 12px; border: 1px solid var(--line);
+    background: var(--surface-2); color: var(--fg); cursor: pointer; text-decoration: none;
+  }
+  .btn.pri { background: var(--acc); color: var(--acc-fg); border-color: var(--acc); }
+  .btn.verde { background: #1ed760; color: #06210f; border-color: #1ed760; }
+  .btn:disabled { opacity: .5; cursor: default; }
+
+  /* hoja de playlists */
+  .velo { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: none; z-index: 10; }
+  .velo.abierto { display: block; }
+  .hoja {
+    position: fixed; left: 0; right: 0; bottom: 0; max-height: 88vh; max-height: 88dvh; z-index: 11;
+    background: var(--surface); border-radius: 18px 18px 0 0; display: none; flex-direction: column;
+    padding: 14px 16px calc(env(safe-area-inset-bottom) + 14px); max-width: 560px; margin: 0 auto;
+  }
+  .hoja.abierto { display: flex; }
+  .hoja .cab { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+  .hoja .cab h2 { font-size: 17px; margin: 0; }
+  .hoja .cerrar { background: none; border: 0; color: var(--fg-mute); font-size: 26px; line-height: 1; cursor: pointer; padding: 2px 6px; }
+  .hoja input[type=search] {
+    width: 100%; font: 16px inherit; font-family: inherit; background: var(--surface-2); color: var(--fg);
+    border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px;
+  }
+  .lista { overflow-y: auto; -webkit-overflow-scrolling: touch; flex: 1; min-height: 120px; }
+  .fila {
+    display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 10px; cursor: pointer; width: 100%;
+    background: none; border: 0; color: inherit; text-align: left; font: inherit;
+  }
+  .fila:hover { background: var(--surface-2); }
+  .fila[aria-pressed=true] { background: var(--surface-2); outline: 2px solid var(--acc); outline-offset: -2px; }
+  .fila img, .fila .sin { width: 48px; height: 48px; border-radius: 4px; object-fit: cover; flex: none; background: var(--surface-2); }
+  .fila .n { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .fila .m { font-size: 13px; color: var(--fg-mute); }
+  .fila > div { min-width: 0; }
+  .aviso { color: var(--fg-mute); padding: 18px 4px; text-align: center; }
+  .aviso .btn { margin-top: 14px; }
+  .pie { display: none; gap: 8px; flex-direction: column; padding-top: 10px; border-top: 1px solid var(--line); margin-top: 6px; }
+  .pie.visible { display: flex; }
+  .pie .sel { font-size: 14px; color: var(--fg-mute); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pie .sel b { color: var(--fg); }
+  .pie .dos { display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; }
+  .pie .btn { padding: 13px 10px; font-size: 15px; }
+
+  .toast {
+    position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom) + 24px); transform: translateX(-50%) translateY(20px);
+    background: #f3ece2; color: #14100d; padding: 11px 16px; border-radius: 10px; font-weight: 600; font-size: 14px;
+    opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; z-index: 20; max-width: calc(100% - 32px); text-align: center;
+  }
+  .toast.ver { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast.mal { background: var(--err); }
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html" aria-label="Volver">‹</a>
+  <h1>Portadas de Playlist</h1>
+</header>
+
+<div class="lienzo">
+  <canvas id="lienzo" width="1024" height="1024" aria-label="Vista previa de la portada"></canvas>
+  <div class="cargando" id="cargando">Cargando…</div>
+</div>
+
+<label class="tit" for="texto">Texto de la cinta</label>
+<div class="texto">
+  <input type="text" id="texto" value="SALSA" maxlength="40" autocomplete="off" autocapitalize="characters" spellcheck="false">
+</div>
+<label class="chk"><input type="checkbox" id="mayus" checked> Todo en mayúsculas</label>
+
+<label class="tit">Color del disco</label>
+<div class="paleta" id="pal-disco"></div>
+<div class="nombre-color" id="nom-disco"></div>
+
+<label class="tit">Color de la cinta</label>
+<div class="paleta" id="pal-cinta"></div>
+<div class="nombre-color" id="nom-cinta"></div>
+
+<div class="acciones">
+  <button class="btn pri" id="guardar">Guardar imagen</button>
+  <button class="btn verde" id="abrir-spotify">Poner en una playlist de Spotify</button>
+</div>
+
+<div class="velo" id="velo"></div>
+<div class="hoja" id="hoja" role="dialog" aria-modal="true" aria-labelledby="hoja-tit">
+  <div class="cab">
+    <h2 id="hoja-tit">Elige la playlist</h2>
+    <button class="cerrar" id="cerrar" aria-label="Cerrar">×</button>
+  </div>
+  <input type="search" id="buscar" placeholder="Buscar playlist…" autocomplete="off">
+  <div class="lista" id="lista"></div>
+  <div class="pie" id="pie">
+    <div class="sel" id="sel"></div>
+    <div class="dos">
+      <button class="btn" id="usar-nombre">Usar su nombre</button>
+      <button class="btn verde" id="subir">Poner portada</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+/* ============================================================
+   PORTADAS DE PLAYLIST
+   ------------------------------------------------------------
+   La base es la foto del CD con la cinta ya limpia (sin "SALSA").
+   mascaras.png dice qué píxeles son disco (canal rojo) y cuáles
+   cinta (canal verde), con el borde suavizado. Para recolorear se
+   conserva la luz de cada píxel (brillos, reflejos, arrugas de la
+   cinta) y solo se cambia el tono: así el disco sigue pareciendo
+   un CD y no una mancha plana.
+   ============================================================ */
+
+const W = 1024;
+const K_AJUSTES = 'portadas_ajustes_v1';
+const K_CREDS = 'musicvault_spotify_creds_v1';   // la misma sesión que MusicVault y el Estudio
+const API = 'https://api.spotify.com/v1';
+
+/* Zona útil de la cinta (en píxeles de la imagen de 1024). Deja fuera
+   el doblez del borde derecho, como en la original. */
+const CAJA = { x: 722, y: 392, w: 246, h: 256 };
+const TAM_MAX = 112;   // "SALSA" en la original mide lo que da este tamaño
+/* Permanent Marker viene inclinada y algo achatada; la letra de la foto es
+   recta y más alta. Se endereza (ENDEREZA) y se estira en vertical (ALTO_X). */
+const ENDEREZA = 0.16, ALTO_X = 1.3;
+
+const DISCOS = [
+  { id: 'orig', n: 'Dorado (original)', c: null, vista: 'conic-gradient(#f9b84a,#c9661a,#fbd27a,#7a3b0a,#f9b84a)' },
+  { id: 'plata', n: 'Plata', c: '#c9ccd3' },
+  { id: 'negro', n: 'Negro', c: '#3a3a3e' },
+  { id: 'rojo', n: 'Rojo', c: '#e0312b' },
+  { id: 'rosa', n: 'Rosa', c: '#ff5fa8' },
+  { id: 'morado', n: 'Morado', c: '#8a4dff' },
+  { id: 'azul', n: 'Azul', c: '#2f7bff' },
+  { id: 'cian', n: 'Turquesa', c: '#18c7c1' },
+  { id: 'verde', n: 'Verde', c: '#3cc14a' }
+];
+const CINTAS = [
+  { id: 'orig', n: 'Cobre (original)', c: null, vista: '#b5602a' },
+  { id: 'blanco', n: 'Blanca', c: '#f1ede4' },
+  { id: 'amarillo', n: 'Amarilla', c: '#f2c230' },
+  { id: 'rojo', n: 'Roja', c: '#c9302a' },
+  { id: 'rosa', n: 'Rosa', c: '#ef7fb0' },
+  { id: 'azul', n: 'Azul', c: '#3565c9' },
+  { id: 'verde', n: 'Verde', c: '#3f9a4e' },
+  { id: 'negro', n: 'Negra', c: '#2b2b2b' }
+];
+
+const $ = id => document.getElementById(id);
+const leer = (k, fb) => { try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? fb : v; } catch (e) { return fb; } };
+const escribir = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } };
+
+const aj = Object.assign({ texto: 'SALSA', mayus: true, disco: 'orig', cinta: 'orig', discoOtro: '#ff7a00', cintaOtro: '#7a4dd8' }, leer(K_AJUSTES, {}));
+
+let toastT;
+function toast(msg, mal) {
+  const t = $('toast');
+  t.textContent = msg; t.classList.toggle('mal', !!mal); t.classList.add('ver');
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('ver'), mal ? 5000 : 2800);
+}
+
+/* ---------------- recoloreado ---------------- */
+let base = null, lum = null, mDisco = null, mCinta = null;
+let refDisco = 1, topeDisco = 2, refCinta = 1, topeCinta = 2;
+
+function cargarImg(src) {
+  return new Promise((ok, mal) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => mal(new Error('No se pudo cargar ' + src)); i.src = src; });
+}
+function pixeles(img) {
+  const c = document.createElement('canvas'); c.width = c.height = W;
+  const x = c.getContext('2d', { willReadFrequently: true });
+  x.drawImage(img, 0, 0, W, W);
+  return x.getImageData(0, 0, W, W).data;
+}
+/* Luz de referencia (media) y techo (percentil 98) de una zona, para
+   saber qué píxeles son "más claros de lo normal" (reflejos) */
+function referencia(mascara) {
+  let s = 0, n = 0; const hist = new Uint32Array(256);
+  for (let i = 0; i < lum.length; i++) if (mascara[i] > 200) { s += lum[i]; n++; hist[Math.round(lum[i] * 255)]++; }
+  const media = s / n;
+  let acum = 0, p98 = 1;
+  for (let v = 0; v < 256; v++) { acum += hist[v]; if (acum >= n * 0.98) { p98 = v / 255; break; } }
+  return [media, Math.max(1.05, p98 / media)];
+}
+
+async function preparar() {
+  const [b, m] = await Promise.all([cargarImg('portadas/base.jpg'), cargarImg('portadas/mascaras.png')]);
+  base = pixeles(b);
+  const mp = pixeles(m);
+  const n = W * W;
+  lum = new Float32Array(n); mDisco = new Uint8Array(n); mCinta = new Uint8Array(n);
+  for (let i = 0, j = 0; i < n; i++, j += 4) {
+    lum[i] = (0.299 * base[j] + 0.587 * base[j + 1] + 0.114 * base[j + 2]) / 255;
+    mDisco[i] = mp[j]; mCinta[i] = mp[j + 1];
+  }
+  [refDisco, topeDisco] = referencia(mDisco);
+  [refCinta, topeCinta] = referencia(mCinta);
+}
+
+const hexRgb = h => [1, 3, 5].map(k => parseInt(h.slice(k, k + 2), 16) / 255);
+
+/* Cada píxel: más oscuro que la media -> el color oscurecido en la misma
+   proporción; más claro -> el color aclarado hacia blanco. Así un disco
+   plateado conserva sus rayos de luz y una cinta blanca sus arrugas. */
+function tenir(datos, mascara, hex, ref, tope) {
+  const c = hexRgb(hex);
+  for (let i = 0, j = 0; i < mascara.length; i++, j += 4) {
+    const a = mascara[i];
+    if (!a) continue;
+    const r = lum[i] / ref;
+    let o0, o1, o2;
+    if (r <= 1) { o0 = c[0] * r; o1 = c[1] * r; o2 = c[2] * r; }
+    else {
+      const t = Math.min(1, (r - 1) / (tope - 1)) * 0.85;
+      o0 = c[0] + (1 - c[0]) * t; o1 = c[1] + (1 - c[1]) * t; o2 = c[2] + (1 - c[2]) * t;
+    }
+    const f = a / 255;
+    datos[j]     = datos[j]     * (1 - f) + o0 * 255 * f;
+    datos[j + 1] = datos[j + 1] * (1 - f) + o1 * 255 * f;
+    datos[j + 2] = datos[j + 2] * (1 - f) + o2 * 255 * f;
+  }
+}
+
+/* ---------------- texto a rotulador ---------------- */
+/* Reparte las palabras en 1..4 líneas y se queda con el reparto que
+   permite la letra más grande dentro de la cinta. */
+function repartos(palabras, n) {
+  if (n === 1) return [[palabras.join(' ')]];
+  const out = [];
+  for (let i = 1; i <= palabras.length - n + 1; i++)
+    for (const resto of repartos(palabras.slice(i), n - 1)) out.push([palabras.slice(0, i).join(' ')].concat(resto));
+  return out;
+}
+function mejorReparto(ctx, palabras, alto) {
+  let mejor = null;
+  for (let n = 1; n <= Math.min(4, palabras.length); n++) {
+    for (const lineas of repartos(palabras, n)) {
+      const ancho = Math.max(...lineas.map(l => ctx.measureText(l).width));
+      const tam = Math.min(TAM_MAX, CAJA.w / ancho * 100, CAJA.h / (n * alto * ALTO_X));
+      if (!mejor || tam > mejor.tam + 0.5) mejor = { lineas, tam, alto };
+    }
+  }
+  return mejor;
+}
+function maquetar(ctx, texto) {
+  let palabras = texto.split(/\s+/).filter(Boolean);
+  if (!palabras.length) return null;
+  ctx.font = '100px "Permanent Marker"';
+  const alto = 1.02;   // interlineado, en "em"
+  let mejor = mejorReparto(ctx, palabras, alto);
+  /* Una palabra muy larga (13+ letras) dejaría la letra diminuta: se parte
+     con guion en 2-4 trozos, como se haría a mano en una cinta estrecha, y
+     solo si así queda claramente más grande. */
+  for (let trozos = 2; trozos <= 4; trozos++) {
+    const prueba = [];
+    palabras.forEach(w => {
+      if (w.length < 13) { prueba.push(w); return; }
+      const t = Math.ceil(w.length / trozos);
+      for (let i = 0; i < w.length; i += t) prueba.push(w.slice(i, i + t) + (i + t < w.length ? '-' : ''));
+    });
+    if (prueba.length === palabras.length) break;   // no hay ninguna palabra tan larga
+    const otro = mejorReparto(ctx, prueba, alto);
+    if (otro.tam > mejor.tam * 1.15) mejor = otro;
+  }
+  return mejor;
+}
+/* rotulador negro sobre cinta clara; blanco (de pintura) sobre cinta oscura */
+function colorTinta() {
+  const cc = colorDe(CINTAS, aj.cinta, aj.cintaOtro);
+  if (!cc) return '#17110e';
+  const [r, g, b] = hexRgb(cc);
+  return 0.299 * r + 0.587 * g + 0.114 * b < 0.3 ? '#f2eee6' : '#17110e';
+}
+function escribirCinta(ctx, texto) {
+  const m = maquetar(ctx, texto);
+  if (!m) return;
+  ctx.save();
+  ctx.font = m.tam.toFixed(1) + 'px "Permanent Marker"';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'alphabetic';
+  /* altura real de las letras para centrar de verdad en vertical */
+  const med = ctx.measureText(m.lineas.join(''));
+  const asc = med.actualBoundingBoxAscent, desc = Math.max(0, med.actualBoundingBoxDescent);
+  const paso = m.tam * m.alto * ALTO_X;
+  const bloque = paso * (m.lineas.length - 1) + (asc + desc) * ALTO_X;
+  const cx = CAJA.x + CAJA.w / 2, y0 = CAJA.y + (CAJA.h - bloque) / 2 + asc * ALTO_X;
+  ctx.translate(cx, CAJA.y + CAJA.h / 2);
+  ctx.rotate(-0.012);
+  ctx.translate(-cx, -(CAJA.y + CAJA.h / 2));
+  ctx.fillStyle = colorTinta();
+  ctx.globalAlpha = 0.94;
+  m.lineas.forEach((l, i) => {
+    const y = y0 + i * paso, ym = y - (asc - desc) / 2 * ALTO_X;   // centro de la línea
+    ctx.save();
+    ctx.translate(cx, ym);
+    ctx.transform(1, 0, ENDEREZA, ALTO_X, 0, 0);
+    ctx.fillText(l, 0, (asc - desc) / 2);
+    ctx.restore();
+  });
+  ctx.restore();
+}
+
+/* ---------------- pintar ---------------- */
+const lienzo = $('lienzo'), ctx = lienzo.getContext('2d');
+const colorDe = (lista, id, otro) => id === 'otro' ? otro : (lista.find(x => x.id === id) || lista[0]).c;
+const textoFinal = () => { const t = aj.texto.trim(); return aj.mayus ? t.toLocaleUpperCase('es-ES') : t; };
+
+function pintarYa() {
+  if (!base) return;
+  pendiente = false;
+  const img = new ImageData(new Uint8ClampedArray(base), W, W);
+  const cd = colorDe(DISCOS, aj.disco, aj.discoOtro), cc = colorDe(CINTAS, aj.cinta, aj.cintaOtro);
+  if (cd) tenir(img.data, mDisco, cd, refDisco, topeDisco);
+  if (cc) tenir(img.data, mCinta, cc, refCinta, topeCinta);
+  ctx.putImageData(img, 0, 0);
+  escribirCinta(ctx, textoFinal());
+}
+/* Mientras escribes se pinta como mucho una vez por fotograma. Antes de
+   guardar o subir se llama a pintarYa(), para no exportar un fotograma viejo. */
+let pendiente = false;
+function pintar() {
+  if (!base || pendiente) return;
+  pendiente = true;
+  requestAnimationFrame(() => { if (pendiente) pintarYa(); });
+}
+function guardarAjustes() { escribir(K_AJUSTES, aj); }
+
+/* ---------------- controles ---------------- */
+function montarPaleta(cont, lista, clave, claveOtro, nom, cinta) {
+  const el = $(cont);
+  const marcar = () => {
+    el.querySelectorAll('.muestra').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.id === aj[clave])));
+    const x = lista.find(x => x.id === aj[clave]);
+    $(nom).textContent = x ? x.n : 'Personalizado (' + aj[claveOtro] + ')';
+  };
+  lista.forEach(x => {
+    const b = document.createElement('button');
+    b.className = 'muestra' + (cinta ? ' cinta' : '');
+    b.dataset.id = x.id; b.title = x.n; b.setAttribute('aria-label', x.n);
+    b.style.background = x.vista || x.c;
+    b.onclick = () => { aj[clave] = x.id; marcar(); pintar(); guardarAjustes(); };
+    el.appendChild(b);
+  });
+  const o = document.createElement('label');
+  o.className = 'muestra otro' + (cinta ? ' cinta' : '');
+  o.dataset.id = 'otro'; o.title = 'Elegir otro color';
+  const inp = document.createElement('input');
+  inp.type = 'color'; inp.value = aj[claveOtro]; inp.setAttribute('aria-label', 'Elegir otro color');
+  inp.oninput = () => { aj[claveOtro] = inp.value; aj[clave] = 'otro'; marcar(); pintar(); };
+  inp.onchange = guardarAjustes;
+  inp.onclick = () => { if (aj[clave] !== 'otro') { aj[clave] = 'otro'; marcar(); pintar(); guardarAjustes(); } };
+  o.appendChild(inp);
+  el.appendChild(o);
+  marcar();
+}
+
+$('texto').value = aj.texto;
+$('mayus').checked = aj.mayus;
+$('texto').addEventListener('input', e => { aj.texto = e.target.value; pintar(); guardarAjustes(); });
+$('mayus').addEventListener('change', e => { aj.mayus = e.target.checked; pintar(); guardarAjustes(); });
+montarPaleta('pal-disco', DISCOS, 'disco', 'discoOtro', 'nom-disco', false);
+montarPaleta('pal-cinta', CINTAS, 'cinta', 'cintaOtro', 'nom-cinta', true);
+
+const slug = () => (textoFinal() || 'portada').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w]+/g, '-').replace(/^-|-$/g, '').toLowerCase() || 'portada';
+const aBlob = (tipo, q) => new Promise(ok => lienzo.toBlob(ok, tipo, q));
+
+/* En el móvil, "Compartir" es lo que deja guardarla en Fotos; en el
+   ordenador se descarga sin más. */
+$('guardar').onclick = async () => {
+  pintarYa();
+  const blob = await aBlob('image/jpeg', 0.93);
+  const nombre = 'portada-' + slug() + '.jpg';
+  const f = new File([blob], nombre, { type: 'image/jpeg' });
+  const tactil = matchMedia('(pointer: coarse)').matches;
+  if (tactil && navigator.canShare && navigator.canShare({ files: [f] })) {
+    try { await navigator.share({ files: [f] }); return; }
+    catch (e) { if (e.name === 'AbortError') return; }
+  }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = nombre;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+};
+
+/* ---------------- Spotify ---------------- */
+const cred = () => leer(K_CREDS, null);
+const tieneScope = s => { const c = cred(); return !!(c && c.scope && c.scope.split(' ').indexOf(s) >= 0); };
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+async function token() {
+  const c = cred();
+  if (!c || !c.refreshToken) throw new Error('SIN_CONEXION');
+  if (c.accessToken && c.expiresAt > Date.now()) return c.accessToken;
+  const res = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ grant_type: 'refresh_token', refresh_token: c.refreshToken, client_id: c.clientId })
+  });
+  if (!res.ok) throw new Error('SESION_CADUCADA');
+  const d = await res.json();
+  escribir(K_CREDS, {
+    clientId: c.clientId, accessToken: d.access_token,
+    refreshToken: d.refresh_token || c.refreshToken,
+    expiresAt: Date.now() + (d.expires_in - 60) * 1000,
+    scope: d.scope || c.scope || ''
+  });
+  return d.access_token;
+}
+async function sp(ruta, o) {
+  o = o || {};
+  let intentos = 0;
+  while (true) {
+    const cab = { Authorization: 'Bearer ' + await token() };
+    if (o.body !== undefined) cab['Content-Type'] = o.tipo || 'application/json';
+    let res;
+    try { res = await fetch(ruta.indexOf('http') === 0 ? ruta : API + ruta, { method: o.method || 'GET', headers: cab, body: o.body }); }
+    catch (e) { if (++intentos > 3) throw new Error('Sin conexión con Spotify'); await sleep(800 * intentos); continue; }
+    if (res.status === 429) {
+      if (++intentos > 5) throw new Error('Spotify está frenando las peticiones; prueba en un rato');
+      await sleep(Math.min(20, +(res.headers.get('Retry-After') || 2)) * 1000);
+      continue;
+    }
+    if (res.status === 401) {
+      if (++intentos > 2) throw new Error('SESION_CADUCADA');
+      const c = cred(); if (c) escribir(K_CREDS, Object.assign({}, c, { accessToken: '', expiresAt: 0 }));
+      continue;
+    }
+    if (res.status >= 500) { if (++intentos > 3) throw new Error('Spotify no responde (' + res.status + ')'); await sleep(700 * intentos); continue; }
+    if (!res.ok) {
+      let t = ''; try { const j = await res.json(); t = (j.error && (j.error.message || j.error)) || ''; } catch (e) {}
+      const e = new Error(res.status + (t ? ': ' + t : '')); e.status = res.status; throw e;
+    }
+    const txt = await res.text();
+    try { return txt ? JSON.parse(txt) : null; } catch (e) { return null; }
+  }
+}
+
+let playlists = null, yo = null, elegida = null;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+function avisoConexion(texto, boton) {
+  $('lista').innerHTML = '<div class="aviso">' + esc(texto) +
+    '<a class="btn verde" href="musicvault.html?conectar=portadas">' + esc(boton) + '</a></div>';
+  $('buscar').style.display = 'none';
+}
+
+async function cargarPlaylists() {
+  const lista = $('lista');
+  if (!cred() || !cred().refreshToken) return avisoConexion('Para ponerla directamente hace falta conectar Spotify (es la misma conexión que MusicVault).', 'Conectar con Spotify');
+  if (!tieneScope('ugc-image-upload')) return avisoConexion('Tu conexión con Spotify no tiene permiso para cambiar portadas. Vuelve a conectar y acepta los permisos.', 'Volver a conectar');
+  $('buscar').style.display = '';
+  if (playlists) return pintarLista();
+  lista.innerHTML = '<div class="aviso">Cargando tus playlists…</div>';
+  try {
+    yo = await sp('/me');
+    const todas = [];
+    let url = '/me/playlists?limit=50';
+    while (url && todas.length < 2000) {
+      const d = await sp(url);
+      (d && d.items || []).forEach(p => { if (p) todas.push(p); });
+      url = d && d.next;
+    }
+    /* Spotify solo deja cambiar la portada de las playlists que son tuyas */
+    playlists = todas.filter(p => p.owner && p.owner.id === yo.id);
+    pintarLista();
+  } catch (e) {
+    if (e.message === 'SIN_CONEXION' || e.message === 'SESION_CADUCADA') return avisoConexion('La sesión de Spotify ha caducado en este dispositivo.', 'Volver a conectar');
+    lista.innerHTML = '<div class="aviso">No se pudieron cargar tus playlists (' + esc(e.message) + ').</div>';
+  }
+}
+
+function pintarLista() {
+  const q = $('buscar').value.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const vis = playlists.filter(p => !q || (p.name || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').includes(q));
+  if (!playlists.length) { $('lista').innerHTML = '<div class="aviso">No tienes playlists propias en Spotify.</div>'; return; }
+  if (!vis.length) { $('lista').innerHTML = '<div class="aviso">Ninguna playlist coincide.</div>'; return; }
+  $('lista').innerHTML = vis.map(p => {
+    const im = p.images && p.images.length ? p.images[p.images.length - 1].url : '';
+    const tot = p.items && p.items.total != null ? p.items.total : (p.tracks && p.tracks.total);
+    return '<button class="fila" data-id="' + esc(p.id) + '" aria-pressed="' + (elegida && elegida.id === p.id) + '">' +
+      (im ? '<img src="' + esc(im) + '" alt="" loading="lazy">' : '<span class="sin"></span>') +
+      '<div><div class="n">' + esc(p.name || '(sin nombre)') + '</div>' +
+      (tot != null ? '<div class="m">' + tot + ' canciones</div>' : '') + '</div></button>';
+  }).join('');
+}
+$('lista').addEventListener('click', e => {
+  const f = e.target.closest('.fila'); if (!f) return;
+  elegida = playlists.find(p => p.id === f.dataset.id);
+  $('lista').querySelectorAll('.fila').forEach(x => x.setAttribute('aria-pressed', String(x === f)));
+  $('sel').innerHTML = 'Elegida: <b>' + esc(elegida.name) + '</b>';
+  $('pie').classList.add('visible');
+});
+$('buscar').addEventListener('input', () => playlists && pintarLista());
+
+function abrirHoja() { $('velo').classList.add('abierto'); $('hoja').classList.add('abierto'); cargarPlaylists(); }
+function cerrarHoja() { $('velo').classList.remove('abierto'); $('hoja').classList.remove('abierto'); }
+$('abrir-spotify').onclick = abrirHoja;
+$('cerrar').onclick = cerrarHoja;
+$('velo').onclick = cerrarHoja;
+
+$('usar-nombre').onclick = () => {
+  if (!elegida) return;
+  aj.texto = elegida.name || ''; $('texto').value = aj.texto; pintar(); guardarAjustes();
+  toast('Texto cambiado. Mira la vista previa antes de ponerla.');
+  cerrarHoja();
+};
+
+/* Spotify solo acepta JPEG en base64 de hasta 256 KB: se baja calidad
+   (y si hace falta tamaño) hasta que quepa. */
+function jpegParaSpotify() {
+  pintarYa();
+  const LIM = 250000;
+  for (const lado of [1024, 800, 640]) {
+    let c = lienzo;
+    if (lado !== W) { c = document.createElement('canvas'); c.width = c.height = lado; c.getContext('2d').drawImage(lienzo, 0, 0, lado, lado); }
+    for (let q = 0.92; q >= 0.6; q -= 0.08) {
+      const b64 = c.toDataURL('image/jpeg', q).split(',')[1];
+      if (b64.length <= LIM) return b64;
+    }
+  }
+  throw new Error('La imagen no cabe en el límite de Spotify');
+}
+
+$('subir').onclick = async () => {
+  if (!elegida) return;
+  const btn = $('subir');
+  btn.disabled = true; btn.textContent = 'Subiendo…';
+  try {
+    await sp('/playlists/' + elegida.id + '/images', { method: 'PUT', tipo: 'image/jpeg', body: jpegParaSpotify() });
+    toast('¡Hecha! Spotify tarda unos segundos en enseñarla.');
+    cerrarHoja();
+    playlists = null;   // para que la próxima vez salga la portada nueva
+  } catch (e) {
+    if (e.message === 'SESION_CADUCADA' || e.message === 'SIN_CONEXION') { avisoConexion('La sesión de Spotify ha caducado en este dispositivo.', 'Volver a conectar'); }
+    else if (e.status === 403) toast('Spotify no deja cambiar esta portada (403). Vuelve a conectar Spotify en MusicVault.', true);
+    else toast('No se pudo subir: ' + e.message, true);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Poner portada';
+  }
+};
+
+/* ---------------- arranque ---------------- */
+(async () => {
+  try {
+    await Promise.all([preparar(), document.fonts.load('100px "Permanent Marker"', 'SALSA')]);
+  } catch (e) {
+    $('cargando').textContent = 'No se pudo cargar la imagen base. Revisa la conexión.';
+    return;
+  }
+  $('cargando').remove();
+  pintar();
+})();
+</script>
+</body>
+</html>

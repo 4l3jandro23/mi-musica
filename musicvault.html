@@ -1975,8 +1975,9 @@ async function handleSpotifyRedirect() {
   /* El Estudio de Playlists no puede abrir el login por su cuenta: Spotify
      solo vuelve a una URL registrada, y la registrada es esta. Asi que nos
      manda aqui, se conecta de la forma de siempre y se regresa alli. */
-  if (qs.get('conectar') === 'estudio') {
-    sessionStorage.setItem(K_VOLVER, 'estudio.html');
+  const VUELTAS = { estudio: 'estudio.html', portadas: 'portadas.html' };
+  if (VUELTAS[qs.get('conectar')]) {
+    sessionStorage.setItem(K_VOLVER, VUELTAS[qs.get('conectar')]);
     history.replaceState({}, '', location.pathname);
     await beginSpotifyLogin();
     return;
@@ -2015,7 +2016,7 @@ async function handleSpotifyRedirect() {
        usuario a donde diga la URL. */
     const volver = sessionStorage.getItem(K_VOLVER);
     sessionStorage.removeItem(K_VOLVER);
-    if (volver === 'estudio.html') { location.href = 'estudio.html'; return; }
+    if (volver === 'estudio.html' || volver === 'portadas.html') { location.href = volver; return; }
     toast('Conectado con Spotify');
   } catch (e) {
     toast('No se pudo completar la conexión con Spotify (' + (e.message || 'error') + ').');
