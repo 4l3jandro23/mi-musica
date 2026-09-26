@@ -1317,8 +1317,8 @@
 
   <div class="state-strip">
     <button class="stat" data-status="all"><div class="n num" id="statAll">0</div><div class="l">En el vault</div></button>
-    <button class="stat pending" data-status="pending"><div class="n num" id="statPending">0</div><div class="l">Pendientes</div></button>
-    <button class="stat done" data-status="listened"><div class="n num" id="statDone">0</div><div class="l">Escuchados</div></button>
+    <button class="stat pending" data-status="pending" id="statPendingBtn"><div class="n num" id="statPending">0</div><div class="l">Pendientes</div></button>
+    <button class="stat done" data-status="listened" id="statDoneBtn"><div class="n num" id="statDone">0</div><div class="l">Escuchados</div></button>
     <button class="stat archived" data-status="archived"><div class="n num" id="statArchived">0</div><div class="l">Archivado</div></button>
   </div>
 
@@ -2978,6 +2978,10 @@ function renderStats() {
   document.getElementById('statDone').textContent = done;
   document.getElementById('statArchived').textContent = ITEMS.filter(i => i.archived).length;
   document.querySelectorAll('.stat').forEach(b => b.classList.toggle('active', b.dataset.status === PREFS.status));
+  // vault de solo artistas: sin canciones ni álbumes, "pendiente/escuchado" no
+  // significa nada (ver el comentario de arriba), así que esos dos botones sobran
+  document.getElementById('statPendingBtn').hidden = !contables.length;
+  document.getElementById('statDoneBtn').hidden = !contables.length;
 }
 
 // se usa desde renderChips() y desde el selector "Ver todos los géneros" —
@@ -3289,8 +3293,21 @@ function indiceArtistas() {
     const k = claveArtista(it);
     if (!k) continue;
     let g = m.get(k);
-    if (!g) { g = { clave: k, nombre: principalDe(it), items: [] }; m.set(k, g); }
+    if (!g) { g = { clave: k, nombre: principalDe(it), items: [], itemId: null }; m.set(k, g); }
     g.items.push(it);
+  }
+  /* Los artistas guardados como ficha propia (27/9/2026: el usuario dejó de
+     guardar canciones y álbumes, y solo guarda artistas) no tienen `artists`
+     — son ellos mismos, no algo hecho POR alguien — así que la clave sale de
+     su propio título, con el mismo criterio de orden que el resto. Sin esto
+     el índice de abajo se quedaba vacío en cuanto no había ni una canción. */
+  for (const it of ITEMS) {
+    if (it.type !== 'artist' || it.archived) continue;
+    const k = fold(sortKey(it.title));
+    if (!k) continue;
+    let g = m.get(k);
+    if (!g) { g = { clave: k, nombre: it.title, items: [], itemId: null }; m.set(k, g); }
+    g.itemId = it.id;
   }
   const lista = [...m.values()].sort((a, b) => cmp(sortKey(a.nombre), sortKey(b.nombre)));
   _indiceCache = { marca: META.updatedAt, n: ITEMS.length, lista };
@@ -3371,6 +3388,14 @@ function pintarArtistas() {
   zona.innerHTML = (!artistas.length
     ? `<p class="lede">Ningún artista con ese nombre.</p>`
     : `<div class="card">${visibles.map(g => {
+        /* Un artista guardado como ficha propia y sin nada debajo no se
+           despliega: se abre directamente su ficha, que es donde vive de
+           verdad su información (bio, género, notas, etiquetas...). */
+        if (g.itemId && !g.items.length) {
+          return `<button class="crow" data-abrir="${esc(g.itemId)}">
+            <span class="ci">${ui('persona')}</span><span class="ct">${esc(g.nombre)}</span><span class="cn">${ui('derecha')}</span>
+          </button>`;
+        }
         const abierto = ARTISTAS_ABIERTOS.has(g.clave);
         return `<button class="crow ${abierto ? 'abierta' : ''}" data-art="${esc(g.clave)}">
           <span class="ci">${abierto ? ui('abajo') : ui('persona')}</span><span class="ct">${esc(g.nombre)}</span><span class="cn">${g.items.length}</span>
@@ -3394,53 +3419,35 @@ function renderInicio() {
   const box = document.getElementById('inicio');
   if (!box) return;
   const vivos = ITEMS.filter(i => !i.archived);
-  const contables = vivos.filter(i => i.type !== 'artist');
-  const escuchados = contables.filter(i => i.listened).length;
   const sinEtiqueta = vivos.filter(i => !(i.tagIds || []).length).length;
+  const archivados = ITEMS.filter(i => i.archived).length;
+  const totalArtistas = vivos.filter(i => i.type === 'artist').length;
 
   const artistas = indiceArtistas();
   const visibles = artistas.slice(0, VISTOS_ARTISTAS);
   const restan = artistas.length - visibles.length;
 
+  /* Vault de solo artistas (27/9/2026: dejó de guardar canciones y álbumes,
+     y borró los que tenía): "escuchado/pendiente" no existe para un artista
+     (ver filtered()), así que esos mosaicos y las preguntas de ejemplo — todas
+     sobre canciones — sobraban. Si algún día vuelve a guardar discos o temas,
+     lo natural es deshacer este cambio, no remendarlo por encima. */
   box.innerHTML = `
     <h1>MusicVault</h1>
     <div class="tiles">
-      <button class="tile t3" data-ira="all"><div class="top"><span class="ico">${ui('baul')}</span><span class="n">${vivos.length.toLocaleString('es-ES')}</span></div><div class="l">Todo</div></button>
-      <button class="tile t2" data-ira="listened"><div class="top"><span class="ico">${ui('visto')}</span><span class="n">${escuchados.toLocaleString('es-ES')}</span></div><div class="l">Escuchados</div></button>
-      ${(() => {
-        /* Antes aqui habia "Sin etiqueta". Con 471 etiquetas automaticas ese
-           numero se queda en nada y la baldosa dejaba de servir para algo.
-           Ahora manda el mezclador, que es lo que de verdad se usa para
-           decidir que escuchar; y si de verdad quedan muchas cosas sin
-           etiquetar, la baldosa vuelve a ser esa. */
-        if (sinEtiqueta > vivos.length * 0.15)
-          return `<button class="tile t4" data-ira="sintag"><div class="top"><span class="ico">${ui('etiqueta')}</span><span class="n">${sinEtiqueta.toLocaleString('es-ES')}</span></div><div class="l">Sin etiquetar</div></button>`;
-        const m = PREFS.mezcla, n = m ? (m.inc || []).length + (m.exc || []).length : 0;
-        return `<button class="tile t4" data-ira="mezcla"><div class="top"><span class="ico">${ui('destello')}</span><span class="n">${n || ''}</span></div><div class="l">${n ? 'Mezcla puesta' : 'Mezclar etiquetas'}</div></button>`;
-      })()}
-      <button class="tile t1" data-ira="pending"><div class="top"><span class="ico">${ui('circulo')}</span><span class="n">${(contables.length - escuchados).toLocaleString('es-ES')}</span></div><div class="l">Pendientes</div></button>
-    </div>
-
-    <h2>Pregúntale a tu vault</h2>
-    <p class="lede" style="margin:-2px 0 10px;">Escribe lo que quieras ver, en cristiano. Sin filtros ni menús.</p>
-    <div class="ejemplos">
-      ${EJEMPLOS_CONSULTA.map(e => '<button class="ejemplo" data-preg="' + esc(e) + '">' + esc(e) + '</button>').join('')}
+      <button class="tile t3" data-ira="all"><div class="top"><span class="ico">${ui('micro')}</span><span class="n">${totalArtistas.toLocaleString('es-ES')}</span></div><div class="l">Artistas</div></button>
+      <button class="tile t4" data-ira="sintag"><div class="top"><span class="ico">${ui('etiqueta')}</span><span class="n">${sinEtiqueta.toLocaleString('es-ES')}</span></div><div class="l">Sin etiquetar</div></button>
+      <button class="tile t1" data-ira="archived"><div class="top"><span class="ico">${ui('baul')}</span><span class="n">${archivados.toLocaleString('es-ES')}</span></div><div class="l">Archivados</div></button>
     </div>
 
     <h2>Acciones</h2>
     <div class="card">
       <button class="crow" data-acc="buscar"><span class="ci">${ui('lupa')}</span><span class="ct">Buscar en Spotify</span></button>
-      <button class="crow" data-acc="pegar"><span class="ci">${ui('enlace')}</span><span class="ct">Pegar enlaces</span></button>
+      <button class="crow" data-acc="pegar"><span class="ci">${ui('enlace')}</span><span class="ct">Pegar artistas</span></button>
       <button class="crow" data-acc="azar"><span class="ci">${ui('dado')}</span><span class="ct">Abrir uno al azar</span></button>
-      <button class="crow" data-acc="mezcla"><span class="ci">${ui('marcador')}</span><span class="ct">Mezclar etiquetas y sacar una playlist</span></button>
-      <button class="crow" data-acc="favpistas"><span class="ci">${ui('estrella')}</span><span class="ct">Canciones sueltas de tus álbumes</span></button>
       <button class="crow" data-acc="autotag"><span class="ci">${ui('destello')}</span><span class="ct">Etiquetar automáticamente</span></button>
       <button class="crow" data-acc="revision"><span class="ci">${ui('ajustes')}</span><span class="ct">Arreglar el vault</span></button>
-      <button class="crow" data-acc="anyos"><span class="ci">${ui('calendario')}</span><span class="ct">Revisar años mal puestos</span></button>
-      <button class="crow" data-acc="samples"><span class="ci">${ui('destello')}</span><span class="ct">Ver de dónde salen los samples</span></button>
       <button class="crow" data-acc="lote"><span class="ci">${ui('lapiz')}</span><span class="ct">Editar en lote</span></button>
-      <button class="crow" data-acc="megusta"><span class="ci">${ui('corazon')}</span><span class="ct">Devolver todo a «Me gusta» de Spotify</span></button>
-      <button class="crow" data-acc="estudio"><span class="ci">${ui('ordenar')}</span><span class="ct">Estudio de playlists</span></button>
       <button class="crow" data-acc="stats"><span class="ci">${ui('barras')}</span><span class="ct">Estadísticas</span></button>
     </div>
 
@@ -3448,7 +3455,7 @@ function renderInicio() {
     ${bloqueEtiquetas()}
 
     <h2>Artistas <span class="h2n">${artistas.length.toLocaleString('es-ES')}</span></h2>
-    ${!artistas.length ? `<p class="lede">Cuando guardes discos o canciones, aquí aparecerán sus artistas para desplegarlos.</p>` : `
+    ${!artistas.length ? `<p class="lede">Cuando guardes un artista, aparecerá aquí.</p>` : `
     <div class="buscaart"><span class="mag">${ui('lupa')}</span><input type="text" id="buscaArtista" placeholder="Buscar artista…" value="${esc(FILTRO_ARTISTA)}" autocomplete="off"></div>
     <div id="zonaArtistas"></div>`}
   `;
@@ -4059,7 +4066,7 @@ let _bulkCorriendo = false;
    (nuevo — busca cada línea en Spotify y guarda la mejor coincidencia, para
    cuando no tienes los enlaces a mano y quieres ir rápido con una lista). */
 let bulkInputMode = 'links';
-let bulkNameType = 'track';
+let bulkNameType = 'artist';
 
 function openBulk() {
   showSheet(bulkInputMode === 'names' ? bulkNamesHtml() : bulkLinksHtml());
@@ -4078,9 +4085,8 @@ function bulkLinksHtml() {
   return `
     <div class="sheethead"><h2>Pegar enlaces</h2><button class="iconbtn" data-close="1" aria-label="Cerrar">${ui('cerrar', 17)}</button></div>
     ${bulkModeSegsHtml()}
-    <p class="lede">Pega álbumes, canciones, artistas o <strong>playlists enteras</strong> — separados por líneas, espacios o mezclados con texto. Los encuentro todos y me salto los que ya tienes. No hay límite: si pegas miles, los va subiendo por lotes.</p>
-    <textarea class="field tall" id="bulkIn" placeholder="https://open.spotify.com/playlist/...
-https://open.spotify.com/album/...
+    <p class="lede">Pega enlaces de artistas de Spotify — separados por líneas, espacios o mezclados con texto. Los encuentro todos y me salto los que ya tienes. No hay límite: si pegas miles, los va subiendo por lotes.</p>
+    <textarea class="field tall" id="bulkIn" placeholder="https://open.spotify.com/artist/...
 https://open.spotify.com/artist/..."></textarea>
 
     <div class="flabel">De las playlists, guardar…</div>
