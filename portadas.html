@@ -148,6 +148,42 @@
   .rango { display: flex; align-items: center; gap: 12px; color: var(--fg-mute); font-size: 14px; margin-top: 10px; }
   .rango input { flex: 1; accent-color: var(--acc); }
   .ayuda { font-size: 13px; color: var(--fg-mute); margin: 6px 0 0; }
+
+  /* barra bajo la vista previa */
+  .barra { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+  .ico { flex: none; width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font-size: 20px; cursor: pointer; }
+  .ico:disabled { opacity: .35; cursor: default; }
+  .ico.dado { font-size: 22px; }
+  .vista-spotify { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; background: #121212; border-radius: 10px; padding: 6px 10px 6px 6px; }
+  .vista-spotify canvas { width: 40px; height: 40px; border-radius: 4px; flex: none; }
+  .vista-spotify div { min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
+  .vista-spotify b { font-size: 14px; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .vista-spotify span { font-size: 12px; color: #a7a7a7; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .cab-fila { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .cab-fila .tit { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .enlace { background: none; border: 0; color: var(--acc); font: 600 14px inherit; font-family: inherit; cursor: pointer; padding: 18px 0 8px; white-space: nowrap; }
+  .nota { margin: -4px 0 8px; }
+
+  /* miniaturas: plantilla, idea o diseño guardado */
+  .plantilla { position: relative; padding-top: 6px; }
+  .mini-btn { display: block; background: none; border: 0; padding: 0; color: var(--fg-mute); font: 12.5px/1.2 inherit; font-family: inherit; cursor: pointer; text-align: center; width: 92px; }
+  .mini-btn canvas { display: block; width: 92px; height: 92px; border-radius: 8px; margin-bottom: 5px; box-shadow: 0 2px 10px rgba(0,0,0,.4); }
+  .mini-btn:active canvas { transform: scale(.96); }
+  .guardar-mio { height: 92px; border: 2px dashed var(--line); border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: var(--fg-mute); }
+  .mas-grande { font-size: 28px; line-height: 1; }
+  .borrar { position: absolute; top: 0; right: -6px; width: 24px; height: 24px; border-radius: 50%; border: 0; background: rgba(0,0,0,.8); color: #fff; font-size: 16px; line-height: 1; cursor: pointer; }
+  .chip.emoji { font-size: 18px; padding: 6px 10px; min-width: 42px; }
+
+  /* modo varias */
+  .fila.multi .tick { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--fg-mute); flex: none; }
+  .fila.multi[aria-pressed=true] { outline: none; }
+  .fila.multi[aria-pressed=true] .tick { background: #1ed760; border-color: #1ed760; box-shadow: inset 0 0 0 3px var(--surface); }
+  .hoja .cab .chip { margin-left: auto; }
+
+  /* miniatura flotante al bajar */
+  .flotante { position: fixed; top: calc(env(safe-area-inset-top) + 10px); right: 12px; z-index: 9; width: 84px; height: 84px; padding: 0; border: 2px solid rgba(255,255,255,.2); border-radius: 10px; overflow: hidden; background: #fff; box-shadow: 0 6px 20px rgba(0,0,0,.55); cursor: pointer; }
+  .flotante canvas { width: 100%; height: 100%; display: block; }
 </style>
 </head>
 <body>
@@ -161,14 +197,35 @@
   <div class="cargando" id="cargando">Cargando…</div>
 </div>
 
-<label class="tit">Plantillas</label>
-<div class="plantillas" id="plantillas"></div>
+<div class="barra">
+  <button class="ico" id="deshacer" disabled aria-label="Deshacer">↶</button>
+  <button class="ico" id="rehacer" disabled aria-label="Rehacer">↷</button>
+  <div class="vista-spotify" aria-label="Así se verá en tu lista de Spotify">
+    <canvas id="vista-mini" width="96" height="96"></canvas>
+    <div><b id="vista-nombre"></b><span>Así se ve en Spotify</span></div>
+  </div>
+  <button class="ico dado" id="sorpresa" aria-label="Sorpréndeme">🎲</button>
+</div>
 
-<label class="tit" for="texto">Texto de la cinta</label>
+<label class="tit" for="texto">Nombre de la playlist (va en la cinta)</label>
 <div class="texto">
   <input type="text" id="texto" value="SALSA" maxlength="40" autocomplete="off" autocapitalize="characters" spellcheck="false">
 </div>
 <label class="chk"><input type="checkbox" id="mayus" checked> Todo en mayúsculas</label>
+
+<div class="cab-fila">
+  <label class="tit" id="ideas-tit">Ideas</label>
+  <button class="enlace" id="otras-ideas">Otras ideas ↻</button>
+</div>
+<p class="ayuda nota" id="ideas-nota"></p>
+<div class="plantillas" id="ideas"></div>
+
+<label class="tit">Mis diseños</label>
+<p class="ayuda nota" id="mios-vacio">Guarda un diseño que te guste para usarlo en otras playlists y que todas queden a juego.</p>
+<div class="plantillas" id="mios"></div>
+
+<label class="tit">Plantillas</label>
+<div class="plantillas" id="plantillas"></div>
 
 <label class="tit">Color del disco</label>
 <div class="paleta" id="pal-disco"></div>
@@ -195,18 +252,19 @@
       <input type="text" class="campo" id="pat-emoji" maxlength="12" placeholder="Emoji o símbolo" autocomplete="off" aria-label="Emoji o símbolo">
       <label class="btn peque">Subir logo<input type="file" id="logo-in" accept="image/*" hidden></label>
     </div>
-    <p class="ayuda">Si pones varios (🍑🍒), se van alternando.</p>
+    <div class="chips rapidos sub" id="rapidos"></div>
+    <p class="ayuda">Toca uno o escribe el tuyo. Si pones varios (🍑🍒), se van alternando.</p>
     <label class="chk" id="logo-si" hidden><input type="checkbox" id="pat-logo"> Usar mi logo en vez del emoji</label>
-    <label class="chk"><input type="checkbox" id="pat-blanco"> En blanco (símbolos como ♫ ★ y el logo)</label>
+    <label class="chk"><input type="checkbox" id="pat-blanco"> Símbolos y logo en blanco (si no, en negro)</label>
     <label class="chk"><input type="checkbox" id="pat-fondo"> Con un círculo detrás</label>
     <label class="rango">Tamaño <input type="range" id="pat-tam" min="30" max="140" step="2"></label>
   </div>
 
   <label class="tit" for="borde">Texto alrededor del borde</label>
-  <input type="text" class="campo" id="borde" maxlength="40" placeholder="Ej.: GYM CD MIX" autocomplete="off">
+  <input type="text" class="campo" id="borde" maxlength="40" placeholder="Ej.: LADO A · 33 RPM" autocomplete="off">
 
   <label class="tit" for="grande">Texto grande en el disco</label>
-  <textarea class="campo" id="grande" rows="2" maxlength="30" placeholder="Ej.: 10 (y en otra línea) KG"></textarea>
+  <textarea class="campo" id="grande" rows="2" maxlength="30" placeholder="Ej.: VOL. (y en otra línea) 2"></textarea>
   <div class="chips sub" id="grande-pos"></div>
 
   <label class="tit">Estilo de los textos del disco</label>
@@ -222,18 +280,26 @@
 <div class="hoja" id="hoja" role="dialog" aria-modal="true" aria-labelledby="hoja-tit">
   <div class="cab">
     <h2 id="hoja-tit">Elige la playlist</h2>
+    <button class="chip" id="varias" aria-pressed="false" hidden>Varias a la vez</button>
     <button class="cerrar" id="cerrar" aria-label="Cerrar">×</button>
   </div>
   <input type="search" id="buscar" placeholder="Buscar playlist…" autocomplete="off">
   <div class="lista" id="lista"></div>
   <div class="pie" id="pie">
     <div class="sel" id="sel"></div>
-    <div class="dos">
+    <div class="dos" id="pie-uno">
       <button class="btn" id="usar-nombre">Usar su nombre</button>
       <button class="btn verde" id="subir">Poner portada</button>
     </div>
+    <div class="dos" id="pie-varias" hidden>
+      <button class="btn" id="marcar-todas">Marcar todas</button>
+      <button class="btn verde" id="subir-varias" disabled>Poner portadas</button>
+    </div>
+    <button class="btn" id="detener" hidden>Detener</button>
   </div>
 </div>
+
+<button class="flotante" id="flotante" hidden aria-label="Volver a la portada"><canvas id="flotante-lienzo" width="200" height="200"></canvas></button>
 
 <div class="toast" id="toast"></div>
 
@@ -268,6 +334,8 @@ const DISCOS = [
   { id: 'plata', n: 'Plata', c: '#c9ccd3' },
   { id: 'negro', n: 'Negro', c: '#3a3a3e' },
   { id: 'rojo', n: 'Rojo', c: '#e0312b' },
+  { id: 'naranja', n: 'Naranja', c: '#ff8a1f' },
+  { id: 'amarillo', n: 'Amarillo', c: '#f5c518' },
   { id: 'rosa', n: 'Rosa', c: '#ff5fa8' },
   { id: 'morado', n: 'Morado', c: '#8a4dff' },
   { id: 'azul', n: 'Azul', c: '#2f7bff' },
@@ -455,6 +523,7 @@ const ACABADOS = [
   { id: 'metal', n: 'Metal cepillado', def: '#b9bdc4' },
   { id: 'goma', n: 'Goma de pesas', def: '#262626' },
   { id: 'vinilo', n: 'Vinilo', def: '#171717' },
+  { id: 'puntos', n: 'Puntos en relieve', def: '#b9cde3' },
   { id: 'foto', n: 'Tu foto' }
 ];
 const POSICIONES = [{ id: 'izq', n: 'Izquierda' }, { id: 'arriba', n: 'Arriba' }, { id: 'abajo', n: 'Abajo' }];
@@ -466,15 +535,27 @@ const ZONAS = {
   abajo:  { x: DX, y: DY + 262, w: 250, h: 140 }
 };
 
-/* Las plantillas cambian el diseño, nunca el texto de la cinta:
-   "muestra" es solo lo que se lee en la miniatura. */
+/* Todo lo que define un diseño (sin el texto de la cinta). Las plantillas,
+   ideas y "Mis diseños" parten de aquí, para no arrastrar restos del
+   diseño anterior (un texto de borde olvidado, un dibujo, etc.). */
+const DISENO_BASE = {
+  acabado: 'cd', disco: 'orig', cinta: 'orig', patOn: false, patLogo: false, patEmoji: '♫',
+  patTam: 62, patFondo: true, patBlanco: true, borde: '', grande: '', grandePos: 'izq', estilo: 'relieve'
+};
+const CLAVES_DISENO = Object.keys(DISENO_BASE).concat(['discoOtro', 'cintaOtro']);
+/* {T} en el borde o el texto grande = el texto de la cinta */
+function completo(p, texto) {
+  const d = Object.assign({}, DISENO_BASE, p);
+  ['borde', 'grande'].forEach(k => { d[k] = String(d[k]).replace(/\{T\}/g, (texto || '').trim()); });
+  return d;
+}
 const PLANTILLAS = [
-  { n: 'Yeezus', muestra: 'SALSA', p: { acabado: 'cd', disco: 'orig', cinta: 'orig', patOn: false, borde: '', grande: '' } },
-  { n: 'Iconos', muestra: 'HITS', p: { acabado: 'metal', disco: 'marino', cinta: 'azul', patOn: true, patLogo: false, patEmoji: '♫', patTam: 62, patFondo: true, patBlanco: true, borde: '', grande: '' } },
-  { n: 'Gym', muestra: 'GYM', p: { acabado: 'goma', disco: 'orig', cinta: 'gris', patOn: false, borde: 'GYM CD MIX', grande: '10\nKG', grandePos: 'izq', estilo: 'relieve' } },
-  { n: 'Vinilo', muestra: 'JAZZ', p: { acabado: 'vinilo', disco: 'orig', cinta: 'blanco', patOn: false, borde: 'LADO A · 33 RPM', grande: '', estilo: 'blanco' } },
-  { n: 'Neón', muestra: 'NOCHE', p: { acabado: 'cd', disco: 'rosa', cinta: 'negro', patOn: true, patLogo: false, patEmoji: '✦', patTam: 40, patFondo: false, patBlanco: true, borde: '', grande: '' } },
-  { n: 'Pesas rojas', muestra: 'LEG DAY', p: { acabado: 'goma', disco: 'rojo', cinta: 'negro', patOn: false, borde: 'HEAVY ROTATION', grande: '20\nKG', grandePos: 'izq', estilo: 'relieve' } }
+  { n: 'Yeezus', muestra: 'SALSA', p: {} },
+  { n: 'Iconos', muestra: 'HITS', p: { acabado: 'metal', disco: 'marino', cinta: 'azul', patOn: true, patEmoji: '♫' } },
+  { n: 'Piel de gallina', muestra: 'CHILLS', p: { acabado: 'puntos', cinta: 'blanco' } },
+  { n: 'Vinilo', muestra: 'JAZZ', p: { acabado: 'vinilo', cinta: 'blanco', borde: 'LADO A · 33 RPM', estilo: 'blanco' } },
+  { n: 'Neón', muestra: 'NOCHE', p: { disco: 'rosa', cinta: 'negro', patOn: true, patEmoji: '✦', patTam: 40, patFondo: false } },
+  { n: 'Luna', muestra: 'CHILL', p: { acabado: 'metal', disco: 'morado', cinta: 'blanco', patOn: true, patEmoji: '☾', patTam: 46, patFondo: false } }
 ];
 
 /* ---------------- utilidades de dibujo ---------------- */
@@ -511,7 +592,7 @@ function textura(acabado, hex) {
   const rnd = azar(7);
   const anillos = new Float32Array(1400);
   for (let i = 0, v = 0; i < anillos.length; i++) { v = v * 0.55 + (rnd() - 0.5); anillos[i] = v; }
-  const k = acabado === 'metal' ? 0.8 : acabado === 'goma' ? 0.35 : 0.5;
+  const k = acabado === 'metal' ? 0.8 : acabado === 'goma' ? 0.35 : acabado === 'puntos' ? 0.6 : 0.5;
   for (let y = DY - DR - 4; y < DY + DR + 4; y++) {
     for (let xx = DX - DR - 4; xx < DX + DR + 4; xx++) {
       const dx = xx - DX, dy = y - DY, rho = Math.sqrt(dx * dx + dy * dy);
@@ -528,6 +609,20 @@ function textura(acabado, hex) {
         for (const g of [220, 352, DR - 7]) {
           const dd = rho - g;
           if (dd > -6 && dd < 6) r += 0.55 * Math.cos(th - LUZ) * Math.sign(dd) * (1 - Math.abs(dd) / 6);
+        }
+      } else if (acabado === 'puntos') {
+        /* bultitos en rejilla hexagonal, iluminados desde arriba a la
+           izquierda y con una sombra pequeña al otro lado: piel de gallina */
+        const s = 19, fila = Math.round(dy / (s * 0.866)), desp = (fila & 1) * s / 2;
+        const col = Math.round((dx - desp) / s);
+        const ex = dx - (col * s + desp), ey = dy - fila * s * 0.866, rb = 6.5;
+        const dd = Math.sqrt(ex * ex + ey * ey);
+        r = 0.92 + 0.06 * (rnd() - 0.5) + 0.12 * Math.cos(th - LUZ) * (rho / DR);
+        if (dd < rb) {
+          const nz = Math.sqrt(1 - (dd / rb) * (dd / rb));
+          r += 0.6 * (-(ex / rb) * 0.6 - (ey / rb) * 0.6 + nz * 0.53 - 0.53);
+        } else if (dd < rb + 2.5) {
+          r -= 0.18 * Math.max(0, (ex + ey) / (dd * 1.41)) * (1 - (dd - rb) / 2.5);
         }
       } else {
         /* vinilo: surcos + el típico reflejo en cruz */
@@ -578,18 +673,34 @@ const simbolos = s => {
   if (window.Intl && Intl.Segmenter) return Array.from(new Intl.Segmenter('es', { granularity: 'grapheme' }).segment(s), g => g.segment).filter(g => g.trim());
   return Array.from(s).filter(g => g.trim());
 };
+/* Símbolos "de trazo": cada móvil los pinta distinto (a veces como emoji
+   de color), así que se dibujan como silueta en blanco o negro. Todo lo
+   demás se trata como emoji y se deja con sus colores. */
+const MONO = new Set(Array.from('♫♪✦★☆♥♡⚡❄☾☀●○▲△■◆✿❀☂✈✎✚✕✓☁☘⚓♠♣♦∞☯☮✌'));
+function sprite(g, tam, blanco) {
+  const lado = Math.ceil(tam * 1.6);
+  const c = document.createElement('canvas'); c.width = c.height = lado;
+  const x = c.getContext('2d');
+  x.textAlign = 'center'; x.textBaseline = 'middle';
+  const mono = MONO.has(g.replace(/️|︎/g, ''));
+  x.font = tam + 'px ' + (mono
+    ? '"Segoe UI Symbol", "Apple Symbols", "Noto Sans Symbols 2", "DejaVu Sans", sans-serif'
+    : '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif');
+  x.fillText(mono ? g.replace(/️/g, '') + '︎' : g, lado / 2, lado / 2 + tam * 0.04);
+  if (mono) {
+    x.globalCompositeOperation = 'source-in';
+    x.fillStyle = blanco ? '#f6f4ef' : '#141414';
+    x.fillRect(0, 0, lado, lado);
+  }
+  return c;
+}
 function dibujarPatron(x, st) {
   const tam = st.patTam, paso = tam * 2.25;
   const usarLogo = st.patLogo && logoImg;
   const lista = simbolos(st.patEmoji);
   if (!usarLogo && !lista.length) return;
   const logo = usarLogo ? (st.patBlanco ? logoBlanco : logoImg) : null;
-  x.save();
-  x.textAlign = 'center'; x.textBaseline = 'middle';
-  /* primero las fuentes de emoji (salen en color); los símbolos sueltos
-     como ♫ ★ ✦ no son emoji y toman el color blanco/negro elegido */
-  x.font = tam + 'px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Segoe UI Symbol", -apple-system, sans-serif';
-  x.fillStyle = st.patBlanco ? '#f6f4ef' : '#141414';
+  const sprites = logo ? [] : lista.map(g => sprite(g, tam, st.patBlanco));
   const filas = Math.ceil(DR / (paso * 0.866)) + 1;
   let n = 0;
   for (let j = -filas; j <= filas; j++) {
@@ -600,18 +711,17 @@ function dibujarPatron(x, st) {
       if (st.patFondo) {
         x.fillStyle = 'rgba(0,0,0,0.22)';
         x.beginPath(); x.arc(px, py, tam * 0.88, 0, Math.PI * 2); x.fill();
-        x.fillStyle = st.patBlanco ? '#f6f4ef' : '#141414';
       }
       if (logo) {
         const f = Math.min(tam * 1.1 / logo.width, tam * 1.1 / logo.height);
         x.drawImage(logo, px - logo.width * f / 2, py - logo.height * f / 2, logo.width * f, logo.height * f);
       } else {
-        x.fillText(lista[n % lista.length], px, py + tam * 0.04);
+        const sp = sprites[n % sprites.length];
+        x.drawImage(sp, px - sp.width / 2, py - sp.height / 2);
       }
       n++;
     }
   }
-  x.restore();
 }
 
 /* ---------------- textos del disco ---------------- */
@@ -717,6 +827,7 @@ function pintarYa() {
   if (!base) return;
   pendiente = false;
   dibujar(ctx, aj);
+  copiarMinis();
 }
 /* Mientras escribes se pinta como mucho una vez por fotograma. Antes de
    guardar o subir se llama a pintarYa(), para no exportar un fotograma viejo. */
@@ -726,7 +837,7 @@ function pintar() {
   pendiente = true;
   requestAnimationFrame(() => { if (pendiente) pintarYa(); });
 }
-function guardarAjustes() { escribir(K_AJUSTES, aj); }
+function guardarAjustes() { escribir(K_AJUSTES, aj); registrar(); }
 
 /* ---------------- imágenes propias (logo y foto) ---------------- */
 let logoImg = null, logoBlanco = null, fotoImg = null;
@@ -808,7 +919,11 @@ function montarChips(cont, lista, clave, alCambiar) {
 /* casillas y campos de texto: se enlazan con su clave de ajustes */
 const CAMPOS = [['texto', 'texto'], ['pat-emoji', 'patEmoji'], ['borde', 'borde'], ['grande', 'grande'], ['pat-tam', 'patTam']];
 const CASILLAS = [['mayus', 'mayus'], ['pat-on', 'patOn'], ['pat-logo', 'patLogo'], ['pat-blanco', 'patBlanco'], ['pat-fondo', 'patFondo']];
-CAMPOS.forEach(([id, k]) => $(id).addEventListener('input', e => { aj[k] = e.target.type === 'range' ? +e.target.value : e.target.value; pintar(); guardarAjustes(); }));
+CAMPOS.forEach(([id, k]) => $(id).addEventListener('input', e => {
+  aj[k] = e.target.type === 'range' ? +e.target.value : e.target.value;
+  pintar(); guardarAjustes();
+  if (k === 'texto') ideasLuego();
+}));
 CASILLAS.forEach(([id, k]) => $(id).addEventListener('change', e => { aj[k] = e.target.checked; sincronizar(); pintar(); guardarAjustes(); }));
 
 function sincronizar() {
@@ -851,28 +966,319 @@ $('foto-in').addEventListener('change', async e => {
   } catch (err) { toast('No se pudo abrir esa imagen', true); }
 });
 
-/* miniaturas de las plantillas, dibujadas con el mismo motor */
+/* ============================================================
+   IDEAS, MIS DISEÑOS, DESHACER
+   ============================================================ */
+
+/* Temas: si el nombre de la playlist contiene alguna clave, se proponen
+   estos diseños primero. Las claves van sin tildes y en minúsculas.
+   Los símbolos sueltos (♥ ❄ ☾ ☀ ✦) salen en blanco; los emoji, en color. */
+const TEMAS = [
+  { claves: ['goosebump', 'escalofrio', 'piel de gallina', 'chills', 'erizad', 'pelos de punta', 'epic', 'epica'],
+    nota: 'Piel de gallina: textura de puntitos en relieve y tonos fríos.',
+    ideas: [
+      { acabado: 'puntos', cinta: 'blanco' },
+      { acabado: 'puntos', disco: 'otro', discoOtro: '#6f7f95', cinta: 'negro' },
+      { disco: 'plata', cinta: 'azul', patOn: true, patEmoji: '❄', patTam: 40, patFondo: false },
+      { acabado: 'vinilo', cinta: 'blanco', borde: '{T}', estilo: 'blanco' },
+      { acabado: 'metal', disco: 'otro', discoOtro: '#8fb3d9', cinta: 'blanco', patOn: true, patEmoji: '⚡', patTam: 44 }
+    ] },
+  { claves: ['verano', 'summer', 'playa', 'beach', 'sol ', 'vacacion', 'piscina', 'tropical'],
+    nota: 'Verano: colores cálidos y algo de playa.',
+    ideas: [
+      { disco: 'cian', cinta: 'amarillo', patOn: true, patEmoji: '🌴', patTam: 50, patFondo: false },
+      { disco: 'naranja', cinta: 'blanco', patOn: true, patEmoji: '☀', patTam: 48, patFondo: false },
+      { disco: 'amarillo', cinta: 'rosa', patOn: true, patEmoji: '🍉🍋', patTam: 46, patFondo: false }
+    ] },
+  { claves: ['invierno', 'winter', 'navidad', 'christmas', 'xmas', 'nieve', 'frio'],
+    nota: 'Invierno: plata, azul hielo y nieve.',
+    ideas: [
+      { disco: 'plata', cinta: 'rojo', patOn: true, patEmoji: '❄', patTam: 42, patFondo: false },
+      { acabado: 'puntos', cinta: 'rojo' },
+      { disco: 'rojo', cinta: 'verde', patOn: true, patEmoji: '🎄', patTam: 50, patFondo: false }
+    ] },
+  { claves: ['chill', 'relax', 'lofi', 'lo-fi', 'calma', 'tranqui', 'dormir', 'sleep', 'noche', 'night', 'luna'],
+    nota: 'Para relajarse: vinilo, lunas y colores apagados.',
+    ideas: [
+      { acabado: 'metal', disco: 'morado', cinta: 'blanco', patOn: true, patEmoji: '☾', patTam: 46, patFondo: false },
+      { acabado: 'vinilo', cinta: 'blanco' },
+      { disco: 'marino', cinta: 'amarillo', patOn: true, patEmoji: '✦', patTam: 32, patFondo: false }
+    ] },
+  { claves: ['fiesta', 'party', 'perreo', 'reggaeton', 'dance', 'club', 'bailar', 'finde', 'discoteca', 'pregame', 'previa'],
+    nota: 'Fiesta: neón, brillos y fuego.',
+    ideas: [
+      { disco: 'rosa', cinta: 'negro', patOn: true, patEmoji: '✦', patTam: 40, patFondo: false },
+      { acabado: 'metal', disco: 'morado', cinta: 'amarillo', patOn: true, patEmoji: '🔥', patTam: 48, patFondo: false },
+      { disco: 'verde', cinta: 'negro', patOn: true, patEmoji: '⚡', patTam: 44 }
+    ] },
+  { claves: ['amor', 'love', 'romant', 'corazon', 'crush', 'te quiero', 'enamora', 'besos', 'kiss'],
+    nota: 'Amor: rojos, rosas y corazones.',
+    ideas: [
+      { disco: 'rojo', cinta: 'blanco', patOn: true, patEmoji: '♥', patTam: 46, patFondo: false },
+      { disco: 'rosa', cinta: 'rojo', patOn: true, patEmoji: '💖', patTam: 46, patFondo: false },
+      { acabado: 'vinilo', cinta: 'rosa', patOn: true, patEmoji: '♥', patTam: 34, patFondo: false }
+    ] },
+  { claves: ['triste', 'sad', 'llorar', ' cry', 'lluvia', ' rain', 'desamor', 'melancol', 'nostalg', 'bajon', 'heartbreak'],
+    nota: 'Para días grises: azules, lluvia y vinilo.',
+    ideas: [
+      { disco: 'marino', cinta: 'blanco', patOn: true, patEmoji: '💧', patTam: 42, patFondo: false },
+      { acabado: 'vinilo', cinta: 'azul' },
+      { acabado: 'metal', cinta: 'negro', patOn: true, patEmoji: '☂', patTam: 46 }
+    ] },
+  { claves: ['rock', 'metal', 'punk', 'grunge', 'heavy', 'guitarra', 'indie'],
+    nota: 'Rock: negro, metal y rayos.',
+    ideas: [
+      { acabado: 'metal', disco: 'negro', cinta: 'rojo', patOn: true, patEmoji: '⚡', patTam: 50 },
+      { disco: 'negro', cinta: 'amarillo', borde: '{T}', estilo: 'blanco' },
+      { acabado: 'vinilo', cinta: 'rojo', grande: '★', grandePos: 'izq', estilo: 'blanco' }
+    ] },
+  { claves: ['jazz', 'soul', 'blues', 'swing', 'bossa', 'funk', 'motown'],
+    nota: 'Jazz y soul: vinilo clásico.',
+    ideas: [
+      { acabado: 'vinilo', cinta: 'amarillo', borde: 'LADO A · 33 RPM', estilo: 'blanco' },
+      { acabado: 'vinilo', cinta: 'blanco' },
+      { disco: 'orig', cinta: 'negro', patOn: true, patEmoji: '♪', patTam: 44, patFondo: false }
+    ] },
+  { claves: ['salsa', 'latin', 'bachata', 'cumbia', 'merengue', 'son cubano', 'caribe', 'cuba'],
+    nota: 'Latino: el dorado original y colores con sabor.',
+    ideas: [
+      {},
+      { disco: 'rojo', cinta: 'amarillo', patOn: true, patEmoji: '🌶️', patTam: 46, patFondo: false },
+      { disco: 'amarillo', cinta: 'rojo', patOn: true, patEmoji: '🌺', patTam: 48, patFondo: false }
+    ] },
+  { claves: ['flamenco', 'andalu', 'sevilla', 'granada', 'rumba', 'copla', 'feria', 'rociero', 'cadiz'],
+    nota: 'Flamenco: rojo, negro y claveles.',
+    ideas: [
+      { disco: 'rojo', cinta: 'negro', patOn: true, patEmoji: '🌹', patTam: 48, patFondo: false },
+      { acabado: 'vinilo', cinta: 'rojo', borde: '¡OLÉ!', estilo: 'blanco' },
+      { disco: 'negro', cinta: 'rojo', patOn: true, patEmoji: '●', patTam: 34, patFondo: false }
+    ] },
+  { claves: ['techno', 'electro', 'house', 'edm', 'rave', 'trance', 'dj ', 'synth'],
+    nota: 'Electrónica: metal, neón y geometría.',
+    ideas: [
+      { acabado: 'metal', disco: 'morado', cinta: 'negro', patOn: true, patEmoji: '✦', patTam: 40, patFondo: false },
+      { disco: 'negro', cinta: 'azul', patOn: true, patEmoji: '▲', patTam: 36, patFondo: false },
+      { acabado: 'metal', disco: 'cian', cinta: 'negro' }
+    ] },
+  { claves: ['rap', 'hip hop', 'hiphop', 'trap', 'drill', 'urbano', 'freestyle'],
+    nota: 'Urbano: negro, dorado y brillos.',
+    ideas: [
+      { disco: 'negro', cinta: 'amarillo', patOn: true, patEmoji: '💎', patTam: 44, patFondo: false },
+      { disco: 'orig', cinta: 'negro', borde: '{T}', estilo: 'negro' },
+      { acabado: 'metal', disco: 'plata', cinta: 'negro', patOn: true, patEmoji: '★', patTam: 40 }
+    ] },
+  { claves: ['clasica', 'classical', 'piano', 'orquesta', 'opera', 'barroco', 'mozart', 'bach'],
+    nota: 'Clásica: sobrio y elegante.',
+    ideas: [
+      { acabado: 'vinilo', cinta: 'blanco', patOn: true, patEmoji: '♪', patTam: 34, patFondo: false },
+      { disco: 'orig', cinta: 'blanco' },
+      { acabado: 'metal', disco: 'plata', cinta: 'negro' }
+    ] },
+  { claves: ['viaje', 'road', 'coche', 'carretera', 'trip', 'ruta', 'conducir', 'drive', 'avion'],
+    nota: 'De viaje: coches, aviones y carretera.',
+    ideas: [
+      { disco: 'azul', cinta: 'amarillo', patOn: true, patEmoji: '🚗', patTam: 46, patFondo: false },
+      { acabado: 'metal', disco: 'plata', cinta: 'amarillo', patOn: true, patEmoji: '✈', patTam: 44 },
+      { acabado: 'vinilo', cinta: 'amarillo', borde: '{T}', estilo: 'blanco' }
+    ] },
+  { claves: ['estudi', 'study', 'focus', 'concentr', 'trabaj', ' work ', 'leer', 'oficina'],
+    nota: 'Para concentrarse: limpio, sin distracciones.',
+    ideas: [
+      { acabado: 'metal', disco: 'plata', cinta: 'blanco' },
+      { acabado: 'vinilo', cinta: 'amarillo' },
+      { disco: 'verde', cinta: 'blanco', patOn: true, patEmoji: '✎', patTam: 40, patFondo: false }
+    ] },
+  { claves: ['cafe', 'coffee', 'manana', 'morning', 'domingo', 'sunday', 'desayuno', 'brunch'],
+    nota: 'Mañanas tranquilas: tonos cálidos y café.',
+    ideas: [
+      { disco: 'naranja', cinta: 'blanco', patOn: true, patEmoji: '☕', patTam: 46, patFondo: false },
+      { acabado: 'vinilo', cinta: 'amarillo' },
+      { disco: 'amarillo', cinta: 'orig', patOn: true, patEmoji: '☀', patTam: 42, patFondo: false }
+    ] },
+  { claves: ['80', '90', '2000', 'retro', 'vintage', 'old school', 'clasicos', 'throwback', 'remember'],
+    nota: 'Retro: neón y vinilo.',
+    ideas: [
+      { disco: 'rosa', cinta: 'amarillo', patOn: true, patEmoji: '★', patTam: 40, patFondo: false },
+      { acabado: 'vinilo', cinta: 'orig' },
+      { disco: 'cian', cinta: 'rosa', patOn: true, patEmoji: '●', patTam: 30, patFondo: false }
+    ] },
+  { claves: ['halloween', 'miedo', 'terror', 'horror', 'spooky', 'fantasma', 'zombi'],
+    nota: 'De miedo: fantasmas y naranja calabaza.',
+    ideas: [
+      { disco: 'negro', cinta: 'amarillo', patOn: true, patEmoji: '👻', patTam: 48, patFondo: false },
+      { disco: 'naranja', cinta: 'negro', patOn: true, patEmoji: '🦇', patTam: 44, patFondo: false }
+    ] },
+  { claves: ['gym', 'workout', 'entreno', 'cardio', 'running', 'correr', 'pesas', 'fitness'],
+    nota: 'Para entrenar: disco de pesas y energía.',
+    ideas: [
+      { acabado: 'goma', cinta: 'gris', borde: 'GYM CD MIX', grande: '10\nKG' },
+      { acabado: 'metal', disco: 'negro', cinta: 'amarillo', patOn: true, patEmoji: '⚡', patTam: 48 }
+    ] }
+];
+
+const sinTildes = s => (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+function temaDe(texto) {
+  const t = ' ' + sinTildes(texto) + ' ';
+  return TEMAS.find(tm => tm.claves.some(k => t.includes(k))) || null;
+}
+function semillaDe(s) { let h = 2166136261; for (const ch of s) { h ^= ch.codePointAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+
+/* Un diseño al azar pero con sentido: tonos del disco y la cinta que
+   contrastan, y dibujos solo a veces. */
+const SIMBOLOS = ['✦', '★', '♫', '●', '♥', '⚡', '☾', '✿', '▲', '❄', '☀', '♪'];
+function aleatorio(semilla) {
+  const r = azar(semilla), elige = l => l[Math.floor(r() * l.length)];
+  const acabado = elige(['cd', 'cd', 'cd', 'metal', 'metal', 'vinilo', 'puntos']);
+  const discos = DISCOS.map(d => d.id);
+  const disco = acabado === 'vinilo' ? 'orig' : elige(discos);
+  let cinta = elige(CINTAS.map(c => c.id));
+  if (cinta === disco) cinta = 'blanco';
+  const d = { acabado, disco, cinta };
+  if (acabado !== 'puntos' && r() < 0.55) Object.assign(d, { patOn: true, patEmoji: elige(SIMBOLOS), patTam: 30 + Math.round(r() * 30), patFondo: r() < 0.4 });
+  if (r() < 0.2) Object.assign(d, { borde: '{T}', estilo: elige(['relieve', 'blanco', 'negro']) });
+  return d;
+}
+function ideasPara(texto, vuelta) {
+  const tema = vuelta ? null : temaDe(texto);
+  const lista = tema ? tema.ideas.slice() : [];
+  const base = semillaDe(sinTildes(texto)) + vuelta * 7919;
+  for (let i = 0; lista.length < 6; i++) lista.push(aleatorio(base + i * 104729));
+  return { tema, lista };
+}
+
+/* ---------------- miniaturas (mismo motor, a pequeño) ---------------- */
+function miniatura(st, etiqueta, alPulsar, alBorrar) {
+  const b = document.createElement('div');
+  b.className = 'plantilla';
+  const boton = document.createElement('button');
+  boton.className = 'mini-btn';
+  boton.setAttribute('aria-label', etiqueta || 'Aplicar este diseño');
+  const mini = document.createElement('canvas');
+  mini.width = mini.height = 180;
+  const tmp = temp('miniatura');
+  dibujar(tmp.getContext('2d'), st);
+  mini.getContext('2d').drawImage(tmp, 0, 0, 180, 180);
+  boton.appendChild(mini);
+  if (etiqueta) { const s = document.createElement('span'); s.textContent = etiqueta; boton.appendChild(s); }
+  boton.onclick = alPulsar;
+  b.appendChild(boton);
+  if (alBorrar) {
+    const x = document.createElement('button');
+    x.className = 'borrar'; x.textContent = '×'; x.setAttribute('aria-label', 'Borrar este diseño');
+    x.onclick = alBorrar;
+    b.appendChild(x);
+  }
+  return b;
+}
+function aplicar(p, aviso) {
+  Object.assign(aj, completo(p, aj.texto));
+  sincronizar(); pintar(); guardarAjustes();
+  if (aviso) toast(aviso);
+}
+
 function montarPlantillas() {
   const el = $('plantillas');
   el.innerHTML = '';
-  const tmp = temp('miniatura'), tx = tmp.getContext('2d');
-  PLANTILLAS.forEach(pl => {
-    const b = document.createElement('button');
-    b.className = 'plantilla';
-    const mini = document.createElement('canvas');
-    mini.width = mini.height = 180;
-    dibujar(tx, Object.assign({}, aj, pl.p, { texto: pl.muestra, mayus: true }));
-    mini.getContext('2d').drawImage(tmp, 0, 0, 180, 180);
-    b.appendChild(mini);
-    const s = document.createElement('span'); s.textContent = pl.n; b.appendChild(s);
-    b.onclick = () => {
-      Object.assign(aj, pl.p);
-      sincronizar(); pintar(); guardarAjustes();
-      toast('Plantilla «' + pl.n + '». Tu texto se mantiene.');
-    };
-    el.appendChild(b);
-  });
+  PLANTILLAS.forEach(pl => el.appendChild(miniatura(
+    Object.assign({}, aj, completo(pl.p, pl.muestra), { texto: pl.muestra, mayus: true }), pl.n,
+    () => aplicar(pl.p, 'Plantilla «' + pl.n + '». Tu texto se mantiene.'))));
 }
+
+let vueltaIdeas = 0, tIdeas = null, textoIdeas = null;
+function montarIdeas(forzar) {
+  const texto = aj.texto.trim();
+  if (!forzar && texto === textoIdeas) return;
+  textoIdeas = texto;
+  const { tema, lista } = ideasPara(texto || 'playlist', vueltaIdeas);
+  $('ideas-tit').textContent = texto ? 'Ideas para «' + textoDe(aj) + '»' : 'Ideas';
+  $('ideas-nota').textContent = tema ? tema.nota : (vueltaIdeas ? 'Más combinaciones al azar.' : 'No reconozco el tema de este nombre, así que aquí van combinaciones al azar.');
+  const el = $('ideas');
+  el.innerHTML = '';
+  lista.forEach((p, i) => el.appendChild(miniatura(Object.assign({}, aj, completo(p, aj.texto)), '',
+    () => aplicar(p, 'Idea aplicada. Puedes seguir retocándola.'))));
+  el.scrollLeft = 0;
+}
+function ideasLuego() { clearTimeout(tIdeas); tIdeas = setTimeout(() => { vueltaIdeas = 0; montarIdeas(); montarMios(); }, 700); }
+
+/* ---------------- Mis diseños ---------------- */
+const K_MIOS = 'portadas_mios_v1';
+let mios = leer(K_MIOS, []);
+function disenoActual() { const d = {}; CLAVES_DISENO.forEach(k => { d[k] = aj[k]; }); return d; }
+function montarMios() {
+  const el = $('mios');
+  el.innerHTML = '';
+  const nuevo = document.createElement('div');
+  nuevo.className = 'plantilla';
+  nuevo.innerHTML = '<button class="mini-btn guardar-mio" aria-label="Guardar este diseño"><span class="mas-grande">+</span><span>Guardar este</span></button>';
+  nuevo.firstChild.onclick = () => {
+    if (aj.acabado === 'foto' || aj.patLogo) toast('Guardado. Ojo: la foto y el logo son los de este móvil.');
+    else toast('Diseño guardado. Úsalo en tus otras playlists.');
+    mios.unshift({ id: Date.now(), d: disenoActual() });
+    mios = mios.slice(0, 40);
+    escribir(K_MIOS, mios);
+    montarMios();
+  };
+  el.appendChild(nuevo);
+  mios.forEach(m => el.appendChild(miniatura(Object.assign({}, aj, m.d), '',
+    () => aplicar(m.d, 'Diseño aplicado con tu texto.'),
+    () => {
+      if (!confirm('¿Borrar este diseño guardado?')) return;
+      mios = mios.filter(x => x.id !== m.id); escribir(K_MIOS, mios); montarMios();
+    })));
+  $('mios-vacio').hidden = mios.length > 0;
+}
+
+/* ---------------- deshacer / rehacer ---------------- */
+const historia = [], futuro = [];
+let ultimo = null, tHist = null;
+function registrarYa() {
+  clearTimeout(tHist); tHist = null;
+  const s = JSON.stringify(aj);
+  if (s === ultimo) return;
+  if (ultimo) { historia.push(ultimo); if (historia.length > 80) historia.shift(); futuro.length = 0; }
+  ultimo = s;
+  botonesHistoria();
+}
+function registrar() { clearTimeout(tHist); tHist = setTimeout(registrarYa, 400); }
+function botonesHistoria() { $('deshacer').disabled = !historia.length; $('rehacer').disabled = !futuro.length; }
+function volverA(s) {
+  Object.keys(aj).forEach(k => delete aj[k]);
+  Object.assign(aj, JSON.parse(s));
+  ultimo = s;
+  escribir(K_AJUSTES, aj);
+  sincronizar(); pintar(); botonesHistoria(); ideasLuego();
+}
+$('deshacer').onclick = () => { registrarYa(); if (!historia.length) return; futuro.push(ultimo); volverA(historia.pop()); };
+$('rehacer').onclick = () => { registrarYa(); if (!futuro.length) return; historia.push(ultimo); volverA(futuro.pop()); };
+$('sorpresa').onclick = () => aplicar(aleatorio(Date.now() & 0xffffff));
+$('otras-ideas').onclick = () => { vueltaIdeas++; montarIdeas(true); };
+
+/* ---------------- emojis rápidos ---------------- */
+const RAPIDOS = ['♫', '✦', '★', '♥', '⚡', '❄', '☾', '☀', '●', '🔥', '🌴', '💿', '🍒', '🌹', '💎', '👻', '🎧', '🌈'];
+RAPIDOS.forEach(e => {
+  const b = document.createElement('button');
+  b.className = 'chip emoji'; b.textContent = e; b.setAttribute('aria-label', 'Usar ' + e);
+  b.onclick = () => { Object.assign(aj, { patOn: true, patLogo: false, patEmoji: e }); sincronizar(); pintar(); guardarAjustes(); };
+  $('rapidos').appendChild(b);
+});
+
+/* ---------------- vista en Spotify y miniatura flotante ---------------- */
+function copiarMinis() {
+  for (const id of ['vista-mini', 'flotante-lienzo']) {
+    const c = $(id), x = c.getContext('2d');
+    x.clearRect(0, 0, c.width, c.height);
+    x.drawImage(lienzo, 0, 0, c.width, c.height);
+  }
+  $('vista-nombre').textContent = aj.texto.trim() || 'Mi playlist';
+}
+/* aparece cuando la portada grande se ha ido casi entera por arriba */
+function revisarFlotante() {
+  const r = document.querySelector('.lienzo').getBoundingClientRect();
+  $('flotante').hidden = r.bottom > 60 || $('hoja').classList.contains('abierto');
+}
+addEventListener('scroll', revisarFlotante, { passive: true });
+addEventListener('resize', revisarFlotante);
+$('flotante').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
 const slug = () => (textoFinal() || 'portada').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w]+/g, '-').replace(/^-|-$/g, '').toLowerCase() || 'portada';
 const aBlob = (tipo, q) => new Promise(ok => lienzo.toBlob(ok, tipo, q));
@@ -949,12 +1355,15 @@ async function sp(ruta, o) {
 }
 
 let playlists = null, yo = null, elegida = null;
+let modoVarias = false, subiendo = false, pararLote = false;
+const marcadas = new Set();
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 function avisoConexion(texto, boton) {
   $('lista').innerHTML = '<div class="aviso">' + esc(texto) +
     '<a class="btn verde" href="musicvault.html?conectar=portadas">' + esc(boton) + '</a></div>';
   $('buscar').style.display = 'none';
+  $('varias').hidden = true;
 }
 
 async function cargarPlaylists() {
@@ -962,6 +1371,7 @@ async function cargarPlaylists() {
   if (!cred() || !cred().refreshToken) return avisoConexion('Para ponerla directamente hace falta conectar Spotify (es la misma conexión que MusicVault).', 'Conectar con Spotify');
   if (!tieneScope('ugc-image-upload')) return avisoConexion('Tu conexión con Spotify no tiene permiso para cambiar portadas. Vuelve a conectar y acepta los permisos.', 'Volver a conectar');
   $('buscar').style.display = '';
+  $('varias').hidden = false;
   if (playlists) return pintarLista();
   lista.innerHTML = '<div class="aviso">Cargando tus playlists…</div>';
   try {
@@ -982,50 +1392,91 @@ async function cargarPlaylists() {
   }
 }
 
+const visibles = () => {
+  const q = sinTildes($('buscar').value.trim());
+  return playlists.filter(p => !q || sinTildes(p.name).includes(q));
+};
 function pintarLista() {
-  const q = $('buscar').value.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-  const vis = playlists.filter(p => !q || (p.name || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').includes(q));
   if (!playlists.length) { $('lista').innerHTML = '<div class="aviso">No tienes playlists propias en Spotify.</div>'; return; }
+  const vis = visibles();
   if (!vis.length) { $('lista').innerHTML = '<div class="aviso">Ninguna playlist coincide.</div>'; return; }
   $('lista').innerHTML = vis.map(p => {
     const im = p.images && p.images.length ? p.images[p.images.length - 1].url : '';
     const tot = p.items && p.items.total != null ? p.items.total : (p.tracks && p.tracks.total);
-    return '<button class="fila" data-id="' + esc(p.id) + '" aria-pressed="' + (elegida && elegida.id === p.id) + '">' +
+    const on = modoVarias ? marcadas.has(p.id) : (elegida && elegida.id === p.id);
+    return '<button class="fila' + (modoVarias ? ' multi' : '') + '" data-id="' + esc(p.id) + '" aria-pressed="' + !!on + '">' +
+      (modoVarias ? '<span class="tick" aria-hidden="true"></span>' : '') +
       (im ? '<img src="' + esc(im) + '" alt="" loading="lazy">' : '<span class="sin"></span>') +
       '<div><div class="n">' + esc(p.name || '(sin nombre)') + '</div>' +
       (tot != null ? '<div class="m">' + tot + ' canciones</div>' : '') + '</div></button>';
   }).join('');
 }
+function pintarPie() {
+  const pie = $('pie');
+  if (modoVarias) {
+    const n = marcadas.size;
+    pie.classList.add('visible');
+    $('pie-uno').hidden = true; $('pie-varias').hidden = false;
+    $('sel').innerHTML = n ? '<b>' + n + '</b> elegida' + (n > 1 ? 's' : '') + '. Cada una llevará <b>su propio nombre</b> en la cinta.' : 'Toca las playlists que quieras.';
+    $('subir-varias').disabled = !n || subiendo;
+    $('subir-varias').textContent = n ? 'Poner portada a ' + n : 'Poner portadas';
+  } else {
+    $('pie-uno').hidden = false; $('pie-varias').hidden = true;
+    pie.classList.toggle('visible', !!elegida);
+    if (elegida) $('sel').innerHTML = 'Elegida: <b>' + esc(elegida.name) + '</b>';
+  }
+}
 $('lista').addEventListener('click', e => {
-  const f = e.target.closest('.fila'); if (!f) return;
-  elegida = playlists.find(p => p.id === f.dataset.id);
-  $('lista').querySelectorAll('.fila').forEach(x => x.setAttribute('aria-pressed', String(x === f)));
-  $('sel').innerHTML = 'Elegida: <b>' + esc(elegida.name) + '</b>';
-  $('pie').classList.add('visible');
+  const f = e.target.closest('.fila'); if (!f || subiendo) return;
+  const p = playlists.find(x => x.id === f.dataset.id);
+  if (modoVarias) {
+    if (marcadas.has(p.id)) marcadas.delete(p.id); else marcadas.add(p.id);
+    f.setAttribute('aria-pressed', String(marcadas.has(p.id)));
+  } else {
+    elegida = p;
+    $('lista').querySelectorAll('.fila').forEach(x => x.setAttribute('aria-pressed', String(x === f)));
+  }
+  pintarPie();
 });
 $('buscar').addEventListener('input', () => playlists && pintarLista());
+$('varias').onclick = () => {
+  if (subiendo) return;
+  modoVarias = !modoVarias;
+  $('varias').setAttribute('aria-pressed', String(modoVarias));
+  $('hoja-tit').textContent = modoVarias ? 'Elige varias playlists' : 'Elige la playlist';
+  pintarLista(); pintarPie();
+};
+$('marcar-todas').onclick = () => {
+  const vis = visibles();
+  const todas = vis.every(p => marcadas.has(p.id));
+  vis.forEach(p => todas ? marcadas.delete(p.id) : marcadas.add(p.id));
+  pintarLista(); pintarPie();
+};
 
-function abrirHoja() { $('velo').classList.add('abierto'); $('hoja').classList.add('abierto'); cargarPlaylists(); }
-function cerrarHoja() { $('velo').classList.remove('abierto'); $('hoja').classList.remove('abierto'); }
+function abrirHoja() { $('velo').classList.add('abierto'); $('hoja').classList.add('abierto'); revisarFlotante(); pintarPie(); cargarPlaylists(); }
+function cerrarHoja() {
+  if (subiendo) { toast('Espera a que termine o pulsa Detener.'); return; }
+  $('velo').classList.remove('abierto'); $('hoja').classList.remove('abierto');
+  revisarFlotante();
+}
 $('abrir-spotify').onclick = abrirHoja;
 $('cerrar').onclick = cerrarHoja;
 $('velo').onclick = cerrarHoja;
 
 $('usar-nombre').onclick = () => {
   if (!elegida) return;
-  aj.texto = elegida.name || ''; $('texto').value = aj.texto; pintar(); guardarAjustes();
+  aj.texto = elegida.name || ''; sincronizar(); pintar(); guardarAjustes(); ideasLuego();
   toast('Texto cambiado. Mira la vista previa antes de ponerla.');
   cerrarHoja();
 };
 
 /* Spotify solo acepta JPEG en base64 de hasta 256 KB: se baja calidad
    (y si hace falta tamaño) hasta que quepa. */
-function jpegParaSpotify() {
-  pintarYa();
+function jpegDe(origen) {
   const LIM = 250000;
   for (const lado of [1024, 800, 640]) {
-    let c = lienzo;
-    if (lado !== W) { c = document.createElement('canvas'); c.width = c.height = lado; c.getContext('2d').drawImage(lienzo, 0, 0, lado, lado); }
+    let c = origen;
+    if (lado !== W) { c = document.createElement('canvas'); c.width = c.height = lado; c.getContext('2d').drawImage(origen, 0, 0, lado, lado); }
     for (let q = 0.92; q >= 0.6; q -= 0.08) {
       const b64 = c.toDataURL('image/jpeg', q).split(',')[1];
       if (b64.length <= LIM) return b64;
@@ -1033,24 +1484,61 @@ function jpegParaSpotify() {
   }
   throw new Error('La imagen no cabe en el límite de Spotify');
 }
+function jpegParaSpotify() { pintarYa(); return jpegDe(lienzo); }
+const subirPortada = (id, b64) => sp('/playlists/' + id + '/images', { method: 'PUT', tipo: 'image/jpeg', body: b64 });
+
+function errorSubida(e) {
+  if (e.message === 'SESION_CADUCADA' || e.message === 'SIN_CONEXION') { avisoConexion('La sesión de Spotify ha caducado en este dispositivo.', 'Volver a conectar'); return true; }
+  if (e.status === 403) toast('Spotify no deja cambiar esta portada (403). Vuelve a conectar Spotify en MusicVault.', true);
+  else toast('No se pudo subir: ' + e.message, true);
+  return false;
+}
 
 $('subir').onclick = async () => {
   if (!elegida) return;
   const btn = $('subir');
   btn.disabled = true; btn.textContent = 'Subiendo…';
   try {
-    await sp('/playlists/' + elegida.id + '/images', { method: 'PUT', tipo: 'image/jpeg', body: jpegParaSpotify() });
+    await subirPortada(elegida.id, jpegParaSpotify());
     toast('¡Hecha! Spotify tarda unos segundos en enseñarla.');
     cerrarHoja();
     playlists = null;   // para que la próxima vez salga la portada nueva
-  } catch (e) {
-    if (e.message === 'SESION_CADUCADA' || e.message === 'SIN_CONEXION') { avisoConexion('La sesión de Spotify ha caducado en este dispositivo.', 'Volver a conectar'); }
-    else if (e.status === 403) toast('Spotify no deja cambiar esta portada (403). Vuelve a conectar Spotify en MusicVault.', true);
-    else toast('No se pudo subir: ' + e.message, true);
-  } finally {
-    btn.disabled = false; btn.textContent = 'Poner portada';
-  }
+  } catch (e) { errorSubida(e); }
+  finally { btn.disabled = false; btn.textContent = 'Poner portada'; }
 };
+
+/* Varias a la vez: mismo diseño, y en la cinta el nombre de cada una.
+   Se hacen de una en una (la API no tiene envío en lote) y se puede parar. */
+$('subir-varias').onclick = async () => {
+  const lista = playlists.filter(p => marcadas.has(p.id));
+  if (!lista.length) return;
+  if (!confirm('Se cambiará la portada de ' + lista.length + ' playlist' + (lista.length > 1 ? 's' : '') + ' con este diseño y su propio nombre. ¿Seguir?')) return;
+  subiendo = true; pararLote = false;
+  $('detener').hidden = false; $('subir-varias').disabled = true; $('marcar-todas').disabled = true;
+  const lote = temp('lote'), lx = lote.getContext('2d');
+  let bien = 0; const fallos = [];
+  for (let i = 0; i < lista.length && !pararLote; i++) {
+    const p = lista[i];
+    $('sel').innerHTML = 'Subiendo <b>' + (i + 1) + '</b> de ' + lista.length + ': ' + esc(p.name);
+    try {
+      dibujar(lx, Object.assign({}, aj, { texto: p.name || '' }));
+      await subirPortada(p.id, jpegDe(lote));
+      bien++; marcadas.delete(p.id);
+    } catch (e) {
+      if (e.message === 'SESION_CADUCADA' || e.message === 'SIN_CONEXION') { fallos.push(p.name); errorSubida(e); break; }
+      fallos.push(p.name);
+    }
+    await sleep(350);
+  }
+  subiendo = false;
+  $('detener').hidden = true; $('marcar-todas').disabled = false;
+  playlists && playlists.length && pintarLista();
+  pintarPie();
+  toast((bien ? bien + ' portada' + (bien > 1 ? 's' : '') + ' puesta' + (bien > 1 ? 's' : '') + '.' : 'No se puso ninguna.') +
+    (fallos.length ? ' Fallaron ' + fallos.length + ': ' + fallos.slice(0, 3).join(', ') + (fallos.length > 3 ? '…' : '') : '') +
+    (pararLote ? ' (detenido)' : ''), !!fallos.length);
+};
+$('detener').onclick = () => { pararLote = true; $('detener').textContent = 'Deteniendo…'; setTimeout(() => { $('detener').textContent = 'Detener'; }, 1500); };
 
 /* ---------------- arranque ---------------- */
 (async () => {
@@ -1064,6 +1552,9 @@ $('subir').onclick = async () => {
   $('cargando').remove();
   sincronizar();
   pintarYa();
+  registrarYa();
+  montarIdeas(true);
+  montarMios();
   montarPlantillas();
 })();
 </script>
