@@ -291,6 +291,8 @@
 
   <label class="tit">Acabado del disco</label>
   <div class="chips" id="acabados"></div>
+  <label class="chk sub"><input type="checkbox" id="irid"> Reflejo de arcoíris (en el CD)</label>
+  <label class="chk"><input type="checkbox" id="fondo-tenido"> Fondo teñido con el color del disco</label>
   <div id="foto-ctl" class="sub" hidden>
     <p class="ayuda" id="foto-nombre"></p>
     <label class="btn sub">Elegir foto<input type="file" id="foto-in" accept="image/*" hidden></label>
@@ -435,19 +437,25 @@ const TAM_MAX = 112;   // "SALSA" en la original mide lo que da este tamaño
    recta y más alta. Se endereza (ENDEREZA) y se estira en vertical (ALTO_X). */
 const ENDEREZA = 0.16, ALTO_X = 1.3;
 
+/* Tonos elegidos para verse bien juntos (una colección), no colores
+   primarios. Los id se mantienen para que lo ya guardado siga funcionando. */
 const DISCOS = [
   { id: 'orig', n: 'Dorado (original)', c: null, vista: 'conic-gradient(#f9b84a,#c9661a,#fbd27a,#7a3b0a,#f9b84a)' },
-  { id: 'plata', n: 'Plata', c: '#c9ccd3' },
-  { id: 'negro', n: 'Negro', c: '#3a3a3e' },
-  { id: 'rojo', n: 'Rojo', c: '#e0312b' },
-  { id: 'naranja', n: 'Naranja', c: '#ff8a1f' },
-  { id: 'amarillo', n: 'Amarillo', c: '#f5c518' },
-  { id: 'rosa', n: 'Rosa', c: '#ff5fa8' },
-  { id: 'morado', n: 'Morado', c: '#8a4dff' },
-  { id: 'azul', n: 'Azul', c: '#2f7bff' },
-  { id: 'marino', n: 'Azul marino', c: '#1d5ea8' },
-  { id: 'cian', n: 'Turquesa', c: '#18c7c1' },
-  { id: 'verde', n: 'Verde', c: '#3cc14a' }
+  { id: 'plata', n: 'Plata', c: '#c6c9cf' },
+  { id: 'negro', n: 'Grafito', c: '#2e2f33' },
+  { id: 'burdeos', n: 'Burdeos', c: '#7e1a2b' },
+  { id: 'rojo', n: 'Rojo', c: '#c23a2e' },
+  { id: 'naranja', n: 'Naranja', c: '#d9772b' },
+  { id: 'amarillo', n: 'Mostaza', c: '#d9a82e' },
+  { id: 'oliva', n: 'Oliva', c: '#6f7a3a' },
+  { id: 'verde', n: 'Verde botella', c: '#2f8f5b' },
+  { id: 'cian', n: 'Turquesa', c: '#1e9a9a' },
+  { id: 'azul', n: 'Azul', c: '#3a6fc4' },
+  { id: 'grisaceo', n: 'Azul grisáceo', c: '#4f6f96' },
+  { id: 'marino', n: 'Azul noche', c: '#23345c' },
+  { id: 'morado', n: 'Morado', c: '#6a4a9c' },
+  { id: 'lavanda', n: 'Lavanda', c: '#a893d6' },
+  { id: 'rosa', n: 'Rosa', c: '#e0709e' }
 ];
 const CINTAS = [
   { id: 'orig', n: 'Cobre (original)', c: null, vista: '#b5602a' },
@@ -468,7 +476,7 @@ const escribir = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); r
 const aj = Object.assign({
   texto: 'SALSA', mayus: true, disco: 'orig', cinta: 'orig', discoOtro: '#ff7a00', cintaOtro: '#7a4dd8',
   acabado: 'cd', patOn: false, patEmoji: '♫', patLogo: false, patTam: 62, patFondo: true, patBlanco: true,
-  borde: '', grande: '', grandePos: 'izq', estilo: 'relieve', patSep: 2.25
+  borde: '', grande: '', grandePos: 'izq', estilo: 'relieve', patSep: 2.25, irid: true, fondo: true
 }, leer(K_AJUSTES, {}));
 
 let toastT;
@@ -514,6 +522,52 @@ async function preparar() {
   }
   [refDisco, topeDisco] = referencia(mDisco);
   [refCinta, topeCinta] = referencia(mCinta);
+  prepararLuces();
+}
+
+/* Un CD de verdad no es de un color plano: donde le da la luz se ve un
+   arcoíris que cambia con el ángulo. Se precalcula cuánto brilla cada
+   píxel del disco en la foto (iriPeso) y qué color del arcoíris le toca
+   (iriArco). fueraM = lo que no es disco ni cinta (fondo y caja), para
+   teñirlo muy suavemente con el color del disco. */
+let iriPeso = null, iriArco = null, fueraM = null;
+function prepararLuces() {
+  const n = W * W;
+  iriPeso = new Float32Array(n); iriArco = new Uint8ClampedArray(n * 3); fueraM = new Float32Array(n);
+  for (let i = 0; i < n; i++) {
+    fueraM[i] = Math.max(0, 1 - (mDisco[i] + mCinta[i]) / 255);
+    if (!mDisco[i]) continue;
+    const r = lum[i] / refDisco;
+    const p = Math.pow(Math.min(1, Math.max(0, (r - 0.95) / (topeDisco - 0.95))), 0.8) * mDisco[i] / 255;
+    if (!p) continue;
+    iriPeso[i] = p;
+    const x = i % W, y = (i / W) | 0;
+    let h = (Math.atan2(y - DY, x - DX) / (2 * Math.PI)) * 2 + Math.hypot(x - DX, y - DY) / DR * 0.6;
+    h = ((h % 1) + 1) % 1;
+    /* hsv(h, 0.43, 1) -> rgb */
+    const k = n => (n + h * 6) % 6, f = n => 1 - 0.43 * Math.max(0, Math.min(k(n), 4 - k(n), 1));
+    iriArco[i * 3] = f(5) * 255; iriArco[i * 3 + 1] = f(3) * 255; iriArco[i * 3 + 2] = f(1) * 255;
+  }
+}
+function iridiscencia(d, fuerza) {
+  for (let i = 0; i < iriPeso.length; i++) {
+    const p = iriPeso[i];
+    if (!p) continue;
+    const w = p * fuerza, j = i * 4, a = i * 3;
+    for (let ch = 0; ch < 3; ch++) {
+      const o = Math.min(255, d[j + ch] * 0.35 + iriArco[a + ch] * 0.75);
+      d[j + ch] = d[j + ch] * (1 - w) + o * w;
+    }
+  }
+}
+function fondoTenido(d, hex) {
+  const c = hexRgb(hex), past = c.map(v => 1 - (1 - v) * 0.55);
+  for (let i = 0; i < fueraM.length; i++) {
+    const f = fueraM[i] * 0.16;
+    if (!f) continue;
+    const j = i * 4;
+    d[j] *= 1 - f * (1 - past[0]); d[j + 1] *= 1 - f * (1 - past[1]); d[j + 2] *= 1 - f * (1 - past[2]);
+  }
 }
 
 const hexRgb = h => [1, 3, 5].map(k => parseInt(h.slice(k, k + 2), 16) / 255);
@@ -628,12 +682,25 @@ function escribirCinta(c, texto, st) {
   x.textAlign = 'center';
   x.textBaseline = 'alphabetic';
   x.fillStyle = tinta;
-  const med = x.measureText(m.lineas.join(''));
-  const asc = med.actualBoundingBoxAscent, desc = Math.max(0, med.actualBoundingBoxDescent);
-  const altoX = m.altoX, paso = m.tam * m.alto * altoX;
-  const bloque = paso * (m.lineas.length - 1) + (asc + desc) * altoX;
+  /* Las tildes de las mayúsculas (Í, Á, Ó…) sobresalen por arriba: cada
+     línea que las lleva deja ese hueco extra respecto a la de encima, o la
+     tilde acaba pegada a la línea anterior como si fuera una coma. */
+  const capAsc = x.measureText('HAMX').actualBoundingBoxAscent;
+  const ascL = m.lineas.map(l => Math.max(capAsc, x.measureText(l).actualBoundingBoxAscent));
+  const desc = Math.max(0, x.measureText(m.lineas.join('')).actualBoundingBoxDescent);
+  let altoX = m.altoX;
+  const medir = ax => {
+    const paso = m.tam * m.alto * ax, extra = ascL.map(v => (v - capAsc) * ax * 1.1);
+    let bloque = (ascL[0] + desc) * ax + paso * (m.lineas.length - 1);
+    for (let i = 1; i < extra.length; i++) bloque += extra[i];
+    return { paso, extra, bloque };
+  };
+  let g = medir(altoX);
+  if (g.bloque > CAJA.h * 0.97) { altoX *= CAJA.h * 0.97 / g.bloque; g = medir(altoX); }
   const cx = CAJA.x + CAJA.w / 2, cy = CAJA.y + CAJA.h / 2;
-  const y0 = CAJA.y + (CAJA.h - bloque) / 2 + asc * altoX;
+  const y0 = CAJA.y + (CAJA.h - g.bloque) / 2 + ascL[0] * altoX;
+  const bases = [];
+  for (let i = 0, y = y0; i < m.lineas.length; i++) { if (i) y += g.paso + g.extra[i]; bases.push(y); }
   const rnd = azar(semillaDe(texto));
   x.translate(cx, cy); x.rotate(-0.012); x.translate(-cx, -cy);
   m.lineas.forEach((l, i) => {
@@ -641,7 +708,7 @@ function escribirCinta(c, texto, st) {
     const anchos = letras.map(ch => x.measureText(ch).width);
     const total = anchos.reduce((a, b) => a + b, 0);
     const sx = Math.min(1, CAJA.w / total);            // estrechar si no cabe
-    const ym = y0 + i * paso - (asc - desc) / 2 * altoX; // centro de la línea
+    const ym = bases[i] - (capAsc - desc) / 2 * altoX;    // centro de la línea
     let px = cx - total * sx / 2;
     letras.forEach((ch, k) => {
       const w = anchos[k] * sx;
@@ -650,7 +717,7 @@ function escribirCinta(c, texto, st) {
       x.translate(px + w / 2, ym + dy);
       x.rotate(giro);
       x.transform(sx * e, 0, ENDEREZA, altoX * e, 0, 0);
-      x.fillText(ch, 0, (asc - desc) / 2);
+      x.fillText(ch, 0, (capAsc - desc) / 2);
       x.restore();
       px += w;
     });
@@ -694,7 +761,7 @@ const ZONAS = {
    diseño anterior (un texto de borde olvidado, un dibujo, etc.). */
 const DISENO_BASE = {
   acabado: 'cd', disco: 'orig', cinta: 'orig', patOn: false, patLogo: false, patEmoji: '♫',
-  patTam: 62, patSep: 2.25, patFondo: true, patBlanco: true, borde: '', grande: '', grandePos: 'izq', estilo: 'relieve'
+  patTam: 62, patSep: 2.25, patFondo: true, irid: true, fondo: true, patBlanco: true, borde: '', grande: '', grandePos: 'izq', estilo: 'relieve'
 };
 const CLAVES_DISENO = Object.keys(DISENO_BASE).concat(['discoOtro', 'cintaOtro']);
 /* {T} en el borde o el texto grande = el texto de la cinta */
@@ -995,6 +1062,11 @@ function dibujar(c, st) {
   let acabado = st.acabado === 'foto' && !fotoImg ? 'cd' : st.acabado;
   if (!ACABADOS.some(a => a.id === acabado)) acabado = 'cd';
   if (acabado === 'cd' && hexD) tenir(img.data, mDisco, hexD, refDisco, topeDisco);
+  if (acabado === 'cd' && st.irid !== false) iridiscencia(img.data, hexD ? 0.55 : 0.3);
+  if (st.fondo !== false) {
+    const def = (ACABADOS.find(a => a.id === acabado) || {}).def;
+    fondoTenido(img.data, acabado === 'foto' ? '#9aa0a8' : (acabado === 'cd' ? hexD : null) || hexD || def || '#d98b2b');
+  }
   /* el cobre original tiene manchas oscuras que en una cinta blanca o
      amarilla parecen suciedad: cuanto más clara la cinta, más se suavizan */
   if (hexC) tenir(img.data, mCinta, hexC, refCinta, topeCinta, 1 - 0.65 * luz(hexC));
@@ -1118,7 +1190,7 @@ function montarChips(cont, lista, clave, alCambiar) {
 
 /* casillas y campos de texto: se enlazan con su clave de ajustes */
 const CAMPOS = [['texto', 'texto'], ['pat-emoji', 'patEmoji'], ['borde', 'borde'], ['grande', 'grande'], ['pat-tam', 'patTam'], ['pat-sep', 'patSep']];
-const CASILLAS = [['mayus', 'mayus'], ['pat-on', 'patOn'], ['pat-logo', 'patLogo'], ['pat-blanco', 'patBlanco'], ['pat-fondo', 'patFondo']];
+const CASILLAS = [['mayus', 'mayus'], ['pat-on', 'patOn'], ['pat-logo', 'patLogo'], ['pat-blanco', 'patBlanco'], ['pat-fondo', 'patFondo'], ['irid', 'irid'], ['fondo-tenido', 'fondo']];
 CAMPOS.forEach(([id, k]) => $(id).addEventListener('input', e => {
   aj[k] = e.target.type === 'range' ? +e.target.value : e.target.value;
   pintar(); guardarAjustes();
@@ -1787,10 +1859,10 @@ function coleccionInicial() {
     items: [
       it('3AM', 'escuchar', 'marino'), it('4AM', 'escuchar', 'morado'), it('Al volante', 'escuchar', 'amarillo'),
       it('Foco', 'escuchar', 'plata'), it('LIT AF', 'escuchar', 'rosa'), it('NRG', 'escuchar', 'rojo'),
-      it('Sad Hours', 'escuchar', 'azul'),
+      it('Sad Hours', 'escuchar', 'grisaceo'),
       it('Antes de mí', 'bloques', 'orig'), it('Electrónica', 'bloques', 'cian'), it('En español', 'bloques', 'naranja'),
-      it('Era EDM', 'bloques', '#8be02f'), it('Flamenco y raíz', 'bloques', '#a8122a'), it('Hip hop', 'bloques', 'negro'),
-      it('Pop, rock e indie', 'bloques', 'verde'), it('The Beatles', 'bloques', '#f2f0ea')
+      it('Era EDM', 'bloques', 'lavanda'), it('Flamenco y raíz', 'bloques', 'burdeos'), it('Hip hop', 'bloques', 'negro'),
+      it('Pop, rock e indie', 'bloques', 'verde'), it('The Beatles', 'bloques', '#ecebe6')
     ]
   };
 }
