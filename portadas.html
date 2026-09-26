@@ -1844,25 +1844,18 @@ $('detener').onclick = () => { pararLote = true; $('detener').textContent = 'Det
    vez: el nombre, el color del disco y el grupo (que fija el color
    de la cinta). Sin emojis ni acabados: eso vive en Diseño libre.
    ============================================================ */
-const K_COL = 'portadas_coleccion_v1', K_MODO = 'portadas_modo_v1';
+/* v2: la colección de 15 del plan anterior ya no existe; se empieza limpio */
+const K_COL = 'portadas_coleccion_v2', K_MODO = 'portadas_modo_v1';
 const nuevoId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 
+/* Septiembre de 2026: borró todas sus playlists menos Goosebumps y Salsa
+   para empezar de nuevo. Un solo grupo; Salsa es la portada original. */
 function coleccionInicial() {
-  const it = (texto, grupo, disco) => disco.startsWith('#')
-    ? { id: nuevoId(), texto, grupo, disco: 'otro', discoOtro: disco }
-    : { id: nuevoId(), texto, grupo, disco, discoOtro: '#ff7a00' };
   return {
-    grupos: [
-      { id: 'escuchar', n: 'Para escuchar', cinta: 'orig', cintaOtro: '#7a4dd8' },
-      { id: 'bloques', n: 'Bloques del archivo', cinta: 'blanco', cintaOtro: '#7a4dd8' }
-    ],
+    grupos: [{ id: 'mias', n: 'Mis playlists', cinta: 'orig', cintaOtro: '#7a4dd8' }],
     items: [
-      it('3AM', 'escuchar', 'marino'), it('4AM', 'escuchar', 'morado'), it('Al volante', 'escuchar', 'amarillo'),
-      it('Foco', 'escuchar', 'plata'), it('LIT AF', 'escuchar', 'rosa'), it('NRG', 'escuchar', 'rojo'),
-      it('Sad Hours', 'escuchar', 'grisaceo'),
-      it('Antes de mí', 'bloques', 'orig'), it('Electrónica', 'bloques', 'cian'), it('En español', 'bloques', 'naranja'),
-      it('Era EDM', 'bloques', 'lavanda'), it('Flamenco y raíz', 'bloques', 'burdeos'), it('Hip hop', 'bloques', 'negro'),
-      it('Pop, rock e indie', 'bloques', 'verde'), it('The Beatles', 'bloques', '#ecebe6')
+      { id: nuevoId(), texto: 'Salsa', grupo: 'mias', disco: 'orig', discoOtro: '#ff7a00' },
+      { id: nuevoId(), texto: 'Goosebumps', grupo: 'mias', disco: 'grisaceo', discoOtro: '#ff7a00' }
     ]
   };
 }
