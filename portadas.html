@@ -525,6 +525,7 @@ const ACABADOS = [
   { id: 'goma', n: 'Goma de pesas', def: '#262626' },
   { id: 'vinilo', n: 'Vinilo', def: '#171717' },
   { id: 'puntos', n: 'Puntos en relieve', def: '#b9cde3' },
+  { id: 'rayas', n: 'Rayas', def: '#4a4b4f' },
   { id: 'foto', n: 'Tu foto' }
 ];
 const POSICIONES = [{ id: 'izq', n: 'Izquierda' }, { id: 'arriba', n: 'Arriba' }, { id: 'abajo', n: 'Abajo' }];
@@ -593,7 +594,7 @@ function textura(acabado, hex) {
   const rnd = azar(7);
   const anillos = new Float32Array(1400);
   for (let i = 0, v = 0; i < anillos.length; i++) { v = v * 0.55 + (rnd() - 0.5); anillos[i] = v; }
-  const k = acabado === 'metal' ? 0.8 : acabado === 'goma' ? 0.35 : acabado === 'puntos' ? 0.6 : 0.5;
+  const k = acabado === 'metal' ? 0.8 : acabado === 'goma' ? 0.35 : acabado === 'puntos' ? 0.6 : acabado === 'rayas' ? 0.9 : 0.5;
   for (let y = DY - DR - 4; y < DY + DR + 4; y++) {
     for (let xx = DX - DR - 4; xx < DX + DR + 4; xx++) {
       const dx = xx - DX, dy = y - DY, rho = Math.sqrt(dx * dx + dy * dy);
@@ -611,6 +612,12 @@ function textura(acabado, hex) {
           const dd = rho - g;
           if (dd > -6 && dd < 6) r += 0.55 * Math.cos(th - LUZ) * Math.sign(dd) * (1 - Math.abs(dd) / 6);
         }
+      } else if (acabado === 'rayas') {
+        /* franjas anchas claras sobre el color, con grano de asfalto
+           y bordes algo gastados (paso de cebra) */
+        const franja = ((y - DY + 1035) / 70 | 0) % 2 === 0;
+        const borde = Math.abs(((y - DY + 1035) % 70) - 35) > 31 ? 0.25 * rnd() : 0;
+        r = franja ? 2 - borde - 0.15 * rnd() : 0.9 + 0.2 * (rnd() - 0.5);
       } else if (acabado === 'puntos') {
         /* bultitos en rejilla hexagonal, iluminados desde arriba a la
            izquierda y con una sombra pequeña al otro lado: piel de gallina */
@@ -1025,6 +1032,15 @@ const TEMAS = [
       { disco: 'marino', cinta: 'blanco', patOn: true, patEmoji: '💧', patTam: 42, patFondo: false },
       { acabado: 'vinilo', cinta: 'azul' },
       { acabado: 'metal', cinta: 'negro', patOn: true, patEmoji: '☂', patTam: 46 }
+    ] },
+  { claves: ['beatles', 'lennon', 'mccartney', 'ringo', 'harrison', 'abbey road', 'yellow submarine', 'sgt pepper', 'let it be', 'hey jude', 'britpop', 'brit', '60s', 'sesenta'],
+    nota: 'Beatles: el paso de cebra de Abbey Road, el White Album, el submarino amarillo y la manzana verde.',
+    ideas: [
+      { acabado: 'rayas', cinta: 'blanco' },
+      { disco: 'otro', discoOtro: '#f2f0ea', cinta: 'blanco', grande: '{T}', grandePos: 'abajo', estilo: 'relieve' },
+      { disco: 'amarillo', cinta: 'azul', patOn: true, patEmoji: '○', patTam: 58, patSep: 2.3, patFondo: false, patBlanco: true },
+      { acabado: 'vinilo', cinta: 'verde', patOn: true, patEmoji: '🍏', patTam: 56, patFondo: false },
+      { disco: 'rosa', cinta: 'amarillo', patOn: true, patEmoji: '🌼🎺🌸', patTam: 46, patFondo: false }
     ] },
   { claves: ['rock', 'metal', 'punk', 'grunge', 'heavy', 'guitarra', 'indie'],
     nota: 'Rock: negro, metal y rayos.',
