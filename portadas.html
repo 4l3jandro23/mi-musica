@@ -412,16 +412,17 @@ async function preparar() {
 }
 
 const hexRgb = h => [1, 3, 5].map(k => parseInt(h.slice(k, k + 2), 16) / 255);
+const luz = h => { const [r, g, b] = hexRgb(h); return 0.299 * r + 0.587 * g + 0.114 * b; };
 
 /* Cada píxel: más oscuro que la media -> el color oscurecido en la misma
    proporción; más claro -> el color aclarado hacia blanco. Así un disco
    plateado conserva sus rayos de luz y una cinta blanca sus arrugas. */
-function tenir(datos, mascara, hex, ref, tope) {
-  const c = hexRgb(hex);
+function tenir(datos, mascara, hex, ref, tope, contraste) {
+  const c = hexRgb(hex), k = contraste == null ? 1 : contraste;
   for (let i = 0, j = 0; i < mascara.length; i++, j += 4) {
     const a = mascara[i];
     if (!a) continue;
-    const r = lum[i] / ref;
+    const r = 1 + (lum[i] / ref - 1) * k;
     let o0, o1, o2;
     if (r <= 1) { o0 = c[0] * r; o1 = c[1] * r; o2 = c[2] * r; }
     else {
@@ -445,12 +446,15 @@ function repartos(palabras, n) {
     for (const resto of repartos(palabras.slice(i), n - 1)) out.push([palabras.slice(0, i).join(' ')].concat(resto));
   return out;
 }
+/* Al escribir a mano en una cinta estrecha se aprietan las letras: se
+   permite estrechar hasta un 18 % antes de tener que bajar el tamaño. */
+const ESTRECHA = 0.82;
 function mejorReparto(ctx, palabras, alto) {
   let mejor = null;
   for (let n = 1; n <= Math.min(4, palabras.length); n++) {
     for (const lineas of repartos(palabras, n)) {
       const ancho = Math.max(...lineas.map(l => ctx.measureText(l).width));
-      const tam = Math.min(TAM_MAX, CAJA.w / ancho * 100, CAJA.h / (n * alto * ALTO_X));
+      const tam = Math.min(TAM_MAX, CAJA.w / (ancho * ESTRECHA) * 100, CAJA.h / (n * alto * ALTO_X));
       if (!mejor || tam > mejor.tam + 0.5) mejor = { lineas, tam, alto };
     }
   }
@@ -476,6 +480,11 @@ function maquetar(ctx, texto) {
     const otro = mejorReparto(ctx, prueba, alto);
     if (otro.tam > mejor.tam * 1.15) mejor = otro;
   }
+  /* Con letra pequeña (nombres largos) sobra alto en la cinta: las letras
+     se hacen más altas, como cuando alguien escribe apretado. */
+  const n = mejor.lineas.length;
+  const objetivo = Math.min(0.62 + 0.14 * (n - 1), 0.95) * CAJA.h;
+  mejor.altoX = Math.max(ALTO_X, Math.min(1.85, objetivo / (n * mejor.tam * alto)));
   return mejor;
 }
 /* rotulador negro sobre cinta clara; blanco (de pintura) sobre cinta oscura */
@@ -485,33 +494,72 @@ function colorTinta(st) {
   const [r, g, b] = hexRgb(cc);
   return 0.299 * r + 0.587 * g + 0.114 * b < 0.3 ? '#f2eee6' : '#17110e';
 }
-function escribirCinta(ctx, texto, st) {
-  const m = maquetar(ctx, texto);
+/* Tinta de rotulador: pequeñas zonas donde la tinta no cubre del todo */
+let _grano = null;
+function granoTinta() {
+  if (_grano) return _grano;
+  const c = document.createElement('canvas'); c.width = c.height = W;
+  const x = c.getContext('2d'), im = x.createImageData(W, W), rnd = azar(99);
+  for (let y = CAJA.y - 40; y < CAJA.y + CAJA.h + 40; y++) {
+    for (let xx = CAJA.x - 40; xx < CAJA.x + CAJA.w + 40; xx++) {
+      const j = (y * W + xx) * 4, v = rnd();
+      im.data[j + 3] = v < 0.1 ? 90 + rnd() * 120 : v * 30;
+    }
+  }
+  x.putImageData(im, 0, 0);
+  return (_grano = c);
+}
+/* Cada letra se dibuja por separado con un poco de variación de tamaño,
+   giro y altura (con semilla: el mismo texto sale siempre igual), para que
+   parezca escrito a mano y no una fuente. */
+function escribirCinta(c, texto, st) {
+  const L = temp('tinta'), x = L.getContext('2d');
+  x.setTransform(1, 0, 0, 1, 0, 0);
+  x.clearRect(0, 0, W, W);
+  const m = maquetar(x, texto);
   if (!m) return;
-  ctx.save();
-  ctx.font = m.tam.toFixed(1) + 'px "Permanent Marker"';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'alphabetic';
-  /* altura real de las letras para centrar de verdad en vertical */
-  const med = ctx.measureText(m.lineas.join(''));
+  const tinta = colorTinta(st), oscura = luz(tinta) < 0.5;
+  x.font = m.tam.toFixed(1) + 'px "Permanent Marker"';
+  x.textAlign = 'center';
+  x.textBaseline = 'alphabetic';
+  x.fillStyle = tinta;
+  const med = x.measureText(m.lineas.join(''));
   const asc = med.actualBoundingBoxAscent, desc = Math.max(0, med.actualBoundingBoxDescent);
-  const paso = m.tam * m.alto * ALTO_X;
-  const bloque = paso * (m.lineas.length - 1) + (asc + desc) * ALTO_X;
-  const cx = CAJA.x + CAJA.w / 2, y0 = CAJA.y + (CAJA.h - bloque) / 2 + asc * ALTO_X;
-  ctx.translate(cx, CAJA.y + CAJA.h / 2);
-  ctx.rotate(-0.012);
-  ctx.translate(-cx, -(CAJA.y + CAJA.h / 2));
-  ctx.fillStyle = colorTinta(st);
-  ctx.globalAlpha = 0.94;
+  const altoX = m.altoX, paso = m.tam * m.alto * altoX;
+  const bloque = paso * (m.lineas.length - 1) + (asc + desc) * altoX;
+  const cx = CAJA.x + CAJA.w / 2, cy = CAJA.y + CAJA.h / 2;
+  const y0 = CAJA.y + (CAJA.h - bloque) / 2 + asc * altoX;
+  const rnd = azar(semillaDe(texto));
+  x.translate(cx, cy); x.rotate(-0.012); x.translate(-cx, -cy);
   m.lineas.forEach((l, i) => {
-    const y = y0 + i * paso, ym = y - (asc - desc) / 2 * ALTO_X;   // centro de la línea
-    ctx.save();
-    ctx.translate(cx, ym);
-    ctx.transform(1, 0, ENDEREZA, ALTO_X, 0, 0);
-    ctx.fillText(l, 0, (asc - desc) / 2);
-    ctx.restore();
+    const letras = Array.from(l);
+    const anchos = letras.map(ch => x.measureText(ch).width);
+    const total = anchos.reduce((a, b) => a + b, 0);
+    const sx = Math.min(1, CAJA.w / total);            // estrechar si no cabe
+    const ym = y0 + i * paso - (asc - desc) / 2 * altoX; // centro de la línea
+    let px = cx - total * sx / 2;
+    letras.forEach((ch, k) => {
+      const w = anchos[k] * sx;
+      const e = 1 + (rnd() - 0.5) * 0.09, giro = (rnd() - 0.5) * 0.08, dy = (rnd() - 0.5) * m.tam * 0.06;
+      x.save();
+      x.translate(px + w / 2, ym + dy);
+      x.rotate(giro);
+      x.transform(sx * e, 0, ENDEREZA, altoX * e, 0, 0);
+      x.fillText(ch, 0, (asc - desc) / 2);
+      x.restore();
+      px += w;
+    });
   });
-  ctx.restore();
+  x.setTransform(1, 0, 0, 1, 0, 0);
+  x.globalCompositeOperation = 'destination-out';
+  x.drawImage(granoTinta(), 0, 0);
+  x.globalCompositeOperation = 'source-over';
+  /* la tinta oscura se multiplica con la cinta (se ve su textura debajo) */
+  c.save();
+  c.globalAlpha = 0.95;
+  c.globalCompositeOperation = oscura ? 'multiply' : 'source-over';
+  c.drawImage(L, 0, 0);
+  c.restore();
 }
 
 /* ---------------- geometría del disco en la foto ---------------- */
@@ -525,7 +573,6 @@ const ACABADOS = [
   { id: 'goma', n: 'Goma de pesas', def: '#262626' },
   { id: 'vinilo', n: 'Vinilo', def: '#171717' },
   { id: 'puntos', n: 'Puntos en relieve', def: '#b9cde3' },
-  { id: 'rayas', n: 'Rayas', def: '#4a4b4f' },
   { id: 'foto', n: 'Tu foto' }
 ];
 const POSICIONES = [{ id: 'izq', n: 'Izquierda' }, { id: 'arriba', n: 'Arriba' }, { id: 'abajo', n: 'Abajo' }];
@@ -594,7 +641,7 @@ function textura(acabado, hex) {
   const rnd = azar(7);
   const anillos = new Float32Array(1400);
   for (let i = 0, v = 0; i < anillos.length; i++) { v = v * 0.55 + (rnd() - 0.5); anillos[i] = v; }
-  const k = acabado === 'metal' ? 0.8 : acabado === 'goma' ? 0.35 : acabado === 'puntos' ? 0.6 : acabado === 'rayas' ? 0.9 : 0.5;
+  const k = acabado === 'metal' ? 0.8 : acabado === 'goma' ? 0.35 : acabado === 'puntos' ? 0.6 : 0.5;
   for (let y = DY - DR - 4; y < DY + DR + 4; y++) {
     for (let xx = DX - DR - 4; xx < DX + DR + 4; xx++) {
       const dx = xx - DX, dy = y - DY, rho = Math.sqrt(dx * dx + dy * dy);
@@ -612,25 +659,22 @@ function textura(acabado, hex) {
           const dd = rho - g;
           if (dd > -6 && dd < 6) r += 0.55 * Math.cos(th - LUZ) * Math.sign(dd) * (1 - Math.abs(dd) / 6);
         }
-      } else if (acabado === 'rayas') {
-        /* franjas anchas claras sobre el color, con grano de asfalto
-           y bordes algo gastados (paso de cebra) */
-        const franja = ((y - DY + 1035) / 70 | 0) % 2 === 0;
-        const borde = Math.abs(((y - DY + 1035) % 70) - 35) > 31 ? 0.25 * rnd() : 0;
-        r = franja ? 2 - borde - 0.15 * rnd() : 0.9 + 0.2 * (rnd() - 0.5);
       } else if (acabado === 'puntos') {
-        /* bultitos en rejilla hexagonal, iluminados desde arriba a la
-           izquierda y con una sombra pequeña al otro lado: piel de gallina */
-        const s = 19, fila = Math.round(dy / (s * 0.866)), desp = (fila & 1) * s / 2;
+        /* piel de gallina: bultitos pequeños, desiguales en tamaño y algo
+           desordenados, con poco relieve. Ordenados y grandes parecían una
+           alfombrilla de ducha. */
+        const s = 17, fila = Math.round(dy / (s * 0.866)), desp = (fila & 1) * s / 2;
         const col = Math.round((dx - desp) / s);
-        const ex = dx - (col * s + desp), ey = dy - fila * s * 0.866, rb = 6.5;
-        const dd = Math.sqrt(ex * ex + ey * ey);
-        r = 0.92 + 0.06 * (rnd() - 0.5) + 0.12 * Math.cos(th - LUZ) * (rho / DR);
+        const fr = v => v - Math.floor(v);
+        const h1 = fr(Math.sin(fila * 127.1 + col * 311.7) * 43758.55), h2 = fr(Math.sin(fila * 269.5 + col * 183.3) * 43758.55);
+        const ex = dx - (col * s + desp + (h1 - 0.5) * 5), ey = dy - (fila * s * 0.866 + (h2 - 0.5) * 5);
+        const rb = 3.4 + h2 * 2.8, dd = Math.sqrt(ex * ex + ey * ey);
+        r = 0.93 + 0.05 * (rnd() - 0.5) + 0.12 * Math.cos(th - LUZ) * (rho / DR);
         if (dd < rb) {
           const nz = Math.sqrt(1 - (dd / rb) * (dd / rb));
-          r += 0.6 * (-(ex / rb) * 0.6 - (ey / rb) * 0.6 + nz * 0.53 - 0.53);
-        } else if (dd < rb + 2.5) {
-          r -= 0.18 * Math.max(0, (ex + ey) / (dd * 1.41)) * (1 - (dd - rb) / 2.5);
+          r += 0.4 * (-(ex / rb) * 0.6 - (ey / rb) * 0.6 + nz * 0.53 - 0.53);
+        } else if (dd < rb + 2) {
+          r -= 0.1 * Math.max(0, (ex + ey) / (dd * 1.41)) * (1 - (dd - rb) / 2);
         }
       } else {
         /* vinilo: surcos + el típico reflejo en cruz */
@@ -702,7 +746,7 @@ function sprite(g, tam, blanco) {
   }
   return c;
 }
-function dibujarPatron(x, st) {
+function dibujarPatron(x, st, xFondo) {
   const tam = st.patTam, paso = tam * (st.patSep || 2.25);
   const usarLogo = st.patLogo && logoImg;
   const lista = simbolos(st.patEmoji);
@@ -717,8 +761,11 @@ function dibujarPatron(x, st) {
       const rho = Math.hypot(px - DX, py - DY);
       if (rho < R_HUB + tam * 0.55 || rho > DR + tam * 0.4) continue;
       if (st.patFondo) {
-        x.fillStyle = 'rgba(0,0,0,0.22)';
-        x.beginPath(); x.arc(px, py, tam * 0.88, 0, Math.PI * 2); x.fill();
+        /* el círculo es una sombra translúcida: va directo al disco, sin
+           pasar por la iluminación (que le quitaría transparencia) */
+        const f = xFondo || x;
+        f.fillStyle = 'rgba(0,0,0,0.22)';
+        f.beginPath(); f.arc(px, py, tam * 0.88, 0, Math.PI * 2); f.fill();
       }
       if (logo) {
         const f = Math.min(tam * 1.1 / logo.width, tam * 1.1 / logo.height);
@@ -791,6 +838,36 @@ function textoGrande(gx, texto, pos) {
   const y0 = z.y - (lineas.length - 1) * tam * alto / 2;
   lineas.forEach((l, i) => gx.fillText(l, z.x, y0 + i * tam * alto));
 }
+/* Mapas de luz sacados de la foto original: sombra (para multiplicar) y
+   reflejos (para aclarar). Así lo impreso en el disco recibe los mismos
+   rayos de luz del CD en vez de parecer una pegatina plana. */
+let _sombra = null, _reflejo = null;
+function mapasLuz() {
+  if (_sombra) return;
+  const hacer = f => {
+    const c = document.createElement('canvas'); c.width = c.height = W;
+    const x = c.getContext('2d'), im = x.createImageData(W, W);
+    for (let i = 0; i < lum.length; i++) {
+      const g = f(lum[i] / refDisco);
+      im.data[i * 4] = im.data[i * 4 + 1] = im.data[i * 4 + 2] = g; im.data[i * 4 + 3] = 255;
+    }
+    x.putImageData(im, 0, 0);
+    return c;
+  };
+  _sombra = hacer(r => 255 * Math.min(1, 0.42 + 0.58 * r));
+  _reflejo = hacer(r => 255 * Math.max(0, Math.min(1, (r - 1) / (topeDisco - 1))));
+}
+function iluminar(capa, fuerza) {
+  mapasLuz();
+  const copia = temp('copia'), cx = copia.getContext('2d');
+  cx.clearRect(0, 0, W, W); cx.drawImage(capa, 0, 0);
+  const x = capa.getContext('2d');
+  x.save();
+  x.globalAlpha = fuerza; x.globalCompositeOperation = 'multiply'; x.drawImage(_sombra, 0, 0);
+  x.globalAlpha = fuerza * 0.5; x.globalCompositeOperation = 'screen'; x.drawImage(_reflejo, 0, 0);
+  x.globalAlpha = 1; x.globalCompositeOperation = 'destination-in'; x.drawImage(copia, 0, 0);
+  x.restore();
+}
 function textosDisco(x, st) {
   const may = t => st.mayus ? t.toLocaleUpperCase('es-ES') : t;
   const borde = may((st.borde || '').trim()), grande = may(st.grande || '').trim();
@@ -810,17 +887,27 @@ const textoFinal = () => textoDe(aj);
 function dibujar(c, st) {
   const img = new ImageData(new Uint8ClampedArray(base), W, W);
   const hexD = colorDe(DISCOS, st.disco, st.discoOtro), hexC = colorDe(CINTAS, st.cinta, st.cintaOtro);
-  const acabado = st.acabado === 'foto' && !fotoImg ? 'cd' : st.acabado;
+  let acabado = st.acabado === 'foto' && !fotoImg ? 'cd' : st.acabado;
+  if (!ACABADOS.some(a => a.id === acabado)) acabado = 'cd';
   if (acabado === 'cd' && hexD) tenir(img.data, mDisco, hexD, refDisco, topeDisco);
-  if (hexC) tenir(img.data, mCinta, hexC, refCinta, topeCinta);
+  /* el cobre original tiene manchas oscuras que en una cinta blanca o
+     amarilla parecen suciedad: cuanto más clara la cinta, más se suavizan */
+  if (hexC) tenir(img.data, mCinta, hexC, refCinta, topeCinta, 1 - 0.65 * luz(hexC));
   c.putImageData(img, 0, 0);
   if (acabado !== 'cd' || st.patOn || (st.borde || '').trim() || (st.grande || '').trim()) {
     const capa = temp('capa'), x = capa.getContext('2d');
     x.clearRect(0, 0, W, W);
     if (acabado === 'foto') dibujarFoto(x);
     else if (acabado !== 'cd') x.drawImage(textura(acabado, hexD || ACABADOS.find(a => a.id === acabado).def), 0, 0);
-    if (st.patOn) dibujarPatron(x, st);
-    textosDisco(x, st);
+    /* lo "impreso" (dibujos y textos en blanco/negro) va en su capa y se
+       ilumina; el relieve ya lleva su propia luz y sombra */
+    const imp = temp('impreso'), ix = imp.getContext('2d');
+    ix.clearRect(0, 0, W, W);
+    if (st.patOn) dibujarPatron(ix, st, x);
+    if (st.estilo !== 'relieve') textosDisco(ix, st);
+    iluminar(imp, acabado === 'cd' || acabado === 'foto' ? 1 : 0.45);
+    x.drawImage(imp, 0, 0);
+    if (st.estilo === 'relieve') textosDisco(x, st);
     /* todo lo nuevo se recorta con la forma del disco: el centro
        transparente y la cinta siguen siendo los de la foto */
     x.globalCompositeOperation = 'destination-in';
@@ -1034,9 +1121,8 @@ const TEMAS = [
       { acabado: 'metal', cinta: 'negro', patOn: true, patEmoji: '☂', patTam: 46 }
     ] },
   { claves: ['beatles', 'lennon', 'mccartney', 'ringo', 'harrison', 'abbey road', 'yellow submarine', 'sgt pepper', 'let it be', 'hey jude', 'britpop', 'brit', '60s', 'sesenta'],
-    nota: 'Beatles: el paso de cebra de Abbey Road, el White Album, el submarino amarillo y la manzana verde.',
+    nota: 'Beatles: el White Album, el submarino amarillo, la manzana verde y Sgt. Pepper.',
     ideas: [
-      { acabado: 'rayas', cinta: 'blanco' },
       { disco: 'otro', discoOtro: '#f2f0ea', cinta: 'blanco', grande: '{T}', grandePos: 'abajo', estilo: 'relieve' },
       { disco: 'amarillo', cinta: 'azul', patOn: true, patEmoji: '○', patTam: 58, patSep: 2.3, patFondo: false, patBlanco: true },
       { acabado: 'vinilo', cinta: 'verde', patOn: true, patEmoji: '🍏', patTam: 56, patFondo: false },
@@ -1147,22 +1233,32 @@ function semillaDe(s) { let h = 2166136261; for (const ch of s) { h ^= ch.codePo
 const SIMBOLOS = ['✦', '★', '♫', '●', '♥', '⚡', '☾', '✿', '▲', '❄', '☀', '♪'];
 function aleatorio(semilla) {
   const r = azar(semilla), elige = l => l[Math.floor(r() * l.length)];
-  const acabado = elige(['cd', 'cd', 'cd', 'metal', 'metal', 'vinilo', 'puntos']);
+  const acabado = elige(['cd', 'cd', 'cd', 'cd', 'metal', 'vinilo']);
   const discos = DISCOS.map(d => d.id);
   const disco = acabado === 'vinilo' ? 'orig' : elige(discos);
   let cinta = elige(CINTAS.map(c => c.id));
   if (cinta === disco) cinta = 'blanco';
   const d = { acabado, disco, cinta };
-  if (acabado !== 'puntos' && r() < 0.55) Object.assign(d, { patOn: true, patEmoji: elige(SIMBOLOS), patTam: 30 + Math.round(r() * 30), patFondo: r() < 0.4 });
-  if (r() < 0.2) Object.assign(d, { borde: '{T}', estilo: elige(['relieve', 'blanco', 'negro']) });
+  if (r() < 0.25) Object.assign(d, { patOn: true, patEmoji: elige(SIMBOLOS), patTam: 30 + Math.round(r() * 30), patFondo: r() < 0.3 });
+  else if (r() < 0.12) Object.assign(d, { borde: '{T}', estilo: elige(['relieve', 'blanco']) });
   return d;
 }
 function ideasPara(texto, vuelta) {
   const tema = vuelta ? null : temaDe(texto);
-  const lista = tema ? tema.ideas.slice() : [];
+  /* lo sobrio primero (el encanto de la portada original es su sencillez);
+     si el tema no trae ninguna idea sobria, se crea una con sus colores */
+  const sobria = i => !i.patOn && !(i.borde || '').trim() && !(i.grande || '').trim();
+  let lista = [];
+  if (tema) {
+    lista = tema.ideas.filter(sobria).concat(tema.ideas.filter(i => !sobria(i)));
+    if (!sobria(lista[0])) {
+      const f = lista[0];
+      lista.unshift({ acabado: f.acabado || 'cd', disco: f.disco, discoOtro: f.discoOtro, cinta: f.cinta });
+    }
+  }
   const base = semillaDe(sinTildes(texto)) + vuelta * 7919;
   for (let i = 0; lista.length < 6; i++) lista.push(aleatorio(base + i * 104729));
-  return { tema, lista };
+  return { tema, lista: lista.slice(0, 6) };
 }
 
 /* ---------------- miniaturas (mismo motor, a pequeño) ---------------- */
