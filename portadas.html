@@ -216,6 +216,26 @@
   .fila-col > div { flex: 1; min-width: 0; }
   .fila-col .n { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
   .fila-col select { width: 100%; font: 14px inherit; font-family: inherit; background: var(--surface-2); color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 7px 8px; }
+
+  .lista-spotify { background: #121212; border-radius: 12px; padding: 6px; }
+  .lista-spotify .fs { display: flex; align-items: center; gap: 12px; padding: 6px; }
+  .lista-spotify canvas { width: 48px; height: 48px; border-radius: 4px; flex: none; background: #333; }
+  .lista-spotify b { display: block; color: #fff; font-size: 15px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .lista-spotify span { display: block; color: #a7a7a7; font-size: 13px; }
+  .lista-spotify > div > div { min-width: 0; }
+  .acciones-item { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px 0 0; }
+  .acciones-item .btn { padding: 12px 8px; font-size: 14px; }
+
+  .galeria-btn { margin-top: 12px; background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .galeria { position: fixed; inset: 0; z-index: 30; background: #0b0b0b; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding: calc(env(safe-area-inset-top) + 56px) 14px calc(env(safe-area-inset-bottom) + 30px); }
+  .galeria-rejilla { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 14px; max-width: 900px; margin: 0 auto; }
+  @media (min-width: 700px) { .galeria-rejilla { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .galeria-rejilla figure { margin: 0; }
+  .galeria-rejilla canvas { display: block; width: 100%; aspect-ratio: 1; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,.6); }
+  .galeria-rejilla figcaption { color: #eee; font-size: 14px; font-weight: 600; margin-top: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cerrar-galeria { position: fixed; top: calc(env(safe-area-inset-top) + 8px); right: 12px; z-index: 31; width: 44px; height: 44px; border-radius: 50%;
+    border: 0; background: rgba(255,255,255,.12); color: #fff; font-size: 26px; line-height: 1; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -231,11 +251,20 @@
 
 <section id="modo-coleccion">
   <p class="ayuda intro">Todas tus playlists con el mismo formato. El disco cambia de color y la cinta dice su grupo. Toca una para cambiarla. <span id="col-total"></span></p>
+  <button class="btn galeria-btn" id="ver-galeria">Ver galería</button>
+
+  <label class="tit">Paleta de la colección</label>
+  <div class="chips" id="paletas"></div>
+  <p class="ayuda nota">Reparte colores que combinan entre sí por todas tus playlists. Las doradas originales se quedan como están.</p>
   <div id="col-grupos"><p class="ayuda">Cargando…</p></div>
   <div class="fila-botones">
     <button class="btn" id="col-anadir">+ Añadir playlist</button>
     <button class="btn" id="col-grupo-nuevo">+ Grupo</button>
   </div>
+  <button class="btn sub" id="col-traer">Traer mis playlists de Spotify</button>
+
+  <label class="tit">Así se ve en Spotify</label>
+  <div class="lista-spotify" id="col-vista"></div>
   <div class="acciones">
     <button class="btn verde" id="col-spotify">Poner todas en Spotify</button>
     <button class="btn pri" id="col-guardar">Guardar todas las imágenes</button>
@@ -292,7 +321,8 @@
   <label class="tit">Acabado del disco</label>
   <div class="chips" id="acabados"></div>
   <label class="chk sub"><input type="checkbox" id="irid"> Reflejo de arcoíris (en el CD)</label>
-  <label class="chk"><input type="checkbox" id="fondo-tenido"> Fondo teñido con el color del disco</label>
+  <label class="chk"><input type="checkbox" id="fondo-tenido"> Fondo de estudio con el color del disco</label>
+  <label class="chk"><input type="checkbox" id="brillo-caja"> Brillo en la tapa de la caja</label>
   <div id="foto-ctl" class="sub" hidden>
     <p class="ayuda" id="foto-nombre"></p>
     <label class="btn sub">Elegir foto<input type="file" id="foto-in" accept="image/*" hidden></label>
@@ -369,6 +399,10 @@
     <div class="paleta" id="item-pal"></div>
     <div class="nombre-color" id="item-color"></div>
   </div>
+  <div class="acciones-item" id="item-acciones">
+    <button class="btn" id="item-guardar">Guardar imagen</button>
+    <button class="btn verde" id="item-spotify">Poner en Spotify</button>
+  </div>
   <div class="dos pie-hoja">
     <button class="btn" id="item-borrar">Quitar</button>
     <button class="btn pri" id="item-ok">Hecho</button>
@@ -405,6 +439,11 @@
     <button class="btn verde" id="colsp-subir" disabled>Poner portadas</button>
     <button class="btn" id="colsp-detener" hidden>Detener</button>
   </div>
+</div>
+
+<div class="galeria" id="galeria" hidden role="dialog" aria-modal="true" aria-label="Galería de portadas">
+  <button class="cerrar-galeria" id="cerrar-galeria" aria-label="Cerrar galería">×</button>
+  <div class="galeria-rejilla" id="galeria-rejilla"></div>
 </div>
 
 <button class="flotante" id="flotante" hidden aria-label="Volver a la portada"><canvas id="flotante-lienzo" width="200" height="200"></canvas></button>
@@ -476,7 +515,7 @@ const escribir = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); r
 const aj = Object.assign({
   texto: 'SALSA', mayus: true, disco: 'orig', cinta: 'orig', discoOtro: '#ff7a00', cintaOtro: '#7a4dd8',
   acabado: 'cd', patOn: false, patEmoji: '♫', patLogo: false, patTam: 62, patFondo: true, patBlanco: true,
-  borde: '', grande: '', grandePos: 'izq', estilo: 'relieve', patSep: 2.25, irid: true, fondo: true
+  borde: '', grande: '', grandePos: 'izq', estilo: 'relieve', patSep: 2.25, irid: true, fondo: false, brillo: true
 }, leer(K_AJUSTES, {}));
 
 let toastT;
@@ -487,7 +526,7 @@ function toast(msg, mal) {
 }
 
 /* ---------------- recoloreado ---------------- */
-let base = null, lum = null, mDisco = null, mCinta = null;
+let base = null, lum = null, mDisco = null, mCinta = null, mFondo = null;
 let refDisco = 1, topeDisco = 2, refCinta = 1, topeCinta = 2;
 
 function cargarImg(src) {
@@ -515,10 +554,10 @@ async function preparar() {
   base = pixeles(b);
   const mp = pixeles(m);
   const n = W * W;
-  lum = new Float32Array(n); mDisco = new Uint8Array(n); mCinta = new Uint8Array(n);
+  lum = new Float32Array(n); mDisco = new Uint8Array(n); mCinta = new Uint8Array(n); mFondo = new Uint8Array(n);
   for (let i = 0, j = 0; i < n; i++, j += 4) {
     lum[i] = (0.299 * base[j] + 0.587 * base[j + 1] + 0.114 * base[j + 2]) / 255;
-    mDisco[i] = mp[j]; mCinta[i] = mp[j + 1];
+    mDisco[i] = mp[j]; mCinta[i] = mp[j + 1]; mFondo[i] = mp[j + 2];   // azul = fondo fuera de la caja
   }
   [refDisco, topeDisco] = referencia(mDisco);
   [refCinta, topeCinta] = referencia(mCinta);
@@ -530,23 +569,48 @@ async function preparar() {
    píxel del disco en la foto (iriPeso) y qué color del arcoíris le toca
    (iriArco). fueraM = lo que no es disco ni cinta (fondo y caja), para
    teñirlo muy suavemente con el color del disco. */
-let iriPeso = null, iriArco = null, fueraM = null;
+let iriPeso = null, iriArco = null, fueraM = null, detalle = null;
 function prepararLuces() {
   const n = W * W;
   iriPeso = new Float32Array(n); iriArco = new Uint8ClampedArray(n * 3); fueraM = new Float32Array(n);
+  detalle = new Float32Array(n);
   for (let i = 0; i < n; i++) {
     fueraM[i] = Math.max(0, 1 - (mDisco[i] + mCinta[i]) / 255);
     if (!mDisco[i]) continue;
+    {
+      /* detalle[i] > 0 aclara, < 0 oscurece (se aplica en detallesCD) */
+      const x = i % W, y = (i / W) | 0, rh = Math.hypot(x - DX, y - DY);
+      const suave = (a, b, v) => Math.min(1, Math.max(0, (v - a) / (b - a)));
+      let dd = 0;
+      // surcos de datos: modulación finísima que da textura al brillo
+      if (rh > 185) dd += 0.045 * suave(185, 200, rh) * Math.sin(rh * 1.9) * Math.sin(rh * 0.23 + 1.3);
+      // canto exterior: línea oscura y un filo de luz por fuera
+      dd -= 0.28 * Math.max(0, 1 - Math.abs(rh - (DR - 7)) / 2.5);
+      dd += 0.2 * Math.max(0, 1 - Math.abs(rh - (DR - 3)) / 1.5);
+      detalle[i] = dd * mDisco[i] / 255;
+    }
     const r = lum[i] / refDisco;
-    const p = Math.pow(Math.min(1, Math.max(0, (r - 0.95) / (topeDisco - 0.95))), 0.8) * mDisco[i] / 255;
+    const p = Math.pow(Math.min(1, Math.max(0, (r - 0.9) / (topeDisco - 0.9))), 1.1) * mDisco[i] / 255;
     if (!p) continue;
     iriPeso[i] = p;
     const x = i % W, y = (i / W) | 0;
-    let h = (Math.atan2(y - DY, x - DX) / (2 * Math.PI)) * 2 + Math.hypot(x - DX, y - DY) / DR * 0.6;
+    /* en un CD real el espectro se abre del centro hacia fuera dentro de
+       cada rayo de luz: el tono depende sobre todo del radio */
+    /* el ángulo entra con peso 1 exacto: así la vuelta completa suma un
+       ciclo entero de tono y no queda un corte en el lado izquierdo */
+    let h = Math.hypot(x - DX, y - DY) / DR * 1.7 + Math.atan2(y - DY, x - DX) / (2 * Math.PI);
     h = ((h % 1) + 1) % 1;
     /* hsv(h, 0.43, 1) -> rgb */
-    const k = n => (n + h * 6) % 6, f = n => 1 - 0.43 * Math.max(0, Math.min(k(n), 4 - k(n), 1));
+    const k = n => (n + h * 6) % 6, f = n => 1 - 0.55 * Math.max(0, Math.min(k(n), 4 - k(n), 1));
     iriArco[i * 3] = f(5) * 255; iriArco[i * 3 + 1] = f(3) * 255; iriArco[i * 3 + 2] = f(1) * 255;
+  }
+}
+function detallesCD(d) {
+  for (let i = 0; i < detalle.length; i++) {
+    const v = detalle[i];
+    if (!v) continue;
+    const j = i * 4;
+    for (let ch = 0; ch < 3; ch++) d[j + ch] = v > 0 ? d[j + ch] + (255 - d[j + ch]) * v : d[j + ch] * (1 + v);
   }
 }
 function iridiscencia(d, fuerza) {
@@ -557,6 +621,38 @@ function iridiscencia(d, fuerza) {
     for (let ch = 0; ch < 3; ch++) {
       const o = Math.min(255, d[j + ch] * 0.35 + iriArco[a + ch] * 0.75);
       d[j + ch] = d[j + ch] * (1 - w) + o * w;
+    }
+  }
+}
+/* Fondo de estudio: lo que hay fuera de la caja pasa a ser un degradado
+   suave del color del disco (más claro en el centro) con la sombra de la
+   caja cayendo hacia abajo, como en una foto de producto. */
+let sombraCaja = null;
+function prepararSombra() {
+  if (sombraCaja) return;
+  sombraCaja = new Float32Array(W * W);
+  const x0 = 34, x1 = 986, y0 = 112, y1 = 962;          // caja desplazada hacia abajo
+  for (let y = 0; y < W; y++) for (let x = 0; x < W; x++) {
+    const i = y * W + x;
+    if (!mFondo[i]) continue;
+    const dx = Math.max(x0 - x, 0, x - x1), dy = Math.max(y0 - y, 0, y - y1);
+    const d = Math.hypot(dx, dy);
+    sombraCaja[i] = 0.34 * Math.exp(-(d * d) / (2 * 22 * 22)) + 0.1 * Math.exp(-(d * d) / (2 * 70 * 70));
+  }
+}
+function fondoEstudio(d, hex) {
+  prepararSombra();
+  const c = hexRgb(hex);
+  const claro = c.map(v => 1 - (1 - v) * 0.22), oscuro = c.map(v => 1 - (1 - v) * 0.5);
+  for (let i = 0; i < mFondo.length; i++) {
+    const a = mFondo[i];
+    if (!a) continue;
+    const x = i % W, y = (i / W) | 0;
+    const t = Math.min(1, Math.hypot(x - 512, y - 470) / 700);
+    const k = 1 - sombraCaja[i], f = a / 255, j = i * 4;
+    for (let ch = 0; ch < 3; ch++) {
+      const v = (claro[ch] + (oscuro[ch] - claro[ch]) * t) * k * 255;
+      d[j + ch] = d[j + ch] * (1 - f) + v * f;
     }
   }
 }
@@ -576,14 +672,14 @@ const luz = h => { const [r, g, b] = hexRgb(h); return 0.299 * r + 0.587 * g + 0
 /* Cada píxel: más oscuro que la media -> el color oscurecido en la misma
    proporción; más claro -> el color aclarado hacia blanco. Así un disco
    plateado conserva sus rayos de luz y una cinta blanca sus arrugas. */
-function tenir(datos, mascara, hex, ref, tope, contraste) {
-  const c = hexRgb(hex), k = contraste == null ? 1 : contraste;
+function tenir(datos, mascara, hex, ref, tope, contraste, suelo) {
+  const c = hexRgb(hex), k = contraste == null ? 1 : contraste, s0 = suelo || 0;
   for (let i = 0, j = 0; i < mascara.length; i++, j += 4) {
     const a = mascara[i];
     if (!a) continue;
     const r = 1 + (lum[i] / ref - 1) * k;
     let o0, o1, o2;
-    if (r <= 1) { o0 = c[0] * r; o1 = c[1] * r; o2 = c[2] * r; }
+    if (r <= 1) { const q = s0 + (1 - s0) * Math.max(0, r); o0 = c[0] * q; o1 = c[1] * q; o2 = c[2] * q; }
     else {
       const t = Math.min(1, (r - 1) / (tope - 1)) * 0.85;
       o0 = c[0] + (1 - c[0]) * t; o1 = c[1] + (1 - c[1]) * t; o2 = c[2] + (1 - c[2]) * t;
@@ -761,7 +857,7 @@ const ZONAS = {
    diseño anterior (un texto de borde olvidado, un dibujo, etc.). */
 const DISENO_BASE = {
   acabado: 'cd', disco: 'orig', cinta: 'orig', patOn: false, patLogo: false, patEmoji: '♫',
-  patTam: 62, patSep: 2.25, patFondo: true, irid: true, fondo: true, patBlanco: true, borde: '', grande: '', grandePos: 'izq', estilo: 'relieve'
+  patTam: 62, patSep: 2.25, patFondo: true, irid: true, fondo: false, brillo: true, patBlanco: true, borde: '', grande: '', grandePos: 'izq', estilo: 'relieve'
 };
 const CLAVES_DISENO = Object.keys(DISENO_BASE).concat(['discoOtro', 'cintaOtro']);
 /* {T} en el borde o el texto grande = el texto de la cinta */
@@ -1061,11 +1157,15 @@ function dibujar(c, st) {
   const hexD = colorDe(DISCOS, st.disco, st.discoOtro), hexC = colorDe(CINTAS, st.cinta, st.cintaOtro);
   let acabado = st.acabado === 'foto' && !fotoImg ? 'cd' : st.acabado;
   if (!ACABADOS.some(a => a.id === acabado)) acabado = 'cd';
-  if (acabado === 'cd' && hexD) tenir(img.data, mDisco, hexD, refDisco, topeDisco);
-  if (acabado === 'cd' && st.irid !== false) iridiscencia(img.data, hexD ? 0.55 : 0.3);
+  /* suelo 0.2: en un CD de color la sombra sigue siendo de ese color, no negra */
+  if (acabado === 'cd' && hexD) tenir(img.data, mDisco, hexD, refDisco, topeDisco, 1, 0.2);
+  if (acabado === 'cd' && st.irid !== false) iridiscencia(img.data, hexD ? 0.6 : 0.3);
+  if (acabado === 'cd') detallesCD(img.data);
   if (st.fondo !== false) {
     const def = (ACABADOS.find(a => a.id === acabado) || {}).def;
-    fondoTenido(img.data, acabado === 'foto' ? '#9aa0a8' : (acabado === 'cd' ? hexD : null) || hexD || def || '#d98b2b');
+    const hexFondo = acabado === 'foto' ? '#9aa0a8' : hexD || def || '#d98b2b';
+    fondoTenido(img.data, hexFondo);
+    fondoEstudio(img.data, hexFondo);
   }
   /* el cobre original tiene manchas oscuras que en una cinta blanca o
      amarilla parecen suciedad: cuanto más clara la cinta, más se suavizan */
@@ -1092,7 +1192,37 @@ function dibujar(c, st) {
     x.globalCompositeOperation = 'source-over';
     c.drawImage(capa, 0, 0);
   }
+  if (st.brillo !== false) brilloTapa(c);
   escribirCinta(c, textoDe(st), st);
+}
+
+/* Reflejo suave en diagonal sobre la tapa de plástico (encima del disco,
+   pero no sobre la cinta, que va pegada por fuera, ni sobre el fondo). */
+let _tapa = null;
+function mascaraTapa() {
+  if (_tapa) return _tapa;
+  const c = document.createElement('canvas'); c.width = c.height = W;
+  const x = c.getContext('2d'), im = x.createImageData(W, W);
+  for (let i = 0; i < mFondo.length; i++) im.data[i * 4 + 3] = Math.max(0, 255 - mFondo[i] - mCinta[i]);
+  x.putImageData(im, 0, 0);
+  return (_tapa = c);
+}
+function brilloTapa(c) {
+  const b = temp('brillo'), x = b.getContext('2d');
+  x.clearRect(0, 0, W, W);
+  const g = x.createLinearGradient(80, 0, 900, 1024);
+  g.addColorStop(0, 'rgba(255,255,255,0)');
+  g.addColorStop(0.3, 'rgba(255,255,255,0)');
+  g.addColorStop(0.4, 'rgba(255,255,255,0.13)');
+  g.addColorStop(0.47, 'rgba(255,255,255,0.03)');
+  g.addColorStop(0.55, 'rgba(255,255,255,0.08)');
+  g.addColorStop(0.6, 'rgba(255,255,255,0)');
+  g.addColorStop(1, 'rgba(255,255,255,0)');
+  x.fillStyle = g; x.fillRect(0, 0, W, W);
+  x.globalCompositeOperation = 'destination-in';
+  x.drawImage(mascaraTapa(), 0, 0);
+  x.globalCompositeOperation = 'source-over';
+  c.drawImage(b, 0, 0);
 }
 
 function pintarYa() {
@@ -1190,7 +1320,7 @@ function montarChips(cont, lista, clave, alCambiar) {
 
 /* casillas y campos de texto: se enlazan con su clave de ajustes */
 const CAMPOS = [['texto', 'texto'], ['pat-emoji', 'patEmoji'], ['borde', 'borde'], ['grande', 'grande'], ['pat-tam', 'patTam'], ['pat-sep', 'patSep']];
-const CASILLAS = [['mayus', 'mayus'], ['pat-on', 'patOn'], ['pat-logo', 'patLogo'], ['pat-blanco', 'patBlanco'], ['pat-fondo', 'patFondo'], ['irid', 'irid'], ['fondo-tenido', 'fondo']];
+const CASILLAS = [['mayus', 'mayus'], ['pat-on', 'patOn'], ['pat-logo', 'patLogo'], ['pat-blanco', 'patBlanco'], ['pat-fondo', 'patFondo'], ['irid', 'irid'], ['fondo-tenido', 'fondo'], ['brillo-caja', 'brillo']];
 CAMPOS.forEach(([id, k]) => $(id).addEventListener('input', e => {
   aj[k] = e.target.type === 'range' ? +e.target.value : e.target.value;
   pintar(); guardarAjustes();
@@ -1924,6 +2054,19 @@ function pintarColeccion() {
     el.appendChild(sec);
   });
   $('col-total').textContent = col.items.length + ' playlist' + (col.items.length === 1 ? '' : 's');
+  /* la colección tal como se verá en la lista oscura de Spotify */
+  const v = $('col-vista');
+  v.innerHTML = '';
+  col.items.forEach(it => {
+    const f = document.createElement('div'); f.className = 'fs';
+    const c = document.createElement('canvas'); c.width = c.height = 96;
+    f.appendChild(c);
+    const t = document.createElement('div');
+    t.innerHTML = '<b>' + esc(it.texto) + '</b><span>Playlist · ' + esc(grupoDe(it).n) + '</span>';
+    f.appendChild(t); v.appendChild(f);
+    pintarMini(c, estadoDe(it));
+  });
+  if (!col.items.length) v.innerHTML = '<p class="ayuda" style="padding:8px">Aún no hay playlists.</p>';
 }
 $('col-grupos').addEventListener('click', e => {
   const p = e.target.closest('.pieza');
@@ -1967,7 +2110,20 @@ function paletaSimple(el, lista, cinta, leerV, ponerV) {
 }
 
 /* ---------------- editar una playlist ---------------- */
-let edit = null, editNueva = false;
+let edit = null, editNueva = false, colorTocado = false;
+/* Color que encaja con el nombre (verano → mostaza, triste → azul…), y si
+   no se reconoce, el primero de la paleta que aún no use nadie. */
+function colorSugerido(nombre, sinContar) {
+  const usados = new Set(col.items.filter(it => it !== sinContar && it.id !== (sinContar && sinContar.id)).map(it => it.disco));
+  const tema = temaDe(nombre);
+  if (tema) {
+    const conColor = tema.ideas.map(i => i.disco).filter(d => d && d !== 'otro' && DISCOS.some(x => x.id === d));
+    const libre = conColor.find(d => !usados.has(d)) || conColor[0];
+    if (libre) return libre;
+  }
+  const d = DISCOS.find(x => !usados.has(x.id));
+  return d ? d.id : 'orig';
+}
 function vistaItem() {
   const tmp = temp('miniatura');
   dibujar(tmp.getContext('2d'), estadoDe(edit));
@@ -1976,10 +2132,12 @@ function vistaItem() {
 }
 function abrirItem(it, nueva) {
   editNueva = !!nueva;
+  colorTocado = !nueva;
   edit = Object.assign({}, it);
   $('item-tit').textContent = nueva ? 'Nueva playlist' : 'Editar playlist';
   $('item-nombre').value = edit.texto;
   $('item-borrar').hidden = !!nueva;
+  $('item-acciones').hidden = !!nueva;
   const gs = $('item-grupos'); gs.innerHTML = '';
   col.grupos.forEach(g => {
     const b = document.createElement('button');
@@ -1988,17 +2146,66 @@ function abrirItem(it, nueva) {
     gs.appendChild(b);
   });
   paletaSimple($('item-pal'), DISCOS, false, () => ({ id: edit.disco, otro: edit.discoOtro || '#ff7a00' }),
-    (id, otro) => { edit.disco = id; edit.discoOtro = otro; vistaItem(); });
+    (id, otro) => { edit.disco = id; edit.discoOtro = otro; colorTocado = true; vistaItem(); });
   vistaItem();
   abrirH('hoja-item');
 }
-$('item-nombre').addEventListener('input', e => { edit.texto = e.target.value; vistaItem(); });
+$('item-nombre').addEventListener('input', e => {
+  edit.texto = e.target.value;
+  /* mientras no elijas color a mano, el color sigue al nombre */
+  if (!colorTocado) {
+    const sug = colorSugerido(edit.texto, edit);
+    if (sug !== edit.disco) {
+      edit.disco = sug;
+      paletaSimple($('item-pal'), DISCOS, false, () => ({ id: edit.disco, otro: edit.discoOtro || '#ff7a00' }),
+        (id, otro) => { edit.disco = id; edit.discoOtro = otro; colorTocado = true; vistaItem(); });
+    }
+  }
+  vistaItem();
+});
 $('item-ok').onclick = () => {
   edit.texto = edit.texto.trim();
   if (!edit.texto) { toast('Ponle un nombre', true); return; }
   if (editNueva) col.items.push(edit);
   else col.items = col.items.map(it => it.id === edit.id ? edit : it);
   guardarCol(); cerrarH('hoja-item'); pintarColeccion();
+};
+async function guardarUna(it) {
+  const lote = temp('lote');
+  dibujar(lote.getContext('2d'), estadoDe(it));
+  const blob = await new Promise(ok => lote.toBlob(ok, 'image/jpeg', 0.92));
+  const f = new File([blob], 'portada-' + slugDe(it.texto) + '.jpg', { type: 'image/jpeg' });
+  if (matchMedia('(pointer: coarse)').matches && navigator.canShare && navigator.canShare({ files: [f] })) {
+    try { await navigator.share({ files: [f] }); return; } catch (e) { if (e.name === 'AbortError') return; }
+  }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+$('item-guardar').onclick = () => { edit.texto = edit.texto.trim(); guardarUna(edit); };
+$('item-spotify').onclick = async () => {
+  if (!cred() || !cred().refreshToken || !tieneScope('ugc-image-upload')) {
+    toast('Primero conecta Spotify (con «Poner todas en Spotify» te lleva a conectarlo).', true); return;
+  }
+  const btn = $('item-spotify');
+  btn.disabled = true; btn.textContent = 'Buscando…';
+  try {
+    const lista = await obtenerPlaylists();
+    const p = buscarPlaylist(edit, lista, new Set());
+    if (!p) { toast('No encuentro en Spotify una playlist llamada «' + edit.texto + '». Usa «Poner todas en Spotify» para elegirla a mano.', true); return; }
+    if (!confirm('¿Poner esta portada en «' + p.name + '»?')) return;
+    btn.textContent = 'Subiendo…';
+    const lote = temp('lote');
+    dibujar(lote.getContext('2d'), estadoDe(edit));
+    await subirPortada(p.id, jpegDe(lote));
+    edit.spotifyId = p.id;
+    col.items = col.items.map(it => it.id === edit.id ? Object.assign({}, it, { spotifyId: p.id }) : it);
+    guardarCol();
+    playlists = null;
+    toast('¡Puesta en «' + p.name + '»! Spotify tarda unos segundos en enseñarla.');
+  } catch (e) {
+    if (e.message === 'SESION_CADUCADA' || e.message === 'SIN_CONEXION') toast('La sesión de Spotify ha caducado: vuelve a conectar.', true);
+    else toast('No se pudo subir: ' + e.message, true);
+  } finally { btn.disabled = false; btn.textContent = 'Poner en Spotify'; }
 };
 $('item-borrar').onclick = () => {
   if (!confirm('¿Quitar «' + edit.texto + '» de tu colección? (No toca nada en Spotify)')) return;
@@ -2008,9 +2215,7 @@ $('item-borrar').onclick = () => {
 /* una playlist nueva recibe un color que aún no use nadie del grupo */
 $('col-anadir').onclick = () => {
   const g = col.grupos[0];
-  const usados = new Set(col.items.map(it => it.disco));
-  const libre = DISCOS.find(d => !usados.has(d.id));
-  abrirItem({ id: nuevoId(), texto: '', grupo: g.id, disco: libre ? libre.id : 'orig', discoOtro: '#ff7a00' }, true);
+  abrirItem({ id: nuevoId(), texto: '', grupo: g.id, disco: colorSugerido(''), discoOtro: '#ff7a00' }, true);
   setTimeout(() => $('item-nombre').focus(), 250);
 };
 
@@ -2181,6 +2386,89 @@ $('colsp-subir').onclick = async () => {
     (fallos.length ? ' Fallaron: ' + fallos.join(', ') + '.' : '') + (pararCol ? ' (Detenido)' : '');
 };
 $('colsp-detener').onclick = () => { pararCol = true; $('colsp-detener').textContent = 'Deteniendo…'; setTimeout(() => { $('colsp-detener').textContent = 'Detener'; }, 1500); };
+
+/* Crea en la colección las playlists de Spotify que aún no tiene, cada una
+   con su color sugerido y ya enlazada. Es lo útil al ir creando playlists
+   nuevas: las haces en Spotify y aquí aparecen con un toque. */
+$('col-traer').onclick = async () => {
+  if (!cred() || !cred().refreshToken || !tieneScope('ugc-image-upload')) {
+    location.href = 'musicvault.html?conectar=portadas'; return;
+  }
+  const btn = $('col-traer');
+  btn.disabled = true; btn.textContent = 'Mirando tu Spotify…';
+  try {
+    playlists = null;
+    const lista = await obtenerPlaylists();
+    const usadas = new Set();
+    col.items.forEach(it => { const p = buscarPlaylist(it, lista, usadas); if (p) { usadas.add(p.id); it.spotifyId = p.id; } });
+    const nuevas = lista.filter(p => !usadas.has(p.id));
+    if (!nuevas.length) { guardarCol(); toast('Ya están todas tus playlists en la colección.'); return; }
+    const nombres = nuevas.map(p => p.name).slice(0, 8).join(', ') + (nuevas.length > 8 ? '…' : '');
+    if (!confirm('Añadir ' + nuevas.length + ' playlist' + (nuevas.length > 1 ? 's' : '') + ' a tu colección: ' + nombres + '?')) { guardarCol(); return; }
+    const g = col.grupos[0];
+    nuevas.forEach(p => {
+      const it = { id: nuevoId(), texto: p.name || 'Playlist', grupo: g.id, disco: 'orig', discoOtro: '#ff7a00', spotifyId: p.id };
+      it.disco = colorSugerido(it.texto);
+      col.items.push(it);
+    });
+    guardarCol(); pintarColeccion();
+    toast(nuevas.length + ' añadida' + (nuevas.length > 1 ? 's' : '') + '. Toca cualquiera para cambiar su color o su nombre.');
+  } catch (e) {
+    if (e.message === 'SESION_CADUCADA' || e.message === 'SIN_CONEXION') location.href = 'musicvault.html?conectar=portadas';
+    else toast('No se pudo leer tu Spotify: ' + e.message, true);
+  } finally { btn.disabled = false; btn.textContent = 'Traer mis playlists de Spotify'; }
+};
+
+/* ---------------- galería ---------------- */
+/* Solo las portadas, grandes y sobre negro: para verlas juntas. */
+$('ver-galeria').onclick = () => {
+  const g = $('galeria-rejilla');
+  g.innerHTML = '';
+  col.items.forEach(it => {
+    const f = document.createElement('figure');
+    const c = document.createElement('canvas'); c.width = c.height = 300;
+    const t = document.createElement('figcaption'); t.textContent = it.texto;
+    f.appendChild(c); f.appendChild(t); g.appendChild(f);
+    pintarMini(c, estadoDe(it));
+  });
+  $('galeria').hidden = false;
+  document.body.style.overflow = 'hidden';
+};
+$('cerrar-galeria').onclick = () => { $('galeria').hidden = true; document.body.style.overflow = ''; };
+
+/* ---------------- paletas de colección ---------------- */
+/* Conjuntos de tonos con la misma intensidad, para que la colección se vea
+   como una serie. "Arcoíris" reparte el círculo cromático entre todas las
+   playlists con la misma luz y saturación: juntas forman un degradado. */
+const hsl = (h, s, l) => {
+  s /= 100; l /= 100;
+  const k = n => (n + h / 30) % 12, a = s * Math.min(l, 1 - l);
+  const f = n => l - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1));
+  return '#' + [f(0), f(8), f(4)].map(v => Math.round(v * 255).toString(16).padStart(2, '0')).join('');
+};
+const PALETAS = [
+  { id: 'joyas', n: 'Joyas', tonos: ['#23345c', '#1f6f6a', '#7e1a2b', '#5b2a6e', '#2f6b3a', '#b0761c', '#1e4f8f', '#8a2f4f'] },
+  { id: 'pastel', n: 'Pastel', tonos: ['#a7c7e7', '#f4b6c2', '#c3b1e1', '#b8e0c8', '#f7d6a0', '#9fd3d0', '#e6c3a5', '#d4d9e8'] },
+  { id: 'tierra', n: 'Tierra', tonos: ['#8c5a3c', '#6f7a3a', '#7e1a2b', '#a88b5a', '#4d5b4a', '#b5602a', '#5a4636', '#c69c6d'] },
+  { id: 'arcoiris', n: 'Arcoíris', tonos: null }
+];
+function aplicarPaleta(pal) {
+  const cambiar = col.items.filter(it => it.disco !== 'orig');
+  if (!cambiar.length) { toast('Solo tienes discos dorados originales: no hay nada que recolorear.'); return; }
+  if (!confirm('¿Cambiar el color de ' + cambiar.length + ' playlist' + (cambiar.length > 1 ? 's' : '') + ' a la paleta «' + pal.n + '»? (Puedes volver a elegir otra cuando quieras.)')) return;
+  cambiar.forEach((it, i) => {
+    it.disco = 'otro';
+    it.discoOtro = pal.tonos ? pal.tonos[i % pal.tonos.length] : hsl(210 + (i / cambiar.length) * 300, 48, 42);
+  });
+  guardarCol(); pintarColeccion();
+  toast('Paleta «' + pal.n + '» aplicada. Ábrelas en «Ver galería».');
+}
+PALETAS.forEach(pal => {
+  const b = document.createElement('button');
+  b.className = 'chip'; b.textContent = pal.n;
+  b.onclick = () => aplicarPaleta(pal);
+  $('paletas').appendChild(b);
+});
 
 /* ---------------- pestañas ---------------- */
 let modo = leer(K_MODO, 'coleccion');
