@@ -236,6 +236,7 @@
   .galeria-rejilla figcaption { color: #eee; font-size: 14px; font-weight: 600; margin-top: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .cerrar-galeria { position: fixed; top: calc(env(safe-area-inset-top) + 8px); right: 12px; z-index: 31; width: 44px; height: 44px; border-radius: 50%;
     border: 0; background: rgba(255,255,255,.12); color: #fff; font-size: 26px; line-height: 1; cursor: pointer; }
+  .version { text-align: center; color: var(--fg-mute); font-size: 12px; margin: 26px 0 0; opacity: .7; }
 </style>
 </head>
 <body>
@@ -460,6 +461,8 @@
 
 <button class="flotante" id="flotante" hidden aria-label="Volver a la portada"><canvas id="flotante-lienzo" width="200" height="200"></canvas></button>
 
+<p class="version" id="version"></p>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -476,6 +479,10 @@
    ============================================================ */
 
 const W = 1024;
+/* Versión de la página. Cambiarla en cada publicación: al abrir, se mira si
+   el servidor tiene otra y, si es así, se recarga sin caché (el iPhone
+   guarda la página y las imágenes mucho rato, sobre todo como app). */
+const VERSION = '2026-09-27c';
 const K_AJUSTES = 'portadas_ajustes_v1';
 const K_CREDS = 'musicvault_spotify_creds_v1';   // la misma sesión que MusicVault y el Estudio
 const API = 'https://api.spotify.com/v1';
@@ -563,7 +570,7 @@ function referencia(mascara) {
 }
 
 async function preparar() {
-  const [b, m] = await Promise.all([cargarImg('portadas/base.jpg'), cargarImg('portadas/mascaras.png')]);
+  const [b, m] = await Promise.all([cargarImg('portadas/base.jpg?v=' + VERSION), cargarImg('portadas/mascaras.png?v=' + VERSION)]);
   base = pixeles(b);
   const mp = pixeles(m);
   const n = W * W;
@@ -2653,6 +2660,19 @@ function ponerModo(m) {
 $('tab-col').onclick = () => ponerModo('coleccion');
 $('tab-libre').onclick = () => ponerModo('libre');
 
+/* ---------------- ¿hay versión nueva? ---------------- */
+(async () => {
+  try {
+    const t = await (await fetch('portadas.html?c=' + Date.now(), { cache: 'no-store' })).text();
+    const m = t.match(/const VERSION = '([^']+)'/);
+    if (!m || m[1] === VERSION) return;
+    /* una sola vez por sesión, por si el servidor aún está a medio publicar */
+    if (sessionStorage.getItem('portadas_recarga') === m[1]) return;
+    sessionStorage.setItem('portadas_recarga', m[1]);
+    location.replace(location.pathname + '?v=' + encodeURIComponent(m[1]));
+  } catch (e) {}
+})();
+
 /* ---------------- arranque ---------------- */
 (async () => {
   try {
@@ -2672,6 +2692,7 @@ $('tab-libre').onclick = () => ponerModo('libre');
   await cargarFotosItems();
   ponerModo(modo);
 })();
+$('version').textContent = 'Versión ' + VERSION;
 </script>
 </body>
 </html>
