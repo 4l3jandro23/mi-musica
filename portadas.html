@@ -201,7 +201,7 @@
   .cinta-muestra { width: 22px; height: 16px; border-radius: 3px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); flex: none; }
   .rejilla { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 10px; }
   .pieza { background: none; border: 0; padding: 0; color: var(--fg); font: 12.5px/1.25 inherit; font-family: inherit; cursor: pointer; text-align: left; min-width: 0; }
-  .pieza canvas { display: block; width: 100%; aspect-ratio: 1; border-radius: 6px; margin-bottom: 5px; box-shadow: 0 2px 10px rgba(0,0,0,.4); background: #eee; }
+  .pieza canvas { display: block; width: 100%; aspect-ratio: 1; border-radius: 6px; margin-bottom: 5px; box-shadow: 0 2px 10px rgba(0,0,0,.4); background: #121212; }
   .pieza span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .pieza:active canvas { transform: scale(.97); }
   .fila-botones { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-top: 18px; }
@@ -252,6 +252,9 @@
 <section id="modo-coleccion">
   <p class="ayuda intro">Todas tus playlists con el mismo formato. El disco cambia de color y la cinta dice su grupo. Toca una para cambiarla. <span id="col-total"></span></p>
   <button class="btn galeria-btn" id="ver-galeria">Ver galería</button>
+
+  <label class="tit">Formato</label>
+  <div class="chips" id="formatos"></div>
 
   <label class="tit">Paleta de la colección</label>
   <div class="chips" id="paletas"></div>
@@ -320,6 +323,9 @@
 
   <label class="tit">Acabado del disco</label>
   <div class="chips" id="acabados"></div>
+  <label class="tit">Encuadre</label>
+  <div class="chips" id="encuadres"></div>
+  <div class="chips sub" id="fondos-suelto"></div>
   <label class="chk sub"><input type="checkbox" id="irid"> Reflejo de arcoíris (en el CD)</label>
   <label class="chk"><input type="checkbox" id="fondo-tenido"> Fondo de estudio con el color del disco</label>
   <label class="chk"><input type="checkbox" id="brillo-caja"> Brillo en la tapa de la caja</label>
@@ -515,7 +521,8 @@ const escribir = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); r
 const aj = Object.assign({
   texto: 'SALSA', mayus: true, disco: 'orig', cinta: 'orig', discoOtro: '#ff7a00', cintaOtro: '#7a4dd8',
   acabado: 'cd', patOn: false, patEmoji: '♫', patLogo: false, patTam: 62, patFondo: true, patBlanco: true,
-  borde: '', grande: '', grandePos: 'izq', estilo: 'relieve', patSep: 2.25, irid: true, fondo: false, brillo: true
+  borde: '', grande: '', grandePos: 'izq', estilo: 'relieve', patSep: 2.25, irid: true, fondo: false, brillo: true,
+  encuadre: 'suelto', fondoSuelto: 'negro'
 }, leer(K_AJUSTES, {}));
 
 let toastT;
@@ -857,7 +864,8 @@ const ZONAS = {
    diseño anterior (un texto de borde olvidado, un dibujo, etc.). */
 const DISENO_BASE = {
   acabado: 'cd', disco: 'orig', cinta: 'orig', patOn: false, patLogo: false, patEmoji: '♫',
-  patTam: 62, patSep: 2.25, patFondo: true, irid: true, fondo: false, brillo: true, patBlanco: true, borde: '', grande: '', grandePos: 'izq', estilo: 'relieve'
+  patTam: 62, patSep: 2.25, patFondo: true, irid: true, fondo: false, brillo: true,
+  encuadre: 'suelto', fondoSuelto: 'negro', patBlanco: true, borde: '', grande: '', grandePos: 'izq', estilo: 'relieve'
 };
 const CLAVES_DISENO = Object.keys(DISENO_BASE).concat(['discoOtro', 'cintaOtro']);
 /* {T} en el borde o el texto grande = el texto de la cinta */
@@ -1192,8 +1200,55 @@ function dibujar(c, st) {
     x.globalCompositeOperation = 'source-over';
     c.drawImage(capa, 0, 0);
   }
-  if (st.brillo !== false) brilloTapa(c);
+  const suelto = st.encuadre === 'suelto';
+  if (st.brillo !== false && !suelto) brilloTapa(c);
   escribirCinta(c, textoDe(st), st);
+  if (suelto) sinCaja(c, st, hexD);
+}
+
+/* ---------------- sin caja: el disco suelto ----------------
+   Se recorta el disco entero (con su anillo transparente y el agujero
+   central abierto) más la cinta, y se pone sobre un fondo liso con su
+   sombra. Sin la caja el disco es el protagonista. La sombra se calcula
+   con la forma (círculo + rectángulo de la cinta) desplazada, sin
+   desenfoques de canvas, que en iPhone antiguos no existen. */
+let alfaSuelto = null, sombraSuelto = null;
+function prepararSuelto() {
+  if (alfaSuelto) return;
+  alfaSuelto = new Float32Array(W * W); sombraSuelto = new Float32Array(W * W);
+  const SX = 14, SY = 22, SB = 26;                       // desplazamiento y suavidad de la sombra
+  const T = { x0: 705, y0: 372, x1: 995, y1: 667 };      // la cinta
+  for (let y = 0; y < W; y++) for (let x = 0; x < W; x++) {
+    const i = y * W + x, r = Math.hypot(x - DX, y - DY);
+    let a = Math.min(1, Math.max(0, DR + 0.5 - r));
+    if (r < 50) a = Math.min(1, Math.max(0, r - 49.5));  // agujero central
+    alfaSuelto[i] = Math.max(a, mCinta[i] / 255);
+    const rs = Math.hypot(x - DX - SX, y - DY - SY);
+    const dCirc = Math.max(0, rs - DR);
+    const dxT = Math.max(T.x0 + SX - x, 0, x - T.x1 - SX), dyT = Math.max(T.y0 + SY - y, 0, y - T.y1 - SY);
+    const d = Math.min(dCirc, Math.hypot(dxT, dyT));
+    sombraSuelto[i] = rs < 52 && dxT + dyT > 0 ? 0 : Math.exp(-(d * d) / (2 * SB * SB));
+  }
+}
+const FONDOS_SUELTO = [{ id: 'negro', n: 'Negro' }, { id: 'blanco', n: 'Blanco' }, { id: 'color', n: 'Color del disco' }];
+function sinCaja(c, st, hexD) {
+  prepararSuelto();
+  const im = c.getImageData(0, 0, W, W), d = im.data;
+  let bg = [18, 18, 18], fuerza = 0.6;                   // #121212, el negro de Spotify
+  if (st.fondoSuelto === 'blanco') { bg = [251, 251, 250]; fuerza = 0.22; }
+  if (st.fondoSuelto === 'color') {
+    const cc = hexRgb(hexD || '#d98b2b');
+    bg = cc.map(v => (1 - (1 - v) * 0.32) * 255); fuerza = 0.3;
+  }
+  for (let i = 0; i < alfaSuelto.length; i++) {
+    const a = alfaSuelto[i];
+    if (a >= 1) continue;
+    const k = 1 - sombraSuelto[i] * fuerza, j = i * 4;
+    d[j] = d[j] * a + bg[0] * k * (1 - a);
+    d[j + 1] = d[j + 1] * a + bg[1] * k * (1 - a);
+    d[j + 2] = d[j + 2] * a + bg[2] * k * (1 - a);
+  }
+  c.putImageData(im, 0, 0);
 }
 
 /* Reflejo suave en diagonal sobre la tapa de plástico (encima del disco,
@@ -1335,6 +1390,7 @@ function sincronizar() {
   $('pat-ctl').hidden = !aj.patOn;
   $('logo-si').hidden = !logoImg;
   $('foto-ctl').hidden = aj.acabado !== 'foto';
+  $('fondos-suelto').hidden = aj.encuadre !== 'suelto';
   $('foto-nombre').textContent = fotoImg ? 'Foto elegida. Puedes cambiarla:' : 'Elige una foto de tu galería:';
 }
 
@@ -1343,6 +1399,8 @@ montarPaleta('pal-cinta', CINTAS, 'cinta', 'cintaOtro', 'nom-cinta', true);
 montarChips('acabados', ACABADOS, 'acabado', sincronizar);
 montarChips('grande-pos', POSICIONES, 'grandePos');
 montarChips('estilos', ESTILOS, 'estilo');
+montarChips('encuadres', [{ id: 'suelto', n: 'Disco suelto' }, { id: 'caja', n: 'Con caja' }], 'encuadre', sincronizar);
+montarChips('fondos-suelto', FONDOS_SUELTO, 'fondoSuelto');
 
 $('logo-in').addEventListener('change', async e => {
   const f = e.target.files[0]; e.target.value = '';
@@ -1992,12 +2050,20 @@ function coleccionInicial() {
 let col = leer(K_COL, null) || coleccionInicial();
 const guardarCol = () => escribir(K_COL, col);
 const grupoDe = it => col.grupos.find(g => g.id === it.grupo) || col.grupos[0];
+const FORMATOS = [
+  { id: 'negro', n: 'Sin caja · negro', encuadre: 'suelto', fondoSuelto: 'negro' },
+  { id: 'blanco', n: 'Sin caja · blanco', encuadre: 'suelto', fondoSuelto: 'blanco' },
+  { id: 'color', n: 'Sin caja · color', encuadre: 'suelto', fondoSuelto: 'color' },
+  { id: 'caja', n: 'Con caja', encuadre: 'caja', fondoSuelto: 'negro' }
+];
+const formatoCol = () => FORMATOS.find(f => f.id === col.formato) || FORMATOS[0];
 function estadoDe(it) {
-  const g = grupoDe(it);
+  const g = grupoDe(it), f = formatoCol();
   return Object.assign(completo({}, it.texto), {
     texto: it.texto, mayus: true,
     disco: it.disco, discoOtro: it.discoOtro || '#ff7a00',
-    cinta: g.cinta, cintaOtro: g.cintaOtro || '#7a4dd8'
+    cinta: g.cinta, cintaOtro: g.cintaOtro || '#7a4dd8',
+    encuadre: f.encuadre, fondoSuelto: f.fondoSuelto
   });
 }
 const nombreColor = (lista, id, otro) => { const x = lista.find(c => c.id === id); return x ? x.n : 'Personalizado ' + otro; };
@@ -2463,6 +2529,17 @@ function aplicarPaleta(pal) {
   guardarCol(); pintarColeccion();
   toast('Paleta «' + pal.n + '» aplicada. Ábrelas en «Ver galería».');
 }
+/* el mismo formato para toda la colección: cambiarlo las cambia todas */
+function pintarFormatos() {
+  const el = $('formatos'); el.innerHTML = '';
+  FORMATOS.forEach(f => {
+    const b = document.createElement('button');
+    b.className = 'chip'; b.textContent = f.n; b.setAttribute('aria-pressed', String(formatoCol().id === f.id));
+    b.onclick = () => { col.formato = f.id; guardarCol(); pintarFormatos(); pintarColeccion(); };
+    el.appendChild(b);
+  });
+}
+pintarFormatos();
 PALETAS.forEach(pal => {
   const b = document.createElement('button');
   b.className = 'chip'; b.textContent = pal.n;
