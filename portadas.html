@@ -405,6 +405,10 @@
     <label class="tit">Color del disco</label>
     <div class="paleta" id="item-pal"></div>
     <div class="nombre-color" id="item-color"></div>
+    <label class="tit">Color de la cinta</label>
+    <div class="chips"><button class="chip" id="item-cinta-grupo">Como su grupo</button></div>
+    <div class="paleta sub" id="item-pal-cinta"></div>
+    <div class="nombre-color" id="item-cinta-nombre"></div>
     <label class="tit">Imagen impresa en el disco (opcional)</label>
     <div class="fila2">
       <label class="btn peque" id="item-foto-btn">Elegir foto<input type="file" id="item-foto-in" accept="image/*" hidden></label>
@@ -482,14 +486,18 @@ const W = 1024;
 /* Versión de la página. Cambiarla en cada publicación: al abrir, se mira si
    el servidor tiene otra y, si es así, se recarga sin caché (el iPhone
    guarda la página y las imágenes mucho rato, sobre todo como app). */
-const VERSION = '2026-09-27c';
+const VERSION = '2026-09-27d';
 const K_AJUSTES = 'portadas_ajustes_v1';
 const K_CREDS = 'musicvault_spotify_creds_v1';   // la misma sesión que MusicVault y el Estudio
 const API = 'https://api.spotify.com/v1';
 
 /* Zona útil de la cinta (en píxeles de la imagen de 1024). Deja fuera
    el doblez del borde derecho, como en la original. */
-const CAJA = { x: 722, y: 392, w: 246, h: 256 };
+const CAJA_NORMAL = { x: 722, y: 392, w: 246, h: 256 };
+/* Con el disco suelto la cinta se dobla por el borde: el texto tiene que
+   caber antes del pliegue (el borde del disco pasa por x ≈ 915 a esa altura). */
+const CAJA_DOBLADA = { x: 716, y: 392, w: 186, h: 256 };
+let CAJA = CAJA_NORMAL;
 const TAM_MAX = 112;   // "SALSA" en la original mide lo que da este tamaño
 /* Permanent Marker viene inclinada y algo achatada; la letra de la foto es
    recta y más alta. Se endereza (ENDEREZA) y se estira en vertical (ALTO_X). */
@@ -1201,6 +1209,7 @@ const textoDe = st => { const t = (st.texto || '').trim(); return st.mayus ? t.t
 const textoFinal = () => textoDe(aj);
 
 function dibujar(c, st) {
+  CAJA = st.encuadre === 'suelto' ? CAJA_DOBLADA : CAJA_NORMAL;
   const img = new ImageData(new Uint8ClampedArray(base), W, W);
   const hexD = colorDe(DISCOS, st.disco, st.discoOtro), hexC = colorDe(CINTAS, st.cinta, st.cintaOtro);
   const foto = st.fotoImg || fotoImg;
@@ -1258,6 +1267,7 @@ function dibujar(c, st) {
    con la forma (círculo + rectángulo de la cinta) desplazada, sin
    desenfoques de canvas, que en iPhone antiguos no existen. */
 let alfaSuelto = null, sombraSuelto = null, cintaEncogida = null;
+const DOBLEZ = 4;   // px de cinta que se ven "dando la vuelta" al canto
 /* La foto original tiene un filo del fondo blanco alrededor de la cinta.
    Con caja no se nota, pero sobre negro sí: se encoge la máscara 2 px
    (el mínimo de cada vecindario) para dejar ese filo fuera. */
@@ -1284,11 +1294,11 @@ function prepararSuelto() {
     const i = y * W + x, r = Math.hypot(x - DX, y - DY);
     let a = Math.min(1, Math.max(0, DR + 0.5 - r));
     if (r < 50) a = Math.min(1, Math.max(0, r - 49.5));  // agujero central
-    alfaSuelto[i] = Math.max(a, cintaEncogida[i] / 255);
+    alfaSuelto[i] = Math.max(a, cintaEncogida[i] / 255 * Math.min(1, Math.max(0, DR + DOBLEZ + 0.5 - r)));
     const rs = Math.hypot(x - DX - SX, y - DY - SY);
     const dCirc = Math.max(0, rs - DR);
     const dxT = Math.max(T.x0 + SX - x, 0, x - T.x1 - SX), dyT = Math.max(T.y0 + SY - y, 0, y - T.y1 - SY);
-    const d = Math.min(dCirc, Math.hypot(dxT, dyT));
+    const d = Math.max(0, dCirc - DOBLEZ);
     sombraSuelto[i] = rs < 52 && dxT + dyT > 0 ? 0 : Math.exp(-(d * d) / (2 * SB * SB));
   }
 }
@@ -1301,6 +1311,23 @@ function sinCaja(c, st, hexD) {
   if (st.fondoSuelto === 'color') {
     const cc = hexRgb(hexD || '#d98b2b');
     bg = cc.map(v => (1 - (1 - v) * 0.32) * 255); fuerza = 0.3;
+  }
+  /* El pliegue: justo antes del borde la cinta se curva (se oscurece),
+     en la arista coge un filo de luz, y lo que da la vuelta al canto se
+     ve en sombra. */
+  for (let y = 360; y < 680; y++) for (let x = 860; x < 1000; x++) {
+    const i = y * W + x, m = cintaEncogida[i] / 255;
+    if (!m) continue;
+    const t = Math.hypot(x - DX, y - DY) - DR, j = i * 4;
+    let mul = 1, luz = 0;
+    if (t > -16 && t <= -3) mul = 1 - 0.28 * (t + 16) / 13;
+    else if (t > -3 && t <= -0.5) luz = 0.22;
+    else if (t > -0.5) mul = 0.42;
+    if (mul === 1 && !luz) continue;
+    for (let ch = 0; ch < 3; ch++) {
+      const v = d[j + ch] * mul;
+      d[j + ch] = d[j + ch] * (1 - m) + (v + (255 - v) * luz) * m;
+    }
   }
   for (let i = 0; i < alfaSuelto.length; i++) {
     const a = alfaSuelto[i];
@@ -2124,7 +2151,8 @@ function estadoDe(it) {
   return Object.assign(completo({}, it.texto), {
     texto: it.texto, mayus: true,
     disco: it.disco, discoOtro: it.discoOtro || '#ff7a00',
-    cinta: g.cinta, cintaOtro: g.cintaOtro || '#7a4dd8',
+    /* cada playlist puede tener su propia cinta; si no, la de su grupo */
+    cinta: it.cinta || g.cinta, cintaOtro: (it.cinta ? it.cintaOtro : g.cintaOtro) || '#7a4dd8',
     encuadre: f.encuadre, fondoSuelto: f.fondoSuelto
   }, it.foto && fotosItems.get(it.id) ? { acabado: 'foto', fotoImg: fotosItems.get(it.id), fotoVer: it.foto } : {});
 }
@@ -2266,6 +2294,19 @@ function estadoEdit() {
   const img = editFoto === undefined ? (edit.foto ? fotosItems.get(edit.id) : null) : editFoto;
   return img ? Object.assign(st, { acabado: 'foto', fotoImg: img }) : st;
 }
+function marcarCintaItem() {
+  $('item-cinta-grupo').setAttribute('aria-pressed', String(!edit.cinta));
+  if (!edit.cinta) $('item-pal-cinta').querySelectorAll('.muestra').forEach(b => b.setAttribute('aria-pressed', 'false'));
+  const g = grupoDe(edit);
+  $('item-cinta-nombre').textContent = edit.cinta ? nombreColor(CINTAS, edit.cinta, edit.cintaOtro)
+    : 'La del grupo «' + g.n + '»: ' + nombreColor(CINTAS, g.cinta, g.cintaOtro);
+}
+function paletaCintaItem() {
+  paletaSimple($('item-pal-cinta'), CINTAS, true, () => ({ id: edit.cinta || '', otro: edit.cintaOtro || '#7a4dd8' }),
+    (id, otro) => { edit.cinta = id; edit.cintaOtro = otro; marcarCintaItem(); vistaItem(); });
+  marcarCintaItem();
+}
+$('item-cinta-grupo').onclick = () => { edit.cinta = null; paletaCintaItem(); vistaItem(); };
 function vistaItem() {
   const tmp = temp('miniatura');
   dibujar(tmp.getContext('2d'), estadoEdit());
@@ -2287,11 +2328,12 @@ function abrirItem(it, nueva) {
   col.grupos.forEach(g => {
     const b = document.createElement('button');
     b.className = 'chip'; b.textContent = g.n; b.setAttribute('aria-pressed', String(g.id === edit.grupo));
-    b.onclick = () => { edit.grupo = g.id; gs.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', String(x === b))); vistaItem(); };
+    b.onclick = () => { edit.grupo = g.id; gs.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', String(x === b))); marcarCintaItem(); vistaItem(); };
     gs.appendChild(b);
   });
   paletaSimple($('item-pal'), DISCOS, false, () => ({ id: edit.disco, otro: edit.discoOtro || '#ff7a00' }),
     (id, otro) => { edit.disco = id; edit.discoOtro = otro; colorTocado = true; vistaItem(); });
+  paletaCintaItem();
   vistaItem();
   abrirH('hoja-item');
 }
