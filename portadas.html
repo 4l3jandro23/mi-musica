@@ -237,6 +237,8 @@
   .cerrar-galeria { position: fixed; top: calc(env(safe-area-inset-top) + 8px); right: 12px; z-index: 31; width: 44px; height: 44px; border-radius: 50%;
     border: 0; background: rgba(255,255,255,.12); color: #fff; font-size: 26px; line-height: 1; cursor: pointer; }
   .version { text-align: center; color: var(--fg-mute); font-size: 12px; margin: 26px 0 0; opacity: .7; }
+  .detalle-textos { margin-top: 10px; }
+  .detalle-textos summary { cursor: pointer; color: var(--acc); font-weight: 600; font-size: 14px; padding: 6px 0; }
 </style>
 </head>
 <body>
@@ -415,6 +417,22 @@
       <button class="btn peque" id="item-foto-quitar" hidden>Quitar foto</button>
     </div>
     <p class="ayuda">Como un CD serigrafiado. Con foto, el color del disco no se usa.</p>
+    <div id="item-foto-ajuste" hidden>
+      <label class="rango">Zoom <input type="range" id="item-foto-zoom" min="1" max="3" step="0.02"></label>
+      <label class="rango">Izq. / dcha. <input type="range" id="item-foto-x" min="-1" max="1" step="0.02"></label>
+      <label class="rango">Arriba / abajo <input type="range" id="item-foto-y" min="-1" max="1" step="0.02"></label>
+      <p class="ayuda">Si hay una cara, sácala del agujero del centro.</p>
+    </div>
+
+    <label class="tit">Tipo de disco</label>
+    <div class="chips" id="item-acabados"></div>
+    <details class="detalle-textos" id="item-textos">
+      <summary>Textos en el disco (opcional)</summary>
+      <label class="tit" for="item-borde">Alrededor del borde</label>
+      <input type="text" class="campo" id="item-borde" maxlength="40" placeholder="Ej.: GYM CD MIX" autocomplete="off">
+      <label class="tit" for="item-grande">Texto grande (Intro = otra línea)</label>
+      <textarea class="campo" id="item-grande" rows="2" maxlength="30" placeholder="Ej.: 10 / KG"></textarea>
+    </details>
   </div>
   <div class="acciones-item" id="item-acciones">
     <button class="btn" id="item-guardar">Guardar imagen</button>
@@ -486,7 +504,7 @@ const W = 1024;
 /* Versión de la página. Cambiarla en cada publicación: al abrir, se mira si
    el servidor tiene otra y, si es así, se recarga sin caché (el iPhone
    guarda la página y las imágenes mucho rato, sobre todo como app). */
-const VERSION = '2026-09-27d';
+const VERSION = '2026-09-28a';
 const K_AJUSTES = 'portadas_ajustes_v1';
 const K_CREDS = 'musicvault_spotify_creds_v1';   // la misma sesión que MusicVault y el Estudio
 const API = 'https://api.spotify.com/v1';
@@ -1032,10 +1050,16 @@ function brilloCD() {
 }
 /* Un CD serigrafiado: la foto va impresa (mate), así que solo recibe un
    toque de la luz del disco, lo justo para que no parezca un recorte plano. */
-function dibujarFoto(x, img) {
+function dibujarFoto(x, img, st) {
   img = img || fotoImg;
-  const lado = Math.min(img.width, img.height);
-  x.drawImage(img, (img.width - lado) / 2, (img.height - lado) / 2, lado, lado, DX - DR, DY - DR, DR * 2, DR * 2);
+  /* zoom 1 = la foto entera cabe en el disco; más zoom = se recorta. X/Y
+     (-1..1) mueven el recorte, para sacar una cara del agujero central. */
+  const zoom = Math.max(1, (st && st.fotoZoom) || 1);
+  const lado = Math.min(img.width, img.height) / zoom;
+  const mx = (img.width - lado) / 2, my = (img.height - lado) / 2;
+  const sx = mx + mx * Math.max(-1, Math.min(1, (st && st.fotoX) || 0));
+  const sy = my + my * Math.max(-1, Math.min(1, (st && st.fotoY) || 0));
+  x.drawImage(img, sx, sy, lado, lado, DX - DR, DY - DR, DR * 2, DR * 2);
   x.save();
   x.globalCompositeOperation = 'soft-light'; x.globalAlpha = 0.35;
   x.drawImage(brilloCD(), 0, 0);
@@ -1233,7 +1257,7 @@ function dibujar(c, st) {
   if (acabado !== 'cd' || st.patOn || (st.borde || '').trim() || (st.grande || '').trim()) {
     const capa = temp('capa'), x = capa.getContext('2d');
     x.clearRect(0, 0, W, W);
-    if (acabado === 'foto') dibujarFoto(x, foto);
+    if (acabado === 'foto') dibujarFoto(x, foto, st);
     else if (acabado !== 'cd') x.drawImage(textura(acabado, hexD || ACABADOS.find(a => a.id === acabado).def), 0, 0);
     /* lo "impreso" (dibujos y textos en blanco/negro) va en su capa y se
        ilumina; el relieve ya lleva su propia luz y sombra */
@@ -1327,6 +1351,19 @@ function sinCaja(c, st, hexD) {
     for (let ch = 0; ch < 3; ch++) {
       const v = d[j + ch] * mul;
       d[j + ch] = d[j + ch] * (1 - m) + (v + (255 - v) * luz) * m;
+    }
+  }
+  /* luz de canto arriba a la izquierda: sin ella un disco negro (el de
+     pesas) se funde con el fondo negro */
+  if (st.fondoSuelto !== 'blanco') {
+    for (let y = DY - DR - 2; y < DY + DR + 2; y++) for (let x = DX - DR - 2; x < DX + DR + 2; x++) {
+      const t = DR - Math.hypot(x - DX, y - DY);
+      if (t < 0 || t > 5) continue;
+      const i = y * W + x;
+      if (cintaEncogida[i] > 40) continue;
+      const l = Math.max(0, Math.cos(Math.atan2(y - DY, x - DX) - LUZ)) * (1 - t / 5) * 0.32, j = i * 4;
+      if (l <= 0) continue;
+      d[j] += (255 - d[j]) * l; d[j + 1] += (255 - d[j + 1]) * l; d[j + 2] += (255 - d[j + 2]) * l;
     }
   }
   for (let i = 0; i < alfaSuelto.length; i++) {
@@ -2153,8 +2190,11 @@ function estadoDe(it) {
     disco: it.disco, discoOtro: it.discoOtro || '#ff7a00',
     /* cada playlist puede tener su propia cinta; si no, la de su grupo */
     cinta: it.cinta || g.cinta, cintaOtro: (it.cinta ? it.cintaOtro : g.cintaOtro) || '#7a4dd8',
-    encuadre: f.encuadre, fondoSuelto: f.fondoSuelto
-  }, it.foto && fotosItems.get(it.id) ? { acabado: 'foto', fotoImg: fotosItems.get(it.id), fotoVer: it.foto } : {});
+    encuadre: f.encuadre, fondoSuelto: f.fondoSuelto,
+    acabado: it.acabado || 'cd', borde: it.borde || '', grande: it.grande || '', grandePos: 'izq', estilo: 'relieve'
+  }, it.foto && fotosItems.get(it.id)
+    ? { acabado: 'foto', fotoImg: fotosItems.get(it.id), fotoVer: it.foto, fotoZoom: it.fotoZoom || 1, fotoX: it.fotoX || 0, fotoY: it.fotoY || 0 }
+    : {});
 }
 /* Fotos impresas en el disco, una por playlist (reducidas, en este móvil) */
 const fotosItems = new Map();
@@ -2292,7 +2332,7 @@ function colorSugerido(nombre, sinContar) {
 function estadoEdit() {
   const st = estadoDe(Object.assign({}, edit, { foto: null }));
   const img = editFoto === undefined ? (edit.foto ? fotosItems.get(edit.id) : null) : editFoto;
-  return img ? Object.assign(st, { acabado: 'foto', fotoImg: img }) : st;
+  return img ? Object.assign(st, { acabado: 'foto', fotoImg: img, fotoZoom: edit.fotoZoom || 1, fotoX: edit.fotoX || 0, fotoY: edit.fotoY || 0 }) : st;
 }
 function marcarCintaItem() {
   $('item-cinta-grupo').setAttribute('aria-pressed', String(!edit.cinta));
@@ -2307,10 +2347,34 @@ function paletaCintaItem() {
   marcarCintaItem();
 }
 $('item-cinta-grupo').onclick = () => { edit.cinta = null; paletaCintaItem(); vistaItem(); };
+const ACABADOS_ITEM = [
+  { id: 'cd', n: 'CD' }, { id: 'metal', n: 'Metal' }, { id: 'goma', n: 'Pesas' }, { id: 'vinilo', n: 'Vinilo' }
+];
+function montarAcabadosItem() {
+  const el = $('item-acabados'); el.innerHTML = '';
+  ACABADOS_ITEM.forEach(a => {
+    const b = document.createElement('button');
+    b.className = 'chip'; b.textContent = a.n; b.setAttribute('aria-pressed', String((edit.acabado || 'cd') === a.id));
+    b.onclick = () => {
+      edit.acabado = a.id;
+      /* el disco de pesas trae sus textos de fábrica, si aún no hay otros */
+      if (a.id === 'goma' && !edit.borde && !edit.grande) { edit.borde = 'GYM CD MIX'; edit.grande = '10\nKG'; if (!colorTocado) edit.disco = 'orig'; }
+      $('item-borde').value = edit.borde || ''; $('item-grande').value = edit.grande || '';
+      if (edit.borde || edit.grande) $('item-textos').open = true;
+      montarAcabadosItem(); vistaItem();
+    };
+    el.appendChild(b);
+  });
+}
+$('item-borde').addEventListener('input', e => { edit.borde = e.target.value; vistaItem(); });
+$('item-grande').addEventListener('input', e => { edit.grande = e.target.value; vistaItem(); });
+[['item-foto-zoom', 'fotoZoom'], ['item-foto-x', 'fotoX'], ['item-foto-y', 'fotoY']].forEach(([id, k]) =>
+  $(id).addEventListener('input', e => { edit[k] = +e.target.value; vistaItem(); }));
 function vistaItem() {
   const tmp = temp('miniatura');
   dibujar(tmp.getContext('2d'), estadoEdit());
   $('item-foto-quitar').hidden = !(editFoto === undefined ? edit.foto && fotosItems.get(edit.id) : editFoto);
+  $('item-foto-ajuste').hidden = $('item-foto-quitar').hidden;
   $('item-foto-btn').firstChild.textContent = $('item-foto-quitar').hidden ? 'Elegir foto' : 'Cambiar foto';
   const c = $('item-vista'); c.getContext('2d').drawImage(tmp, 0, 0, c.width, c.height);
   $('item-color').textContent = nombreColor(DISCOS, edit.disco, edit.discoOtro);
@@ -2334,6 +2398,10 @@ function abrirItem(it, nueva) {
   paletaSimple($('item-pal'), DISCOS, false, () => ({ id: edit.disco, otro: edit.discoOtro || '#ff7a00' }),
     (id, otro) => { edit.disco = id; edit.discoOtro = otro; colorTocado = true; vistaItem(); });
   paletaCintaItem();
+  montarAcabadosItem();
+  $('item-borde').value = edit.borde || ''; $('item-grande').value = edit.grande || '';
+  $('item-textos').open = !!(edit.borde || edit.grande);
+  $('item-foto-zoom').value = edit.fotoZoom || 1; $('item-foto-x').value = edit.fotoX || 0; $('item-foto-y').value = edit.fotoY || 0;
   vistaItem();
   abrirH('hoja-item');
 }
