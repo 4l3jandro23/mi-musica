@@ -404,6 +404,12 @@
     <label class="tit">Color del disco</label>
     <div class="paleta" id="item-pal"></div>
     <div class="nombre-color" id="item-color"></div>
+    <label class="tit">Imagen impresa en el disco (opcional)</label>
+    <div class="fila2">
+      <label class="btn peque" id="item-foto-btn">Elegir foto<input type="file" id="item-foto-in" accept="image/*" hidden></label>
+      <button class="btn peque" id="item-foto-quitar" hidden>Quitar foto</button>
+    </div>
+    <p class="ayuda">Como un CD serigrafiado. Con foto, el color del disco no se usa.</p>
   </div>
   <div class="acciones-item" id="item-acciones">
     <button class="btn" id="item-guardar">Guardar imagen</button>
@@ -612,6 +618,30 @@ function prepararLuces() {
     iriArco[i * 3] = f(5) * 255; iriArco[i * 3 + 1] = f(3) * 255; iriArco[i * 3 + 2] = f(1) * 255;
   }
 }
+/* Sombra de la cinta sobre el disco: está pegada encima, así que por
+   abajo y por la izquierda oscurece un poco el disco. */
+let sombraCinta = null;
+function prepararSombraCinta() {
+  if (sombraCinta) return;
+  sombraCinta = new Float32Array(W * W);
+  const T = { x0: 705 - 5, y0: 372 + 7, x1: 995 - 5, y1: 667 + 7 };   // cinta desplazada
+  for (let y = T.y0 - 30; y < T.y1 + 30; y++) for (let x = T.x0 - 30; x < T.x1 + 30; x++) {
+    const i = y * W + x;
+    if (!mDisco[i] || mCinta[i] > 200) continue;
+    const dx = Math.max(T.x0 - x, 0, x - T.x1), dy = Math.max(T.y0 - y, 0, y - T.y1);
+    const d = Math.hypot(dx, dy);
+    sombraCinta[i] = 0.42 * Math.exp(-(d * d) / (2 * 7 * 7)) * (1 - mCinta[i] / 255) * mDisco[i] / 255;
+  }
+}
+function sombraDeCinta(d) {
+  prepararSombraCinta();
+  for (let i = 0; i < sombraCinta.length; i++) {
+    const v = sombraCinta[i];
+    if (!v) continue;
+    const j = i * 4;
+    d[j] *= 1 - v; d[j + 1] *= 1 - v; d[j + 2] *= 1 - v;
+  }
+}
 function detallesCD(d) {
   for (let i = 0; i < detalle.length; i++) {
     const v = detalle[i];
@@ -765,7 +795,7 @@ function granoTinta() {
   for (let y = CAJA.y - 40; y < CAJA.y + CAJA.h + 40; y++) {
     for (let xx = CAJA.x - 40; xx < CAJA.x + CAJA.w + 40; xx++) {
       const j = (y * W + xx) * 4, v = rnd();
-      im.data[j + 3] = v < 0.1 ? 90 + rnd() * 120 : v * 30;
+      im.data[j + 3] = v < 0.035 ? 50 + rnd() * 70 : v * 16;
     }
   }
   x.putImageData(im, 0, 0);
@@ -985,11 +1015,14 @@ function brilloCD() {
   x.putImageData(im, 0, 0);
   return (_brillo = c);
 }
-function dibujarFoto(x) {
-  const lado = Math.min(fotoImg.width, fotoImg.height);
-  x.drawImage(fotoImg, (fotoImg.width - lado) / 2, (fotoImg.height - lado) / 2, lado, lado, DX - DR, DY - DR, DR * 2, DR * 2);
+/* Un CD serigrafiado: la foto va impresa (mate), así que solo recibe un
+   toque de la luz del disco, lo justo para que no parezca un recorte plano. */
+function dibujarFoto(x, img) {
+  img = img || fotoImg;
+  const lado = Math.min(img.width, img.height);
+  x.drawImage(img, (img.width - lado) / 2, (img.height - lado) / 2, lado, lado, DX - DR, DY - DR, DR * 2, DR * 2);
   x.save();
-  x.globalCompositeOperation = 'soft-light'; x.globalAlpha = 0.6;
+  x.globalCompositeOperation = 'soft-light'; x.globalAlpha = 0.35;
   x.drawImage(brilloCD(), 0, 0);
   x.restore();
 }
@@ -1163,12 +1196,14 @@ const textoFinal = () => textoDe(aj);
 function dibujar(c, st) {
   const img = new ImageData(new Uint8ClampedArray(base), W, W);
   const hexD = colorDe(DISCOS, st.disco, st.discoOtro), hexC = colorDe(CINTAS, st.cinta, st.cintaOtro);
-  let acabado = st.acabado === 'foto' && !fotoImg ? 'cd' : st.acabado;
+  const foto = st.fotoImg || fotoImg;
+  let acabado = st.acabado === 'foto' && !foto ? 'cd' : st.acabado;
   if (!ACABADOS.some(a => a.id === acabado)) acabado = 'cd';
   /* suelo 0.2: en un CD de color la sombra sigue siendo de ese color, no negra */
   if (acabado === 'cd' && hexD) tenir(img.data, mDisco, hexD, refDisco, topeDisco, 1, 0.2);
   if (acabado === 'cd' && st.irid !== false) iridiscencia(img.data, hexD ? 0.6 : 0.3);
   if (acabado === 'cd') detallesCD(img.data);
+  sombraDeCinta(img.data);
   if (st.fondo !== false) {
     const def = (ACABADOS.find(a => a.id === acabado) || {}).def;
     const hexFondo = acabado === 'foto' ? '#9aa0a8' : hexD || def || '#d98b2b';
@@ -1182,7 +1217,7 @@ function dibujar(c, st) {
   if (acabado !== 'cd' || st.patOn || (st.borde || '').trim() || (st.grande || '').trim()) {
     const capa = temp('capa'), x = capa.getContext('2d');
     x.clearRect(0, 0, W, W);
-    if (acabado === 'foto') dibujarFoto(x);
+    if (acabado === 'foto') dibujarFoto(x, foto);
     else if (acabado !== 'cd') x.drawImage(textura(acabado, hexD || ACABADOS.find(a => a.id === acabado).def), 0, 0);
     /* lo "impreso" (dibujos y textos en blanco/negro) va en su capa y se
        ilumina; el relieve ya lleva su propia luz y sombra */
@@ -1199,6 +1234,9 @@ function dibujar(c, st) {
     x.drawImage(mascaraDisco(), 0, 0);
     x.globalCompositeOperation = 'source-over';
     c.drawImage(capa, 0, 0);
+    if (acabado !== 'cd') {
+      const im2 = c.getImageData(0, 0, W, W); sombraDeCinta(im2.data); c.putImageData(im2, 0, 0);
+    }
   }
   const suelto = st.encuadre === 'suelto';
   if (st.brillo !== false && !suelto) brilloTapa(c);
@@ -1212,9 +1250,26 @@ function dibujar(c, st) {
    sombra. Sin la caja el disco es el protagonista. La sombra se calcula
    con la forma (círculo + rectángulo de la cinta) desplazada, sin
    desenfoques de canvas, que en iPhone antiguos no existen. */
-let alfaSuelto = null, sombraSuelto = null;
+let alfaSuelto = null, sombraSuelto = null, cintaEncogida = null;
+/* La foto original tiene un filo del fondo blanco alrededor de la cinta.
+   Con caja no se nota, pero sobre negro sí: se encoge la máscara 2 px
+   (el mínimo de cada vecindario) para dejar ese filo fuera. */
+function encogerCinta() {
+  let m = mCinta;
+  for (let pasada = 0; pasada < 2; pasada++) {
+    const o = new Uint8Array(W * W);
+    for (let y = 1; y < W - 1; y++) for (let x = 1; x < W - 1; x++) {
+      const i = y * W + x;
+      if (!m[i]) continue;
+      o[i] = Math.min(m[i], m[i - 1], m[i + 1], m[i - W], m[i + W]);
+    }
+    m = o;
+  }
+  return m;
+}
 function prepararSuelto() {
   if (alfaSuelto) return;
+  cintaEncogida = encogerCinta();
   alfaSuelto = new Float32Array(W * W); sombraSuelto = new Float32Array(W * W);
   const SX = 14, SY = 22, SB = 26;                       // desplazamiento y suavidad de la sombra
   const T = { x0: 705, y0: 372, x1: 995, y1: 667 };      // la cinta
@@ -1222,7 +1277,7 @@ function prepararSuelto() {
     const i = y * W + x, r = Math.hypot(x - DX, y - DY);
     let a = Math.min(1, Math.max(0, DR + 0.5 - r));
     if (r < 50) a = Math.min(1, Math.max(0, r - 49.5));  // agujero central
-    alfaSuelto[i] = Math.max(a, mCinta[i] / 255);
+    alfaSuelto[i] = Math.max(a, cintaEncogida[i] / 255);
     const rs = Math.hypot(x - DX - SX, y - DY - SY);
     const dCirc = Math.max(0, rs - DR);
     const dxT = Math.max(T.x0 + SX - x, 0, x - T.x1 - SX), dyT = Math.max(T.y0 + SY - y, 0, y - T.y1 - SY);
@@ -2064,7 +2119,16 @@ function estadoDe(it) {
     disco: it.disco, discoOtro: it.discoOtro || '#ff7a00',
     cinta: g.cinta, cintaOtro: g.cintaOtro || '#7a4dd8',
     encuadre: f.encuadre, fondoSuelto: f.fondoSuelto
-  });
+  }, it.foto && fotosItems.get(it.id) ? { acabado: 'foto', fotoImg: fotosItems.get(it.id), fotoVer: it.foto } : {});
+}
+/* Fotos impresas en el disco, una por playlist (reducidas, en este móvil) */
+const fotosItems = new Map();
+const claveFoto = id => 'portadas_foto_item_' + id;
+async function cargarFotosItems() {
+  for (const it of col.items) {
+    if (!it.foto) continue;
+    try { const u = localStorage.getItem(claveFoto(it.id)); if (u) fotosItems.set(it.id, await cargarImg(u)); } catch (e) {}
+  }
 }
 const nombreColor = (lista, id, otro) => { const x = lista.find(c => c.id === id); return x ? x.n : 'Personalizado ' + otro; };
 
@@ -2176,7 +2240,7 @@ function paletaSimple(el, lista, cinta, leerV, ponerV) {
 }
 
 /* ---------------- editar una playlist ---------------- */
-let edit = null, editNueva = false, colorTocado = false;
+let edit = null, editNueva = false, colorTocado = false, editFoto = undefined;   // undefined = sin cambios, null = quitar
 /* Color que encaja con el nombre (verano → mostaza, triste → azul…), y si
    no se reconoce, el primero de la paleta que aún no use nadie. */
 function colorSugerido(nombre, sinContar) {
@@ -2190,15 +2254,23 @@ function colorSugerido(nombre, sinContar) {
   const d = DISCOS.find(x => !usados.has(x.id));
   return d ? d.id : 'orig';
 }
+function estadoEdit() {
+  const st = estadoDe(Object.assign({}, edit, { foto: null }));
+  const img = editFoto === undefined ? (edit.foto ? fotosItems.get(edit.id) : null) : editFoto;
+  return img ? Object.assign(st, { acabado: 'foto', fotoImg: img }) : st;
+}
 function vistaItem() {
   const tmp = temp('miniatura');
-  dibujar(tmp.getContext('2d'), estadoDe(edit));
+  dibujar(tmp.getContext('2d'), estadoEdit());
+  $('item-foto-quitar').hidden = !(editFoto === undefined ? edit.foto && fotosItems.get(edit.id) : editFoto);
+  $('item-foto-btn').firstChild.textContent = $('item-foto-quitar').hidden ? 'Elegir foto' : 'Cambiar foto';
   const c = $('item-vista'); c.getContext('2d').drawImage(tmp, 0, 0, c.width, c.height);
   $('item-color').textContent = nombreColor(DISCOS, edit.disco, edit.discoOtro);
 }
 function abrirItem(it, nueva) {
   editNueva = !!nueva;
   colorTocado = !nueva;
+  editFoto = undefined;
   edit = Object.assign({}, it);
   $('item-tit').textContent = nueva ? 'Nueva playlist' : 'Editar playlist';
   $('item-nombre').value = edit.texto;
@@ -2229,16 +2301,32 @@ $('item-nombre').addEventListener('input', e => {
   }
   vistaItem();
 });
+$('item-foto-in').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = '';
+  if (!f) return;
+  try { editFoto = reducir(await leerArchivo(f), 700, 'image/jpeg', 0.85).canvas; vistaItem(); }
+  catch (err) { toast('No se pudo abrir esa imagen', true); }
+});
+$('item-foto-quitar').onclick = () => { editFoto = null; vistaItem(); };
 $('item-ok').onclick = () => {
   edit.texto = edit.texto.trim();
   if (!edit.texto) { toast('Ponle un nombre', true); return; }
+  if (editFoto) {
+    fotosItems.set(edit.id, editFoto);
+    edit.foto = Date.now().toString(36);
+    try { localStorage.setItem(claveFoto(edit.id), editFoto.toDataURL('image/jpeg', 0.85)); }
+    catch (err) { toast('La foto se usa, pero este móvil no tiene sitio para guardarla para la próxima vez.', true); }
+  } else if (editFoto === null) {
+    fotosItems.delete(edit.id); edit.foto = null;
+    try { localStorage.removeItem(claveFoto(edit.id)); } catch (err) {}
+  }
   if (editNueva) col.items.push(edit);
   else col.items = col.items.map(it => it.id === edit.id ? edit : it);
   guardarCol(); cerrarH('hoja-item'); pintarColeccion();
 };
-async function guardarUna(it) {
+async function guardarUna(it, st) {
   const lote = temp('lote');
-  dibujar(lote.getContext('2d'), estadoDe(it));
+  dibujar(lote.getContext('2d'), st || estadoDe(it));
   const blob = await new Promise(ok => lote.toBlob(ok, 'image/jpeg', 0.92));
   const f = new File([blob], 'portada-' + slugDe(it.texto) + '.jpg', { type: 'image/jpeg' });
   if (matchMedia('(pointer: coarse)').matches && navigator.canShare && navigator.canShare({ files: [f] })) {
@@ -2247,7 +2335,7 @@ async function guardarUna(it) {
   const a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name;
   document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
 }
-$('item-guardar').onclick = () => { edit.texto = edit.texto.trim(); guardarUna(edit); };
+$('item-guardar').onclick = () => { edit.texto = edit.texto.trim(); guardarUna(edit, estadoEdit()); };
 $('item-spotify').onclick = async () => {
   if (!cred() || !cred().refreshToken || !tieneScope('ugc-image-upload')) {
     toast('Primero conecta Spotify (con «Poner todas en Spotify» te lleva a conectarlo).', true); return;
@@ -2261,7 +2349,7 @@ $('item-spotify').onclick = async () => {
     if (!confirm('¿Poner esta portada en «' + p.name + '»?')) return;
     btn.textContent = 'Subiendo…';
     const lote = temp('lote');
-    dibujar(lote.getContext('2d'), estadoDe(edit));
+    dibujar(lote.getContext('2d'), estadoEdit());
     await subirPortada(p.id, jpegDe(lote));
     edit.spotifyId = p.id;
     col.items = col.items.map(it => it.id === edit.id ? Object.assign({}, it, { spotifyId: p.id }) : it);
@@ -2276,6 +2364,8 @@ $('item-spotify').onclick = async () => {
 $('item-borrar').onclick = () => {
   if (!confirm('¿Quitar «' + edit.texto + '» de tu colección? (No toca nada en Spotify)')) return;
   col.items = col.items.filter(it => it.id !== edit.id);
+  fotosItems.delete(edit.id);
+  try { localStorage.removeItem(claveFoto(edit.id)); } catch (err) {}
   guardarCol(); cerrarH('hoja-item'); pintarColeccion();
 };
 /* una playlist nueva recibe un color que aún no use nadie del grupo */
@@ -2579,6 +2669,7 @@ $('tab-libre').onclick = () => ponerModo('libre');
   montarIdeas(true);
   montarMios();
   montarPlantillas();
+  await cargarFotosItems();
   ponerModo(modo);
 })();
 </script>
