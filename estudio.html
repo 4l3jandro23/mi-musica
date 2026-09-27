@@ -1239,7 +1239,7 @@ const anadirPistas = (id, uris, posicion) =>
 const reemplazarPistas = (id, uris) =>
   sp('/playlists/' + id + '/items', { method: 'PUT', body: { uris: uris } });
 const quitarPistas = (id, uris) =>
-  sp('/playlists/' + id + '/items', { method: 'DELETE', body: { tracks: uris.map(u => ({ uri: u })) } });
+  sp('/playlists/' + id + '/items', { method: 'DELETE', body: { items: uris.map(u => ({ uri: u })) } });
 const cambiarDetalles = (id, campos) =>
   sp('/playlists/' + id, { method: 'PUT', body: campos });
 const subirPortada = (id, base64) =>

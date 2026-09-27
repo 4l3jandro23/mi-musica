@@ -1947,6 +1947,9 @@ const SPOTIFY_SCOPE_BIBLIO = 'user-library-read user-library-modify';
    usaban: tocar playlists publicas, ponerles portada y ver tu top. Se
    piden desde aqui porque esta es la pagina registrada en Spotify. */
 const SPOTIFY_SCOPE_ESTUDIO = 'playlist-modify-public ugc-image-upload user-top-read';
+/* Los del Mando de Spotify (mando.html): artistas seguidos, reproductor y
+   perfil. Tambien se piden desde aqui por ser la pagina registrada. */
+const SPOTIFY_SCOPE_MANDO = 'user-follow-read user-follow-modify user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-private';
 
 /* Manda al usuario a la pantalla de login real de Spotify. Al volver, Spotify
    añade ?code=...&state=... a esta misma URL (por eso hace falta registrar
@@ -1961,7 +1964,7 @@ async function beginSpotifyLogin() {
   const params = new URLSearchParams({
     client_id: c.clientId, response_type: 'code', redirect_uri: REDIRECT_URI,
     code_challenge_method: 'S256', code_challenge: challenge, state,
-    scope: SPOTIFY_SCOPE + ' ' + SPOTIFY_SCOPE_RECIENTES + ' ' + SPOTIFY_SCOPE_CREAR + ' ' + SPOTIFY_SCOPE_BIBLIO + ' ' + SPOTIFY_SCOPE_ESTUDIO
+    scope: SPOTIFY_SCOPE + ' ' + SPOTIFY_SCOPE_RECIENTES + ' ' + SPOTIFY_SCOPE_CREAR + ' ' + SPOTIFY_SCOPE_BIBLIO + ' ' + SPOTIFY_SCOPE_ESTUDIO + ' ' + SPOTIFY_SCOPE_MANDO
   });
   location.href = 'https://accounts.spotify.com/authorize?' + params.toString();
 }
@@ -1975,7 +1978,7 @@ async function handleSpotifyRedirect() {
   /* El Estudio de Playlists no puede abrir el login por su cuenta: Spotify
      solo vuelve a una URL registrada, y la registrada es esta. Asi que nos
      manda aqui, se conecta de la forma de siempre y se regresa alli. */
-  const VUELTAS = { estudio: 'estudio.html', portadas: 'portadas.html' };
+  const VUELTAS = { estudio: 'estudio.html', portadas: 'portadas.html', mando: 'mando.html' };
   if (VUELTAS[qs.get('conectar')]) {
     sessionStorage.setItem(K_VOLVER, VUELTAS[qs.get('conectar')]);
     history.replaceState({}, '', location.pathname);
@@ -2016,7 +2019,7 @@ async function handleSpotifyRedirect() {
        usuario a donde diga la URL. */
     const volver = sessionStorage.getItem(K_VOLVER);
     sessionStorage.removeItem(K_VOLVER);
-    if (volver === 'estudio.html' || volver === 'portadas.html') { location.href = volver; return; }
+    if (volver === 'estudio.html' || volver === 'portadas.html' || volver === 'mando.html') { location.href = volver; return; }
     toast('Conectado con Spotify');
   } catch (e) {
     toast('No se pudo completar la conexión con Spotify (' + (e.message || 'error') + ').');
@@ -2091,7 +2094,13 @@ const SPOTIFY_PERMISOS = [
   { s: 'user-library-modify', q: 'devolver canciones a «Me gusta»' },
   { s: 'playlist-modify-public', q: 'editar playlists públicas desde el Estudio' },
   { s: 'ugc-image-upload', q: 'ponerle portada a una playlist' },
-  { s: 'user-top-read', q: 'usar lo que más escuchas como fuente' }
+  { s: 'user-top-read', q: 'usar lo que más escuchas como fuente' },
+  { s: 'user-follow-read', q: 'ver los artistas que sigues (Mando)' },
+  { s: 'user-follow-modify', q: 'seguir y dejar de seguir (Mando)' },
+  { s: 'user-read-playback-state', q: 'ver qué suena (Mando)' },
+  { s: 'user-modify-playback-state', q: 'controlar la reproducción (Mando)' },
+  { s: 'user-read-currently-playing', q: 'ver la canción que suena (Mando)' },
+  { s: 'user-read-private', q: 'leer tu perfil (Mando)' }
 ];
 function permisosQueFaltan() {
   const c = loadCreds();
