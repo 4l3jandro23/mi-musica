@@ -239,48 +239,158 @@
   .version { text-align: center; color: var(--fg-mute); font-size: 12px; margin: 26px 0 0; opacity: .7; }
   .detalle-textos { margin-top: 10px; }
   .detalle-textos summary { cursor: pointer; color: var(--acc); font-weight: 600; font-size: 14px; padding: 6px 0; }
+
+  /* ===================== REDISEÑO ===================== */
+  :root {
+    --bg: #0c0c0d; --surface: #17171a; --surface-2: #222226; --line: #2c2c31;
+    --fg: #f4f1ec; --fg-mute: #9a978f; --acc: #d98b4a; --acc-fg: #1a0e04;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+    padding: 0 16px calc(env(safe-area-inset-bottom) + 110px); max-width: 720px; letter-spacing: -.005em; }
+  header.top { position: sticky; top: 0; z-index: 8; display: flex; align-items: center; gap: 6px;
+    margin: 0 -16px 8px; padding: calc(env(safe-area-inset-top) + 14px) 16px 12px;
+    background: linear-gradient(var(--bg) 70%, rgba(12,12,13,0)); }
+  header.top .atras { color: var(--fg-mute); font-size: 28px; padding: 0 8px 0 0; text-decoration: none; line-height: 1; }
+  header.top .titulo { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 10px; }
+  header.top h1 { font-size: 30px; font-weight: 800; letter-spacing: -.03em; }
+  header.top #col-total { color: var(--fg-mute); font-size: 14px; }
+  .ico-top { width: 42px; height: 42px; border-radius: 50%; border: 0; background: var(--surface); color: var(--fg);
+    display: grid; place-items: center; cursor: pointer; }
+  .ico-top:active { transform: scale(.94); }
+
+  .rejilla { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 16px; }
+  @media (min-width: 560px) { .rejilla { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .pieza { font-size: 15px; font-weight: 600; color: var(--fg); }
+  .pieza canvas { border-radius: 10px; margin-bottom: 9px; background: #121212; box-shadow: none; transition: transform .15s ease; }
+  .pieza:active canvas, .pieza:active .mas-caja { transform: scale(.96); }
+  .pieza span { padding: 0 2px; }
+  .cargando-mini { animation: latido 1.2s ease-in-out infinite; }
+  @keyframes latido { 50% { opacity: .55; } }
+  .pieza.nueva { color: var(--fg-mute); }
+  .mas-caja { aspect-ratio: 1; border-radius: 10px; border: 2px dashed var(--line); display: grid; place-items: center; margin-bottom: 9px; transition: transform .15s ease; }
+  .mas-caja span { font-size: 44px; font-weight: 300; color: var(--fg-mute); line-height: 1; }
+  .grupo { margin-top: 10px; }
+  .grupo + .grupo { margin-top: 28px; }
+  .grupo-cab { margin-bottom: 12px; }
+  .grupo-cab b { font-size: 17px; }
+
+  .barra-abajo { position: fixed; left: 0; right: 0; bottom: 0; z-index: 9; display: flex; gap: 10px;
+    padding: 14px 16px calc(env(safe-area-inset-bottom) + 14px); max-width: 720px; margin: 0 auto;
+    background: linear-gradient(rgba(12,12,13,0), var(--bg) 35%); }
+  .btn-spotify, .btn-sec { border: 0; border-radius: 999px; font: 700 16px/1 inherit; font-family: inherit; padding: 17px 20px; cursor: pointer; }
+  .btn-spotify { flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px; background: #1ed760; color: #04170a; }
+  .btn-sec { background: var(--surface-2); color: var(--fg); }
+  .btn-spotify:active, .btn-sec:active { transform: scale(.97); }
+
+  .hoja { background: var(--surface); border-radius: 22px 22px 0 0; max-width: 720px; }
+  .hoja .cab h2 { font-size: 20px; font-weight: 800; letter-spacing: -.02em; }
+  .hoja .cab::before { content: ''; position: absolute; left: 50%; top: 7px; width: 38px; height: 4px; margin-left: -19px; border-radius: 2px; background: var(--line); }
+  .hoja { padding-top: 20px; }
+  .vista-grande { width: min(70vw, 280px); border-radius: 12px; }
+  .nombre-grande { margin-top: 16px; font-size: 20px; font-weight: 700; text-align: center; background: var(--surface-2); border: 0; padding: 14px; }
+  .btn { border-radius: 12px; background: var(--surface-2); border-color: transparent; }
+  .btn.pri { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .chip { border-color: transparent; background: var(--surface-2); padding: 10px 15px; }
+  .chip[aria-pressed=true] { background: var(--fg); color: var(--bg); }
+  .mas-item { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 6px; }
+  .mas-item > summary, .detalle-textos summary { cursor: pointer; color: var(--fg-mute); font-weight: 600; font-size: 14px; padding: 10px 0; }
+  .enlace-peligro { display: block; margin: 22px auto 6px; background: none; border: 0; color: var(--err); font: 600 14px inherit; font-family: inherit; cursor: pointer; }
+  .pie-hoja { border-top: 0; padding-top: 8px; }
+  .acciones-item { padding-top: 12px; }
+
+  .grupo-aj { background: var(--surface-2); border-radius: 16px; padding: 14px 14px 16px; margin-top: 12px; }
+  .grupo-aj h3 { margin: 0 0 8px; font-size: 15px; font-weight: 700; }
+  .grupo-aj .btn, .grupo-aj .chip:not([aria-pressed=true]) { background: var(--surface); }
+  #item-foto-btn { flex: 1; }
+  .grupo-aj label.tit:first-of-type { margin-top: 6px; }
+  .grupo-aj .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .estado-sp { margin: 0 0 10px; color: var(--fg-mute); font-size: 14px; display: flex; align-items: center; gap: 8px; }
+  .punto { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .punto.ok { background: #1ed760; } .punto.mal { background: var(--err); } .punto.aviso { background: #f2c230; }
+  .diag { list-style: none; padding: 0; margin: 10px 0 0; font-size: 13.5px; }
+  .diag li { padding: 4px 0; } .diag .ok { color: #7fd99a; } .diag .mal { color: var(--err); }
+  .lista-spotify { background: #121212; }
+  .volver-col { background: none; border: 0; color: var(--fg-mute); font: 600 15px inherit; font-family: inherit; padding: 6px 0 14px; cursor: pointer; }
+  .version { margin-top: 30px; }
+  .toast { bottom: calc(env(safe-area-inset-bottom) + 96px); }
 </style>
 </head>
 <body>
-<header>
-  <a href="index.html" aria-label="Volver">‹</a>
-  <h1>Portadas de Playlist</h1>
+<header class="top">
+  <a href="index.html" class="atras" aria-label="Volver">‹</a>
+  <div class="titulo">
+    <h1>Portadas</h1>
+    <span id="col-total"></span>
+  </div>
+  <button class="ico-top" id="ver-galeria" aria-label="Ver galería">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg>
+  </button>
+  <button class="ico-top" id="abrir-ajustes" aria-label="Ajustes">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+  </button>
 </header>
 
-<div class="pestanas" role="tablist">
+<div class="pestanas" role="tablist" hidden>
   <button role="tab" id="tab-col" aria-selected="true">Mi colección</button>
   <button role="tab" id="tab-libre" aria-selected="false">Diseño libre</button>
 </div>
 
 <section id="modo-coleccion">
-  <p class="ayuda intro">Todas tus playlists con el mismo formato. El disco cambia de color y la cinta dice su grupo. Toca una para cambiarla. <span id="col-total"></span></p>
-  <button class="btn galeria-btn" id="ver-galeria">Ver galería</button>
+  <div id="col-grupos"></div>
+  <button id="col-anadir" hidden></button>
 
-  <label class="tit">Formato</label>
-  <div class="chips" id="formatos"></div>
-  <div class="chips sub" id="cintas-col"></div>
-  <button class="btn sub" id="cinta-unica">Misma cinta cobre en todas</button>
-  <p class="ayuda nota">Pone la cinta de cobre original en todas tus playlists (la de pesas, en gris).</p>
-
-  <label class="tit">Paleta de la colección</label>
-  <div class="chips" id="paletas"></div>
-  <p class="ayuda nota">Reparte colores que combinan entre sí por todas tus playlists. Las doradas originales se quedan como están.</p>
-  <div id="col-grupos"><p class="ayuda">Cargando…</p></div>
-  <div class="fila-botones">
-    <button class="btn" id="col-anadir">+ Añadir playlist</button>
-    <button class="btn" id="col-grupo-nuevo">+ Grupo</button>
-  </div>
-  <button class="btn sub" id="col-traer">Traer mis playlists de Spotify</button>
-
-  <label class="tit">Así se ve en Spotify</label>
-  <div class="lista-spotify" id="col-vista"></div>
-  <div class="acciones">
-    <button class="btn verde" id="col-spotify">Poner todas en Spotify</button>
-    <button class="btn pri" id="col-guardar">Guardar todas las imágenes</button>
+  <div class="barra-abajo">
+    <button class="btn-sec" id="col-guardar">Guardar</button>
+    <button class="btn-spotify" id="col-spotify">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.6 14.4a.6.6 0 0 1-.9.2c-2.4-1.5-5.4-1.8-9-1a.6.6 0 1 1-.3-1.2c3.9-.9 7.2-.5 9.9 1.1.3.2.4.6.3.9zm1.2-2.7a.8.8 0 0 1-1 .2c-2.7-1.7-6.9-2.2-10.2-1.2a.8.8 0 1 1-.4-1.4c3.7-1.1 8.3-.6 11.4 1.4.3.2.4.7.2 1zm.1-2.8C14.6 9 9.2 8.8 6.1 9.7a.9.9 0 1 1-.5-1.8c3.5-1.1 9.5-.9 13.2 1.3a.9.9 0 0 1-.9 1.7z"/></svg>
+      Subir a Spotify
+    </button>
   </div>
 </section>
 
+<div class="hoja" id="hoja-ajustes" role="dialog" aria-modal="true" aria-labelledby="ajustes-tit">
+  <div class="cab">
+    <h2 id="ajustes-tit">Ajustes</h2>
+    <button class="cerrar" data-cierra="hoja-ajustes" aria-label="Cerrar">×</button>
+  </div>
+  <div class="cuerpo">
+    <div class="grupo-aj">
+      <h3>Spotify</h3>
+      <p class="estado-sp" id="estado-sp"></p>
+      <div class="dos">
+        <a class="btn" id="conectar-sp" href="musicvault.html?conectar=portadas">Conectar Spotify</a>
+        <button class="btn" id="probar-sp">Probar conexión</button>
+      </div>
+      <ul class="diag" id="diag"></ul>
+      <button class="btn sub" id="col-traer">Traer mis playlists de Spotify</button>
+    </div>
+
+    <div class="grupo-aj">
+      <h3>Estilo de todas</h3>
+      <label class="tit">Fondo</label>
+      <div class="chips" id="formatos"></div>
+      <label class="tit">Cinta</label>
+      <div class="chips" id="cintas-col"></div>
+      <button class="btn sub" id="cinta-unica">Misma cinta cobre en todas</button>
+      <label class="tit">Recolorear con una paleta</label>
+      <div class="chips" id="paletas"></div>
+    </div>
+
+    <div class="grupo-aj">
+      <h3>Así se ve en tu Spotify</h3>
+      <div class="lista-spotify" id="col-vista"></div>
+    </div>
+
+    <div class="grupo-aj">
+      <h3>Más</h3>
+      <button class="btn" id="col-grupo-nuevo">Crear un grupo</button>
+      <button class="btn sub" id="ir-libre">Editor libre (una portada suelta)</button>
+    </div>
+  </div>
+</div>
+
 <section id="modo-libre" hidden>
+<button class="volver-col" id="volver-col">‹ Volver a mis portadas</button>
 <div class="lienzo">
   <canvas id="lienzo" width="1024" height="1024" aria-label="Vista previa de la portada"></canvas>
   <div class="cargando" id="cargando">Cargando…</div>
@@ -403,23 +513,17 @@
   </div>
   <div class="cuerpo">
     <canvas id="item-vista" width="480" height="480" class="vista-grande"></canvas>
-    <label class="tit" for="item-nombre">Nombre (lo que pone la cinta)</label>
-    <input type="text" class="campo" id="item-nombre" maxlength="40" autocomplete="off" autocapitalize="characters">
-    <label class="tit">Grupo</label>
-    <div class="chips" id="item-grupos"></div>
-    <label class="tit">Color del disco</label>
-    <div class="paleta" id="item-pal"></div>
+    <input type="text" class="campo nombre-grande" id="item-nombre" maxlength="40" autocomplete="off" autocapitalize="characters" placeholder="Nombre de la playlist" aria-label="Nombre (lo que pone la cinta)">
+
+    <label class="tit">Disco</label>
+    <div class="chips" id="item-acabados"></div>
+    <div class="paleta sub" id="item-pal"></div>
     <div class="nombre-color" id="item-color"></div>
-    <label class="tit">Color de la cinta</label>
-    <div class="chips"><button class="chip" id="item-cinta-grupo">Como su grupo</button></div>
-    <div class="paleta sub" id="item-pal-cinta"></div>
-    <div class="nombre-color" id="item-cinta-nombre"></div>
-    <label class="tit">Imagen impresa en el disco (opcional)</label>
-    <div class="fila2">
-      <label class="btn peque" id="item-foto-btn">Elegir foto<input type="file" id="item-foto-in" accept="image/*" hidden></label>
+
+    <div class="fila2 sub">
+      <label class="btn peque" id="item-foto-btn">Poner una foto en el disco<input type="file" id="item-foto-in" accept="image/*" hidden></label>
       <button class="btn peque" id="item-foto-quitar" hidden>Quitar foto</button>
     </div>
-    <p class="ayuda">Como un CD serigrafiado. Con foto, el color del disco no se usa.</p>
     <div id="item-foto-ajuste" hidden>
       <label class="rango">Zoom <input type="range" id="item-foto-zoom" min="1" max="3" step="0.02"></label>
       <label class="rango">Izq. / dcha. <input type="range" id="item-foto-x" min="-1" max="1" step="0.02"></label>
@@ -427,22 +531,29 @@
       <p class="ayuda">Si hay una cara, sácala del agujero del centro.</p>
     </div>
 
-    <label class="tit">Tipo de disco</label>
-    <div class="chips" id="item-acabados"></div>
-    <details class="detalle-textos" id="item-textos">
-      <summary>Textos en el disco (opcional)</summary>
-      <label class="tit" for="item-borde">Alrededor del borde</label>
-      <input type="text" class="campo" id="item-borde" maxlength="40" placeholder="Ej.: GYM CD MIX" autocomplete="off">
-      <label class="tit" for="item-grande">Texto grande (Intro = otra línea)</label>
-      <textarea class="campo" id="item-grande" rows="2" maxlength="30" placeholder="Ej.: 10 / KG"></textarea>
+    <details class="mas-item">
+      <summary>Más ajustes</summary>
+      <label class="tit">Color de la cinta</label>
+      <div class="chips"><button class="chip" id="item-cinta-grupo">Como las demás</button></div>
+      <div class="paleta sub" id="item-pal-cinta"></div>
+      <div class="nombre-color" id="item-cinta-nombre"></div>
+      <label class="tit">Grupo</label>
+      <div class="chips" id="item-grupos"></div>
+      <details class="detalle-textos" id="item-textos">
+        <summary>Textos en el disco</summary>
+        <label class="tit" for="item-borde">Alrededor del borde</label>
+        <input type="text" class="campo" id="item-borde" maxlength="40" placeholder="Ej.: GYM CD MIX" autocomplete="off">
+        <label class="tit" for="item-grande">Texto grande (Intro = otra línea)</label>
+        <textarea class="campo" id="item-grande" rows="2" maxlength="30" placeholder="Ej.: 10 / KG"></textarea>
+      </details>
+      <button class="enlace-peligro" id="item-borrar">Quitar esta playlist de la colección</button>
     </details>
   </div>
   <div class="acciones-item" id="item-acciones">
     <button class="btn" id="item-guardar">Guardar imagen</button>
-    <button class="btn verde" id="item-spotify">Poner en Spotify</button>
+    <button class="btn verde" id="item-spotify">Subir a Spotify</button>
   </div>
-  <div class="dos pie-hoja">
-    <button class="btn" id="item-borrar">Quitar</button>
+  <div class="pie-hoja">
     <button class="btn pri" id="item-ok">Hecho</button>
   </div>
 </div>
@@ -507,7 +618,7 @@ const W = 1024;
 /* Versión de la página. Cambiarla en cada publicación: al abrir, se mira si
    el servidor tiene otra y, si es así, se recarga sin caché (el iPhone
    guarda la página y las imágenes mucho rato, sobre todo como app). */
-const VERSION = '2026-09-28f';
+const VERSION = '2026-09-28g';
 const K_AJUSTES = 'portadas_ajustes_v1';
 const K_CREDS = 'musicvault_spotify_creds_v1';   // la misma sesión que MusicVault y el Estudio
 const API = 'https://api.spotify.com/v1';
@@ -2158,16 +2269,7 @@ async function cargarPlaylists() {
   if (playlists) return pintarLista();
   lista.innerHTML = '<div class="aviso">Cargando tus playlists…</div>';
   try {
-    yo = await sp('/me');
-    const todas = [];
-    let url = '/me/playlists?limit=50';
-    while (url && todas.length < 2000) {
-      const d = await sp(url);
-      (d && d.items || []).forEach(p => { if (p) todas.push(p); });
-      url = d && d.next;
-    }
-    /* Spotify solo deja cambiar la portada de las playlists que son tuyas */
-    playlists = todas.filter(p => p.owner && p.owner.id === yo.id);
+    playlists = await leerPlaylists();
     pintarLista();
   } catch (e) {
     if (e.message === 'SIN_CONEXION' || e.message === 'SESION_CADUCADA') return avisoConexion('La sesión de Spotify ha caducado en este dispositivo.', 'Volver a conectar');
@@ -2240,14 +2342,14 @@ function abrirHoja() { $('velo').classList.add('abierto'); $('hoja').classList.a
 function cerrarHoja() {
   if (subiendo) { toast('Espera a que termine o pulsa Detener.'); return; }
   $('hoja').classList.remove('abierto');
-  if (!['hoja-item', 'hoja-grupo', 'hoja-colsp'].some(h => $(h).classList.contains('abierto'))) $('velo').classList.remove('abierto');
+  if (!['hoja-item', 'hoja-grupo', 'hoja-colsp', 'hoja-ajustes'].some(h => $(h).classList.contains('abierto'))) $('velo').classList.remove('abierto');
   revisarFlotante();
 }
 $('abrir-spotify').onclick = abrirHoja;
 $('cerrar').onclick = cerrarHoja;
 $('velo').onclick = () => {
   if ($('hoja').classList.contains('abierto')) cerrarHoja();
-  ['hoja-item', 'hoja-grupo', 'hoja-colsp'].forEach(h => { if ($(h).classList.contains('abierto')) cerrarH(h); });
+  ['hoja-item', 'hoja-grupo', 'hoja-colsp', 'hoja-ajustes'].forEach(h => { if ($(h).classList.contains('abierto')) cerrarH(h); });
 };
 
 $('usar-nombre').onclick = () => {
@@ -2354,10 +2456,10 @@ let col = leer(K_COL, null) || coleccionInicial();
 const guardarCol = () => escribir(K_COL, col);
 const grupoDe = it => col.grupos.find(g => g.id === it.grupo) || col.grupos[0];
 const FORMATOS = [
-  { id: 'negro', n: 'Sin caja · negro', encuadre: 'suelto', fondoSuelto: 'negro' },
-  { id: 'blanco', n: 'Sin caja · blanco', encuadre: 'suelto', fondoSuelto: 'blanco' },
-  { id: 'color', n: 'Sin caja · color', encuadre: 'suelto', fondoSuelto: 'color' },
-  { id: 'caja', n: 'Con caja', encuadre: 'caja', fondoSuelto: 'negro' }
+  { id: 'negro', n: 'Negro', encuadre: 'suelto', fondoSuelto: 'negro' },
+  { id: 'blanco', n: 'Blanco', encuadre: 'suelto', fondoSuelto: 'blanco' },
+  { id: 'color', n: 'Del color del disco', encuadre: 'suelto', fondoSuelto: 'color' },
+  { id: 'caja', n: 'Caja de CD', encuadre: 'caja', fondoSuelto: 'negro' }
 ];
 const formatoCol = () => FORMATOS.find(f => f.id === col.formato) || FORMATOS[0];
 function estadoDe(it) {
@@ -2393,7 +2495,7 @@ function pintarMini(canvas, st) {
   const clave = JSON.stringify(st);
   const hecha = cacheMini.get(clave);
   const x = canvas.getContext('2d');
-  if (hecha) { x.drawImage(hecha, 0, 0, canvas.width, canvas.height); return; }
+  if (hecha) { x.drawImage(hecha, 0, 0, canvas.width, canvas.height); canvas.classList.remove('cargando-mini'); return; }
   colaMini.push({ canvas, st, clave });
   if (!tColaMini) tColaMini = setTimeout(vaciarCola, 0);
 }
@@ -2407,6 +2509,7 @@ function vaciarCola() {
   c.getContext('2d').drawImage(tmp, 0, 0, 300, 300);
   cacheMini.set(t.clave, c);
   t.canvas.getContext('2d').drawImage(c, 0, 0, t.canvas.width, t.canvas.height);
+  t.canvas.classList.remove('cargando-mini');
   if (colaMini.length) tColaMini = setTimeout(vaciarCola, 0);
 }
 function colorCinta(g) { const c = colorDe(CINTAS, g.cinta, g.cintaOtro); return c || '#b5602a'; }
@@ -2419,9 +2522,9 @@ function pintarColeccion() {
     const items = col.items.filter(it => grupoDe(it) === g);
     const sec = document.createElement('div');
     sec.className = 'grupo';
-    sec.innerHTML = '<div class="grupo-cab"><span class="cinta-muestra" style="background:' + colorCinta(g) + '"></span>' +
+    sec.innerHTML = (col.grupos.length > 1 ? '<div class="grupo-cab"><span class="cinta-muestra" style="background:' + colorCinta(g) + '"></span>' +
       '<b>' + esc(g.n) + '</b><span class="cuenta">' + items.length + '</span>' +
-      '<button class="enlace" data-grupo="' + g.id + '">Editar grupo</button></div><div class="rejilla"></div>';
+      '<button class="enlace" data-grupo="' + g.id + '">Editar</button></div>' : '') + '<div class="rejilla"></div>';
     const rej = sec.querySelector('.rejilla');
     items.forEach(it => {
       const b = document.createElement('button');
@@ -2430,12 +2533,20 @@ function pintarColeccion() {
       b.appendChild(c);
       const s = document.createElement('span'); s.textContent = it.texto || '(sin nombre)'; b.appendChild(s);
       rej.appendChild(b);
+      c.classList.add('cargando-mini');
       pintarMini(c, estadoDe(it));
     });
-    if (!items.length) rej.innerHTML = '<p class="ayuda">Este grupo está vacío.</p>';
+    if (!items.length && col.grupos.length > 1) rej.innerHTML = '<p class="ayuda">Este grupo está vacío.</p>';
     el.appendChild(sec);
   });
-  $('col-total').textContent = col.items.length + ' playlist' + (col.items.length === 1 ? '' : 's');
+  /* la casilla para añadir, al final de la última rejilla */
+  const ultima = el.querySelector('.rejilla:last-of-type') || el;
+  const mas = document.createElement('button');
+  mas.className = 'pieza nueva'; mas.setAttribute('aria-label', 'Añadir playlist');
+  mas.innerHTML = '<div class="mas-caja"><span>+</span></div><span>Nueva</span>';
+  mas.onclick = () => $('col-anadir').click();
+  ultima.appendChild(mas);
+  $('col-total').textContent = col.items.length ? col.items.length + ' playlist' + (col.items.length === 1 ? '' : 's') : '';
   /* la colección tal como se verá en la lista oscura de Spotify */
   const v = $('col-vista');
   v.innerHTML = '';
@@ -2458,7 +2569,7 @@ $('col-grupos').addEventListener('click', e => {
 });
 
 /* ---------------- hojas (ventanas de abajo) ---------------- */
-const HOJAS = ['hoja', 'hoja-item', 'hoja-grupo', 'hoja-colsp'];
+const HOJAS = ['hoja', 'hoja-item', 'hoja-grupo', 'hoja-colsp', 'hoja-ajustes'];
 function abrirH(id) { $('velo').classList.add('abierto'); $(id).classList.add('abierto'); revisarFlotante(); }
 function cerrarH(id) {
   if (subiendo || subiendoCol) { toast('Espera a que termine o pulsa Detener.'); return; }
@@ -2516,7 +2627,7 @@ function marcarCintaItem() {
   if (!edit.cinta) $('item-pal-cinta').querySelectorAll('.muestra').forEach(b => b.setAttribute('aria-pressed', 'false'));
   const g = grupoDe(edit);
   $('item-cinta-nombre').textContent = edit.cinta ? nombreColor(CINTAS, edit.cinta, edit.cintaOtro)
-    : 'La del grupo «' + g.n + '»: ' + nombreColor(CINTAS, g.cinta, g.cintaOtro);
+    : 'La misma que las demás (' + nombreColor(CINTAS, g.cinta, g.cintaOtro).toLowerCase() + ')';
 }
 function paletaCintaItem() {
   paletaSimple($('item-pal-cinta'), CINTAS, true, () => ({ id: edit.cinta || '', otro: edit.cintaOtro || '#7a4dd8' }),
@@ -2548,11 +2659,13 @@ $('item-grande').addEventListener('input', e => { edit.grande = e.target.value; 
 [['item-foto-zoom', 'fotoZoom'], ['item-foto-x', 'fotoX'], ['item-foto-y', 'fotoY']].forEach(([id, k]) =>
   $(id).addEventListener('input', e => { edit[k] = +e.target.value; vistaItem(); }));
 function vistaItem() {
+  $('item-pal').hidden = ['pesas', 'oro'].includes(edit.acabado) || !!(editFoto === undefined ? edit.foto && fotosItems.get(edit.id) : editFoto);
+  $('item-color').hidden = $('item-pal').hidden;
   const tmp = temp('miniatura');
   dibujar(tmp.getContext('2d'), estadoEdit());
   $('item-foto-quitar').hidden = !(editFoto === undefined ? edit.foto && fotosItems.get(edit.id) : editFoto);
   $('item-foto-ajuste').hidden = $('item-foto-quitar').hidden;
-  $('item-foto-btn').firstChild.textContent = $('item-foto-quitar').hidden ? 'Elegir foto' : 'Cambiar foto';
+  $('item-foto-btn').firstChild.textContent = $('item-foto-quitar').hidden ? 'Poner una foto en el disco' : 'Cambiar la foto';
   const c = $('item-vista'); c.getContext('2d').drawImage(tmp, 0, 0, c.width, c.height);
   $('item-color').textContent = nombreColor(DISCOS, edit.disco, edit.discoOtro);
 }
@@ -2712,7 +2825,7 @@ $('col-guardar').onclick = async () => {
     archivos.push(new File([blob], 'portada-' + slugDe(it.texto) + '.jpg', { type: 'image/jpeg' }));
     await sleep(0);
   }
-  btn.disabled = false; btn.textContent = 'Guardar todas las imágenes';
+  btn.disabled = false; btn.textContent = 'Guardar';
   const tactil = matchMedia('(pointer: coarse)').matches;
   if (tactil && navigator.canShare && navigator.canShare({ files: archivos })) {
     try { await navigator.share({ files: archivos }); return; } catch (e) { if (e.name === 'AbortError') return; }
@@ -2741,17 +2854,30 @@ function buscarPlaylist(it, lista, usadas) {
     libres.find(p => normNombre(p.name).startsWith(n + ' ')) ||
     libres.find(p => (' ' + normNombre(p.name) + ' ').includes(' ' + n + ' ')) || null;
 }
-async function obtenerPlaylists() {
-  if (playlists) return playlists;
+/* Todas tus playlists. Desde 2026 Spotify a veces rechaza pedir 50 de
+   golpe (400): entonces se baja a 10 por página, como hace el Mando.
+   Solo se quedan las tuyas: Spotify no deja cambiar portadas ajenas. */
+async function leerPlaylists() {
   yo = await sp('/me');
   const todas = [];
-  let url = '/me/playlists?limit=50';
+  let lim = 50, url = '/me/playlists?limit=' + lim;
   while (url && todas.length < 2000) {
-    const d = await sp(url);
-    (d && d.items || []).forEach(p => { if (p) todas.push(p); });
+    let d;
+    try { d = await sp(url); }
+    catch (e) {
+      if (e.status === 400 && lim > 10 && !todas.length) { lim = 10; url = '/me/playlists?limit=10'; continue; }
+      throw e;
+    }
+    const items = (d && d.items) || [];
+    items.forEach(p => { if (p) todas.push(p); });
+    if (!items.length) break;
     url = d && d.next;
   }
-  playlists = todas.filter(p => p.owner && p.owner.id === yo.id);
+  return todas.filter(p => p.owner && p.owner.id === yo.id);
+}
+async function obtenerPlaylists() {
+  if (playlists) return playlists;
+  playlists = await leerPlaylists();
   return playlists;
 }
 function avisoCol(texto, boton) {
@@ -2822,7 +2948,7 @@ $('colsp-subir').onclick = async () => {
       it.spotifyId = pid;   // la próxima vez se enlaza sola
       bien++;
     } catch (e) {
-      fallos.push(it.texto);
+      fallos.push(it.texto + ' (' + explicar(e) + ')');
       if (e.message === 'SESION_CADUCADA' || e.message === 'SIN_CONEXION') break;
     }
     await sleep(350);
@@ -2950,6 +3076,54 @@ PALETAS.forEach(pal => {
   b.onclick = () => aplicarPaleta(pal);
   $('paletas').appendChild(b);
 });
+
+/* Un error de Spotify dicho en cristiano */
+function explicar(e) {
+  const m = (e && e.message) || String(e);
+  if (m === 'SIN_CONEXION') return 'falta conectar Spotify';
+  if (m === 'SESION_CADUCADA') return 'la sesión ha caducado: vuelve a conectar';
+  if (e && e.status === 403) return 'Spotify no da permiso (403). Vuelve a conectar y acepta todo. Detalle: ' + m;
+  if (e && e.status === 413) return 'la imagen pesa demasiado (413)';
+  if (e && e.status === 404) return 'no encuentra esa playlist (404): ¿la has borrado?';
+  return m;
+}
+
+/* ---------------- prueba de conexión ----------------
+   Hace los mismos pasos que al subir y dice cuál falla y por qué. */
+async function probarConexion() {
+  const out = $('diag'), linea = (ok, t) => { out.insertAdjacentHTML('beforeend', '<li class="' + (ok ? 'ok' : 'mal') + '">' + (ok ? '✓ ' : '✗ ') + esc(t) + '</li>'); };
+  out.innerHTML = '';
+  const c = cred();
+  if (!c || !c.clientId) { linea(false, 'Este aparato no tiene guardada la conexión con Spotify. Pulsa «Conectar Spotify».'); return; }
+  linea(true, 'Hay conexión guardada en este aparato');
+  if (!c.refreshToken) { linea(false, 'La conexión está a medias: pulsa «Conectar Spotify» otra vez.'); return; }
+  if (!tieneScope('ugc-image-upload')) { linea(false, 'Falta el permiso para cambiar portadas: pulsa «Conectar Spotify» y acepta todo.'); return; }
+  linea(true, 'Tiene permiso para cambiar portadas');
+  try { await token(); linea(true, 'La sesión sigue viva'); }
+  catch (e) { linea(false, 'La sesión ha caducado: pulsa «Conectar Spotify». (' + e.message + ')'); return; }
+  try { const me = await sp('/me'); linea(true, 'Conectado como ' + (me.display_name || me.id)); }
+  catch (e) { linea(false, 'Spotify no responde a «quién soy»: ' + explicar(e)); return; }
+  try { playlists = null; const l = await obtenerPlaylists(); linea(true, l.length + ' playlists tuyas encontradas'); }
+  catch (e) { linea(false, 'No se pudo leer tu lista de playlists: ' + explicar(e)); return; }
+  linea(true, 'Todo bien: ya puedes subir las portadas.');
+}
+
+/* ---------------- ajustes ---------------- */
+function pintarEstadoSp() {
+  const c = cred(), ok = !!(c && c.refreshToken);
+  $('estado-sp').innerHTML = ok
+    ? (tieneScope('ugc-image-upload') ? '<span class="punto ok"></span>Conectado' : '<span class="punto aviso"></span>Conectado, pero falta el permiso de portadas')
+    : '<span class="punto mal"></span>Sin conectar en este aparato';
+  $('conectar-sp').textContent = ok ? 'Volver a conectar' : 'Conectar Spotify';
+}
+/* si la letra del rotulador llega tarde, se repintan las miniaturas */
+if (document.fonts && document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', () => {
+  cacheMini.clear(); if (modo === 'coleccion' && base) pintarColeccion();
+});
+$('abrir-ajustes').onclick = () => { pintarEstadoSp(); $('diag').innerHTML = ''; abrirH('hoja-ajustes'); };
+$('probar-sp').onclick = async () => { const b = $('probar-sp'); b.disabled = true; b.textContent = 'Probando…'; try { await probarConexion(); } finally { b.disabled = false; b.textContent = 'Probar conexión'; pintarEstadoSp(); } };
+$('ir-libre').onclick = () => { cerrarH('hoja-ajustes'); ponerModo('libre'); };
+$('volver-col').onclick = () => ponerModo('coleccion');
 
 /* ---------------- pestañas ---------------- */
 let modo = leer(K_MODO, 'coleccion');
