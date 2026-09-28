@@ -504,7 +504,7 @@ const W = 1024;
 /* Versión de la página. Cambiarla en cada publicación: al abrir, se mira si
    el servidor tiene otra y, si es así, se recarga sin caché (el iPhone
    guarda la página y las imágenes mucho rato, sobre todo como app). */
-const VERSION = '2026-09-28a';
+const VERSION = '2026-09-28b';
 const K_AJUSTES = 'portadas_ajustes_v1';
 const K_CREDS = 'musicvault_spotify_creds_v1';   // la misma sesión que MusicVault y el Estudio
 const API = 'https://api.spotify.com/v1';
@@ -572,7 +572,7 @@ function toast(msg, mal) {
 }
 
 /* ---------------- recoloreado ---------------- */
-let base = null, lum = null, mDisco = null, mCinta = null, mFondo = null;
+let base = null, lum = null, mDisco = null, mCinta = null, mFondo = null, pesasImg = null;
 let refDisco = 1, topeDisco = 2, refCinta = 1, topeCinta = 2;
 
 function cargarImg(src) {
@@ -597,6 +597,13 @@ function referencia(mascara) {
 
 async function preparar() {
   const [b, m] = await Promise.all([cargarImg('portadas/base.jpg?v=' + VERSION), cargarImg('portadas/mascaras.png?v=' + VERSION)]);
+  /* su disco de pesas (foto real, alineada a esta plantilla): se carga
+     aparte y, si falla, "Pesas" cae al dibujo de goma */
+  cargarImg('portadas/pesas.jpg?v=' + VERSION).then(i => {
+    pesasImg = i;
+    if (typeof cacheMini !== 'undefined') cacheMini.clear();
+    if (typeof modo !== 'undefined' && modo === 'coleccion' && typeof pintarColeccion === 'function') pintarColeccion();
+  }).catch(() => {});
   base = pixeles(b);
   const mp = pixeles(m);
   const n = W * W;
@@ -911,6 +918,7 @@ const ACABADOS = [
   { id: 'goma', n: 'Goma de pesas', def: '#262626' },
   { id: 'vinilo', n: 'Vinilo', def: '#171717' },
   { id: 'puntos', n: 'Puntos en relieve', def: '#b9cde3' },
+  { id: 'pesas', n: 'Disco de pesas', def: '#1c1c1c' },
   { id: 'foto', n: 'Tu foto' }
 ];
 const POSICIONES = [{ id: 'izq', n: 'Izquierda' }, { id: 'arriba', n: 'Arriba' }, { id: 'abajo', n: 'Abajo' }];
@@ -1258,6 +1266,7 @@ function dibujar(c, st) {
     const capa = temp('capa'), x = capa.getContext('2d');
     x.clearRect(0, 0, W, W);
     if (acabado === 'foto') dibujarFoto(x, foto, st);
+    else if (acabado === 'pesas') x.drawImage(pesasImg || textura('goma', '#262626'), 0, 0);
     else if (acabado !== 'cd') x.drawImage(textura(acabado, hexD || ACABADOS.find(a => a.id === acabado).def), 0, 0);
     /* lo "impreso" (dibujos y textos en blanco/negro) va en su capa y se
        ilumina; el relieve ya lleva su propia luz y sombra */
@@ -2348,7 +2357,7 @@ function paletaCintaItem() {
 }
 $('item-cinta-grupo').onclick = () => { edit.cinta = null; paletaCintaItem(); vistaItem(); };
 const ACABADOS_ITEM = [
-  { id: 'cd', n: 'CD' }, { id: 'metal', n: 'Metal' }, { id: 'goma', n: 'Pesas' }, { id: 'vinilo', n: 'Vinilo' }
+  { id: 'cd', n: 'CD' }, { id: 'pesas', n: 'Pesas' }, { id: 'metal', n: 'Metal' }, { id: 'vinilo', n: 'Vinilo' }
 ];
 function montarAcabadosItem() {
   const el = $('item-acabados'); el.innerHTML = '';
@@ -2358,7 +2367,7 @@ function montarAcabadosItem() {
     b.onclick = () => {
       edit.acabado = a.id;
       /* el disco de pesas trae sus textos de fábrica, si aún no hay otros */
-      if (a.id === 'goma' && !edit.borde && !edit.grande) { edit.borde = 'GYM CD MIX'; edit.grande = '10\nKG'; if (!colorTocado) edit.disco = 'orig'; }
+      if (a.id === 'pesas') { edit.borde = ''; edit.grande = ''; if (!edit.cinta) { edit.cinta = 'gris'; } }
       $('item-borde').value = edit.borde || ''; $('item-grande').value = edit.grande || '';
       if (edit.borde || edit.grande) $('item-textos').open = true;
       montarAcabadosItem(); vistaItem();
