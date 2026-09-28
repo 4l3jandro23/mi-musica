@@ -258,6 +258,7 @@
 
   <label class="tit">Formato</label>
   <div class="chips" id="formatos"></div>
+  <div class="chips sub" id="cintas-col"></div>
 
   <label class="tit">Paleta de la colección</label>
   <div class="chips" id="paletas"></div>
@@ -504,7 +505,7 @@ const W = 1024;
 /* Versión de la página. Cambiarla en cada publicación: al abrir, se mira si
    el servidor tiene otra y, si es así, se recarga sin caché (el iPhone
    guarda la página y las imágenes mucho rato, sobre todo como app). */
-const VERSION = '2026-09-28c';
+const VERSION = '2026-09-28e';
 const K_AJUSTES = 'portadas_ajustes_v1';
 const K_CREDS = 'musicvault_spotify_creds_v1';   // la misma sesión que MusicVault y el Estudio
 const API = 'https://api.spotify.com/v1';
@@ -681,6 +682,158 @@ function sombraDeCinta(d) {
     const j = i * 4;
     d[j] *= 1 - v; d[j + 1] *= 1 - v; d[j + 2] *= 1 - v;
   }
+}
+/* ---------------- disco de oro ----------------
+   Oro pulido: la luz de cada píxel (de la foto original) se pasa por un
+   degradado bronce oscuro → oro → amarillo casi blanco, con más contraste
+   que el CD normal y sin arcoíris (el oro no lo tiene). */
+const ORO = [[0, [34, 20, 4]], [0.22, [96, 60, 12]], [0.42, [176, 122, 30]], [0.58, [226, 176, 62]],
+             [0.72, [250, 214, 120]], [0.86, [255, 240, 190]], [1, [255, 252, 238]]];
+function colorOro(u) {
+  for (let k = 1; k < ORO.length; k++) {
+    if (u <= ORO[k][0]) {
+      const [u0, c0] = ORO[k - 1], [u1, c1] = ORO[k], t = (u - u0) / (u1 - u0);
+      return [c0[0] + (c1[0] - c0[0]) * t, c0[1] + (c1[1] - c0[1]) * t, c0[2] + (c1[2] - c0[2]) * t];
+    }
+  }
+  return ORO[ORO.length - 1][1];
+}
+function dorar(d) {
+  for (let i = 0; i < mDisco.length; i++) {
+    const m = mDisco[i];
+    if (!m) continue;
+    const u = Math.pow(Math.min(1, Math.max(0, lum[i] / refDisco / topeDisco)), 0.8);
+    const c = colorOro(u), f = m / 255, j = i * 4;
+    d[j] = d[j] * (1 - f) + c[0] * f; d[j + 1] = d[j + 1] * (1 - f) + c[1] * f; d[j + 2] = d[j + 2] * (1 - f) + c[2] * f;
+  }
+}
+/* destellos en los puntos donde la luz pega más fuerte: lo que hace que
+   parezca un disco de oro de premio y no un disco amarillo */
+let _puntosBrillo = null;
+function puntosBrillo() {
+  if (_puntosBrillo) return _puntosBrillo;
+  const cand = [];
+  for (let y = DY - DR; y < DY + DR; y += 4) for (let x = DX - DR; x < DX + DR; x += 4) {
+    const i = y * W + x, r = Math.hypot(x - DX, y - DY);
+    /* solo en la superficie del disco: lejos del agujero, del borde y de la cinta */
+    const lejosCinta = x < 660 || y < 330 || y > 710;
+    if (mDisco[i] > 250 && r > 240 && r < DR - 45 && lejosCinta) cand.push([lum[i], x, y]);
+  }
+  cand.sort((a, b) => b[0] - a[0]);
+  const elegidos = [];
+  for (const c of cand) {
+    if (elegidos.every(e => Math.hypot(e[1] - c[1], e[2] - c[2]) > 260)) elegidos.push(c);
+    if (elegidos.length === 3) break;
+  }
+  return (_puntosBrillo = elegidos.map((e, k) => ({ x: e[1], y: e[2], t: [1, 0.7, 0.5][k] })));
+}
+function destellos(c) {
+  c.save();
+  c.globalCompositeOperation = 'screen';
+  for (const p of puntosBrillo()) {
+    const r = 70 * p.t;
+    const g = c.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
+    g.addColorStop(0, 'rgba(255,252,235,0.95)'); g.addColorStop(0.25, 'rgba(255,236,170,0.45)'); g.addColorStop(1, 'rgba(255,220,120,0)');
+    c.fillStyle = g; c.beginPath(); c.arc(p.x, p.y, r, 0, Math.PI * 2); c.fill();
+    /* estrella de cuatro puntas, fina */
+    for (const [ax, ay, largo] of [[1, 0, 2.6], [0, 1, 2.2], [0.7, 0.7, 1.2], [0.7, -0.7, 1.2]]) {
+      const L = r * largo;
+      const gl = c.createLinearGradient(p.x - ax * L, p.y - ay * L, p.x + ax * L, p.y + ay * L);
+      gl.addColorStop(0, 'rgba(255,245,210,0)'); gl.addColorStop(0.5, 'rgba(255,250,230,0.85)'); gl.addColorStop(1, 'rgba(255,245,210,0)');
+      c.strokeStyle = gl; c.lineWidth = 2.2 * p.t + 0.6;
+      c.beginPath(); c.moveTo(p.x - ax * L, p.y - ay * L); c.lineTo(p.x + ax * L, p.y + ay * L); c.stroke();
+    }
+  }
+  c.restore();
+}
+/* ---------------- sin cinta ----------------
+   Debajo de la cinta la foto original no tiene disco. Se rellena con el
+   mismo disco girado 70° (de una zona donde no hay cinta): como el CD es
+   circular, los rayos y los anillos encajan. */
+/* Zona a rellenar: la cinta ensanchada 4 px (para que no quede su silueta) */
+let _zonaCinta = null;
+function zonaCinta() {
+  if (_zonaCinta) return _zonaCinta;
+  const z = new Uint8Array(W * W);
+  for (let y = 350; y < 690; y++) for (let x = 690; x < 1010; x++) {
+    let dentro = false;
+    for (let dy = -4; dy <= 4 && !dentro; dy += 2) for (let dx = -4; dx <= 4 && !dentro; dx += 2)
+      if (mCinta[(y + dy) * W + x + dx] > 30) dentro = true;
+    if (dentro) z[y * W + x] = 1;
+  }
+  /* para cada radio, el ángulo donde empieza y acaba el hueco */
+  const amin = new Float32Array(1100).fill(9), amax = new Float32Array(1100).fill(-9);
+  for (let y = 350; y < 690; y++) for (let x = 690; x < 1010; x++) {
+    if (!z[y * W + x]) continue;
+    const r = Math.round(Math.hypot(x - DX, y - DY)), a = Math.atan2(y - DY, x - DX);
+    if (a < amin[r]) amin[r] = a;
+    if (a > amax[r]) amax[r] = a;
+  }
+  return (_zonaCinta = { z, amin, amax });
+}
+/* Debajo de la cinta la foto original no tiene disco. Como los rayos de luz
+   del CD van en ángulo, se rellena cada punto mezclando lo que hay justo a
+   un lado y al otro del hueco a su misma distancia del centro: los rayos
+   continúan como si la cinta nunca hubiera estado. */
+function rellenarCinta(d) {
+  const { z, amin, amax } = zonaCinta(), orig = new Uint8ClampedArray(d);
+  const muestra = (r, a, ch) => {
+    const x = Math.round(DX + r * Math.cos(a)), y = Math.round(DY + r * Math.sin(a));
+    return orig[(y * W + x) * 4 + ch];
+  };
+  for (let y = 350; y < 690; y++) for (let x = 690; x < 1010; x++) {
+    const i = y * W + x;
+    if (!z[i]) continue;
+    const rr = Math.hypot(x - DX, y - DY), r = Math.round(rr), a = Math.atan2(y - DY, x - DX);
+    const a0 = amin[r] - 0.03, a1 = amax[r] + 0.03, t = Math.min(1, Math.max(0, (a - a0) / (a1 - a0 || 1)));
+    const j = i * 4;
+    for (let ch = 0; ch < 3; ch++) d[j + ch] = muestra(rr, a0, ch) * (1 - t) + muestra(rr, a1, ch) * t;
+  }
+}
+/* El disco de pesas no está perfectamente centrado, así que girarlo
+   descoloca los anillos. Se combinan las dos cosas: la forma (anillos,
+   luces) continuada de un lado al otro del hueco, como en el CD, y encima
+   solo el grano fino de la goma copiado de otra zona girada. */
+function pesasSinCinta(img) {
+  const c = document.createElement('canvas'); c.width = c.height = W;
+  const x = c.getContext('2d');
+  x.drawImage(img, 0, 0);
+  const im = x.getImageData(0, 0, W, W), d = im.data, orig = new Uint8ClampedArray(d);
+  const { z } = zonaCinta();
+  /* 1) forma: mezcla angular (igual que rellenarCinta) */
+  rellenarCinta(d);
+  /* 2) grano: (goma girada) − (su media local), sumado encima */
+  const a = 70 * Math.PI / 180, ca = Math.cos(a), sa = Math.sin(a);
+  const rot = (xx, y, ch) => {
+    const dx = xx - DX, dy = y - DY;
+    return orig[(Math.round(DY + dy * ca - dx * sa) * W + Math.round(DX + dx * ca + dy * sa)) * 4 + ch];
+  };
+  for (let y = 350; y < 690; y++) for (let xx = 690; xx < 1010; xx++) {
+    const i = y * W + xx;
+    if (!z[i]) continue;
+    const jj = i * 4;
+    for (let ch = 0; ch < 3; ch++) {
+      let m = 0;
+      for (let oy = -3; oy <= 3; oy += 3) for (let ox = -3; ox <= 3; ox += 3) m += rot(xx + ox, y + oy, ch);
+      d[jj + ch] = Math.max(0, Math.min(255, d[jj + ch] + (rot(xx, y, ch) - m / 9) * 0.9));
+    }
+  }
+  x.putImageData(im, 0, 0);
+  return c;
+}
+let pesasSin = null;
+let _mascaraCompleta = null;
+function mascaraDiscoCompleta() {
+  if (_mascaraCompleta) return _mascaraCompleta;
+  const c = document.createElement('canvas'); c.width = c.height = W;
+  const x = c.getContext('2d'), im = x.createImageData(W, W);
+  for (let i = 0; i < mDisco.length; i++) {
+    const px = i % W, py = (i / W) | 0, r = Math.hypot(px - DX, py - DY);
+    const bajoCinta = r < DR + 0.5 && r > R_HUB && zonaCinta().z[i] ? 255 : 0;
+    im.data[i * 4 + 3] = Math.max(mDisco[i], bajoCinta);
+  }
+  x.putImageData(im, 0, 0);
+  return (_mascaraCompleta = c);
 }
 function detallesCD(d) {
   for (let i = 0; i < detalle.length; i++) {
@@ -919,6 +1072,7 @@ const ACABADOS = [
   { id: 'vinilo', n: 'Vinilo', def: '#171717' },
   { id: 'puntos', n: 'Puntos en relieve', def: '#b9cde3' },
   { id: 'pesas', n: 'Disco de pesas', def: '#1c1c1c' },
+  { id: 'oro', n: 'Disco de oro', def: '#d4a024' },
   { id: 'foto', n: 'Tu foto' }
 ];
 const POSICIONES = [{ id: 'izq', n: 'Izquierda' }, { id: 'arriba', n: 'Arriba' }, { id: 'abajo', n: 'Abajo' }];
@@ -1248,10 +1402,15 @@ function dibujar(c, st) {
   let acabado = st.acabado === 'foto' && !foto ? 'cd' : st.acabado;
   if (!ACABADOS.some(a => a.id === acabado)) acabado = 'cd';
   /* suelo 0.2: en un CD de color la sombra sigue siendo de ese color, no negra */
+  /* el disco de pesas es una foto algo descentrada: rellenar bajo la cinta
+     deja marcas, así que ese disco conserva siempre su cinta */
+  const baseCD = acabado === 'cd' || acabado === 'oro', sinCinta = !!st.sinCinta && acabado !== 'pesas';
   if (acabado === 'cd' && hexD) tenir(img.data, mDisco, hexD, refDisco, topeDisco, 1, 0.2);
   if (acabado === 'cd' && st.irid !== false) iridiscencia(img.data, hexD ? 0.6 : 0.3);
-  if (acabado === 'cd') detallesCD(img.data);
-  sombraDeCinta(img.data);
+  if (acabado === 'oro') dorar(img.data);
+  if (baseCD) detallesCD(img.data);
+  if (sinCinta) rellenarCinta(img.data);
+  else sombraDeCinta(img.data);
   if (st.fondo !== false) {
     const def = (ACABADOS.find(a => a.id === acabado) || {}).def;
     const hexFondo = acabado === 'foto' ? '#9aa0a8' : hexD || def || '#d98b2b';
@@ -1260,13 +1419,16 @@ function dibujar(c, st) {
   }
   /* el cobre original tiene manchas oscuras que en una cinta blanca o
      amarilla parecen suciedad: cuanto más clara la cinta, más se suavizan */
-  if (hexC) tenir(img.data, mCinta, hexC, refCinta, topeCinta, 1 - 0.65 * luz(hexC));
+  if (hexC && !sinCinta) tenir(img.data, mCinta, hexC, refCinta, topeCinta, 1 - 0.65 * luz(hexC));
   c.putImageData(img, 0, 0);
-  if (acabado !== 'cd' || st.patOn || (st.borde || '').trim() || (st.grande || '').trim()) {
+  if (!baseCD || st.patOn || (st.borde || '').trim() || (st.grande || '').trim()) {
     const capa = temp('capa'), x = capa.getContext('2d');
     x.clearRect(0, 0, W, W);
     if (acabado === 'foto') dibujarFoto(x, foto, st);
-    else if (acabado === 'pesas') x.drawImage(pesasImg || textura('goma', '#262626'), 0, 0);
+    else if (acabado === 'pesas') {
+      if (sinCinta && pesasImg && !pesasSin) pesasSin = pesasSinCinta(pesasImg);
+      x.drawImage((sinCinta ? pesasSin : pesasImg) || textura('goma', '#262626'), 0, 0);
+    }
     else if (acabado !== 'cd') x.drawImage(textura(acabado, hexD || ACABADOS.find(a => a.id === acabado).def), 0, 0);
     /* lo "impreso" (dibujos y textos en blanco/negro) va en su capa y se
        ilumina; el relieve ya lleva su propia luz y sombra */
@@ -1274,22 +1436,23 @@ function dibujar(c, st) {
     ix.clearRect(0, 0, W, W);
     if (st.patOn) dibujarPatron(ix, st, x);
     if (st.estilo !== 'relieve') textosDisco(ix, st);
-    iluminar(imp, acabado === 'cd' || acabado === 'foto' ? 1 : 0.45);
+    iluminar(imp, baseCD || acabado === 'foto' ? 1 : 0.45);
     x.drawImage(imp, 0, 0);
     if (st.estilo === 'relieve') textosDisco(x, st);
     /* todo lo nuevo se recorta con la forma del disco: el centro
        transparente y la cinta siguen siendo los de la foto */
     x.globalCompositeOperation = 'destination-in';
-    x.drawImage(mascaraDisco(), 0, 0);
+    x.drawImage(sinCinta ? mascaraDiscoCompleta() : mascaraDisco(), 0, 0);
     x.globalCompositeOperation = 'source-over';
     c.drawImage(capa, 0, 0);
-    if (acabado !== 'cd') {
+    if (!baseCD && !sinCinta) {
       const im2 = c.getImageData(0, 0, W, W); sombraDeCinta(im2.data); c.putImageData(im2, 0, 0);
     }
   }
   const suelto = st.encuadre === 'suelto';
+  if (acabado === 'oro') destellos(c);
   if (st.brillo !== false && !suelto) brilloTapa(c);
-  escribirCinta(c, textoDe(st), st);
+  if (!sinCinta) escribirCinta(c, textoDe(st), st);
   if (suelto) sinCaja(c, st, hexD);
 }
 
@@ -1299,7 +1462,7 @@ function dibujar(c, st) {
    sombra. Sin la caja el disco es el protagonista. La sombra se calcula
    con la forma (círculo + rectángulo de la cinta) desplazada, sin
    desenfoques de canvas, que en iPhone antiguos no existen. */
-let alfaSuelto = null, sombraSuelto = null, cintaEncogida = null;
+let alfaSuelto = null, sombraSuelto = null, cintaEncogida = null, alfaCirculo = null;
 const DOBLEZ = 4;   // px de cinta que se ven "dando la vuelta" al canto
 /* La foto original tiene un filo del fondo blanco alrededor de la cinta.
    Con caja no se nota, pero sobre negro sí: se encoge la máscara 2 px
@@ -1320,7 +1483,7 @@ function encogerCinta() {
 function prepararSuelto() {
   if (alfaSuelto) return;
   cintaEncogida = encogerCinta();
-  alfaSuelto = new Float32Array(W * W); sombraSuelto = new Float32Array(W * W);
+  alfaSuelto = new Float32Array(W * W); sombraSuelto = new Float32Array(W * W); alfaCirculo = new Float32Array(W * W);
   const SX = 14, SY = 22, SB = 26;                       // desplazamiento y suavidad de la sombra
   const T = { x0: 705, y0: 372, x1: 995, y1: 667 };      // la cinta
   for (let y = 0; y < W; y++) for (let x = 0; x < W; x++) {
@@ -1328,6 +1491,7 @@ function prepararSuelto() {
     let a = Math.min(1, Math.max(0, DR + 0.5 - r));
     if (r < 50) a = Math.min(1, Math.max(0, r - 49.5));  // agujero central
     alfaSuelto[i] = Math.max(a, cintaEncogida[i] / 255 * Math.min(1, Math.max(0, DR + DOBLEZ + 0.5 - r)));
+    alfaCirculo[i] = a;
     const rs = Math.hypot(x - DX - SX, y - DY - SY);
     const dCirc = Math.max(0, rs - DR);
     const dxT = Math.max(T.x0 + SX - x, 0, x - T.x1 - SX), dyT = Math.max(T.y0 + SY - y, 0, y - T.y1 - SY);
@@ -1348,7 +1512,9 @@ function sinCaja(c, st, hexD) {
   /* El pliegue: justo antes del borde la cinta se curva (se oscurece),
      en la arista coge un filo de luz, y lo que da la vuelta al canto se
      ve en sombra. */
-  for (let y = 360; y < 680; y++) for (let x = 860; x < 1000; x++) {
+  const sinC = st.sinCinta && st.acabado !== 'pesas';
+  const alfa = sinC ? alfaCirculo : alfaSuelto;
+  if (!sinC) for (let y = 360; y < 680; y++) for (let x = 860; x < 1000; x++) {
     const i = y * W + x, m = cintaEncogida[i] / 255;
     if (!m) continue;
     const t = Math.hypot(x - DX, y - DY) - DR, j = i * 4;
@@ -1369,14 +1535,14 @@ function sinCaja(c, st, hexD) {
       const t = DR - Math.hypot(x - DX, y - DY);
       if (t < 0 || t > 5) continue;
       const i = y * W + x;
-      if (cintaEncogida[i] > 40) continue;
+      if (cintaEncogida[i] > 40 && !sinC) continue;
       const l = Math.max(0, Math.cos(Math.atan2(y - DY, x - DX) - LUZ)) * (1 - t / 5) * 0.32, j = i * 4;
       if (l <= 0) continue;
       d[j] += (255 - d[j]) * l; d[j + 1] += (255 - d[j + 1]) * l; d[j + 2] += (255 - d[j + 2]) * l;
     }
   }
-  for (let i = 0; i < alfaSuelto.length; i++) {
-    const a = alfaSuelto[i];
+  for (let i = 0; i < alfa.length; i++) {
+    const a = alfa[i];
     if (a >= 1) continue;
     const k = 1 - sombraSuelto[i] * fuerza, j = i * 4;
     d[j] = d[j] * a + bg[0] * k * (1 - a);
@@ -2199,7 +2365,7 @@ function estadoDe(it) {
     disco: it.disco, discoOtro: it.discoOtro || '#ff7a00',
     /* cada playlist puede tener su propia cinta; si no, la de su grupo */
     cinta: it.cinta || g.cinta, cintaOtro: (it.cinta ? it.cintaOtro : g.cintaOtro) || '#7a4dd8',
-    encuadre: f.encuadre, fondoSuelto: f.fondoSuelto,
+    encuadre: f.encuadre, fondoSuelto: f.fondoSuelto, sinCinta: !!col.sinCinta,
     acabado: it.acabado || 'cd', borde: it.borde || '', grande: it.grande || '', grandePos: 'izq', estilo: 'relieve'
   }, it.foto && fotosItems.get(it.id)
     ? { acabado: 'foto', fotoImg: fotosItems.get(it.id), fotoVer: it.foto, fotoZoom: it.fotoZoom || 1, fotoX: it.fotoX || 0, fotoY: it.fotoY || 0 }
@@ -2357,7 +2523,7 @@ function paletaCintaItem() {
 }
 $('item-cinta-grupo').onclick = () => { edit.cinta = null; paletaCintaItem(); vistaItem(); };
 const ACABADOS_ITEM = [
-  { id: 'cd', n: 'CD' }, { id: 'pesas', n: 'Pesas' }, { id: 'metal', n: 'Metal' }, { id: 'vinilo', n: 'Vinilo' }
+  { id: 'cd', n: 'CD' }, { id: 'oro', n: 'Oro' }, { id: 'pesas', n: 'Pesas' }, { id: 'metal', n: 'Metal' }, { id: 'vinilo', n: 'Vinilo' }
 ];
 function montarAcabadosItem() {
   const el = $('item-acabados'); el.innerHTML = '';
@@ -2756,6 +2922,16 @@ function pintarFormatos() {
   });
 }
 pintarFormatos();
+function pintarCintasCol() {
+  const el = $('cintas-col'); el.innerHTML = '';
+  [[false, 'Con cinta'], [true, 'Sin cinta']].forEach(([v, n]) => {
+    const b = document.createElement('button');
+    b.className = 'chip'; b.textContent = n; b.setAttribute('aria-pressed', String(!!col.sinCinta === v));
+    b.onclick = () => { col.sinCinta = v; guardarCol(); pintarCintasCol(); pintarColeccion(); };
+    el.appendChild(b);
+  });
+}
+pintarCintasCol();
 PALETAS.forEach(pal => {
   const b = document.createElement('button');
   b.className = 'chip'; b.textContent = pal.n;
