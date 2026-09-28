@@ -313,6 +313,7 @@
   .volver-col { background: none; border: 0; color: var(--fg-mute); font: 600 15px inherit; font-family: inherit; padding: 6px 0 14px; cursor: pointer; }
   .version { margin-top: 30px; }
   .toast { bottom: calc(env(safe-area-inset-bottom) + 96px); }
+  .btn-spotify.en-pausa { background: var(--surface-2); color: var(--fg-mute); }
 </style>
 </head>
 <body>
@@ -618,7 +619,7 @@ const W = 1024;
 /* Versión de la página. Cambiarla en cada publicación: al abrir, se mira si
    el servidor tiene otra y, si es así, se recarga sin caché (el iPhone
    guarda la página y las imágenes mucho rato, sobre todo como app). */
-const VERSION = '2026-09-28g';
+const VERSION = '2026-09-28h';
 const K_AJUSTES = 'portadas_ajustes_v1';
 const K_CREDS = 'musicvault_spotify_creds_v1';   // la misma sesión que MusicVault y el Estudio
 const API = 'https://api.spotify.com/v1';
@@ -2219,8 +2220,19 @@ async function token() {
   });
   return d.access_token;
 }
+const K_PAUSA = 'portadas_pausa_spotify_v1';
+const pausaHasta = () => { try { return +localStorage.getItem(K_PAUSA) || 0; } catch (e) { return 0; } };
+function cuanto(ms) {
+  const m = Math.ceil(ms / 60000);
+  if (m <= 1) return 'un minuto';
+  if (m < 60) return m + ' minutos';
+  const h = Math.floor(m / 60), r = m % 60;
+  return h + (h === 1 ? ' hora' : ' horas') + (r ? ' y ' + r + ' min' : '');
+}
 async function sp(ruta, o) {
   o = o || {};
+  /* durante una pausa de Spotify no se llama: se avisa de cuánto queda */
+  if (pausaHasta() > Date.now()) { const e = new Error('PAUSA'); e.status = 429; e.hasta = pausaHasta(); throw e; }
   let intentos = 0;
   while (true) {
     const cab = { Authorization: 'Bearer ' + await token() };
@@ -2229,8 +2241,16 @@ async function sp(ruta, o) {
     try { res = await fetch(ruta.indexOf('http') === 0 ? ruta : API + ruta, { method: o.method || 'GET', headers: cab, body: o.body }); }
     catch (e) { if (++intentos > 3) throw new Error('Sin conexión con Spotify'); await sleep(800 * intentos); continue; }
     if (res.status === 429) {
-      if (++intentos > 5) throw new Error('Spotify está frenando las peticiones; prueba en un rato');
-      await sleep(Math.min(20, +(res.headers.get('Retry-After') || 2)) * 1000);
+      /* Spotify dice cuántos segundos esperar. Si es poco, se espera y se
+         repite; si es mucho, se para y se recuerda hasta cuándo, para no
+         seguir llamando (cada llamada durante la pausa la alarga). */
+      const ra = +(res.headers.get('Retry-After') || 0) || Math.min(30, 2 * Math.pow(2, intentos));
+      if (ra > 30 || ++intentos > 4) {
+        const hasta = Date.now() + Math.max(ra, 30) * 1000;
+        try { localStorage.setItem(K_PAUSA, String(hasta)); } catch (x) {}
+        const e = new Error('PAUSA'); e.status = 429; e.hasta = hasta; throw e;
+      }
+      await sleep(ra * 1000 + 300);
       continue;
     }
     if (res.status === 401) {
@@ -2750,8 +2770,9 @@ $('item-spotify').onclick = async () => {
   const btn = $('item-spotify');
   btn.disabled = true; btn.textContent = 'Buscando…';
   try {
-    const lista = await obtenerPlaylists();
-    const p = buscarPlaylist(edit, lista, new Set());
+    /* si ya se subió antes, se sabe a qué playlist va: no hace falta pedir la
+       lista entera (menos peticiones = menos pausas de Spotify) */
+    const p = edit.spotifyId ? { id: edit.spotifyId, name: edit.texto } : buscarPlaylist(edit, await obtenerPlaylists(), new Set());
     if (!p) { toast('No encuentro en Spotify una playlist llamada «' + edit.texto + '». Usa «Poner todas en Spotify» para elegirla a mano.', true); return; }
     if (!confirm('¿Poner esta portada en «' + p.name + '»?')) return;
     btn.textContent = 'Subiendo…';
@@ -2765,8 +2786,8 @@ $('item-spotify').onclick = async () => {
     toast('¡Puesta en «' + p.name + '»! Spotify tarda unos segundos en enseñarla.');
   } catch (e) {
     if (e.message === 'SESION_CADUCADA' || e.message === 'SIN_CONEXION') toast('La sesión de Spotify ha caducado: vuelve a conectar.', true);
-    else toast('No se pudo subir: ' + e.message, true);
-  } finally { btn.disabled = false; btn.textContent = 'Poner en Spotify'; }
+    else toast('No se pudo subir: ' + explicar(e), true);
+  } finally { btn.disabled = false; btn.textContent = 'Subir a Spotify'; }
 };
 $('item-borrar').onclick = () => {
   if (!confirm('¿Quitar «' + edit.texto + '» de tu colección? (No toca nada en Spotify)')) return;
@@ -2893,6 +2914,7 @@ function estadoColsp() {
   $('colsp-subir').disabled = !n || subiendoCol;
 }
 $('col-spotify').onclick = async () => {
+  if (pausaHasta() > Date.now()) { toast('Spotify tiene tu conexión en pausa. Prueba dentro de ' + cuanto(pausaHasta() - Date.now()) + '.', true); return; }
   abrirH('hoja-colsp');
   $('colsp-subir').hidden = false;
   if (!cred() || !cred().refreshToken) return avisoCol('Para ponerlas directamente hace falta conectar Spotify (la misma conexión que MusicVault).', 'Conectar con Spotify');
@@ -2948,6 +2970,7 @@ $('colsp-subir').onclick = async () => {
       it.spotifyId = pid;   // la próxima vez se enlaza sola
       bien++;
     } catch (e) {
+      if (e.message === 'PAUSA') { fallos.push('las demás: ' + explicar(e)); break; }
       fallos.push(it.texto + ' (' + explicar(e) + ')');
       if (e.message === 'SESION_CADUCADA' || e.message === 'SIN_CONEXION') break;
     }
@@ -3082,6 +3105,7 @@ function explicar(e) {
   const m = (e && e.message) || String(e);
   if (m === 'SIN_CONEXION') return 'falta conectar Spotify';
   if (m === 'SESION_CADUCADA') return 'la sesión ha caducado: vuelve a conectar';
+  if (m === 'PAUSA') return 'Spotify ha puesto tu conexión en pausa por hacer muchas peticiones. Vuelve a probar dentro de ' + cuanto((e.hasta || 0) - Date.now()) + ' (no insistas antes: lo alarga)';
   if (e && e.status === 403) return 'Spotify no da permiso (403). Vuelve a conectar y acepta todo. Detalle: ' + m;
   if (e && e.status === 413) return 'la imagen pesa demasiado (413)';
   if (e && e.status === 404) return 'no encuentra esa playlist (404): ¿la has borrado?';
@@ -3111,6 +3135,10 @@ async function probarConexion() {
 /* ---------------- ajustes ---------------- */
 function pintarEstadoSp() {
   const c = cred(), ok = !!(c && c.refreshToken);
+  if (pausaHasta() > Date.now()) {
+    $('estado-sp').innerHTML = '<span class="punto aviso"></span>En pausa por Spotify: vuelve a probar dentro de ' + cuanto(pausaHasta() - Date.now());
+    return;
+  }
   $('estado-sp').innerHTML = ok
     ? (tieneScope('ugc-image-upload') ? '<span class="punto ok"></span>Conectado' : '<span class="punto aviso"></span>Conectado, pero falta el permiso de portadas')
     : '<span class="punto mal"></span>Sin conectar en este aparato';
@@ -3120,6 +3148,13 @@ function pintarEstadoSp() {
 if (document.fonts && document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', () => {
   cacheMini.clear(); if (modo === 'coleccion' && base) pintarColeccion();
 });
+/* si se abre la app durante una pausa, avisarlo antes de que intente subir */
+function avisoPausa() {
+  const b = $('col-spotify');
+  if (pausaHasta() > Date.now()) { b.classList.add('en-pausa'); b.lastChild.textContent = ' En pausa · ' + cuanto(pausaHasta() - Date.now()); }
+  else { b.classList.remove('en-pausa'); b.lastChild.textContent = ' Subir a Spotify'; }
+}
+setInterval(avisoPausa, 30000); setTimeout(avisoPausa, 0);
 $('abrir-ajustes').onclick = () => { pintarEstadoSp(); $('diag').innerHTML = ''; abrirH('hoja-ajustes'); };
 $('probar-sp').onclick = async () => { const b = $('probar-sp'); b.disabled = true; b.textContent = 'Probando…'; try { await probarConexion(); } finally { b.disabled = false; b.textContent = 'Probar conexión'; pintarEstadoSp(); } };
 $('ir-libre').onclick = () => { cerrarH('hoja-ajustes'); ponerModo('libre'); };
