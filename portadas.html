@@ -1976,7 +1976,7 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;'
 
 function avisoConexion(texto, boton) {
   $('lista').innerHTML = '<div class="aviso">' + esc(texto) +
-    '<a class="btn verde" href="musicvault.html?conectar=portadas">' + esc(boton) + '</a></div>';
+    '<a class="btn verde" href="mando.html?conectar=portadas">' + esc(boton) + '</a></div>';
   $('buscar').style.display = 'none';
   $('varias').hidden = true;
 }
@@ -2588,7 +2588,7 @@ async function obtenerPlaylists() {
 }
 function avisoCol(texto, boton) {
   $('colsp-lista').innerHTML = '<div class="aviso">' + esc(texto) +
-    '<a class="btn verde" href="musicvault.html?conectar=portadas">' + esc(boton) + '</a></div>';
+    '<a class="btn verde" href="mando.html?conectar=portadas">' + esc(boton) + '</a></div>';
   $('colsp-subir').hidden = true;
   $('colsp-estado').textContent = '';
 }
@@ -2674,7 +2674,7 @@ $('colsp-detener').onclick = () => { pararCol = true; $('colsp-detener').textCon
    nuevas: las haces en Spotify y aquí aparecen con un toque. */
 $('col-traer').onclick = async () => {
   if (!cred() || !cred().refreshToken || !tieneScope('ugc-image-upload')) {
-    location.href = 'musicvault.html?conectar=portadas'; return;
+    location.href = 'mando.html?conectar=portadas'; return;
   }
   const btn = $('col-traer');
   btn.disabled = true; btn.textContent = 'Mirando tu Spotify…';
@@ -2696,7 +2696,7 @@ $('col-traer').onclick = async () => {
     guardarCol(); pintarColeccion();
     toast(nuevas.length + ' añadida' + (nuevas.length > 1 ? 's' : '') + '. Toca cualquiera para cambiar su color o su nombre.');
   } catch (e) {
-    if (e.message === 'SESION_CADUCADA' || e.message === 'SIN_CONEXION') location.href = 'musicvault.html?conectar=portadas';
+    if (e.message === 'SESION_CADUCADA' || e.message === 'SIN_CONEXION') location.href = 'mando.html?conectar=portadas';
     else toast('No se pudo leer tu Spotify: ' + e.message, true);
   } finally { btn.disabled = false; btn.textContent = 'Traer mis playlists de Spotify'; }
 };

@@ -536,7 +536,7 @@
   <span class="dot" id="dot" title="Spotify"></span>
   <button class="btn ghost ico" id="bProy" title="Mis borradores">&#128193;</button>
   <button class="btn ghost ico" id="bAyuda" title="Ayuda">?</button>
-  <a class="btn ghost ico" href="musicvault.html" title="Volver a MusicVault">&#8617;</a>
+  <a class="btn ghost ico" href="index.html" title="Volver a Mi Música">&#8617;</a>
 </div>
 
 <!-- ======================= PANTALLA 1: por dónde empiezo ======================= -->
@@ -884,6 +884,8 @@ async function cargarVault() {
   const av = toast('Es la primera vez en este dispositivo: bajando tu vault…', 60000);
   try {
     const res = await fetch('musicvault-sync.json?t=' + Date.now());
+    /* MusicVault ya no existe (sep. 2026): sin vault se trabaja solo con Spotify, sin avisos */
+    if (res.status === 404) { av.remove(); V.listo = true; return; }
     if (!res.ok) throw new Error('' + res.status);
     const d = await res.json();
     indexarVault(d.items || [], d.tags || []);
@@ -1961,7 +1963,7 @@ function exigeConexion() {
   ponerBuscador('', null, null);
   $('#srcFiltros').innerHTML =
     '<div class="fbody"><p class="lede">Para esto hace falta tu cuenta de Spotify. La conexión se abre desde MusicVault (es la página registrada en Spotify); luego vuelves aquí y ya está.</p>' +
-    '<a class="btn pri wide" href="musicvault.html?conectar=estudio">Conectar con Spotify</a>' +
+    '<a class="btn pri wide" href="mando.html?conectar=estudio">Conectar con Spotify</a>' +
     '<p class="lede tiny" style="margin-top:10px;">Mientras tanto puedes montar la playlist con tu vault, que funciona sin conexión.</p></div>';
   return false;
 }
@@ -1970,7 +1972,7 @@ function faltaPermiso(s) {
   ponerBuscador('', null, null);
   $('#srcFiltros').innerHTML =
     '<div class="fbody"><p class="lede">Falta un permiso: <b>' + esc(p ? p.q : s) + '</b>. Se concede volviendo a conectar una vez — los permisos de un token no cambian solos.</p>' +
-    '<a class="btn pri wide" href="musicvault.html?conectar=estudio">Volver a conectar</a></div>';
+    '<a class="btn pri wide" href="mando.html?conectar=estudio">Volver a conectar</a></div>';
 }
 /* ============================================================
    LA LISTA QUE ESTAS MONTANDO
@@ -2274,7 +2276,7 @@ function abrirGuardar() {
   if (!S.lista.length) { toast('La lista está vacía'); return; }
   if (!conectado()) {
     hoja('Guardar en Spotify', '<p class="lede">Hay que conectar la cuenta primero. Se hace desde MusicVault, que es la página registrada en Spotify; al volver aquí tu lista sigue intacta.</p>' +
-      '<a class="btn pri wide" href="musicvault.html?conectar=estudio">Conectar con Spotify</a>');
+      '<a class="btn pri wide" href="mando.html?conectar=estudio">Conectar con Spotify</a>');
     return;
   }
   const faltan = permisosQueFaltan().filter(p => p.s.indexOf('playlist-modify') === 0);
@@ -2662,7 +2664,7 @@ function abrirAyuda() {
     (faltan.length ? '<br>Faltan permisos para: ' + faltan.map(p => esc(p.q)).join(', ') + '. Se arregla volviendo a conectar una vez.' : '<br>Todos los permisos concedidos.') + '</p>' +
     '<h3>Lo que Spotify ya no deja</h3>' +
     '<p class="lede">Desde febrero de 2026: no se puede leer el contenido de una playlist de otra persona, la búsqueda da 10 resultados por vez, y una playlist admite 10.000 canciones como mucho (por eso existe «partir en dos»).</p>' +
-    (faltan.length ? '<div class="btnrow" style="margin-top:14px;"><a class="btn pri" href="musicvault.html?conectar=estudio">Volver a conectar Spotify</a></div>' : ''));
+    (faltan.length ? '<div class="btnrow" style="margin-top:14px;"><a class="btn pri" href="mando.html?conectar=estudio">Volver a conectar Spotify</a></div>' : ''));
 }
 
 
@@ -2942,7 +2944,7 @@ function recBlanco() {
 function recColeccion() {
   if (!conectado()) {
     hoja('Organizar tu Spotify', '<p class="lede">Hace falta la cuenta de Spotify conectada. Se hace desde MusicVault y vuelves aquí.</p>' +
-      '<a class="btn pri wide" href="musicvault.html?conectar=estudio">Conectar con Spotify</a>');
+      '<a class="btn pri wide" href="mando.html?conectar=estudio">Conectar con Spotify</a>');
     return;
   }
   const arb = arbolTags();
