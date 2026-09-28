@@ -259,6 +259,8 @@
   <label class="tit">Formato</label>
   <div class="chips" id="formatos"></div>
   <div class="chips sub" id="cintas-col"></div>
+  <button class="btn sub" id="cinta-unica">Misma cinta cobre en todas</button>
+  <p class="ayuda nota">Pone la cinta de cobre original en todas tus playlists (la de pesas, en gris).</p>
 
   <label class="tit">Paleta de la colección</label>
   <div class="chips" id="paletas"></div>
@@ -505,7 +507,7 @@ const W = 1024;
 /* Versión de la página. Cambiarla en cada publicación: al abrir, se mira si
    el servidor tiene otra y, si es así, se recarga sin caché (el iPhone
    guarda la página y las imágenes mucho rato, sobre todo como app). */
-const VERSION = '2026-09-28e';
+const VERSION = '2026-09-28f';
 const K_AJUSTES = 'portadas_ajustes_v1';
 const K_CREDS = 'musicvault_spotify_creds_v1';   // la misma sesión que MusicVault y el Estudio
 const API = 'https://api.spotify.com/v1';
@@ -2932,6 +2934,16 @@ function pintarCintasCol() {
   });
 }
 pintarCintasCol();
+/* una sola cinta para toda la colección: cobre en los grupos y ninguna
+   playlist con color propio, salvo el disco de pesas, que va en gris */
+$('cinta-unica').onclick = () => {
+  if (!confirm('¿Poner la cinta de cobre en todas tus playlists?')) return;
+  col.grupos.forEach(g => { g.cinta = 'orig'; });
+  col.items.forEach(it => { it.cinta = it.acabado === 'pesas' ? 'gris' : null; });
+  col.sinCinta = false;
+  guardarCol(); pintarCintasCol(); pintarColeccion();
+  toast('Hecho: cinta de cobre en todas. Ahora «Poner todas en Spotify».');
+};
 PALETAS.forEach(pal => {
   const b = document.createElement('button');
   b.className = 'chip'; b.textContent = pal.n;
