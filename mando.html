@@ -463,7 +463,18 @@ async function token() {
 
 /* Freno de Spotify (429): una sola puerta para todas las peticiones, que se
    espera a trozos de un segundo para que Detener funcione de verdad. */
-let _pausaHasta = 0, _parar = false, _429 = 0;
+/* Un castigo largo de Spotify se recuerda entre recargas: volver a
+   preguntar mientras dura solo sirve para que lo alarguen. */
+const K_PAUSA = 'mando_pausa_spotify_v1';
+let _pausaHasta = +leer(K_PAUSA, 0) || 0, _parar = false, _429 = 0;
+const ESPERA_MAX = 45;   // segundos que se esperan en silencio; mas que eso se avisa
+function errorFreno() {
+  const s = esperaPendiente();
+  const t = s < 90 ? s + ' segundos' : s < 5400 ? 'unos ' + Math.round(s / 60) + ' minutos' : 'unas ' + Math.round(s / 3600) + ' horas';
+  const e = new Error('Spotify ha frenado tus peticiones por ir demasiado deprisa. Vuelve a funcionar solo dentro de ' + t + '. No es una caída ni has perdido nada.');
+  e.status = 429; e.freno = true;
+  return e;
+}
 const esperaPendiente = () => Math.max(0, Math.ceil((_pausaHasta - Date.now()) / 1000));
 async function esperarTurno() {
   let falta = _pausaHasta - Date.now();
@@ -480,6 +491,7 @@ async function sp(ruta, o) {
   let intentos = 0;
   while (true) {
     if (_parar && !o.siempre) throw new Error('DETENIDO');
+    if (esperaPendiente() > ESPERA_MAX) throw errorFreno();
     await esperarTurno();
     const tk = await token();
     const cab = { Authorization: 'Bearer ' + tk };
@@ -490,8 +502,13 @@ async function sp(ruta, o) {
     }
     let res;
     try {
-      res = await fetch(ruta.indexOf('http') === 0 ? ruta : API + ruta, { method: o.method || 'GET', headers: cab, body: cuerpo });
+      /* una peticion colgada no puede dejar la rueda girando para siempre */
+      const ctl = new AbortController();
+      const tmo = setTimeout(() => ctl.abort(), 25000);
+      try { res = await fetch(ruta.indexOf('http') === 0 ? ruta : API + ruta, { method: o.method || 'GET', headers: cab, body: cuerpo, signal: ctl.signal }); }
+      finally { clearTimeout(tmo); }
     } catch (e) {
+      if (e && e.name === 'AbortError') throw e;
       if (++intentos > 3) throw new Error('Sin conexión con Spotify');
       await sleep(800 * intentos);
       continue;
@@ -500,6 +517,7 @@ async function sp(ruta, o) {
       const ra = +(res.headers.get('Retry-After') || 0);
       const seg = ra > 0 ? ra : Math.min(60, 2 * Math.pow(2, _429++));
       _pausaHasta = Math.max(_pausaHasta, Date.now() + seg * 1000 + 300);
+      if (seg > ESPERA_MAX) { escribir(K_PAUSA, _pausaHasta); pintarFreno(); throw errorFreno(); }
       if (++intentos > 6) { const e = new Error('Spotify está frenando las peticiones: prueba en un rato'); e.status = 429; throw e; }
       continue;
     }
@@ -551,10 +569,22 @@ async function paginar(ruta, o) {
   return out;
 }
 
+/* Aviso fijo arriba mientras dura el freno, con la cuenta atras */
+function pintarFreno() {
+  let el = document.getElementById('freno');
+  const s = esperaPendiente();
+  if (s <= ESPERA_MAX) { if (el) el.remove(); return; }
+  if (!el) { el = document.createElement('div'); el.id = 'freno'; el.className = 'aviso'; el.style.cssText = 'max-width:900px;margin:10px auto 0;'; document.querySelector('.top').after(el); }
+  el.innerHTML = '<b>Spotify te ha puesto en pausa</b>' + esc(errorFreno().message.replace(/^Spotify ha frenado tus peticiones por ir demasiado deprisa. /, '')) +
+    ' Mientras tanto, «Mis artistas» funciona igual.';
+}
+setInterval(pintarFreno, 30000);
 function explicarError(e) {
   const m = (e && e.message) || String(e);
   if (m === 'DETENIDO') return 'Detenido';
   if (m === 'SIN_CONEXION') return 'Falta conectar con Spotify';
+  if (e && e.name === 'AbortError') return 'Spotify no contesta. Mira tu conexión a internet y pulsa Reintentar.';
+  if (e && e.freno) return m;
   if (e && e.status === 403) {
     if (/premium/i.test(m)) return 'Esto necesita Spotify Premium';
     if (/scope/i.test(m)) return 'Falta un permiso: vuelve a conectar desde Ajustes';
@@ -759,7 +789,7 @@ function render() {
   f(m);
 }
 function htmlSinConexion() {
-  return '<div class="card"><h2>Conecta tu Spotify</h2><p class="soft">El Mando usa la misma conexión que MusicVault. Pulsa el botón, acepta en Spotify y volverás aquí solo.</p>' +
+  return '<div class="card"><h2>Conecta tu Spotify</h2><p class="soft">Pulsa el botón, acepta en Spotify y volverás aquí solo.</p>' +
     '<a class="btn pri wide" href="' + CONECTAR + '">Conectar con Spotify</a></div>';
 }
 function htmlPermisos() {
@@ -2896,6 +2926,7 @@ $('#bAjustes').onclick = hojaAjustes;
 aplicarTema();
 (async () => {
   if (await alVolverDeSpotify()) return;
+  pintarFreno();
   render();
   leerReproductor();
   /* al abrir, se trae lo de otros aparatos en segundo plano */
