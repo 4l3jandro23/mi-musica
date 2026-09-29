@@ -359,6 +359,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
+const VERSION = '2026-09-29c';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -516,10 +517,14 @@ function errorFreno() {
   e.status = 429; e.freno = true;
   return e;
 }
-const esperaPendiente = () => Math.max(0, Math.ceil((_pausaHasta - Date.now()) / 1000));
+/* la pausa es de toda tu conexion de Spotify: se comparte con Portadas */
+const K_PAUSA_PORT = 'portadas_pausa_spotify_v1';
+const pausaTotal = () => Math.max(_pausaHasta, +(localStorage.getItem(K_PAUSA_PORT) || 0) || 0, +leer(K_PAUSA, 0) || 0);
+const esperaPendiente = () => Math.max(0, Math.ceil((pausaTotal() - Date.now()) / 1000));
+function guardarPausa(hasta) { escribir(K_PAUSA, hasta); try { localStorage.setItem(K_PAUSA_PORT, String(hasta)); } catch (e) {} }
 async function esperarTurno() {
-  let falta = _pausaHasta - Date.now();
-  while (falta > 0 && !_parar) { await sleep(Math.min(falta, 1000)); falta = _pausaHasta - Date.now(); }
+  let falta = pausaTotal() - Date.now();
+  while (falta > 0 && !_parar) { await sleep(Math.min(falta, 1000)); falta = pausaTotal() - Date.now(); }
 }
 async function motivo(res) {
   let t = '';
@@ -530,11 +535,12 @@ async function motivo(res) {
 /* Ritmo: como mucho unas 7 peticiones por segundo. Spotify castiga las
    rafagas (sobre todo a las apps en modo desarrollo) con pausas de horas;
    ir un poco mas despacio sale muchisimo mas rapido. */
-let _prox = 0;
-const HUECO = 140;
+let _prox = 0, _lentoHasta = 0;
 async function ritmo() {
+  /* tras un aviso de Spotify se va mucho mas despacio durante 10 minutos */
+  const hueco = Date.now() < _lentoHasta ? 900 : 200;
   const ahora = Date.now(), t = Math.max(ahora, _prox);
-  _prox = t + HUECO;
+  _prox = t + hueco;
   if (t > ahora) await sleep(t - ahora);
 }
 /* Registro de fallos, para poder contarlos (Ajustes → Fallos recientes) */
@@ -544,14 +550,78 @@ function apuntarFallo(e, donde) {
   const l = leer(K_ERR, []);
   l.unshift({ at: Date.now(), donde: donde || '', msg: String(e.message || e).slice(0, 300), st: e.status || 0, ruta: e.ruta || '' });
   escribir(K_ERR, l.slice(0, 30));
+  subirFallosLuego();
 }
+/* Si este aparato tiene el token de GitHub (el de Mis artistas), los fallos
+   se guardan tambien en mando-fallos.json del repo: asi Claude los puede
+   leer sin que tengas que copiar nada. Como mucho una vez cada 3 minutos. */
+let _tFallos = 0;
+function subirFallosLuego() {
+  if (typeof ghCfg !== 'function' || !ghCfg()) return;
+  clearTimeout(_tFallos);
+  const falta = Math.max(15000, 180000 - (Date.now() - (+leer('mando_fallos_subidos_v1', 0))));
+  _tFallos = setTimeout(() => subirFallos(), falta);
+}
+async function subirFallos(diag) {
+  const g = ghCfg(); if (!g) return false;
+  escribir('mando_fallos_subidos_v1', Date.now());
+  const datos = { version: VERSION, at: new Date().toISOString(), aparato: navigator.userAgent, pantalla: innerWidth + 'x' + innerHeight,
+    pausaSeg: esperaPendiente(), cola: COLA.length, permisosQueFaltan: permisosQueFaltan().map(p => p.s), fallos: leer(K_ERR, []).slice(0, 30), diagnostico: diag || null };
+  const url = 'https://api.github.com/repos/' + g.repo + '/contents/mando-fallos.json';
+  try {
+    let sha;
+    const r0 = await ghFetch(url);
+    if (r0.ok) sha = (await r0.json()).sha;
+    const r = await ghFetch(url, { method: 'PUT', body: JSON.stringify({ message: 'mando: fallos del aparato', content: b64enc(JSON.stringify(datos, null, 1)), sha: sha }) });
+    return r.ok;
+  } catch (e) { return false; }
+}
+/* ---- Cola de cambios ----
+   Si Spotify esta en pausa, añadir/quitar canciones, Me gusta, seguir y
+   los datos de una playlist no fallan: se apuntan en orden y se mandan
+   solos en cuanto Spotify deja (se mira cada minuto y al abrir). */
+const K_COLA = 'mando_cola_v1';
+let COLA = leer(K_COLA, []), _encolados = 0, _colaCorre = false;
+const guardarCola = () => escribir(K_COLA, COLA);
+function encolable(ruta, o) {
+  if (!o.method || o.method === 'GET' || o.sinCola || o.raw) return false;
+  const r = ruta.replace(API, '');
+  return /^\/playlists\/\w+\/items/.test(r) || /^\/me\/library\?/.test(r) || (o.method === 'PUT' && /^\/playlists\/\w+$/.test(r));
+}
+function encolar(ruta, o) {
+  COLA.push({ ruta: ruta.replace(API, ''), method: o.method, body: o.body, at: Date.now() });
+  guardarCola(); _encolados++;
+  pintarFreno();
+  return null;
+}
+async function procesarCola() {
+  if (_colaCorre || !COLA.length || esperaPendiente() > 0 || !conectado()) return;
+  _colaCorre = true;
+  let hechos = 0;
+  try {
+    while (COLA.length) {
+      const x = COLA[0];
+      try { await sp(x.ruta, { method: x.method, body: x.body, sinCola: true, siempre: true }); }
+      catch (e) {
+        if (e.freno || e.status === 429 || e.name === 'AbortError' || /Sin conexión|no responde/.test(e.message)) break;
+        apuntarFallo(e, 'cola');
+      }
+      COLA.shift(); guardarCola(); hechos++;
+    }
+  } finally {
+    _colaCorre = false; pintarFreno();
+    if (hechos) { S.playlists = null; S.likes = null; S.indice = null; toast(hechos + (hechos === 1 ? ' cambio pendiente hecho' : ' cambios pendientes hechos') + ' en Spotify ✓'); }
+  }
+}
+setInterval(procesarCola, 60000);
+
 async function sp(ruta, o) {
   o = o || {};
   let intentos = 0;
   while (true) {
     if (_parar && !o.siempre) throw new Error('DETENIDO');
-    if (esperaPendiente() > ESPERA_MAX) throw errorFreno();
-    await esperarTurno();
+    if (!o.ignorarPausa && esperaPendiente() > ESPERA_MAX) { if (encolable(ruta, o)) return encolar(ruta, o); throw errorFreno(); }
+    if (!o.ignorarPausa) await esperarTurno();
     await ritmo();
     const tk = await token();
     const cab = { Authorization: 'Bearer ' + tk };
@@ -577,7 +647,9 @@ async function sp(ruta, o) {
       const ra = +(res.headers.get('Retry-After') || 0);
       const seg = ra > 0 ? ra : Math.min(60, 2 * Math.pow(2, _429++));
       _pausaHasta = Math.max(_pausaHasta, Date.now() + seg * 1000 + 300);
-      if (seg > ESPERA_MAX) { escribir(K_PAUSA, _pausaHasta); pintarFreno(); throw errorFreno(); }
+      _lentoHasta = Date.now() + seg * 1000 + 600000;
+      apuntarFallo({ message: 'Spotify pide esperar ' + seg + ' s (429)', status: 429, ruta: (o.method || 'GET') + ' ' + ruta.replace(API, '').split('?')[0] }, 'freno');
+      if (seg > ESPERA_MAX) { guardarPausa(_pausaHasta); pintarFreno(); if (encolable(ruta, o)) return encolar(ruta, o); throw errorFreno(); }
       if (++intentos > 6) { const e = new Error('Spotify está frenando las peticiones: prueba en un rato'); e.status = 429; throw e; }
       continue;
     }
@@ -632,11 +704,33 @@ async function paginar(ruta, o) {
 /* Aviso fijo arriba mientras dura el freno, con la cuenta atras */
 function pintarFreno() {
   let el = document.getElementById('freno');
-  const s = esperaPendiente();
-  if (s <= ESPERA_MAX) { if (el) el.remove(); return; }
-  if (!el) { el = document.createElement('div'); el.id = 'freno'; el.className = 'aviso'; el.style.cssText = 'max-width:900px;margin:10px auto 0;'; document.querySelector('.top').after(el); }
-  el.innerHTML = '<b>Spotify te ha puesto en pausa</b>' + esc(errorFreno().message.replace(/^Spotify ha frenado tus peticiones por ir demasiado deprisa. /, '')) +
-    ' Mientras tanto, «Mis artistas» funciona igual.';
+  const s = esperaPendiente(), n = COLA.length, pausa = s > ESPERA_MAX;
+  if (!pausa && !n && !S.guardado) { if (el) el.remove(); return; }
+  if (!el) { el = document.createElement('div'); el.id = 'freno'; el.className = 'aviso'; el.style.cssText = 'max-width:880px;margin:10px auto 0;width:calc(100% - 24px);'; document.querySelector('.top').after(el); }
+  let h = '';
+  if (pausa) h += '<b>Spotify te ha puesto en pausa</b>' + esc(errorFreno().message.replace(/^Spotify ha frenado tus peticiones por ir demasiado deprisa. /, '')) + ' ';
+  else if (S.guardado) h += '<b>Spotify no contesta ahora mismo</b>Estás viendo lo guardado en este aparato. ';
+  if (pausa || S.guardado) h += 'Puedes seguir mirando, marcando y preparando cambios: se guardan en cola. ';
+  if (n) h += '<br><b style="display:inline">' + n + (n === 1 ? ' cambio esperando' : ' cambios esperando') + '</b> para mandarse a Spotify. ';
+  const pr = +leer('mando_probe_v1', 0);
+  h += '<div class="btnrow" style="margin-top:8px">' + (Date.now() - pr > 600000 ? '<button class="btn sm" id="frProbar">' + ic('recargar') + 'Probar ahora</button>' : '') +
+    (n ? '<button class="btn sm ghost" id="frCola">Ver la cola</button>' : '') + '</div>';
+  el.innerHTML = h;
+  const b = el.querySelector('#frProbar'); if (b) b.onclick = probarAhora;
+  const c = el.querySelector('#frCola'); if (c) c.onclick = () => { S.tab = 'cambios'; S.vista = null; S.pila = []; S.fuente = null; render(); scrollTo(0, 0); };
+}
+/* Una sola llamada para ver si Spotify ya deja (como mucho una vez cada
+   10 minutos: insistir durante una pausa la alarga). */
+async function probarAhora() {
+  escribir('mando_probe_v1', Date.now());
+  const b = $('#frProbar'); if (b) { b.disabled = true; b.textContent = 'Probando…'; }
+  try {
+    await sp('/me', { ignorarPausa: true, siempre: true });
+    _pausaHasta = 0; guardarPausa(0); S.guardado = null;
+    toast('Spotify ya contesta ✓');
+    invalidar(); if (S.fuente) S.fuente.pistas = null;
+    pintarFreno(); render(); procesarCola();
+  } catch (e) { toast(explicarError(e), null, 7000); pintarFreno(); }
 }
 setInterval(pintarFreno, 30000);
 function explicarError(e) {
@@ -704,20 +798,34 @@ async function cachePoner(k, v) {
 const sinK = ps => ps.map(p => { const o = Object.assign({}, p); delete o.k; delete o.veces; return o; });
 const conK = ps => ps.map(p => Object.assign({}, p, { k: ++_k }));
 
+const esCaida = e => !!e && (e.freno || e.status === 429 || e.name === 'AbortError' || /Sin conexión|no responde/.test(e.message || ''));
 async function yo() {
-  if (!S.me) S.me = await sp('/me');
+  if (S.me) return S.me;
+  try { S.me = await sp('/me'); cachePoner('me', S.me); }
+  catch (e) { const c = esCaida(e) && await cacheLeer('me'); if (!c) throw e; S.me = c; modoGuardado(); }
   return S.me;
 }
+function modoGuardado(at) { if (!S.guardado) S.guardado = at || Date.now(); pintarFreno(); }
 async function cargarPlaylists(forzar) {
   if (S.playlists && !forzar) return S.playlists;
   S.indice = null;
-  const it = await paginar('/me/playlists', { limite: 50 });
+  let it;
+  try { it = await paginar('/me/playlists', { limite: 50 }); }
+  catch (e) {
+    const c = esCaida(e) && await cacheLeer('pls');
+    if (!c) throw e;
+    modoGuardado(c.at);
+    S.playlists = c.lista;
+    return S.playlists;
+  }
   S.playlists = it.filter(Boolean).map(p => ({
     id: p.id, uri: p.uri, name: p.name || '(sin nombre)', desc: p.description || '',
     owner: p.owner || {}, publica: !!p.public, colab: !!p.collaborative,
     total: ((p.items || p.tracks) || {}).total || 0, img: imgDe(p.images, 60), imgG: imgDe(p.images, 300),
     snap: p.snapshot_id
   }));
+  cachePoner('pls', { at: Date.now(), lista: S.playlists });
+  if (S.guardado) { S.guardado = null; pintarFreno(); }
   return S.playlists;
 }
 const esMia = p => !!p && (p.owner.id === (S.me && S.me.id) || p.colab);
@@ -735,7 +843,11 @@ async function pistasDePlaylist(id, av) {
   if (c && meta && meta.snap && c.snap === meta.snap) return conK(c.pistas);
   let it;
   try { it = await paginar('/playlists/' + id + '/items', { limite: 50, alAvanzar: av }); }
-  catch (e) { if ((e.status === 403 || e.status === 404) && meta && !esMia(meta)) throw errorAjena(meta); throw e; }
+  catch (e) {
+    if ((e.status === 403 || e.status === 404) && meta && !esMia(meta)) throw errorAjena(meta);
+    if (esCaida(e) && c) { modoGuardado(); return conK(c.pistas); }
+    throw e;
+  }
   const ps = it.map(x => pista(x && (x.item || x.track), { added: x && x.added_at })).filter(Boolean);
   if (!ps.length && meta && meta.total > 0 && !esMia(meta)) throw errorAjena(meta);
   if (meta && meta.snap) cachePoner('pl:' + id, { snap: meta.snap, pistas: sinK(ps) });
@@ -770,8 +882,9 @@ async function pistasMeGusta(av) {
       }
     } catch (e) { if (e.freno || e.message === 'DETENIDO') throw e; }
   }
-  let total = 0;
-  const it = await paginar('/me/tracks', { limite: 50, alAvanzar: (n, t) => { total = t || n; if (av) av(n, t); } });
+  let total = 0, it;
+  try { it = await paginar('/me/tracks', { limite: 50, alAvanzar: (n, t) => { total = t || n; if (av) av(n, t); } }); }
+  catch (e) { if (esCaida(e) && c && c.pistas) { modoGuardado(); return conK(c.pistas); } throw e; }
   const ps = it.map(x => pista(x && x.track, { added: x && x.added_at })).filter(Boolean);
   cachePoner('likes', { total: it.length, pistas: sinK(ps) });
   return ps;
@@ -808,6 +921,15 @@ async function trozos(arr, n, fn, etiqueta) {
 const libPoner = (uris, et) => trozos(uris, 40, u => sp('/me/library?uris=' + encodeURIComponent(u.join(',')), { method: 'PUT' }), et);
 const libQuitar = (uris, et) => trozos(uris, 40, u => sp('/me/library?uris=' + encodeURIComponent(u.join(',')), { method: 'DELETE' }), et);
 async function libTiene(uris) {
+  try { return await libTieneSp(uris); }
+  catch (e) {
+    const c = esCaida(e) && await cacheLeer('likes');
+    if (!c || !c.pistas) throw e;
+    const si = new Set(c.pistas.map(p => p.uri));
+    return uris.map(u => si.has(u));
+  }
+}
+async function libTieneSp(uris) {
   const out = [];
   await trozos(uris, 40, async u => {
     const d = await sp('/me/library/contains?uris=' + encodeURIComponent(u.join(',')));
@@ -876,9 +998,13 @@ async function deshacerUltimo(id) {
 }
 /* Ejecuta algo largo con barra de progreso, Detener y errores explicados. */
 async function trabajo(fn, txt) {
-  _parar = false;
+  _parar = false; _encolados = 0;
   progreso(txt || 'Trabajando…');
-  try { return await fn(); }
+  try {
+    const r = await fn();
+    if (_encolados) setTimeout(() => toast('Spotify está en pausa: lo he dejado en cola y se hará solo cuando vuelva (lo ves arriba).', null, 8000), 50);
+    return r;
+  }
   catch (e) { apuntarFallo(e, txt); toast(explicarError(e), null, 7000); return undefined; }
   finally { progreso(null); _parar = false; }
 }
@@ -2100,11 +2226,29 @@ function abrirResultadosComoLista() {
 /* ============================================================
    CAMBIOS (deshacer)
    ============================================================ */
+function htmlCola() {
+  if (!COLA.length) return '';
+  const nom = x => {
+    const id = (x.ruta.match(/^\/playlists\/(\w+)/) || [])[1];
+    const n = x.body && (x.body.uris || x.body.items) ? (x.body.uris || x.body.items).length : (x.ruta.match(/uris=([^&]*)/) ? decodeURIComponent(x.ruta.match(/uris=([^&]*)/)[1]).split(',').length : 0);
+    if (/\/me\/library/.test(x.ruta)) return (x.method === 'PUT' ? 'Guardar ' : 'Quitar ') + n + ' en tu biblioteca / Me gusta';
+    if (/items/.test(x.ruta)) return (x.method === 'POST' ? 'Añadir ' + n : x.method === 'DELETE' ? 'Quitar ' + n : 'Reordenar') + ' en «' + esc(id ? nombrePl(id) : '?') + '»';
+    return 'Cambiar datos de «' + esc(id ? nombrePl(id) : '?') + '»';
+  };
+  return '<div class="aviso"><b>En cola · ' + COLA.length + '</b>Se mandan solos a Spotify en cuanto deje (se mira cada minuto).' +
+    '<div class="tiny" style="margin:8px 0">' + COLA.slice(0, 30).map(x => '<div>· ' + nom(x) + ' <span class="mute">' + fecha(x.at) + '</span></div>').join('') + (COLA.length > 30 ? '<div class="mute">y ' + (COLA.length - 30) + ' más</div>' : '') + '</div>' +
+    '<div class="btnrow"><button class="btn sm" id="colaYa">Intentar ahora</button><button class="btn sm ghost" id="colaFuera">Descartar la cola</button></div></div>';
+}
+function engancharCola(m) {
+  const a = m.querySelector('#colaYa'); if (a) a.onclick = async () => { if (esperaPendiente() > 0) { toast('Spotify sigue en pausa: faltan ' + Math.ceil(esperaPendiente() / 60) + ' min'); return; } await procesarCola(); render(); };
+  const b = m.querySelector('#colaFuera'); if (b) b.onclick = async () => { if (!(await confirmar('¿Descartar ' + COLA.length + ' cambios en cola?', 'Descartar', 'No se mandarán a Spotify.'))) return; COLA = []; guardarCola(); pintarFreno(); render(); };
+}
 function vCambios(m) {
-  if (!HIST.length) { m.innerHTML = '<div class="vacio">Aquí aparecerá todo lo que cambies, con su botón de deshacer.</div>'; return; }
-  m.innerHTML = '<p class="soft tiny">Los últimos 40 cambios hechos desde el Mando en este aparato. Deshacer una reordenación o un borrado deja la playlist como estaba (las fechas de «añadida» pasan a ser las de hoy).</p>' +
+  if (!HIST.length && !COLA.length) { m.innerHTML = '<div class="vacio">Aquí aparecerá todo lo que cambies, con su botón de deshacer.</div>'; return; }
+  m.innerHTML = htmlCola() + '<p class="soft tiny">Los últimos 40 cambios hechos desde el Mando en este aparato. Deshacer una reordenación o un borrado deja la playlist como estaba (las fechas de «añadida» pasan a ser las de hoy).</p>' +
     HIST.map(h => '<div class="hist' + (h.hecho ? ' hecho' : '') + '"><div class="t"><div class="nowrap">' + esc(h.txt) + '</div><div class="mute tiny">' + new Date(h.at).toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' }) + '</div></div>' +
       (h.d && !h.hecho ? '<button class="btn sm" data-h="' + h.id + '">' + ic('deshacer') + 'Deshacer</button>' : (h.hecho ? '<span class="tiny mute">deshecho</span>' : '')) + '</div>').join('');
+  engancharCola(m);
   m.onclick = async e => {
     const b = e.target.closest('[data-h]'); if (!b) return;
     const h = HIST.find(x => x.id === b.dataset.h);
@@ -2198,7 +2342,7 @@ async function hojaReproductor() {
       if (v) v.onchange = async () => { try { await sp('/me/player/volume?volume_percent=' + v.value, { method: 'PUT' }); } catch (err) { toast(explicarError(err)); } };
     });
 }
-setInterval(() => { if (document.visibilityState === 'visible' && !$('#progreso').offsetParent) leerReproductor(); }, 25000);
+setInterval(() => { if (document.visibilityState === 'visible' && !$('#progreso').offsetParent && esperaPendiente() === 0) leerReproductor(); }, 40000);
 setInterval(() => { if (S.suena && S.suena.playing && document.visibilityState === 'visible') pintarMini(); }, 1000);
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') leerReproductor(); });
 
@@ -2217,12 +2361,12 @@ function hojaAjustes() {
     '<label class="lbl">Token de GitHub</label><input class="field" id="gTok" type="password" placeholder="' + (ghCfg() ? 'guardado (déjalo vacío para no cambiarlo)' : 'github_pat_…') + '">' +
     '<div class="btnrow" style="margin-top:8px"><button class="btn" id="gOk">Guardar y sincronizar</button></div>' +
     '<p class="tiny mute">' + esc(misSync.msg || (ghCfg() ? 'Configurado' : 'Sin configurar: solo se guarda en este aparato')) + '</p>' +
-    '<h3>Spotify</h3><div class="btnrow"><button class="btn sm" id="aCid">Cambiar el Client ID</button><button class="btn sm" id="aCache">Borrar lo guardado en este aparato</button></div>' +
+    '<h3>Spotify</h3><div class="btnrow"><button class="btn sm pri" id="aDiag">' + ic('check') + 'Diagnóstico</button><button class="btn sm" id="aCid">Cambiar el Client ID</button><button class="btn sm" id="aCache">Borrar lo guardado en este aparato</button></div>' +
     (() => { const l = leer(K_ERR, []); return '<h3>Fallos recientes</h3>' + (l.length ? '<p class="soft tiny">Si algo falla, pulsa «Copiar» y pégaselo a Claude: así se ve exactamente qué ha pasado.</p><div class="tiny" style="max-height:170px;overflow:auto;background:var(--surface);border-radius:10px;padding:8px 10px">' +
       l.slice(0, 12).map(x => '<div style="margin-bottom:6px"><b>' + new Date(x.at).toLocaleString('es-ES', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) + '</b> ' + esc(x.donde) + ' · ' + esc(x.msg) + (x.ruta ? ' <span class="mute">[' + esc(x.ruta) + ']</span>' : '') + '</div>').join('') +
       '</div><div class="btnrow" style="margin-top:6px"><button class="btn sm" id="aErrC">Copiar</button><button class="btn sm ghost" id="aErrB">Vaciar</button></div>' : '<p class="tiny mute">Ninguno. 🎉</p>'); })() +
     '<h3>Tema</h3><div class="chips" id="aTema">' + [['', 'Automático'], ['light', 'Claro'], ['dark', 'Oscuro']].map(t => '<button class="chip' + ((PREFS.tema || '') === t[0] ? ' on' : '') + '" data-t="' + t[0] + '">' + t[1] + '</button>').join('') + '</div>' +
-    '<p class="mute tiny" style="margin-top:16px"><a href="index.html" style="color:inherit">Volver a Mi Música</a></p>', h => {
+    '<p class="mute tiny" style="margin-top:16px"><a href="index.html" style="color:inherit">Volver a Mi Música</a> · versión ' + VERSION + '</p>', h => {
       h.querySelector('#aCopia').onclick = () => { cerrarHoja(); copiaDeTodo(); };
       h.querySelector('#aRest').onclick = () => { cerrarHoja(); restaurarCopia(); };
       h.querySelector('#gOk').onclick = async () => {
@@ -2232,11 +2376,46 @@ function hojaAjustes() {
         cerrarHoja(); await misAsegurar(); sincronizarMis(true);
       };
       h.querySelector('#aCid').onclick = () => { cerrarHoja(); hojaClientId(null); };
+      h.querySelector('#aDiag').onclick = () => { cerrarHoja(); hojaDiagnostico(); };
       h.querySelector('#aCache').onclick = async () => { const db = await idb(); if (db) await new Promise(ok => { const t = db.transaction('kv', 'readwrite'); t.objectStore('kv').clear(); t.oncomplete = ok; t.onerror = ok; }); invalidar(); cerrarHoja(); toast('Borrado: se volverá a leer todo de Spotify'); render(); };
       const ec = h.querySelector('#aErrC'); if (ec) ec.onclick = () => { const l = leer(K_ERR, []); navigator.clipboard.writeText(l.map(x => new Date(x.at).toISOString() + ' | ' + x.donde + ' | ' + x.st + ' | ' + x.ruta + ' | ' + x.msg).join('\n') + '\n' + navigator.userAgent).then(() => toast('Copiado'), () => toast('No se ha podido copiar')); };
       const eb = h.querySelector('#aErrB'); if (eb) eb.onclick = () => { escribir(K_ERR, []); cerrarHoja(); toast('Vaciado'); };
       h.querySelector('#aTema').onclick = e => { const c = e.target.closest('[data-t]'); if (!c) return; PREFS.tema = c.dataset.t; guardarPrefs(); aplicarTema(); cerrarHoja(); };
     });
+}
+/* Prueba paso a paso: dice exactamente que falla y por que */
+async function hojaDiagnostico() {
+  hoja('<h2>Diagnóstico</h2><p class="soft tiny">Prueba cada cosa por orden. Tarda unos segundos.</p><ul id="dgL" style="list-style:none;padding:0;margin:10px 0;font-size:14px;line-height:1.5"></ul><div class="btnrow" id="dgB"></div>', async h => {
+    const L = h.querySelector('#dgL'), res = [];
+    const linea = (ok, t) => { res.push((ok === true ? 'OK ' : ok === false ? 'MAL ' : '-- ') + t); L.insertAdjacentHTML('beforeend', '<li style="margin-bottom:6px">' + (ok === true ? '✅ ' : ok === false ? '❌ ' : 'ℹ️ ') + esc(t) + '</li>'); };
+    linea(null, 'Versión ' + VERSION);
+    const c = cred();
+    if (!c || !c.refreshToken) { linea(false, 'Este aparato no tiene la conexión con Spotify guardada: Ajustes → Conectar con Spotify'); return fin(); }
+    linea(true, 'Hay conexión guardada (Client ID …' + String(c.clientId || '').slice(-4) + ')');
+    const fal = permisosQueFaltan();
+    linea(!fal.length, fal.length ? 'Faltan permisos: ' + fal.map(p => p.s).join(', ') + ' → Volver a conectar y aceptar todo' : 'Tiene todos los permisos');
+    const s = esperaPendiente();
+    if (s > 0) { linea(false, 'Spotify te tiene en pausa ' + (s < 5400 ? Math.ceil(s / 60) + ' min' : Math.round(s / 3600) + ' h') + ' más, por demasiadas peticiones. No pruebo nada más para no alargarla.'); return fin(); }
+    linea(true, 'Spotify no te tiene en pausa');
+    linea(null, COLA.length + ' cambios en cola');
+    try { await token(); linea(true, 'La sesión sigue viva'); } catch (e) { linea(false, 'Sesión: ' + e.message); return fin(); }
+    const paso = async (txt, ruta) => { const t0 = Date.now(); try { await sp(ruta, { siempre: true }); linea(true, txt + ' (' + (Date.now() - t0) + ' ms)'); return true; } catch (e) { linea(false, txt + ': ' + explicarError(e) + (e.status ? ' [' + e.status + ']' : '')); return false; } };
+    if (!(await paso('Tu perfil', '/me'))) return fin();
+    await paso('Tus playlists', '/me/playlists?limit=1');
+    await paso('Tus Me gusta', '/me/tracks?limit=1');
+    await paso('Comprobar Me gusta', '/me/library/contains?uris=' + encodeURIComponent('spotify:track:4uLU6hMCjMI75M1A2tKUQC'));
+    await paso('Artistas que sigues', '/me/following?type=artist&limit=1');
+    await paso('Buscar', '/search?type=track&limit=1&q=salsa');
+    await paso('Reproductor', '/me/player');
+    fin();
+    function fin() {
+      const B = h.querySelector('#dgB');
+      B.innerHTML = '<button class="btn sm" id="dgC">Copiar</button>' + (ghCfg() ? '<button class="btn sm pri" id="dgE">Enviar a Claude</button>' : '');
+      B.querySelector('#dgC').onclick = () => navigator.clipboard.writeText(res.join('\n') + '\n' + navigator.userAgent).then(() => toast('Copiado'), () => toast('No se ha podido copiar'));
+      const e = B.querySelector('#dgE'); if (e) e.onclick = async () => { e.disabled = true; e.textContent = 'Enviando…'; const ok = await subirFallos(res); toast(ok ? 'Enviado: dile a Claude «mira los fallos»' : 'No se ha podido enviar'); e.textContent = ok ? 'Enviado ✓' : 'Enviar a Claude'; e.disabled = false; };
+      if (ghCfg()) subirFallos(res);
+    }
+  });
 }
 function aplicarTema() { if (PREFS.tema) document.documentElement.dataset.theme = PREFS.tema; else delete document.documentElement.dataset.theme; }
 async function copiaDeTodo() {
@@ -2947,11 +3126,13 @@ function faltanGeneros(ps) {
 }
 async function cargarGeneros(ps) {
   await misAsegurar();
-  const ids = faltanGeneros(ps);
+  /* sin pedidos en bloque desde 2026: uno por artista, asi que con tope */
+  const todos = faltanGeneros(ps), ids = todos.slice(0, 80);
+  if (todos.length > ids.length) setTimeout(() => toast('Mirados ' + ids.length + ' artistas; quedan ' + (todos.length - ids.length) + '. Vuelve a pulsar en un rato (así Spotify no se enfada).', null, 7000), 400);
   for (let i = 0; i < ids.length; i++) {
     progreso('Mirando géneros de los artistas', i, ids.length);
     try { const a = await sp('/artists/' + ids[i]); GEN[ids[i]] = (a && a.genres) || []; }
-    catch (e) { if (e.message === 'DETENIDO') break; GEN[ids[i]] = []; }
+    catch (e) { if (e.message === 'DETENIDO' || esCaida(e)) break; GEN[ids[i]] = []; }
     if (i % 20 === 19) escribir(K_GEN, GEN);
   }
   escribir(K_GEN, GEN);
@@ -3288,27 +3469,33 @@ function abrirNovedades() {
     let c = leer(K_NOV, null);
     if (!c || Date.now() - c.at > 12 * 36e5) {
       const r = await trabajo(async () => {
-        const seg = (await paginar('/me/following?type=artist', { limite: 50, clave: 'artists' })).slice(0, 200);
+        /* cada artista se mira como mucho una vez al dia y 60 por vez:
+           con cientos de artistas, antes eran cientos de peticiones seguidas */
+        const seg = await paginar('/me/following?type=artist', { limite: 50, clave: 'artists' });
         const lim = new Date(Date.now() - 62 * 864e5).toISOString().slice(0, 10);
-        const out = [];
-        for (let i = 0; i < seg.length; i++) {
-          progreso('Mirando a ' + seg[i].name, i, seg.length);
+        const porArt = (leer(K_NOV, null) || {}).porArt || {};
+        const pend = seg.filter(a => !porArt[a.id] || Date.now() - porArt[a.id].at > 24 * 36e5);
+        const toca = pend.slice(0, 60);
+        for (let i = 0; i < toca.length; i++) {
+          progreso('Mirando a ' + toca[i].name, i, toca.length);
           try {
-            const d = await sp('/artists/' + seg[i].id + '/albums?include_groups=album,single&limit=10');
-            for (const a of ((d && d.items) || [])) if ((a.release_date || '') >= lim && !out.some(x => x.id === a.id)) out.push(Object.assign(discoDe(a), { fecha: a.release_date }));
-          } catch (e) { if (e.message === 'DETENIDO') break; }
+            const d = await sp('/artists/' + toca[i].id + '/albums?include_groups=album,single&limit=10');
+            porArt[toca[i].id] = { at: Date.now(), d: ((d && d.items) || []).filter(a => (a.release_date || '') >= lim).map(a => Object.assign(discoDe(a), { fecha: a.release_date })) };
+          } catch (e) { if (e.message === 'DETENIDO' || esCaida(e)) break; }
         }
-        return { at: Date.now(), discos: out.sort((a, b) => b.fecha.localeCompare(a.fecha)) };
+        const out = [];
+        for (const a of seg) for (const x of ((porArt[a.id] || {}).d || [])) if (x.fecha >= lim && !out.some(y => y.id === x.id)) out.push(x);
+        return { at: Date.now(), discos: out.sort((a, b) => b.fecha.localeCompare(a.fecha)), porArt: porArt, faltan: seg.filter(a => !porArt[a.id]).length };
       }, 'Buscando novedades');
       if (!r) { const x = $('#nvC'); if (x) x.innerHTML = '<div class="vacio">No se ha podido</div>'; return; }
       c = r; escribir(K_NOV, c);
     }
     const x = $('#nvC'); if (!x) return;
-    x.innerHTML = '<p class="tiny mute">De los artistas que sigues en Spotify, últimos 2 meses · mirado ' + fecha(c.at) + ' <button class="btn sm ghost" id="nvRe">' + ic('recargar') + 'Volver a mirar</button></p>' +
+    x.innerHTML = '<p class="tiny mute">De los artistas que sigues en Spotify, últimos 2 meses · mirado ' + fecha(c.at) + (c.faltan ? ' · <b>faltan ' + c.faltan + ' artistas</b> (se miran de 60 en 60 para que Spotify no te frene)' : '') + ' <button class="btn sm ghost" id="nvRe">' + ic('recargar') + (c.faltan ? 'Mirar más' : 'Volver a mirar') + '</button></p>' +
       (c.discos.length ? '<div class="btnrow" style="margin-bottom:8px"><button class="btn pri sm" id="nvPl">' + ic('plus') + 'Playlist con todo lo nuevo</button></div><div class="lista-obj">' +
         c.discos.map(d => '<div class="obj" data-id="' + d.id + '">' + imgOph(d.img, 'disco') + '<div class="t"><div class="t1 nowrap">' + esc(d.name) + '</div><div class="t2 nowrap">' + esc(d.artistas) + ' · ' + (d.tipo === 'single' ? 'sencillo' : 'disco') + ' · ' + new Date(d.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }) + '</div></div></div>').join('') + '</div>'
         : '<div class="vacio">Nada nuevo en los últimos 2 meses</div>');
-    $('#nvRe').onclick = () => { localStorage.removeItem(K_NOV); render(); };
+    $('#nvRe').onclick = () => { escribir(K_NOV, { at: 0, discos: [], porArt: c.porArt || {} }); render(); };
     x.querySelectorAll('.obj').forEach(el => el.onclick = () => abrirDisco(el.dataset.id, c.discos.find(d => d.id === el.dataset.id)));
     const pl = $('#nvPl');
     if (pl) pl.onclick = async () => {
@@ -3377,7 +3564,8 @@ window.addEventListener('unhandledrejection', e => apuntarFallo(e.reason, 'sin c
   if (await alVolverDeSpotify()) return;
   pintarFreno();
   render();
-  leerReproductor();
+  if (esperaPendiente() === 0) leerReproductor();
+  setTimeout(procesarCola, 4000);
   /* al abrir, se trae lo de otros aparatos en segundo plano */
   if (ghCfg()) misAsegurar().then(() => sincronizarMis());
 })();
