@@ -1,12 +1,40 @@
 {
- "version": "2026-09-29f",
- "at": "2026-09-29T20:24:12.830Z",
+ "version": "2026-09-30a",
+ "at": "2026-09-29T20:38:35.957Z",
  "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
  "pantalla": "1368x673",
- "pausaSeg": 1,
+ "pausaSeg": 0,
  "cola": 0,
  "permisosQueFaltan": [],
  "fallos": [
+  {
+   "at": 1790714300951,
+   "donde": "freno",
+   "msg": "Spotify pide esperar 8 s (429)",
+   "st": 429,
+   "ruta": "GET /me"
+  },
+  {
+   "at": 1790714296535,
+   "donde": "freno",
+   "msg": "Spotify pide esperar 4 s (429)",
+   "st": 429,
+   "ruta": "GET /me"
+  },
+  {
+   "at": 1790714293544,
+   "donde": "freno",
+   "msg": "Spotify pide esperar 2 s (429)",
+   "st": 429,
+   "ruta": "GET /me"
+  },
+  {
+   "at": 1790714291196,
+   "donde": "freno",
+   "msg": "Spotify pide esperar 2 s (429)",
+   "st": 429,
+   "ruta": "GET /me"
+  },
   {
    "at": 1790713436892,
    "donde": "freno",
@@ -188,20 +216,6 @@
    "msg": "Spotify pide esperar 4 s (429)",
    "st": 429,
    "ruta": "GET /artists/45dkTj5sMRSjrmBSBeiHym"
-  },
-  {
-   "at": 1790703103397,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 2 s (429)",
-   "st": 429,
-   "ruta": "GET /artists/45dkTj5sMRSjrmBSBeiHym"
-  },
-  {
-   "at": 1790701834492,
-   "donde": "Leyendo artistas",
-   "msg": "Spotify está frenando las peticiones: prueba en un rato",
-   "st": 429,
-   "ruta": ""
   }
  ],
  "diagnostico": null
