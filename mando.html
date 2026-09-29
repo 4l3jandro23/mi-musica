@@ -195,6 +195,17 @@
   #analiza button { border: 0; border-radius: 999px; padding: 4px 10px; background: color-mix(in srgb, var(--bg) 20%, transparent); color: inherit; font-weight: 700; cursor: pointer; }
   .t2 b.yr { color: var(--jade); font-weight: 750; }
 
+  /* mis discos */
+  .tarj .es { position: absolute; left: 7px; bottom: 7px; z-index: 1; font-size: 11px; font-weight: 800; color: #fff; border-radius: 7px; padding: 2px 7px; box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+  .tarj .imgw { position: relative; }
+  .estados { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 7px; margin: 12px 0 6px; }
+  .estados button { border: 1.5px solid var(--line-firm); background: var(--surface); color: inherit; border-radius: 12px; padding: 10px 6px; font-weight: 750; font-size: 13.5px; cursor: pointer; }
+  .estados button.on { color: #fff; border-color: transparent; }
+  .dcab { display: flex; gap: 14px; align-items: flex-start; }
+  .dcab img, .dcab .ph { width: 120px; height: 120px; border-radius: 12px; object-fit: cover; flex: none; box-shadow: var(--shadow-lg); }
+  .dnav { display: flex; gap: 8px; align-items: center; margin-top: 10px; }
+  .dnav .btn { flex: 1; }
+
   /* repaso una a una */
   .rp { max-width: 520px; margin: 0 auto; text-align: center; }
   .rp .prog { height: 4px; background: var(--surface-2); border-radius: 4px; overflow: hidden; margin: 6px 0 14px; }
@@ -388,7 +399,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-09-29f';
+const VERSION = '2026-09-29g';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -665,8 +676,8 @@ async function sp(ruta, o) {
   let intentos = 0;
   const fam = familia(ruta);
   if ((!o.method || o.method === 'GET') && !o.ignorarPausa && (_enfria[fam] || 0) > Date.now()) {
-    const e = new Error('Spotify está frenando esa parte (' + (fam === '/artists' ? 'artistas' : fam.slice(1)) + ') un par de minutos. El resto funciona.');
-    e.status = 429; e.ruta = 'GET ' + fam; throw e;
+    const e = new Error('Spotify está frenando esa parte (' + ({ '/artists': 'artistas', '/albums': 'discos', '/search': 'búsqueda' }[fam] || fam.slice(1)) + ') un par de minutos. El resto funciona.');
+    e.status = 429; e.ruta = 'GET ' + fam; e.enfriaHasta = _enfria[fam]; throw e;
   }
   while (true) {
     if (_parar && !o.siempre) throw new Error('DETENIDO');
@@ -701,7 +712,7 @@ async function sp(ruta, o) {
       _lentoHasta = Date.now() + seg * 1000 + 600000;
       apuntarFallo({ message: 'Spotify pide esperar ' + seg + ' s (429)', status: 429, ruta: (o.method || 'GET') + ' ' + ruta.replace(API, '').split('?')[0] }, 'freno');
       if (seg > ESPERA_MAX) { guardarPausa(_pausaHasta); pintarFreno(); if (encolable(ruta, o)) return encolar(ruta, o); throw errorFreno(); }
-      if (++intentos > (ra > 0 ? 6 : 3)) { if (!ra) _enfria[fam] = Date.now() + 120000; const e = new Error('Spotify está frenando las peticiones: prueba en un rato'); e.status = 429; e.ruta = (o.method || 'GET') + ' ' + ruta.replace(API, '').split('?')[0]; throw e; }
+      if (++intentos > (ra > 0 ? 6 : 3)) { if (!ra) _enfria[fam] = Date.now() + 120000; const e = new Error('Spotify está frenando las peticiones: prueba en un rato'); e.status = 429; if (!ra) e.enfriaHasta = _enfria[fam]; e.ruta = (o.method || 'GET') + ' ' + ruta.replace(API, '').split('?')[0]; throw e; }
       continue;
     }
     if (res.status === 401) {
@@ -1104,7 +1115,7 @@ async function trabajo(fn, txt) {
   catch (e) { apuntarFallo(e, txt); toast(explicarError(e), null, 7000); return undefined; }
   finally { progreso(null); _parar = false; }
 }
-function invalidar() { S.playlists = null; S.likes = null; S.discos = null; S.artistas = null; S.indice = null; }
+function invalidar() { S.playlists = null; S.likes = null; S.discos = null; S.artistas = null; S.indice = null; S.md = null; }
 
 /* ============================================================
    ESTADO Y NAVEGACION
@@ -1121,7 +1132,8 @@ const guardarPrefs = () => escribir(K_PREFS, PREFS);
 const TABS = [
   { id: 'playlists', txt: 'Playlists', ic: 'lista' },
   { id: 'likes', txt: 'Me gusta', ic: 'corazon' },
-  { id: 'discos', txt: 'Discos', ic: 'disco' },
+  { id: 'misdiscos', txt: 'Mis discos', ic: 'disco' },
+  { id: 'discos', txt: 'Discos guardados', ic: 'disco' },
   { id: 'artistas', txt: 'Seguidos', ic: 'persona' },
   { id: 'mis', txt: 'Mis artistas', ic: 'estrella' },
   { id: 'buscar', txt: 'Buscar', ic: 'buscar' },
@@ -1157,7 +1169,7 @@ function render() {
   m.onclick = null;
   if (!conectado()) { m.innerHTML = htmlSinConexion(); pintarAccion(); return; }
   if (S.vista) return S.vista.pintar(m);
-  const f = { playlists: vPlaylists, likes: vLikes, discos: vDiscos, artistas: vArtistas, mis: vMis, buscar: vBuscar, escuchas: vEscuchas, cambios: vCambios }[S.tab];
+  const f = { playlists: vPlaylists, likes: vLikes, misdiscos: vMisDiscos, discos: vDiscos, artistas: vArtistas, mis: vMis, buscar: vBuscar, escuchas: vEscuchas, cambios: vCambios }[S.tab];
   f(m);
 }
 function htmlSinConexion() {
@@ -1180,6 +1192,17 @@ function fallo(m, e) {
     '</div></div>';
   const r = $('#bReint'); if (r) r.onclick = () => { invalidar(); if (S.fuente) S.fuente.pistas = null; render(); };
   const a = $('#bAtrasF'); if (a) a.onclick = atras;
+  if (e && e.enfriaHasta && r) {
+    const vista = S.vista, tab = S.tab;
+    const tic = () => {
+      if (!r.isConnected || S.vista !== vista || S.tab !== tab) return;
+      const falta = Math.ceil((e.enfriaHasta - Date.now()) / 1000);
+      if (falta <= 0) { if (S.fuente) S.fuente.pistas = null; render(); return; }
+      r.textContent = 'Reintento solo en ' + falta + ' s';
+      setTimeout(tic, 1000);
+    };
+    tic();
+  }
 }
 const fecha = ms => {
   if (!ms) return '';
@@ -1279,7 +1302,7 @@ const K_LF = 'musicvault_lastfm_v1';          // la misma clave de Last.fm que u
 const lfCfg = () => { const l = leer(K_LF, null); return l && l.apiKey ? l : null; };
 const ETQ_GRUPOS = [
   ['ambiente', 'Mood y ambiente'], ['genero', 'Géneros'], ['sub', 'Subgéneros'], ['tipo', 'Tipología'], ['idioma', 'Idioma'],
-  ['decada', 'Década (año real)'], ['epoca', 'Épocas'], ['hito', 'Hitos'], ['origen', 'Origen'], ['mis', 'Mis etiquetas']
+  ['decada', 'Década (año real)'], ['epoca', 'Épocas'], ['hito', 'Hitos'], ['origen', 'Origen'], ['mis', 'Mis etiquetas'], ['estado', 'Estado del disco']
 ];
 const nomGrupo = g => (ETQ_GRUPOS.find(x => x[0] === g) || [0, g])[1];
 const IDIOMAS = ['Español', 'Inglés', 'Portugués', 'Francés', 'Italiano', 'Alemán', 'Catalán', 'Coreano', 'Japonés', 'Instrumental', 'Otro'];
@@ -1550,7 +1573,8 @@ function nombresDeGrupo(g) {
   const E = ETQ || ETQ0(), usados = new Set();
   for (const k of ['man', 'alb']) for (const v of Object.values(E[k])) for (const x of (v.t || [])) if (x.g === g) usados.add(x.n);
   let base = [];
-  if (g === 'idioma') base = IDIOMAS; else if (g === 'tipo') base = TIPOS; else if (g === 'ambiente') base = MOODS.concat(TAXONOMIA.filter(t => t.g === 'ambiente').map(t => t.n));
+  if (g === 'estado') base = ESTADOS.map(e => e[0]);
+  else if (g === 'idioma') base = IDIOMAS; else if (g === 'tipo') base = TIPOS; else if (g === 'ambiente') base = MOODS.concat(TAXONOMIA.filter(t => t.g === 'ambiente').map(t => t.n));
   else if (g === 'genero' || g === 'sub' || g === 'origen' || g === 'epoca') base = TAXONOMIA.filter(t => t.g === g).map(t => t.n);
   return Array.from(new Set(Array.from(usados).concat(base)));
 }
@@ -1588,7 +1612,7 @@ function hojaEtiquetar(ps, alDisco) {
               const o = E[modo][k] || (E[modo][k] = { t: [] });
               o.t = (o.t || []).filter(x => !(x.g === grupo && x.n === n));
               if (!todas) {
-                if (grupo === 'idioma') o.t = o.t.filter(x => x.g !== 'idioma');   // un idioma por cancion
+                if (grupo === 'idioma' || grupo === 'estado') o.t = o.t.filter(x => x.g !== grupo);   // uno solo
                 o.t.push({ g: grupo, n: n });
               }
               o.ts = Date.now();
@@ -1647,6 +1671,200 @@ async function sincronizarEtq() {
     }
   } catch (e) { apuntarFallo(e, 'sincronizar etiquetas'); }
   finally { _etqSync = false; }
+}
+
+/* ============================================================
+   MIS DISCOS
+   Tu playlist de discos: una cancion (la primera) por disco, todos juntos
+   en un mismo sitio. El Mando la lee como discos y a cada uno le pones su
+   estado (Pendiente, Me encanta…). El estado se guarda como etiqueta del
+   disco, asi que la playlist no se toca y se ve igual en Spotify.
+   ============================================================ */
+const PL_DISCOS = '5VfoXjFtZswNpsklDndGrN';
+const ESTADOS = [['Pendiente', '#6b7280'], ['Me encanta', '#d4568a'], ['Me gusta', '#2f8f5e'], ['Regular', '#c98a1f'], ['No me gusta', '#b8202e']];
+const colorEstado = n => (ESTADOS.find(e => e[0] === n) || [0, '#6b7280'])[1];
+const plDiscosId = () => PREFS.plDiscos || PL_DISCOS;
+function estadoDisco(id) { const a = (ETQ || ETQ0()).alb[id]; const x = a && (a.t || []).find(t => t.g === 'estado'); return x ? x.n : ''; }
+function ponerEstado(d, n) {
+  const E = ETQ, antes = E.alb[d.id] ? JSON.parse(JSON.stringify(E.alb[d.id])) : null;
+  const o = E.alb[d.id] || (E.alb[d.id] = { t: [] });
+  const ya = estadoDisco(d.id) === n;
+  o.t = (o.t || []).filter(x => x.g !== 'estado');
+  if (!ya) o.t.push({ g: 'estado', n: n });
+  o.ts = Date.now();
+  etqCambio();
+  apuntar('«' + d.name + '»: ' + (ya ? 'sin estado' : n), { t: 'etq', man: {}, alb: { [d.id]: antes } });
+}
+const MD = { est: '', dec: '', gen: '', q: '', orden: '' };
+async function discosDePlaylist() {
+  if (S.md) return S.md;
+  await etqAsegurar(); await misAsegurar();
+  const id = plDiscosId();
+  const pls = await cargarPlaylists();
+  const meta = pls.find(p => p.id === id);
+  if (!meta) { const e = new Error('No encuentro tu playlist de discos entre tus playlists. Elige cuál es con «Cambiar de playlist».'); e.sinPl = true; throw e; }
+  const ps = await pistasDePlaylist(id, (n, t) => progresoCarga(n, t));
+  const vistos = new Map();
+  ps.forEach((p, i) => {
+    if (!p.albumId || vistos.has(p.albumId)) return;
+    vistos.set(p.albumId, { id: p.albumId, uri: p.albumUri || ('spotify:album:' + p.albumId), name: p.album, artistas: nombresArtistas(p), img: p.coverG || p.cover, p: p, added: p.added, pos: i });
+  });
+  S.md = { meta: meta, discos: Array.from(vistos.values()), pistas: ps };
+  return S.md;
+}
+function discosFiltrados() {
+  const q = fold(MD.q).trim();
+  let l = S.md.discos.filter(d => {
+    if (MD.est === '_' ? estadoDisco(d.id) : MD.est && estadoDisco(d.id) !== MD.est) return false;
+    if (MD.dec && String(decadaDe(d.p)) !== MD.dec) return false;
+    if (MD.gen) { const g = etiquetasCancion(d.p).genero; if (!g || !g.has(MD.gen)) return false; }
+    if (q && fold(d.name + ' ' + d.artistas).indexOf(q) < 0) return false;
+    return true;
+  });
+  const by = (fn, dir) => l.sort((a, b) => { const x = fn(a), y = fn(b); return (typeof x === 'number' ? x - y : COL.compare(x, y)) * (dir || 1); });
+  if (MD.orden === 'viejos') by(d => d.pos);
+  else if (MD.orden === 'anyo') by(d => anyo(d.p) || 9999);
+  else if (MD.orden === 'anyoD') by(d => anyo(d.p) || 0, -1);
+  else if (MD.orden === 'artista') by(d => d.artistas + ' ' + (anyo(d.p) || ''));
+  else if (MD.orden === 'titulo') by(d => d.name);
+  else by(d => d.pos, -1);
+  return l;
+}
+async function vMisDiscos(m) {
+  if (!S.md) m.innerHTML = '<div class="spin"></div><div class="vacio" id="cargaTxt"></div>';
+  try { await discosDePlaylist(); }
+  catch (e) {
+    fallo(m, e);
+    m.insertAdjacentHTML('beforeend', '<div class="btnrow" style="justify-content:center"><button class="btn" id="mdCambiar">Cambiar de playlist</button></div>');
+    $('#mdCambiar').onclick = hojaPlDiscos; return;
+  }
+  if (S.tab !== 'misdiscos' || S.vista) return;
+  const D = S.md.discos, l = discosFiltrados();
+  const cuenta = n => D.filter(d => n === '_' ? !estadoDisco(d.id) : estadoDisco(d.id) === n).length;
+  const chip = (k, v, t, n) => '<button class="chip' + (MD[k] === v ? ' on' : '') + '" data-k="' + k + '" data-v="' + esc(v) + '">' + t + (n != null ? ' <b style="opacity:.55">' + n + '</b>' : '') + '</button>';
+  const decs = contar(D, d => { const x = decadaDe(d.p); return x == null ? null : String(x); }).sort((a, b) => a[0] < b[0] ? -1 : 1);
+  const gens = contar(D, d => Array.from(etiquetasCancion(d.p).genero || [])).slice(0, 14);
+  m.innerHTML = '<div class="cab" style="margin-bottom:6px"><div class="txt"><h2>Mis discos</h2><div class="soft tiny">' + D.length + ' discos en <a href="https://open.spotify.com/playlist/' + esc(S.md.meta.id) + '" target="_blank" rel="noopener" style="color:inherit">«' + esc(S.md.meta.name) + '»</a> · ' + cuenta('Pendiente') + ' pendientes · ' + cuenta('_') + ' sin estado</div>' +
+    '<div class="btnrow" style="margin-top:8px"><button class="btn sm pri" id="mdRep">' + ic('play') + 'Repasar ' + (MD.est || MD.dec || MD.gen || MD.q ? 'estos' : 'pendientes') + '</button>' +
+    '<button class="btn sm" id="mdCrear">' + ic('plus') + 'Playlist con los discos enteros</button><button class="btn sm" id="mdMas">' + ic('mas') + '</button></div></div></div>' +
+    '<div class="herr"><input class="field" id="mdQ" type="search" placeholder="Buscar disco o artista" value="' + esc(MD.q) + '">' +
+    '<select class="field" id="mdO">' + [['', 'Recientes'], ['viejos', 'Primeros añadidos'], ['anyo', 'Año real ↑'], ['anyoD', 'Año real ↓'], ['artista', 'Artista'], ['titulo', 'Título']].map(o => '<option value="' + o[0] + '"' + (MD.orden === o[0] ? ' selected' : '') + '>' + o[1] + '</option>').join('') + '</select></div>' +
+    '<div class="chips" id="mdF" style="margin-bottom:6px">' + chip('est', '', 'Todos', D.length) + chip('est', '_', 'Sin estado', cuenta('_')) + ESTADOS.map(([n]) => chip('est', n, n, cuenta(n))).join('') + '</div>' +
+    (decs.length > 1 ? '<div class="chips" id="mdF2" style="margin-bottom:6px">' + decs.map(([k, n]) => chip('dec', k, nombreDecada(+k), n)).join('') + '</div>' : '') +
+    (gens.length ? '<div class="chips" id="mdF3" style="margin-bottom:10px">' + gens.map(([k, n]) => chip('gen', k, esc(k), n)).join('') + '</div>' : '') +
+    (l.length ? '<div class="rejilla" id="mdL">' + l.map((d, i) => { const e = estadoDisco(d.id), y = anyo(d.p);
+      return '<div class="tarj" data-i="' + i + '"><div class="imgw">' + (d.img ? '<img loading="lazy" src="' + esc(d.img) + '" alt="">' : ph('disco')) + (e ? '<span class="es" style="background:' + colorEstado(e) + '">' + esc(e) + '</span>' : '') + '</div>' +
+        '<div class="t"><div class="t1 nowrap">' + esc(d.name) + '</div><div class="t2 nowrap">' + esc(d.artistas) + (y ? ' · ' + y : '') + '</div></div></div>'; }).join('') + '</div>'
+      : '<div class="vacio">' + (D.length ? 'Ningún disco con ese filtro' : 'La playlist está vacía: añade la primera canción de cada disco') + '</div>');
+  const fil = e => { const c = e.target.closest('[data-k]'); if (!c) return; MD[c.dataset.k] = MD[c.dataset.k] === c.dataset.v && c.dataset.v ? '' : c.dataset.v; render(); };
+  ['#mdF', '#mdF2', '#mdF3'].forEach(id => { const x = $(id); if (x) x.onclick = fil; });
+  $('#mdQ').oninput = e => { MD.q = e.target.value; clearTimeout(MD._t); MD._t = setTimeout(() => { const y = scrollY; render(); scrollTo(0, y); const q = $('#mdQ'); if (q) { q.focus(); q.setSelectionRange(q.value.length, q.value.length); } }, 250); };
+  $('#mdO').onchange = e => { MD.orden = e.target.value; render(); };
+  const L = $('#mdL'); if (L) L.onclick = e => { const t = e.target.closest('[data-i]'); if (t) hojaDisco(l, +t.dataset.i); };
+  $('#mdRep').onclick = () => {
+    const lista = (MD.est || MD.dec || MD.gen || MD.q) ? l : l.filter(d => !estadoDisco(d.id) || estadoDisco(d.id) === 'Pendiente');
+    if (!lista.length) { toast('No hay discos que repasar'); return; }
+    hojaDisco(lista, 0);
+  };
+  $('#mdCrear').onclick = () => playlistDiscosEnteros(l);
+  $('#mdMas').onclick = () => hoja('<h2>Mis discos</h2><div class="opc">' +
+    '<button data-o="analizar">' + ic('varita') + '<span>Año real y géneros de los discos<span class="sub">MusicBrainz y Last.fm, en segundo plano</span></span></button>' +
+    '<button data-o="abrir">' + ic('lista') + '<span>Abrir la playlist como lista<span class="sub">para ordenar, quitar repetidos…</span></span></button>' +
+    '<button data-o="cambiar">' + ic('ajustes') + '<span>Cambiar de playlist<span class="sub">ahora: «' + esc(S.md.meta.name) + '»</span></span></button>' +
+    '<button data-o="recargar">' + ic('recargar') + 'Volver a leerla de Spotify</button></div>', h => {
+      h.querySelector('.opc').onclick = e => {
+        const b = e.target.closest('[data-o]'); if (!b) return; cerrarHoja();
+        const o = b.dataset.o;
+        if (o === 'analizar') analizar(S.md.discos.map(d => d.p), true);
+        else if (o === 'abrir') abrirPlaylist(S.md.meta);
+        else if (o === 'cambiar') hojaPlDiscos();
+        else if (o === 'recargar') { S.md = null; S.playlists = null; render(); }
+      };
+    });
+}
+function hojaPlDiscos() {
+  cargarPlaylists().then(pls => {
+    const mias = pls.filter(esMia);
+    hoja('<h2>¿Cuál es tu playlist de discos?</h2><p class="soft tiny">La de «la primera canción de cada disco».</p><div class="opc">' +
+      mias.map(p => '<button data-id="' + p.id + '">' + ic(p.id === plDiscosId() ? 'check' : 'lista') + '<span class="nowrap">' + esc(p.name) + '<span class="sub">' + p.total + ' canciones</span></span></button>').join('') + '</div>', h => {
+        h.querySelector('.opc').onclick = e => { const b = e.target.closest('[data-id]'); if (!b) return; PREFS.plDiscos = b.dataset.id; guardarPrefs(); S.md = null; cerrarHoja(); S.tab = 'misdiscos'; S.vista = null; render(); };
+      });
+  }).catch(e => toast(explicarError(e)));
+}
+/* Un disco en grande, con su estado. Anterior/Siguiente recorre la lista
+   que estabas viendo: asi se repasan los pendientes uno a uno. */
+function hojaDisco(lista, i) {
+  const d = lista[i]; if (!d) { cerrarHoja(); render(); return; }
+  const e = estadoDisco(d.id);
+  hoja('<div class="dcab">' + (d.img ? '<img src="' + esc(d.img) + '" alt="">' : ph('disco')) + '<div style="min-width:0"><h2 style="margin:0 0 2px">' + esc(d.name) + '</h2><div class="soft">' + esc(d.artistas) + '</div>' +
+    '<div class="tiny mute" style="margin-top:4px">' + textoAnyo(d.p) + (d.added ? ' · en tu lista desde ' + fecha(d.added) : '') + '</div></div></div>' +
+    '<div class="estados">' + ESTADOS.map(([n, c]) => '<button data-e="' + esc(n) + '" class="' + (e === n ? 'on' : '') + '"' + (e === n ? ' style="background:' + c + '"' : '') + '>' + esc(n) + '</button>').join('') + '</div>' +
+    htmlEtiquetas(d.p, 14) +
+    '<div class="opc" style="margin-top:8px">' +
+    '<button data-o="play">' + ic('play') + 'Escuchar el disco entero</button>' +
+    '<button data-o="ver">' + ic('disco') + 'Ver sus canciones</button>' +
+    '<button data-o="etq">' + ic('etiqueta') + 'Etiquetar el disco<span class="sub">mood, género, idioma… y corregir el año</span></button>' +
+    '<a href="https://open.spotify.com/album/' + esc(d.id) + '" target="_blank" rel="noopener">' + ic('externo') + 'Abrir en Spotify</a>' +
+    '<button data-o="quitar" class="danger">' + ic('papelera') + 'Quitar de Mis discos</button></div>' +
+    '<div class="dnav"><button class="btn" data-n="-1"' + (i ? '' : ' disabled') + '>← Anterior</button><span class="tiny mute" style="white-space:nowrap">' + (i + 1) + ' / ' + lista.length + '</span><button class="btn pri" data-n="1"' + (i < lista.length - 1 ? '' : ' disabled') + '>Siguiente →</button></div>', h => {
+      h.onclick = async ev => {
+        const eb = ev.target.closest('[data-e]');
+        if (eb) { ponerEstado(d, eb.dataset.e); return hojaDisco(lista, i); }
+        const nb = ev.target.closest('[data-n]');
+        if (nb) return hojaDisco(lista, i + +nb.dataset.n);
+        const o = ev.target.closest('[data-o]'); if (!o) return;
+        const k = o.dataset.o;
+        if (k === 'play') reproducir({ context_uri: d.uri });
+        else if (k === 'ver') { cerrarHoja(); abrirDisco(d.id, { name: d.name, artistas: d.artistas, year: d.p.year, imgG: d.img }); }
+        else if (k === 'etq') hojaEtiquetar([d.p], true);
+        else if (k === 'quitar') {
+          if (!(await confirmar('¿Quitar «' + d.name + '» de Mis discos?', 'Quitar', 'Se quita su canción de la playlist. Se puede deshacer desde Cambios.'))) return;
+          const uris = S.md.pistas.filter(p => p.albumId === d.id).map(p => p.uri);
+          const ok = await trabajo(async () => { await plQuitar(plDiscosId(), uris, 'Quitando'); apuntar('«' + d.name + '» quitado de Mis discos', { t: 'plAnadir', pid: plDiscosId(), uris: uris }); return true; }, 'Quitando');
+          if (ok) { S.md = null; S.playlists = null; toast('Quitado', { txt: 'Deshacer', fn: () => deshacerUltimo(HIST[0].id) }); render(); }
+        }
+      };
+    }, () => { if (S.tab === 'misdiscos' && !S.vista) { const y = scrollY; render(); setTimeout(() => scrollTo(0, y), 60); } });
+}
+/* canciones de un disco, guardadas 30 dias (no cambian) */
+async function pistasDisco(id) {
+  const a = await discoSp(id);
+  return ((a && a.tracks && a.tracks.items) || []).map(t => t && t.uri).filter(Boolean);
+}
+async function playlistDiscosEnteros(l) {
+  if (!l.length) { toast('No hay discos con ese filtro'); return; }
+  if (l.length > 60 && !(await confirmar('Son ' + l.length + ' discos', 'Seguir', 'Hay que pedir a Spotify las canciones de cada uno: tardará un poco. Mejor filtra antes (por estado, década o género).'))) return;
+  const uris = await trabajo(async () => {
+    const u = [];
+    for (let i = 0; i < l.length; i++) { progreso('Leyendo «' + l[i].name + '»', i, l.length); (await pistasDisco(l[i].id)).forEach(x => u.push(x)); }
+    return u;
+  }, 'Leyendo discos');
+  if (!uris) return;
+  const nom = ['Discos', MD.est && MD.est !== '_' ? MD.est : '', MD.dec ? nombreDecada(+MD.dec) : '', MD.gen].filter(Boolean).join(' · ');
+  hojaNuevaPlaylist(uris, nom);
+}
+/* Añadir discos a tu playlist de discos (su primera canción) */
+async function anadirAMisDiscos(discos) {
+  const r = await trabajo(async () => {
+    const md = await discosDePlaylist();
+    const ya = new Set(md.discos.map(d => d.id));
+    const nuevos = discos.filter(d => d.id && !ya.has(d.id));
+    if (!nuevos.length) return { n: 0 };
+    const uris = [];
+    for (let i = 0; i < nuevos.length; i++) {
+      progreso('Buscando la primera canción', i, nuevos.length);
+      const u = nuevos[i].primera || (await pistasDisco(nuevos[i].id))[0];
+      if (u) uris.push(u);
+    }
+    await plAnadir(plDiscosId(), uris, null, 'Añadiendo a Mis discos');
+    apuntar(uris.length + ' discos a Mis discos', { t: 'plQuitar', pid: plDiscosId(), uris: uris });
+    for (const d of nuevos) if (!estadoDisco(d.id)) { const o = ETQ.alb[d.id] || (ETQ.alb[d.id] = { t: [] }); o.t.push({ g: 'estado', n: 'Pendiente' }); o.ts = Date.now(); }
+    etqCambio();
+    return { n: uris.length };
+  }, 'Añadiendo a Mis discos');
+  if (!r) return;
+  S.md = null; S.playlists = null;
+  toast(r.n ? r.n + (r.n === 1 ? ' disco añadido' : ' discos añadidos') + ' a Mis discos (como Pendiente)' : 'Ya estaban en Mis discos');
 }
 
 /* ---- Repasar una a una ----
@@ -2394,6 +2612,7 @@ function hojaMasSeleccion(ps) {
     '<button data-o="discos">' + ic('disco') + 'Guardar sus discos<span class="sub">en tu biblioteca</span></button>' +
     '<button data-o="artistas">' + ic('persona') + 'Seguir a sus artistas</button>' +
     '<button data-o="aMis">' + ic('estrella') + 'Añadir sus artistas a Mis artistas</button>' +
+    '<button data-o="aMisDiscos">' + ic('disco') + 'Añadir sus discos a Mis discos<span class="sub">la primera canción de cada disco, como Pendiente</span></button>' +
     (S.fuente.kind !== 'likes' ? '<button data-o="nolike">' + ic('corazon') + 'Quitarlas de Me gusta</button>' : '') +
     '</div>', h => {
       h.querySelector('.opc').onclick = async e => {
@@ -2405,6 +2624,7 @@ function hojaMasSeleccion(ps) {
         else if (o === 'discos') guardarEnBiblio(Array.from(new Set(ps.map(p => p.albumUri).filter(Boolean))), 'discos');
         else if (o === 'artistas') guardarEnBiblio(Array.from(new Set([].concat.apply([], ps.map(p => p.artists.map(a => a.uri))).filter(Boolean))), 'artistas');
         else if (o === 'aMis') { await misAsegurar(); aMisDesdeUris([].concat.apply([], ps.map(p => p.artists.map(a => a.uri))).filter(Boolean)); }
+        else if (o === 'aMisDiscos') { const v = new Map(); ps.forEach(p => { if (p.albumId && !v.has(p.albumId)) v.set(p.albumId, { id: p.albumId }); }); anadirAMisDiscos(Array.from(v.values())); }
         else if (o === 'nolike') {
           const uris = Array.from(new Set(ps.map(p => p.uri)));
           await trabajo(async () => { await libQuitar(uris, 'Quitando de Me gusta'); apuntar(uris.length + ' quitadas de Me gusta', { t: 'libPoner', uris }); S.likes = null; toast('Quitadas de Me gusta'); }, 'Quitando');
@@ -2440,6 +2660,7 @@ function hojaPista(p) {
     (S.indice ? '<p class="tiny soft" style="margin:8px 0 0">' + ((S.indice.m.get(p.uri) || []).length ? 'Está en: <b>' + (S.indice.m.get(p.uri) || []).map(id => esc(nombrePl(id))).join('</b>, <b>') + '</b>' : 'No está en ninguna playlist tuya') + '</p>' : '') +
     htmlEtiquetas(p) +
     '<div class="opc">' +
+    (p.albumId ? '<button data-o="aMisDiscos">' + ic('disco') + 'Añadir su disco a Mis discos</button>' : '') +
     '<button data-o="etiquetar">' + ic('etiqueta') + 'Etiquetar y año real<span class="sub">mood, tipología, idioma, género, tus etiquetas… y corregir el año</span></button>' +
     (!S.indice && !p.local ? '<button data-o="donde">' + ic('lista') + '¿En qué playlists está?</button>' : '') +
     '<button data-o="marcar">' + ic('check') + 'Marcar todas de ' + esc((p.artists[0] || {}).name || 'este artista') + '</button>' +
@@ -2458,6 +2679,7 @@ function hojaPista(p) {
         const b = e.target.closest('button[data-o]'); if (!b) return;
         const o = b.dataset.o; cerrarHoja();
         if (o === 'etiquetar') { hojaEtiquetar([p]); return; }
+        if (o === 'aMisDiscos') { anadirAMisDiscos([{ id: p.albumId, primera: f.kind === 'album' ? (f.pistas[0] || {}).uri : null }]); return; }
         if (o === 'donde') { trabajo(() => indice(), 'Mirando tus playlists').then(ix => { if (ix) { pintarFilas(true); hojaPista(p); } }); return; }
         if (o === 'marcar') { const n0 = (p.artists[0] || {}).name; S.visibles.forEach(x => { if (x.artists.some(a => a.name === n0)) S.sel.add(x.k); }); pintarFilas(true); pintarAccion(); toast(S.sel.size + ' marcadas'); return; }
         if (o === 'play') reproducir((f.kind === 'playlist' || f.kind === 'album') && !p.local ? { context_uri: f.uri, offset: { uri: p.uri } } : { uris: [p.uri] });
@@ -2744,13 +2966,30 @@ async function quitarObjetos() {
   toast('Hecho', { txt: 'Deshacer', fn: () => deshacerUltimo(HIST[0].id) });
   render();
 }
+/* Un disco con todas sus canciones. /albums/{id} ya trae las 50 primeras,
+   asi que casi siempre es UNA peticion; y se guarda 30 dias en el aparato
+   (un disco no cambia), porque Spotify frena mucho la parte de discos. */
+async function discoSp(id) {
+  const c = await cacheLeer('alb:' + id);
+  if (c && Date.now() - c.at < 30 * 864e5) return c.a;
+  const a = await sp('/albums/' + id);
+  if (!a) return a;
+  let items = ((a.tracks || {}).items || []).slice();
+  let next = (a.tracks || {}).next;
+  if (!a.tracks) { items = await paginar('/albums/' + id + '/tracks', { limite: 50 }); next = null; }
+  while (next) { const d = await sp(next); items = items.concat((d && d.items) || []); next = d && d.next; }
+  const lig = Object.assign({}, a, { tracks: { items: items.map(t => ({ id: t.id, uri: t.uri, name: t.name, type: t.type, duration_ms: t.duration_ms, artists: (t.artists || []).map(x => ({ id: x.id, name: x.name, uri: x.uri })), is_local: t.is_local, track_number: t.track_number, disc_number: t.disc_number })) } });
+  delete lig.available_markets;
+  cachePoner('alb:' + id, { at: Date.now(), a: lig });
+  return lig;
+}
 async function abrirDisco(id, d) {
   const f = { kind: 'album', id: id, uri: 'spotify:album:' + id, name: d ? d.name : 'Disco', meta: d || { artistas: '', year: '', imgG: '' }, editable: false, pistas: null };
   abrirFuente(f, async () => {
-    const a = await sp('/albums/' + id);
+    const a = await discoSp(id);
     const dd = discoDe(a); Object.assign(f.meta, dd); f.name = dd.name;
-    const it = await paginar('/albums/' + id + '/tracks', { limite: 50 });
-    return it.map(t => pista(Object.assign({}, t, { album: a }))).filter(Boolean);
+    const alb = Object.assign({}, a); delete alb.tracks;
+    return a.tracks.items.map(t => pista(Object.assign({}, t, { album: alb }))).filter(Boolean);
   });
 }
 
@@ -3690,7 +3929,8 @@ function hojaFuente(f) {
       b('seguirTodos', 'personaMas', 'Seguir a todos sus artistas'),
       b('dejarTodos', 'personaMenos', 'Dejar de seguir a todos sus artistas'),
       b('aMis', 'estrella', 'Añadir sus artistas a Mis artistas'),
-      f.kind === 'album' ? b('guardarDisco', 'disco', 'Guardar o quitar el disco de tu biblioteca') : ''
+      f.kind === 'album' ? b('guardarDisco', 'disco', 'Guardar o quitar el disco de tu biblioteca') : '',
+      f.kind === 'album' ? b('aMisDiscos', 'disco', 'Añadir a Mis discos', 'tu playlist de discos, como Pendiente') : ''
     ]) +
     '</div>', h => {
       h.querySelector('.opc').onclick = async e => {
@@ -3749,6 +3989,7 @@ function hojaFuente(f) {
         }
         else if (o === 'aMis') { await misAsegurar(); aMisDesdeUris(artUris()); }
         else if (o === 'guardarDisco') alternarBiblio(f.uri, 'disco');
+        else if (o === 'aMisDiscos') anadirAMisDiscos([{ id: f.id, primera: (ps[0] || {}).uri }]);
       };
     });
 }
@@ -4182,7 +4423,7 @@ function abrirNovedades() {
     if (pl) pl.onclick = async () => {
       const uris = await trabajo(async () => {
         const u = [];
-        for (let i = 0; i < c.discos.length; i++) { progreso('Leyendo discos', i, c.discos.length); const t = await paginar('/albums/' + c.discos[i].id + '/tracks', { limite: 50 }); t.forEach(z => z.uri && u.push(z.uri)); }
+        for (let i = 0; i < c.discos.length; i++) { progreso('Leyendo discos', i, c.discos.length); (await pistasDisco(c.discos[i].id)).forEach(z => u.push(z)); }
         return u;
       }, 'Leyendo discos');
       if (uris) hojaNuevaPlaylist(uris, 'Novedades · ' + new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }));
