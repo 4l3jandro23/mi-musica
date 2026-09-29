@@ -8,11 +8,14 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Mando">
-<meta name="theme-color" content="#14100d" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#f7f2e9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e0c0b" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f6f2ec" media="(prefers-color-scheme: light)">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
 <title>Mando de Spotify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Inter:wght@400..800&display=swap" rel="stylesheet">
 <style>
   :root {
     color-scheme: light;
@@ -359,20 +362,245 @@
   .seccion { background: color-mix(in srgb, var(--surface) 55%, transparent); border: 1px solid var(--line); border-radius: 18px; padding: 12px 14px 16px; margin-bottom: 14px; }
   .seccion h3 { margin: 4px 0 10px; display: flex; gap: 8px; align-items: center; }
   .sechead { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-bottom: 4px; } .sechead h3 { flex: 1; min-width: 150px; }
+
+  /* ============================================================
+     DISEÑO 2026-09-30
+     Oscuro profundo o claro cálido, color sacado de cada portada,
+     navegación abajo en el móvil y barra lateral en el ordenador.
+     ============================================================ */
+  :root {
+    --bg:#f6f2ec; --bg-2:#efe9e0; --surface:#ffffff; --surface-2:#ece6dc; --surface-3:#e2dace;
+    --line:rgba(28,20,12,0.08); --line-firm:rgba(28,20,12,0.15);
+    --fg:#17120d; --fg-soft:#4c4339; --fg-mute:#80766a;
+    --amber:#c47a0a; --amber-soft:#f6e3c0; --on-amber:#ffffff;
+    --jade:#128a64; --jade-soft:#d3ede3; --rust:#c2412f;
+    --glass:rgba(255,255,255,0.72);
+    --shadow-sm:0 1px 2px rgba(28,20,12,.05), 0 4px 14px rgba(28,20,12,.06);
+    --shadow-md:0 8px 28px rgba(28,20,12,.12);
+    --shadow-lg:0 18px 60px rgba(28,20,12,.22);
+    --r:16px; --r-sm:11px;
+    --f-disp:"Bricolage Grotesque", "Inter", system-ui, sans-serif;
+    --nav-h:0px; --side:0px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      --bg:#0e0c0b; --bg-2:#141110; --surface:#1a1715; --surface-2:#24201d; --surface-3:#2f2a26;
+      --line:rgba(255,236,210,0.07); --line-firm:rgba(255,236,210,0.14);
+      --fg:#f8f2ea; --fg-soft:#cbbfae; --fg-mute:#91877a;
+      --amber:#f4b13e; --amber-soft:rgba(244,177,62,0.15); --on-amber:#1c1305;
+      --jade:#4fd1a1; --jade-soft:rgba(79,209,161,0.14); --rust:#ff7a66;
+      --glass:rgba(26,23,21,0.72);
+      --shadow-sm:0 1px 2px rgba(0,0,0,.4), 0 4px 14px rgba(0,0,0,.3);
+      --shadow-md:0 10px 30px rgba(0,0,0,.45);
+      --shadow-lg:0 20px 70px rgba(0,0,0,.65);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:#0e0c0b; --bg-2:#141110; --surface:#1a1715; --surface-2:#24201d; --surface-3:#2f2a26;
+    --line:rgba(255,236,210,0.07); --line-firm:rgba(255,236,210,0.14);
+    --fg:#f8f2ea; --fg-soft:#cbbfae; --fg-mute:#91877a;
+    --amber:#f4b13e; --amber-soft:rgba(244,177,62,0.15); --on-amber:#1c1305;
+    --jade:#4fd1a1; --jade-soft:rgba(79,209,161,0.14); --rust:#ff7a66;
+    --glass:rgba(26,23,21,0.72);
+    --shadow-sm:0 1px 2px rgba(0,0,0,.4), 0 4px 14px rgba(0,0,0,.3);
+    --shadow-md:0 10px 30px rgba(0,0,0,.45);
+    --shadow-lg:0 20px 70px rgba(0,0,0,.65);
+  }
+  body { font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-feature-settings: "cv11", "ss01"; letter-spacing: -0.006em;
+    padding-bottom: calc(190px + env(safe-area-inset-bottom)); padding-left: var(--side); }
+  ::selection { background: var(--amber-soft); }
+  h2 { font-family: var(--f-disp); font-weight: 800; font-size: 24px; letter-spacing: -0.025em; line-height: 1.1; }
+  h3 { font-family: var(--f-disp); font-weight: 750; font-size: 18px; letter-spacing: -0.02em; margin: 22px 0 10px; }
+  main { padding: 14px 16px; max-width: 1100px; }
+  main.entra { animation: entra .32s var(--ease-out); }
+  @keyframes entra { from { opacity: 0; transform: translateY(8px); } }
+
+  /* cabecera */
+  .top { background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom-color: transparent; box-shadow: 0 1px 0 var(--line); }
+  .bar { max-width: 1100px; padding: 10px 16px 8px; }
+  .logo { font-family: var(--f-disp); font-size: 21px; letter-spacing: -0.03em; display: flex; align-items: center; gap: 9px; }
+  .logo .marca { width: 30px; height: 30px; border-radius: 9px; flex: none; display: grid; place-items: center; background: linear-gradient(135deg, var(--amber), color-mix(in srgb, var(--amber) 55%, #d4568a)); color: var(--on-amber); box-shadow: var(--shadow-sm); }
+  .logo .marca svg { width: 17px; height: 17px; stroke-width: 2.4; }
+  .logo span { color: var(--fg-mute); font-weight: 650; }
+  .btn.ghost.ico { border-radius: 999px; width: 38px; height: 38px; padding: 0; }
+  .btn.ghost.ico:hover { background: var(--surface-2); }
+  .cupo { background: var(--surface-2); border-color: transparent; }
+
+  /* navegacion: abajo en el movil */
+  .tabs { display: none; }
+  .bnav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; display: flex; justify-content: space-around;
+    padding: 6px 6px calc(6px + env(safe-area-inset-bottom)); background: var(--glass);
+    backdrop-filter: saturate(1.6) blur(20px); -webkit-backdrop-filter: saturate(1.6) blur(20px); box-shadow: 0 -1px 0 var(--line); }
+  .bnav button { flex: 1; max-width: 96px; border: 0; background: transparent; color: var(--fg-mute); display: flex; flex-direction: column; align-items: center; gap: 3px;
+    font-size: 10.5px; font-weight: 650; padding: 5px 2px 3px; border-radius: 12px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .bnav button svg { width: 23px; height: 23px; stroke-width: 1.9; transition: transform .2s var(--ease-out); }
+  .bnav button.on { color: var(--fg); }
+  .bnav button.on svg { stroke-width: 2.4; transform: translateY(-1px) scale(1.06); color: var(--amber); }
+  .bnav button:active svg { transform: scale(.9); }
+  :root { --nav-h: calc(62px + env(safe-area-inset-bottom)); }
+  .abajo { bottom: var(--nav-h); padding-bottom: 8px; }
+  .hoja { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+
+  /* ...y barra lateral en el ordenador */
+  @media (min-width: 1000px) {
+    :root { --nav-h: 0px; --side: 236px; }
+    .bnav { display: none; }
+    .tabs { display: flex; flex-direction: column; gap: 2px; position: fixed; left: 0; top: 0; bottom: 0; width: var(--side); z-index: 41;
+      padding: 18px 12px; margin: 0; max-width: none; overflow-y: auto; background: var(--bg-2); box-shadow: 1px 0 0 var(--line); }
+    .tabs::before { content: "Mando"; font-family: var(--f-disp); font-weight: 800; font-size: 24px; letter-spacing: -0.03em; padding: 4px 12px 16px; }
+    .tab { justify-content: flex-start; padding: 10px 12px; border-radius: 12px; font-size: 14.5px; color: var(--fg-soft); gap: 12px; }
+    .tab svg { width: 20px; height: 20px; }
+    .tab:hover { background: var(--surface-2); color: var(--fg); }
+    .tab.on { background: var(--surface); color: var(--fg); box-shadow: var(--shadow-sm); }
+    .tab.on svg { color: var(--amber); }
+    .logo { visibility: hidden; }
+    .abajo { left: var(--side); }
+    .rejilla { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 18px; }
+  }
+
+  /* botones, chips, campos */
+  .btn { border-radius: 999px; padding: 9px 16px; font-weight: 650; border-color: var(--line-firm); background: var(--surface); box-shadow: none; }
+  .btn:hover { background: var(--surface-2); }
+  .btn.sm { border-radius: 999px; padding: 7px 13px; }
+  .btn.pri { background: var(--amber); border-color: transparent; color: var(--on-amber); box-shadow: 0 6px 18px color-mix(in srgb, var(--amber) 35%, transparent); }
+  .btn.pri:hover { background: color-mix(in srgb, var(--amber) 88%, #fff); }
+  .btn.danger { background: transparent; }
+  .chip { border: 0; background: var(--surface-2); color: var(--fg-soft); padding: 7px 13px; font-weight: 650; transition: background .15s, color .15s, transform .12s var(--ease-out); }
+  .chip:hover { background: var(--surface-3); color: var(--fg); }
+  .chip.on { background: var(--fg); color: var(--bg); }
+  .chip.fuerte { background: var(--amber); color: var(--on-amber); }
+  .chip.medio { outline: 1.5px dashed var(--amber); outline-offset: -2px; }
+  .field { border-radius: 14px; border-color: transparent; background: var(--surface-2); padding: 11px 14px; transition: background .15s, box-shadow .15s; }
+  .field:focus { background: var(--surface); border-color: transparent; box-shadow: 0 0 0 2px var(--amber); }
+  .herr .field { padding: 10px 14px; }
+  .card, .seccion, .kpi, .rango { border-color: transparent; background: var(--surface); box-shadow: var(--shadow-sm); border-radius: var(--r); }
+  .aviso { border-radius: var(--r); background: var(--amber-soft); }
+  .ayuda { background: var(--surface); box-shadow: var(--shadow-sm); border-radius: var(--r); }
+
+  /* cabecera grande con el color de la portada */
+  .hero { position: relative; margin: -14px -16px 16px; padding: 12px 16px 22px;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--tinte, var(--surface-3)) 62%, var(--bg)) 0%, color-mix(in srgb, var(--tinte, var(--surface-3)) 22%, var(--bg)) 62%, var(--bg) 100%);
+    transition: background .6s; }
+  .hero .back { margin: 0 0 6px -6px; background: color-mix(in srgb, var(--bg) 35%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .back + .hero { margin-top: 0; padding-top: 8px; }
+  .hero-in { display: flex; gap: 22px; align-items: flex-end; }
+  .hero-in > img, .hero-in > .ph { width: 188px; height: 188px; border-radius: 14px; object-fit: cover; flex: none; box-shadow: 0 22px 50px rgba(0,0,0,.38); background: var(--surface-2); }
+  .hero.red .hero-in > img, .hero.red .hero-in > .ph { border-radius: 50%; }
+  .hero .txt { min-width: 0; flex: 1; }
+  .hero .eti { font-size: 11.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--fg-soft); }
+  .hero h2 { font-size: clamp(26px, 5.4vw, 52px); line-height: 1.02; margin: 4px 0 8px; white-space: normal; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .hero .soft.tiny, .hero .mute.tiny { font-size: 13px; }
+  .hero .btnrow { margin-top: 14px !important; gap: 10px; align-items: center; }
+  .hero .bplay { width: 54px; height: 54px; border-radius: 50%; padding: 0; }
+  .hero .bplay svg { width: 22px; height: 22px; fill: currentColor; stroke-width: 0; margin-left: 2px; }
+  @media (max-width: 640px) {
+    .hero-in { flex-direction: column; align-items: center; text-align: center; gap: 16px; }
+    .hero-in > img, .hero-in > .ph { width: min(50vw, 200px); height: min(50vw, 200px); }
+    .hero .btnrow { justify-content: center; }
+  }
+
+  /* filas de canciones */
+  .row { border-radius: 12px; padding: 0 6px 0 2px; transition: background .12s; }
+  .row:hover { background: var(--surface-2); }
+  .row.sel { background: var(--amber-soft); box-shadow: inset 3px 0 0 var(--amber); }
+  .row img, .row .ph { width: 46px; height: 46px; border-radius: 8px; box-shadow: var(--shadow-sm); }
+  .row .t1 { font-size: 15px; font-weight: 620; letter-spacing: -0.01em; }
+  .row .t2 { font-size: 13px; margin-top: 1px; }
+  .row .ck { border-width: 2px; width: 23px; height: 23px; }
+  .row.sel .ck, .obj.sel .ck { background: var(--amber); border-color: var(--amber); }
+  .row.suena .t1 { color: var(--jade); }
+  .row.suena .t1::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--jade); margin-right: 7px; vertical-align: 2px; animation: late 1.2s ease-in-out infinite; }
+  @keyframes late { 50% { opacity: .35; } }
+  .row .mas { opacity: .6; } .row:hover .mas { opacity: 1; }
+  .selbar { background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 8px 0; }
+
+  /* listas de objetos */
+  .obj { border-radius: 14px; padding: 8px; }
+  .obj:hover { background: var(--surface-2); }
+  .obj img, .obj .ph { width: 56px; height: 56px; border-radius: 10px; box-shadow: var(--shadow-sm); }
+  .obj .t1 { font-weight: 680; letter-spacing: -0.01em; }
+
+  /* tarjetas: la portada manda */
+  .rejilla { gap: 14px 12px; }
+  .tarj { background: transparent; border: 0; border-radius: 14px; overflow: visible; padding: 0; transition: transform .2s var(--ease-out); }
+  .tarj:hover { transform: translateY(-3px); }
+  .tarj:active { transform: scale(.97); }
+  .tarj img, .tarj .ph, .tarj .imgw { border-radius: 14px; box-shadow: var(--shadow-md); }
+  .tarj .imgw img { box-shadow: none; }
+  .tarj .imgw { overflow: hidden; }
+  .tarj .t { padding: 8px 2px 2px; }
+  .tarj .t1 { font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
+  .tarj .t2 { font-size: 12.5px; }
+  .tarj.sel { outline: 3px solid var(--amber); outline-offset: 3px; }
+  .tarj.red img, .tarj.red .ph { box-shadow: var(--shadow-md); }
+  .tarj .n { border-radius: 8px; box-shadow: var(--shadow-sm); }
+  .tarj .es { border-radius: 999px; padding: 3px 9px; backdrop-filter: blur(4px); }
+
+  /* barra de acciones y minirreproductor: cristal */
+  .accion { background: color-mix(in srgb, var(--fg) 92%, transparent); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 22px; padding: 7px; box-shadow: var(--shadow-lg); }
+  .accion button { border-radius: 14px; font-size: 12px; padding: 7px 10px; }
+  .accion .cuantas { font-family: var(--f-disp); font-size: 18px; }
+  .mini { position: relative; overflow: hidden; border: 0; border-radius: 18px; padding: 8px 8px 8px 8px;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--tinte, var(--surface-2)) 55%, var(--surface)) 0%, var(--surface) 75%);
+    box-shadow: var(--shadow-md); transition: background .6s; }
+  .mini img, .mini .ph { width: 46px; height: 46px; border-radius: 10px; box-shadow: var(--shadow-sm); }
+  .mini .t1 { font-weight: 700; }
+  .mini .prog { position: absolute; left: 12px; right: 12px; bottom: 3px; height: 2.5px; margin: 0; background: color-mix(in srgb, var(--fg) 12%, transparent); }
+  .mini .prog i { background: var(--fg); }
+  .mini .btn { width: 40px; height: 40px; padding: 0; border-radius: 50%; }
+  .mini .btn[data-p="pp"] { background: var(--fg); color: var(--bg); }
+  .mini .btn[data-p="pp"] svg { fill: currentColor; stroke-width: 0; }
+
+  /* hojas, avisos y progreso */
+  .velo { background: rgba(0,0,0,0.45); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+  .hoja { background: var(--bg-2); border-radius: 28px 28px 0 0; padding-left: 20px; padding-right: 20px; }
+  @media (min-width: 700px) { .hoja { bottom: 24px; border-radius: 28px; max-height: calc(100vh - 48px); } }
+  .hoja .asa { width: 42px; background: var(--line-firm); margin-bottom: 14px; }
+  .hoja h2 { font-size: 22px; }
+  .opc button, .opc a { border-radius: 14px; padding: 12px 10px; font-weight: 580; }
+  .opc button:hover, .opc a:hover { background: var(--surface); }
+  .opc svg { width: 21px; height: 21px; color: var(--amber); }
+  .opc .sec { padding-top: 18px; }
+  .toast { border-radius: 999px; padding: 11px 18px; background: color-mix(in srgb, var(--fg) 94%, transparent); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+  .progreso { border: 0; border-radius: 20px; background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: var(--shadow-md); }
+  .progreso .b { height: 5px; border-radius: 3px; }
+  .progreso .b i { border-radius: 3px; background: linear-gradient(90deg, var(--amber), color-mix(in srgb, var(--amber) 55%, #d4568a)); }
+  #freno { border-radius: var(--r); box-shadow: var(--shadow-sm); }
+  .spin { width: 26px; height: 26px; border-width: 3px; border-color: var(--surface-3); border-top-color: var(--amber); margin: 48px auto; }
+  .vacio { padding: 56px 24px; font-size: 15px; }
+  .hist { border-bottom: 0; background: var(--surface); border-radius: 14px; padding: 12px 14px; margin-bottom: 8px; box-shadow: var(--shadow-sm); }
+  .barra i { height: 8px; background: linear-gradient(90deg, var(--amber), color-mix(in srgb, var(--amber) 60%, #d4568a)); }
+  .rango.on { background: var(--fg); color: var(--bg); }
+  .estados button { border: 0; background: var(--surface); box-shadow: var(--shadow-sm); border-radius: 14px; }
+  .rp .dest button { border: 0; background: var(--surface); box-shadow: var(--shadow-sm); border-radius: 16px; }
+  .rp .dest button.ya { box-shadow: inset 0 0 0 1.5px var(--line-firm); }
+  .rp .port { border-radius: 18px; box-shadow: 0 24px 60px rgba(0,0,0,.35); }
+  .etq { background: var(--surface-2); padding: 4px 10px; }
+  .dcab img, .dcab .ph { border-radius: 14px; }
+  #analiza { border-radius: 999px; background: color-mix(in srgb, var(--fg) 92%, transparent); backdrop-filter: blur(16px); }
+
+  .hero-in > .ph svg { width: 34%; height: 34%; }
+  .opc button, .opc a { flex-wrap: wrap; }
+  .opc > button > .sub, .opc > a > .sub { flex-basis: calc(100% - 34px); margin: -9px 0 0 33px; }
+  @media (max-width: 520px) { .logo span { display: none; } }
+  /* titulo grande de cada pestaña */
+  main[data-titulo]::before { content: attr(data-titulo); display: block; font-family: var(--f-disp); font-weight: 800; font-size: 30px; letter-spacing: -0.03em; line-height: 1.1; margin: 6px 0 14px; }
+  @media (min-width: 1000px) { main[data-titulo]::before { font-size: 38px; margin-top: 12px; } }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 </head>
 <body>
 <header class="top">
   <div class="bar">
-    <div class="logo">Mando <span>de Spotify</span></div>
+    <div class="logo"><i class="marca"></i>Mando <span>de Spotify</span></div>
     <button class="cupo" id="bCupo" title="Cuánto estás usando de Spotify"><i></i><span>Cupo</span></button>
     <button class="btn ghost ico" id="bRecargar" title="Volver a leer de Spotify"></button>
     <button class="btn ghost ico" id="bAjustes" title="Conexión y copias"></button>
   </div>
-  <nav class="tabs" id="tabs"></nav>
 </header>
+<nav class="tabs" id="tabs"></nav>
 <main id="main"></main>
+<nav class="bnav" id="bnav"></nav>
 <div class="abajo" id="abajo">
   <div class="accion" id="accion" hidden></div>
   <div class="mini" id="mini" hidden></div>
@@ -408,7 +636,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-09-29h';
+const VERSION = '2026-09-30a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -1222,9 +1450,30 @@ const TABS = [
   { id: 'escuchas', txt: 'Estadísticas', ic: 'grafica' },
   { id: 'cambios', txt: 'Cambios', ic: 'deshacer' }
 ];
+/* En el movil: cuatro pestañas principales abajo y «Más» con el resto */
+const PRINCIPALES = ['playlists', 'likes', 'misdiscos', 'buscar'];
 function pintarTabs() {
-  $('#tabs').innerHTML = TABS.map(t => '<button class="tab' + (S.tab === t.id && !S.vista ? ' on' : '') + '" data-t="' + t.id + '">' + ic(t.ic) + t.txt + '</button>').join('');
+  $('#tabs').innerHTML = TABS.map(t => '<button class="tab' + (S.tab === t.id ? ' on' : '') + '" data-t="' + t.id + '">' + ic(t.ic) + t.txt + '</button>').join('');
+  const otra = PRINCIPALES.indexOf(S.tab) < 0;
+  $('#bnav').innerHTML = PRINCIPALES.map(id => { const t = TABS.find(x => x.id === id); return '<button class="' + (S.tab === id ? 'on' : '') + '" data-t="' + id + '">' + ic(t.ic) + '<span>' + (id === 'misdiscos' ? 'Discos' : t.txt) + '</span></button>'; }).join('') +
+    '<button class="' + (otra ? 'on' : '') + '" data-t="_mas">' + ic(otra ? (TABS.find(x => x.id === S.tab) || {}).ic || 'mas' : 'mas') + '<span>' + (otra ? (TABS.find(x => x.id === S.tab) || {}).txt || 'Más' : 'Más') + '</span></button>';
 }
+function irATab(id) {
+  S.tab = id; S.vista = null; S.pila = []; S.fuente = null; S.filtro = ''; modoSelPl = false; limpiarSel();
+  render(); scrollTo(0, 0);
+}
+$('#bnav').onclick = e => {
+  const b = e.target.closest('[data-t]'); if (!b) return;
+  if (b.dataset.t !== '_mas') return irATab(b.dataset.t);
+  hoja('<h2>Más</h2><div class="opc">' + TABS.filter(t => PRINCIPALES.indexOf(t.id) < 0).map(t => '<button data-t="' + t.id + '">' + ic(t.ic) + '<span>' + t.txt + '</span></button>').join('') +
+    '<div class="sec">Ajustes</div><button data-x="cupo">' + ic('grafica') + 'Tu cupo de Spotify</button><button data-x="aj">' + ic('ajustes') + 'Conexión, copias y tema</button></div>', h => {
+      h.querySelector('.opc').onclick = ev => {
+        const x = ev.target.closest('[data-t],[data-x]'); if (!x) return;
+        cerrarHoja(true);
+        if (x.dataset.t) irATab(x.dataset.t); else if (x.dataset.x === 'cupo') hojaCupo(); else hojaAjustes();
+      };
+    });
+};
 $('#tabs').onclick = e => {
   const b = e.target.closest('[data-t]'); if (!b) return;
   S.tab = b.dataset.t; S.vista = null; S.pila = []; S.fuente = null; S.filtro = ''; modoSelPl = false; limpiarSel();
@@ -1245,10 +1494,16 @@ function atras() {
 }
 function limpiarSel() { S.sel.clear(); S.selObj.clear(); S.soloSel = false; pintarAccion(); }
 
+let _pantalla = '';
 function render() {
   pintarTabs();
   const m = $('#main');
   m.onclick = null;
+  const titulos = { playlists: 'Tus playlists', discos: 'Discos guardados', artistas: 'Artistas que sigues', mis: 'Mis artistas', buscar: 'Buscar', escuchas: 'Estadísticas', cambios: 'Cambios' };
+  if (!S.vista && titulos[S.tab] && conectado()) m.dataset.titulo = titulos[S.tab]; else delete m.dataset.titulo;
+  const clave = S.tab + '|' + S.pila.length + '|' + (S.vista ? 'v' : '');
+  if (clave !== _pantalla) { _pantalla = clave; m.classList.remove('entra'); void m.offsetWidth; m.classList.add('entra'); }
+  setTimeout(() => tintar(m), 0);
   if (!conectado()) { m.innerHTML = htmlSinConexion(); pintarAccion(); return; }
   if (S.vista) return S.vista.pintar(m);
   const f = { playlists: vPlaylists, likes: vLikes, misdiscos: vMisDiscos, discos: vDiscos, artistas: vArtistas, mis: vMis, buscar: vBuscar, escuchas: vEscuchas, cambios: vCambios }[S.tab];
@@ -2102,7 +2357,7 @@ function progresoCarga(n, t) {
 async function pintarFuente(m, f, cargar) {
   if (!f.pistas) {
     m.innerHTML = cabFuente(f) + '<div class="spin"></div><div class="vacio" id="cargaTxt"></div>';
-    enganchaCab(m, f);
+    enganchaCab(m, f); tintar(m);
     try { f.pistas = await cargar(); } catch (e) { return fallo(m, e); }
     if (S.fuente !== f) return;
   }
@@ -2111,7 +2366,7 @@ async function pintarFuente(m, f, cargar) {
     '<select class="field" id="fO">' + [['', f.kind === 'playlist' || f.kind === 'album' ? 'Su orden' : 'Recientes'], ['title', 'Título'], ['artist', 'Artista'], ['album', 'Disco'], ['year', 'Año ↓'], ['yearA', 'Año ↑'], ['ms', 'Duración'], ['added', 'Añadida ↓'], ['addedA', 'Añadida ↑']]
       .filter(o => f.kind !== 'album' || o[0].indexOf('added') < 0).map(o => '<option value="' + o[0] + '"' + (S.orden === o[0] ? ' selected' : '') + '>' + o[1] + '</option>').join('') + '</select></div>' +
     '<div class="selbar" id="selbar"></div><div class="vlist" id="vlist"></div>';
-  enganchaCab(m, f);
+  enganchaCab(m, f); tintar(m);
   $('#fQ').oninput = e => { S.filtro = e.target.value; recalcular(); };
   $('#fO').onchange = e => { S.orden = e.target.value; recalcular(); };
   recalcular();
@@ -2123,14 +2378,16 @@ function cabFuente(f) {
   let sub = n + ' canciones' + (tot ? ' · ' + durLarga(tot) : '');
   if (f.kind === 'playlist') sub += esMia(f.meta) ? (f.meta.publica ? ' · pública' : ' · privada') : ' · de ' + esc(f.meta.owner.display_name || '');
   if (f.kind === 'album') sub = esc(f.meta.artistas) + ' · ' + f.meta.year + ' · ' + sub;
-  return '<button class="btn ghost sm back" id="bAtras">' + ic('atras') + 'Atrás</button>' +
-    '<div class="cab">' + (img ? '<img src="' + esc(img) + '" alt="">' : ph(f.kind === 'likes' ? 'corazon' : 'lista')) +
-    '<div class="txt"><h2 class="nowrap">' + esc(f.name) + '</h2><div class="soft tiny">' + sub + '</div>' +
-    (f.meta && f.meta.desc ? '<div class="mute tiny nowrap">' + esc(f.meta.desc.replace(/<[^>]+>/g, '')) + '</div>' : '') +
-    '<div class="btnrow" style="margin-top:8px">' +
-    (f.kind === 'playlist' || f.kind === 'album' ? '<button class="btn sm pri" id="bPlay">' + ic('play') + 'Reproducir</button>' : '') +
-    (f.herramientas !== false ? '<button class="btn sm" id="bHerr">' + (f.kind === 'playlist' && f.editable ? ic('lapiz') + 'Editar' : ic('mas') + 'Opciones') + '</button>' : '') +
-    '</div></div></div>';
+  const eti = { playlist: 'Playlist', album: 'Disco', likes: 'Tu biblioteca', todo: 'Tu biblioteca' }[f.kind] || 'Lista';
+  return '<div class="hero"' + (img ? ' data-tinte="' + esc(img) + '"' : ' style="--tinte:' + (f.kind === 'likes' ? '#6a4fd8' : 'var(--surface-3)') + '"') + '>' +
+    '<button class="btn ghost sm back" id="bAtras">' + ic('atras') + 'Atrás</button>' +
+    '<div class="hero-in">' + (img ? '<img src="' + esc(img) + '" alt="">' : (f.kind === 'likes' ? '<div class="ph" style="background:linear-gradient(135deg,#4a2fd0,#b8a7ff);color:#fff">' + ic('corazon') + '</div>' : ph('lista'))) +
+    '<div class="txt"><div class="eti">' + eti + '</div><h2>' + esc(f.name) + '</h2><div class="soft tiny">' + sub + '</div>' +
+    (f.meta && f.meta.desc ? '<div class="mute tiny nowrap" style="margin-top:2px">' + esc(f.meta.desc.replace(/<[^>]+>/g, '')) + '</div>' : '') +
+    '<div class="btnrow">' +
+    (f.kind === 'playlist' || f.kind === 'album' ? '<button class="btn pri bplay" id="bPlay" aria-label="Reproducir">' + ic('play') + '</button>' : '') +
+    (f.herramientas !== false ? '<button class="btn" id="bHerr">' + (f.kind === 'playlist' && f.editable ? ic('lapiz') + 'Editar' : ic('mas') + 'Opciones') + '</button>' : '') +
+    '</div></div></div></div>';
 }
 function enganchaCab(m, f) {
   $('#bAtras').onclick = atras;
@@ -3114,16 +3371,16 @@ function abrirArtista(id) {
     const grupo = t => discos.filter(d => d.tipo === t);
     const sec = (t, nom) => grupo(t).length ? '<h3>' + nom + ' · ' + grupo(t).length + '</h3><div class="lista-obj">' + grupo(t).map(d => '<div class="obj" data-id="' + d.id + '">' + imgOph(d.img, 'disco') + '<div class="t"><div class="t1 nowrap">' + esc(d.name) + '</div><div class="t2">' + d.year + ' · ' + d.total + ' canciones</div></div></div>').join('') + '</div>' : '';
     m.innerHTML = '<button class="btn ghost sm back" id="bAtras">' + ic('atras') + 'Atrás</button>' +
-      '<div class="cab">' + (x.imgG ? '<img src="' + esc(x.imgG) + '" style="border-radius:50%">' : ph('persona', true)) + '<div class="txt"><h2>' + esc(x.name) + '</h2><div class="soft tiny">' + esc(x.sub) + '</div>' +
-      '<div class="btnrow" style="margin-top:8px"><button class="btn sm pri" id="bPlayA">' + ic('play') + 'Reproducir</button>' +
-      (sigo != null ? '<button class="btn sm" id="bSeguir">' + (sigo ? 'Dejar de seguir' : 'Seguir') + '</button>' : '') +
-      '<button class="btn sm" id="bCanc">' + ic('buscar') + 'Sus canciones</button></div></div></div>' +
+      '<div class="hero red"' + (x.imgG ? ' data-tinte="' + esc(x.imgG) + '"' : '') + '><div class="hero-in">' + (x.imgG ? '<img src="' + esc(x.imgG) + '" alt="">' : ph('persona', true)) + '<div class="txt"><div class="eti">Artista</div><h2>' + esc(x.name) + '</h2><div class="soft tiny">' + esc(x.sub) + '</div>' +
+      '<div class="btnrow"><button class="btn pri bplay" id="bPlayA" aria-label="Reproducir">' + ic('play') + '</button>' +
+      (sigo != null ? '<button class="btn" id="bSeguir">' + (sigo ? 'Siguiendo' : 'Seguir') + '</button>' : '') +
+      '<button class="btn" id="bCanc">' + ic('buscar') + 'Sus canciones</button></div></div></div></div>' +
       '<div id="misBloque"></div>' + sec('album', 'Discos') + sec('single', 'Sencillos y EP') + sec('compilation', 'Recopilatorios') +
       (discos.length >= 30 && S._masDiscos !== id ? '<button class="btn sm" id="bMasDiscos" style="margin-top:10px">Ver toda su discografía</button>' : '');
     $('#bAtras').onclick = atras;
     $('#bPlayA').onclick = () => reproducir({ context_uri: a.uri });
     const bmd = $('#bMasDiscos'); if (bmd) bmd.onclick = () => { S._masDiscos = id; render(); };
-    pintarBloqueMis(a);
+    pintarBloqueMis(a); tintar(m);
     const bs = $('#bSeguir'); if (bs) bs.onclick = async () => { await alternarBiblio(a.uri, 'artista'); render(); };
     $('#bCanc').onclick = () => { S.tab = 'buscar'; S.vista = null; S.pila = []; S.buscar = { q: 'artist:"' + a.name + '"', tipo: 'track', res: null }; render(); lanzarBusqueda(); };
     m.querySelectorAll('.obj[data-id]').forEach(el => el.onclick = () => abrirDisco(el.dataset.id, discos.find(d => d.id === el.dataset.id)));
@@ -3257,11 +3514,45 @@ async function leerReproductor() {
   pintarMini();
   if (antes !== t.uri) pintarFilas(true);
 }
+/* El color de una portada: se reduce a 12x12 y se hace la media pesando
+   mas los pixeles con color (los grises casi no cuentan). */
+const _colores = new Map();
+function colorDe(url) {
+  return new Promise(ok => {
+    if (!url) return ok(null);
+    if (_colores.has(url)) return ok(_colores.get(url));
+    const im = new Image(); im.crossOrigin = 'anonymous';
+    im.onload = () => {
+      try {
+        const c = document.createElement('canvas'); c.width = c.height = 12;
+        const x = c.getContext('2d'); x.drawImage(im, 0, 0, 12, 12);
+        const d = x.getImageData(0, 0, 12, 12).data;
+        let r = 0, g = 0, b = 0, n = 0;
+        for (let i = 0; i < d.length; i += 4) { const R = d[i], G = d[i + 1], B = d[i + 2], sat = (Math.max(R, G, B) - Math.min(R, G, B)) / 255, w = 0.08 + sat * sat * 3; r += R * w; g += G * w; b += B * w; n += w; }
+        r /= n; g /= n; b /= n;
+        /* ni muy oscuro ni quemado */
+        const l = (Math.max(r, g, b) + Math.min(r, g, b)) / 2, k = l < 70 ? 70 / Math.max(l, 1) : l > 190 ? 190 / l : 1;
+        const col = 'rgb(' + [r, g, b].map(v => Math.round(Math.min(255, v * k))).join(',') + ')';
+        _colores.set(url, col); ok(col);
+      } catch (e) { _colores.set(url, null); ok(null); }
+    };
+    im.onerror = () => { _colores.set(url, null); ok(null); };
+    im.src = url;
+  });
+}
+function tintar(raiz) {
+  (raiz || document).querySelectorAll('[data-tinte]').forEach(el => {
+    if (el._tinteDe === el.dataset.tinte) return;
+    el._tinteDe = el.dataset.tinte;
+    colorDe(el.dataset.tinte).then(c => { if (c) el.style.setProperty('--tinte', c); });
+  });
+}
 function pintarMini() {
   const s = S.suena, el = $('#mini');
   if (!s) { el.hidden = true; return; }
   el.hidden = false;
   const prog = Math.min(1, (s.prog + (s.playing ? Date.now() - s.at : 0)) / (s.dur || 1));
+  if (el._tinteDe !== s.p.cover) { el._tinteDe = s.p.cover; colorDe(s.p.coverG || s.p.cover).then(c => { if (c) el.style.setProperty('--tinte', c); else el.style.removeProperty('--tinte'); }); }
   el.innerHTML = imgOph(s.p.cover, 'disco') + '<div class="t"><div class="t1 nowrap">' + esc(s.p.title) + '</div><div class="t2 nowrap">' + esc(nombresArtistas(s.p)) + (s.disp ? ' · ' + esc(s.disp.name) : '') + '</div><div class="prog"><i style="width:' + (prog * 100).toFixed(1) + '%"></i></div></div>' +
     '<button class="btn ico" data-p="ant">' + ic('ant') + '</button><button class="btn ico" data-p="pp">' + ic(s.playing ? 'pausa' : 'play') + '</button><button class="btn ico" data-p="sig">' + ic('sig') + '</button>';
 }
@@ -4571,6 +4862,7 @@ function confirmar(titulo, boton, texto) {
    ARRANQUE
    ============================================================ */
 $('#bRecargar').innerHTML = ic('recargar');
+document.querySelector('.logo .marca').innerHTML = ic('play');
 $('#bAjustes').innerHTML = ic('ajustes');
 $('#bRecargar').onclick = () => {
   invalidar();
