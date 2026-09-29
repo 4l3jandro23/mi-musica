@@ -1,12 +1,89 @@
 {
- "version": "2026-09-29d",
- "at": "2026-09-29T17:41:16.498Z",
+ "version": "2026-09-29f",
+ "at": "2026-09-29T20:20:55.830Z",
  "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
  "pantalla": "1368x673",
- "pausaSeg": 0,
+ "pausaSeg": 2,
  "cola": 0,
  "permisosQueFaltan": [],
  "fallos": [
+  {
+   "at": 1790713240636,
+   "donde": "freno",
+   "msg": "Spotify pide esperar 16 s (429)",
+   "st": 429,
+   "ruta": "GET /artists/25uiPmTg16RbhZWAqwLBy5"
+  },
+  {
+   "at": 1790713232262,
+   "donde": "freno",
+   "msg": "Spotify pide esperar 8 s (429)",
+   "st": 429,
+   "ruta": "GET /artists/25uiPmTg16RbhZWAqwLBy5"
+  },
+  {
+   "at": 1790713227398,
+   "donde": "freno",
+   "msg": "Spotify pide esperar 4 s (429)",
+   "st": 429,
+   "ruta": "GET /artists/25uiPmTg16RbhZWAqwLBy5"
+  },
+  {
+   "at": 1790713225000,
+   "donde": "freno",
+   "msg": "Spotify pide esperar 2 s (429)",
+   "st": 429,
+   "ruta": "GET /artists/25uiPmTg16RbhZWAqwLBy5"
+  },
+  {
+   "at": 1790713211465,
+   "donde": "cargar",
+   "msg": "Spotify está frenando esa parte (albums) un par de minutos. El resto funciona.",
+   "st": 429,
+   "ruta": "GET /albums"
+  },
+  {
+   "at": 1790713207556,
+   "donde": "cargar",
+   "msg": "Spotify está frenando esa parte (albums) un par de minutos. El resto funciona.",
+   "st": 429,
+   "ruta": "GET /albums"
+  },
+  {
+   "at": 1790713202406,
+   "donde": "cargar",
+   "msg": "Spotify está frenando las peticiones: prueba en un rato",
+   "st": 429,
+   "ruta": "GET /albums/3SUEJULSGgBDG1j4GQhfYY"
+  },
+  {
+   "at": 1790713202393,
+   "donde": "freno",
+   "msg": "Spotify pide esperar 16 s (429)",
+   "st": 429,
+   "ruta": "GET /albums/3SUEJULSGgBDG1j4GQhfYY"
+  },
+  {
+   "at": 1790713194023,
+   "donde": "freno",
+   "msg": "Spotify pide esperar 8 s (429)",
+   "st": 429,
+   "ruta": "GET /albums/3SUEJULSGgBDG1j4GQhfYY"
+  },
+  {
+   "at": 1790713189500,
+   "donde": "freno",
+   "msg": "Spotify pide esperar 4 s (429)",
+   "st": 429,
+   "ruta": "GET /albums/3SUEJULSGgBDG1j4GQhfYY"
+  },
+  {
+   "at": 1790713187131,
+   "donde": "freno",
+   "msg": "Spotify pide esperar 2 s (429)",
+   "st": 429,
+   "ruta": "GET /albums/3SUEJULSGgBDG1j4GQhfYY"
+  },
   {
    "at": 1790703507526,
    "donde": "freno",
