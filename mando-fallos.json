@@ -1,9 +1,9 @@
 {
  "version": "2026-09-29c",
- "at": "2026-09-29T17:32:07.758Z",
+ "at": "2026-09-29T17:32:13.496Z",
  "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
  "pantalla": "1368x673",
- "pausaSeg": 8,
+ "pausaSeg": 2,
  "cola": 0,
  "permisosQueFaltan": [],
  "fallos": [
@@ -43,10 +43,5 @@
    "ruta": ""
   }
  ],
- "diagnostico": [
-  "-- Versión 2026-09-29c",
-  "OK Hay conexión guardada (Client ID …0ce7)",
-  "OK Tiene todos los permisos",
-  "MAL Spotify te tiene en pausa 1 min más, por demasiadas peticiones. No pruebo nada más para no alargarla."
- ]
+ "diagnostico": null
 }
