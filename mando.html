@@ -72,7 +72,7 @@
     padding-top: env(safe-area-inset-top);
   }
   .bar { display: flex; align-items: center; gap: 8px; padding: 9px 14px 6px; max-width: 900px; margin: 0 auto; }
-  .logo { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; flex: 1; min-width: 0; }
+  .logo { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 18px; font-weight: 800; letter-spacing: -0.3px; flex: 1; min-width: 0; }
   .logo span { color: var(--amber); }
   .tabs { display: flex; gap: 4px; overflow-x: auto; padding: 2px 14px 9px; max-width: 900px; margin: 0 auto; scrollbar-width: none; }
   .tabs::-webkit-scrollbar { display: none; }
@@ -184,6 +184,14 @@
   .elnum input { width: 74px; padding: 7px 10px; }
   .elpie { position: sticky; bottom: 0; background: var(--bg); padding: 10px 0 2px; margin-top: 12px; display: flex; gap: 8px; }
   .accion .cerrar { padding: 6px; }
+
+  /* medidor de cupo */
+  .cupo { border: 1px solid var(--line); background: var(--surface); color: var(--fg-soft); border-radius: 999px; padding: 5px 10px 5px 8px; font-weight: 700; font-size: 12.5px; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+  .cupo i { width: 9px; height: 9px; border-radius: 50%; background: #2f8f5e; flex: none; }
+  .cupo.medio i { background: #d98c1f; } .cupo.alto i, .cupo.frenado i { background: #c4342e; }
+  .cupo.frenado { color: #c4342e; border-color: #c4342e; }
+  .medbar { height: 10px; border-radius: 6px; background: var(--surface-2); overflow: hidden; margin: 6px 0 2px; }
+  .medbar i { display: block; height: 100%; border-radius: 6px; }
 
   /* etiquetas */
   .etqs { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
@@ -358,6 +366,7 @@
 <header class="top">
   <div class="bar">
     <div class="logo">Mando <span>de Spotify</span></div>
+    <button class="cupo" id="bCupo" title="Cuánto estás usando de Spotify"><i></i><span>Cupo</span></button>
     <button class="btn ghost ico" id="bRecargar" title="Volver a leer de Spotify"></button>
     <button class="btn ghost ico" id="bAjustes" title="Conexión y copias"></button>
   </div>
@@ -399,7 +408,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-09-29g';
+const VERSION = '2026-09-29h';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -577,8 +586,11 @@ async function motivo(res) {
    ir un poco mas despacio sale muchisimo mas rapido. */
 let _prox = 0, _lentoHasta = 0;
 async function ritmo() {
-  /* tras un aviso de Spotify se va mucho mas despacio durante 10 minutos */
-  const hueco = Date.now() < _lentoHasta ? 900 : 200;
+  /* Gobernador: tras un aviso de Spotify se va mucho mas despacio 10
+     minutos, y aunque no haya aviso, si en los ultimos 30 s ya van muchas
+     peticiones se frena solo ANTES de que Spotify castigue. */
+  const n = enVentana();
+  const hueco = Date.now() < _lentoHasta ? 900 : n > UMBRAL_ALTO ? 900 : n > UMBRAL_MEDIO ? 450 : 200;
   const ahora = Date.now(), t = Math.max(ahora, _prox);
   _prox = t + hueco;
   if (t > ahora) await sleep(t - ahora);
@@ -670,7 +682,10 @@ setInterval(procesarCola, 60000);
    descansar 2 minutos en vez de seguir pidiendole cosas. */
 const _enfria = {};
 const familia = ruta => '/' + (ruta.replace(API, '').split('?')[0].split('/')[1] || '');
-let _pets = [];
+let _pets = [];      // { t, f }: cada peticion a Spotify, para el medidor
+const VENTANA = 30000; // Spotify cuenta por ventanas de 30 segundos
+const UMBRAL_MEDIO = 50, UMBRAL_ALTO = 80;
+const enVentana = () => { const d = Date.now() - VENTANA; let n = 0; for (let i = _pets.length - 1; i >= 0 && _pets[i].t > d; i--) n++; return n; };
 async function sp(ruta, o) {
   o = o || {};
   let intentos = 0;
@@ -684,7 +699,8 @@ async function sp(ruta, o) {
     if (!o.ignorarPausa && esperaPendiente() > ESPERA_MAX) { if (encolable(ruta, o)) return encolar(ruta, o); throw errorFreno(); }
     if (!o.ignorarPausa) await esperarTurno();
     await ritmo();
-    _pets.push(Date.now()); if (_pets.length > 800) _pets = _pets.slice(-600);
+    _pets.push({ t: Date.now(), f: fam }); if (_pets.length > 1500) _pets = _pets.slice(-1000);
+    contarDia();
     const tk = await token();
     const cab = { Authorization: 'Bearer ' + tk };
     let cuerpo;
@@ -995,6 +1011,58 @@ async function indice(forzar) {
   S.indice = { m: m, pls: pls, at: Date.now() };
   return S.indice;
 }
+/* ---- Medidor ---- */
+function contarDia() {
+  const hoy = new Date().toISOString().slice(0, 10), c = _dia || {};
+  if (c.d !== hoy) { c.d = hoy; c.n = 0; }
+  c.n++;
+  if (c.n % 10 === 0 || c.n < 10) escribir('mando_pets_dia_v1', c);
+  _dia = c;
+}
+let _dia = leer('mando_pets_dia_v1', {});
+addEventListener('pagehide', () => escribir('mando_pets_dia_v1', _dia));
+function nivelCupo() {
+  const enf = Object.keys(_enfria).filter(k => _enfria[k] > Date.now());
+  if (esperaPendiente() > 0 || enf.length) return { k: 'frenado', t: 'Frenado', enf: enf };
+  const n = enVentana();
+  if (n > UMBRAL_ALTO) return { k: 'alto', t: 'Alto', n: n, enf: enf };
+  if (n > UMBRAL_MEDIO) return { k: 'medio', t: 'Medio', n: n, enf: enf };
+  return { k: 'bajo', t: 'Bien', n: n, enf: enf };
+}
+let _cupoK = '';
+function pintarCupo() {
+  const b = $('#bCupo'); if (!b) return;
+  const c = nivelCupo(), clave = c.k + '|' + (c.n || 0);
+  if (clave === _cupoK) return;
+  _cupoK = clave;
+  b.className = 'cupo ' + c.k;
+  b.querySelector('span').textContent = c.k === 'frenado' ? 'Frenado' : c.k === 'bajo' ? 'Cupo ok' : c.k === 'medio' ? 'Medio' : 'Alto';
+}
+setInterval(pintarCupo, 1500);
+function hojaCupo() {
+  const c = nivelCupo(), n30 = enVentana(), n10 = _pets.filter(x => Date.now() - x.t < 600000).length;
+  const fams = contar(_pets.filter(x => Date.now() - x.t < 600000), x => x.f);
+  const nomF = f => ({ '/me': 'tu biblioteca y reproductor', '/playlists': 'playlists', '/artists': 'artistas', '/albums': 'discos', '/search': 'búsqueda' }[f] || f.slice(1));
+  const pct = Math.min(100, Math.round(100 * n30 / (UMBRAL_ALTO + 20)));
+  const col = { bajo: '#2f8f5e', medio: '#d98c1f', alto: '#c4342e', frenado: '#c4342e' }[c.k];
+  hoja('<h2>Tu cupo de Spotify</h2><p class="soft tiny">Spotify deja a tu app hacer un número limitado de peticiones cada 30 segundos. Si te pasas, frena un rato (a veces horas). El Mando va más despacio solo cuando ve que te acercas.</p>' +
+    '<div class="medbar"><i style="width:' + pct + '%;background:' + col + '"></i></div>' +
+    '<p style="margin:4px 0 12px"><b>' + (c.k === 'frenado' ? 'Ahora mismo Spotify está frenando' : c.k === 'alto' ? 'Vas muy deprisa: el Mando ya está bajando el ritmo' : c.k === 'medio' ? 'Uso medio: el Mando va algo más despacio' : 'Vas bien') + '</b></p>' +
+    '<div class="aviso">' + n30 + ' peticiones en los últimos 30 s · ' + n10 + ' en 10 min · ' + ((_dia && _dia.n) || 0) + ' hoy' +
+    (esperaPendiente() > 0 ? '<br><b style="display:inline">Pausa de Spotify:</b> ' + Math.ceil(esperaPendiente() / 60) + ' min más' : '') +
+    (c.enf && c.enf.length ? '<br><b style="display:inline">Descansando:</b> ' + c.enf.map(nomF).join(', ') + ' (el resto funciona)' : '') +
+    (COLA.length ? '<br>' + COLA.length + ' cambios en cola' : '') + '</div>' +
+    (fams.length ? '<div class="elsec">En qué se ha gastado (10 min)</div>' + fams.map(([f, k]) => '<div class="barra"><span style="width:46%" class="nowrap">' + esc(nomF(f)) + '</span><i style="width:' + Math.max(3, 50 * k / fams[0][1]) + '%"></i><span class="mute">' + k + '</span></div>').join('') : '') +
+    '<div class="elsec">Lo que más gasta</div><p class="tiny soft" style="margin:0">Cargar Me gusta entero la primera vez (luego solo lo nuevo), «Toda mi música», copias de seguridad, playlists con discos enteros y novedades. Artistas y discos ya se guardan en el aparato: abrirlos otra vez no gasta nada.</p>');
+}
+async function avisoCoste(n, que) {
+  const c = nivelCupo();
+  if (n <= 120 && c.k !== 'alto' && c.k !== 'frenado') return true;
+  const min = Math.max(1, Math.round(n * 0.45 / 60));
+  return confirmar(que + ': unas ' + n + ' peticiones a Spotify', 'Seguir',
+    (c.k === 'alto' || c.k === 'frenado' ? 'Ahora mismo ya vas deprisa: mejor dentro de un rato. ' : '') + 'A buen ritmo tarda unos ' + min + ' min y, mientras, el resto del Mando irá más lento.');
+}
+
 /* Artistas guardados en el aparato 30 dias: la ruta de artistas es la que
    Spotify limita mas, y un artista casi nunca cambia. */
 const _arts = new Map();
@@ -1011,6 +1079,19 @@ async function artistaSp(id) {
   }
   return a;
 }
+async function artistaLigero(id) {
+  if (_arts.has(id)) return _arts.get(id);
+  const c = await cacheLeer('art:' + id);
+  if (c && Date.now() - c.at < 30 * 864e5) { _arts.set(id, c.a); return c.a; }
+  const seg = (S.artistas || S.segCache || []).find(a => a.id === id);
+  const m = MIS && misPorId(id), con = artistasConocidos().get(id);
+  const nombre = (seg && seg.name) || (m && m.name) || (con && con.name);
+  const img = (seg && seg.imgG) || (m && m.img) || (con && con.img) || '';
+  /* sin foto se pide a Spotify solo si vas holgado de cupo */
+  if (nombre && (img || nivelCupo().k !== 'bajo' || (_enfria['/artists'] || 0) > Date.now()))
+    return { id: id, uri: 'spotify:artist:' + id, name: nombre, genres: (m && m.genres) || (seg && seg.generos) || [], images: img ? [{ url: img, width: 300 }] : [] };
+  return artistaSp(id);
+}
 const nombrePl = id => ((S.playlists || []).find(p => p.id === id) || {}).name || '?';
 
 /* ============================================================
@@ -1024,8 +1105,9 @@ async function trozos(arr, n, fn, etiqueta) {
 }
 /* Biblioteca unificada de 2026: canciones, discos, artistas y playlists
    se guardan / siguen y se quitan con la misma ruta, de 40 en 40. */
-const libPoner = (uris, et) => trozos(uris, 40, u => sp('/me/library?uris=' + encodeURIComponent(u.join(',')), { method: 'PUT' }), et);
-const libQuitar = (uris, et) => trozos(uris, 40, u => sp('/me/library?uris=' + encodeURIComponent(u.join(',')), { method: 'DELETE' }), et);
+const olvidarSeguidos = uris => { if (uris.some(u => String(u).indexOf(':artist:') > 0)) { S.segCache = null; cachePoner('seguidos', null); } };
+const libPoner = (uris, et) => (olvidarSeguidos(uris), trozos(uris, 40, u => sp('/me/library?uris=' + encodeURIComponent(u.join(',')), { method: 'PUT' }), et));
+const libQuitar = (uris, et) => (olvidarSeguidos(uris), trozos(uris, 40, u => sp('/me/library?uris=' + encodeURIComponent(u.join(',')), { method: 'DELETE' }), et));
 async function libTiene(uris) {
   try { return await libTieneSp(uris); }
   catch (e) {
@@ -1833,7 +1915,9 @@ async function pistasDisco(id) {
 }
 async function playlistDiscosEnteros(l) {
   if (!l.length) { toast('No hay discos con ese filtro'); return; }
-  if (l.length > 60 && !(await confirmar('Son ' + l.length + ' discos', 'Seguir', 'Hay que pedir a Spotify las canciones de cada uno: tardará un poco. Mejor filtra antes (por estado, década o género).'))) return;
+  let sinGuardar = 0;
+  for (const d of l) { const c = await cacheLeer('alb:' + d.id); if (!c) sinGuardar++; }
+  if (!(await avisoCoste(sinGuardar, 'Leer ' + sinGuardar + ' discos que aún no están guardados'))) return;
   const uris = await trabajo(async () => {
     const u = [];
     for (let i = 0; i < l.length; i++) { progreso('Leyendo «' + l[i].name + '»', i, l.length); (await pistasDisco(l[i].id)).forEach(x => u.push(x)); }
@@ -2640,7 +2724,7 @@ async function guardarEnBiblio(uris, que) {
     if (!nuevas.length) { toast('Ya tenías todos'); return; }
     await libPoner(nuevas, que === 'discos' ? 'Guardando discos' : 'Siguiendo artistas');
     apuntar((que === 'discos' ? nuevas.length + ' discos guardados' : nuevas.length + ' artistas seguidos'), { t: 'libQuitar', uris: nuevas });
-    S.discos = null; S.artistas = null;
+    S.discos = null; S.artistas = null; S.segCache = null; cachePoner('seguidos', null);
     toast(que === 'discos' ? nuevas.length + ' discos guardados' : 'Sigues a ' + nuevas.length + ' artistas más');
   }, 'Guardando');
 }
@@ -2700,7 +2784,7 @@ async function alternarBiblio(uri, que) {
     const [ya] = await libTiene([uri]);
     if (ya) { await libQuitar([uri]); apuntar((que === 'disco' ? 'Disco quitado' : 'Dejado de seguir'), { t: 'libPoner', uris: [uri] }); toast(que === 'disco' ? 'Disco quitado de tu biblioteca' : 'Ya no lo sigues'); }
     else { await libPoner([uri]); apuntar((que === 'disco' ? 'Disco guardado' : 'Siguiendo'), { t: 'libQuitar', uris: [uri] }); toast(que === 'disco' ? 'Disco guardado en tu biblioteca' : 'Ahora lo sigues'); }
-    S.discos = null; S.artistas = null;
+    S.discos = null; S.artistas = null; S.segCache = null; cachePoner('seguidos', null);
   }, 'Guardando');
 }
 async function repesEnVarias(ids) {
@@ -2999,8 +3083,8 @@ async function abrirDisco(id, d) {
 async function vArtistas(m) {
   if (!S.artistas) {
     cargando(m);
-    try { S.artistas = (await paginar('/me/following?type=artist', { limite: 50, clave: 'artists' })).map(artistaDe); }
-    catch (e) { return fallo(m, e); }
+    try { S.artistas = (await paginar('/me/following?type=artist', { limite: 50, clave: 'artists' })).map(artistaDe); cachePoner('seguidos', S.artistas); S.segCache = S.artistas; }
+    catch (e) { const c = esCaida(e) && await cacheLeer('seguidos'); if (!c) return fallo(m, e); S.artistas = c; modoGuardado(); }
     if (S.tab !== 'artistas' || S.vista) return;
   }
   pintarObjetos(m, S.artistas, 'artista', a => abrirArtista(a.id), 'artistas que sigues');
@@ -3012,12 +3096,19 @@ function abrirArtista(id) {
     $('#bAtras').onclick = atras;
     let a, discos, sigo;
     try {
-      a = await artistaSp(id);
+      a = await artistaLigero(id);
       if (MIS && a && misPorId(id) && !misPorId(id).img && imgDe(a.images, 200)) misEditar(id, { img: imgDe(a.images, 200) });
       const cd = await cacheLeer('artAlb:' + id);
-      if (cd && Date.now() - cd.at < 864e5) discos = cd.d;
-      else { discos = (await paginar('/artists/' + id + '/albums?include_groups=album,single,compilation', { limite: 10, tope: 80 })).map(x => discoDe(x)); cachePoner('artAlb:' + id, { at: Date.now(), d: discos }); }
-      try { sigo = (await libTiene([a.uri]))[0]; } catch (e) { sigo = null; }
+      if (cd && Date.now() - cd.at < 7 * 864e5 && (!S._masDiscos || S._masDiscos !== id || cd.todo)) discos = cd.d;
+      else {
+        const tope = S._masDiscos === id ? 150 : 30;
+        discos = (await paginar('/artists/' + id + '/albums?include_groups=album,single,compilation', { limite: 10, tope: tope })).map(x => discoDe(x));
+        cachePoner('artAlb:' + id, { at: Date.now(), d: discos, todo: discos.length < tope });
+      }
+      /* ¿lo sigues? con la lista de Seguidos guardada no hace falta preguntar */
+      const segs = S.artistas || S.segCache;
+      if (segs) sigo = segs.some(x => x.id === id);
+      else { try { sigo = (await libTiene([a.uri]))[0]; } catch (e) { sigo = null; } }
     } catch (e) { return fallo(m, e); }
     const x = artistaDe(a);
     const grupo = t => discos.filter(d => d.tipo === t);
@@ -3027,9 +3118,11 @@ function abrirArtista(id) {
       '<div class="btnrow" style="margin-top:8px"><button class="btn sm pri" id="bPlayA">' + ic('play') + 'Reproducir</button>' +
       (sigo != null ? '<button class="btn sm" id="bSeguir">' + (sigo ? 'Dejar de seguir' : 'Seguir') + '</button>' : '') +
       '<button class="btn sm" id="bCanc">' + ic('buscar') + 'Sus canciones</button></div></div></div>' +
-      '<div id="misBloque"></div>' + sec('album', 'Discos') + sec('single', 'Sencillos y EP') + sec('compilation', 'Recopilatorios');
+      '<div id="misBloque"></div>' + sec('album', 'Discos') + sec('single', 'Sencillos y EP') + sec('compilation', 'Recopilatorios') +
+      (discos.length >= 30 && S._masDiscos !== id ? '<button class="btn sm" id="bMasDiscos" style="margin-top:10px">Ver toda su discografía</button>' : '');
     $('#bAtras').onclick = atras;
     $('#bPlayA').onclick = () => reproducir({ context_uri: a.uri });
+    const bmd = $('#bMasDiscos'); if (bmd) bmd.onclick = () => { S._masDiscos = id; render(); };
     pintarBloqueMis(a);
     const bs = $('#bSeguir'); if (bs) bs.onclick = async () => { await alternarBiblio(a.uri, 'artista'); render(); };
     $('#bCanc').onclick = () => { S.tab = 'buscar'; S.vista = null; S.pila = []; S.buscar = { q: 'artist:"' + a.name + '"', tipo: 'track', res: null }; render(); lanzarBusqueda(); };
@@ -3276,7 +3369,7 @@ async function hojaDiagnostico() {
     const s = esperaPendiente();
     if (s > 0) { linea(false, 'Spotify te tiene en pausa ' + (s < 5400 ? Math.ceil(s / 60) + ' min' : Math.round(s / 3600) + ' h') + ' más, por demasiadas peticiones. No pruebo nada más para no alargarla.'); return fin(); }
     linea(true, 'Spotify no te tiene en pausa');
-    linea(null, COLA.length + ' cambios en cola · ' + _pets.filter(t => Date.now() - t < 60000).length + ' peticiones en el último minuto, ' + _pets.filter(t => Date.now() - t < 600000).length + ' en 10 min');
+    linea(null, COLA.length + ' cambios en cola · ' + _pets.filter(x => Date.now() - x.t < 60000).length + ' peticiones en el último minuto, ' + _pets.filter(x => Date.now() - x.t < 600000).length + ' en 10 min');
     const enf = Object.keys(_enfria).filter(k => _enfria[k] > Date.now());
     if (enf.length) linea(false, 'Descansando por freno: ' + enf.join(', '));
     try { await token(); linea(true, 'La sesión sigue viva'); } catch (e) { linea(false, 'Sesión: ' + e.message); return fin(); }
@@ -3301,6 +3394,8 @@ async function hojaDiagnostico() {
 }
 function aplicarTema() { if (PREFS.tema) document.documentElement.dataset.theme = PREFS.tema; else delete document.documentElement.dataset.theme; }
 async function copiaDeTodo() {
+  const est = (S.playlists || []).reduce((a, p) => a + Math.ceil((p.total || 0) / 50), 0) + 60;
+  if (!(await avisoCoste(est, 'La copia de todo'))) return;
   await trabajo(async () => {
     await yo();
     const pls = await cargarPlaylists(true);
@@ -3804,6 +3899,7 @@ async function misAccion(a) {
    que falte se completa sola al abrir el artista. */
 function artistasConocidos() {
   const m = new Map();
+  for (const a of (S.segCache || [])) m.set(a.id, { id: a.id, name: a.name, img: a.imgG || a.img || '', genres: a.generos });
   const mete = a => { if (a && a.id && !m.has(a.id)) m.set(a.id, { id: a.id, name: a.name, img: a.img || '' }); };
   for (const a of (S.artistas || [])) m.set(a.id, { id: a.id, name: a.name, img: a.imgG || a.img || '', genres: a.generos });
   const listas = [S.fuente && S.fuente.pistas, S.likes, S.visibles].concat(Object.values(ST.datos || {}).map(d => d && d.tracks));
@@ -3821,7 +3917,7 @@ async function aMisDesdeUris(uris) {
     await trabajo(async () => {
       for (let i = 0; i < faltan.length; i++) {
         progreso('Leyendo artistas', i, faltan.length);
-        try { arts.push(await artistaSp(faltan[i])); } catch (e) { if (esCaida(e) || e.message === 'DETENIDO') break; }
+        try { arts.push(await artistaLigero(faltan[i])); } catch (e) { if (esCaida(e) || e.message === 'DETENIDO') break; }
       }
     }, 'Leyendo artistas');
   }
@@ -4028,25 +4124,29 @@ function generosArtista(id) {
   const m = MIS && misPorId(id);
   return m && m.genres ? m.genres : null;
 }
+/* Spotify ya no da generos de artista (y pedirlos gastaba cupo de la parte
+   que mas frena). Ahora salen de Mis artistas y de Last.fm. */
 function faltanGeneros(ps) {
-  const ids = new Set();
-  for (const p of ps) for (const a of p.artists) if (a.id && !generosArtista(a.id)) ids.add(a.id);
-  return Array.from(ids);
+  const v = new Set();
+  for (const p of ps) for (const a of p.artists.slice(0, 2)) if (artistaSinGenero(a)) v.add(fold(a.name));
+  return Array.from(v);
 }
 async function cargarGeneros(ps) {
-  await misAsegurar();
-  /* sin pedidos en bloque desde 2026: uno por artista, asi que con tope */
-  const todos = faltanGeneros(ps), ids = todos.slice(0, 80);
-  if (todos.length > ids.length) setTimeout(() => toast('Mirados ' + ids.length + ' artistas; quedan ' + (todos.length - ids.length) + '. Vuelve a pulsar en un rato (así Spotify no se enfada).', null, 7000), 400);
-  for (let i = 0; i < ids.length; i++) {
-    progreso('Mirando géneros de los artistas', i, ids.length);
-    try { const a = await artistaSp(ids[i]); GEN[ids[i]] = (a && a.genres) || []; }
-    catch (e) { if (e.message === 'DETENIDO' || esCaida(e)) break; GEN[ids[i]] = []; }
-    if (i % 20 === 19) escribir(K_GEN, GEN);
+  await misAsegurar(); await etqAsegurar();
+  if (!lfCfg()) { toast('Para los géneros hace falta tu clave de Last.fm: ponla en Ajustes', null, 6000); return; }
+  const vistos = new Set(), nombres = [];
+  for (const p of ps) for (const a of p.artists.slice(0, 2)) { const k = fold(a.name); if (!vistos.has(k) && artistaSinGenero(a)) { vistos.add(k); nombres.push(a.name); } }
+  for (let i = 0; i < nombres.length; i++) {
+    if (_parar) break;
+    progreso('Géneros de los artistas (Last.fm)', i, nombres.length);
+    try { const g = await lfArtista(nombres[i]); if (g) ETQ.lfa[fold(nombres[i])] = { g: g, at: Date.now() }; }
+    catch (e) { toast(e.message); break; }
+    if (i % 20 === 19) etqCambio();
+    await sleep(260);
   }
-  escribir(K_GEN, GEN);
+  etqCambio();
 }
-const generosDe = p => Array.from(new Set([].concat.apply([], p.artists.map(a => generosArtista(a.id) || []).map(g => g.map(x => String(x).toLowerCase())))));
+const generosDe = p => Array.from(new Set(generosCancion(p).map(x => String(x).toLowerCase())));
 function etiquetasDe(p) {
   if (!MIS) return [];
   const out = new Set();
@@ -4304,7 +4404,7 @@ async function verDatos(f) {
     '<h3>Artistas que más salen</h3>' + barras(arts.slice(0, 12), total) +
     (tagsAmb.length ? '<h3>Estado de ánimo <span class="tiny mute">(tus etiquetas)</span></h3>' + barras(tagsAmb.slice(0, 10), total, t => tagPorId(t).name) : '') +
     (tagsGen.length ? '<h3>Géneros <span class="tiny mute">(tus etiquetas)</span></h3>' + barras(tagsGen.slice(0, 10), total, t => tagPorId(t).name) : '') +
-    (gens.length ? '<h3>Géneros de Spotify</h3>' + barras(gens.slice(0, 10), total) : (faltanGeneros(ps).length ? '<p class="tiny mute">Los géneros de Spotify aún no se han mirado: «Filtrar y crear» los carga.</p>' : '')) +
+    (gens.length ? '<h3>Géneros</h3>' + barras(gens.slice(0, 10), total) : (faltanGeneros(ps).length ? '<p class="tiny mute">Faltan géneros: «Etiquetar automáticamente» los busca en Last.fm.</p>' : '')) +
     (añadidas.length > 1 ? '<h3>Cuándo las añadiste</h3>' + barras(añadidas, total) : '') +
     '<p class="tiny mute" style="margin-top:14px">Spotify ya no da BPM, energía ni popularidad a apps personales; por eso aquí no salen.</p>');
 }
@@ -4326,7 +4426,7 @@ async function vEscuchas(m) {
         const tr = ((x && x.items) || []).map(i => pista(i.track, { added: i.played_at })).filter(Boolean);
         const artC = contar(tr, p => p.artists.slice(0, 1).map(a => a.id));
         const arts = [];
-        for (const [id, n] of artC.slice(0, 12)) { try { const a = await artistaSp(id); arts.push(Object.assign(artistaDe(a), { veces: n })); } catch (e) { if (esCaida(e) || e.status === 429) break; } }
+        for (const [id, n] of artC.slice(0, 12)) { try { const a = await artistaLigero(id); arts.push(Object.assign(artistaDe(a), { veces: n })); } catch (e) { if (esCaida(e) || e.status === 429) break; } }
         const vistas = new Map(); for (const p of tr) { const v = vistas.get(p.uri); if (v) v.veces++; else vistas.set(p.uri, Object.assign(p, { veces: 1 })); }
         d = { arts, tracks: Array.from(vistas.values()).sort((a, b) => b.veces - a.veces), crudo: tr };
       } else {
@@ -4396,8 +4496,8 @@ function abrirNovedades() {
         const seg = await paginar('/me/following?type=artist', { limite: 50, clave: 'artists' });
         const lim = new Date(Date.now() - 62 * 864e5).toISOString().slice(0, 10);
         const porArt = (leer(K_NOV, null) || {}).porArt || {};
-        const pend = seg.filter(a => !porArt[a.id] || Date.now() - porArt[a.id].at > 24 * 36e5);
-        const toca = pend.slice(0, 60);
+        const pend = seg.filter(a => !porArt[a.id] || Date.now() - porArt[a.id].at > 72 * 36e5);
+        const toca = pend.slice(0, 25);
         for (let i = 0; i < toca.length; i++) {
           progreso('Mirando a ' + toca[i].name, i, toca.length);
           try {
@@ -4413,7 +4513,7 @@ function abrirNovedades() {
       c = r; escribir(K_NOV, c);
     }
     const x = $('#nvC'); if (!x) return;
-    x.innerHTML = '<p class="tiny mute">De los artistas que sigues en Spotify, últimos 2 meses · mirado ' + fecha(c.at) + (c.faltan ? ' · <b>faltan ' + c.faltan + ' artistas</b> (se miran de 60 en 60 para que Spotify no te frene)' : '') + ' <button class="btn sm ghost" id="nvRe">' + ic('recargar') + (c.faltan ? 'Mirar más' : 'Volver a mirar') + '</button></p>' +
+    x.innerHTML = '<p class="tiny mute">De los artistas que sigues en Spotify, últimos 2 meses · mirado ' + fecha(c.at) + (c.faltan ? ' · <b>faltan ' + c.faltan + ' artistas</b> (se miran de 25 en 25 para no gastar tu cupo)' : '') + ' <button class="btn sm ghost" id="nvRe">' + ic('recargar') + (c.faltan ? 'Mirar más' : 'Volver a mirar') + '</button></p>' +
       (c.discos.length ? '<div class="btnrow" style="margin-bottom:8px"><button class="btn pri sm" id="nvPl">' + ic('plus') + 'Playlist con todo lo nuevo</button></div><div class="lista-obj">' +
         c.discos.map(d => '<div class="obj" data-id="' + d.id + '">' + imgOph(d.img, 'disco') + '<div class="t"><div class="t1 nowrap">' + esc(d.name) + '</div><div class="t2 nowrap">' + esc(d.artistas) + ' · ' + (d.tipo === 'single' ? 'sencillo' : 'disco') + ' · ' + new Date(d.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }) + '</div></div></div>').join('') + '</div>'
         : '<div class="vacio">Nada nuevo en los últimos 2 meses</div>');
@@ -4478,6 +4578,7 @@ $('#bRecargar').onclick = () => {
   render(); leerReproductor(); toast('Leyendo de nuevo de Spotify');
 };
 $('#bAjustes').onclick = hojaAjustes;
+$('#bCupo').onclick = hojaCupo;
 aplicarTema();
 function medirTop() { const t = document.querySelector('.top'); if (t) document.documentElement.style.setProperty('--topH', t.offsetHeight + 'px'); }
 medirTop(); addEventListener('resize', medirTop);
@@ -4490,6 +4591,8 @@ window.addEventListener('unhandledrejection', e => apuntarFallo(e.reason, 'sin c
   setTimeout(procesarCola, 4000);
   /* al abrir, se trae lo de otros aparatos en segundo plano */
   etqAsegurar().then(() => { if (S.fuente && $('#vlist')) pintarFilas(true); });
+  cacheLeer('seguidos').then(l => { if (l && !S.segCache) S.segCache = l; });
+  pintarCupo();
   if (ghCfg()) misAsegurar().then(() => sincronizarMis()).then(() => sincronizarEtq());
 })();
 document.addEventListener('visibilitychange', () => {
