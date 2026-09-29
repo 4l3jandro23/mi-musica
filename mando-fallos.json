@@ -1,12 +1,40 @@
 {
  "version": "2026-09-30a",
- "at": "2026-09-29T20:59:23.830Z",
+ "at": "2026-09-29T21:02:24.835Z",
  "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
  "pantalla": "1368x673",
- "pausaSeg": 17,
+ "pausaSeg": 0,
  "cola": 0,
  "permisosQueFaltan": [],
  "fallos": [
+  {
+   "at": 1790715581901,
+   "donde": "cargar",
+   "msg": "Spotify ha frenado tus peticiones por ir demasiado deprisa. Vuelve a funcionar solo dentro de 61 segundos. No es una caída ni has perdido nada.",
+   "st": 429,
+   "ruta": ""
+  },
+  {
+   "at": 1790715581901,
+   "donde": "freno",
+   "msg": "Spotify pide esperar 60 s (429)",
+   "st": 429,
+   "ruta": "GET /me/tracks"
+  },
+  {
+   "at": 1790715581140,
+   "donde": "cargar",
+   "msg": "Spotify ha frenado tus peticiones por ir demasiado deprisa. Vuelve a funcionar solo dentro de 61 segundos. No es una caída ni has perdido nada.",
+   "st": 429,
+   "ruta": ""
+  },
+  {
+   "at": 1790715581100,
+   "donde": "freno",
+   "msg": "Spotify pide esperar 60 s (429)",
+   "st": 429,
+   "ruta": "GET /me/following"
+  },
   {
    "at": 1790715547889,
    "donde": "freno",
@@ -188,34 +216,6 @@
    "msg": "Spotify pide esperar 2 s (429)",
    "st": 429,
    "ruta": "GET /me"
-  },
-  {
-   "at": 1790713436892,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 16 s (429)",
-   "st": 429,
-   "ruta": "GET /me/tracks"
-  },
-  {
-   "at": 1790713427877,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 8 s (429)",
-   "st": 429,
-   "ruta": "GET /me/tracks"
-  },
-  {
-   "at": 1790713422881,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 4 s (429)",
-   "st": 429,
-   "ruta": "GET /me/tracks"
-  },
-  {
-   "at": 1790713419928,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 2 s (429)",
-   "st": 429,
-   "ruta": "GET /me/tracks"
   }
  ],
  "diagnostico": null
