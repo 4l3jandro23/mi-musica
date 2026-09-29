@@ -1,0 +1,33 @@
+{
+ "version": "2026-09-29c",
+ "at": "2026-09-29T17:27:06.647Z",
+ "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+ "pantalla": "1368x673",
+ "pausaSeg": 0,
+ "cola": 0,
+ "permisosQueFaltan": [],
+ "fallos": [
+  {
+   "at": 1790701834492,
+   "donde": "Leyendo artistas",
+   "msg": "Spotify está frenando las peticiones: prueba en un rato",
+   "st": 429,
+   "ruta": ""
+  }
+ ],
+ "diagnostico": [
+  "-- Versión 2026-09-29c",
+  "OK Hay conexión guardada (Client ID …0ce7)",
+  "OK Tiene todos los permisos",
+  "OK Spotify no te tiene en pausa",
+  "-- 0 cambios en cola",
+  "OK La sesión sigue viva",
+  "OK Tu perfil (229 ms)",
+  "OK Tus playlists (851 ms)",
+  "OK Tus Me gusta (1138 ms)",
+  "OK Comprobar Me gusta (308 ms)",
+  "OK Artistas que sigues (399 ms)",
+  "MAL Buscar: Spotify no responde (502)",
+  "OK Reproductor (361 ms)"
+ ]
+}
