@@ -3717,7 +3717,7 @@ async function bibliotecaLocal() {
 }
 async function buscarLocal(q) {
   const el = $('#bL'); if (!el) return;
-  const ws = fold(q).trim().split(/\s+/).filter(w => (w.length > 1 || /d/.test(w)) && !/:/.test(w));
+  const ws = fold(q).trim().split(/\s+/).filter(w => (w.length > 1 || /\d/.test(w)) && !/:/.test(w));
   if (!ws.length) { el.innerHTML = ''; return; }
   const lib = await bibliotecaLocal();
   const ms = lib.filter(p => ws.every(w => p._f.indexOf(w) >= 0));
