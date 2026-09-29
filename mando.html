@@ -359,7 +359,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-09-29c';
+const VERSION = '2026-09-29d';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -562,19 +562,30 @@ function subirFallosLuego() {
   const falta = Math.max(15000, 180000 - (Date.now() - (+leer('mando_fallos_subidos_v1', 0))));
   _tFallos = setTimeout(() => subirFallos(), falta);
 }
-async function subirFallos(diag) {
+let _colaSubida = Promise.resolve();
+function subirFallos(diag) {
+  const p = _colaSubida.then(() => subirFallosYa(diag));
+  _colaSubida = p.catch(() => {});
+  return p;
+}
+async function subirFallosYa(diag) {
   const g = ghCfg(); if (!g) return false;
   escribir('mando_fallos_subidos_v1', Date.now());
   const datos = { version: VERSION, at: new Date().toISOString(), aparato: navigator.userAgent, pantalla: innerWidth + 'x' + innerHeight,
     pausaSeg: esperaPendiente(), cola: COLA.length, permisosQueFaltan: permisosQueFaltan().map(p => p.s), fallos: leer(K_ERR, []).slice(0, 30), diagnostico: diag || null };
   const url = 'https://api.github.com/repos/' + g.repo + '/contents/mando-fallos.json';
-  try {
-    let sha;
-    const r0 = await ghFetch(url);
-    if (r0.ok) sha = (await r0.json()).sha;
-    const r = await ghFetch(url, { method: 'PUT', body: JSON.stringify({ message: 'mando: fallos del aparato', content: b64enc(JSON.stringify(datos, null, 1)), sha: sha }) });
-    return r.ok;
-  } catch (e) { return false; }
+  for (let i = 0; i < 3; i++) {
+    try {
+      let sha;
+      const r0 = await ghFetch(url + '?t=' + Date.now());
+      if (r0.ok) sha = (await r0.json()).sha;
+      const r = await ghFetch(url, { method: 'PUT', body: JSON.stringify({ message: 'mando: fallos del aparato', content: b64enc(JSON.stringify(datos, null, 1)), sha: sha }) });
+      if (r.ok) return true;
+      if (r.status !== 409 && r.status !== 422) return false;
+    } catch (e) { if (i === 2) return false; }
+    await sleep(1200 * (i + 1));
+  }
+  return false;
 }
 /* ---- Cola de cambios ----
    Si Spotify esta en pausa, añadir/quitar canciones, Me gusta, seguir y
@@ -650,7 +661,7 @@ async function sp(ruta, o) {
       _lentoHasta = Date.now() + seg * 1000 + 600000;
       apuntarFallo({ message: 'Spotify pide esperar ' + seg + ' s (429)', status: 429, ruta: (o.method || 'GET') + ' ' + ruta.replace(API, '').split('?')[0] }, 'freno');
       if (seg > ESPERA_MAX) { guardarPausa(_pausaHasta); pintarFreno(); if (encolable(ruta, o)) return encolar(ruta, o); throw errorFreno(); }
-      if (++intentos > 6) { const e = new Error('Spotify está frenando las peticiones: prueba en un rato'); e.status = 429; throw e; }
+      if (++intentos > (ra > 0 ? 6 : 3)) { const e = new Error('Spotify está frenando las peticiones: prueba en un rato'); e.status = 429; e.ruta = (o.method || 'GET') + ' ' + ruta.replace(API, '').split('?')[0]; throw e; }
       continue;
     }
     if (res.status === 401) {
@@ -882,11 +893,39 @@ async function pistasMeGusta(av) {
       }
     } catch (e) { if (e.freno || e.message === 'DETENIDO') throw e; }
   }
-  let total = 0, it;
-  try { it = await paginar('/me/tracks', { limite: 50, alAvanzar: (n, t) => { total = t || n; if (av) av(n, t); } }); }
-  catch (e) { if (esCaida(e) && c && c.pistas) { modoGuardado(); return conK(c.pistas); } throw e; }
-  const ps = it.map(x => pista(x && x.track, { added: x && x.added_at })).filter(Boolean);
-  cachePoner('likes', { total: it.length, pistas: sinK(ps) });
+  /* Carga completa, que se guarda cada 20 paginas: si Spotify frena a
+     mitad (con 20.000 canciones son mas de 400 peticiones), al volver sigue
+     por donde iba en vez de empezar de cero. */
+  const par = await cacheLeer('likesParcial');
+  let ps = [], crudos = 0, url = '/me/tracks?limit=50', total = null, pag = 0;
+  if (par && par.url && Date.now() - par.at < 12 * 36e5) { ps = conK(par.pistas); crudos = par.crudos; url = par.url; }
+  const guardarParcial = () => cachePoner('likesParcial', { at: Date.now(), url: url, crudos: crudos, pistas: sinK(ps) });
+  try {
+    while (url) {
+      const d = await sp(url);
+      if (!d) break;
+      total = d.total;
+      const items = d.items || [];
+      for (const x of items) { crudos++; const p = pista(x && x.track, { added: x && x.added_at }); if (p) ps.push(p); }
+      if (av) av(crudos, total);
+      url = items.length ? d.next : null;
+      if (url && ++pag % 20 === 0) guardarParcial();
+    }
+  } catch (e) {
+    if (ps.length && url) guardarParcial();
+    if (esCaida(e) && c && c.pistas) { modoGuardado(); return conK(c.pistas); }
+    if ((esCaida(e) || e.message === 'DETENIDO') && ps.length) {
+      modoGuardado();
+      setTimeout(() => toast('Spotify ha frenado a mitad: tienes ' + ps.length + ' de ' + (total || '?') + '. Pulsa ↻ arriba en un rato y seguirá por donde iba.', null, 9000), 300);
+      return ps;
+    }
+    throw e;
+  }
+  /* por si al reanudar se colo alguna repetida */
+  const vistas = new Set();
+  ps = ps.filter(p => { const k = p.uri + '|' + p.added; if (vistas.has(k)) return false; vistas.add(k); return true; });
+  cachePoner('likes', { total: total != null ? total : crudos, pistas: sinK(ps) });
+  cachePoner('likesParcial', null);
   return ps;
 }
 /* Indice: en que playlists tuyas esta cada cancion (usa la cache: si no
@@ -2139,6 +2178,7 @@ function abrirArtista(id) {
     let a, discos, sigo;
     try {
       a = await sp('/artists/' + id);
+      if (MIS && a && misPorId(id) && !misPorId(id).img && imgDe(a.images, 200)) misEditar(id, { img: imgDe(a.images, 200) });
       discos = (await paginar('/artists/' + id + '/albums?include_groups=album,single,compilation', { limite: 10, tope: 120 })).map(x => discoDe(x));
       try { sigo = (await libTiene([a.uri]))[0]; } catch (e) { sigo = null; }
     } catch (e) { return fallo(m, e); }
@@ -2405,7 +2445,8 @@ async function hojaDiagnostico() {
     await paso('Tus Me gusta', '/me/tracks?limit=1');
     await paso('Comprobar Me gusta', '/me/library/contains?uris=' + encodeURIComponent('spotify:track:4uLU6hMCjMI75M1A2tKUQC'));
     await paso('Artistas que sigues', '/me/following?type=artist&limit=1');
-    await paso('Buscar', '/search?type=track&limit=1&q=salsa');
+    await paso('Buscar', '/search?type=track&limit=10&q=salsa');
+    try { const n = (await cacheLeer('likes') || {}).pistas; linea(null, n ? n.length + ' Me gusta guardados en este aparato' : 'Me gusta aún no guardados en este aparato'); } catch (x) {}
     await paso('Reproductor', '/me/player');
     fin();
     function fin() {
@@ -2413,7 +2454,7 @@ async function hojaDiagnostico() {
       B.innerHTML = '<button class="btn sm" id="dgC">Copiar</button>' + (ghCfg() ? '<button class="btn sm pri" id="dgE">Enviar a Claude</button>' : '');
       B.querySelector('#dgC').onclick = () => navigator.clipboard.writeText(res.join('\n') + '\n' + navigator.userAgent).then(() => toast('Copiado'), () => toast('No se ha podido copiar'));
       const e = B.querySelector('#dgE'); if (e) e.onclick = async () => { e.disabled = true; e.textContent = 'Enviando…'; const ok = await subirFallos(res); toast(ok ? 'Enviado: dile a Claude «mira los fallos»' : 'No se ha podido enviar'); e.textContent = ok ? 'Enviado ✓' : 'Enviar a Claude'; e.disabled = false; };
-      if (ghCfg()) subirFallos(res);
+      if (ghCfg() && e) { e.disabled = true; e.textContent = 'Enviando…'; subirFallos(res).then(ok => { e.disabled = false; e.textContent = ok ? 'Enviado ✓' : 'Enviar a Claude'; }); }
     }
   });
 }
@@ -2916,15 +2957,33 @@ async function misAccion(a) {
   S.selObj.clear(); MV.sel = false; render();
 }
 /* Desde «Seguidos» o una seleccion de canciones: pasar artistas a la lista */
+/* Antes se pedia a Spotify cada artista uno a uno, y esa ruta Spotify la
+   limita muchisimo: con cientos de artistas te ponia en pausa. Ahora se usa
+   lo que ya se sabe (nombre en las canciones, foto en «Seguidos») y la foto
+   que falte se completa sola al abrir el artista. */
+function artistasConocidos() {
+  const m = new Map();
+  const mete = a => { if (a && a.id && !m.has(a.id)) m.set(a.id, { id: a.id, name: a.name, img: a.img || '' }); };
+  for (const a of (S.artistas || [])) m.set(a.id, { id: a.id, name: a.name, img: a.imgG || a.img || '', genres: a.generos });
+  const listas = [S.fuente && S.fuente.pistas, S.likes, S.visibles].concat(Object.values(ST.datos || {}).map(d => d && d.tracks));
+  for (const l of listas) if (l) for (const p of l) for (const a of (p.artists || [])) mete(a);
+  for (const d of Object.values(ST.datos || {})) if (d && d.arts) for (const a of d.arts) m.set(a.id, { id: a.id, name: a.name, img: a.imgG || a.img || '', genres: a.generos });
+  return m;
+}
 async function aMisDesdeUris(uris) {
-  const ids = Array.from(new Set(uris.map(u => u.split(':')[2]))).filter(id => !misPorId(id));
+  const ids = Array.from(new Set(uris.map(u => String(u).split(':')[2]).filter(Boolean))).filter(id => !misPorId(id));
   if (!ids.length) { toast('Ya estaban todos en Mis artistas'); return; }
-  const arts = await trabajo(async () => {
-    const out = [];
-    for (let i = 0; i < ids.length; i++) { progreso('Leyendo artistas', i, ids.length); out.push(await sp('/artists/' + ids[i])); }
-    return out;
-  }, 'Leyendo artistas');
-  if (!arts) return;
+  const con = artistasConocidos();
+  const arts = ids.map(id => con.get(id)).filter(a => a && a.name);
+  const faltan = ids.filter(id => !con.has(id) || !con.get(id).name).slice(0, 15);
+  if (faltan.length) {
+    await trabajo(async () => {
+      for (let i = 0; i < faltan.length; i++) {
+        progreso('Leyendo artistas', i, faltan.length);
+        try { arts.push(await sp('/artists/' + faltan[i])); } catch (e) { if (esCaida(e) || e.message === 'DETENIDO') break; }
+      }
+    }, 'Leyendo artistas');
+  }
   toast(misAnadir(arts) + ' añadidos a Mis artistas');
 }
 
@@ -3404,7 +3463,7 @@ async function vEscuchas(m) {
         const tr = ((x && x.items) || []).map(i => pista(i.track, { added: i.played_at })).filter(Boolean);
         const artC = contar(tr, p => p.artists.slice(0, 1).map(a => a.id));
         const arts = [];
-        for (const [id, n] of artC.slice(0, 12)) { try { const a = await sp('/artists/' + id); arts.push(Object.assign(artistaDe(a), { veces: n })); } catch (e) {} }
+        for (const [id, n] of artC.slice(0, 12)) { try { const a = await sp('/artists/' + id); arts.push(Object.assign(artistaDe(a), { veces: n })); } catch (e) { if (esCaida(e) || e.status === 429) break; } }
         const vistas = new Map(); for (const p of tr) { const v = vistas.get(p.uri); if (v) v.veces++; else vistas.set(p.uri, Object.assign(p, { veces: 1 })); }
         d = { arts, tracks: Array.from(vistas.values()).sort((a, b) => b.veces - a.veces), crudo: tr };
       } else {
