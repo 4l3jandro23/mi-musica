@@ -634,7 +634,18 @@
   #np .ctl button.on { color: #1ed760; }
   #np .ctl .pp { width: 70px; height: 70px; border-radius: 50%; background: #fff; color: #111; display: grid; place-items: center; opacity: 1; }
   #np .ctl .pp svg { width: 30px; height: 30px; fill: currentColor; stroke-width: 0; }
-  #np .acc { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  #np .acc { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  #np .acc button.on { background: #fff; color: #111; }
+  #np .letraC { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; margin-top: 4px; }
+  #np .letra { position: relative; flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: none; -webkit-mask-image: linear-gradient(180deg, transparent, #000 12%, #000 80%, transparent); mask-image: linear-gradient(180deg, transparent, #000 12%, #000 80%, transparent); }
+  #np .letra::-webkit-scrollbar { display: none; }
+  #np .letra .esp { height: 38%; }
+  #np .letra p { font-family: var(--f-disp); font-size: 25px; font-weight: 800; line-height: 1.22; margin: 0 0 14px; opacity: .38; cursor: pointer; transition: opacity .3s, transform .3s var(--ease-out); transform-origin: left center; }
+  #np .letra p.on { opacity: 1; transform: scale(1.03); }
+  #np .letra p.nota { font-size: 20px; }
+  #np .letra.plana { font-size: 18px; line-height: 1.55; font-weight: 600; padding: 20px 0; opacity: .92; }
+  #np .letra.vacia { display: grid; place-items: center; text-align: center; opacity: .75; font-size: 16px; -webkit-mask-image: none; mask-image: none; }
+  #np .miniport { width: 52px; height: 52px; border-radius: 10px; object-fit: cover; flex: none; }
   #np .acc button { border: 0; background: rgba(255,255,255,.12); border-radius: 14px; padding: 10px 4px; font-size: 11.5px; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px; }
   #np .acc svg { width: 20px; height: 20px; }
   #np .vol { display: flex; gap: 10px; align-items: center; opacity: .9; }
@@ -830,7 +841,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-09-30e';
+const VERSION = '2026-09-30f';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -1476,11 +1487,14 @@ function nivelCupo() {
 let _cupoK = '';
 function pintarCupo() {
   const b = $('#bCupo'); if (!b) return;
-  const c = nivelCupo(), clave = c.k + '|' + (c.n || 0);
+  const c = nivelCupo(), seg = esperaPendiente();
+  const parcial = c.k === 'frenado' && seg === 0;
+  const txt = c.k === 'frenado' ? (parcial ? 'Casi todo ok' : 'Pausa ' + (seg >= 3600 ? Math.ceil(seg / 60) + ' min' : Math.floor(seg / 60) + ':' + String(seg % 60).padStart(2, '0'))) : c.k === 'bajo' ? 'Cupo ok' : c.k === 'medio' ? 'Medio' : 'Alto';
+  const clave = c.k + '|' + (c.n || 0) + '|' + txt;
   if (clave === _cupoK) return;
   _cupoK = clave;
-  b.className = 'cupo ' + c.k;
-  b.querySelector('span').textContent = c.k === 'frenado' ? 'Frenado' : c.k === 'bajo' ? 'Cupo ok' : c.k === 'medio' ? 'Medio' : 'Alto';
+  b.className = 'cupo ' + (parcial ? 'medio' : c.k);
+  b.querySelector('span').textContent = txt;
 }
 setInterval(pintarCupo, 1500);
 function hojaCupo() {
@@ -3096,22 +3110,27 @@ function pintarNP(todo) {
   if (!s) { cerrarAhora(); return; }
   const pos = Math.min(s.dur || 0, s.prog + (s.playing ? Date.now() - s.at : 0));
   if (!todo && el._uri === s.uri) {
+    /* al acabar la cancion se mira cual suena ahora (una sola peticion) */
+    if (s.playing && s.dur && pos >= s.dur - 300 && !s._fin) { s._fin = true; setTimeout(leerReproductor, 1500); }
     const r = el.querySelector('#npSeek'); if (r && !r._toca) r.value = pos;
     const t = el.querySelector('#npT'); if (t) t.textContent = dur(pos);
     return;
   }
   el._uri = s.uri;
   const img = s.p.coverG || s.p.cover, like = _likeDe.get(s.uri);
+  if (NPL.on) cargarLetraNP();
+  el.classList.toggle('con-letra', NPL.on);
   el.innerHTML = '<div class="fondo" style="background-image:url(&quot;' + esc(img || '') + '&quot;)"></div><div class="in">' +
     '<div class="top"><button class="rb" id="npX" aria-label="Cerrar">' + ic('abajoV') + '</button><span>' + (s.ctx && S.fuente && S.fuente.uri === s.ctx.uri ? esc(S.fuente.name) : 'Sonando' + (s.disp ? ' en ' + esc(s.disp.name) : '')) + '</span><button class="rb" id="npMas" aria-label="Más">' + ic('mas') + '</button></div>' +
-    (img ? '<img class="port" src="' + esc(img) + '" alt="">' : '<div class="port"></div>') +
-    '<div class="tit"><div style="flex:1;min-width:0"><h2 class="nowrap">' + esc(s.p.title) + '</h2><div class="sub nowrap">' + esc(nombresArtistas(s.p)) + '</div></div>' +
+    (NPL.on ? '<div id="npLetraC" class="letraC">' + htmlLetra() + '</div>' : img ? '<img class="port" src="' + esc(img) + '" alt="">' : '<div class="port"></div>') +
+    '<div class="tit">' + (NPL.on && img ? '<img class="miniport" src="' + esc(img) + '" alt="">' : '') + '<div style="flex:1;min-width:0"><h2 class="nowrap">' + esc(s.p.title) + '</h2><div class="sub nowrap">' + esc(nombresArtistas(s.p)) + '</div></div>' +
     '<button class="rb like' + (like ? ' on' : '') + '" id="npLike" aria-label="Me gusta">' + ic('corazon') + '</button></div>' +
     '<input type="range" id="npSeek" min="0" max="' + (s.dur || 1) + '" value="' + pos + '"><div class="tiempos"><span id="npT">' + dur(pos) + '</span><span>' + dur(s.dur || 0) + '</span></div>' +
     '<div class="ctl"><button data-p="shuffle" class="' + (s.shuffle ? 'on' : '') + '">' + ic('aleat') + '</button><button data-p="ant">' + ic('ant') + '</button><button data-p="pp" class="pp">' + ic(s.playing ? 'pausa' : 'play') + '</button><button data-p="sig">' + ic('sig') + '</button><button data-p="repeat" class="' + (s.repeat && s.repeat !== 'off' ? 'on' : '') + '">' + ic('repetir') + '</button></div>' +
-    '<div class="acc"><button data-a="anadir">' + ic('plus') + 'Playlist</button><button data-a="etq">' + ic('etiqueta') + 'Etiquetar</button><button data-a="disco">' + ic('disco') + 'Mis discos</button><button data-a="disp">' + ic('movil') + 'Aparatos</button></div>' +
+    '<div class="acc"><button data-a="letra"' + (NPL.on ? ' class="on"' : '') + '>' + ic('lista') + 'Letra</button><button data-a="anadir">' + ic('plus') + 'Playlist</button><button data-a="etq">' + ic('etiqueta') + 'Etiquetar</button><button data-a="disco">' + ic('disco') + 'Mis discos</button><button data-a="disp">' + ic('movil') + 'Aparatos</button></div>' +
     (s.vol != null ? '<div class="vol">' + ic('altavoz') + '<input type="range" id="npVol" min="0" max="100" value="' + s.vol + '"></div>' : '') + '</div>';
   el.querySelector('#npX').onclick = cerrarAhora;
+  if (NPL.on) { engancharLetra(); marcarLetra(true); }
   el.querySelector('#npMas').onclick = () => { const f0 = S.fuente; S.fuente = S.fuente || { kind: 'suelta', name: '', pistas: [s.p] }; hojaPista(s.p); if (!f0) S.fuente = null; };
   el.querySelector('#npLike').onclick = async () => {
     const ya = _likeDe.get(s.uri);
@@ -3126,6 +3145,7 @@ function pintarNP(todo) {
   el.querySelector('.acc').onclick = e => {
     const b = e.target.closest('[data-a]'); if (!b) return;
     const a = b.dataset.a;
+    if (a === 'letra') { NPL.on = !NPL.on; PREFS.letraOn = NPL.on; guardarPrefs(); pintarNP(true); return; }
     if (a === 'anadir') { const f0 = S.fuente; S.fuente = { kind: 'suelta', name: '', pistas: [s.p] }; elegirDestino([s.p], false).then(() => { S.fuente = f0; }); }
     else if (a === 'etq') hojaEtiquetar([s.p]);
     else if (a === 'disco') { if (s.p.albumId) anadirAMisDiscos([{ id: s.p.albumId }]); }
@@ -3133,6 +3153,78 @@ function pintarNP(todo) {
   };
 }
 setInterval(() => { if ($('#np') && document.visibilityState === 'visible') pintarNP(false); }, 1000);
+/* ---- Letras (lrclib.net: gratis, sin clave y sin gastar nada de Spotify) ----
+   Se guardan en el aparato: una cancion solo se pide una vez. */
+const NPL = { on: !!PREFS.letraOn, uri: '', d: null, act: -1, toca: 0 };
+async function letraDe(p, durMs) {
+  const k = 'letra:' + (p.id || p.uri);
+  const g = await cacheLeer(k);
+  if (g && (g.ok || Date.now() - g.at < 7 * 864e5)) return g;
+  const q = o => Object.entries(o).map(([a, b]) => a + '=' + encodeURIComponent(b)).join('&');
+  const art = artPpal(p), limpio = p.title.replace(/\s+-\s+.*$/, '').replace(/\s*\((feat|with|con)[^)]*\)/i, '').trim();
+  let r = null;
+  try {
+    const x = await fetch('https://lrclib.net/api/get?' + q({ track_name: limpio, artist_name: art, album_name: p.album || '', duration: Math.round((durMs || p.ms || 0) / 1000) }));
+    if (x.ok) r = await x.json();
+    if (!r || (!r.syncedLyrics && !r.plainLyrics && !r.instrumental)) {
+      const y = await fetch('https://lrclib.net/api/search?' + q({ track_name: limpio, artist_name: art }));
+      if (y.ok) {
+        const l = (await y.json()) || [], seg = (durMs || p.ms || 0) / 1000;
+        l.sort((a, b) => (!!b.syncedLyrics - !!a.syncedLyrics) || Math.abs(a.duration - seg) - Math.abs(b.duration - seg));
+        r = l.find(z => !seg || Math.abs(z.duration - seg) < 8) || null;
+      }
+    }
+  } catch (e) { return { ok: false, at: Date.now(), red: true }; }
+  const out = { ok: !!r && !!(r.syncedLyrics || r.plainLyrics || r.instrumental), at: Date.now(), inst: !!(r && r.instrumental), lineas: null, texto: '' };
+  if (r && r.syncedLyrics) {
+    out.lineas = [];
+    for (const ln of r.syncedLyrics.split('\n')) {
+      const m = ln.match(/^\[(\d+):(\d+(?:\.\d+)?)\]\s?(.*)$/);
+      if (m) out.lineas.push({ t: Math.round((+m[1] * 60 + +m[2]) * 1000), x: m[3] });
+    }
+  } else if (r && r.plainLyrics) out.texto = r.plainLyrics;
+  cachePoner(k, out);
+  return out;
+}
+function htmlLetra() {
+  const d = NPL.d;
+  if (!d) return '<div class="letra vacia"><div class="spin"></div></div>';
+  if (d.red) return '<div class="letra vacia">No se ha podido buscar la letra (¿sin conexión?).</div>';
+  if (!d.ok) return '<div class="letra vacia">No hay letra para esta canción.</div>';
+  if (d.inst) return '<div class="letra vacia">♪ Instrumental ♪</div>';
+  if (d.lineas && d.lineas.length) return '<div class="letra" id="npLetra"><div class="esp"></div>' + d.lineas.map((l, i) => '<p data-l="' + i + '"' + (l.x ? '' : ' class="nota"') + '>' + (esc(l.x) || '♪') + '</p>').join('') + '<div class="esp"></div></div>';
+  return '<div class="letra plana" id="npLetra">' + esc(d.texto).replace(/\n/g, '<br>') + '<p class="tiny" style="opacity:.6;margin-top:18px">Esta letra no va sincronizada.</p></div>';
+}
+function cargarLetraNP() {
+  const s = S.suena; if (!s) return;
+  if (NPL.uri === s.uri && NPL.d) return;
+  NPL.uri = s.uri; NPL.d = null; NPL.act = -1;
+  const uri = s.uri;
+  letraDe(s.p, s.dur).then(d => { if (NPL.uri !== uri) return; NPL.d = d; const c = $('#npLetraC'); if (c) { c.innerHTML = htmlLetra(); engancharLetra(); marcarLetra(true); } });
+}
+function engancharLetra() {
+  const L = $('#npLetra'); if (!L) return;
+  const nota = () => { NPL.toca = Date.now(); };
+  L.addEventListener('touchstart', nota, { passive: true }); L.addEventListener('wheel', nota, { passive: true });
+  L.onclick = e => { const p = e.target.closest('[data-l]'); if (!p || !NPL.d || !NPL.d.lineas) return; NPL.toca = 0; accionPlayer('seek', NPL.d.lineas[+p.dataset.l].t); };
+}
+function marcarLetra(ya) {
+  const s = S.suena, L = $('#npLetra'), d = NPL.d;
+  if (!s || !L || !d || !d.lineas || NPL.uri !== s.uri) return;
+  const pos = Math.min(s.dur || 0, s.prog + (s.playing ? Date.now() - s.at : 0)) + 250;
+  let i = -1; for (let j = 0; j < d.lineas.length; j++) { if (d.lineas[j].t <= pos) i = j; else break; }
+  if (i === NPL.act && !ya) return;
+  NPL.act = i;
+  L.querySelectorAll('p.on').forEach(x => x.classList.remove('on'));
+  const p = i >= 0 && L.querySelector('[data-l="' + i + '"]');
+  if (p) p.classList.add('on');
+  if (Date.now() - NPL.toca > 4000) {
+    const obj = p ? p.offsetTop - L.clientHeight * 0.38 : 0;
+    L.scrollTo({ top: Math.max(0, obj), behavior: ya ? 'auto' : 'smooth' });
+  }
+}
+setInterval(() => { if (NPL.on && $('#npLetra') && document.visibilityState === 'visible') marcarLetra(false); }, 250);
+
 addEventListener('keydown', e => { if (e.key === 'Escape' && $('#np') && !_hoja) cerrarAhora(); });
 
 /* ---- Repasar una a una ----
