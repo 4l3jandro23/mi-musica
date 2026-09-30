@@ -804,6 +804,17 @@
   .diadisco b { font-family: var(--f-disp); font-size: 20px; line-height: 1.1; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
   .diadisco span { color: var(--fg-soft); font-size: 13.5px; }
   .diadisco .dd-b { display: flex; gap: 6px; margin-top: 8px; }
+  .meta-an { border: 0; background: transparent; color: inherit; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; flex: none; padding: 0; font: inherit; }
+  .meta-an .an { width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; }
+  .meta-an .an i { font-style: normal; width: 42px; height: 42px; border-radius: 50%; background: var(--surface); display: grid; place-items: center; font-weight: 800; font-size: 13px; }
+  .meta-an small { font-size: 10.5px; color: var(--fg-mute); text-align: center; line-height: 1.2; }
+  @media (max-width: 599px) { .meta-an { position: absolute; top: 10px; right: 10px; } .meta-an small { display: none; } .meta-an .an { width: 44px; height: 44px; } .meta-an .an i { width: 34px; height: 34px; font-size: 11.5px; } .diadisco .dd-t { padding-right: 44px; } .diadisco .dd-b { margin-right: -44px; } }
+  .meta-sem { display: flex; align-items: flex-end; gap: 6px; height: 130px; margin: 16px 0 10px; }
+  .meta-sem > div { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 3px; }
+  .meta-sem span { width: 100%; max-width: 34px; border-radius: 6px 6px 2px 2px; background: var(--surface-2); }
+  .meta-sem span.ok { background: var(--amber); }
+  .meta-sem b { font-size: 12px; }
+  .meta-sem small { font-size: 10px; color: var(--fg-mute); white-space: nowrap; }
   .acentos button { width: 38px; height: 38px; border-radius: 50%; border: 3px solid var(--surface); cursor: pointer; box-shadow: 0 0 0 1px var(--line-firm); transition: transform .15s var(--ease-out); }
   .acentos button.on { box-shadow: 0 0 0 2px var(--fg); transform: scale(1.08); }
 </style>
@@ -856,7 +867,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-09-30g';
+const VERSION = '2026-09-30h';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2441,7 +2452,7 @@ function hojaDisco(lista, i) {
           if (ok) { S.md = null; S.playlists = null; toast('Quitado', { txt: 'Deshacer', fn: () => deshacerUltimo(HIST[0].id) }); render(); }
         }
       };
-    }, () => { if (S.tab === 'misdiscos' && !S.vista) { const y = scrollY; render(); setTimeout(() => scrollTo(0, y), 60); } });
+    }, () => { if (S.tab === 'misdiscos' && !S.vista) { const y = scrollY; render(); setTimeout(() => scrollTo(0, y), 60); } else if (S.tab === 'inicio' && !S.vista && S.md) pintarDiscoDelDia(S.md, () => true); });
 }
 /* canciones de un disco, guardadas 30 dias (no cambian) */
 async function pistasDisco(id) {
@@ -3111,6 +3122,36 @@ function aplicarAcento() {
 }
 try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', aplicarAcento); } catch (e) {}
 
+/* Meta semanal de discos: cuantos valoras cada semana (de lunes a domingo) */
+const lunesDe = t => { const d = new Date(t); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - (d.getDay() + 6) % 7); return d.getTime(); };
+function metaDiscos() {
+  const meta = PREFS.metaDiscos || 3, E = ETQ || ETQ0(), porSem = new Map();
+  for (const o of Object.values(E.alb)) if (o && o.te) { const k = lunesDe(o.te); porSem.set(k, (porSem.get(k) || 0) + 1); }
+  const esta = lunesDe(Date.now()), hechos = porSem.get(esta) || 0;
+  let racha = 0, k = esta;
+  if (hechos < meta) k -= 7 * 864e5;
+  while ((porSem.get(k) || 0) >= meta) { racha++; k = lunesDe(k - 3 * 864e5); }
+  return { meta, hechos, racha, porSem };
+}
+function htmlAnilloMeta() {
+  const m = metaDiscos(), pct = Math.min(100, Math.round(100 * m.hechos / m.meta));
+  return '<button class="meta-an" data-dd="meta" aria-label="Meta semanal"><span class="an" style="background:conic-gradient(var(--amber) ' + pct + '%, var(--surface-2) 0)"><i>' + m.hechos + '/' + m.meta + '</i></span><small>' + (m.hechos >= m.meta ? '¡Hecho!' : 'esta semana') + (m.racha > 1 ? '<br>🔥 ' + m.racha + ' sem.' : '') + '</small></button>';
+}
+function hojaMeta() {
+  const m = metaDiscos();
+  const sem = []; let k = lunesDe(Date.now());
+  for (let i = 0; i < 8; i++) { sem.unshift([k, m.porSem.get(k) || 0]); k = lunesDe(k - 3 * 864e5); }
+  const mx = Math.max(m.meta, ...sem.map(x => x[1]));
+  hoja('<h2>Tu meta de discos</h2><p class="soft">Cuántos discos pendientes quieres escuchar y valorar cada semana. Cuenta cuando les pones estado o nota.</p>' +
+    '<div class="chips" id="mtN">' + [1, 2, 3, 4, 5, 7, 10].map(n => '<button class="chip' + (n === m.meta ? ' on' : '') + '" data-n="' + n + '">' + n + ' a la semana</button>').join('') + '</div>' +
+    '<div class="meta-sem">' + sem.map(([t, n]) => { const d = new Date(t); return '<div><span class="' + (n >= m.meta ? 'ok' : '') + '" style="height:' + Math.max(4, Math.round(100 * n / mx)) + '%"></span><b>' + n + '</b><small>' + d.getDate() + ' ' + MESES_ES[d.getMonth()].slice(0, 3) + '</small></div>'; }).join('') + '</div>' +
+    '<p class="soft" style="text-align:center">' + (m.racha ? '🔥 Llevas <b>' + m.racha + (m.racha === 1 ? ' semana' : ' semanas seguidas') + '</b> cumpliendo la meta' : 'Cumple la meta esta semana para empezar una racha') + '</p>' +
+    '<button class="btn pri wide" id="mtS">' + ic('varita') + 'Elegir un disco con la ruleta</button>', h => {
+      h.querySelector('#mtN').onclick = e => { const c = e.target.closest('[data-n]'); if (!c) return; PREFS.metaDiscos = +c.dataset.n; guardarPrefs(); hojaMeta(); if (S.tab === 'inicio' && S.md) pintarDiscoDelDia(S.md, () => true); };
+      h.querySelector('#mtS').onclick = () => { cerrarHoja(true); sorprendeme(); };
+    });
+}
+
 /* Disco del dia: uno de los pendientes elegido por la fecha (el mismo todo el dia en todos tus aparatos) */
 function pintarDiscoDelDia(md, vivo) {
   const el = $('#inDia'); if (!el || !vivo()) return;
@@ -3124,11 +3165,12 @@ function pintarDiscoDelDia(md, vivo) {
   const e = estadoDisco(d.id), hecho = e && e !== 'Pendiente';
   el.innerHTML = '<div class="diadisco"' + (d.img ? ' data-tinte="' + esc(d.img) + '"' : '') + '>' + (d.img ? '<img src="' + esc(d.img) + '" alt="">' : ph('disco')) +
     '<div class="dd-t"><div class="eti">' + (hecho ? '✓ Disco del día · ' + esc(e) + (notaDisco(d.id) ? ' · ★ ' + notaDisco(d.id) : '') : 'Tu disco del día') + '</div><b>' + esc(d.name) + '</b><span class="nowrap">' + esc(d.artistas) + (anyo(d.p) ? ' · ' + anyo(d.p) : '') + '</span>' +
-    '<div class="dd-b"><button class="btn sm pri" data-dd="play">' + ic('play') + 'Escuchar</button><button class="btn sm" data-dd="ver">' + (hecho ? 'Ver' : 'Valorar') + '</button></div></div></div>';
+    '<div class="dd-b"><button class="btn sm pri" data-dd="play">' + ic('play') + 'Escuchar</button><button class="btn sm" data-dd="ver">' + (hecho ? 'Ver' : 'Valorar') + '</button></div></div>' + htmlAnilloMeta() + '</div>';
   tintar(el);
   el.onclick = ev => {
     const b = ev.target.closest('[data-dd]');
     if (b && b.dataset.dd === 'play') return reproducir({ context_uri: d.uri || 'spotify:album:' + d.id });
+    if (b && b.dataset.dd === 'meta') return hojaMeta();
     hojaDisco([d], 0);
   };
 }
