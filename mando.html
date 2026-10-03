@@ -867,7 +867,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-09-30h';
+const VERSION = '2026-10-03a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -4972,6 +4972,10 @@ function azar(n) { const a = new Uint8Array(n); crypto.getRandomValues(a); retur
 async function iniciarLogin(volver) {
   const c = cred();
   if (!c || !c.clientId) { hojaClientId(volver); return; }
+  /* si el Client ID no tiene buena pinta o el intento anterior no volvio de Spotify
+     (p. ej. «INVALID_CLIENT»), se deja revisarlo antes de ir */
+  if (!c.refreshToken && (!CID_OK(c.clientId) || localStorage.getItem(K_INTENTO))) { hojaClientId(volver, true); return; }
+  localStorage.setItem(K_INTENTO, String(Date.now()));
   const verifier = azar(64), state = azar(16);
   sessionStorage.setItem(K_PKCE, JSON.stringify({ verifier, state }));
   if (volver) sessionStorage.setItem(K_VOLVER, volver); else sessionStorage.removeItem(K_VOLVER);
@@ -4982,13 +4986,24 @@ async function iniciarLogin(volver) {
     scope: PERMISOS.map(p => p.s).join(' ')
   });
 }
-function hojaClientId(volver) {
-  hoja('<h2>Client ID de Spotify</h2><p class="soft">En este aparato no está guardado. Está en <b>developer.spotify.com → Dashboard → tu app</b>. Solo hay que ponerlo una vez por aparato.</p>' +
-    '<input class="field" id="cid" placeholder="Client ID" autocomplete="off" value="' + esc((cred() || {}).clientId || '') + '">' +
-    '<button class="btn pri wide" id="cidOk" style="margin-top:10px">Guardar y conectar</button>', h => {
+const K_INTENTO = 'mando_login_intento_v1';
+const CID_OK = v => /^[0-9a-f]{32}$/.test(String(v || ''));
+function hojaClientId(volver, revisar) {
+  const actual = (cred() || {}).clientId || '';
+  hoja('<h2>Client ID de Spotify</h2>' +
+    (revisar ? '<div class="aviso"><b>Revisa el Client ID</b>' + (CID_OK(actual) ? 'La última vez Spotify no dejó entrar con este (si te salió «INVALID_CLIENT», es que no es el bueno). Compáralo con el del Dashboard.' : 'El que hay guardado en este aparato no tiene el formato correcto.') + '</div>' : '<p class="soft">En este aparato no está guardado.</p>') +
+    '<p class="soft">Está en <b>developer.spotify.com → Dashboard → tu app → Settings</b>, en «Client ID» (no el «Client secret»). Son 32 letras y números. Lo más fácil: pulsa el botón de copiar que hay al lado y pégalo aquí.</p>' +
+    '<input class="field" id="cid" placeholder="Client ID (32 caracteres)" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" value="' + esc(actual) + '">' +
+    '<p class="tiny" id="cidMsg" style="min-height:18px;margin:6px 0 0"></p>' +
+    '<button class="btn pri wide" id="cidOk" style="margin-top:6px">Guardar y conectar</button>', h => {
+      const inp = h.querySelector('#cid'), msg = h.querySelector('#cidMsg');
+      const limpio = () => inp.value.replace(/\s+/g, '').toLowerCase();
+      const ver = () => { const v = limpio(); msg.style.color = CID_OK(v) ? 'var(--jade)' : 'var(--rust)'; msg.textContent = !v ? '' : CID_OK(v) ? '✓ Tiene buena pinta' : 'Tiene ' + v.length + ' caracteres' + (/[^0-9a-f]/.test(v) ? ' y alguno que no vale' : '') + ': deben ser 32 (números y letras de la a a la f).'; };
+      inp.oninput = ver; ver();
       h.querySelector('#cidOk').onclick = () => {
-        const v = h.querySelector('#cid').value.trim(); if (!v) return;
+        const v = limpio(); if (!CID_OK(v)) { ver(); inp.focus(); return; }
         escribir(K_CREDS, Object.assign({}, cred() || {}, { clientId: v }));
+        localStorage.removeItem(K_INTENTO);
         cerrarHoja(); iniciarLogin(volver);
       };
     });
@@ -5004,6 +5019,7 @@ async function alVolverDeSpotify() {
   }
   const code = qs.get('code'), state = qs.get('state'), err = qs.get('error');
   if (!code && !err) return false;
+  localStorage.removeItem(K_INTENTO);
   history.replaceState({}, '', location.pathname);
   if (err) { toast('Spotify: ' + err); return false; }
   let g = null;
