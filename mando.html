@@ -867,7 +867,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-03b';
+const VERSION = '2026-10-03c';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -4955,7 +4955,8 @@ function restaurarCopia() {
    reenvio de una linea hacia aqui: Spotify vuelve alli, y alli
    se reenvia a esta pagina con el ?code= intacto.
    ============================================================ */
-const REDIRECT = location.origin + location.pathname.replace(/[^/]*$/, '') + 'musicvault.html';
+/* la direccion registrada en Spotify, fija: si se abre el Mando por otra ruta (sin .html, con mayusculas…) Spotify la rechazaria */
+const REDIRECT = /github\.io$/.test(location.hostname) ? 'https://4l3jandro23.github.io/mi-musica/musicvault.html' : location.origin + location.pathname.replace(/[^/]*$/, '') + 'musicvault.html';
 const K_PKCE = 'musicvault_pkce_v1';
 const K_VOLVER = 'musicvault_volver_v1';
 /* Solo se vuelve a paginas conocidas: nada de ir a donde diga la URL */
@@ -4971,13 +4972,10 @@ function azar(n) { const a = new Uint8Array(n); crypto.getRandomValues(a); retur
 
 async function iniciarLogin(volver) {
   let c = cred();
-  /* sin conexion en este aparato: siempre con el Client ID bueno (asi da igual lo que hubiera guardado) */
-  if (!c || !c.refreshToken) { if (!c || c.clientId !== CID_DEF) { escribir(K_CREDS, Object.assign({}, c || {}, { clientId: CID_DEF })); localStorage.removeItem(K_INTENTO); } c = cred(); }
+  /* al conectar (o volver a conectar) siempre con el Client ID bueno, aunque el aparato guardase otro de antes */
+  if (!c || c.clientId !== CID_DEF) { escribir(K_CREDS, { clientId: CID_DEF }); localStorage.removeItem(K_INTENTO); }
+  c = cred();
   if (!c || !c.clientId) { hojaClientId(volver); return; }
-  /* si el Client ID no tiene buena pinta o el intento anterior no volvio de Spotify
-     (p. ej. «INVALID_CLIENT»), se deja revisarlo antes de ir */
-  if (!c.refreshToken && (!CID_OK(c.clientId) || localStorage.getItem(K_INTENTO))) { hojaClientId(volver, true); return; }
-  localStorage.setItem(K_INTENTO, String(Date.now()));
   const verifier = azar(64), state = azar(16);
   sessionStorage.setItem(K_PKCE, JSON.stringify({ verifier, state }));
   if (volver) sessionStorage.setItem(K_VOLVER, volver); else sessionStorage.removeItem(K_VOLVER);
