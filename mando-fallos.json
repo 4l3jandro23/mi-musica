@@ -1,221 +1,74 @@
 {
- "version": "2026-10-04c",
- "at": "2026-10-04T09:04:46.254Z",
- "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
- "pantalla": "1368x673",
- "pausaSeg": 885,
- "cola": 0,
+ "version": "2026-10-04j",
+ "at": "2026-10-04T16:22:32.455Z",
+ "aparato": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Mobile/15E148 Safari/604.1",
+ "pantalla": "390x844",
+ "pausaSeg": 1785,
+ "cola": 3,
  "permisosQueFaltan": [],
  "fallos": [
   {
-   "at": 1791104670561,
+   "at": 1791130937451,
+   "donde": "freno",
+   "msg": "Spotify ha frenado: pausa de 30 min (nivel 4)",
+   "st": 429,
+   "ruta": "DELETE /me/library"
+  },
+  {
+   "at": 1791122512551,
+   "donde": "portada",
+   "msg": "Spotify ha pedido parar un rato. La Fonoteca vuelve a intentarlo solo dentro de unos 51 minutos (si insistiera antes, Spotify alargaría el castigo). Mientras, lo guardado funciona y los cambios van a la cola.",
+   "st": 429,
+   "ruta": ""
+  },
+  {
+   "at": 1791121982134,
+   "donde": "freno",
+   "msg": "Spotify ha frenado: pausa de 60 min (nivel 5)",
+   "st": 429,
+   "ruta": "GET /me/player/recently-played"
+  },
+  {
+   "at": 1791103046281,
+   "donde": "freno",
+   "msg": "Spotify ha frenado: pausa de 60 min (nivel 5)",
+   "st": 429,
+   "ruta": "GET /me/player/recently-played"
+  },
+  {
+   "at": 1791079856137,
+   "donde": "freno",
+   "msg": "Spotify ha frenado: pausa de 30 min (nivel 4)",
+   "st": 429,
+   "ruta": "GET /me/player/recently-played"
+  },
+  {
+   "at": 1791063418905,
    "donde": "freno",
    "msg": "Spotify ha frenado: pausa de 15 min (nivel 3)",
    "st": 429,
-   "ruta": "GET /me/tracks"
+   "ruta": "GET /me"
   },
   {
-   "at": 1791104334505,
+   "at": 1791063277849,
    "donde": "freno",
    "msg": "Spotify ha frenado: pausa de 5 min (nivel 2)",
    "st": 429,
    "ruta": "GET /me/tracks"
   },
   {
-   "at": 1791104272364,
+   "at": 1791063276911,
    "donde": "freno",
    "msg": "Spotify ha frenado: pausa de 1 min (nivel 1)",
    "st": 429,
-   "ruta": "GET /me/player/recently-played"
-  },
-  {
-   "at": 1791103388128,
-   "donde": "cargar",
-   "msg": "Spotify ha pedido parar un rato. El Mando vuelve a intentarlo solo dentro de 49 segundos (si insistiera antes, Spotify alargaría el castigo). Mientras, lo guardado funciona y los cambios van a la cola.",
-   "st": 429,
-   "ruta": ""
-  },
-  {
-   "at": 1791103385812,
-   "donde": "cargar",
-   "msg": "Spotify ha pedido parar un rato. El Mando vuelve a intentarlo solo dentro de 51 segundos (si insistiera antes, Spotify alargaría el castigo). Mientras, lo guardado funciona y los cambios van a la cola.",
-   "st": 429,
-   "ruta": ""
-  },
-  {
-   "at": 1791103376444,
-   "donde": "freno",
-   "msg": "Spotify ha frenado: pausa de 1 min (nivel 1)",
-   "st": 429,
-   "ruta": "GET /me/player/recently-played"
-  },
-  {
-   "at": 1790715581901,
-   "donde": "cargar",
-   "msg": "Spotify ha frenado tus peticiones por ir demasiado deprisa. Vuelve a funcionar solo dentro de 61 segundos. No es una caída ni has perdido nada.",
-   "st": 429,
-   "ruta": ""
-  },
-  {
-   "at": 1790715581901,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 60 s (429)",
-   "st": 429,
    "ruta": "GET /me/tracks"
   },
   {
-   "at": 1790715581140,
+   "at": 1791063020647,
    "donde": "cargar",
-   "msg": "Spotify ha frenado tus peticiones por ir demasiado deprisa. Vuelve a funcionar solo dentro de 61 segundos. No es una caída ni has perdido nada.",
-   "st": 429,
+   "msg": "Load failed",
+   "st": 0,
    "ruta": ""
-  },
-  {
-   "at": 1790715581100,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 60 s (429)",
-   "st": 429,
-   "ruta": "GET /me/following"
-  },
-  {
-   "at": 1790715547889,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 32 s (429)",
-   "st": 429,
-   "ruta": "GET /me/tracks"
-  },
-  {
-   "at": 1790715547305,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 16 s (429)",
-   "st": 429,
-   "ruta": "GET /me/following"
-  },
-  {
-   "at": 1790715538228,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 8 s (429)",
-   "st": 429,
-   "ruta": "GET /me/following"
-  },
-  {
-   "at": 1790715537336,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 4 s (429)",
-   "st": 429,
-   "ruta": "GET /me/tracks"
-  },
-  {
-   "at": 1790715534943,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 2 s (429)",
-   "st": 429,
-   "ruta": "GET /me/following"
-  },
-  {
-   "at": 1790714565112,
-   "donde": "cargar",
-   "msg": "Spotify está frenando esa parte (me) un par de minutos. El resto funciona.",
-   "st": 429,
-   "ruta": "GET /me"
-  },
-  {
-   "at": 1790714549089,
-   "donde": "cargar",
-   "msg": "Spotify está frenando esa parte (me) un par de minutos. El resto funciona.",
-   "st": 429,
-   "ruta": "GET /me"
-  },
-  {
-   "at": 1790714514910,
-   "donde": "cargar",
-   "msg": "Spotify está frenando las peticiones: prueba en un rato",
-   "st": 429,
-   "ruta": "GET /me/following"
-  },
-  {
-   "at": 1790714514909,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 4 s (429)",
-   "st": 429,
-   "ruta": "GET /me/following"
-  },
-  {
-   "at": 1790714511896,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 2 s (429)",
-   "st": 429,
-   "ruta": "GET /me/following"
-  },
-  {
-   "at": 1790714507202,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 4 s (429)",
-   "st": 429,
-   "ruta": "GET /me/following"
-  },
-  {
-   "at": 1790714506521,
-   "donde": "cargar",
-   "msg": "Spotify está frenando las peticiones: prueba en un rato",
-   "st": 429,
-   "ruta": "GET /me/albums"
-  },
-  {
-   "at": 1790714506521,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 2 s (429)",
-   "st": 429,
-   "ruta": "GET /me/albums"
-  },
-  {
-   "at": 1790714489038,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 16 s (429)",
-   "st": 429,
-   "ruta": "GET /me/following"
-  },
-  {
-   "at": 1790714488177,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 8 s (429)",
-   "st": 429,
-   "ruta": "GET /me/albums"
-  },
-  {
-   "at": 1790714483750,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 4 s (429)",
-   "st": 429,
-   "ruta": "GET /me/albums"
-  },
-  {
-   "at": 1790714481139,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 2 s (429)",
-   "st": 429,
-   "ruta": "GET /me/albums"
-  },
-  {
-   "at": 1790714326866,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 8 s (429)",
-   "st": 429,
-   "ruta": "GET /me"
-  },
-  {
-   "at": 1790714325651,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 4 s (429)",
-   "st": 429,
-   "ruta": "GET /me"
-  },
-  {
-   "at": 1790714324739,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 2 s (429)",
-   "st": 429,
-   "ruta": "GET /me"
   }
  ],
  "diagnostico": null
