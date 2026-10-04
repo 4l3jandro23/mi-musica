@@ -813,6 +813,25 @@
   .pcd-antes img { width: 62px; height: 62px; border-radius: 6px; object-fit: cover; box-shadow: 0 4px 14px rgba(0,0,0,.4); display: block; border: 2px solid rgba(255,255,255,.8); }
   .pcd-antes small { font-size: 10px; color: #fff; text-shadow: 0 1px 3px #000; font-weight: 700; }
   .sws { display: flex; gap: 7px; flex-wrap: wrap; }
+  .bj { background: linear-gradient(135deg, color-mix(in srgb, var(--amber) 22%, var(--surface)), var(--surface) 70%); border-radius: 20px; padding: 16px; margin-bottom: 12px; box-shadow: var(--shadow-sm); }
+  .bj-eti { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--amber); margin-bottom: 6px; }
+  .bj h3 { font-family: var(--f-disp); font-size: 21px; margin: 0 0 6px; }
+  .bj p { margin: 0 0 10px; color: var(--fg-soft); }
+  .bj-fila { display: flex; gap: 14px; align-items: center; }
+  .bj-n { font-family: var(--f-disp); font-size: 46px; font-weight: 800; line-height: 1; color: var(--amber); }
+  .bj .tiny { color: var(--fg-mute); }
+  .bj-ok { display: flex; gap: 12px; align-items: center; background: var(--surface); }
+  .bj-ic { width: 40px; height: 40px; border-radius: 50%; background: var(--jade); color: #fff; display: grid; place-items: center; flex: none; }
+  .bj-ic svg { width: 22px; height: 22px; stroke-width: 2.6; }
+  .bj-reglas { display: flex; flex-direction: column; gap: 8px; margin: 4px 0 14px; }
+  .bj-reglas div { display: flex; gap: 10px; align-items: flex-start; }
+  .bj-reglas b { width: 24px; height: 24px; border-radius: 50%; background: var(--amber-soft); color: var(--amber); display: grid; place-items: center; flex: none; font-size: 13px; }
+  .crits { display: flex; flex-direction: column; gap: 12px; max-height: 55vh; overflow-y: auto; }
+  .crit-n { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; margin-bottom: 4px; }
+  .rp .dest button { flex-direction: column; gap: 2px; }
+  .rp .dest .crit-q { display: block; font-size: 11.5px; font-weight: 600; opacity: .7; line-height: 1.2; }
+  .rp .dest .queda { grid-column: 1 / -1; border-style: dashed; }
+  .rp .dest .queda.on { background: var(--jade); border-color: var(--jade); color: #fff; }
   #galcd { position: fixed; inset: 0; z-index: 260; background: #0b0b0b; color: #fff; overflow-y: auto; padding: calc(10px + env(safe-area-inset-top)) 16px calc(30px + env(safe-area-inset-bottom)); animation: aparece .25s ease both; }
   #galcd .gal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-family: var(--f-disp); font-size: 22px; }
   #galcd .rb { border: 0; background: rgba(255,255,255,.12); color: #fff; border-radius: 50%; width: 42px; height: 42px; display: grid; place-items: center; cursor: pointer; }
@@ -910,7 +929,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-04c';
+const VERSION = '2026-10-04d';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2575,10 +2594,11 @@ function tarjetaMini(img, t1, t2, attrs, red) {
 async function vInicio(m) {
   const h = new Date().getHours(), sal = h < 6 ? 'Buenas noches' : h < 13 ? 'Buenos días' : h < 21 ? 'Buenas tardes' : 'Buenas noches';
   const nom = () => S.me && S.me.display_name ? ', ' + esc(S.me.display_name.split(' ')[0]) : '';
-  m.innerHTML = '<div class="saludo" id="inSal">' + sal + nom() + '</div><div id="inAhora"></div><div id="inDia"></div><div class="atajos" id="inAtajos"></div><div id="inDiscos"></div><div id="inNuevas"></div><div id="inRec"></div><div id="inHoy"></div><div id="inCaps"></div><div id="inPls"></div><div id="inEtq"></div>';
+  m.innerHTML = '<div class="saludo" id="inSal">' + sal + nom() + '</div><div id="inAhora"></div><div id="inBj"></div><div id="inDia"></div><div class="atajos" id="inAtajos"></div><div id="inDiscos"></div><div id="inNuevas"></div><div id="inRec"></div><div id="inHoy"></div><div id="inCaps"></div><div id="inPls"></div><div id="inEtq"></div>';
   const vivo = () => S.tab === 'inicio' && !S.vista && $('#inAtajos');
   if (!S.me) yo().then(() => { const x = $('#inSal'); if (x) x.innerHTML = sal + nom(); }).catch(() => {});
   pintarAhoraInicio();
+  pintarBandeja(vivo).catch(() => {});
   /* atajos */
   const likesN = S.likes ? S.likes.length : ((await cacheLeer('likes')) || { pistas: [] }).pistas.length;
   if (!vivo()) return;
@@ -2701,6 +2721,8 @@ function hojaIrA() {
     ['Jugar: ¿cuándo te gustó?', 'corazon', () => hojaJuego('cuando')],
     ['Jugar: ¿cuál es más antigua?', 'ordenar', () => hojaJuego('orden')],
     ['Comparar dos listas', 'unir', () => hojaComparar()],
+    ['Ordenar la bandeja (lo nuevo)', 'play', () => ordenarBandeja()],
+    ['Las preguntas de tus playlists', 'lapiz', () => hojaCriterios()],
     ['Portadas de CD', 'disco', () => irATab('portadas')],
     ['Imagen para compartir', 'imagen', () => hojaCompartir()],
     ['Nueva playlist', 'plus', () => hojaNuevaPlaylist()],
@@ -3428,6 +3450,128 @@ function hojaPaletaCD(mias) {
 }
 const slugP = t => (fold(t || 'portada').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'portada');
 
+
+/* ============================================================
+   TU BANDEJA — la forma de no volver a fracasar ordenando
+   ------------------------------------------------------------
+   Diez años de intentos fallaron por lo mismo: había que decidir
+   sobre miles de canciones antes de disfrutar nada. Aquí la regla
+   es la contraria:
+   1. Solo se decide LO NUEVO (lo que te gusta desde una fecha). Lo
+      de antes es tu archivo: está bien donde está, no hay deuda.
+   2. Poco y a menudo: tandas de 5 minutos (25 canciones).
+   3. Cada playlist tiene UNA pregunta que se contesta escuchando
+      una sola canción («¿me pone la piel de gallina?»). Si una
+      playlist no la tiene, el criterio no está claro.
+   Lo decidido se apunta en las etiquetas (ETQ.man[uri].bj), que ya
+   se sincronizan entre tus aparatos por GitHub.
+   ============================================================ */
+const BJ_TANDA = 25;
+const decidida = p => { const m = (ETQ || ETQ0()).man[p.uri]; return !!(m && m.bj); };
+function marcarDecididas(uris) {
+  const now = Date.now();
+  for (const u of uris) { const o = ETQ.man[u] || (ETQ.man[u] = { t: [] }); o.bj = now; o.ts = now; }
+  etqCambio();
+  const sem = lunesDe(now), b = PREFS.bandeja || (PREFS.bandeja = {});
+  b.semanas = Array.from(new Set([sem].concat(b.semanas || []))).sort((x, y) => y - x).slice(0, 60);
+  const hoyK = claveDia(now); b.nHoy = (b.hoy === hoyK ? (b.nHoy || 0) : 0) + uris.length; b.hoy = hoyK;
+  guardarPrefs();
+}
+async function estadoBandeja() {
+  await etqAsegurar();
+  const todas = (await likesGuardados()).filter(p => !p.local);
+  const b = PREFS.bandeja;
+  if (!b || !b.desde) return { config: false, total: todas.length };
+  const enPl = S.indice ? S.indice.m : null;
+  const nuevas = todas.filter(p => p.added >= b.desde);
+  const pend = nuevas.filter(p => !decidida(p) && !(enPl && (enPl.get(p.uri) || []).length)).sort((x, y) => x.added - y.added);
+  let racha = 0, k = lunesDe(Date.now());
+  const sems = new Set(b.semanas || []);
+  if (!sems.has(k)) k = lunesDe(k - 3 * 864e5);
+  while (sems.has(k)) { racha++; k = lunesDe(k - 3 * 864e5); }
+  return { config: true, total: todas.length, archivo: todas.length - nuevas.length, nuevas: nuevas.length, pend, racha, desde: b.desde };
+}
+function htmlBandeja(E) {
+  if (!E.total) return '<div class="bj"><div class="bj-eti">Tu bandeja</div><p>Para ordenar sin agobios, la Fonoteca necesita leer tus Me gusta <b>una vez</b> en este aparato (luego solo pide lo nuevo).</p><button class="btn pri" id="bjLeer">' + ic('corazon') + 'Leer mis Me gusta</button></div>';
+  if (!E.config) return '<div class="bj bj-nueva"><div class="bj-eti">Empieza aquí</div><h3>Tu bandeja: ordenar sin agobiarte</h3>' +
+    '<p>Tienes <b>' + n$(E.total) + '</b> canciones en Me gusta. No hace falta ordenarlas: eso es tu archivo y está bien donde está. A partir de ahora solo decides lo <b>nuevo</b>, poco a poco.</p>' +
+    '<p class="tiny" style="opacity:.8;margin-top:-4px">¿Desde cuándo cuenta como nuevo?</p><div class="chips" id="bjDesde">' +
+    [['0', 'Desde hoy (empezar de cero)'], ['30', 'Lo del último mes'], ['90', 'Los últimos 3 meses']].map(([d, t], i) => '<button class="chip' + (i === 1 ? ' on' : '') + '" data-d="' + d + '">' + t + '</button>').join('') + '</div>' +
+    '<button class="btn pri" id="bjEmp" style="margin-top:12px">Empezar</button></div>';
+  const n = E.pend.length, min = Math.max(1, Math.round(Math.min(n, BJ_TANDA) * 12 / 60));
+  if (!n) return '<div class="bj bj-ok"><div class="bj-ic">' + ic('check') + '</div><div style="flex:1;min-width:0"><b>Bandeja al día</b><div class="tiny">' +
+    (E.nuevas ? n$(E.nuevas) + ' canciones nuevas ya decididas' : 'Cuando le des al corazón a algo, aparecerá aquí') + (E.racha > 1 ? ' · 🔥 ' + E.racha + ' semanas seguidas' : '') + '</div></div><button class="btn sm ghost" id="bjMas">' + ic('mas') + '</button></div>';
+  return '<div class="bj"><div class="bj-eti">Tu bandeja' + (E.racha > 1 ? ' · 🔥 ' + E.racha + ' semanas' : '') + '</div><div class="bj-fila"><div class="bj-n">' + n$(n) + '</div><div style="flex:1;min-width:0"><b>' + (n === 1 ? 'canción nueva por decidir' : 'canciones nuevas por decidir') + '</b><div class="tiny">Lo de antes (' + n$(E.archivo) + ') es tu archivo: no hay que tocarlo.</div></div></div>' +
+    '<div class="btnrow" style="margin-top:12px"><button class="btn pri" id="bjGo">' + ic('play') + 'Ordenar ' + Math.min(n, BJ_TANDA) + ' · ~' + min + ' min</button><button class="btn sm ghost" id="bjMas">' + ic('mas') + '</button></div></div>';
+}
+async function pintarBandeja(vivo) {
+  const el = $('#inBj'); if (!el) return;
+  const E = await estadoBandeja();
+  if (!vivo()) return;
+  el.innerHTML = htmlBandeja(E);
+  const d = el.querySelector('#bjDesde');
+  if (d) {
+    let dias = 30;
+    d.onclick = e => { const c = e.target.closest('[data-d]'); if (!c) return; dias = +c.dataset.d; d.querySelectorAll('.chip').forEach(x => x.classList.toggle('on', x === c)); };
+    el.querySelector('#bjEmp').onclick = () => {
+      const t = new Date(); t.setHours(0, 0, 0, 0);
+      PREFS.bandeja = Object.assign(PREFS.bandeja || {}, { desde: t.getTime() - dias * 864e5 }); guardarPrefs();
+      pintarBandeja(vivo);
+      if (!Object.keys(PREFS.criterios || {}).length) setTimeout(hojaCriterios, 300);
+    };
+  }
+  const g = el.querySelector('#bjGo'); if (g) g.onclick = () => ordenarBandeja(E.pend);
+  const lr = el.querySelector('#bjLeer'); if (lr) lr.onclick = () => irATab('likes');
+  const m = el.querySelector('#bjMas'); if (m) m.onclick = () => hojaBandeja(E);
+}
+async function ordenarBandeja(pend) {
+  if (!pend) pend = (await estadoBandeja()).pend || [];
+  if (!pend.length) { toast('Tu bandeja está al día'); return; }
+  const f = { kind: 'likes', id: 'likes', name: 'Bandeja', editable: false, meta: null, pistas: null };
+  await repasar(f, conK(pend.slice(0, BJ_TANDA)));
+  if (RP) RP.bandeja = true;
+  render();
+}
+function hojaBandeja(E) {
+  const b = PREFS.bandeja || {};
+  hoja('<h2>Tu bandeja</h2>' +
+    '<div class="bj-reglas"><div><b>1</b><span>Solo decides lo nuevo. Lo de antes del ' + (b.desde ? fechaLarga(b.desde) : '') + ' es tu archivo.</span></div><div><b>2</b><span>Poco y a menudo: tandas de ' + BJ_TANDA + ' canciones, unos 5 minutos.</span></div><div><b>3</b><span>Cada playlist responde a una pregunta que se contesta con una sola canción.</span></div></div>' +
+    '<div class="opc">' +
+    '<button data-o="crit">' + ic('lapiz') + '<span>Las preguntas de tus playlists<span class="sub">' + Object.keys(PREFS.criterios || {}).length + ' con pregunta</span></span></button>' +
+    '<button data-o="todo">' + ic('lista') + '<span>Ver la bandeja como lista<span class="sub">' + n$((E.pend || []).length) + ' por decidir</span></span></button>' +
+    '<button data-o="rescate">' + ic('reloj') + '<span>Rescatar del archivo<span class="sub">10 canciones viejas al azar, por si alguna merece una playlist (opcional)</span></span></button>' +
+    '<button data-o="desde">' + ic('ajustes') + '<span>Cambiar desde cuándo cuenta como nuevo</span></button>' +
+    '</div>', h => {
+      h.querySelector('.opc').onclick = async e => {
+        const x = e.target.closest('[data-o]'); if (!x) return;
+        const o = x.dataset.o; cerrarHoja(true);
+        if (o === 'crit') hojaCriterios();
+        else if (o === 'todo') abrirLista('Bandeja', E.pend || []);
+        else if (o === 'rescate') {
+          const arch = (await likesGuardados()).filter(p => !p.local && p.added < (b.desde || 0) && !decidida(p));
+          if (!arch.length) { toast('No hay nada en el archivo'); return; }
+          const f = { kind: 'likes', id: 'likes', name: 'Rescate', editable: false, meta: null, pistas: null };
+          await repasar(f, conK(barajar(arch.slice()).slice(0, 10))); if (RP) RP.bandeja = true; render();
+        }
+        else if (o === 'desde') { PREFS.bandeja = Object.assign(b, { desde: 0 }); guardarPrefs(); if (S.tab === 'inicio') render(); else irATab('inicio'); }
+      };
+    });
+}
+/* La pregunta de cada playlist: el criterio tiene que poder aplicarse escuchando UNA canción */
+const IDEAS_CRITERIO = ['¿Me pone la piel de gallina?', '¿Me dan ganas de bailar ya?', '¿La pondría para concentrarme?', '¿Me la llevaría a correr?', '¿Es para cantar a gritos en el coche?', '¿Me relaja de verdad?', '¿Es salsa que bailaría?'];
+async function hojaCriterios() {
+  let pls; try { pls = (await cargarPlaylists()).filter(esMia); } catch (e) { toast(explicarError(e)); return; }
+  const C = PREFS.criterios || (PREFS.criterios = {});
+  hoja('<h2>La pregunta de cada playlist</h2><p class="soft">Una playlist funciona si puedes decidir escuchando <b>una sola canción</b>, sin compararla con las demás. «¿Me pone la piel de gallina?» funciona; «las mejores de la historia» no, porque obliga a comparar. Si no se te ocurre la pregunta de una playlist, quizá sobra.</p>' +
+    '<div class="crits">' + pls.map(p => '<div class="crit"><div class="crit-n"><b class="nowrap">' + esc(p.name) + '</b><span class="tiny mute">' + p.total + ' canciones' + (p.total > 500 ? ' · <span style="color:var(--rust)">más de 500: cuesta escucharla entera</span>' : '') + '</span></div><input class="field" data-id="' + p.id + '" placeholder="' + esc(IDEAS_CRITERIO[Math.abs(semilla(p.id)) % IDEAS_CRITERIO.length]) + '" value="' + esc(C[p.id] || '') + '" maxlength="80"></div>').join('') + '</div>' +
+    '<button class="btn pri wide" id="crOk" style="margin-top:12px">Guardar</button>', h => {
+      const guardar = () => { h.querySelectorAll('[data-id]').forEach(i => { const v = i.value.trim(); if (v) C[i.dataset.id] = v; else delete C[i.dataset.id]; }); guardarPrefs(); };
+      h.querySelector('#crOk').onclick = () => { guardar(); cerrarHoja(); toast('Guardado: saldrán al ordenar la bandeja'); };
+      h.addEventListener('change', guardar);
+    });
+}
+const semilla = s => { let h = 0; for (const ch of String(s)) h = (h * 31 + ch.charCodeAt(0)) | 0; return h; };
+
 /* Meta semanal de discos: cuantos valoras cada semana (de lunes a domingo) */
 const lunesDe = t => { const d = new Date(t); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - (d.getDay() + 6) % 7); return d.getTime(); };
 function metaDiscos() {
@@ -3651,32 +3795,36 @@ async function repasar(f, ps) {
   let pls;
   try { pls = await cargarPlaylists(); } catch (e) { toast(explicarError(e)); return; }
   const rec = PREFS.recientes || [], pos = id => { const i = rec.indexOf(id); return i < 0 ? 99 : i; };
-  const dest = pls.filter(p => esMia(p) && !(f.kind === 'playlist' && p.id === f.id)).sort((a, b) => pos(a.id) - pos(b.id) || b.total - a.total).slice(0, 6);
+  const crit = PREFS.criterios || {};
+  const dest = pls.filter(p => esMia(p) && !(f.kind === 'playlist' && p.id === f.id)).sort((a, b) => (!!crit[b.id] - !!crit[a.id]) || pos(a.id) - pos(b.id) || b.total - a.total).slice(0, 6);
   const quitar = f.kind === 'likes' ? 'Quitar ♥' : (f.kind === 'playlist' && f.editable ? 'Quitar de aquí' : '');
   RP = { f: f, lista: lista, i: 0, dec: new Map(), dest: dest, quitar: quitar };
   limpiarSel();
   abrirVista({ repaso: true, pintar: pintarRepaso });
 }
-function decDe(p) { let d = RP.dec.get(p.k); if (!d) { d = { pl: new Set(), fuera: false }; RP.dec.set(p.k, d); } return d; }
-function cambiosRepaso() { let n = 0; for (const d of RP.dec.values()) if (d.pl.size || d.fuera) n++; return n; }
+function decDe(p) { let d = RP.dec.get(p.k); if (!d) { d = { pl: new Set(), fuera: false, queda: false }; RP.dec.set(p.k, d); } return d; }
+function cambiosRepaso() { let n = 0; for (const d of RP.dec.values()) if (d.pl.size || d.fuera || d.queda) n++; return n; }
 function pintarRepaso(m) {
   if (!RP) { atras(); return; }
   const p = RP.lista[RP.i], n = RP.lista.length;
   if (!p) {
-    m.innerHTML = '<div class="rp"><h2>¡Repaso terminado!</h2><p class="soft">' + cambiosRepaso() + ' canciones con cambios.</p>' +
+    m.innerHTML = '<div class="rp"><h2>' + (RP.bandeja ? '¡Tanda hecha!' : '¡Repaso terminado!') + '</h2><p class="soft">' + cambiosRepaso() + (RP.bandeja ? ' canciones decididas. Pulsa aplicar y listo: por hoy ya has cumplido.' : ' canciones con cambios.') + '</p>' +
       '<div class="btnrow" style="justify-content:center;margin-top:12px"><button class="btn pri" id="rpAp">' + ic('check') + 'Aplicar en Spotify</button><button class="btn" id="rpVol">Volver a la última</button></div></div>';
     $('#rpAp').onclick = aplicarRepaso; $('#rpVol').onclick = () => { RP.i = n - 1; render(); };
     return;
   }
-  const d = RP.dec.get(p.k) || { pl: new Set(), fuera: false };
+  const d = RP.dec.get(p.k) || { pl: new Set(), fuera: false, queda: false };
+  const CR = PREFS.criterios || {};
   const enPl = S.indice ? (S.indice.m.get(p.uri) || []) : [];
   m.innerHTML = '<button class="btn ghost sm back" id="bAtras">' + ic('atras') + 'Salir</button><div class="rp">' +
-    '<div class="tiny mute">' + (RP.i + 1) + ' de ' + n + ' · ' + cambiosRepaso() + ' con cambios</div><div class="prog"><i style="width:' + (100 * RP.i / n) + '%"></i></div>' +
+    '<div class="tiny mute">' + (RP.bandeja ? '<b>Bandeja</b> · ' : '') + (RP.i + 1) + ' de ' + n + ' · ' + cambiosRepaso() + (RP.bandeja ? ' decididas' : ' con cambios') + '</div><div class="prog"><i style="width:' + (100 * RP.i / n) + '%"></i></div>' +
     (p.coverG ? '<img class="port" src="' + esc(p.coverG) + '" alt="">' : '<div class="port">' + ic('disco') + '</div>') +
     '<h2>' + esc(p.title) + '</h2><div class="soft">' + esc(nombresArtistas(p)) + '</div><div class="tiny mute">' + esc(p.album) + ' · ' + textoAnyo(p) + ' · ' + dur(p.ms) + (p.added ? ' · añadida ' + fecha(p.added) : '') + '</div>' +
     '<div class="donde">' + (S.indice ? (enPl.length ? 'Ya está en: ' + enPl.map(id => esc(nombrePl(id))).join(', ') : 'No está en ninguna playlist') : '') + '</div>' +
-    '<div class="dest">' + RP.dest.map((pl, i) => '<button data-pl="' + pl.id + '" class="' + (d.pl.has(pl.id) ? 'on' : '') + (enPl.indexOf(pl.id) >= 0 ? ' ya' : '') + '">' + (d.pl.has(pl.id) ? '✓ ' : '+ ') + esc(pl.name) + ' <span class="k">' + (i + 1) + '</span></button>').join('') +
+    '<div class="dest">' + RP.dest.map((pl, i) => '<button data-pl="' + pl.id + '" class="' + (d.pl.has(pl.id) ? 'on' : '') + (enPl.indexOf(pl.id) >= 0 ? ' ya' : '') + '">' + (d.pl.has(pl.id) ? '✓ ' : '+ ') + esc(pl.name) + (CR[pl.id] ? '<small class="crit-q">' + esc(CR[pl.id]) + '</small>' : '') + ' <span class="k">' + (i + 1) + '</span></button>').join('') +
+    (RP.bandeja ? '<button data-x="queda" class="queda' + (d.queda ? ' on' : '') + '">' + (d.queda ? '✓ ' : '') + 'Se queda solo en Me gusta <span class="k">0</span></button>' : '') +
     (RP.quitar ? '<button data-x="fuera" class="malo' + (d.fuera ? ' on' : '') + '">' + (d.fuera ? '✓ ' : '') + RP.quitar + ' <span class="k">Q</span></button>' : '') + '</div>' +
+    (RP.bandeja && !Object.keys(CR).length ? '<button class="btn sm ghost" id="rpCrit" style="margin:0 auto 6px;display:flex">' + ic('lapiz') + 'Ponles una pregunta a tus playlists</button>' : '') +
     '<div class="nav"><button class="btn" id="rpAnt"' + (RP.i ? '' : ' disabled') + '>← Anterior</button><button class="btn" id="rpPlay">' + ic('play') + 'Escuchar</button><button class="btn pri" id="rpSig">Siguiente →</button></div>' +
     '<label class="check tiny" style="justify-content:center"><input type="checkbox" id="rpAuto"' + (PREFS.rpAuto ? ' checked' : '') + '> Que suene cada canción al pasar</label>' +
     (!S.indice ? '<button class="btn sm ghost" id="rpIx" style="margin-top:6px">' + ic('lista') + '¿En qué playlists está cada una?</button>' : '') +
@@ -3688,11 +3836,13 @@ function pintarRepaso(m) {
   $('#rpAp').onclick = aplicarRepaso;
   $('#rpAuto').onchange = e => { PREFS.rpAuto = e.target.checked; guardarPrefs(); if (PREFS.rpAuto) reproducir({ uris: [p.uri] }); };
   const ix = $('#rpIx'); if (ix) ix.onclick = async () => { if (await trabajo(() => indice(), 'Mirando tus playlists')) render(); };
+  const rc = $('#rpCrit'); if (rc) rc.onclick = hojaCriterios;
   m.querySelector('.dest').onclick = e => {
     const b = e.target.closest('button'); if (!b) return;
     const dd = decDe(p);
     if (b.dataset.pl) { const id = b.dataset.pl; dd.pl.has(id) ? dd.pl.delete(id) : dd.pl.add(id); if (dd.pl.has(id)) return setTimeout(() => moverRepaso(1), 160), render(); }
-    else { dd.fuera = !dd.fuera; if (dd.fuera) return setTimeout(() => moverRepaso(1), 160), render(); }
+    else if (b.dataset.x === 'queda') { dd.queda = !dd.queda; if (dd.queda) { dd.fuera = false; return setTimeout(() => moverRepaso(1), 160), render(); } }
+    else { dd.fuera = !dd.fuera; if (dd.fuera) { dd.queda = false; return setTimeout(() => moverRepaso(1), 160), render(); } }
     render();
   };
 }
@@ -3717,6 +3867,7 @@ async function aplicarRepaso() {
     if (d.fuera) fuera.push(p);
   }
   const hechos = [];
+  const decididas = R.bandeja ? Array.from(R.dec).filter(([, d]) => d.pl.size || d.fuera || d.queda).map(([k]) => porK.get(k)).filter(Boolean).map(p => p.uri) : [];
   const ok = await trabajo(async () => {
     const lista = [];
     for (const [id, us] of porPl) {
@@ -3734,10 +3885,11 @@ async function aplicarRepaso() {
     return true;
   }, 'Aplicando el repaso');
   if (!ok) return;
+  if (decididas.length) { marcarDecididas(decididas); hechos.unshift(decididas.length + (decididas.length === 1 ? ' decidida' : ' decididas')); }
   if (fuera.length && f.pistas) { const kk = new Set(fuera.map(p => p.k)); f.pistas = f.pistas.filter(p => !kk.has(p.k)); if (f.kind === 'likes') S.likes = f.pistas; }
   S.playlists = null; S.indice = null;
   RP = null;
-  toast(hechos.length ? hechos.join(' · ') : 'Ya estaba todo así', hechos.length ? { txt: 'Deshacer', fn: () => deshacerUltimo(HIST[0].id) } : null);
+  toast(hechos.length ? hechos.join(' · ') : 'Ya estaba todo así', hechos.length && (porPl.size || fuera.length) ? { txt: 'Deshacer', fn: () => deshacerUltimo(HIST[0].id) } : null);
   atras();
 }
 /* teclado: en el repaso y en las listas (ordenador) */
@@ -3751,6 +3903,7 @@ document.addEventListener('keydown', e => {
     else if (e.key === ' ' && p) { e.preventDefault(); reproducir({ uris: [p.uri] }); }
     else if (/^[1-6]$/.test(e.key) && p && RP.dest[+e.key - 1]) { const b = document.querySelector('.rp [data-pl="' + RP.dest[+e.key - 1].id + '"]'); if (b) b.click(); }
     else if ((e.key === 'q' || e.key === 'Q') && p && RP.quitar) { const b = document.querySelector('.rp [data-x="fuera"]'); if (b) b.click(); }
+    else if (e.key === '0' && p && RP.bandeja) { const b = document.querySelector('.rp [data-x="queda"]'); if (b) b.click(); }
     return;
   }
   if (!S.fuente || !$('#vlist')) return;
@@ -5822,6 +5975,7 @@ function hojaFuente(f) {
     ]) +
     sec('Editar', [
       ed ? b('datos', 'lapiz', 'Nombre, descripción y privacidad') : '',
+      ed ? b('criterio', 'filtro', 'Su pregunta', (PREFS.criterios || {})[f.id] ? '«' + esc(PREFS.criterios[f.id]) + '»' : 'qué tiene que cumplir una canción para entrar') : '',
       ed ? b('portadaCD', 'disco', 'Portada de CD', 'el disco con su cinta y el nombre a rotulador') : '',
       ed ? b('portada', 'imagen', 'Cambiar la portada', 'desde una foto') : '',
       ed ? b('ordenar', 'ordenar', 'Ordenar', 'título, artista, año, duración, repartir artistas…') : '',
@@ -5856,7 +6010,7 @@ function hojaFuente(f) {
       h.querySelector('.opc').onclick = async e => {
         const x = e.target.closest('[data-o]'); if (!x) return;
         const o = x.dataset.o;
-        if (!f.pistas && ['datos', 'portada', 'portadaCD', 'borrar', 'dejar', 'guardarDisco'].indexOf(o) < 0) { toast('Espera a que termine de cargar'); return; }
+        if (!f.pistas && ['datos', 'criterio', 'portada', 'portadaCD', 'borrar', 'dejar', 'guardarDisco'].indexOf(o) < 0) { toast('Espera a que termine de cargar'); return; }
         cerrarHoja();
         const ps = f.pistas, uris = () => Array.from(new Set(ps.filter(p => !p.local).map(p => p.uri)));
         const artUris = () => Array.from(new Set([].concat.apply([], ps.map(p => p.artists.map(a => a.uri))).filter(Boolean)));
@@ -5865,6 +6019,7 @@ function hojaFuente(f) {
         else if (o === 'unir') { S.selObj.clear(); S.selObj.add(f.id); hojaCombinar(); }
         else if (o === 'dividir') hojaDividir(f);
         else if (o === 'datos') hojaDatos(f);
+        else if (o === 'criterio') hojaCriterios();
         else if (o === 'portada') elegirPortada(f);
         else if (o === 'portadaCD') hojaPortadaCD(f.meta);
         else if (o === 'ordenar') hojaOrdenar(f);
