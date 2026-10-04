@@ -971,7 +971,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-04g';
+const VERSION = '2026-10-04h';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -3548,14 +3548,14 @@ async function estadoBandeja() {
 function htmlBandeja(E) {
   if (!E.total) return '<div class="bj"><div class="bj-eti">Tu bandeja</div><p>Para ordenar sin agobios, la Fonoteca necesita leer tus Me gusta <b>una vez</b> en este aparato (luego solo pide lo nuevo).</p><button class="btn pri" id="bjLeer">' + ic('corazon') + 'Leer mis Me gusta</button></div>';
   if (!E.config) return '<div class="bj bj-nueva"><div class="bj-eti">Empieza aquí</div><h3>Tu bandeja: ordenar sin agobiarte</h3>' +
-    '<p>Tienes <b>' + n$(E.total) + '</b> canciones en Me gusta. No hace falta ordenarlas: eso es tu archivo y está bien donde está. A partir de ahora solo decides lo <b>nuevo</b>, poco a poco.</p>' +
+    '<p>Tienes <b>' + n$(E.total) + '</b> canciones en Me gusta. No hace falta repasarlas una a una: son tu archivo, siguen en Me gusta y de ahí la Fonoteca te propondrá playlists. Aquí solo decides lo <b>nuevo</b>, poco a poco.</p>' +
     '<p class="tiny" style="opacity:.8;margin-top:-4px">¿Desde cuándo cuenta como nuevo?</p><div class="chips" id="bjDesde">' +
     [['0', 'Desde hoy (empezar de cero)'], ['30', 'Lo del último mes'], ['90', 'Los últimos 3 meses']].map(([d, t], i) => '<button class="chip' + (i === 1 ? ' on' : '') + '" data-d="' + d + '">' + t + '</button>').join('') + '</div>' +
     '<button class="btn pri" id="bjEmp" style="margin-top:12px">Empezar</button></div>';
   const n = E.pend.length, min = Math.max(1, Math.round(Math.min(n, BJ_TANDA) * 12 / 60));
   if (!n) return '<div class="bj bj-ok"><div class="bj-ic">' + ic('check') + '</div><div style="flex:1;min-width:0"><b>Bandeja al día</b><div class="tiny">' +
     (E.nuevas ? n$(E.nuevas) + ' canciones nuevas ya decididas' : 'Cuando le des al corazón a algo, aparecerá aquí') + (E.racha > 1 ? ' · 🔥 ' + E.racha + ' semanas seguidas' : '') + '</div></div><button class="btn sm ghost" id="bjMas">' + ic('mas') + '</button></div>';
-  return '<div class="bj"><div class="bj-eti">Tu bandeja' + (E.racha > 1 ? ' · 🔥 ' + E.racha + ' semanas' : '') + '</div><div class="bj-fila"><div class="bj-n">' + n$(n) + '</div><div style="flex:1;min-width:0"><b>' + (n === 1 ? 'canción nueva por decidir' : 'canciones nuevas por decidir') + '</b><div class="tiny">Lo de antes (' + n$(E.archivo) + ') es tu archivo: no hay que tocarlo.</div></div></div>' +
+  return '<div class="bj"><div class="bj-eti">Tu bandeja' + (E.racha > 1 ? ' · 🔥 ' + E.racha + ' semanas' : '') + '</div><div class="bj-fila"><div class="bj-n">' + n$(n) + '</div><div style="flex:1;min-width:0"><b>' + (n === 1 ? 'canción nueva por decidir' : 'canciones nuevas por decidir') + '</b><div class="tiny">Lo de antes (' + n$(E.archivo) + ') es tu archivo: de ahí salen las ideas de playlists, sin tener que repasarlo.</div></div></div>' +
     '<div class="btnrow" style="margin-top:12px"><button class="btn pri" id="bjGo">' + ic('play') + 'Ordenar ' + Math.min(n, BJ_TANDA) + ' · ~' + min + ' min</button><button class="btn sm ghost" id="bjMas">' + ic('mas') + '</button></div></div>';
 }
 async function pintarBandeja(vivo) {
