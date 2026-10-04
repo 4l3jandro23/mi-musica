@@ -971,7 +971,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-04i';
+const VERSION = '2026-10-04j';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -4093,7 +4093,9 @@ async function aplicarRepaso() {
     const lista = [];
     for (const [id, us] of porPl) {
       const pl = R.dest.find(x => x.id === id);
-      const ya = new Set((await pistasDePlaylist(id, (n, t) => progreso('Mirando «' + pl.name + '»', n, t))).map(p => p.uri));
+      let ya = new Set();
+      try { ya = new Set((await pistasDePlaylist(id, (n, t) => progreso('Mirando «' + pl.name + '»', n, t))).map(p => p.uri)); }
+      catch (e) { if (!esCaida(e)) throw e; const c = await cacheLeer('pl:' + id); if (c && c.pistas) ya = new Set(c.pistas.map(p => p.uri)); }
       const u = Array.from(new Set(us)).filter(x => !ya.has(x));
       if (u.length) { await plAnadir(id, u, null, 'Añadiendo a «' + pl.name + '»'); lista.push({ t: 'plQuitar', pid: id, uris: u }); recordarDestino(id); hechos.push(u.length + ' a «' + pl.name + '»'); }
     }
@@ -4110,7 +4112,8 @@ async function aplicarRepaso() {
   if (fuera.length && f.pistas) { const kk = new Set(fuera.map(p => p.k)); f.pistas = f.pistas.filter(p => !kk.has(p.k)); if (f.kind === 'likes') S.likes = f.pistas; }
   S.playlists = null; S.indice = null;
   RP = null;
-  toast(hechos.length ? hechos.join(' · ') : 'Ya estaba todo así', hechos.length && (porPl.size || fuera.length) ? { txt: 'Deshacer', fn: () => deshacerUltimo(HIST[0].id) } : null);
+  if (_encolados > 0) toast('Guardado. Spotify está en pausa: lo mandará la Fonoteca sola en cuanto deje. No tienes que hacer nada.', null, 7000);
+  else toast(hechos.length ? hechos.join(' · ') : 'Ya estaba todo así', hechos.length && (porPl.size || fuera.length) ? { txt: 'Deshacer', fn: () => deshacerUltimo(HIST[0].id) } : null);
   atras();
 }
 /* teclado: en el repaso y en las listas (ordenador) */
