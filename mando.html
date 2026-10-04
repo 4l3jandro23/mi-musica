@@ -971,7 +971,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-04h';
+const VERSION = '2026-10-04i';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -1947,8 +1947,7 @@ function hojaNuevaPlaylist(uris, sugerido) {
     let pulsado = false;
     hoja('<h2>Nueva playlist</h2>' +
       '<label class="lbl">Nombre</label><input class="field" id="nNom" value="' + esc(sugerido || '') + '" maxlength="100">' +
-      '<label class="lbl">Su pregunta</label><input class="field" id="nCrit" maxlength="80" placeholder="¿Qué tiene que tener una canción para entrar?">' +
-      '<p class="tiny mute" style="margin:4px 0 0">Algo que se conteste escuchando una sola canción, como «¿me pone la piel de gallina?». Si no se te ocurre, quizá no necesitas esta playlist.</p>' +
+      '<label class="lbl">Qué va en ella</label><input class="field" id="nCrit" maxlength="80" placeholder="Ej.: salsa de cualquier época (opcional)">' +
       '<label class="lbl">Descripción</label><input class="field" id="nDesc" maxlength="300">' +
       '<label class="check"><input type="checkbox" id="nPub"> Pública (sale en tu perfil)</label>' +
       (uris ? '<p class="soft tiny">Se crea con ' + uris.length + ' canciones.</p>' : '') +
@@ -2776,7 +2775,7 @@ function hojaIrA() {
     ['Comparar dos listas', 'unir', () => hojaComparar()],
     ['Ordenar la bandeja (lo nuevo)', 'play', () => ordenarBandeja()],
     ['Ideas de playlists', 'varita', () => abrirIdeas()],
-    ['Las preguntas de tus playlists', 'lapiz', () => hojaCriterios()],
+    ['Qué va en cada playlist', 'lapiz', () => hojaCriterios()],
     ['Portadas de CD', 'disco', () => irATab('portadas')],
     ['Imagen para compartir', 'imagen', () => hojaCompartir()],
     ['Nueva playlist', 'plus', () => hojaNuevaPlaylist()],
@@ -3589,9 +3588,9 @@ async function ordenarBandeja(pend) {
 function hojaBandeja(E) {
   const b = PREFS.bandeja || {};
   hoja('<h2>Tu bandeja</h2>' +
-    '<div class="bj-reglas"><div><b>1</b><span>Solo decides lo nuevo. Lo de antes del ' + (b.desde ? fechaLarga(b.desde) : '') + ' es tu archivo.</span></div><div><b>2</b><span>Poco y a menudo: tandas de ' + BJ_TANDA + ' canciones, unos 5 minutos.</span></div><div><b>3</b><span>Cada playlist responde a una pregunta que se contesta con una sola canción.</span></div></div>' +
+    '<div class="bj-reglas"><div><b>1</b><span>Solo decides lo nuevo. Lo de antes del ' + (b.desde ? fechaLarga(b.desde) : '') + ' es tu archivo.</span></div><div><b>2</b><span>Poco y a menudo: tandas de ' + BJ_TANDA + ' canciones, unos 5 minutos.</span></div><div><b>3</b><span>Cada playlist dice en una frase qué canciones van en ella.</span></div></div>' +
     '<div class="opc">' +
-    '<button data-o="crit">' + ic('lapiz') + '<span>Las preguntas de tus playlists<span class="sub">' + Object.keys(PREFS.criterios || {}).length + ' con pregunta</span></span></button>' +
+    '<button data-o="crit">' + ic('lapiz') + '<span>Qué va en cada playlist<span class="sub">' + Object.keys(PREFS.criterios || {}).length + ' con frase</span></span></button>' +
     '<button data-o="todo">' + ic('lista') + '<span>Ver la bandeja como lista<span class="sub">' + n$((E.pend || []).length) + ' por decidir</span></span></button>' +
     '<button data-o="rescate">' + ic('reloj') + '<span>Rescatar del archivo<span class="sub">10 canciones viejas al azar, por si alguna merece una playlist (opcional)</span></span></button>' +
     '<button data-o="desde">' + ic('ajustes') + '<span>Cambiar desde cuándo cuenta como nuevo</span></button>' +
@@ -3616,11 +3615,13 @@ const IDEAS_CRITERIO = ['¿Me pone la piel de gallina?', '¿Me dan ganas de bail
 async function hojaCriterios() {
   let pls; try { pls = (await cargarPlaylists()).filter(esMia); } catch (e) { toast(explicarError(e)); return; }
   const C = PREFS.criterios || (PREFS.criterios = {});
-  hoja('<h2>La pregunta de cada playlist</h2><p class="soft">Una playlist funciona si puedes decidir escuchando <b>una sola canción</b>, sin compararla con las demás. «¿Me pone la piel de gallina?» funciona; «las mejores de la historia» no, porque obliga a comparar. Si no se te ocurre la pregunta de una playlist, quizá sobra.</p>' +
-    '<div class="crits">' + pls.map(p => '<div class="crit"><div class="crit-n"><b class="nowrap">' + esc(p.name) + '</b><span class="tiny mute">' + p.total + ' canciones' + (p.total > 500 ? ' · <span style="color:var(--rust)">más de 500: cuesta escucharla entera</span>' : '') + '</span></div><input class="field" data-id="' + p.id + '" placeholder="' + esc(IDEAS_CRITERIO[Math.abs(semilla(p.id)) % IDEAS_CRITERIO.length]) + '" value="' + esc(C[p.id] || '') + '" maxlength="80"></div>').join('') + '</div>' +
+  pls = pls.filter(p => p.id !== plDiscosId());
+  hoja('<h2>Qué va en cada playlist</h2><p class="soft">Escribe en una frase qué canciones van en cada una, como se lo dirías a un amigo. Te saldrá debajo de cada playlist cuando ordenes la bandeja, para decidir rápido.</p>' +
+    '<div class="aviso" style="margin-bottom:12px"><b>El truco</b>Que se pueda decidir escuchando una sola canción. «Salsa de cualquier época» o «me pone la piel de gallina» sirven. «Las mejores de la historia» no, porque te obliga a compararla con todas.</div>' +
+    '<div class="crits">' + pls.map(p => '<div class="crit"><div class="crit-n"><b class="nowrap">' + esc(p.name) + '</b><span class="tiny mute">' + p.total + ' canciones' + '</span></div><input class="field" data-id="' + p.id + '" placeholder="Qué canciones van aquí (opcional)" value="' + esc(C[p.id] || '') + '" maxlength="80"></div>').join('') + '</div>' +
     '<button class="btn pri wide" id="crOk" style="margin-top:12px">Guardar</button>', h => {
       const guardar = () => { h.querySelectorAll('[data-id]').forEach(i => { const v = i.value.trim(); if (v) C[i.dataset.id] = v; else delete C[i.dataset.id]; }); guardarPrefs(); };
-      h.querySelector('#crOk').onclick = () => { guardar(); cerrarHoja(); toast('Guardado: saldrán al ordenar la bandeja'); };
+      h.querySelector('#crOk').onclick = () => { guardar(); cerrarHoja(); toast('Guardado: lo verás al ordenar la bandeja'); };
       h.addEventListener('change', guardar);
     });
 }
@@ -3629,7 +3630,7 @@ const semilla = s => { let h = 0; for (const ch of String(s)) h = (h * 31 + ch.c
 /* ---- Revisión de tus playlists: pocas cosas, concretas y con su botón ----
    Solo usa lo guardado en el aparato (no gasta peticiones). */
 async function revisionPlaylists(lista) {
-  const mias = lista.filter(esMia), otras = lista.filter(p => !esMia(p)), CR = PREFS.criterios || {}, out = [];
+  const mias = lista.filter(p => esMia(p) && p.id !== plDiscosId()), otras = lista.filter(p => !esMia(p)), CR = PREFS.criterios || {}, out = [];
   const cache = {};
   for (const p of mias) { const c = await cacheLeer('pl:' + p.id); if (c && c.pistas && c.snap === p.snap) cache[p.id] = c.pistas; }
   for (const p of mias) {
@@ -3647,10 +3648,10 @@ async function revisionPlaylists(lista) {
   for (let i = 0; i < ids.length; i++) for (let j = i + 1; j < ids.length; j++) {
     const A = cache[ids[i]], B = cache[ids[j]]; if (A.length < 10 || B.length < 10) continue;
     const kb = new Set(B.map(x => x.uri)), com = A.filter(x => kb.has(x.uri)).length, pct = com / Math.min(A.length, B.length);
-    if (pct >= 0.6) { const pa = mias.find(p => p.id === ids[i]), pb = mias.find(p => p.id === ids[j]); out.push({ p: pa, t: 'Se parece un ' + Math.round(pct * 100) + '% a «' + pb.name + '»', sub: 'Si dos playlists dicen casi lo mismo, una sobra o su pregunta no está clara.', b: 'Comparar', fn: () => hojaComparar(pa.id) }); }
+    if (pct >= 0.6) { const pa = mias.find(p => p.id === ids[i]), pb = mias.find(p => p.id === ids[j]); out.push({ p: pa, t: 'Se parece un ' + Math.round(pct * 100) + '% a «' + pb.name + '»', sub: 'Si dos playlists dicen casi lo mismo, una sobra o no está claro qué va en cada una.', b: 'Comparar', fn: () => hojaComparar(pa.id) }); }
   }
   const sinPreg = mias.filter(p => p.total && !CR[p.id]);
-  if (sinPreg.length) out.push({ t: sinPreg.length === 1 ? '«' + sinPreg[0].name + '» no tiene pregunta' : sinPreg.length + ' playlists sin pregunta', sub: 'Sin una pregunta que se conteste con una sola canción, la playlist acaba siendo un cajón de sastre.', b: 'Ponerlas', fn: hojaCriterios });
+  if (sinPreg.length) out.push({ t: sinPreg.length === 1 ? '«' + sinPreg[0].name + '» no dice qué va en ella' : sinPreg.length + ' playlists sin decir qué va en ellas', sub: 'Una frase como «salsa de cualquier época» evita que acaben siendo un cajón de sastre.', b: 'Escribirlo', fn: hojaCriterios });
   if (otras.length > 5) out.push({ t: 'Sigues ' + otras.length + ' playlists de otros', sub: 'Sigue fuentes, no destinos: con más de 5 vuelve el desorden. Quédate con las que de verdad escuchas.', b: 'Ver', fn: () => { const y = document.querySelector('#plOtras'); if (y) y.scrollIntoView({ behavior: 'smooth' }); } });
   return out;
 }
@@ -3667,15 +3668,15 @@ function hojaRevision(av) {
    No hace falta saber cuántas, cuáles ni cómo se llamarán: se mira
    lo que ya te gusta (géneros, mood, idioma, épocas, cuándo te
    gustó, artistas) y se proponen de una en una. Tú solo dices sí,
-   ahora no o nunca. Cada idea trae su pregunta, que se contesta
+   ahora no o nunca. Cada idea trae su frase de qué va en ella, que se contesta
    con una sola canción. No gasta nada de Spotify hasta que creas una.
    ============================================================ */
 const ID_MIN = 30, ID_TOPE = 500;
 const ID = { lista: null, at: 0, i: 0, filtro: '' };
 const preguntaDe = (g, n) => ({
-  genero: '¿Es ' + n.toLowerCase() + '?', sub: '¿Es ' + n.toLowerCase() + '?', ambiente: '¿Me pone en modo «' + n.toLowerCase() + '»?',
-  idioma: '¿Se canta en ' + n.toLowerCase() + '?', epoca: '¿Suena a ' + n + '?', origen: '¿Es de ' + n + '?', tipo: '¿Es ' + n.toLowerCase() + '?', mis: '¿Es «' + n + '»?'
-}[g] || '¿Encaja con «' + n + '»?');
+  genero: n + ' de cualquier época', sub: n + ' de cualquier época', ambiente: 'Canciones que me ponen en modo ' + n.toLowerCase(),
+  idioma: 'Canciones en ' + n.toLowerCase(), epoca: 'Canciones que suenan a ' + n, origen: 'Música de ' + n, tipo: 'Canciones en versión ' + n.toLowerCase(), mis: 'Canciones «' + n + '»'
+}[g] || 'Canciones de «' + n + '»');
 const TIPO_IDEA = { genero: 'Género', sub: 'Género', ambiente: 'Mood', idioma: 'Idioma', epoca: 'Época', origen: 'Origen', tipo: 'Tipo', mis: 'Tus etiquetas', combo: 'Mezcla', anyo: 'Tus años', artista: 'Artista' };
 async function calcularIdeas(av) {
   await etqAsegurar(); try { await misAsegurar(); } catch (e) {}
@@ -3711,7 +3712,7 @@ async function calcularIdeas(av) {
     /* puntos: tamaño cómodo (60-400), y primero lo que mejor define (mood y género) */
     const tam = n >= 60 && n <= 400 ? 1 : n < 60 ? 0.6 : Math.max(0.25, 400 / n);
     const peso = { ambiente: 1.25, genero: 1.15, sub: 1.1, combo: 1.05, epoca: 0.95, idioma: 0.95, origen: 0.85, tipo: 0.8, mis: 1, anyo: 0.7, artista: 0.6 }[x.g] || 0.8;
-    out.push({ k: x.k, g: x.g, n: x.n, nombre, preg: x.g === 'anyo' ? '¿Me gustó en ' + x.n + '?' : x.g === 'artista' ? '¿Es de ' + x.n + '?' : x.g === 'combo' ? '¿Es ' + x.n.split(/ · | en /)[0].toLowerCase() + ' ' + (/ · /.test(x.n) ? 'de los ' + x.n.split(' · ')[1].toLowerCase() : x.n.slice(x.n.indexOf(' en ') + 1)) + '?' : preguntaDe(x.g, x.n), ps: x.ps, pts: tam * peso * Math.log10(n), luego: luego.has(x.k) });
+    out.push({ k: x.k, g: x.g, n: x.n, nombre, preg: x.g === 'anyo' ? 'Lo que me gustó en ' + x.n : x.g === 'artista' ? 'Canciones de ' + x.n : x.g === 'combo' ? x.n.split(/ · | en /)[0] + ' ' + (/ · /.test(x.n) ? 'de los ' + x.n.split(' · ')[1].toLowerCase() : x.n.slice(x.n.indexOf(' en ') + 1)) : preguntaDe(x.g, x.n), ps: x.ps, pts: tam * peso * Math.log10(n), luego: luego.has(x.k) });
   }
   /* sin repetir casi la misma idea: si dos comparten el 85 % se queda la mejor */
   out.sort((a, b) => (a.luego - b.luego) || b.pts - a.pts);
@@ -3755,7 +3756,7 @@ async function pintarIdeas(m) {
     h += '<div class="idea"><div class="id-mos">' + portadas.map(u => '<img src="' + esc(u) + '" alt="">').join('') + '</div>' +
       '<div class="id-cuerpo"><div class="id-tipo">' + TIPO_IDEA[x.g] + (x.luego ? ' · la dejaste para luego' : '') + ' · ' + (ID.i + 1) + ' de ' + lista.length + '</div>' +
       '<input class="id-nom" id="idNom" value="' + esc(x.nombre) + '" maxlength="80" aria-label="Nombre">' +
-      '<label class="id-preg">Su pregunta<input id="idPreg" value="' + esc(x.preg) + '" maxlength="80"></label>' +
+      '<label class="id-preg">Qué va en ella<input id="idPreg" value="' + esc(x.preg) + '" maxlength="80"></label>' +
       '<div class="id-dato"><b>' + n$(x.ps.length) + '</b> canciones' + (x.ps.length > ID_TOPE ? ' · se crearía con las ' + ID_TOPE + ' que más recientemente te gustaron' : '') + '</div>' +
       '<div class="id-arts">' + arts.map(a => '<span>' + esc(a) + '</span>').join('') + '</div>' +
       (decs.length > 1 ? '<div class="id-decs">' + decs.map(([d, n]) => '<div><i style="height:' + Math.max(6, Math.round(100 * n / dmx)) + '%"></i><small>' + String(d).slice(2) + '</small></div>').join('') + '</div>' : '') +
@@ -4044,7 +4045,7 @@ function pintarRepaso(m) {
     '<div class="dest">' + RP.dest.map((pl, i) => '<button data-pl="' + pl.id + '" class="' + (d.pl.has(pl.id) ? 'on' : '') + (enPl.indexOf(pl.id) >= 0 ? ' ya' : '') + '">' + (d.pl.has(pl.id) ? '✓ ' : '+ ') + esc(pl.name) + (CR[pl.id] ? '<small class="crit-q">' + esc(CR[pl.id]) + '</small>' : '') + ' <span class="k">' + (i + 1) + '</span></button>').join('') +
     (RP.bandeja ? '<button data-x="queda" class="queda' + (d.queda ? ' on' : '') + '">' + (d.queda ? '✓ ' : '') + 'Se queda solo en Me gusta <span class="k">0</span></button>' : '') +
     (RP.quitar ? '<button data-x="fuera" class="malo' + (d.fuera ? ' on' : '') + '">' + (d.fuera ? '✓ ' : '') + RP.quitar + ' <span class="k">Q</span></button>' : '') + '</div>' +
-    (RP.bandeja && !Object.keys(CR).length ? '<button class="btn sm ghost" id="rpCrit" style="margin:0 auto 6px;display:flex">' + ic('lapiz') + 'Ponles una pregunta a tus playlists</button>' : '') +
+    (RP.bandeja && !Object.keys(CR).length ? '<button class="btn sm ghost" id="rpCrit" style="margin:0 auto 6px;display:flex">' + ic('lapiz') + 'Escribe qué va en cada playlist</button>' : '') +
     '<div class="nav"><button class="btn" id="rpAnt"' + (RP.i ? '' : ' disabled') + '>← Anterior</button><button class="btn" id="rpPlay">' + ic('play') + 'Escuchar</button><button class="btn pri" id="rpSig">Siguiente →</button></div>' +
     '<label class="check tiny" style="justify-content:center"><input type="checkbox" id="rpAuto"' + (PREFS.rpAuto ? ' checked' : '') + '> Que suene cada canción al pasar</label>' +
     (!S.indice ? '<button class="btn sm ghost" id="rpIx" style="margin-top:6px">' + ic('lista') + '¿En qué playlists está cada una?</button>' : '') +
@@ -6203,7 +6204,7 @@ function hojaFuente(f) {
     ]) +
     sec('Editar', [
       ed ? b('datos', 'lapiz', 'Nombre, descripción y privacidad') : '',
-      ed ? b('criterio', 'filtro', 'Su pregunta', (PREFS.criterios || {})[f.id] ? '«' + esc(PREFS.criterios[f.id]) + '»' : 'qué tiene que cumplir una canción para entrar') : '',
+      ed && f.id !== plDiscosId() ? b('criterio', 'filtro', 'Qué va en ella', (PREFS.criterios || {})[f.id] ? '«' + esc(PREFS.criterios[f.id]) + '»' : 'una frase que la defina') : '',
       ed ? b('portadaCD', 'disco', 'Portada de CD', 'el disco con su cinta y el nombre a rotulador') : '',
       ed ? b('portada', 'imagen', 'Cambiar la portada', 'desde una foto') : '',
       ed ? b('ordenar', 'ordenar', 'Ordenar', 'título, artista, año, duración, repartir artistas…') : '',
