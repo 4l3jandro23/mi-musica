@@ -813,6 +813,19 @@
   .pcd-antes img { width: 62px; height: 62px; border-radius: 6px; object-fit: cover; box-shadow: 0 4px 14px rgba(0,0,0,.4); display: block; border: 2px solid rgba(255,255,255,.8); }
   .pcd-antes small { font-size: 10px; color: #fff; text-shadow: 0 1px 3px #000; font-weight: 700; }
   .sws { display: flex; gap: 7px; flex-wrap: wrap; }
+  #galcd { position: fixed; inset: 0; z-index: 260; background: #0b0b0b; color: #fff; overflow-y: auto; padding: calc(10px + env(safe-area-inset-top)) 16px calc(30px + env(safe-area-inset-bottom)); animation: aparece .25s ease both; }
+  #galcd .gal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-family: var(--f-disp); font-size: 22px; }
+  #galcd .rb { border: 0; background: rgba(255,255,255,.12); color: #fff; border-radius: 50%; width: 42px; height: 42px; display: grid; place-items: center; cursor: pointer; }
+  #galcd .gal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; max-width: 1100px; margin: 0 auto 30px; }
+  #galcd .gal-it canvas { width: 100%; aspect-ratio: 1; border-radius: 6px; display: block; }
+  #galcd .gal-it span { display: block; font-size: 13px; font-weight: 700; margin-top: 6px; }
+  #galcd .gal-lista { max-width: 460px; margin: 0 auto; background: #121212; border-radius: 12px; padding: 14px; }
+  #galcd .gal-fila { display: flex; gap: 12px; align-items: center; padding: 6px 0; }
+  #galcd .gal-fila canvas { width: 48px; height: 48px; border-radius: 4px; flex: none; }
+  #galcd .gal-fila div { min-width: 0; display: flex; flex-direction: column; }
+  #galcd .gal-fila small { color: #a7a7a7; font-size: 12.5px; }
+  .pal-mu { display: flex; width: 96px; height: 22px; border-radius: 6px; overflow: hidden; flex: none; }
+  .pal-mu i { flex: 1; }
   .sw { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--line-firm); cursor: pointer; padding: 0; transition: transform .12s var(--ease-out); }
   .sw.on { box-shadow: 0 0 0 2px var(--fg); transform: scale(1.1); }
   .pcd-foto input[type=range] { width: 100%; }
@@ -897,7 +910,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-04b';
+const VERSION = '2026-10-04c';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2365,7 +2378,7 @@ function ponerEstado(d, n) {
   etqCambio();
   apuntar('«' + d.name + '»: ' + (ya ? 'sin estado' : n), { t: 'etq', man: {}, alb: { [d.id]: antes } });
 }
-const MD = { est: '', dec: '', gen: '', q: '', orden: '' };
+const MD = { est: '', dec: '', gen: '', q: '', orden: '', nota: '' };
 async function discosDePlaylist() {
   if (S.md) return S.md;
   await etqAsegurar(); await misAsegurar();
@@ -2387,6 +2400,7 @@ function discosFiltrados() {
   let l = S.md.discos.filter(d => {
     if (MD.est === '_' ? estadoDisco(d.id) : MD.est && estadoDisco(d.id) !== MD.est) return false;
     if (MD.dec && String(decadaDe(d.p)) !== MD.dec) return false;
+    if (MD.nota === '_' ? notaDisco(d.id) : MD.nota && notaDisco(d.id) < +MD.nota) return false;
     if (MD.gen) { const g = etiquetasCancion(d.p).genero; if (!g || !g.has(MD.gen)) return false; }
     if (q && fold(d.name + ' ' + d.artistas).indexOf(q) < 0) return false;
     return true;
@@ -2416,11 +2430,12 @@ async function vMisDiscos(m) {
   const decs = contar(D, d => { const x = decadaDe(d.p); return x == null ? null : String(x); }).sort((a, b) => a[0] < b[0] ? -1 : 1);
   const gens = contar(D, d => Array.from(etiquetasCancion(d.p).genero || [])).slice(0, 14);
   m.innerHTML = '<div class="cab" style="margin-bottom:6px"><div class="txt"><h2>Mis discos</h2><div class="soft tiny">' + D.length + ' discos en <a href="https://open.spotify.com/playlist/' + esc(S.md.meta.id) + '" target="_blank" rel="noopener" style="color:inherit">«' + esc(S.md.meta.name) + '»</a> · ' + cuenta('Pendiente') + ' pendientes · ' + cuenta('_') + ' sin estado</div>' +
-    '<div class="btnrow" style="margin-top:8px"><button class="btn sm pri" id="mdRep">' + ic('play') + 'Repasar ' + (MD.est || MD.dec || MD.gen || MD.q ? 'estos' : 'pendientes') + '</button>' +
+    '<div class="btnrow" style="margin-top:8px"><button class="btn sm pri" id="mdRep">' + ic('play') + 'Repasar ' + (MD.est || MD.dec || MD.gen || MD.q || MD.nota ? 'estos' : 'pendientes') + '</button>' +
     '<button class="btn sm" id="mdSorp">' + ic('varita') + 'Sorpréndeme</button><button class="btn sm" id="mdCrear">' + ic('plus') + 'Playlist con los discos enteros</button><button class="btn sm" id="mdMas">' + ic('mas') + '</button></div></div></div>' +
     '<div class="herr"><input class="field" id="mdQ" type="search" placeholder="Buscar disco o artista" value="' + esc(MD.q) + '">' +
     '<select class="field" id="mdO">' + [['', 'Recientes'], ['viejos', 'Primeros añadidos'], ['anyo', 'Año real ↑'], ['anyoD', 'Año real ↓'], ['artista', 'Artista'], ['titulo', 'Título'], ['nota', 'Estrellas ↓']].map(o => '<option value="' + o[0] + '"' + (MD.orden === o[0] ? ' selected' : '') + '>' + o[1] + '</option>').join('') + '</select></div>' +
     '<div class="chips" id="mdF" style="margin-bottom:6px">' + chip('est', '', 'Todos', D.length) + chip('est', '_', 'Sin estado', cuenta('_')) + ESTADOS.map(([n]) => chip('est', n, n, cuenta(n))).join('') + '</div>' +
+    (D.some(d => notaDisco(d.id)) ? '<div class="chips" id="mdF4" style="margin-bottom:6px">' + chip('nota', '9', '★ 4½ o más', D.filter(d => notaDisco(d.id) >= 9).length) + chip('nota', '8', '★ 4 o más', D.filter(d => notaDisco(d.id) >= 8).length) + chip('nota', '6', '★ 3 o más', D.filter(d => notaDisco(d.id) >= 6).length) + chip('nota', '_', 'Sin estrellas', D.filter(d => !notaDisco(d.id)).length) + '</div>' : '') +
     (decs.length > 1 ? '<div class="chips" id="mdF2" style="margin-bottom:6px">' + decs.map(([k, n]) => chip('dec', k, nombreDecada(+k), n)).join('') + '</div>' : '') +
     (gens.length ? '<div class="chips" id="mdF3" style="margin-bottom:10px">' + gens.map(([k, n]) => chip('gen', k, esc(k), n)).join('') + '</div>' : '') +
     (l.length ? '<div class="rejilla" id="mdL">' + l.map((d, i) => { const e = estadoDisco(d.id), y = anyo(d.p);
@@ -2428,7 +2443,7 @@ async function vMisDiscos(m) {
         '<div class="t"><div class="t1 nowrap">' + esc(d.name) + '</div><div class="t2 nowrap">' + esc(d.artistas) + (y ? ' · ' + y : '') + '</div></div></div>'; }).join('') + '</div>'
       : '<div class="vacio">' + (D.length ? 'Ningún disco con ese filtro' : 'La playlist está vacía: añade la primera canción de cada disco') + '</div>');
   const fil = e => { const c = e.target.closest('[data-k]'); if (!c) return; MD[c.dataset.k] = MD[c.dataset.k] === c.dataset.v && c.dataset.v ? '' : c.dataset.v; render(); };
-  ['#mdF', '#mdF2', '#mdF3'].forEach(id => { const x = $(id); if (x) x.onclick = fil; });
+  ['#mdF', '#mdF2', '#mdF3', '#mdF4'].forEach(id => { const x = $(id); if (x) x.onclick = fil; });
   $('#mdQ').oninput = e => { MD.q = e.target.value; clearTimeout(MD._t); MD._t = setTimeout(() => { const y = scrollY; render(); scrollTo(0, y); const q = $('#mdQ'); if (q) { q.focus(); q.setSelectionRange(q.value.length, q.value.length); } }, 250); };
   $('#mdO').onchange = e => { MD.orden = e.target.value; render(); };
   const L = $('#mdL'); if (L) L.onclick = e => { const t = e.target.closest('[data-i]'); if (t) hojaDisco(l, +t.dataset.i); };
@@ -3279,6 +3294,7 @@ async function vPortadas(m) {
   const items = mias.map(p => ({ p, it: itemDe(p) || itemVirtual(p) }));
   const pend = items.filter(x => cambiadaCD(x.it, x.p));
   m.innerHTML = '<div class="pcd-cab"><div><h1>Portadas de CD</h1><p class="soft">Toca una playlist para cambiar el color del disco, la cinta o el nombre. Dibujarlas no gasta nada de Spotify.</p></div></div>' +
+    (items.length ? '<div class="btnrow" style="margin-bottom:10px"><button class="btn sm pri" id="pcdGal">' + ic('imagen') + 'Ver todas juntas</button><button class="btn sm" id="pcdPal">' + ic('varita') + 'Colores para todas</button></div>' : '') +
     '<div class="chips" id="pcdF" style="margin-bottom:12px">' + FORMATOS_CD.map(f => '<button class="chip' + ((col.formato || 'negro') === f.id ? ' on' : '') + '" data-f="' + f.id + '">' + f.n + '</button>').join('') + '</div>' +
     (items.length ? '<div class="pcd-grid" id="pcdG">' + items.map((x, i) => '<button class="pcd" data-i="' + i + '"><canvas width="320" height="320"></canvas><span class="t1 nowrap">' + esc(x.p.name) + '</span><span class="t2">' + (x.it.virtual ? 'Sin portada de CD' : cambiadaCD(x.it, x.p) ? '<b>Sin poner en Spotify</b>' : '✓ En Spotify') + '</span></button>').join('') + '</div>'
       : '<div class="vacio">No tienes playlists tuyas todavía.</div>') +
@@ -3287,6 +3303,8 @@ async function vPortadas(m) {
   m.querySelector('#pcdF').onclick = e => { const c = e.target.closest('[data-f]'); if (!c) return; col.formato = c.dataset.f; guardarColP(); render(); };
   const g = m.querySelector('#pcdG'); if (g) g.onclick = e => { const b = e.target.closest('[data-i]'); if (b) hojaPortadaCD(items[+b.dataset.i].p); };
   const bt = m.querySelector('#pcdTodas'); if (bt) bt.onclick = () => subirVariasCD(pend.map(x => x.p));
+  const bg = m.querySelector('#pcdGal'); if (bg) bg.onclick = () => galeriaCD(items);
+  const bp = m.querySelector('#pcdPal'); if (bp) bp.onclick = () => hojaPaletaCD(mias);
 }
 async function subirPortadaCD(p, it) {
   const st = ajustesCD(it), g = lienzoCD();
@@ -3370,6 +3388,43 @@ async function hojaPortadaCD(p) {
         guardarColP(); pintaHoja(h); repintar(h);
       });
     }, () => { if (S.tab === 'portadas' && !S.vista) { const y = scrollY; render(); setTimeout(() => scrollTo(0, y), 60); } });
+}
+/* todas juntas sobre negro, como se verán en tu biblioteca de Spotify */
+function galeriaCD(items) {
+  const el = document.createElement('div'); el.id = 'galcd';
+  el.innerHTML = '<div class="gal-top"><b>Tus portadas</b><button class="rb" aria-label="Cerrar">' + ic('abajoV') + '</button></div><div class="gal-grid">' +
+    items.map(x => '<div class="gal-it"><canvas width="320" height="320"></canvas><span class="nowrap">' + esc(x.p.name) + '</span></div>').join('') + '</div>' +
+    '<div class="gal-lista"><div class="tiny" style="opacity:.6;margin-bottom:8px">Así se ven en la lista de Spotify</div>' + items.map(x => '<div class="gal-fila"><canvas width="96" height="96"></canvas><div><b class="nowrap">' + esc(x.p.name) + '</b><small>Playlist · ' + (x.p.total || 0) + ' canciones</small></div></div>').join('') + '</div>';
+  document.body.append(el);
+  el.querySelectorAll('.gal-grid canvas').forEach((c, i) => pintarMiniCD(c, ajustesCD(items[i].it)));
+  el.querySelectorAll('.gal-fila canvas').forEach((c, i) => pintarMiniCD(c, ajustesCD(items[i].it)));
+  const cerrar = () => el.remove();
+  el.querySelector('.rb').onclick = cerrar;
+  addEventListener('keydown', function esc0(e) { if (e.key === 'Escape') { cerrar(); removeEventListener('keydown', esc0); } });
+}
+const PALETAS_CD = [
+  { n: 'Joyas', t: ['#23345c', '#1f6f6a', '#7e1a2b', '#5b2a6e', '#2f6b3a', '#b0761c', '#1e4f8f', '#8a2f4f'] },
+  { n: 'Pastel', t: ['#a7c7e7', '#f4b6c2', '#c3b1e1', '#b8e0c8', '#f7d6a0', '#9fd3d0', '#e6c3a5', '#d4d9e8'] },
+  { n: 'Tierra', t: ['#8c5a3c', '#6f7a3a', '#7e1a2b', '#a88b5a', '#4d5b4a', '#b5602a', '#5a4636', '#c69c6d'] },
+  { n: 'Arcoíris', t: null },
+  { n: 'Todas plata', t: ['plata'] },
+  { n: 'Todas grafito', t: ['negro'] }
+];
+function hojaPaletaCD(mias) {
+  hoja('<h2>Colores para todas</h2><p class="soft">Cambia el color del disco de todas tus portadas a la vez para que combinen. Los discos de oro, pesas, foto y el dorado original no se tocan. Luego puedes retocar cualquiera.</p>' +
+    '<div class="opc" id="palL">' + PALETAS_CD.map((p, i) => { const tonos = p.t ? p.t.map(c => c.charAt(0) === '#' ? c : (CD.DISCOS.find(d => d.id === c) || {}).c) : [0, 1, 2, 3, 4, 5].map(k => CD.hsl(210 + k * 50, 48, 42)); return '<button data-i="' + i + '"><span class="pal-mu">' + tonos.slice(0, 8).map(c => '<i style="background:' + c + '"></i>').join('') + '</span><span>' + p.n + '</span></button>'; }).join('') + '</div>', h => {
+      h.querySelector('#palL').onclick = e => {
+        const b = e.target.closest('[data-i]'); if (!b) return;
+        const pal = PALETAS_CD[+b.dataset.i];
+        const its = mias.map(p => itemDe(p, true)).filter(it => !['oro', 'pesas', 'foto'].includes(it.acabado) && !it.foto && it.disco !== 'orig');
+        its.forEach((it, i) => {
+          if (pal.t && pal.t[0].charAt(0) !== '#') { it.disco = pal.t[0]; return; }
+          it.disco = 'otro'; it.discoOtro = pal.t ? pal.t[i % pal.t.length] : CD.hsl(210 + (i / Math.max(1, its.length)) * 300, 48, 42);
+        });
+        guardarColP(); cerrarHoja(true); render();
+        toast('Colores «' + pal.n + '» puestos en ' + its.length + ' portadas. Si te gustan, «Poner en Spotify».');
+      };
+    });
 }
 const slugP = t => (fold(t || 'portada').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'portada');
 
