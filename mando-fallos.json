@@ -1,12 +1,19 @@
 {
- "version": "2026-09-30h",
- "at": "2026-10-04T08:43:23.135Z",
+ "version": "2026-10-04c",
+ "at": "2026-10-04T08:58:07.370Z",
  "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
  "pantalla": "1368x673",
- "pausaSeg": 34,
+ "pausaSeg": 45,
  "cola": 0,
  "permisosQueFaltan": [],
  "fallos": [
+  {
+   "at": 1791104272364,
+   "donde": "freno",
+   "msg": "Spotify ha frenado: pausa de 1 min (nivel 1)",
+   "st": 429,
+   "ruta": "GET /me/player/recently-played"
+  },
   {
    "at": 1791103388128,
    "donde": "cargar",
@@ -207,13 +214,6 @@
    "at": 1790714316638,
    "donde": "cargar",
    "msg": "Spotify está frenando esa parte (me) un par de minutos. El resto funciona.",
-   "st": 429,
-   "ruta": "GET /me"
-  },
-  {
-   "at": 1790714300951,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 8 s (429)",
    "st": 429,
    "ruta": "GET /me"
   }
