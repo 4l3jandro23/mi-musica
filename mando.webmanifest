@@ -1,6 +1,6 @@
 {
-  "name": "Mando de Spotify",
-  "short_name": "Mando",
+  "name": "Fonoteca",
+  "short_name": "Fonoteca",
   "description": "Edita tu Spotify en bloque, ordena tus Me gusta y tus discos",
   "start_url": "mando.html",
   "scope": "./",
