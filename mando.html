@@ -897,7 +897,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-04a';
+const VERSION = '2026-10-04b';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -1395,8 +1395,20 @@ async function yo() {
   return S.me;
 }
 function modoGuardado(at) { if (!S.guardado) S.guardado = at || Date.now(); pintarFreno(); }
-async function cargarPlaylists(forzar) {
-  if (S.playlists && !forzar) return S.playlists;
+let _cplP = null, _cplFrio = true;
+function cargarPlaylists(forzar) {
+  if (S.playlists && !forzar) return Promise.resolve(S.playlists);
+  if (_cplP && !forzar) return _cplP;
+  return (_cplP = cargarPlaylists0(forzar).finally(() => { _cplP = null; }));
+}
+async function cargarPlaylists0(forzar) {
+  /* recien abierta la app: si la lista guardada tiene menos de 10 min, vale (no gasta nada) */
+  if (_cplFrio && !forzar) {
+    _cplFrio = false;
+    const c = await cacheLeer('pls');
+    if (c && c.lista && Date.now() - c.at < 600000) { S.playlists = c.lista; return S.playlists; }
+  }
+  _cplFrio = false;
   S.indice = null;
   let it;
   try { it = await paginar('/me/playlists', { limite: 50 }); }
@@ -1817,20 +1829,21 @@ function htmlPermisos() {
 const esqueleto = n => Array.from({ length: n || 8 }, () => '<div class="esq"><i></i><div style="flex:1"><b></b><em></em></div></div>').join('');
 const cargando = m => { m.innerHTML = esqueleto(9); };
 function fallo(m, e) {
-  apuntarFallo(e, 'cargar');
+  if (!(e && e.freno)) apuntarFallo(e, 'cargar');
   m.innerHTML = (S.vista ? '<button class="btn ghost sm back" id="bAtrasF">' + ic('atras') + 'Atrás</button>' : '') +
     '<div class="vacio">' + esc(explicarError(e)) + '<br><br><div class="btnrow" style="justify-content:center">' +
     (e && e.abrir ? '<a class="btn pri" href="' + esc(e.abrir) + '" target="_blank" rel="noopener">' + ic('externo') + 'Abrir en Spotify</a>' : '<button class="btn pri" id="bReint">Reintentar</button>') +
     '</div></div>';
   const r = $('#bReint'); if (r) r.onclick = () => { invalidar(); if (S.fuente) S.fuente.pistas = null; render(); };
   const a = $('#bAtrasF'); if (a) a.onclick = atras;
-  if (e && e.enfriaHasta && r) {
+  const hasta = e && (e.enfriaHasta || (e.freno ? pausaTotal() + 1500 : 0));
+  if (hasta && r) {
     const vista = S.vista, tab = S.tab;
     const tic = () => {
       if (!r.isConnected || S.vista !== vista || S.tab !== tab) return;
-      const falta = Math.ceil((e.enfriaHasta - Date.now()) / 1000);
+      const falta = Math.ceil((hasta - Date.now()) / 1000);
       if (falta <= 0) { if (S.fuente) S.fuente.pistas = null; render(); return; }
-      r.textContent = 'Reintento solo en ' + falta + ' s';
+      r.textContent = 'Reintento solo en ' + (falta >= 90 ? Math.ceil(falta / 60) + ' min' : falta + ' s');
       setTimeout(tic, 1000);
     };
     tic();
@@ -2301,7 +2314,10 @@ async function sincronizarEtq() {
       if (put.status === 409 || put.status === 422) continue;
       return;
     }
-  } catch (e) { apuntarFallo(e, 'sincronizar etiquetas'); }
+  } catch (e) {
+    if (/Load failed|Failed to fetch|NetworkError/i.test(e && e.message || '')) { if (!sincronizarEtq._re) { sincronizarEtq._re = 1; setTimeout(() => { sincronizarEtq._re = 0; sincronizarEtq(); }, 30000); } }
+    else apuntarFallo(e, 'sincronizar etiquetas');
+  }
   finally { _etqSync = false; }
 }
 
@@ -2588,8 +2604,10 @@ async function vInicio(m) {
   /* escuchado hace poco (1 peticion, guardada 5 min) */
   (async () => {
     if (!tieneScope('user-read-recently-played')) return;
-    if (!_recientes || Date.now() - _recientes.at > 300000) {
-      try { const x = await sp('/me/player/recently-played?limit=30'); _recientes = { at: Date.now(), ps: ((x && x.items) || []).map(i => pista(i.track, { added: i.played_at })).filter(Boolean) }; }
+    if (!_recientes) { const g = await cacheLeer('recientes'); if (g && g.ps) _recientes = g; }
+    if (!_recientes || Date.now() - _recientes.at > 600000) {
+      if (esperaPendiente() > 0) { if (!_recientes) return; } else
+      try { const x = await sp('/me/player/recently-played?limit=30'); _recientes = { at: Date.now(), ps: ((x && x.items) || []).map(i => pista(i.track, { added: i.played_at })).filter(Boolean) }; cachePoner('recientes', _recientes); }
       catch (e) { return; }
     }
     const el = $('#inRec'); if (!el || !vivo()) return;
@@ -4932,7 +4950,14 @@ async function reproducir(cuerpo) {
     toast(explicarError(e));
   }
 }
-async function leerReproductor() {
+let _lr = null, _lrAt = 0;
+function leerReproductor() {
+  if (_lr) return _lr;
+  if (Date.now() - _lrAt < 3000) return Promise.resolve();
+  _lrAt = Date.now();
+  return (_lr = leerReproductor0().finally(() => { _lr = null; }));
+}
+async function leerReproductor0() {
   if (!conectado() || !tieneScope('user-read-playback-state')) { $('#mini').hidden = true; return; }
   let d;
   try { d = await sp('/me/player?additional_types=episode', { siempre: true }); } catch (e) { return; }
@@ -5036,7 +5061,8 @@ async function hojaReproductor() {
 setInterval(() => { if (document.visibilityState === 'visible' && !$('#progreso').offsetParent && esperaPendiente() === 0 && (S.suena || $('#np'))) leerReproductor(); }, 60000);
 setInterval(() => { if (document.visibilityState === 'visible' && esperaPendiente() === 0 && !S.suena) leerReproductor(); }, 180000);
 setInterval(() => { if (S.suena && S.suena.playing && document.visibilityState === 'visible') pintarMini(); }, 1000);
-document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') leerReproductor(); });
+let _oculta = 0;
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') _oculta = Date.now(); else if (_oculta && Date.now() - _oculta > 60000 && esperaPendiente() === 0) leerReproductor(); });
 
 /* ============================================================
    AJUSTES: conexion y copias de seguridad
