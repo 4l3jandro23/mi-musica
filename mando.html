@@ -685,7 +685,8 @@
   @media (min-width: 1000px) { #bBuscar { display: none !important; } }
   .opc button, .opc a { flex-wrap: wrap; }
   .opc > button > .sub, .opc > a > .sub { flex-basis: calc(100% - 34px); margin: -9px 0 0 33px; }
-  @media (max-width: 520px) { .logo span { display: none; } }
+  @media (max-width: 520px) { .logo span { display: none; } .logo { font-size: 19px; gap: 7px; } .logo .marca { width: 26px; height: 26px; } .top .cupo { padding-left: 9px; padding-right: 9px; } }
+  @media (max-width: 380px) { .top .cupo span { display: none; } }
   /* titulo grande de cada pestaña */
   main[data-titulo]::before { content: attr(data-titulo); display: block; font-family: var(--f-disp); font-weight: 800; font-size: 30px; letter-spacing: -0.03em; line-height: 1.1; margin: 6px 0 14px; }
   @media (min-width: 1000px) { main[data-titulo]::before { font-size: 38px; margin-top: 12px; } }
@@ -842,6 +843,10 @@
   .rp .dest .crit-q { display: block; font-size: 11.5px; font-weight: 600; opacity: .7; line-height: 1.2; }
   .rp .dest .queda { grid-column: 1 / -1; border-style: dashed; }
   .rp .dest .queda.on { background: var(--jade); border-color: var(--jade); color: #fff; }
+  /* al ordenar, en el movil, que no tape nada el minirreproductor y que quepan los botones */
+  body:has(.rp) #mini { display: none !important; }
+  @media (max-width: 760px) { .rp .port { width: min(44vw, 200px); } .rp h2 { font-size: 20px; margin-top: 8px; } .rp .pie { bottom: calc(var(--nav-h, 64px) + 10px + env(safe-area-inset-bottom)); } .rp .nav { gap: 6px; } .rp .nav .btn { flex: 1 1 0; min-width: 0; padding-left: 8px; padding-right: 8px; white-space: nowrap; } }
+  @media (hover: none) { .rp .k { display: none; } }
   #galcd { position: fixed; inset: 0; z-index: 260; background: #0b0b0b; color: #fff; overflow-y: auto; padding: calc(10px + env(safe-area-inset-top)) 16px calc(30px + env(safe-area-inset-bottom)); animation: aparece .25s ease both; }
   #galcd .gal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-family: var(--f-disp); font-size: 22px; }
   #galcd .rb { border: 0; background: rgba(255,255,255,.12); color: #fff; border-radius: 50%; width: 42px; height: 42px; display: grid; place-items: center; cursor: pointer; }
@@ -939,7 +944,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-04e';
+const VERSION = '2026-10-04f';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -1915,6 +1920,8 @@ function hojaNuevaPlaylist(uris, sugerido) {
     let pulsado = false;
     hoja('<h2>Nueva playlist</h2>' +
       '<label class="lbl">Nombre</label><input class="field" id="nNom" value="' + esc(sugerido || '') + '" maxlength="100">' +
+      '<label class="lbl">Su pregunta</label><input class="field" id="nCrit" maxlength="80" placeholder="¿Qué tiene que tener una canción para entrar?">' +
+      '<p class="tiny mute" style="margin:4px 0 0">Algo que se conteste escuchando una sola canción, como «¿me pone la piel de gallina?». Si no se te ocurre, quizá no necesitas esta playlist.</p>' +
       '<label class="lbl">Descripción</label><input class="field" id="nDesc" maxlength="300">' +
       '<label class="check"><input type="checkbox" id="nPub"> Pública (sale en tu perfil)</label>' +
       (uris ? '<p class="soft tiny">Se crea con ' + uris.length + ' canciones.</p>' : '') +
@@ -1925,7 +1932,9 @@ function hojaNuevaPlaylist(uris, sugerido) {
           pulsado = true;
           cerrarHoja();
           const r = await trabajo(async () => {
-            const p = await crearPlaylist(nom, h.querySelector('#nDesc').value.trim(), h.querySelector('#nPub').checked);
+            const crit = h.querySelector('#nCrit').value.trim();
+            const p = await crearPlaylist(nom, h.querySelector('#nDesc').value.trim() || crit, h.querySelector('#nPub').checked);
+            if (crit) { (PREFS.criterios || (PREFS.criterios = {}))[p.id] = crit; guardarPrefs(); }
             if (uris && uris.length) await plAnadir(p.id, uris, null, 'Metiendo canciones en «' + nom + '»');
             apuntar('Creada «' + nom + '»', { t: 'libQuitar', uris: [p.uri] });
             return p;
@@ -2617,7 +2626,7 @@ async function vInicio(m) {
   const at = [
     ['likes', 'corazon', 'Me gusta', likesN ? likesN.toLocaleString('es-ES') + ' canciones' : '', 'linear-gradient(135deg,#4a2fd0,#b8a7ff)'],
     ['misdiscos', 'disco', 'Mis discos', pend != null ? pend + ' pendientes' : 'tu lista de discos', 'linear-gradient(135deg,#c47a0a,#f4b13e)'],
-    ['_repasar', 'play', 'Repasar Me gusta', 'ordenar con un toque', 'linear-gradient(135deg,#128a64,#4fd1a1)'],
+    ['portadas', 'imagen', 'Portadas', 'tus playlists como CD', 'linear-gradient(135deg,#128a64,#4fd1a1)'],
     ['_todo', 'buscar', 'Toda mi música', 'Me gusta + playlists', 'linear-gradient(135deg,#2b5fd9,#6ea8ff)'],
     ['escuchas', 'grafica', 'Estadísticas', 'lo que más escuchas', 'linear-gradient(135deg,#d4568a,#ff9ec4)'],
     ['mis', 'estrella', 'Mis artistas', MIS ? MIS.artistas.length.toLocaleString('es-ES') + ' artistas' : 'tu lista', 'linear-gradient(135deg,#5a4a3a,#a08a70)'],
