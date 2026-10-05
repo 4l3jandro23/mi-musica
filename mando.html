@@ -977,7 +977,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-05d';
+const VERSION = '2026-10-05e';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -1897,6 +1897,7 @@ $('#bnav').onclick = e => {
   hoja('<h2>Más</h2><div class="opc">' + TABS.filter(t => PRINCIPALES.indexOf(t.id) < 0).map(t => '<button data-t="' + t.id + '">' + ic(t.ic) + '<span>' + t.txt + '</span></button>').join('') +
     '<div class="sec">Herramientas</div><button data-x="ira">' + ic('buscar') + '<span>Ir a…<span class="sub">busca cualquier playlist, disco, artista o herramienta</span></span></button>' +
     '<button data-x="sorpresa">' + ic('varita') + '<span>Ruleta de discos<span class="sub">un disco pendiente al azar</span></span></button>' +
+    '<button data-x="etq">' + ic('etiqueta') + '<span>Etiquetar mis Me gusta<span class="sub">año real y género de cada canción (mejor en el PC, una noche)</span></span></button>' +
     '<button data-x="juego">' + ic('estrella') + '<span>Juega con tu música<span class="sub">¿de qué año es?, ¿quién canta?…</span></span></button>' +
     '<button data-x="comparar">' + ic('unir') + '<span>Comparar dos listas<span class="sub">qué comparten y qué no</span></span></button>' +
     '<button data-x="imagen">' + ic('imagen') + '<span>Imagen para compartir<span class="sub">tus discos favoritos en un collage</span></span></button>' +
@@ -1904,7 +1905,7 @@ $('#bnav').onclick = e => {
       h.querySelector('.opc').onclick = ev => {
         const x = ev.target.closest('[data-t],[data-x]'); if (!x) return;
         cerrarHoja(true);
-        if (x.dataset.t) irATab(x.dataset.t); else if (x.dataset.x === 'cupo') hojaCupo(); else if (x.dataset.x === 'ira') hojaIrA(); else if (x.dataset.x === 'sorpresa') sorprendeme(); else if (x.dataset.x === 'juego') hojaJuego(); else if (x.dataset.x === 'comparar') hojaComparar(); else if (x.dataset.x === 'imagen') hojaCompartir(); else hojaAjustes();
+        if (x.dataset.t) irATab(x.dataset.t); else if (x.dataset.x === 'cupo') hojaCupo(); else if (x.dataset.x === 'ira') hojaIrA(); else if (x.dataset.x === 'sorpresa') sorprendeme(); else if (x.dataset.x === 'juego') hojaJuego(); else if (x.dataset.x === 'etq') etiquetarTodo(); else if (x.dataset.x === 'comparar') hojaComparar(); else if (x.dataset.x === 'imagen') hojaCompartir(); else hojaAjustes();
       };
     });
 };
@@ -2347,7 +2348,7 @@ function hojaAnalizar(f) {
     const t = (n, s) => n * s < 90 ? Math.ceil(n * s) + ' s' : n * s < 5400 ? Math.ceil(n * s / 60) + ' min' : (n * s / 3600).toFixed(1) + ' h';
     hoja('<h2>Etiquetar automáticamente</h2><p class="soft tiny">' + (S.sel.size ? 'Las ' + ps.length + ' marcadas' : 'Las ' + ps.length + ' canciones de «' + esc(f.name) + '»') + '. Sigue en segundo plano mientras usas la Fonoteca; si cierras, lo hecho se queda guardado y al volver sigue por donde iba.</p>' +
       '<div class="aviso" style="margin-top:10px"><b>Cómo está ahora</b>Con género: ' + conGen + ' de ' + ps.length + '<br>Con año real comprobado: ' + conAnyo + ' de ' + unicas.length + '<br>Artistas sin género: ' + artSin.size + '</div>' +
-      (lfCfg() ? '' : '<p class="soft tiny"><b>Para los géneros hace falta tu clave de Last.fm</b> (gratis, sin iniciar sesión). Si la tenías en MusicVault, este aparato la recuerda; si no, créala en <a href="https://www.last.fm/api/account/create" target="_blank" rel="noopener">last.fm/api</a> y pégala aquí:</p><input class="field" id="anLf" placeholder="Clave de API de Last.fm">') +
+      (lfCfg() ? '' : '<p class="soft tiny"><b>No hace falta nada más:</b> el género de cada canción sale de MusicBrainz. Opcional: con una clave de Last.fm (gratis) también se completan los artistas sin género; créala en <a href="https://www.last.fm/api/account/create" target="_blank" rel="noopener">last.fm/api</a> y pégala aquí (o déjalo vacío):</p><input class="field" id="anLf" placeholder="Clave de Last.fm (opcional)">') +
       '<div class="opc" style="margin-top:10px">' +
       '<button data-o="sosp">' + ic('varita') + '<span>Rápido: géneros + año real de las sospechosas<span class="sub">' + sosp + ' canciones de discos remasterizados, recopilatorios, deluxe… · unos ' + t(sosp, 1.1) + (artSin.size && lfCfg() ? ' + ' + t(artSin.size, 0.3) + ' de géneros' : '') + '</span></span></button>' +
       '<button data-o="todas">' + ic('reloj') + '<span>Completo: año real y género de CADA canción<span class="sub">' + sinG + ' canciones · unos ' + t(sinG, 1.1) + '. MusicBrainz solo deja 1 por segundo: mejor en el ordenador, con la Fonoteca abierta (puede ser toda una noche). Se sincroniza con el móvil.</span></span></button>' +
@@ -2848,6 +2849,7 @@ function hojaIrA() {
     ['Comparar dos listas', 'unir', () => hojaComparar()],
     ['Ordenar la bandeja (lo nuevo)', 'play', () => ordenarBandeja()],
     ['Ideas de playlists', 'varita', () => abrirIdeas()],
+    ['Etiquetar mis Me gusta (año y género de cada canción)', 'etiqueta', () => etiquetarTodo()],
     ['Qué va en cada playlist', 'lapiz', () => hojaCriterios()],
     ['Portadas de CD', 'disco', () => irATab('portadas')],
     ['Imagen para compartir', 'imagen', () => hojaCompartir()],
@@ -3928,6 +3930,14 @@ async function rellenarPlaylist(f) {
         }
       };
     });
+}
+/* Etiquetar todos tus Me gusta (año real y género de cada canción), desde cualquier sitio */
+async function etiquetarTodo() {
+  let ps = await likesGuardados();
+  if (!ps.length) { toast('Primero abre «Me gusta» una vez para que se carguen'); irATab('likes'); return; }
+  const par = await cacheLeer('likesParcial');
+  if (par && par.url) toast('Aún se están cargando tus Me gusta: etiquetaré las ' + n$(ps.length) + ' que ya hay', null, 6000);
+  hojaAnalizar({ name: 'Me gusta', pistas: conK(ps) });
 }
 /* Meta semanal de discos: cuantos valoras cada semana (de lunes a domingo) */
 const lunesDe = t => { const d = new Date(t); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - (d.getDay() + 6) % 7); return d.getTime(); };
