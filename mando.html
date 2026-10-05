@@ -977,7 +977,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-05c';
+const VERSION = '2026-10-05d';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -1836,7 +1836,34 @@ const S = {
   selObj: new Set(), buscar: { q: '', tipo: 'track', res: null }, suena: null, soloSel: false, indice: null
 };
 const PREFS = Object.assign({ saltarRepes: true }, leer(K_PREFS, {}));
-const guardarPrefs = () => escribir(K_PREFS, PREFS);
+const CFG_SYNC = ['criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento'];
+let _cfgSnap = null;
+const guardarPrefs = () => {
+  escribir(K_PREFS, PREFS);
+  if (!ETQ) return;
+  const snap = _cfgSnap || {};
+  let cambio = false;
+  for (const k of CFG_SYNC) { const j = JSON.stringify(PREFS[k] === undefined ? null : PREFS[k]); if (snap[k] !== j) { snap[k] = j; (ETQ.cfg || (ETQ.cfg = {}))[k] = { v: PREFS[k] === undefined ? null : PREFS[k], ts: Date.now() }; cambio = true; } }
+  _cfgSnap = snap;
+  if (cambio) etqCambio();
+};
+/* lo que llega de otro aparato se aplica aquí si es más nuevo */
+function aplicarCfg() {
+  const C = (ETQ && ETQ.cfg) || {}, vistos = leer('fonoteca_cfg_ts_v1', {});
+  let hubo = false;
+  for (const k of Object.keys(C)) {
+    const x = C[k]; if (!x || (vistos[k] || 0) >= x.ts) continue;
+    vistos[k] = x.ts;
+    if (k === 'portadas') { if (x.v) { escribir('portadas_coleccion_v2', x.v); if (typeof PCD !== 'undefined') { PCD.col = null; PCD.cache.clear(); } } }
+    else if (x.v === null) delete PREFS[k]; else PREFS[k] = x.v;
+    hubo = true;
+  }
+  if (!hubo) return;
+  escribir('fonoteca_cfg_ts_v1', vistos);
+  escribir(K_PREFS, PREFS);
+  _cfgSnap = {}; for (const k of CFG_SYNC) _cfgSnap[k] = JSON.stringify(PREFS[k] === undefined ? null : PREFS[k]);
+  try { aplicarAcento(); } catch (e) {}
+}
 
 const TABS = [
   { id: 'inicio', txt: 'Inicio', ic: 'casa' },
@@ -2064,6 +2091,15 @@ async function etqAsegurar() {
   const c = await cacheLeer('etq');
   ETQ = Object.assign(ETQ0(), c || {});
   _etqVer++;
+  aplicarCfg();
+  /* la primera vez en este aparato, sus ajustes actuales pasan a sincronizarse */
+  if (!_cfgSnap) {
+    /* lo de este aparato se ofrece con fecha muy antigua: si otro aparato ya tenía algo, gana el otro */
+    _cfgSnap = {}; const C = ETQ.cfg || (ETQ.cfg = {}); let n = 0;
+    for (const k of CFG_SYNC) { const v = PREFS[k] === undefined ? null : PREFS[k]; _cfgSnap[k] = JSON.stringify(v); if (!C[k] && v !== null) { C[k] = { v: v, ts: 1 }; n++; } }
+    const col = leer('portadas_coleccion_v2', null); if (!C.portadas && col) { C.portadas = { v: col, ts: 1 }; n++; }
+    if (n) etqCambio();
+  }
   return ETQ;
 }
 let _tEtq = 0, _tEtqGh = 0;
@@ -2407,6 +2443,8 @@ const GH_ETQ = 'etiquetas-canciones.json';
 function fundirEtq(a, b) {
   if (!b) return a;
   const o = ETQ0();
+  o.cfg = Object.assign({}, b.cfg || {});
+  for (const [k, v] of Object.entries(a.cfg || {})) if (!o.cfg[k] || (v.ts || 0) >= (o.cfg[k].ts || 0)) o.cfg[k] = v;
   for (const k of ['y', 'lfa']) { o[k] = Object.assign({}, b[k] || {}); for (const [c, v] of Object.entries(a[k] || {})) if (!o[k][c] || (v.at || 0) >= (o[k][c].at || 0)) o[k][c] = v; }
   for (const k of ['man', 'alb']) { o[k] = Object.assign({}, b[k] || {}); for (const [c, v] of Object.entries(a[k] || {})) if (!o[k][c] || (v.ts || 0) >= (o[k][c].ts || 0)) o[k][c] = v; }
   return o;
@@ -2420,7 +2458,7 @@ async function sincronizarEtq() {
     for (let i = 0; i < 3; i++) {
       const r = await ghLeer(GH_ETQ);
       const fundido = fundirEtq(ETQ, r.datos), cuerpo = JSON.stringify(fundido);
-      ETQ = fundido; etqCambio(true);
+      ETQ = fundido; etqCambio(true); aplicarCfg();
       if (r.datos && JSON.stringify(r.datos) === cuerpo) return;
       const put = await ghFetch(r.api, { method: 'PUT', body: JSON.stringify({ message: 'etiquetas de canciones', content: b64enc(cuerpo), branch: 'main', sha: r.sha || undefined }) });
       if (put.status === 409 || put.status === 422) continue;
@@ -3321,7 +3359,7 @@ function colPortadas() {
   }
   return PCD.col;
 }
-const guardarColP = () => escribir(K_COL, PCD.col);
+const guardarColP = () => { escribir(K_COL, PCD.col); if (ETQ) { (ETQ.cfg || (ETQ.cfg = {})).portadas = { v: PCD.col, ts: Date.now() }; const v = leer('fonoteca_cfg_ts_v1', {}); v.portadas = ETQ.cfg.portadas.ts; escribir('fonoteca_cfg_ts_v1', v); etqCambio(); } };
 const FORMATOS_CD = [
   { id: 'negro', n: 'Fondo negro', encuadre: 'suelto', fondoSuelto: 'negro' },
   { id: 'blanco', n: 'Fondo blanco', encuadre: 'suelto', fondoSuelto: 'blanco' },
