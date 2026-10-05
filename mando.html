@@ -977,7 +977,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-06a';
+const VERSION = '2026-10-06b';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2110,11 +2110,45 @@ function etqCambio(sinSubir) {
   if (!sinSubir && ghCfg()) { clearTimeout(_tEtqGh); _tEtqGh = setTimeout(sincronizarEtq, 60000); }
 }
 const claveCancion = p => p._c || (p._c = obraDe(p.title) + '|' + obraDe((p.artists[0] || {}).name || ''));
+const RX_SESION = /\b(demo|take \d+|takes? \d|studio jam|jam|rehearsal|outtake|sessions?|alternate|alt\.? take|early version|(first|second|third) version|esher|work in progress|backing track|rough mix|home recording|working version)\b/;
+const RX_REEDICION = /deluxe|anniversary|aniversario|expanded|legacy|remaster|super deluxe|edition|edicion/;
+const albLimpio = a => String(a || '').replace(/\s*[\(\[][^\)\]]*(deluxe|anniversary|aniversario|expanded|legacy|remaster|edition|edicion|edición|version|versión|mix|bonus)[^\)\]]*[\)\]]/gi, '').replace(/\s+-\s+.*(deluxe|anniversary|remaster|edition|version).*$/i, '').trim();
+const claveAlbO = p => 'alb|' + obraDe(albLimpio(p.album)) + '|' + obraDe((p.artists[0] || {}).name || '');
+const esSesion = p => RX_SESION.test(fold(p.title));
+const esReedicion = p => esSesion(p) || RX_REEDICION.test(fold(p.album || ''));
 function anyoReal(p) {
   const E = ETQ || ETQ0(), m = E.man[p.uri];
   if (m && m.y) return +m.y;
-  const e = E.y[claveCancion(p)];
-  return e && e.y ? +e.y : 0;
+  const e = E.y[claveCancion(p)], y = e && e.y ? +e.y : 0;
+  if (p.album && esReedicion(p)) {
+    const a = E.y[claveAlbO(p)], ya = a && a.y ? +a.y : 0;
+    if (ya && (esSesion(p) || !y || ya < y)) return ya;
+  }
+  return y;
+}
+/* el año del disco original, en MusicBrainz: mismo título y artista, álbum de estudio (sin recopilatorios) */
+async function anyoAlbumMB(p) {
+  const al = albLimpio(p.album), art = (p.artists[0] || {}).name || '';
+  const q = 'releasegroup:"' + al.replace(/["\\]/g, '') + '" AND artistname:"' + art.replace(/["\\]/g, '') + '" AND primarytype:album';
+  for (let i = 0; i < 4; i++) {
+    const espera = _mbProx - Date.now(); _mbProx = Math.max(Date.now(), _mbProx) + 1100;
+    if (espera > 0) await dormir(espera);
+    let r;
+    try { r = await fetchMB('https://musicbrainz.org/ws/2/release-group/?fmt=json&limit=25&query=' + encodeURIComponent(q)); }
+    catch (e) { await dormir(3000); continue; }
+    if (r.status === 503 || r.status === 429) { _mbProx = Date.now() + 5000 * (i + 1); continue; }
+    if (!r.ok) return 0;
+    const d = await r.json(), T = obraDe(al), A = obraDe(art);
+    let best = 0;
+    for (const g of (d['release-groups'] || [])) {
+      if ((g['secondary-types'] || []).length || obraDe(g.title) !== T) continue;
+      if (!(g['artist-credit'] || []).some(a => obraDe(a.name) === A)) continue;
+      const y = +String(g['first-release-date'] || '').slice(0, 4);
+      if (y >= 1900 && (!best || y < best)) best = y;
+    }
+    return best;
+  }
+  throw new Error('MusicBrainz no contesta ahora');
 }
 const anyo = p => anyoReal(p) || +p.year || 0;
 function textoAnyo(p) {
@@ -2347,6 +2381,20 @@ async function analizar(ps, todas) {
       if (AN.n % 10 === 0) { etqCambio(); refrescarEtq(); }
     }
     etqCambio();
+    /* 3. discos reeditados (deluxe, aniversario…) y tomas/demos: el año del disco original */
+    const vistosA = new Set(), discos = [];
+    for (const p of ps) { if (p.local || !p.album || !esReedicion(p)) continue; const k = claveAlbO(p); if (vistosA.has(k) || ETQ.y[k]) continue; vistosA.add(k); discos.push(p); }
+    if (discos.length && !AN.parar) {
+      AN.txt = 'Año original de discos reeditados'; AN.n = 0; AN.t = discos.length; pintarAnaliza();
+      for (const p of discos) {
+        if (AN.parar) break;
+        try { ETQ.y[claveAlbO(p)] = { y: await anyoAlbumMB(p), at: Date.now() }; }
+        catch (e) { toast(e.message); break; }
+        AN.n++; hechos++; pintarAnaliza();
+        if (AN.n % 10 === 0) { etqCambio(); refrescarEtq(); }
+      }
+      etqCambio();
+    }
   } finally {
     AN.corre = false; pintarAnaliza(); refrescarEtq();
     toast(AN.parar ? 'Análisis detenido: lo hecho se queda guardado' : 'Análisis terminado ✓', null, 5000);
