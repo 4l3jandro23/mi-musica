@@ -977,7 +977,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-05e';
+const VERSION = '2026-10-06a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2235,6 +2235,22 @@ function htmlEtiquetas(p, max) {
    antigua de sus lanzamientos oficiales. Asi «Something» sale 1969 aunque
    en Spotify este en un disco de 2019. 1 peticion por segundo (sus normas). */
 let _mbProx = 0;
+let _relojW = null, _relojN = 0; const _relojP = new Map();
+function dormir(ms) {
+  try {
+    if (!_relojW) {
+      _relojW = new Worker(URL.createObjectURL(new Blob(['onmessage=e=>setTimeout(()=>postMessage(e.data.id),e.data.ms)'], { type: 'text/javascript' })));
+      _relojW.onmessage = e => { const f = _relojP.get(e.data); if (f) { _relojP.delete(e.data); f(); } };
+    }
+    return new Promise(r => { const id = ++_relojN; _relojP.set(id, r); _relojW.postMessage({ id, ms }); });
+  } catch (e) { return sleep(ms); }
+}
+/* MusicBrainz con tiempo máximo: si una consulta se cuelga, se reintenta */
+function fetchMB(url) {
+  const ac = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  const t = ac && setTimeout(() => ac.abort(), 20000);
+  return fetch(url, ac ? { signal: ac.signal } : {}).finally(() => clearTimeout(t));
+}
 /* etiquetas de MusicBrainz que no son géneros (listas de éxitos, idiomas, notas personales…) */
 const RUIDO_MB = /billboard|hot 100|chart|wochen|^ph_|top \d|^\d|spanish|english|español|instrumental|^live$|^mix$|cover|remix|favou?rite|seen live|vocal|male|female|^usa?$|united states|puerto ric|english|^4 stars|stars$/i;
 async function anyoMB(p) {
@@ -2243,10 +2259,10 @@ async function anyoMB(p) {
   const q = 'recording:"' + tit.replace(/["\\]/g, '') + '" AND artist:"' + art.replace(/["\\]/g, '') + '"';
   for (let i = 0; i < 4; i++) {
     const espera = _mbProx - Date.now(); _mbProx = Math.max(Date.now(), _mbProx) + 1100;
-    if (espera > 0) await sleep(espera);
+    if (espera > 0) await dormir(espera);
     let r;
-    try { r = await fetch('https://musicbrainz.org/ws/2/recording/?fmt=json&limit=100&query=' + encodeURIComponent(q)); }
-    catch (e) { await sleep(3000); continue; }
+    try { r = await fetchMB('https://musicbrainz.org/ws/2/recording/?fmt=json&limit=100&query=' + encodeURIComponent(q)); }
+    catch (e) { await dormir(3000); continue; }
     if (r.status === 503 || r.status === 429) { _mbProx = Date.now() + 5000 * (i + 1); continue; }
     if (!r.ok) return 0;
     const d = await r.json();
@@ -2292,7 +2308,9 @@ function pintarAnaliza() {
   let el = document.getElementById('analiza');
   if (!AN.corre) { if (el) el.remove(); return; }
   if (!el) { el = document.createElement('div'); el.id = 'analiza'; document.body.append(el); }
-  el.innerHTML = '<span class="nowrap">' + esc(AN.txt) + ' · ' + AN.n + '/' + AN.t + '</span><button>Detener</button>';
+  const falta = Math.max(0, AN.t - AN.n) * 1.15, quedan = AN.t > 30 && AN.n ? ' · quedan ' + (falta < 3600 ? Math.ceil(falta / 60) + ' min' : (falta / 3600).toFixed(1).replace('.', ',') + ' h') : '';
+  el.innerHTML = '<span class="nowrap">' + esc(AN.txt) + ' · ' + n$(AN.n) + '/' + n$(AN.t) + quedan + '</span><button>Detener</button>';
+  el.title = 'Deja la Fonoteca abierta y el ordenador sin suspender. Si la cierras, sigue por donde iba la próxima vez.';
   el.querySelector('button').onclick = () => { AN.parar = true; };
 }
 async function analizar(ps, todas) {
@@ -2325,7 +2343,8 @@ async function analizar(ps, todas) {
       try { const y = await anyoMB(p); ETQ.y[claveCancion(p)] = { y: y, at: Date.now(), g: p._mbg || [] }; }
       catch (e) { toast(e.message); break; }
       AN.n++; hechos++;
-      if (AN.n % 10 === 0) { etqCambio(); pintarAnaliza(); refrescarEtq(); }
+      pintarAnaliza();
+      if (AN.n % 10 === 0) { etqCambio(); refrescarEtq(); }
     }
     etqCambio();
   } finally {
