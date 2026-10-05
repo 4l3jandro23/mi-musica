@@ -977,7 +977,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-05b';
+const VERSION = '2026-10-05c';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -1252,6 +1252,11 @@ async function procesarCola() {
   }
 }
 setInterval(procesarCola, 60000);
+setInterval(async () => {
+  if (_likesFondo || document.visibilityState !== 'visible' || esperaPendiente() > 0 || !conectado()) return;
+  const par = await cacheLeer('likesParcial'); if (!par || !par.url) return;
+  likesFondo().then(ps => { S.likes = ps; if (S.tab === 'likes' && !S.vista) { toast('Ya están todas tus Me gusta: ' + n$(ps.length)); render(); } }).catch(() => {});
+}, 120000);
 
 /* Si una parte de Spotify (p. ej. artistas) frena sin decir cuanto, se deja
    descansar 2 minutos en vez de seguir pidiendole cosas. */
@@ -1555,23 +1560,39 @@ async function pistasMeGusta(av) {
         }
         url = d.next;
       }
-      if (hallada && total === crudos + c.total) {
+      if (hallada) {
         const out = nuevas.concat(conK(c.pistas));
         if (av) av(out.length, out.length);
-        if (nuevas.length) cachePoner('likes', { total: total, pistas: sinK(out) });
+        if (nuevas.length || total !== c.total) cachePoner('likes', { total: total, pistas: sinK(out) });
         return out;
       }
     } catch (e) { if (e.freno || e.message === 'DETENIDO') throw e; }
   }
-  /* Carga completa, que se guarda cada 20 paginas: si Spotify frena a
-     mitad (con 20.000 canciones son mas de 400 peticiones), al volver sigue
-     por donde iba en vez de empezar de cero. */
+  /* Carga completa: con 18.000 canciones son casi 400 peticiones, y de golpe
+     Spotify bloquea. Así que va despacio en segundo plano, guardando cada 10
+     páginas, y mientras se puede usar lo que ya hay. */
+  const par0 = await cacheLeer('likesParcial');
+  const job = likesFondo(av);
+  if (par0 && par0.pistas && par0.pistas.length) {
+    job.then(ps => { S.likes = ps; if (S.tab === 'likes' && !S.vista) { toast('Ya están todas tus Me gusta: ' + n$(ps.length)); render(); } }).catch(() => {});
+    const parcial = conK(par0.pistas); parcial._parcial = { n: par0.crudos, total: par0.total };
+    return parcial;
+  }
+  return await job;
+}
+let _likesFondo = null;
+function likesFondo(av) { return _likesFondo || (_likesFondo = likesFondo0(av).finally(() => { _likesFondo = null; })); }
+async function likesFondo0(av) {
+  const c = await cacheLeer('likes');
   const par = await cacheLeer('likesParcial');
   let ps = [], crudos = 0, url = '/me/tracks?limit=50', total = null, pag = 0;
-  if (par && par.url && Date.now() - par.at < 12 * 36e5) { ps = conK(par.pistas); crudos = par.crudos; url = par.url; }
-  const guardarParcial = () => cachePoner('likesParcial', { at: Date.now(), url: url, crudos: crudos, pistas: sinK(ps) });
+  if (par && par.url && Date.now() - par.at < 30 * 864e5) { ps = conK(par.pistas); crudos = par.crudos; url = par.url; total = par.total || null; }
+  const guardarParcial = () => cachePoner('likesParcial', { at: Date.now(), url: url, crudos: crudos, total: total, pistas: sinK(ps) });
   try {
+    let primera = true;
     while (url) {
+      if (!primera) await sleep(document.visibilityState === 'visible' ? 1300 : 2500);
+      primera = false;
       const d = await sp(url);
       if (!d) break;
       total = d.total;
@@ -1579,14 +1600,14 @@ async function pistasMeGusta(av) {
       for (const x of items) { crudos++; const p = pista(x && x.track, { added: x && x.added_at }); if (p) ps.push(p); }
       if (av) av(crudos, total);
       url = items.length ? d.next : null;
-      if (url && ++pag % 20 === 0) guardarParcial();
+      if (url && ++pag % 10 === 0) guardarParcial();
     }
   } catch (e) {
     if (ps.length && url) guardarParcial();
     if (esCaida(e) && c && c.pistas) { modoGuardado(); return conK(c.pistas); }
     if ((esCaida(e) || e.message === 'DETENIDO') && ps.length) {
       modoGuardado();
-      setTimeout(() => toast('Spotify ha frenado a mitad: tienes ' + ps.length + ' de ' + (total || '?') + '. Pulsa ↻ arriba en un rato y seguirá por donde iba.', null, 9000), 300);
+      setTimeout(() => toast('Spotify ha pedido parar: tienes ' + n$(ps.length) + ' de ' + n$(total || 0) + '. Seguirá solo, despacio, cuando deje.', null, 7000), 300);
       return ps;
     }
     throw e;
@@ -2868,7 +2889,7 @@ function abrirLista(nombre, l, i) {
   if (i != null) setTimeout(() => { const p = S.fuente && S.fuente.pistas && S.fuente.pistas[i]; if (p) hojaPista(p); }, 150);
 }
 async function likesGuardados() {
-  if (S.likes && S.likes.length) return S.likes;
+  if (S.likes && S.likes.length && !S.likes._parcial) return S.likes;
   const c = await cacheLeer('likes');
   return c && c.pistas ? c.pistas : [];
 }
@@ -5155,10 +5176,11 @@ function vLikes(m) {
   S.vista = null;
   m.innerHTML = '';
   /* Me gusta se pinta como una fuente, pero sin boton de Atras: es una pestaña */
-  pintarFuente(m, f, async () => { if (!S.likes) S.likes = await pistasMeGusta((n, t) => progresoCarga(n, t)); return S.likes; }).then(() => {
+  pintarFuente(m, f, async () => { if (!S.likes || S.likes._parcial) S.likes = await pistasMeGusta((n, t) => progresoCarga(n, t)); return S.likes; }).then(() => {
     const b = $('#bAtras'); if (b) b.remove();
-    const v = $('#vlist'); if (v && f.pistas && f.pistas.length > 1500) {
-      $('#vlist').insertAdjacentHTML('beforebegin', '<div class="aviso"><b>Llevas ' + f.pistas.length + ' en Me gusta</b>Tu regla: una vez al mes, saca lo que lleve más de 6 meses. «Opciones → Limpieza mensual» lo marca de un toque.</div>');
+    const v = $('#vlist'); if (v && f.pistas && f.pistas._parcial) {
+      const P = f.pistas._parcial;
+      v.insertAdjacentHTML('beforebegin', '<div class="aviso" id="lkCarga"><b>Cargando tus Me gusta poco a poco</b>Ya tienes ' + n$(f.pistas.length) + (P.total ? ' de ' + n$(P.total) : '') + '. Va despacio a propósito para que Spotify no se bloquee; puedes usar ya estas y se completará sola.</div>');
     }
   });
 }
