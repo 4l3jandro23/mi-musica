@@ -814,6 +814,12 @@
   .pcd-antes img { width: 62px; height: 62px; border-radius: 6px; object-fit: cover; box-shadow: 0 4px 14px rgba(0,0,0,.4); display: block; border: 2px solid rgba(255,255,255,.8); }
   .pcd-antes small { font-size: 10px; color: #fff; text-shadow: 0 1px 3px #000; font-weight: 700; }
   .sws { display: flex; gap: 7px; flex-wrap: wrap; }
+  .rp .dest.uno { grid-template-columns: 1fr; }
+  .rp .dest.uno button { min-height: 64px; font-size: 17px; }
+  .rl-g { display: flex; flex-direction: column; gap: 8px; margin: 4px 0 14px; }
+  .rl-g > div { background: var(--surface-2); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; }
+  .rl-g b { font-size: 18px; }
+  .rl-g small { color: var(--fg-mute); }
   .idea-ent { width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; border: 0; background: var(--surface); color: inherit; border-radius: 18px; padding: 12px 14px; margin-bottom: 12px; box-shadow: var(--shadow-sm); cursor: pointer; font: inherit; }
   .idea-ent .ic { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, #7a2fd0, #ff7ab8); color: #fff; flex: none; }
   .idea-ent > span:nth-child(2) { flex: 1; min-width: 0; display: flex; flex-direction: column; }
@@ -971,7 +977,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-04j';
+const VERSION = '2026-10-05a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -3793,6 +3799,69 @@ async function pintarIdeas(m) {
   };
 }
 
+/* ---- Rellenar una playlist con tus Me gusta ----
+   Busca en lo que ya te gusta canciones que pegan en esta playlist:
+   las de artistas que ya están en ella y las de su mismo estilo (los
+   géneros que más se repiten en ella y lo que diga su frase).
+   Solo lee lo guardado; añadir es lo único que va a Spotify. */
+async function candidatasPara(f) {
+  await etqAsegurar(); try { await misAsegurar(); } catch (e) {}
+  const likes = (await likesGuardados()).filter(p => !p.local);
+  const dentro = new Set(); f.pistas.forEach(p => { dentro.add(p.uri); dentro.add(claveObra(p)); });
+  const arts = new Map(); f.pistas.forEach(p => p.artists.forEach(a => arts.set(fold(a.name), (arts.get(fold(a.name)) || 0) + 1)));
+  const gen = contar(f.pistas, p => { const r = etiquetasCancion(p); return Array.from(r.genero || []).concat(Array.from(r.sub || [])); });
+  const frase = fold((PREFS.criterios || {})[f.id] || '') + ' ' + fold(f.name);
+  const estilos = new Set(gen.filter(([, n]) => n >= Math.max(3, f.pistas.length * 0.25)).map(([g]) => g));
+  /* lo que diga el nombre o la frase («salsa de cualquier época») también cuenta */
+  for (const p of likes.slice(0, 4000)) { const r = etiquetasCancion(p); for (const g of [].concat(Array.from(r.genero || []), Array.from(r.sub || []))) if (fold(g).length > 3 && frase.indexOf(fold(g)) >= 0) estilos.add(g); }
+  const out = [];
+  for (const p of likes) {
+    if (dentro.has(p.uri) || dentro.has(claveObra(p))) continue;
+    let pts = 0, porArt = '', porEst = '';
+    for (const a of p.artists) { const n = arts.get(fold(a.name)); if (n) { pts += 2 + Math.log2(1 + n); porArt = a.name; break; } }
+    if (estilos.size) { const r = etiquetasCancion(p); const g = [].concat(Array.from(r.genero || []), Array.from(r.sub || [])).find(x => estilos.has(x)); if (g) { pts += 1.5; porEst = g; } }
+    if (pts) out.push(Object.assign({}, p, { _pts: pts, _por: porArt ? 'artista' : 'estilo', _porTxt: porArt || porEst }));
+  }
+  out.sort((a, b) => b._pts - a._pts || b.added - a.added);
+  return { lista: out, estilos: Array.from(estilos), nArt: arts.size };
+}
+async function rellenarPlaylist(f) {
+  if (!f.pistas) { toast('Espera a que termine de cargar'); return; }
+  hoja('<h2>Rellenar «' + esc(f.name) + '»</h2><div class="spin"></div><p class="soft" style="text-align:center">Buscando en tus Me gusta…</p>');
+  const C = await candidatasPara(f);
+  if (!_hoja) return;
+  const deArt = C.lista.filter(p => p._por === 'artista'), deEst = C.lista.filter(p => p._por === 'estilo');
+  if (!C.lista.length) {
+    hoja('<h2>Rellenar «' + esc(f.name) + '»</h2><p class="soft">No he encontrado en tus Me gusta más canciones que peguen aquí' + (f.pistas.length < 5 ? ': con más canciones en la playlist puedo afinar mejor' : '') + '. Prueba a buscar a mano con el buscador de Me gusta.</p><button class="btn wide" id="rlB">' + ic('buscar') + 'Buscar en Me gusta</button>', h => { h.querySelector('#rlB').onclick = () => { cerrarHoja(true); irATab('likes'); }; });
+    return;
+  }
+  const top = contar(deArt, p => [p._porTxt]).slice(0, 6).map(a => a[0]);
+  hoja('<h2>Rellenar «' + esc(f.name) + '»</h2><p class="soft">He encontrado <b>' + n$(C.lista.length) + '</b> canciones en tus Me gusta que pueden ir aquí:</p>' +
+    '<div class="rl-g">' +
+    (deArt.length ? '<div><b>' + n$(deArt.length) + '</b> de artistas que ya tienes en ella<small>' + esc(top.join(', ')) + (C.nArt > top.length ? '…' : '') + '</small></div>' : '') +
+    (deEst.length ? '<div><b>' + n$(deEst.length) + '</b> del mismo estilo<small>' + esc(C.estilos.slice(0, 4).join(', ')) + '</small></div>' : '') + '</div>' +
+    '<div class="opc"><button data-o="una">' + ic('play') + '<span>Una a una<span class="sub">una cada vez: «Sí» o «Siguiente»</span></span></button>' +
+    '<button data-o="lista">' + ic('lista') + '<span>Ver la lista y marcar<span class="sub">marca las que quieras y «Añadir a…»</span></span></button>' +
+    (deArt.length ? '<button data-o="art">' + ic('plus') + '<span>Añadir directamente las ' + n$(deArt.length) + ' de sus artistas<span class="sub">lo más seguro</span></span></button>' : '') +
+    '</div><p class="tiny mute">Tus Me gusta no se tocan: solo se añaden a la playlist.</p>', h => {
+      h.querySelector('.opc').onclick = async e => {
+        const b = e.target.closest('[data-o]'); if (!b) return;
+        const o = b.dataset.o; cerrarHoja(true);
+        if (o === 'lista') abrirLista('Para «' + f.name + '»', C.lista);
+        else if (o === 'una') {
+          const fl = { kind: 'lista', id: 'rl' + f.id, name: 'Para «' + f.name + '»', editable: false, meta: null, pistas: null };
+          await repasar(fl, conK(C.lista.slice(0, 60)));
+          if (RP) { RP.dest = [f.meta || (S.playlists || []).find(p => p.id === f.id)].filter(Boolean); RP.solo = f.name; render(); }
+        }
+        else if (o === 'art') {
+          const uris = deArt.map(p => p.uri);
+          if (!(await confirmar('¿Añadir ' + uris.length + ' canciones a «' + f.name + '»?', 'Añadirlas', 'Son de artistas que ya tienes en ella. Siguen en Me gusta. Se puede deshacer desde Cambios.'))) return;
+          const ok = await trabajo(async () => { await plAnadir(f.id, uris, null, 'Añadiendo a «' + f.name + '»'); apuntar(uris.length + ' añadidas a «' + f.name + '»', { t: 'plQuitar', pid: f.id, uris: uris }); return true; }, 'Añadiendo');
+          if (ok) { f.pistas = null; S.playlists = null; toast(uris.length + ' añadidas a «' + f.name + '»', { txt: 'Deshacer', fn: () => deshacerUltimo(HIST[0].id) }); render(); }
+        }
+      };
+    });
+}
 /* Meta semanal de discos: cuantos valoras cada semana (de lunes a domingo) */
 const lunesDe = t => { const d = new Date(t); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - (d.getDay() + 6) % 7); return d.getTime(); };
 function metaDiscos() {
@@ -4042,7 +4111,7 @@ function pintarRepaso(m) {
     (p.coverG ? '<img class="port" src="' + esc(p.coverG) + '" alt="">' : '<div class="port">' + ic('disco') + '</div>') +
     '<h2>' + esc(p.title) + '</h2><div class="soft">' + esc(nombresArtistas(p)) + '</div><div class="tiny mute">' + esc(p.album) + ' · ' + textoAnyo(p) + ' · ' + dur(p.ms) + (p.added ? ' · añadida ' + fecha(p.added) : '') + '</div>' +
     '<div class="donde">' + (S.indice ? (enPl.length ? 'Ya está en: ' + enPl.map(id => esc(nombrePl(id))).join(', ') : 'No está en ninguna playlist') : '') + '</div>' +
-    '<div class="dest">' + RP.dest.map((pl, i) => '<button data-pl="' + pl.id + '" class="' + (d.pl.has(pl.id) ? 'on' : '') + (enPl.indexOf(pl.id) >= 0 ? ' ya' : '') + '">' + (d.pl.has(pl.id) ? '✓ ' : '+ ') + esc(pl.name) + (CR[pl.id] ? '<small class="crit-q">' + esc(CR[pl.id]) + '</small>' : '') + ' <span class="k">' + (i + 1) + '</span></button>').join('') +
+    '<div class="dest' + (RP.dest.length === 1 ? ' uno' : '') + '">' + RP.dest.map((pl, i) => '<button data-pl="' + pl.id + '" class="' + (d.pl.has(pl.id) ? 'on' : '') + (enPl.indexOf(pl.id) >= 0 ? ' ya' : '') + '">' + (d.pl.has(pl.id) ? '✓ ' : RP.solo ? 'Sí, a ' : '+ ') + esc(pl.name) + (CR[pl.id] ? '<small class="crit-q">' + esc(CR[pl.id]) + '</small>' : '') + ' <span class="k">' + (i + 1) + '</span></button>').join('') +
     (RP.bandeja ? '<button data-x="queda" class="queda' + (d.queda ? ' on' : '') + '">' + (d.queda ? '✓ ' : '') + 'Se queda solo en Me gusta <span class="k">0</span></button>' : '') +
     (RP.quitar ? '<button data-x="fuera" class="malo' + (d.fuera ? ' on' : '') + '">' + (d.fuera ? '✓ ' : '') + RP.quitar + ' <span class="k">Q</span></button>' : '') + '</div>' +
     (RP.bandeja && !Object.keys(CR).length ? '<button class="btn sm ghost" id="rpCrit" style="margin:0 auto 6px;display:flex">' + ic('lapiz') + 'Escribe qué va en cada playlist</button>' : '') +
@@ -6200,6 +6269,7 @@ function hojaFuente(f) {
   const sec = (tit, items) => items.filter(Boolean).length ? '<div class="sec">' + tit + '</div>' + items.filter(Boolean).join('') : '';
   hoja('<h2>' + esc(f.name) + '</h2><div class="opc">' +
     sec('Crear', [
+      ed ? b('rellenar', 'varita', 'Rellenar con mis Me gusta', 'busca canciones que pegan aquí: de sus artistas y de su estilo') : '',
       b('filtrar', 'filtro', 'Filtrar y crear', 'por mood, género, idioma, tipología, década o año REAL, épocas, hitos, artista…'),
       b('parecida', 'varita', 'Crear una parecida', 'más canciones de sus mismos artistas que aún no tienes aquí'),
       pl ? b('unir', 'unir', 'Unir con otras playlists') : '',
@@ -6246,7 +6316,8 @@ function hojaFuente(f) {
         cerrarHoja();
         const ps = f.pistas, uris = () => Array.from(new Set(ps.filter(p => !p.local).map(p => p.uri)));
         const artUris = () => Array.from(new Set([].concat.apply([], ps.map(p => p.artists.map(a => a.uri))).filter(Boolean)));
-        if (o === 'filtrar') hojaFiltrar(f);
+        if (o === 'rellenar') rellenarPlaylist(f);
+        else if (o === 'filtrar') hojaFiltrar(f);
         else if (o === 'parecida') hojaParecida(f);
         else if (o === 'unir') { S.selObj.clear(); S.selObj.add(f.id); hojaCombinar(); }
         else if (o === 'dividir') hojaDividir(f);
