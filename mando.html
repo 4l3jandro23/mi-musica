@@ -977,7 +977,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-05a';
+const VERSION = '2026-10-05b';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2066,6 +2066,8 @@ function textoAnyo(p) {
 }
 function generosCancion(p) {
   const out = [], E = ETQ || ETQ0();
+  const propia = (E.y[claveCancion(p)] || {}).g;
+  if (propia && propia.length) return propia.slice();
   for (const a of p.artists.slice(0, 3)) {
     const m = MIS && a.id && misPorId(a.id);
     if (m && m.genres) for (const g of m.genres) out.push(g);
@@ -2175,6 +2177,8 @@ function htmlEtiquetas(p, max) {
    antigua de sus lanzamientos oficiales. Asi «Something» sale 1969 aunque
    en Spotify este en un disco de 2019. 1 peticion por segundo (sus normas). */
 let _mbProx = 0;
+/* etiquetas de MusicBrainz que no son géneros (listas de éxitos, idiomas, notas personales…) */
+const RUIDO_MB = /billboard|hot 100|chart|wochen|^ph_|top \d|^\d|spanish|english|español|instrumental|^live$|^mix$|cover|remix|favou?rite|seen live|vocal|male|female|^usa?$|united states|puerto ric|english|^4 stars|stars$/i;
 async function anyoMB(p) {
   const tit = p.title.replace(/\s*[-–—]\s*.*$/, '').replace(/\s*[\(\[][^\)\]]*[\)\]]/g, '').trim() || p.title;
   const art = (p.artists[0] || {}).name || '';
@@ -2190,15 +2194,18 @@ async function anyoMB(p) {
     const d = await r.json();
     const T = obraDe(tit), A = obraDe(art);
     let best = 0;
+    const tags = new Map();
     for (const rec of (d.recordings || [])) {
       if (obraDe(rec.title) !== T) continue;
       if (!(rec['artist-credit'] || []).some(a => obraDe(a.name) === A || obraDe((a.artist || {}).name) === A)) continue;
+      for (const t of (rec.tags || [])) { const n = String(t.name || '').trim(); if (n && !RUIDO_MB.test(n) && !LASTFM_RUIDO.has(fold(n))) tags.set(n, (tags.get(n) || 0) + Math.max(1, t.count || 1)); }
       const fechas = (rec.releases || []).filter(x => !x.status || x.status === 'Official').map(x => x.date);
       if (!fechas.some(Boolean) && rec['first-release-date']) fechas.push(rec['first-release-date']);
       for (const f of fechas) { const y = +(String(f || '').slice(0, 4)); if (y >= 1900 && (!best || y < best)) best = y; }
     }
     /* si sale posterior al disco de Spotify, algo no cuadra: vale el del disco */
     if (best && p.year && best > +p.year) best = +p.year;
+    p._mbg = Array.from(tags).sort((a, b) => b[1] - a[1]).slice(0, 6).map(x => x[0]);
     return best;
   }
   throw new Error('MusicBrainz no contesta ahora');
@@ -2253,11 +2260,11 @@ async function analizar(ps, todas) {
     }
     /* 2. año real (MusicBrainz, 1 por segundo) */
     const lim = Date.now() - 60 * 864e5, vistas = new Set();
-    const cand = ps.filter(p => { if (p.local) return false; const c = claveCancion(p), e = ETQ.y[c]; if (vistas.has(c) || (e && (e.y || e.at > lim))) return false; vistas.add(c); return todas || sospechosa(p); });
-    AN.txt = 'Año real'; AN.n = 0; AN.t = cand.length; pintarAnaliza();
+    const cand = ps.filter(p => { if (p.local) return false; const c = claveCancion(p), e = ETQ.y[c]; if (vistas.has(c) || (e && e.g && (e.y || e.at > lim))) return false; vistas.add(c); return todas || sospechosa(p); });
+    AN.txt = 'Año real y género de cada canción'; AN.n = 0; AN.t = cand.length; pintarAnaliza();
     for (const p of cand) {
       if (AN.parar) break;
-      try { ETQ.y[claveCancion(p)] = { y: await anyoMB(p), at: Date.now() }; }
+      try { const y = await anyoMB(p); ETQ.y[claveCancion(p)] = { y: y, at: Date.now(), g: p._mbg || [] }; }
       catch (e) { toast(e.message); break; }
       AN.n++; hechos++;
       if (AN.n % 10 === 0) { etqCambio(); pintarAnaliza(); refrescarEtq(); }
@@ -2277,6 +2284,7 @@ function hojaAnalizar(f) {
     const conAnyo = unicas.filter(p => E.y[claveCancion(p)]).length;
     const sosp = unicas.filter(p => !E.y[claveCancion(p)] && sospechosa(p)).length;
     const resto = unicas.filter(p => !E.y[claveCancion(p)]).length;
+    const sinG = unicas.filter(p => !(E.y[claveCancion(p)] || {}).g).length;
     const artSin = new Set(); ps.forEach(p => p.artists.slice(0, 2).forEach(a => { if (artistaSinGenero(a)) artSin.add(fold(a.name)); }));
     const conGen = ps.filter(p => { const r = etiquetasCancion(p); return r.genero && r.genero.size; }).length;
     const t = (n, s) => n * s < 90 ? Math.ceil(n * s) + ' s' : n * s < 5400 ? Math.ceil(n * s / 60) + ' min' : (n * s / 3600).toFixed(1) + ' h';
@@ -2285,8 +2293,8 @@ function hojaAnalizar(f) {
       (lfCfg() ? '' : '<p class="soft tiny"><b>Para los géneros hace falta tu clave de Last.fm</b> (gratis, sin iniciar sesión). Si la tenías en MusicVault, este aparato la recuerda; si no, créala en <a href="https://www.last.fm/api/account/create" target="_blank" rel="noopener">last.fm/api</a> y pégala aquí:</p><input class="field" id="anLf" placeholder="Clave de API de Last.fm">') +
       '<div class="opc" style="margin-top:10px">' +
       '<button data-o="sosp">' + ic('varita') + '<span>Rápido: géneros + año real de las sospechosas<span class="sub">' + sosp + ' canciones de discos remasterizados, recopilatorios, deluxe… · unos ' + t(sosp, 1.1) + (artSin.size && lfCfg() ? ' + ' + t(artSin.size, 0.3) + ' de géneros' : '') + '</span></span></button>' +
-      '<button data-o="todas">' + ic('reloj') + '<span>Completo: año real de todas<span class="sub">' + resto + ' canciones · unos ' + t(resto, 1.1) + '. MusicBrainz solo deja 1 por segundo.</span></span></button>' +
-      '</div><p class="tiny mute">El año real sale de MusicBrainz (la fecha del primer lanzamiento oficial). Los géneros, de Last.fm y de tus Mis artistas. El mood sale de los géneros y de tus etiquetas; el idioma, del título y del origen del artista.</p>', h => {
+      '<button data-o="todas">' + ic('reloj') + '<span>Completo: año real y género de CADA canción<span class="sub">' + sinG + ' canciones · unos ' + t(sinG, 1.1) + '. MusicBrainz solo deja 1 por segundo: mejor en el ordenador, con la Fonoteca abierta (puede ser toda una noche). Se sincroniza con el móvil.</span></span></button>' +
+      '</div><p class="tiny mute">El año real y el género de cada canción salen de MusicBrainz (así sabe que «BAILE INoLVIDABLE» de Bad Bunny es salsa aunque Bad Bunny sea reguetón). Si una canción no tiene etiquetas allí, se usa el género de su artista (Last.fm y tus Mis artistas). El mood sale de los géneros y de tus etiquetas; el idioma, del título y del origen del artista.</p>', h => {
         h.querySelector('.opc').onclick = e => {
           const b = e.target.closest('[data-o]'); if (!b) return;
           const k = h.querySelector('#anLf'); if (k && k.value.trim()) escribir(K_LF, { apiKey: k.value.trim() });
@@ -2357,7 +2365,7 @@ function hojaEtiquetar(ps, alDisco) {
           }
           if (e.target.closest('#etYmb')) {
             const b = h.querySelector('#etYmb'); b.textContent = 'Buscando…';
-            try { const y = await anyoMB(ps[0]); ETQ.y[claveCancion(ps[0])] = { y: y, at: Date.now() }; etqCambio(); b.textContent = y ? 'Año real: ' + y : 'No lo encuentro'; h.querySelector('#etY').placeholder = y || ps[0].year; }
+            try { const y = await anyoMB(ps[0]); ETQ.y[claveCancion(ps[0])] = { y: y, at: Date.now(), g: ps[0]._mbg || [] }; etqCambio(); b.textContent = y ? 'Año real: ' + y : 'No lo encuentro'; h.querySelector('#etY').placeholder = y || ps[0].year; }
             catch (x) { b.textContent = 'MusicBrainz no contesta'; }
             return;
           }
