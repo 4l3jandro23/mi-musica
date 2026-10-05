@@ -977,7 +977,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-06b';
+const VERSION = '2026-10-06c';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2005,11 +2005,15 @@ function hojaNuevaPlaylist(uris, sugerido) {
       '<label class="lbl">Qué va en ella</label><input class="field" id="nCrit" maxlength="80" placeholder="Ej.: salsa de cualquier época (opcional)">' +
       '<label class="lbl">Descripción</label><input class="field" id="nDesc" maxlength="300">' +
       '<label class="check"><input type="checkbox" id="nPub"> Pública (sale en tu perfil)</label>' +
-      (uris ? '<p class="soft tiny">Se crea con ' + uris.length + ' canciones.</p>' : '') +
+      (uris ? '<p class="soft tiny">Se crea con ' + uris.length + ' canciones.</p>' : '<label class="lbl">Canciones (opcional)</label><textarea class="field" id="nLinks" rows="3" placeholder="Pega enlaces de canciones de Spotify, uno por línea"></textarea><p class="tiny mute" id="nLinksN" style="margin:4px 0 0"></p>') +
       '<button class="btn pri wide" id="nOk" style="margin-top:10px">Crear</button>', h => {
         const n = h.querySelector('#nNom'); setTimeout(() => n.focus(), 250);
+        const lk = h.querySelector('#nLinks');
+        const deLinks = () => lk ? Array.from(new Set((lk.value.match(/track[/:]([A-Za-z0-9]{22})/g) || []).map(x => 'spotify:track:' + x.slice(-22)))) : [];
+        if (lk) lk.oninput = () => { const k = deLinks().length; h.querySelector('#nLinksN').textContent = k ? k + ' canciones reconocidas' : ''; };
         h.querySelector('#nOk').onclick = async () => {
           const nom = n.value.trim(); if (!nom) { n.focus(); return; }
+          if (!uris && deLinks().length) uris = deLinks();
           pulsado = true;
           cerrarHoja();
           const r = await trabajo(async () => {
