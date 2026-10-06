@@ -232,6 +232,20 @@
   .rp .dest button .k { font-size: 11px; opacity: .55; font-weight: 600; }
   .rp .dest button.malo { color: var(--rust); }
   .rp .dest button.malo.on { background: var(--rust); border-color: var(--rust); color: #fff; }
+  .rp .dest button.olvido { flex-direction: column; gap: 2px; }
+  .rp .dest button.olvido small { font-size: 11px; font-weight: 600; opacity: .7; }
+  .rp .dest button.olvido.on { background: var(--fg-soft); border-color: var(--fg-soft); color: var(--bg); }
+  .rep-g { background: var(--surface); border-radius: 16px; padding: 6px; margin-bottom: 10px; box-shadow: var(--shadow-sm); }
+  .rep-g h4 { margin: 6px 8px 4px; font-size: 14px; }
+  .rep-i { display: flex; gap: 10px; align-items: center; padding: 7px 8px; border-radius: 12px; cursor: pointer; }
+  .rep-i img, .rep-i .ph { width: 40px; height: 40px; border-radius: 6px; flex: none; object-fit: cover; background: var(--surface-2); }
+  .rep-i .tx { flex: 1; min-width: 0; font-size: 13px; line-height: 1.3; }
+  .rep-i .tx small { display: block; color: var(--fg-mute); }
+  .rep-i .est { font-size: 12px; font-weight: 800; flex: none; padding: 4px 9px; border-radius: 99px; }
+  .rep-i.si .est { background: var(--jade); color: #fff; }
+  .rep-i.no { opacity: .55; }
+  .rep-i.no .est { color: var(--rust); }
+  .rep-i .pl { flex: none; }
   .rp .nav { display: flex; gap: 8px; margin: 6px 0; }
   .rp .nav .btn { flex: 1; }
   .rp .pie { position: sticky; bottom: calc(86px + env(safe-area-inset-bottom)); margin-top: 14px; }
@@ -977,7 +991,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-06c';
+const VERSION = '2026-10-06d';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -1836,7 +1850,7 @@ const S = {
   selObj: new Set(), buscar: { q: '', tipo: 'track', res: null }, suena: null, soloSel: false, indice: null
 };
 const PREFS = Object.assign({ saltarRepes: true }, leer(K_PREFS, {}));
-const CFG_SYNC = ['criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento'];
+const CFG_SYNC = ['criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido'];
 let _cfgSnap = null;
 const guardarPrefs = () => {
   escribir(K_PREFS, PREFS);
@@ -3731,6 +3745,19 @@ async function ordenarBandeja(pend) {
   if (RP) RP.bandeja = true;
   render();
 }
+async function limpiarMeGusta(f) {
+  let todas = f && f.pistas ? f.pistas : (S.likes && S.likes.length ? S.likes : await likesGuardados());
+  todas = todas.filter(p => !p.local);
+  if (!todas.length) { toast('Primero abre Me gusta para que se carguen'); irATab('likes'); return; }
+  await etqAsegurar();
+  const pend = todas.filter(p => !decidida(p));
+  if (!pend.length) { toast('Ya has decidido todas tus Me gusta. ¡Enhorabuena!'); return; }
+  const fl = { kind: 'likes', id: 'likes', name: 'Limpiar Me gusta', editable: false, meta: null, pistas: S.likes || null };
+  await repasar(fl, conK(barajar(pend.slice()).slice(0, BJ_TANDA)));
+  if (RP) RP.bandeja = true;
+  toast('Quedan ' + n$(pend.length) + ' por decidir: de ' + BJ_TANDA + ' en ' + BJ_TANDA + ', sin prisa', null, 5000);
+  render();
+}
 function hojaBandeja(E) {
   const b = PREFS.bandeja || {};
   hoja('<h2>Tu bandeja</h2>' +
@@ -3738,6 +3765,8 @@ function hojaBandeja(E) {
     '<div class="opc">' +
     '<button data-o="crit">' + ic('lapiz') + '<span>Qué va en cada playlist<span class="sub">' + Object.keys(PREFS.criterios || {}).length + ' con frase</span></span></button>' +
     '<button data-o="todo">' + ic('lista') + '<span>Ver la bandeja como lista<span class="sub">' + n$((E.pend || []).length) + ' por decidir</span></span></button>' +
+    '<button data-o="limpiar">' + ic('corazonRoto') + '<span>Limpiar mis Me gusta<span class="sub">25 al azar: se queda, a una playlist, «Para no olvidar» o fuera</span></span></button>' +
+    '<button data-o="repes">' + ic('repes') + '<span>Revisar repetidas<span class="sub">la misma canción dos veces: eliges con cuál te quedas</span></span></button>' +
     '<button data-o="rescate">' + ic('reloj') + '<span>Rescatar del archivo<span class="sub">10 canciones viejas al azar, por si alguna merece una playlist (opcional)</span></span></button>' +
     '<button data-o="desde">' + ic('ajustes') + '<span>Cambiar desde cuándo cuenta como nuevo</span></button>' +
     '</div>', h => {
@@ -3746,6 +3775,8 @@ function hojaBandeja(E) {
         const o = x.dataset.o; cerrarHoja(true);
         if (o === 'crit') hojaCriterios();
         else if (o === 'todo') abrirLista('Bandeja', E.pend || []);
+        else if (o === 'limpiar') limpiarMeGusta();
+        else if (o === 'repes') hojaRepesLikes();
         else if (o === 'rescate') {
           const arch = (await likesGuardados()).filter(p => !p.local && p.added < (b.desde || 0) && !decidida(p));
           if (!arch.length) { toast('No hay nada en el archivo'); return; }
@@ -4234,14 +4265,52 @@ async function repasar(f, ps) {
   try { pls = await cargarPlaylists(); } catch (e) { toast(explicarError(e)); return; }
   const rec = PREFS.recientes || [], pos = id => { const i = rec.indexOf(id); return i < 0 ? 99 : i; };
   const crit = PREFS.criterios || {};
-  const dest = pls.filter(p => esMia(p) && !(f.kind === 'playlist' && p.id === f.id)).sort((a, b) => (!!crit[b.id] - !!crit[a.id]) || pos(a.id) - pos(b.id) || b.total - a.total).slice(0, 6);
+  const dest = pls.filter(p => esMia(p) && !(f.kind === 'playlist' && p.id === f.id) && !(f.kind === 'likes' && p.id === PREFS.plOlvido)).sort((a, b) => (!!crit[b.id] - !!crit[a.id]) || pos(a.id) - pos(b.id) || b.total - a.total).slice(0, 6);
   const quitar = f.kind === 'likes' ? 'Quitar ♥' : (f.kind === 'playlist' && f.editable ? 'Quitar de aquí' : '');
   RP = { f: f, lista: lista, i: 0, dec: new Map(), dest: dest, quitar: quitar };
   limpiarSel();
   abrirVista({ repaso: true, pintar: pintarRepaso });
 }
-function decDe(p) { let d = RP.dec.get(p.k); if (!d) { d = { pl: new Set(), fuera: false, queda: false }; RP.dec.set(p.k, d); } return d; }
-function cambiosRepaso() { let n = 0; for (const d of RP.dec.values()) if (d.pl.size || d.fuera || d.queda) n++; return n; }
+/* «Para no olvidar»: lo que no escuchas pero no quieres perder (Gucci Gang,
+   Dance Monkey…). Sale de Me gusta, que así no lía tus recomendaciones ni tu
+   biblioteca, pero sigue en Spotify, en una playlist privada. */
+const NOMBRE_OLVIDO = 'Para no olvidar';
+async function plOlvido(nueva) {
+  const pls = nueva ? [] : await cargarPlaylists();
+  let p = (PREFS.plOlvido && pls.find(x => x.id === PREFS.plOlvido)) || pls.find(x => esMia(x) && fold(x.name) === fold(NOMBRE_OLVIDO));
+  if (!p) {
+    const d = await crearPlaylist(NOMBRE_OLVIDO, 'Canciones que no escucho pero no quiero olvidar. Fuera de Me gusta a propósito.', false);
+    p = { id: d.id, name: d.name, uri: d.uri };
+  }
+  if (PREFS.plOlvido !== p.id) {
+    PREFS.plOlvido = p.id;
+    const C = PREFS.criterios || (PREFS.criterios = {});
+    if (!C[p.id]) C[p.id] = 'No la escucho, pero no quiero olvidarla';
+    guardarPrefs();
+  }
+  return p;
+}
+/* mete canciones en «Para no olvidar» y las quita de Me gusta; devuelve los pasos para deshacer */
+async function mandarAOlvido(uris) {
+  const u = Array.from(new Set(uris)), pasos = [];
+  let po = await plOlvido(), ya = new Set();
+  try { ya = new Set((await pistasDePlaylist(po.id)).map(p => p.uri)); }
+  catch (e) {
+    /* la borraste desde Spotify (la lista guardada aún la tenía): se crea otra */
+    if (e.status === 404) { po = await plOlvido(true); }
+    else if (!esCaida(e)) throw e;
+  }
+  const nu = u.filter(x => !ya.has(x));
+  if (nu.length) {
+    try { await plAnadir(po.id, nu, null, 'Guardando en «' + NOMBRE_OLVIDO + '»'); }
+    catch (e) { if (e.status !== 404) throw e; po = await plOlvido(true); await plAnadir(po.id, u, null, 'Guardando en «' + NOMBRE_OLVIDO + '»'); nu.splice(0, nu.length, ...u); }
+    pasos.push({ t: 'plQuitar', pid: po.id, uris: nu });
+  }
+  await libQuitar(u, 'Quitando de Me gusta'); pasos.push({ t: 'libPoner', uris: u });
+  return pasos;
+}
+function decDe(p) { let d = RP.dec.get(p.k); if (!d) { d = { pl: new Set(), fuera: false, queda: false, olvido: false }; RP.dec.set(p.k, d); } return d; }
+function cambiosRepaso() { let n = 0; for (const d of RP.dec.values()) if (d.pl.size || d.fuera || d.queda || d.olvido) n++; return n; }
 function pintarRepaso(m) {
   if (!RP) { atras(); return; }
   const p = RP.lista[RP.i], n = RP.lista.length;
@@ -4251,7 +4320,7 @@ function pintarRepaso(m) {
     $('#rpAp').onclick = aplicarRepaso; $('#rpVol').onclick = () => { RP.i = n - 1; render(); };
     return;
   }
-  const d = RP.dec.get(p.k) || { pl: new Set(), fuera: false, queda: false };
+  const d = RP.dec.get(p.k) || { pl: new Set(), fuera: false, queda: false, olvido: false };
   const CR = PREFS.criterios || {};
   const enPl = S.indice ? (S.indice.m.get(p.uri) || []) : [];
   m.innerHTML = '<button class="btn ghost sm back" id="bAtras">' + ic('atras') + 'Salir</button><div class="rp">' +
@@ -4261,7 +4330,8 @@ function pintarRepaso(m) {
     '<div class="donde">' + (S.indice ? (enPl.length ? 'Ya está en: ' + enPl.map(id => esc(nombrePl(id))).join(', ') : 'No está en ninguna playlist') : '') + '</div>' +
     '<div class="dest' + (RP.dest.length === 1 ? ' uno' : '') + '">' + RP.dest.map((pl, i) => '<button data-pl="' + pl.id + '" class="' + (d.pl.has(pl.id) ? 'on' : '') + (enPl.indexOf(pl.id) >= 0 ? ' ya' : '') + '">' + (d.pl.has(pl.id) ? '✓ ' : RP.solo ? 'Sí, a ' : '+ ') + esc(pl.name) + (CR[pl.id] ? '<small class="crit-q">' + esc(CR[pl.id]) + '</small>' : '') + ' <span class="k">' + (i + 1) + '</span></button>').join('') +
     (RP.bandeja ? '<button data-x="queda" class="queda' + (d.queda ? ' on' : '') + '">' + (d.queda ? '✓ ' : '') + 'Se queda solo en Me gusta <span class="k">0</span></button>' : '') +
-    (RP.quitar ? '<button data-x="fuera" class="malo' + (d.fuera ? ' on' : '') + '">' + (d.fuera ? '✓ ' : '') + RP.quitar + ' <span class="k">Q</span></button>' : '') + '</div>' +
+    (RP.f.kind === 'likes' ? '<button data-x="olvido" class="olvido' + (d.olvido ? ' on' : '') + '"><span>' + (d.olvido ? '✓ ' : '') + 'Para no olvidar <span class="k">A</span></span><small>no la escucho, pero que no se pierda</small></button>' : '') +
+    (RP.quitar ? '<button data-x="fuera" class="malo' + (d.fuera ? ' on' : '') + '">' + (d.fuera ? '✓ ' : '') + (RP.f.kind === 'likes' ? 'Fuera del todo' : RP.quitar) + ' <span class="k">Q</span></button>' : '') + '</div>' +
     (RP.bandeja && !Object.keys(CR).length ? '<button class="btn sm ghost" id="rpCrit" style="margin:0 auto 6px;display:flex">' + ic('lapiz') + 'Escribe qué va en cada playlist</button>' : '') +
     '<div class="nav"><button class="btn" id="rpAnt"' + (RP.i ? '' : ' disabled') + '>← Anterior</button><button class="btn" id="rpPlay">' + ic('play') + 'Escuchar</button><button class="btn pri" id="rpSig">Siguiente →</button></div>' +
     '<label class="check tiny" style="justify-content:center"><input type="checkbox" id="rpAuto"' + (PREFS.rpAuto ? ' checked' : '') + '> Que suene cada canción al pasar</label>' +
@@ -4279,8 +4349,9 @@ function pintarRepaso(m) {
     const b = e.target.closest('button'); if (!b) return;
     const dd = decDe(p);
     if (b.dataset.pl) { const id = b.dataset.pl; dd.pl.has(id) ? dd.pl.delete(id) : dd.pl.add(id); if (dd.pl.has(id)) return setTimeout(() => moverRepaso(1), 160), render(); }
-    else if (b.dataset.x === 'queda') { dd.queda = !dd.queda; if (dd.queda) { dd.fuera = false; return setTimeout(() => moverRepaso(1), 160), render(); } }
-    else { dd.fuera = !dd.fuera; if (dd.fuera) { dd.queda = false; return setTimeout(() => moverRepaso(1), 160), render(); } }
+    else if (b.dataset.x === 'queda') { dd.queda = !dd.queda; if (dd.queda) { dd.fuera = dd.olvido = false; return setTimeout(() => moverRepaso(1), 160), render(); } }
+    else if (b.dataset.x === 'olvido') { dd.olvido = !dd.olvido; if (dd.olvido) { dd.fuera = dd.queda = false; dd.pl.clear(); return setTimeout(() => moverRepaso(1), 160), render(); } }
+    else { dd.fuera = !dd.fuera; if (dd.fuera) { dd.queda = dd.olvido = false; return setTimeout(() => moverRepaso(1), 160), render(); } }
     render();
   };
 }
@@ -4298,14 +4369,15 @@ async function salirRepaso() {
 async function aplicarRepaso() {
   if (!RP || !cambiosRepaso()) return;
   const R = RP, f = R.f, porK = new Map(R.lista.map(p => [p.k, p]));
-  const porPl = new Map(), fuera = [];
+  const porPl = new Map(), fuera = [], olvido = [];
   for (const [k, d] of R.dec) {
     const p = porK.get(k); if (!p) continue;
     for (const id of d.pl) { if (!porPl.has(id)) porPl.set(id, []); porPl.get(id).push(p.uri); }
     if (d.fuera) fuera.push(p);
+    else if (d.olvido && f.kind === 'likes') olvido.push(p);
   }
   const hechos = [];
-  const decididas = R.bandeja ? Array.from(R.dec).filter(([, d]) => d.pl.size || d.fuera || d.queda).map(([k]) => porK.get(k)).filter(Boolean).map(p => p.uri) : [];
+  const decididas = R.bandeja ? Array.from(R.dec).filter(([, d]) => d.pl.size || d.fuera || d.queda || d.olvido).map(([k]) => porK.get(k)).filter(Boolean).map(p => p.uri) : [];
   const ok = await trabajo(async () => {
     const lista = [];
     for (const [id, us] of porPl) {
@@ -4321,16 +4393,26 @@ async function aplicarRepaso() {
       if (f.kind === 'likes') { await libQuitar(u, 'Quitando de Me gusta'); lista.push({ t: 'libPoner', uris: u }); hechos.push(u.length + ' quitadas de Me gusta'); }
       else if (f.kind === 'playlist' && f.editable) { await plQuitar(f.id, u, 'Quitando de «' + f.name + '»'); lista.push({ t: 'plAnadir', pid: f.id, uris: u }); hechos.push(u.length + ' quitadas de «' + f.name + '»'); }
     }
+    if (olvido.length) { lista.push.apply(lista, await mandarAOlvido(olvido.map(p => p.uri))); hechos.push(olvido.length + ' a «' + NOMBRE_OLVIDO + '»'); }
     if (lista.length) apuntar('Repaso: ' + hechos.join(', '), { t: 'varios', lista: lista });
     return true;
   }, 'Aplicando el repaso');
   if (!ok) return;
   if (decididas.length) { marcarDecididas(decididas); hechos.unshift(decididas.length + (decididas.length === 1 ? ' decidida' : ' decididas')); }
-  if (fuera.length && f.pistas) { const kk = new Set(fuera.map(p => p.k)); f.pistas = f.pistas.filter(p => !kk.has(p.k)); if (f.kind === 'likes') S.likes = f.pistas; }
+  /* las del repaso son copias (otra k): se quitan por uri */
+  if (fuera.length || olvido.length) {
+    const uu = new Set(fuera.concat(olvido).map(p => p.uri)), sin = l => { const o = l.filter(p => !uu.has(p.uri)); if (l._parcial) o._parcial = l._parcial; return o; };
+    if (f.pistas) f.pistas = sin(f.pistas);
+    if (f.kind === 'likes') {
+      if (S.likes) S.likes = sin(S.likes);
+      if (S.fuente && S.fuente.kind === 'likes' && S.fuente.pistas) S.fuente.pistas = sin(S.fuente.pistas);
+      const c = await cacheLeer('likes'); if (c && c.pistas) cachePoner('likes', { total: Math.max(0, (c.total || 0) - uu.size), pistas: c.pistas.filter(p => !uu.has(p.uri)) });
+    }
+  }
   S.playlists = null; S.indice = null;
   RP = null;
   if (_encolados > 0) toast('Guardado. Spotify está en pausa: lo mandará la Fonoteca sola en cuanto deje. No tienes que hacer nada.', null, 7000);
-  else toast(hechos.length ? hechos.join(' · ') : 'Ya estaba todo así', hechos.length && (porPl.size || fuera.length) ? { txt: 'Deshacer', fn: () => deshacerUltimo(HIST[0].id) } : null);
+  else toast(hechos.length ? hechos.join(' · ') : 'Ya estaba todo así', hechos.length && (porPl.size || fuera.length || olvido.length) ? { txt: 'Deshacer', fn: () => deshacerUltimo(HIST[0].id) } : null);
   atras();
 }
 /* teclado: en el repaso y en las listas (ordenador) */
@@ -4344,6 +4426,8 @@ document.addEventListener('keydown', e => {
     else if (e.key === ' ' && p) { e.preventDefault(); reproducir({ uris: [p.uri] }); }
     else if (/^[1-6]$/.test(e.key) && p && RP.dest[+e.key - 1]) { const b = document.querySelector('.rp [data-pl="' + RP.dest[+e.key - 1].id + '"]'); if (b) b.click(); }
     else if ((e.key === 'q' || e.key === 'Q') && p && RP.quitar) { const b = document.querySelector('.rp [data-x="fuera"]'); if (b) b.click(); }
+    else if ((e.key === 'a' || e.key === 'A') && p) { const b = document.querySelector('.rp [data-x="olvido"]'); if (b) b.click(); }
+    else if (e.key === '0' && p) { const b = document.querySelector('.rp [data-x="queda"]'); if (b) b.click(); }
     else if (e.key === '0' && p && RP.bandeja) { const b = document.querySelector('.rp [data-x="queda"]'); if (b) b.click(); }
     return;
   }
@@ -5248,7 +5332,60 @@ function repartirArtistas(ps) {
   }
   return out;
 }
+/* Repetidas en Me gusta, agrupadas, para elegir con cuál te quedas. Por
+   defecto: la del disco original (no recopilatorio ni single), la más antigua. */
+function gruposRepetidas(ps) {
+  const g = new Map();
+  for (const p of ps) { if (p.local) continue; const k = claveObra(p); if (!g.has(k)) g.set(k, []); g.get(k).push(p); }
+  const peso = p => ({ album: 0, single: 1, compilation: 2 })[p.albumType] ?? 1;
+  const enPl = p => S.indice ? (S.indice.m.get(p.uri) || []).length : 0;
+  const out = [];
+  for (const l of g.values()) {
+    const u = new Map(); for (const p of l) if (!u.has(p.uri)) u.set(p.uri, p);
+    if (u.size < 2) continue;
+    const xs = Array.from(u.values()).sort((a, b) => (enPl(b) - enPl(a)) || (peso(a) - peso(b)) || ((+a.year || 9999) - (+b.year || 9999)) || (a.added - b.added));
+    out.push(xs);
+  }
+  return out.sort((a, b) => artPpal(a[0]).localeCompare(artPpal(b[0])) || a[0].title.localeCompare(b[0].title));
+}
+async function hojaRepesLikes(f) {
+  let ps = f && f.pistas ? f.pistas : (S.likes && S.likes.length ? S.likes : await likesGuardados());
+  if (!ps || !ps.length) { toast('Primero abre Me gusta para que se carguen'); irATab('likes'); return; }
+  const G = gruposRepetidas(ps);
+  if (!G.length) { toast('No tienes canciones repetidas en Me gusta'); return; }
+  const queda = new Map(G.map((g, i) => [i, g[0].uri]));
+  const tipoTxt = p => p.albumType === 'compilation' ? 'recopilatorio' : p.albumType === 'single' ? 'single' : 'disco';
+  const nFuera = () => G.reduce((s, g) => s + g.length - 1, 0);
+  const fila = (p, i) => { const si = queda.get(i) === p.uri; return '<div class="rep-i ' + (si ? 'si' : 'no') + '" data-g="' + i + '" data-u="' + p.uri + '">' + (p.cover ? '<img src="' + esc(p.cover) + '" alt="" loading="lazy">' : '<span class="ph"></span>') +
+    '<div class="tx"><b>' + esc(p.title) + '</b><small>' + esc(p.album) + ' · ' + (p.year || '¿?') + ' · ' + tipoTxt(p) + (p.added ? ' · añadida ' + fecha(p.added) : '') + '</small></div>' +
+    '<button class="btn sm ghost pl" data-play="' + p.uri + '" aria-label="Escuchar">' + ic('play') + '</button><span class="est">' + (si ? 'Se queda' : 'Fuera') + '</span></div>'; };
+  hoja('<h2>Repetidas en Me gusta</h2><p class="soft"><b>' + G.length + '</b>' + (G.length === 1 ? ' canción está' : ' canciones están') + ' dos veces o más (otra edición, el single y el disco, un recopilatorio…). Ya he elegido una de cada; toca otra si prefieres esa. Los directos y remixes no cuentan como repetidas.</p>' +
+    (ps._parcial ? '<div class="aviso" style="margin-bottom:10px"><b>Aún se están cargando tus Me gusta</b>Puede que falten algunas repetidas; vuelve a mirar cuando termine.</div>' : '') +
+    '<div id="repL">' + G.map((g, i) => '<div class="rep-g"><h4>' + esc(artPpal(g[0])) + ' — ' + esc(g[0].title) + '</h4>' + g.map(p => fila(p, i)).join('') + '</div>').join('') + '</div>' +
+    '<button class="btn pri wide" id="repOk" style="position:sticky;bottom:0;margin-top:8px">Quitar ' + nFuera() + ' de Me gusta</button>' +
+    '<p class="tiny mute" style="text-align:center">Solo se quitan de Me gusta las marcadas como «Fuera». Se puede deshacer en Cambios.</p>', h => {
+      h.querySelector('#repL').onclick = e => {
+        const pb = e.target.closest('[data-play]'); if (pb) { e.stopPropagation(); reproducir({ uris: [pb.dataset.play] }); return; }
+        const r = e.target.closest('.rep-i'); if (!r) return;
+        const i = +r.dataset.g; queda.set(i, r.dataset.u);
+        r.parentNode.querySelectorAll('.rep-i').forEach(x => { const si = x.dataset.u === r.dataset.u; x.className = 'rep-i ' + (si ? 'si' : 'no'); x.querySelector('.est').textContent = si ? 'Se queda' : 'Fuera'; });
+      };
+      h.querySelector('#repOk').onclick = async () => {
+        const fuera = []; G.forEach((g, i) => g.forEach(p => { if (p.uri !== queda.get(i)) fuera.push(p.uri); }));
+        cerrarHoja(true);
+        const ok = await trabajo(async () => { await libQuitar(fuera, 'Quitando repetidas de Me gusta'); apuntar(fuera.length + ' repetidas quitadas de Me gusta', { t: 'libPoner', uris: fuera }); return true; }, 'Quitando repetidas');
+        if (!ok) return;
+        const fu = new Set(fuera);
+        if (S.likes) { const l = S.likes.filter(p => !fu.has(p.uri)); if (S.likes._parcial) l._parcial = S.likes._parcial; S.likes = l; }
+        if (S.fuente && S.fuente.kind === 'likes' && S.fuente.pistas) S.fuente.pistas = S.fuente.pistas.filter(p => !fu.has(p.uri));
+        const c = await cacheLeer('likes'); if (c && c.pistas) cachePoner('likes', { total: Math.max(0, (c.total || 0) - fuera.length), pistas: c.pistas.filter(p => !fu.has(p.uri)) });
+        toast(_encolados > 0 ? 'Guardado: Spotify está en pausa y lo mandará la Fonoteca sola' : fuera.length + ' repetidas quitadas de Me gusta', { txt: 'Deshacer', fn: () => deshacerUltimo(HIST[0].id) });
+        render();
+      };
+    });
+}
 async function quitarRepetidas(f) {
+  if (f && f.kind === 'likes') return hojaRepesLikes(f);
   const vistas = new Set(), fuera = [];
   for (const p of f.pistas) { const a = p.uri, o = claveObra(p); if (vistas.has(a) || vistas.has(o)) fuera.push(p); vistas.add(a); vistas.add(o); }
   if (!fuera.length) { toast('No hay repetidas'); return; }
@@ -6432,6 +6569,9 @@ function hojaFuente(f) {
       ed ? b('ordenar', 'ordenar', 'Ordenar', 'título, artista, año, duración, repartir artistas…') : '',
       ed ? b('aleatorio', 'aleat', 'Aleatorio', 'baraja el orden de verdad') : '',
       ed ? b('repes', 'repes', 'Deduplicar', 'quita repetidas, también otras ediciones de la misma canción') : '',
+      lk ? b('limpiar', 'corazonRoto', 'Limpiar mis Me gusta', '25 al azar: se queda, a una playlist, «Para no olvidar» o fuera') : '',
+      lk ? b('repes', 'repes', 'Revisar repetidas', 'la misma canción dos veces: eliges con cuál te quedas') : '',
+      lk ? b('olvido', 'reloj', 'Mandar a «Para no olvidar»', S.sel.size ? 'las ' + S.sel.size + ' marcadas: salen de Me gusta pero se guardan' : 'marca antes las canciones') : '',
       lk ? b('limpieza', 'reloj', 'Limpieza mensual', 'marca lo que lleva más de 6 meses en Me gusta') : '',
       ed ? b('borrar', 'papelera', 'Eliminar la playlist', 'se puede recuperar desde Cambios', 'danger') : '',
       pl && !f.editable ? b('dejar', 'papelera', 'Dejar de seguir esta playlist', '', 'danger') : ''
@@ -6477,6 +6617,15 @@ function hojaFuente(f) {
         else if (o === 'ordenar') hojaOrdenar(f);
         else if (o === 'aleatorio') aplicarOrden(barajar(ps.slice()), '«' + f.name + '» barajada');
         else if (o === 'repes') quitarRepetidas(f);
+        else if (o === 'limpiar') limpiarMeGusta(f);
+        else if (o === 'olvido') {
+          const sel = seleccionadas().filter(p => !p.local);
+          if (!sel.length) { toast('Marca primero las canciones (toca su portada)'); return; }
+          const ok = await trabajo(async () => { const pasos = await mandarAOlvido(sel.map(p => p.uri)); apuntar(sel.length + ' a «' + NOMBRE_OLVIDO + '»', { t: 'varios', lista: pasos }); return true; }, 'Guardando en «' + NOMBRE_OLVIDO + '»');
+          if (!ok) return;
+          const kk = new Set(sel.map(p => p.k)); f.pistas = f.pistas.filter(p => !kk.has(p.k)); S.likes = f.pistas; limpiarSel(); S.playlists = null;
+          toast(sel.length + ' en «' + NOMBRE_OLVIDO + '» y fuera de Me gusta', { txt: 'Deshacer', fn: () => deshacerUltimo(HIST[0].id) }); render();
+        }
         else if (o === 'limpieza') {
           const lim = Date.now() - 182 * 864e5;
           S.sel.clear(); ps.forEach(p => { if (p.added && p.added < lim) S.sel.add(p.k); });
