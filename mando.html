@@ -1007,7 +1007,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-07c';
+const VERSION = '2026-10-07d';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -3875,12 +3875,20 @@ const RX_EDM = /\b(edm|big room|electro house|progressive house|future house|bas
    etiqueta suelta de «house» no cuenta, y un tema de Guetta con Sia sí */
 function esEDM(p) {
   const E = ETQ || ETQ0(), a = p.artists[0];
+  /* fuerte: un género de baile (house, edm, dubstep…); flojo: «electronic», «dance» */
+  const parte = gs => { const f = gs.filter(g => RX_EDM.test(fold(g))).length; if (!f) return 0; return (f + gs.filter(g => !RX_EDM.test(fold(g)) && /^(electronic|electronica|electronique|dance|club)$/.test(fold(g))).length) / gs.length; };
   if (a) {
-    const l = E.lfa[fold(a.name)], m = MIS && a.id && misPorId(a.id);
-    const gA = (l && l.g && l.g.length && l.g) || (m && m.genres && m.genres.length && m.genres) || (a.id && GEN[a.id] && GEN[a.id].length && GEN[a.id]);
-    if (gA) return gA.some(g => RX_EDM.test(fold(g)));
+    const k = fold(a.name);
+    /* géneros de Spotify del artista: con uno basta */
+    const l = E.lfa[k]; if (l && l.g && l.g.length) return l.g.some(g => RX_EDM.test(fold(g)));
+    /* etiquetas de otras fuentes (más ruidosas): que sean al menos la mitad */
+    const m = MIS && a.id && misPorId(a.id), gA = (m && m.genres && m.genres.length && m.genres) || (a.id && GEN[a.id] && GEN[a.id].length && GEN[a.id]);
+    if (gA) return parte(gA) >= 0.6;
   }
-  return generosCancion(p).some(g => RX_EDM.test(fold(g)));
+  /* solo etiquetas de la canción: dos o más y un tercio */
+  const g = generosCancion(p); if (!g.length) return false;
+  const n = g.filter(x => RX_EDM.test(fold(x))).length;
+  return n >= 2 && n / g.length >= 0.34;
 }
 async function plEpoca(nueva) {
   const pls = nueva ? [] : await cargarPlaylists();
