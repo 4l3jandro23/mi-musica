@@ -246,6 +246,7 @@
   .rep-i.no { opacity: .55; }
   .rep-i.no .est { color: var(--rust); }
   .rep-i .pl { flex: none; }
+  .rep-dist { margin: 2px 8px 6px; font-size: 12px; }
   .rp .nav { display: flex; gap: 8px; margin: 6px 0; }
   .rp .nav .btn { flex: 1; }
   .rp .pie { position: sticky; bottom: calc(86px + env(safe-area-inset-bottom)); margin-top: 14px; }
@@ -991,7 +992,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-06d';
+const VERSION = '2026-10-06e';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -1850,7 +1851,7 @@ const S = {
   selObj: new Set(), buscar: { q: '', tipo: 'track', res: null }, suena: null, soloSel: false, indice: null
 };
 const PREFS = Object.assign({ saltarRepes: true }, leer(K_PREFS, {}));
-const CFG_SYNC = ['criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido'];
+const CFG_SYNC = ['criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido', 'distintas'];
 let _cfgSnap = null;
 const guardarPrefs = () => {
   escribir(K_PREFS, PREFS);
@@ -3815,8 +3816,8 @@ async function revisionPlaylists(lista) {
     if (p.total > 500) out.push({ p, t: 'Tiene ' + n$(p.total) + ' canciones', sub: 'Más de 500 cuesta escucharla entera. Pártela en trozos con sentido.', b: 'Abrir', fn: () => abrirPlaylist(p) });
     const ps = cache[p.id];
     if (ps) {
-      const vis = new Set(); let rep = 0;
-      for (const x of ps) { const k = claveObra(x); if (vis.has(x.uri) || vis.has(k)) rep++; vis.add(x.uri); vis.add(k); }
+      const esRep = marcadorRepes(); let rep = 0;
+      for (const x of ps) if (esRep(x)) rep++;
       if (rep) out.push({ p, t: rep + (rep === 1 ? ' canción repetida' : ' canciones repetidas'), sub: 'La misma canción dos veces (o en otra edición).', b: 'Quitarlas', fn: () => { abrirPlaylist(p); let n = 0; const t = setInterval(() => { if (S.fuente && S.fuente.id === p.id && S.fuente.pistas) { clearInterval(t); quitarRepetidas(S.fuente); } else if (++n > 80) clearInterval(t); }, 250); } });
     }
   }
@@ -4750,12 +4751,8 @@ function pintarSelbar() {
          cancion (uri) o misma obra (titulo + artista, sin coletillas de
          remaster), para que "Quitar" deje una sola */
       S.sel.clear();
-      const vistas = new Set();
-      for (const p of f.pistas) {
-        const a = p.uri, o = claveObra(p);
-        if (vistas.has(a) || vistas.has(o)) S.sel.add(p.k);
-        vistas.add(a); vistas.add(o);
-      }
+      const esRep = marcadorRepes();
+      for (const p of f.pistas) if (esRep(p)) S.sel.add(p.k);
       toast(S.sel.size ? S.sel.size + ' repetidas marcadas (se queda la primera de cada una)' : 'No hay repetidas');
     }
     else if (s === 'viejas') { S.sel.clear(); const lim = Date.now() - 182 * 864e5; S.visibles.forEach(p => { if (p.added && p.added < lim) S.sel.add(p.k); }); toast(S.sel.size + ' añadidas hace más de 6 meses'); }
@@ -4854,7 +4851,37 @@ function hojaElegirPor(f) {
       h.querySelector('#epOk').onclick = () => { cerrarHoja(); pintarFilas(true); };
     }, () => { pintarFilas(true); pintarAccion(); });
 }
-const claveObra = p => fold(p.title).replace(/\s*[-(\[].*(remaster|version|versión|mono|stereo|edit|deluxe).*$/i, '').replace(/[^a-z0-9 ]/g, '').trim() + '|' + fold((p.artists[0] || {}).name);
+const RX_OTRA = /\b(live|en vivo|en directo|directo|vivo|acoustic|acustic|acustica|unplugged|demo|take|remix|mix|edit|rework|vip|dub|instrumental|a cappella|acapella|karaoke|cover|sped up|slowed|reverb|session|rehearsal|outtake|alternate|extended|club|piano|orchestral|sinfonic|symphonic)\b/;
+const RX_MISMA = /^(\d{4} )?(digital(ly)? )?remaster|remastered|remasteris|remasteriz|^\d+(st|nd|rd|th) anniversary|^feat\b|^ft\b|^featuring|^with |^con |^from |^de la pelicula|^bso|soundtrack|^explicit|^clean$|^deluxe( edition| version)?$|bonus|^(album|lp|original|single|original album|stereo album) version$|^\d{4}$/;
+const RX_FEAT = /^(feat\b|ft\b|featuring|with |con )/;
+const _PT = new WeakMap();
+function partesTitulo(p) {
+  const c = _PT.get(p); if (c) return c;
+  let t = fold(p.title); const extra = [];
+  t = t.replace(/\s*[\(\[]([^\)\]]*)[\)\]]/g, (m, x) => (extra.push(x.trim()), ' '));
+  const i = t.indexOf(' - '); if (i > 0) { t.slice(i + 3).split(/ - | \/ /).forEach(x => extra.push(x.trim())); t = t.slice(0, i); }
+  const limpio = x => x.replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+  const resto = extra.filter(x => x && (RX_OTRA.test(x) || !RX_MISMA.test(x))).map(limpio).sort();
+  const feat = extra.filter(x => RX_FEAT.test(x) && !RX_OTRA.test(x)).map(limpio).sort().join(',');
+  const r = { k: limpio(t) + (resto.length ? ' (' + resto.join(', ') + ')' : '') + '|' + fold((p.artists[0] || {}).name), feat: feat };
+  _PT.set(p, r); return r;
+}
+const claveObra = p => partesTitulo(p).k;
+/* ¿la misma grabación? mismo título limpio y casi la misma duración (una
+   «single version» suele ser más corta; con otros invitados, casi idéntica) */
+function mismaGrabacion(a, b) {
+  if (a.uri === b.uri) return true;
+  if (claveObra(a) !== claveObra(b)) return false;
+  const D = PREFS.distintas || []; if (D.indexOf(parDe(a.uri, b.uri)) >= 0) return false;
+  if (!a.ms || !b.ms) return true;
+  return Math.abs(a.ms - b.ms) <= (partesTitulo(a).feat === partesTitulo(b).feat ? 8000 : 3000);
+}
+const parDe = (x, y) => x < y ? x + '|' + y : y + '|' + x;
+/* recorre en orden y dice cuáles repiten una anterior */
+function marcadorRepes() {
+  const m = new Map();
+  return p => { const k = claveObra(p), l = m.get(k) || []; const r = l.some(x => mismaGrabacion(x, p)); l.push(p); m.set(k, l); return r; };
+}
 
 /* ---------------- barra de acciones ---------------- */
 function pintarAccion() {
@@ -5197,8 +5224,7 @@ async function repesEnVarias(ids) {
       const pl = pls[i];
       progreso('Repetidas en «' + pl.name + '»', i, pls.length);
       const ps = await pistasDePlaylist(pl.id);
-      const vistas = new Set(), quedan = [];
-      for (const p of ps) { const a = p.uri, o = claveObra(p); if (!(vistas.has(a) || vistas.has(o))) quedan.push(p); vistas.add(a); vistas.add(o); }
+      const esRep = marcadorRepes(), quedan = ps.filter(p => !esRep(p));
       if (quedan.length === ps.length) continue;
       if (ps.some(p => p.local)) continue;
       await plReescribir(pl.id, quedan.map(p => p.uri), 'Limpiando «' + pl.name + '»');
@@ -5340,10 +5366,17 @@ function gruposRepetidas(ps) {
   const peso = p => ({ album: 0, single: 1, compilation: 2 })[p.albumType] ?? 1;
   const enPl = p => S.indice ? (S.indice.m.get(p.uri) || []).length : 0;
   const out = [];
+  const sub = [];
   for (const l of g.values()) {
     const u = new Map(); for (const p of l) if (!u.has(p.uri)) u.set(p.uri, p);
     if (u.size < 2) continue;
-    const xs = Array.from(u.values()).sort((a, b) => (enPl(b) - enPl(a)) || (peso(a) - peso(b)) || ((+a.year || 9999) - (+b.year || 9999)) || (a.added - b.added));
+    /* separa en grupos de la misma grabación (por duración) */
+    const gs = [];
+    for (const p of u.values()) { const x = gs.find(gg => gg.every(q => mismaGrabacion(q, p))); if (x) x.push(p); else gs.push([p]); }
+    for (const gg of gs) if (gg.length > 1) sub.push(gg);
+  }
+  for (const l of sub) {
+    const xs = l.slice().sort((a, b) => (enPl(b) - enPl(a)) || (peso(a) - peso(b)) || ((+a.year || 9999) - (+b.year || 9999)) || (a.added - b.added));
     out.push(xs);
   }
   return out.sort((a, b) => artPpal(a[0]).localeCompare(artPpal(b[0])) || a[0].title.localeCompare(b[0].title));
@@ -5356,22 +5389,35 @@ async function hojaRepesLikes(f) {
   const queda = new Map(G.map((g, i) => [i, g[0].uri]));
   const tipoTxt = p => p.albumType === 'compilation' ? 'recopilatorio' : p.albumType === 'single' ? 'single' : 'disco';
   const nFuera = () => G.reduce((s, g) => s + g.length - 1, 0);
+  const contarFuera = () => G.reduce((s, g, i) => s + (queda.get(i) === null ? 0 : g.length - 1), 0);
   const fila = (p, i) => { const si = queda.get(i) === p.uri; return '<div class="rep-i ' + (si ? 'si' : 'no') + '" data-g="' + i + '" data-u="' + p.uri + '">' + (p.cover ? '<img src="' + esc(p.cover) + '" alt="" loading="lazy">' : '<span class="ph"></span>') +
     '<div class="tx"><b>' + esc(p.title) + '</b><small>' + esc(p.album) + ' · ' + (p.year || '¿?') + ' · ' + tipoTxt(p) + (p.added ? ' · añadida ' + fecha(p.added) : '') + '</small></div>' +
     '<button class="btn sm ghost pl" data-play="' + p.uri + '" aria-label="Escuchar">' + ic('play') + '</button><span class="est">' + (si ? 'Se queda' : 'Fuera') + '</span></div>'; };
-  hoja('<h2>Repetidas en Me gusta</h2><p class="soft"><b>' + G.length + '</b>' + (G.length === 1 ? ' canción está' : ' canciones están') + ' dos veces o más (otra edición, el single y el disco, un recopilatorio…). Ya he elegido una de cada; toca otra si prefieres esa. Los directos y remixes no cuentan como repetidas.</p>' +
+  hoja('<h2>Repetidas en Me gusta</h2><p class="soft"><b>' + G.length + '</b>' + (G.length === 1 ? ' canción está' : ' canciones están') + ' dos veces o más (otra edición, el single y el disco, un recopilatorio…). Ya he elegido una de cada; toca otra si prefieres esa. Solo cuento la misma grabación (remaster, deluxe, recopilatorio, con la misma duración); los directos, remixes, versiones y mezclas nuevas no. Si aun así alguna no es la misma, pulsa «No son la misma».</p>' +
     (ps._parcial ? '<div class="aviso" style="margin-bottom:10px"><b>Aún se están cargando tus Me gusta</b>Puede que falten algunas repetidas; vuelve a mirar cuando termine.</div>' : '') +
-    '<div id="repL">' + G.map((g, i) => '<div class="rep-g"><h4>' + esc(artPpal(g[0])) + ' — ' + esc(g[0].title) + '</h4>' + g.map(p => fila(p, i)).join('') + '</div>').join('') + '</div>' +
+    '<div id="repL">' + G.map((g, i) => '<div class="rep-g" data-gi="' + i + '"><h4>' + esc(artPpal(g[0])) + ' — ' + esc(g[0].title) + '</h4>' + g.map(p => fila(p, i)).join('') + '<button class="btn sm ghost rep-dist" data-dist="' + i + '">No son la misma: quedarme todas</button></div>').join('') + '</div>' +
     '<button class="btn pri wide" id="repOk" style="position:sticky;bottom:0;margin-top:8px">Quitar ' + nFuera() + ' de Me gusta</button>' +
     '<p class="tiny mute" style="text-align:center">Solo se quitan de Me gusta las marcadas como «Fuera». Se puede deshacer en Cambios.</p>', h => {
       h.querySelector('#repL').onclick = e => {
         const pb = e.target.closest('[data-play]'); if (pb) { e.stopPropagation(); reproducir({ uris: [pb.dataset.play] }); return; }
+        const db = e.target.closest('[data-dist]');
+        if (db) {
+          const i = +db.dataset.dist, g = G[i], D = PREFS.distintas || (PREFS.distintas = []);
+          for (let a = 0; a < g.length; a++) for (let b = a + 1; b < g.length; b++) { const k = parDe(g[a].uri, g[b].uri); if (D.indexOf(k) < 0) D.push(k); }
+          if (D.length > 3000) D.splice(0, D.length - 3000);
+          guardarPrefs(); queda.set(i, null);
+          const caja = db.closest('.rep-g'); caja.style.display = 'none';
+          h.querySelector('#repOk').textContent = 'Quitar ' + contarFuera() + ' de Me gusta';
+          toast('Apuntado: no te las volveré a enseñar como repetidas');
+          return;
+        }
         const r = e.target.closest('.rep-i'); if (!r) return;
-        const i = +r.dataset.g; queda.set(i, r.dataset.u);
+        const i = +r.dataset.g; if (queda.get(i) === null) return; queda.set(i, r.dataset.u);
         r.parentNode.querySelectorAll('.rep-i').forEach(x => { const si = x.dataset.u === r.dataset.u; x.className = 'rep-i ' + (si ? 'si' : 'no'); x.querySelector('.est').textContent = si ? 'Se queda' : 'Fuera'; });
       };
       h.querySelector('#repOk').onclick = async () => {
-        const fuera = []; G.forEach((g, i) => g.forEach(p => { if (p.uri !== queda.get(i)) fuera.push(p.uri); }));
+        const fuera = []; G.forEach((g, i) => { if (queda.get(i) !== null) g.forEach(p => { if (p.uri !== queda.get(i)) fuera.push(p.uri); }); });
+        if (!fuera.length) { cerrarHoja(true); toast('No se ha quitado nada'); return; }
         cerrarHoja(true);
         const ok = await trabajo(async () => { await libQuitar(fuera, 'Quitando repetidas de Me gusta'); apuntar(fuera.length + ' repetidas quitadas de Me gusta', { t: 'libPoner', uris: fuera }); return true; }, 'Quitando repetidas');
         if (!ok) return;
@@ -5386,11 +5432,10 @@ async function hojaRepesLikes(f) {
 }
 async function quitarRepetidas(f) {
   if (f && f.kind === 'likes') return hojaRepesLikes(f);
-  const vistas = new Set(), fuera = [];
-  for (const p of f.pistas) { const a = p.uri, o = claveObra(p); if (vistas.has(a) || vistas.has(o)) fuera.push(p); vistas.add(a); vistas.add(o); }
+  const esRep = marcadorRepes(), fuera = f.pistas.filter(esRep);
   if (!fuera.length) { toast('No hay repetidas'); return; }
   S.sel = new Set(fuera.map(p => p.k)); recalcular(); pintarAccion();
-  if (await confirmar('Hay ' + fuera.length + ' repetidas', 'Quitarlas', 'Se queda la primera de cada una. Incluye la misma canción en otra edición (remaster, deluxe); los directos y remixes no cuentan como repetidas.')) quitarDeFuente(fuera, true);
+  if (await confirmar('Hay ' + fuera.length + ' repetidas', 'Quitarlas', 'Se queda la primera de cada una. Cuenta la misma grabación en otra edición (remaster, deluxe, recopilatorio); los directos, remixes, versiones y mezclas de otro año no.')) quitarDeFuente(fuera, true);
 }
 function hojaPartir(f) {
   hoja('<h2>Partir «' + esc(f.name) + '»</h2><p class="soft">Crea playlists nuevas con trozos de esta. La original no se toca.</p>' +
