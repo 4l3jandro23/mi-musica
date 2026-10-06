@@ -992,7 +992,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-06g';
+const VERSION = '2026-10-07a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -1558,7 +1558,7 @@ async function pistasDePlaylist(id, av) {
    estaba guardada; si las cuentas cuadran, se junta y listo (1 peticion
    si no ha cambiado nada, en vez de 40 con 2.000 canciones). */
 async function pistasMeGusta(av) {
-  const c = await cacheLeer('likes');
+  const c = await aplicarFueraLikes(await cacheLeer('likes'));
   if (c && c.pistas && c.pistas.length) {
     try {
       const conocidas = new Set(c.pistas.slice(0, 300).map(p => p.uri + '|' + p.added));
@@ -1606,6 +1606,22 @@ async function pistasMeGusta(av) {
    Leer las 18.000 otra vez son ~370 peticiones, así que se busca partiendo
    en dos: se mira una página en mitad de la lista y, comparando posiciones,
    se sabe si falta algo antes o después. Una canción quitada ≈ 10 peticiones. */
+/* Lo que un aparato descubre que quitaste se apunta (canción + fecha en que
+   le diste ♥) y viaja al otro con las etiquetas: el móvil no tiene que buscarlo. */
+function apuntarFueraLikes(claves) {
+  if (!claves || !claves.length) return;
+  const F = PREFS.likesFuera || [], ya = new Set(F);
+  for (const k of claves) if (!ya.has(k)) { F.push(k); ya.add(k); }
+  PREFS.likesFuera = F.slice(-4000); guardarPrefs();
+}
+async function aplicarFueraLikes(c) {
+  const F = PREFS.likesFuera; if (!F || !F.length || !c || !c.pistas) return c;
+  const fu = new Set(F), quedan = c.pistas.filter(p => !fu.has(p.uri + '|' + p.added));
+  if (quedan.length === c.pistas.length) return c;
+  const n = c.pistas.length - quedan.length, c2 = { total: Math.max(quedan.length, (c.total || 0) - n), pistas: quedan };
+  await cachePoner('likes', c2);
+  return c2;
+}
 const unidadesLikes = c => Math.max(c.total || 0, (c.pistas || []).length);
 let _sq = null;
 function sincronizarQuitadas() { return _sq || (_sq = sincQuitadas0().finally(() => { _sq = null; })); }
@@ -1654,6 +1670,7 @@ async function sincQuitadas0() {
   const c2 = await cacheLeer('likes'); if (!c2 || !c2.pistas) return;
   const quedan = c2.pistas.filter(p => !fuera.has(clave(p)));
   const nuevoTotal = cortado ? unidadesLikes(c2) - fuera.size : unidadesLikes(c2) - r;
+  apuntarFueraLikes(Array.from(fuera));
   cachePoner('likes', { total: Math.max(quedan.length, nuevoTotal), pistas: quedan });
   if (fuera.size) {
     const quita = l => { const o = l.filter(p => !fuera.has(clave(p))); if (l._parcial) o._parcial = l._parcial; return o; };
@@ -1666,6 +1683,7 @@ async function sincQuitadas0() {
   if (cortado) setTimeout(() => sincronizarQuitadas().catch(() => {}), 90000);
 }
 let _likesFondo = null;
+const v0 = () => !!$('#vlist');
 function likesFondo(av) { return _likesFondo || (_likesFondo = likesFondo0(av).finally(() => { _likesFondo = null; })); }
 async function likesFondo0(av) {
   const c = await cacheLeer('likes');
@@ -1700,6 +1718,11 @@ async function likesFondo0(av) {
   /* por si al reanudar se colo alguna repetida */
   const vistas = new Set();
   ps = ps.filter(p => { const k = p.uri + '|' + p.added; if (vistas.has(k)) return false; vistas.add(k); return true; });
+  if (c && c.pistas && c.pistas.length) {
+    const hay = new Set(ps.map(p => p.uri + '|' + p.added));
+    const fuera = c.pistas.map(p => p.uri + '|' + p.added).filter(k => !hay.has(k));
+    if (fuera.length && fuera.length < c.pistas.length / 2) apuntarFueraLikes(fuera);
+  }
   cachePoner('likes', { total: total != null ? total : crudos, pistas: sinK(ps) });
   cachePoner('likesParcial', null);
   return ps;
@@ -1921,7 +1944,7 @@ const S = {
   selObj: new Set(), buscar: { q: '', tipo: 'track', res: null }, suena: null, soloSel: false, indice: null
 };
 const PREFS = Object.assign({ saltarRepes: true }, leer(K_PREFS, {}));
-const CFG_SYNC = ['criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido', 'distintas'];
+const CFG_SYNC = ['criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido', 'distintas', 'likesFuera'];
 let _cfgSnap = null;
 const guardarPrefs = () => {
   escribir(K_PREFS, PREFS);
@@ -1948,6 +1971,15 @@ function aplicarCfg() {
   escribir(K_PREFS, PREFS);
   _cfgSnap = {}; for (const k of CFG_SYNC) _cfgSnap[k] = JSON.stringify(PREFS[k] === undefined ? null : PREFS[k]);
   try { aplicarAcento(); } catch (e) {}
+  /* llegaron canciones quitadas desde el otro aparato: fuera también aquí */
+  if (C.likesFuera) cacheLeer('likes').then(aplicarFueraLikes).then(c2 => {
+    if (!c2 || !c2.pistas) return;
+    const fu = new Set(PREFS.likesFuera || []), sin = l => { const o = l.filter(p => !fu.has(p.uri + '|' + p.added)); if (l._parcial) o._parcial = l._parcial; return o; };
+    const antes = S.likes ? S.likes.length : 0;
+    if (S.likes) S.likes = sin(S.likes);
+    if (S.fuente && S.fuente.kind === 'likes' && S.fuente.pistas) S.fuente.pistas = sin(S.fuente.pistas);
+    if (S.likes && S.likes.length < antes && S.tab === 'likes' && !S.vista) render();
+  }).catch(() => {});
 }
 
 const TABS = [
@@ -5555,6 +5587,7 @@ function vLikes(m) {
   /* Me gusta se pinta como una fuente, pero sin boton de Atras: es una pestaña */
   pintarFuente(m, f, async () => { if (!S.likes || S.likes._parcial) S.likes = await pistasMeGusta((n, t) => progresoCarga(n, t)); return S.likes; }).then(() => {
     const b = $('#bAtras'); if (b) b.remove();
+    if (v0() && _likesFondo && f.pistas && !f.pistas._parcial) $('#vlist').insertAdjacentHTML('beforebegin', '<div class="aviso" id="lkAct"><b>Actualizando con Spotify</b>Estás viendo tu lista de antes: lo que quitaste en Spotify desaparecerá cuando termine. Deja la Fonoteca abierta unos minutos.</div>');
     const v = $('#vlist'); if (v && f.pistas && f.pistas._parcial) {
       const P = f.pistas._parcial;
       v.insertAdjacentHTML('beforebegin', '<div class="aviso" id="lkCarga"><b>Cargando tus Me gusta poco a poco</b>Ya tienes ' + n$(f.pistas.length) + (P.total ? ' de ' + n$(P.total) : '') + '. Va despacio a propósito para que Spotify no se bloquee; puedes usar ya estas y se completará sola.</div>');
