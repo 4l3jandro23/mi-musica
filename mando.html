@@ -1007,7 +1007,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-07b';
+const VERSION = '2026-10-07c';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -3871,7 +3871,17 @@ async function ordenarBandeja(pend) {
    «Pasado» o «Mezcla» (esas se repasan canción a canción). */
 const NOMBRE_EPOCA = 'Mi época EDM';
 const RX_EDM = /\b(edm|big room|electro house|progressive house|future house|bass house|slap house|g-house|tech house|deep house|tropical house|melbourne bounce|dutch house|complextro|house|dubstep|brostep|riddim|bass music|future bass|drum and bass|dnb|liquid funk|jungle|trance|psytrance|hardstyle|rawstyle|hard dance|jumpstyle|happy hardcore|hardcore techno|uk hardcore|frenchcore|techno|moombahton|edm trap|festival trap|trap edm|electro|eurodance|uk garage|bassline|future rave|wonky)\b/;
-const esEDM = p => generosCancion(p).some(g => RX_EDM.test(fold(g)));
+/* manda el género del artista principal (si se sabe): así «Shape of You» con una
+   etiqueta suelta de «house» no cuenta, y un tema de Guetta con Sia sí */
+function esEDM(p) {
+  const E = ETQ || ETQ0(), a = p.artists[0];
+  if (a) {
+    const l = E.lfa[fold(a.name)], m = MIS && a.id && misPorId(a.id);
+    const gA = (l && l.g && l.g.length && l.g) || (m && m.genres && m.genres.length && m.genres) || (a.id && GEN[a.id] && GEN[a.id].length && GEN[a.id]);
+    if (gA) return gA.some(g => RX_EDM.test(fold(g)));
+  }
+  return generosCancion(p).some(g => RX_EDM.test(fold(g)));
+}
 async function plEpoca(nueva) {
   const pls = nueva ? [] : await cargarPlaylists();
   let p = (PREFS.plEpoca && pls.find(x => x.id === PREFS.plEpoca)) || pls.find(x => esMia(x) && fold(x.name) === fold(NOMBRE_EPOCA));
@@ -3888,16 +3898,21 @@ async function hojaEpocaEDM(f) {
   if (!edm.length) { toast('No encuentro electrónica en tus Me gusta (¿faltan los géneros? Prueba «Etiquetar mis Me gusta»)', null, 6000); return; }
   /* lo que escuchas ahora: tus artistas más escuchados de las últimas semanas y meses */
   const ahora = new Set();
-  try { for (const r of ['short_term', 'medium_term']) { const d = await sp('/me/top/artists?limit=50&time_range=' + r); for (const a of (d && d.items) || []) ahora.add(fold(a.name)); } } catch (e) { if (e.message === 'DETENIDO') return; }
+  try {
+    for (const r of ['short_term', 'medium_term']) { const d = await sp('/me/top/artists?limit=50&time_range=' + r); for (const a of (d && d.items) || []) ahora.add(fold(a.name)); }
+    const d = await sp('/me/player/recently-played?limit=50'); for (const x of (d && d.items) || []) for (const a of ((x.track || {}).artists || []).slice(0, 1)) ahora.add(fold(a.name));
+  } catch (e) { if (e.message === 'DETENIDO') return; }
   const porA = new Map();
   for (const p of edm) { const k = fold(artPpal(p)); if (!porA.has(k)) porA.set(k, { k, nombre: artPpal(p), ps: [] }); porA.get(k).ps.push(p); }
   const A = Array.from(porA.values()).sort((a, b) => b.ps.length - a.ps.length);
   const hace1 = Date.now() - 365 * 864e5;
+  /* si casi todo se añadió este año (lo juntaste todo de golpe), la fecha no dice nada */
+  const fechaVale = ps.filter(p => p.added > hace1).length < ps.length * 0.6;
   const EA = PREFS.epocaArt || {};
   for (const a of A) {
     const ys = a.ps.map(p => p.added).filter(Boolean).map(t => new Date(t).getFullYear());
     a.desde = ys.length ? Math.min(...ys) : 0; a.hasta = ys.length ? Math.max(...ys) : 0;
-    a.ahora = ahora.has(a.k); a.reciente = a.ps.some(p => p.added > hace1);
+    a.ahora = ahora.has(a.k); a.reciente = fechaVale && a.ps.some(p => p.added > hace1);
     a.v = EA[a.k] || (a.ahora || a.reciente ? 'sigo' : 'pasado');
   }
   const resumen = () => {
@@ -3909,7 +3924,7 @@ async function hojaEpocaEDM(f) {
     '<div class="ep-t">' + [['sigo', 'Sigo'], ['mezcla', 'Mezcla'], ['pasado', 'Pasado']].map(([v, t]) => '<button data-v="' + v + '" class="' + (a.v === v ? 'on' : '') + '">' + t + '</button>').join('') + '</div></div>';
   const pintarRes = h => { const r = resumen(); h.querySelector('.ep-res').innerHTML = '<div><b>' + n$(r.sigue) + '</b><small>siguen en Me gusta</small></div><div><b>' + n$(r.rep) + '</b><small>repasar una a una</small></div><div><b>' + n$(r.sale) + '</b><small>salen de Me gusta</small></div>'; };
   hoja('<h2>Tu época EDM</h2><p class="soft">He encontrado <b>' + n$(edm.length) + '</b> canciones de electrónica de <b>' + n$(A.length) + '</b>' + (A.length === 1 ? ' artista.' : ' artistas.') + ' <b>Todas</b> irán a una playlist «' + NOMBRE_EPOCA + '», para que no se pierdan. De Me gusta solo salen las de los artistas que marques como <b>Pasado</b>. Los que marques como <b>Mezcla</b> los repasas canción a canción.</p>' +
-    '<p class="tiny mute">Ya los he marcado así: si lo escuchas ahora o añadiste algo suyo este año, «Sigo»; si no, «Pasado». Cámbialo donde no acierte.' + (sinGen > 200 ? ' Ojo: ' + n$(sinGen) + ' canciones aún no tienen género y no salen aquí.' : '') + '</p>' +
+    '<p class="tiny mute">Ya los he marcado así: «Sigo» si está entre lo que más escuchas estas semanas y meses' + (fechaVale ? ' o añadiste algo suyo este año' : '') + '; el resto, «Pasado». Mira sobre todo los de arriba (los que más canciones tienen) y cambia lo que no acierte. Los de 1 o 2 canciones puedes dejarlos: no se pierden, quedan en la playlist.' + (sinGen > 200 ? ' Ojo: ' + n$(sinGen) + ' canciones aún no tienen género y no salen aquí.' : '') + '</p>' +
     '<div class="ep-res"></div><div id="epL">' + A.map(filaA).join('') + '</div>' +
     '<button class="btn pri wide" id="epOk" style="position:sticky;bottom:0;margin-top:10px">Hacerlo</button>' +
     '<p class="tiny mute" style="text-align:center">Se puede deshacer desde Cambios. Lo que decidas por artista se recuerda (también en el móvil).</p>', h => {
