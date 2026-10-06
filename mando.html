@@ -992,7 +992,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-06f';
+const VERSION = '2026-10-06g';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -1576,9 +1576,15 @@ async function pistasMeGusta(av) {
         url = d.next;
       }
       if (hallada) {
-        const out = nuevas.concat(conK(c.pistas));
+        /* si volviste a darle ♥ a una vieja, sube arriba: fuera la copia de abajo */
+        const nu = new Set(nuevas.map(p => p.uri));
+        const out = nuevas.concat(conK(nu.size ? c.pistas.filter(p => !nu.has(p.uri)) : c.pistas));
         if (av) av(out.length, out.length);
-        if (nuevas.length || total !== c.total) cachePoner('likes', { total: total, pistas: sinK(out) });
+        /* lo guardado cuenta como lo que tenía + lo nuevo; si Spotify dice menos,
+           es que quitaste algo desde Spotify y hay que buscarlo */
+        const guardado = crudos + unidadesLikes(c) - (c.pistas.length - (out.length - nuevas.length));
+        if (nuevas.length || guardado !== c.total) cachePoner('likes', { total: guardado, pistas: sinK(out) });
+        if (total != null && total < guardado) setTimeout(() => sincronizarQuitadas().catch(() => {}), 1500);
         return out;
       }
     } catch (e) { if (e.freno || e.message === 'DETENIDO') throw e; }
@@ -1594,6 +1600,70 @@ async function pistasMeGusta(av) {
     return parcial;
   }
   return await job;
+}
+/* ---- Lo que quitas de Me gusta desde Spotify ----
+   La lectura rápida solo mira lo nuevo de arriba; lo quitado está en medio.
+   Leer las 18.000 otra vez son ~370 peticiones, así que se busca partiendo
+   en dos: se mira una página en mitad de la lista y, comparando posiciones,
+   se sabe si falta algo antes o después. Una canción quitada ≈ 10 peticiones. */
+const unidadesLikes = c => Math.max(c.total || 0, (c.pistas || []).length);
+let _sq = null;
+function sincronizarQuitadas() { return _sq || (_sq = sincQuitadas0().finally(() => { _sq = null; })); }
+async function sincQuitadas0() {
+  if (esperaPendiente() > 0) return;
+  const c = await cacheLeer('likes'); if (!c || !c.pistas || !c.pistas.length) return;
+  const L = c.pistas, clave = p => p.uri + '|' + p.added, pos = new Map(L.map((p, i) => [clave(p), i]));
+  const LIM = 45; let pet = 0, cortado = false, total = null;
+  const pagina = async o => {
+    if (++pet > LIM) { cortado = true; return null; }
+    if (pet > 1) await sleep(document.visibilityState === 'visible' ? 600 : 1500);
+    const d = await sp('/me/tracks?limit=50&offset=' + o);
+    if (d && d.total != null) total = d.total;
+    return ((d && d.items) || []).map(x => { const p = pista(x && x.track, { added: x && x.added_at }); return p ? clave(p) : null; });
+  };
+  /* quitadas antes de la posición o = (sitio en lo guardado) − o */
+  const quitadasAntes = (ks, o) => { for (let j = 0; j < ks.length; j++) { const i = pos.get(ks[j]); if (i != null) return i - (o + j); } return null; };
+  const k0 = await pagina(0); if (!k0) return;
+  const r = unidadesLikes(c) - total, r0 = quitadasAntes(k0, 0);
+  if (r <= 0 || r0 == null || r0 < 0) return;
+  /* muchas quitadas: sale más a cuenta leerlo todo otra vez, despacio y en segundo plano */
+  if (r > 60) {
+    await cachePoner('likesParcial', null);
+    likesFondo().then(ps => { S.likes = ps; if (S.tab === 'likes' && !S.vista) { toast('Me gusta actualizado: ' + n$(ps.length)); render(); } }).catch(() => {});
+    return;
+  }
+  const fuera = new Set();
+  const tramo = async (oLo, rLo, oHi, rHi, ks) => {
+    if (rHi <= rLo || cortado) return;
+    if (oHi - oLo <= 50) {
+      const k = ks || await pagina(oLo); if (!k) return;
+      const hay = new Set(k), a = oLo + rLo, b = Math.min(L.length, oHi + rHi);
+      for (let i = a; i < b; i++) if (!hay.has(clave(L[i]))) fuera.add(clave(L[i]));
+      return;
+    }
+    const mid = oLo + Math.floor((oHi - oLo) / 2);
+    const km = await pagina(mid); if (!km) return;
+    const rm = quitadasAntes(km, mid); if (rm == null) return;
+    await tramo(oLo, rLo, mid, rm, oLo === 0 ? k0 : null);
+    await tramo(mid, rm, oHi, rHi, km);
+  };
+  /* las que había por encima de la primera que sigue */
+  { const hay = new Set(k0); for (let i = 0; i < Math.min(L.length, r0); i++) if (!hay.has(clave(L[i]))) fuera.add(clave(L[i])); }
+  await tramo(0, r0, total, r, k0);
+  /* aplicar sobre lo guardado ahora (puede haber cambiado mientras) */
+  const c2 = await cacheLeer('likes'); if (!c2 || !c2.pistas) return;
+  const quedan = c2.pistas.filter(p => !fuera.has(clave(p)));
+  const nuevoTotal = cortado ? unidadesLikes(c2) - fuera.size : unidadesLikes(c2) - r;
+  cachePoner('likes', { total: Math.max(quedan.length, nuevoTotal), pistas: quedan });
+  if (fuera.size) {
+    const quita = l => { const o = l.filter(p => !fuera.has(clave(p))); if (l._parcial) o._parcial = l._parcial; return o; };
+    if (S.likes) S.likes = quita(S.likes);
+    if (S.fuente && S.fuente.kind === 'likes' && S.fuente.pistas) S.fuente.pistas = quita(S.fuente.pistas);
+    if (S.tab === 'likes' && !S.vista) render();
+    toast(fuera.size === 1 ? 'Actualizado: 1 canción que quitaste en Spotify' : 'Actualizado: ' + fuera.size + ' canciones que quitaste en Spotify');
+  }
+  /* si quedaban muchas, sigue en un rato */
+  if (cortado) setTimeout(() => sincronizarQuitadas().catch(() => {}), 90000);
 }
 let _likesFondo = null;
 function likesFondo(av) { return _likesFondo || (_likesFondo = likesFondo0(av).finally(() => { _likesFondo = null; })); }
