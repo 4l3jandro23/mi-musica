@@ -1026,7 +1026,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-07e';
+const VERSION = '2026-10-07f';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -1980,7 +1980,7 @@ const S = {
   selObj: new Set(), buscar: { q: '', tipo: 'track', res: null }, suena: null, soloSel: false, indice: null
 };
 const PREFS = Object.assign({ saltarRepes: true }, leer(K_PREFS, {}));
-const CFG_SYNC = ['criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido', 'distintas', 'likesFuera', 'plEpoca', 'epocaArt'];
+const CFG_SYNC = ['criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido', 'distintas', 'likesFuera', 'plEpoca', 'epocaArt', 'edmNo'];
 let _cfgSnap = null;
 const guardarPrefs = () => {
   escribir(K_PREFS, PREFS);
@@ -3893,18 +3893,48 @@ const NOMBRE_EPOCA = 'Mi época EDM';
 const RX_EDM = /\b(edm|big room|electro house|progressive house|future house|bass house|slap house|g-house|tech house|deep house|tropical house|melbourne bounce|dutch house|complextro|house|dubstep|brostep|riddim|bass music|future bass|drum and bass|dnb|liquid funk|jungle|trance|psytrance|hardstyle|rawstyle|hard dance|jumpstyle|happy hardcore|hardcore techno|uk hardcore|frenchcore|techno|moombahton|edm trap|festival trap|trap edm|electro|eurodance|uk garage|bassline|future rave|wonky)\b/;
 /* manda el género del artista principal (si se sabe): así «Shape of You» con una
    etiqueta suelta de «house» no cuenta, y un tema de Guetta con Sia sí */
-function esEDM(p) {
-  const E = ETQ || ETQ0(), a = p.artists[0];
+/* ¿un artista es de electrónica de baile? (por su nombre; null si no se sabe) */
+const RX_NO_EDM = /corrido|cumbia|banda|regional mexican|sierreno|norteno|tumbado/;
+function artistaEDM(a) {
+  if (!a) return null;
+  const E = ETQ || ETQ0(), k = fold(a.name);
+  if ((PREFS.edmNo || []).indexOf(k) >= 0) return false;
+  const vale = g => RX_EDM.test(fold(g)) && !RX_NO_EDM.test(fold(g));
   /* fuerte: un género de baile (house, edm, dubstep…); flojo: «electronic», «dance» */
-  const parte = gs => { const f = gs.filter(g => RX_EDM.test(fold(g))).length; if (!f) return 0; return (f + gs.filter(g => !RX_EDM.test(fold(g)) && /^(electronic|electronica|electronique|dance|club)$/.test(fold(g))).length) / gs.length; };
-  if (a) {
-    const k = fold(a.name);
-    /* géneros de Spotify del artista: con uno basta */
-    const l = E.lfa[k]; if (l && l.g && l.g.length) return l.g.some(g => RX_EDM.test(fold(g)));
-    /* etiquetas de otras fuentes (más ruidosas): que sean al menos la mitad */
-    const m = MIS && a.id && misPorId(a.id), gA = (m && m.genres && m.genres.length && m.genres) || (a.id && GEN[a.id] && GEN[a.id].length && GEN[a.id]);
-    if (gA) return parte(gA) >= 0.6;
-  }
+  const parte = gs => { const f = gs.filter(vale).length; if (!f) return 0; return (f + gs.filter(g => !vale(g) && /^(electronic|electronica|electronique|dance|club)$/.test(fold(g))).length) / gs.length; };
+  /* géneros de Spotify del artista: con uno basta (si no es de otra cosa: corridos «electro»…) */
+  const l = E.lfa[k]; if (l && l.g && l.g.length) return l.g.some(vale) && !l.g.some(g => RX_NO_EDM.test(fold(g)));
+  /* etiquetas de otras fuentes (más ruidosas): la mayoría */
+  const m = MIS && a.id && misPorId(a.id), gA = (m && m.genres && m.genres.length && m.genres) || (a.id && GEN[a.id] && GEN[a.id].length && GEN[a.id]);
+  if (gA) return parte(gA) >= 0.6;
+  return null;
+}
+/* remix de un DJ: «HUMBLE. - Skrillex Remix» es EDM aunque Kendrick sea rap */
+const RX_REMIX = /\b(remix|re-?edit|edit|vip|bootleg|flip|rework|mix|remode)\b/;
+function remixerEDM(p) {
+  const t = fold(p.title);
+  if (!RX_REMIX.test(t) || /\b(radio edit|single edit|original mix|extended mix|album mix|clean edit)\b/.test(t) && !/remix|bootleg|flip|vip|rework/.test(t)) return null;
+  /* 1. el DJ sale como artista de la canción */
+  for (const a of p.artists.slice(1)) if (artistaEDM(a) && t.indexOf(fold(a.name)) >= 0) return a.name;
+  for (const a of p.artists.slice(1)) if (artistaEDM(a)) return a.name;
+  /* 2. el DJ solo está en el título: se busca entre los de electrónica que conoces */
+  const m = t.match(/[\(\[\-]\s*([^\(\)\[\]\-]+?)\s+(remix|re-?edit|edit|vip|bootleg|flip|rework)\b/);
+  if (m) { const nom = m[1].replace(/^(feat|ft)\.?\s.*$/, '').trim(); const l = (ETQ || ETQ0()).lfa[nom]; if (l && artistaEDM({ name: nom })) { const i = t.indexOf(nom); return i >= 0 ? p.title.substr(i, nom.length) : nom; } }
+  return null;
+}
+/* el artista con el que se agrupa en la época: el DJ si es un remix */
+function artistaEpoca(p) {
+  const a = p.artists[0];
+  if (artistaEDM(a)) return a.name;
+  return remixerEDM(p) || (a ? a.name : '');
+}
+function esEDM(p) {
+  if ((PREFS.edmNo || []).indexOf(p.uri) >= 0) return false;
+  const a = p.artists[0], ea = artistaEDM(a);
+  if (ea) return true;
+  /* un remix de un DJ cuenta aunque el artista sea de otra cosa */
+  if (remixerEDM(p)) return true;
+  if (ea === false) return false;
   /* solo etiquetas de la canción: dos o más y un tercio */
   const g = generosCancion(p); if (!g.length) return false;
   const n = g.filter(x => RX_EDM.test(fold(x))).length;
@@ -3944,7 +3974,7 @@ async function hojaEpocaEDM(f) {
   }, 'Mirando qué escuchas ahora');
   const B = leer(K_EPOCA, { si: {}, hechos: {} });
   const porA = new Map();
-  for (const p of edm) { const k = fold(artPpal(p)); if (!porA.has(k)) porA.set(k, { k, nombre: artPpal(p), ps: [] }); porA.get(k).ps.push(p); }
+  for (const p of edm) { const nom = artistaEpoca(p), k = fold(nom); if (!porA.has(k)) porA.set(k, { k, nombre: nom, ps: [] }); porA.get(k).ps.push(p); }
   const yaHechos = PREFS.epocaArt || {};
   /* los ya aplicados otro día van al final */
   const A = Array.from(porA.values()).sort((x, y) => (!!yaHechos[x.k] - !!yaHechos[y.k]) || y.ps.length - x.ps.length);
@@ -3960,7 +3990,7 @@ async function hojaEpocaEDM(f) {
   const hechos = new Set(Object.keys(B.hechos || {}));
   const guardarB = () => { const o = { si: {}, hechos: {} }; for (const a of A) { if (!hechos.has(a.k)) continue; o.hechos[a.k] = 1; for (const p of a.ps) o.si[p.uri] = si.has(p.uri); } escribir(K_EPOCA, o); };
   const nSi = a => a.ps.filter(p => si.has(p.uri)).length;
-  const cuenta = () => { let quedan = 0, salen = 0, arts = 0; for (const a of A) if (hechos.has(a.k)) { arts++; const n = nSi(a); quedan += n; salen += a.ps.length - n; } return { quedan, salen, arts }; };
+  const cuenta = () => { let quedan = 0, salen = 0, arts = 0; for (const a of A) if (hechos.has(a.k) && a.ps.length) { arts++; const n = nSi(a); quedan += n; salen += a.ps.length - n; } return { quedan, salen, arts }; };
   const cab = (a, i) => '<div class="ep-cab" data-a="' + i + '"><div class="tx"><b>' + esc(a.nombre) + '</b><small>' + a.ps.length + (a.ps.length === 1 ? ' canción' : ' canciones') + (a.ahora ? ' · <span class="ep-now">lo escuchas ahora</span>' : '') + (yaHechos[a.k] ? ' · ya separado otro día' : '') + '</small></div><span class="ep-n">' + (hechos.has(a.k) ? nSi(a) + ' se quedan' : 'sin revisar') + '</span><span class="flecha">' + ic('chev') + '</span></div>';
   const cancion = p => '<div class="ep-c ' + (si.has(p.uri) ? 'si' : 'no') + '" data-u="' + p.uri + '"><span class="ck">✓</span><span class="t">' + esc(p.title) + '</span>' + (cAhora.has(p.uri) ? '<span class="ya">la escuchas</span>' : '') + '<button class="btn sm ghost pl" data-play="' + p.uri + '" aria-label="Escuchar">' + ic('play') + '</button></div>';
   const pintarRes = h => { const r = cuenta(); h.querySelector('.ep-res').innerHTML = '<div><b>' + n$(r.arts) + '</b><small>de ' + n$(A.length) + ' artistas revisados</small></div><div><b>' + n$(r.quedan) + '</b><small>siguen en Me gusta</small></div><div><b>' + n$(r.salen) + '</b><small>solo en la época</small></div>'; h.querySelector('#epOk').disabled = !r.arts; h.querySelector('#epOk').textContent = r.arts ? 'Aplicar ' + r.arts + (r.arts === 1 ? ' artista' : ' artistas') : 'Revisa algún artista'; };
@@ -3977,11 +4007,20 @@ async function hojaEpocaEDM(f) {
         const a = A[+g.dataset.g];
         if (e.target.closest('.ep-cab')) {
           const cs = g.querySelector('.ep-cs');
-          if (!cs.innerHTML) cs.innerHTML = '<div class="ep-todo"><button class="btn sm" data-todo="si">Me quedo todas</button><button class="btn sm" data-todo="no">Ninguna</button></div>' + a.ps.map(cancion).join('');
+          if (!cs.innerHTML) cs.innerHTML = '<div class="ep-todo"><button class="btn sm" data-todo="si">Me quedo todas</button><button class="btn sm" data-todo="no">Ninguna</button><button class="btn sm ghost" data-noedm="1">No es EDM</button></div>' + a.ps.map(cancion).join('');
           g.classList.toggle('abierto');
           /* abrirlo cuenta como revisado: lo que veas sin marcar, pasa a la época */
           if (!hechos.has(a.k)) { hechos.add(a.k); guardarB(); repintarCab(g); pintarRes(h); }
           return;
+        }
+        if (e.target.closest('[data-noedm]')) {
+          /* fuera de la época: el artista entero (y sus canciones, por si alguna era un remix suyo) */
+          const N = PREFS.edmNo || (PREFS.edmNo = []);
+          if (N.indexOf(a.k) < 0) N.push(a.k);
+          for (const p of a.ps) if (fold(artPpal(p)) !== a.k && N.indexOf(p.uri) < 0) N.push(p.uri);
+          guardarPrefs(); hechos.delete(a.k); for (const p of a.ps) si.delete(p.uri); guardarB();
+          a.ps = []; g.remove(); pintarRes(h);
+          toast('Apuntado: ' + a.nombre + ' no es EDM'); return;
         }
         const t = e.target.closest('[data-todo]');
         if (t) { for (const p of a.ps) { if (t.dataset.todo === 'si') si.add(p.uri); else si.delete(p.uri); } g.querySelectorAll('.ep-c').forEach(c => c.className = 'ep-c ' + (si.has(c.dataset.u) ? 'si' : 'no')); }
@@ -3990,7 +4029,7 @@ async function hojaEpocaEDM(f) {
         if (t || c) { hechos.add(a.k); guardarB(); repintarCab(g); pintarRes(h); }
       };
       h.querySelector('#epOk').onclick = async () => {
-        const rev = A.filter(a => hechos.has(a.k)); if (!rev.length) return;
+        const rev = A.filter(a => hechos.has(a.k) && a.ps.length); if (!rev.length) return;
         const todas = [].concat(...rev.map(a => a.ps)), fuera = todas.filter(p => !si.has(p.uri));
         if (!(await confirmar('¿Aplicar ' + rev.length + (rev.length === 1 ? ' artista?' : ' artistas?'), 'Aplicar', n$(todas.length) + ' canciones a «' + NOMBRE_EPOCA + '»' + (fuera.length ? ' y ' + n$(fuera.length) + ' salen de Me gusta' : '') + '. Con muchas, Spotify va despacio: si pide pausa, la Fonoteca lo termina sola.'))) return;
         cerrarHoja(true);
