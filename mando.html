@@ -262,6 +262,25 @@
   .ep-t button.on[data-v="pasado"] { background: var(--fg-soft); color: var(--bg); }
   .ep-t button.on[data-v="mezcla"] { background: var(--amber); color: var(--on-amber); }
   @media (max-width: 420px) { .ep-a { flex-wrap: wrap; } .ep-t { margin-left: auto; } }
+  .ep-g { border-bottom: 1px solid var(--line); }
+  .ep-g.hecho .ep-cab b::after { content: ' ✓'; color: var(--jade); }
+  .ep-cab { display: flex; align-items: center; gap: 10px; padding: 10px 4px; cursor: pointer; }
+  .ep-cab .tx { flex: 1; min-width: 0; font-size: 13px; line-height: 1.3; }
+  .ep-cab .tx b { display: block; font-size: 15px; }
+  .ep-cab .tx small { color: var(--fg-mute); }
+  .ep-cab .ep-n { flex: none; font-size: 12px; font-weight: 800; padding: 4px 9px; border-radius: 99px; background: var(--surface-2); }
+  .ep-cab .flecha { flex: none; transition: transform .2s; opacity: .5; }
+  .ep-g.abierto .ep-cab .flecha { transform: rotate(90deg); }
+  .ep-cs { display: none; padding: 0 0 10px; }
+  .ep-g.abierto .ep-cs { display: block; }
+  .ep-todo { display: flex; gap: 6px; margin: 0 4px 8px; flex-wrap: wrap; }
+  .ep-c { display: flex; align-items: center; gap: 8px; padding: 7px 6px; border-radius: 10px; cursor: pointer; font-size: 14px; }
+  .ep-c .ck { width: 22px; height: 22px; border-radius: 7px; border: 2px solid var(--line-firm); flex: none; display: grid; place-items: center; font-size: 13px; font-weight: 900; color: transparent; }
+  .ep-c.si .ck { background: var(--jade); border-color: var(--jade); color: #fff; }
+  .ep-c .t { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ep-c.no .t { color: var(--fg-mute); }
+  .ep-c .ya { font-size: 11px; color: var(--jade); font-weight: 800; flex: none; }
+  .ep-c .pl { flex: none; }
   .rp .nav { display: flex; gap: 8px; margin: 6px 0; }
   .rp .nav .btn { flex: 1; }
   .rp .pie { position: sticky; bottom: calc(86px + env(safe-area-inset-bottom)); margin-top: 14px; }
@@ -1007,7 +1026,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-07d';
+const VERSION = '2026-10-07e';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -1051,6 +1070,7 @@ const ICO = {
   filtro: '<path d="M22 3H2l8 9.5V19l4 2v-8.5z"/>',
   varita: '<path d="m15 4 5 5L8 21l-5-5zM15 4l2-2M20 9l2-2M5 3v4M3 5h4M19 15v4M17 17h4"/>',
   grafica: '<path d="M3 3v18h18"/><path d="M7 15v3M11 10v8M15 13v5M19 6v12"/>',
+  chev: '<path d="m9 6 6 6-6 6"/>',
   rayo: '<path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/>',
   corazonRoto: '<path d="M19.5 12.6 12 20l-7.5-7.4A5 5 0 1 1 12 6a5 5 0 1 1 7.5 6.6z"/><path d="m12 6-1.5 4 3 2-1.5 4"/>',
   personaMas: '<circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M19 8v6M16 11h6"/>',
@@ -3897,6 +3917,12 @@ async function plEpoca(nueva) {
   if (PREFS.plEpoca !== p.id) { PREFS.plEpoca = p.id; const C = PREFS.criterios || (PREFS.criterios = {}); if (!C[p.id]) C[p.id] = 'Electrónica de mi época EDM (big room, dubstep, house, trap…)'; guardarPrefs(); }
   return p;
 }
+/* Casi todos los artistas son «mezcla»: se decide por canción, pero sin
+   escuchar: tocas un artista, ves sus títulos y marcas los que SIGUES
+   escuchando (lo demás pasa a la época). Vienen marcadas las que escuchas
+   ahora. Se puede hacer poco a poco: solo se aplica lo de los artistas
+   revisados, y lo marcado se guarda en el aparato mientras tanto. */
+const K_EPOCA = 'fonoteca_epoca_borrador_v1';
 async function hojaEpocaEDM(f) {
   let ps = f && f.pistas ? f.pistas : (S.likes && S.likes.length ? S.likes : await likesGuardados());
   if (!ps || !ps.length) { toast('Primero abre Me gusta para que se carguen'); irATab('likes'); return; }
@@ -3904,63 +3930,85 @@ async function hojaEpocaEDM(f) {
   ps = ps.filter(p => !p.local);
   const edm = ps.filter(esEDM), sinGen = ps.filter(p => !generosCancion(p).length).length;
   if (!edm.length) { toast('No encuentro electrónica en tus Me gusta (¿faltan los géneros? Prueba «Etiquetar mis Me gusta»)', null, 6000); return; }
-  /* lo que escuchas ahora: tus artistas más escuchados de las últimas semanas y meses */
-  const ahora = new Set();
-  try {
-    for (const r of ['short_term', 'medium_term']) { const d = await sp('/me/top/artists?limit=50&time_range=' + r); for (const a of (d && d.items) || []) ahora.add(fold(a.name)); }
-    const d = await sp('/me/player/recently-played?limit=50'); for (const x of (d && d.items) || []) for (const a of ((x.track || {}).artists || []).slice(0, 1)) ahora.add(fold(a.name));
-  } catch (e) { if (e.message === 'DETENIDO') return; }
+  /* lo que escuchas ahora: canciones y artistas más escuchados de estas semanas y meses, y lo último que has puesto */
+  const cAhora = new Set(), aAhora = new Set();
+  await trabajo(async () => {
+    try {
+      for (const r of ['short_term', 'medium_term']) {
+        const t = await sp('/me/top/tracks?limit=50&time_range=' + r); for (const x of (t && t.items) || []) cAhora.add(x.uri);
+        const d = await sp('/me/top/artists?limit=50&time_range=' + r); for (const x of (d && d.items) || []) aAhora.add(fold(x.name));
+      }
+      const d = await sp('/me/player/recently-played?limit=50'); for (const x of (d && d.items) || []) if (x.track) cAhora.add(x.track.uri);
+    } catch (e) { if (e.message === 'DETENIDO') throw e; }
+    return true;
+  }, 'Mirando qué escuchas ahora');
+  const B = leer(K_EPOCA, { si: {}, hechos: {} });
   const porA = new Map();
   for (const p of edm) { const k = fold(artPpal(p)); if (!porA.has(k)) porA.set(k, { k, nombre: artPpal(p), ps: [] }); porA.get(k).ps.push(p); }
-  const A = Array.from(porA.values()).sort((a, b) => b.ps.length - a.ps.length);
-  const hace1 = Date.now() - 365 * 864e5;
-  /* si casi todo se añadió este año (lo juntaste todo de golpe), la fecha no dice nada */
-  const fechaVale = ps.filter(p => p.added > hace1).length < ps.length * 0.6;
-  const EA = PREFS.epocaArt || {};
+  const yaHechos = PREFS.epocaArt || {};
+  /* los ya aplicados otro día van al final */
+  const A = Array.from(porA.values()).sort((x, y) => (!!yaHechos[x.k] - !!yaHechos[y.k]) || y.ps.length - x.ps.length);
+  const si = new Set();
   for (const a of A) {
-    const ys = a.ps.map(p => p.added).filter(Boolean).map(t => new Date(t).getFullYear());
-    a.desde = ys.length ? Math.min(...ys) : 0; a.hasta = ys.length ? Math.max(...ys) : 0;
-    a.ahora = ahora.has(a.k); a.reciente = fechaVale && a.ps.some(p => p.added > hace1);
-    a.v = EA[a.k] || (a.ahora || a.reciente ? 'sigo' : 'pasado');
+    a.ahora = aAhora.has(a.k);
+    a.ps.sort((x, y) => (cAhora.has(y.uri) - cAhora.has(x.uri)) || x.title.localeCompare(y.title));
+    for (const p of a.ps) {
+      const g = B.si[p.uri];
+      if (g === true || (g === undefined && cAhora.has(p.uri))) si.add(p.uri);
+    }
   }
-  const resumen = () => {
-    let sale = 0, rep = 0, sigue = 0;
-    for (const a of A) { if (a.v === 'pasado') sale += a.ps.length; else if (a.v === 'mezcla') rep += a.ps.length; else sigue += a.ps.length; }
-    return { sale, rep, sigue };
-  };
-  const filaA = (a, i) => '<div class="ep-a" data-i="' + i + '"><div class="tx"><b>' + esc(a.nombre) + '</b><small>' + a.ps.length + (a.ps.length === 1 ? ' canción' : ' canciones') + (a.desde ? ' · añadidas ' + (a.desde === a.hasta ? a.desde : a.desde + '–' + a.hasta) : '') + (a.ahora ? ' · <span class="ep-now">lo escuchas ahora</span>' : a.reciente ? ' · <span class="ep-now">añadiste algo este año</span>' : '') + '</small></div>' +
-    '<div class="ep-t">' + [['sigo', 'Sigo'], ['mezcla', 'Mezcla'], ['pasado', 'Pasado']].map(([v, t]) => '<button data-v="' + v + '" class="' + (a.v === v ? 'on' : '') + '">' + t + '</button>').join('') + '</div></div>';
-  const pintarRes = h => { const r = resumen(); h.querySelector('.ep-res').innerHTML = '<div><b>' + n$(r.sigue) + '</b><small>siguen en Me gusta</small></div><div><b>' + n$(r.rep) + '</b><small>repasar una a una</small></div><div><b>' + n$(r.sale) + '</b><small>salen de Me gusta</small></div>'; };
-  hoja('<h2>Tu época EDM</h2><p class="soft">He encontrado <b>' + n$(edm.length) + '</b> canciones de electrónica de <b>' + n$(A.length) + '</b>' + (A.length === 1 ? ' artista.' : ' artistas.') + ' <b>Todas</b> irán a una playlist «' + NOMBRE_EPOCA + '», para que no se pierdan. De Me gusta solo salen las de los artistas que marques como <b>Pasado</b>. Los que marques como <b>Mezcla</b> los repasas canción a canción.</p>' +
-    '<p class="tiny mute">Ya los he marcado así: «Sigo» si está entre lo que más escuchas estas semanas y meses' + (fechaVale ? ' o añadiste algo suyo este año' : '') + '; el resto, «Pasado». Mira sobre todo los de arriba (los que más canciones tienen) y cambia lo que no acierte. Los de 1 o 2 canciones puedes dejarlos: no se pierden, quedan en la playlist.' + (sinGen > 200 ? ' Ojo: ' + n$(sinGen) + ' canciones aún no tienen género y no salen aquí.' : '') + '</p>' +
-    '<div class="ep-res"></div><div id="epL">' + A.map(filaA).join('') + '</div>' +
-    '<button class="btn pri wide" id="epOk" style="position:sticky;bottom:0;margin-top:10px">Hacerlo</button>' +
-    '<p class="tiny mute" style="text-align:center">Se puede deshacer desde Cambios. Lo que decidas por artista se recuerda (también en el móvil).</p>', h => {
+  const hechos = new Set(Object.keys(B.hechos || {}));
+  const guardarB = () => { const o = { si: {}, hechos: {} }; for (const a of A) { if (!hechos.has(a.k)) continue; o.hechos[a.k] = 1; for (const p of a.ps) o.si[p.uri] = si.has(p.uri); } escribir(K_EPOCA, o); };
+  const nSi = a => a.ps.filter(p => si.has(p.uri)).length;
+  const cuenta = () => { let quedan = 0, salen = 0, arts = 0; for (const a of A) if (hechos.has(a.k)) { arts++; const n = nSi(a); quedan += n; salen += a.ps.length - n; } return { quedan, salen, arts }; };
+  const cab = (a, i) => '<div class="ep-cab" data-a="' + i + '"><div class="tx"><b>' + esc(a.nombre) + '</b><small>' + a.ps.length + (a.ps.length === 1 ? ' canción' : ' canciones') + (a.ahora ? ' · <span class="ep-now">lo escuchas ahora</span>' : '') + (yaHechos[a.k] ? ' · ya separado otro día' : '') + '</small></div><span class="ep-n">' + (hechos.has(a.k) ? nSi(a) + ' se quedan' : 'sin revisar') + '</span><span class="flecha">' + ic('chev') + '</span></div>';
+  const cancion = p => '<div class="ep-c ' + (si.has(p.uri) ? 'si' : 'no') + '" data-u="' + p.uri + '"><span class="ck">✓</span><span class="t">' + esc(p.title) + '</span>' + (cAhora.has(p.uri) ? '<span class="ya">la escuchas</span>' : '') + '<button class="btn sm ghost pl" data-play="' + p.uri + '" aria-label="Escuchar">' + ic('play') + '</button></div>';
+  const pintarRes = h => { const r = cuenta(); h.querySelector('.ep-res').innerHTML = '<div><b>' + n$(r.arts) + '</b><small>de ' + n$(A.length) + ' artistas revisados</small></div><div><b>' + n$(r.quedan) + '</b><small>siguen en Me gusta</small></div><div><b>' + n$(r.salen) + '</b><small>solo en la época</small></div>'; h.querySelector('#epOk').disabled = !r.arts; h.querySelector('#epOk').textContent = r.arts ? 'Aplicar ' + r.arts + (r.arts === 1 ? ' artista' : ' artistas') : 'Revisa algún artista'; };
+  hoja('<h2>Tu época EDM</h2><p class="soft"><b>' + n$(edm.length) + '</b> canciones de electrónica de <b>' + n$(A.length) + '</b> artistas. Toca un artista y <b>marca las canciones que sigues escuchando</b>: se quedan en Me gusta. Las demás salen de Me gusta pero no se pierden: <b>todas</b> van a la playlist «' + NOMBRE_EPOCA + '».</p>' +
+    '<p class="tiny mute">Ya vienen marcadas las que escuchas estas semanas. No hace falta hacerlo todo hoy: se aplican solo los artistas que abras, y lo que marques se guarda.' + (sinGen > 200 ? ' Ojo: ' + n$(sinGen) + ' canciones aún no tienen género y no salen aquí.' : '') + '</p>' +
+    '<div class="ep-res"></div><div id="epL">' + A.map((a, i) => '<div class="ep-g' + (hechos.has(a.k) ? ' hecho' : '') + '" data-g="' + i + '">' + cab(a, i) + '<div class="ep-cs"></div></div>').join('') + '</div>' +
+    '<button class="btn pri wide" id="epOk" style="position:sticky;bottom:0;margin-top:10px">Aplicar</button>' +
+    '<p class="tiny mute" style="text-align:center">Se puede deshacer desde Cambios.</p>', h => {
       pintarRes(h);
+      const repintarCab = g => { const i = +g.dataset.g; g.querySelector('.ep-cab').outerHTML = cab(A[i], i); g.classList.toggle('hecho', hechos.has(A[i].k)); };
       h.querySelector('#epL').onclick = e => {
-        const b = e.target.closest('[data-v]'); if (!b) return;
-        const fila = b.closest('.ep-a'), a = A[+fila.dataset.i]; a.v = b.dataset.v;
-        fila.querySelectorAll('[data-v]').forEach(x => x.classList.toggle('on', x === b));
-        pintarRes(h);
+        const pb = e.target.closest('[data-play]'); if (pb) { e.stopPropagation(); reproducir({ uris: [pb.dataset.play] }); return; }
+        const g = e.target.closest('.ep-g'); if (!g) return;
+        const a = A[+g.dataset.g];
+        if (e.target.closest('.ep-cab')) {
+          const cs = g.querySelector('.ep-cs');
+          if (!cs.innerHTML) cs.innerHTML = '<div class="ep-todo"><button class="btn sm" data-todo="si">Me quedo todas</button><button class="btn sm" data-todo="no">Ninguna</button></div>' + a.ps.map(cancion).join('');
+          g.classList.toggle('abierto');
+          /* abrirlo cuenta como revisado: lo que veas sin marcar, pasa a la época */
+          if (!hechos.has(a.k)) { hechos.add(a.k); guardarB(); repintarCab(g); pintarRes(h); }
+          return;
+        }
+        const t = e.target.closest('[data-todo]');
+        if (t) { for (const p of a.ps) { if (t.dataset.todo === 'si') si.add(p.uri); else si.delete(p.uri); } g.querySelectorAll('.ep-c').forEach(c => c.className = 'ep-c ' + (si.has(c.dataset.u) ? 'si' : 'no')); }
+        const c = e.target.closest('.ep-c');
+        if (c) { const u = c.dataset.u; si.has(u) ? si.delete(u) : si.add(u); c.className = 'ep-c ' + (si.has(u) ? 'si' : 'no'); }
+        if (t || c) { hechos.add(a.k); guardarB(); repintarCab(g); pintarRes(h); }
       };
       h.querySelector('#epOk').onclick = async () => {
-        const r = resumen();
-        if (!(await confirmar('¿Separar tu época EDM?', 'Hacerlo', n$(edm.length) + ' canciones a «' + NOMBRE_EPOCA + '»' + (r.sale ? ', ' + n$(r.sale) + ' salen de Me gusta' : '') + (r.rep ? ' y luego repasas ' + n$(r.rep) : '') + '. Spotify va despacio con tantas: si pide pausa, la Fonoteca lo terminará sola.'))) return;
-        const E2 = {}; for (const a of A) E2[a.k] = a.v; PREFS.epocaArt = Object.assign(PREFS.epocaArt || {}, E2); guardarPrefs();
+        const rev = A.filter(a => hechos.has(a.k)); if (!rev.length) return;
+        const todas = [].concat(...rev.map(a => a.ps)), fuera = todas.filter(p => !si.has(p.uri));
+        if (!(await confirmar('¿Aplicar ' + rev.length + (rev.length === 1 ? ' artista?' : ' artistas?'), 'Aplicar', n$(todas.length) + ' canciones a «' + NOMBRE_EPOCA + '»' + (fuera.length ? ' y ' + n$(fuera.length) + ' salen de Me gusta' : '') + '. Con muchas, Spotify va despacio: si pide pausa, la Fonoteca lo termina sola.'))) return;
         cerrarHoja(true);
-        const fuera = [].concat(...A.filter(a => a.v === 'pasado').map(a => a.ps)), mezcla = [].concat(...A.filter(a => a.v === 'mezcla').map(a => a.ps));
         const ok = await trabajo(async () => {
           const pe = await plEpoca(), pasos = [];
           let ya = new Set();
           try { ya = new Set((await pistasDePlaylist(pe.id)).map(p => p.uri)); } catch (e) { if (!esCaida(e)) throw e; }
-          const nu = Array.from(new Set(edm.map(p => p.uri))).filter(u => !ya.has(u));
+          const nu = Array.from(new Set(todas.map(p => p.uri))).filter(u => !ya.has(u));
           if (ya.size + nu.length > 10000) throw new Error('Una playlist no puede pasar de 10.000 canciones');
           if (nu.length) { await plAnadir(pe.id, nu, null, 'Guardando en «' + NOMBRE_EPOCA + '»'); pasos.push({ t: 'plQuitar', pid: pe.id, uris: nu }); }
-          if (fuera.length) { const u = fuera.map(p => p.uri); await libQuitar(u, 'Quitando de Me gusta'); pasos.push({ t: 'libPoner', uris: u }); marcarDecididas(u); }
-          apuntar('Época EDM: ' + nu.length + ' a «' + NOMBRE_EPOCA + '»' + (fuera.length ? ', ' + fuera.length + ' fuera de Me gusta' : ''), { t: 'varios', lista: pasos });
+          if (fuera.length) { const u = fuera.map(p => p.uri); await libQuitar(u, 'Quitando de Me gusta'); pasos.push({ t: 'libPoner', uris: u }); }
+          marcarDecididas(todas.map(p => p.uri));
+          apuntar('Época EDM (' + rev.length + (rev.length === 1 ? ' artista): ' : ' artistas): ') + nu.length + ' a «' + NOMBRE_EPOCA + '»' + (fuera.length ? ', ' + fuera.length + ' fuera de Me gusta' : ''), { t: 'varios', lista: pasos });
           return true;
         }, 'Separando tu época EDM');
         if (!ok) return;
+        const EA = PREFS.epocaArt || (PREFS.epocaArt = {}); for (const a of rev) EA[a.k] = Date.now(); guardarPrefs();
+        const B2 = leer(K_EPOCA, { si: {}, hechos: {} }); for (const a of rev) { delete B2.hechos[a.k]; for (const p of a.ps) delete B2.si[p.uri]; } escribir(K_EPOCA, B2);
         if (fuera.length) {
           const uu = new Set(fuera.map(p => p.uri)), sin = l => { const o = l.filter(p => !uu.has(p.uri)); if (l._parcial) o._parcial = l._parcial; return o; };
           if (S.likes) S.likes = sin(S.likes);
@@ -3968,8 +4016,8 @@ async function hojaEpocaEDM(f) {
           const c = await cacheLeer('likes'); if (c && c.pistas) cachePoner('likes', { total: Math.max(0, (c.total || 0) - uu.size), pistas: c.pistas.filter(p => !uu.has(p.uri)) });
         }
         S.playlists = null;
-        toast(_encolados > 0 ? 'Guardado: Spotify está en pausa y la Fonoteca lo terminará sola' : 'Hecho: tu época EDM está en «' + NOMBRE_EPOCA + '»', { txt: 'Deshacer', fn: () => deshacerUltimo(HIST[0].id) }, 7000);
-        if (mezcla.length) setTimeout(() => repasarEpoca(mezcla), 600); else render();
+        toast(_encolados > 0 ? 'Guardado: Spotify está en pausa y la Fonoteca lo terminará sola' : 'Hecho: ' + rev.length + (rev.length === 1 ? ' artista separado' : ' artistas separados'), { txt: 'Deshacer', fn: () => deshacerUltimo(HIST[0].id) }, 7000);
+        render();
       };
     });
 }
