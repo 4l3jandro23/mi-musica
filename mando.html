@@ -281,6 +281,25 @@
   .ep-c.no .t { color: var(--fg-mute); }
   .ep-c .ya { font-size: 11px; color: var(--jade); font-weight: 800; flex: none; }
   .ep-c .pl { flex: none; }
+  .ep-c .v { font-size: 11px; color: var(--fg-mute); flex: none; max-width: 40%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ep-bar { display: flex; gap: 6px; margin: 4px 0 8px; flex-wrap: wrap; align-items: center; }
+  .ep-bar .field { flex: 1; min-width: 140px; }
+  .ep-fam { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 4px; scrollbar-width: none; }
+  .ep-fam .chip { flex: none; }
+  .mapa h3 { font-size: 15px; margin: 18px 0 8px; }
+  .mapa .fila { display: grid; grid-template-columns: 120px 1fr 44px; gap: 8px; align-items: center; font-size: 13px; margin: 5px 0; }
+  .mapa .fila span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mapa .bar { height: 12px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
+  .mapa .bar i { display: block; height: 100%; border-radius: 99px; background: var(--amber); }
+  .mapa .fila b { text-align: right; font-variant-numeric: tabular-nums; }
+  .mapa .anyos { display: flex; align-items: flex-end; gap: 3px; height: 120px; margin-top: 6px; }
+  .mapa .anyos div { flex: 1; background: var(--amber); border-radius: 4px 4px 0 0; min-height: 2px; position: relative; }
+  .mapa .anyos div.pico { background: var(--rust); }
+  .mapa .ejes { display: flex; gap: 3px; font-size: 10px; color: var(--fg-mute); }
+  .mapa .ejes span { flex: 1; text-align: center; }
+  .mapa .dato { background: var(--surface); border-radius: 14px; padding: 12px; box-shadow: var(--shadow-sm); margin: 8px 0; font-size: 14px; }
+  .ver-g { background: var(--surface); border-radius: 16px; padding: 8px; margin-bottom: 10px; box-shadow: var(--shadow-sm); }
+  .ver-g h4 { margin: 4px 6px 6px; font-size: 14px; }
   .rp .nav { display: flex; gap: 8px; margin: 6px 0; }
   .rp .nav .btn { flex: 1; }
   .rp .pie { position: sticky; bottom: calc(86px + env(safe-area-inset-bottom)); margin-top: 14px; }
@@ -1026,7 +1045,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-07f';
+const VERSION = '2026-10-07g';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -3940,6 +3959,144 @@ function esEDM(p) {
   const n = g.filter(x => RX_EDM.test(fold(x))).length;
   return n >= 2 && n / g.length >= 0.34;
 }
+/* estilos de la época (por prioridad: el primero que encaje) */
+const FAM_EDM = [
+  ['Dubstep y bass', /dubstep|brostep|riddim|bass music|wonky|deathstep|colour bass/],
+  ['Drum & bass', /drum and bass|\bdnb\b|liquid funk|jungle|neurofunk/],
+  ['Hardstyle', /hardstyle|rawstyle|hard dance|jumpstyle|hardcore|frenchcore|hard techno/],
+  ['Trap y moombahton', /edm trap|festival trap|trap edm|moombahton|twerk|jersey club/],
+  ['Trance', /trance/],
+  ['Big room y electro house', /big room|electro house|complextro|dutch house|melbourne bounce|future rave/],
+  ['Future bass y melódico', /future bass|melodic|kawaii|chillstep|tropical house/],
+  ['House', /house/],
+  ['Electro', /electro|nu disco/],
+  ['Techno', /techno|minimal/],
+  ['EDM pop', /edm|eurodance|dance/]
+];
+function generosDeNombre(nom) { const l = (ETQ || ETQ0()).lfa[fold(nom)]; return (l && l.g) || []; }
+function familiaEDM(p) {
+  const gs = generosDeNombre(artistaEpoca(p)).concat(generosDeNombre((p.artists[0] || {}).name), generosCancion(p)).map(fold);
+  for (const [n, rx] of FAM_EDM) if (gs.some(g => rx.test(g))) return n;
+  return 'Otros';
+}
+/* lo que escuchas ahora (canciones y artistas), 10 minutos en memoria */
+let _ahora = null;
+async function escuchasAhora() {
+  if (_ahora && Date.now() - _ahora.at < 6e5) return _ahora;
+  const c = new Set(), a = new Set();
+  try {
+    for (const r of ['short_term', 'medium_term']) {
+      const t = await sp('/me/top/tracks?limit=50&time_range=' + r); for (const x of (t && t.items) || []) c.add(x.uri);
+      const d = await sp('/me/top/artists?limit=50&time_range=' + r); for (const x of (d && d.items) || []) a.add(fold(x.name));
+    }
+    const d = await sp('/me/player/recently-played?limit=50'); for (const x of (d && d.items) || []) if (x.track) c.add(x.track.uri);
+  } catch (e) { if (e.message === 'DETENIDO') throw e; }
+  return (_ahora = { at: Date.now(), c, a });
+}
+/* todas a la playlist de la época; las de «fuera» salen de Me gusta */
+async function aplicarEpoca(todas, fuera, txt) {
+  const ok = await trabajo(async () => {
+    const pe = await plEpoca(), pasos = [];
+    let ya = new Set();
+    try { ya = new Set((await pistasDePlaylist(pe.id)).map(p => p.uri)); } catch (e) { if (!esCaida(e)) throw e; }
+    const nu = Array.from(new Set(todas.map(p => p.uri))).filter(u => !ya.has(u));
+    if (ya.size + nu.length > 10000) throw new Error('Una playlist no puede pasar de 10.000 canciones');
+    if (nu.length) { await plAnadir(pe.id, nu, null, 'Guardando en «' + NOMBRE_EPOCA + '»'); pasos.push({ t: 'plQuitar', pid: pe.id, uris: nu }); }
+    if (fuera.length) { const u = fuera.map(p => p.uri); await libQuitar(u, 'Quitando de Me gusta'); pasos.push({ t: 'libPoner', uris: u }); }
+    apuntar(txt + ': ' + nu.length + ' a «' + NOMBRE_EPOCA + '»' + (fuera.length ? ', ' + fuera.length + ' fuera de Me gusta' : ''), { t: 'varios', lista: pasos });
+    return true;
+  }, 'Guardando en tu época EDM');
+  if (!ok) return false;
+  if (fuera.length) {
+    const uu = new Set(fuera.map(p => p.uri)), sin = l => { const o = l.filter(p => !uu.has(p.uri)); if (l._parcial) o._parcial = l._parcial; return o; };
+    if (S.likes) S.likes = sin(S.likes);
+    if (S.fuente && S.fuente.kind === 'likes' && S.fuente.pistas) S.fuente.pistas = sin(S.fuente.pistas);
+    const c = await cacheLeer('likes'); if (c && c.pistas) cachePoner('likes', { total: Math.max(0, (c.total || 0) - uu.size), pistas: c.pistas.filter(p => !uu.has(p.uri)) });
+  }
+  S.playlists = null;
+  return true;
+}
+async function cancionesEDM(f) {
+  let ps = f && f.pistas ? f.pistas : (S.likes && S.likes.length ? S.likes : await likesGuardados());
+  if (!ps || !ps.length) { toast('Primero abre Me gusta para que se carguen'); irATab('likes'); return null; }
+  await etqAsegurar();
+  const edm = ps.filter(p => !p.local && esEDM(p));
+  if (!edm.length) { toast('No encuentro electrónica en tus Me gusta'); return null; }
+  return edm;
+}
+/* lo que va detrás del título: «Extended Mix», «Tiësto Remix»… */
+function versionDe(p) {
+  const m = p.title.match(/\(([^)]*(mix|edit|remix|version|vip|bootleg|flip|rework|dub|instrumental|acoustic|live)[^)]*)\)|\s-\s(.*)$/i);
+  return m ? (m[1] || m[3] || '').trim() : '';
+}
+
+/* ---- Mapa de tu época ---- */
+async function hojaMapaEDM(f) {
+  const edm = await cancionesEDM(f); if (!edm) return;
+  const fam = {}, yrs = {}, art = {};
+  for (const p of edm) {
+    const fa = familiaEDM(p); fam[fa] = (fam[fa] || 0) + 1;
+    const y = anyoReal(p) || +p.year; if (y >= 2000) yrs[y] = (yrs[y] || 0) + 1;
+    const a = artistaEpoca(p); art[a] = (art[a] || 0) + 1;
+  }
+  const F = Object.entries(fam).sort((a, b) => b[1] - a[1]), maxF = F[0][1];
+  const ys = Object.keys(yrs).map(Number).sort((a, b) => a - b), y0 = ys[0], y1 = ys[ys.length - 1];
+  const serie = []; for (let y = y0; y <= y1; y++) serie.push([y, yrs[y] || 0]);
+  const maxY = Math.max(...serie.map(x => x[1])), pico = serie.find(x => x[1] === maxY)[0];
+  /* los años de verdad de la época: los que suman el 80 % */
+  const orden = serie.slice().sort((a, b) => b[1] - a[1]); let acc = 0; const nucleo = [];
+  for (const [y, n] of orden) { if (acc >= edm.length * 0.8) break; acc += n; nucleo.push(y); }
+  const ini = Math.min(...nucleo), fin = Math.max(...nucleo);
+  const T = Object.entries(art).sort((a, b) => b[1] - a[1]).slice(0, 15), maxA = T[0][1];
+  const sep = Object.keys(PREFS.epocaArt || {}).length, B = leer(K_EPOCA, { hechos: {} });
+  const total = (S.likes && S.likes.length) || edm.length;
+  const fila = (n, v, mx) => '<div class="fila"><span>' + esc(n) + '</span><div class="bar"><i style="width:' + Math.max(2, Math.round(100 * v / mx)) + '%"></i></div><b>' + n$(v) + '</b></div>';
+  hoja('<div class="mapa"><h2>Tu época EDM</h2>' +
+    '<div class="dato"><b>' + n$(edm.length) + '</b> canciones de electrónica: el <b>' + Math.round(100 * edm.length / total) + '%</b> de tus Me gusta. Tu época va de <b>' + ini + ' a ' + fin + '</b>, con el pico en <b>' + pico + '</b> (' + n$(maxY) + ' canciones de ese año).</div>' +
+    '<h3>Por estilo</h3>' + F.map(([n, v]) => fila(n, v, maxF)).join('') +
+    '<h3>Por año de la canción</h3><div class="anyos">' + serie.map(([y, n]) => '<div class="' + (y === pico ? 'pico' : '') + '" style="height:' + Math.max(2, Math.round(100 * n / maxY)) + '%" title="' + y + ': ' + n + '"></div>').join('') + '</div>' +
+    '<div class="ejes">' + serie.map(([y]) => '<span>' + ((y % 5 === 0 || y === y0 || y === y1) ? "'" + String(y).slice(2) : '') + '</span>').join('') + '</div>' +
+    '<h3>Tus 15 de la época</h3>' + T.map(([n, v]) => fila(n, v, maxA)).join('') +
+    '<div class="dato">' + (sep ? 'Ya has separado <b>' + sep + '</b> artistas. ' : '') + (Object.keys(B.hechos || {}).length ? 'Tienes <b>' + Object.keys(B.hechos).length + '</b> revisados sin aplicar. ' : '') + 'Para separar: «Separar mi época EDM».</div>' +
+    '<div class="btnrow"><button class="btn pri" id="mpSep">' + ic('rayo') + 'Separar mi época</button><button class="btn" id="mpVer">' + ic('repes') + 'Versiones repetidas</button></div></div>', h => {
+      h.querySelector('#mpSep').onclick = () => { cerrarHoja(true); hojaEpocaEDM(f); };
+      h.querySelector('#mpVer').onclick = () => { cerrarHoja(true); hojaVersionesEDM(f); };
+    });
+}
+
+/* ---- Versiones de la misma canción (Radio Edit, Extended, remixes) ---- */
+async function hojaVersionesEDM(f) {
+  const edm = await cancionesEDM(f); if (!edm) return;
+  const ah = await escuchasAhora();
+  const base = p => fold(p.title).replace(/\s*[\(\[][^\)\]]*[\)\]]/g, ' ').replace(/\s+-\s+.*$/, '').replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim() + '|' + fold((p.artists[0] || {}).name);
+  const g = new Map(); for (const p of edm) { const k = base(p); if (!g.has(k)) g.set(k, []); g.get(k).push(p); }
+  const G = Array.from(g.values()).map(l => Array.from(new Map(l.map(p => [p.uri, p])).values())).filter(l => l.length > 1);
+  if (!G.length) { toast('No tienes varias versiones de la misma canción'); return; }
+  /* por defecto se queda: la que escuchas, si no la original (sin nada detrás), si no la primera */
+  const queda = G.map(l => { const x = l.find(p => ah.c.has(p.uri)) || l.find(p => !versionDe(p)) || l[0]; return new Set([x.uri]); });
+  G.sort((a, b) => b.length - a.length);
+  const fila = (p, i) => '<div class="ep-c ' + (queda[i].has(p.uri) ? 'si' : 'no') + '" data-g="' + i + '" data-u="' + p.uri + '"><span class="ck">✓</span><span class="t">' + esc(versionDe(p) || 'Original') + '</span><span class="v">' + esc(p.album) + '</span>' + (ah.c.has(p.uri) ? '<span class="ya">la escuchas</span>' : '') + '<button class="btn sm ghost pl" data-play="' + p.uri + '" aria-label="Escuchar">' + ic('play') + '</button></div>';
+  const nFuera = () => G.reduce((n, l, i) => n + l.length - queda[i].size, 0);
+  const total = G.reduce((n, l) => n + l.length, 0);
+  hoja('<h2>Versiones de la misma canción</h2><p class="soft"><b>' + G.length + '</b> canciones de tu época las tienes en varias versiones (' + n$(total) + ' en total): Radio Edit, Extended Mix, remixes… Marca con cuáles te quedas en Me gusta. <b>Todas</b> van a «' + NOMBRE_EPOCA + '», ninguna se pierde.</p>' +
+    '<div id="verL">' + G.map((l, i) => '<div class="ver-g"><h4>' + esc((l[0].artists[0] || {}).name) + ' — ' + esc(l[0].title.replace(/\s*[\(\[].*$|\s-\s.*$/, '')) + '</h4>' + l.map(p => fila(p, i)).join('') + '</div>').join('') + '</div>' +
+    '<button class="btn pri wide" id="verOk" style="position:sticky;bottom:0;margin-top:8px"></button>', h => {
+      const boton = () => { const n = nFuera(); h.querySelector('#verOk').textContent = n ? 'Aplicar: ' + n + ' salen de Me gusta' : 'Me quedo todas: solo guardarlas en la época'; };
+      boton();
+      h.querySelector('#verL').onclick = e => {
+        const pb = e.target.closest('[data-play]'); if (pb) { e.stopPropagation(); reproducir({ uris: [pb.dataset.play] }); return; }
+        const c = e.target.closest('.ep-c'); if (!c) return;
+        const i = +c.dataset.g, u = c.dataset.u;
+        if (queda[i].has(u)) { if (queda[i].size === 1) { toast('Quédate al menos una (o marca otra primero)'); return; } queda[i].delete(u); } else queda[i].add(u);
+        c.className = 'ep-c ' + (queda[i].has(u) ? 'si' : 'no'); boton();
+      };
+      h.querySelector('#verOk').onclick = async () => {
+        const todas = [].concat(...G), fuera = todas.filter((p, k) => { const i = G.findIndex(l => l.indexOf(p) >= 0); return !queda[i].has(p.uri); });
+        cerrarHoja(true);
+        if (await aplicarEpoca(todas, fuera, 'Versiones EDM')) { toast(fuera.length ? fuera.length + ' versiones fuera de Me gusta; todas en «' + NOMBRE_EPOCA + '»' : 'Guardadas en «' + NOMBRE_EPOCA + '»', { txt: 'Deshacer', fn: () => deshacerUltimo(HIST[0].id) }, 7000); render(); }
+      };
+    });
+}
 async function plEpoca(nueva) {
   const pls = nueva ? [] : await cargarPlaylists();
   let p = (PREFS.plEpoca && pls.find(x => x.id === PREFS.plEpoca)) || pls.find(x => esMia(x) && fold(x.name) === fold(NOMBRE_EPOCA));
@@ -3992,14 +4149,33 @@ async function hojaEpocaEDM(f) {
   const nSi = a => a.ps.filter(p => si.has(p.uri)).length;
   const cuenta = () => { let quedan = 0, salen = 0, arts = 0; for (const a of A) if (hechos.has(a.k) && a.ps.length) { arts++; const n = nSi(a); quedan += n; salen += a.ps.length - n; } return { quedan, salen, arts }; };
   const cab = (a, i) => '<div class="ep-cab" data-a="' + i + '"><div class="tx"><b>' + esc(a.nombre) + '</b><small>' + a.ps.length + (a.ps.length === 1 ? ' canción' : ' canciones') + (a.ahora ? ' · <span class="ep-now">lo escuchas ahora</span>' : '') + (yaHechos[a.k] ? ' · ya separado otro día' : '') + '</small></div><span class="ep-n">' + (hechos.has(a.k) ? nSi(a) + ' se quedan' : 'sin revisar') + '</span><span class="flecha">' + ic('chev') + '</span></div>';
-  const cancion = p => '<div class="ep-c ' + (si.has(p.uri) ? 'si' : 'no') + '" data-u="' + p.uri + '"><span class="ck">✓</span><span class="t">' + esc(p.title) + '</span>' + (cAhora.has(p.uri) ? '<span class="ya">la escuchas</span>' : '') + '<button class="btn sm ghost pl" data-play="' + p.uri + '" aria-label="Escuchar">' + ic('play') + '</button></div>';
+  for (const a of A) { const c = {}; for (const p of a.ps) { const fa = familiaEDM(p); c[fa] = (c[fa] || 0) + 1; } a.fam = Object.entries(c).sort((x, y) => y[1] - x[1])[0][0]; }
+  const FAMS = Array.from(new Set(A.map(a => a.fam)));
+  const cancion = p => '<div class="ep-c ' + (si.has(p.uri) ? 'si' : 'no') + '" data-u="' + p.uri + '"><span class="ck">✓</span><span class="t">' + esc(p.title) + '</span>' + (p.artists[0] && fold(p.artists[0].name) !== fold(artistaEpoca(p)) ? '<span class="v">' + esc(p.artists[0].name) + '</span>' : '') + (cAhora.has(p.uri) ? '<span class="ya">la escuchas</span>' : '') + '<button class="btn sm ghost pl" data-play="' + p.uri + '" aria-label="Escuchar">' + ic('play') + '</button></div>';
   const pintarRes = h => { const r = cuenta(); h.querySelector('.ep-res').innerHTML = '<div><b>' + n$(r.arts) + '</b><small>de ' + n$(A.length) + ' artistas revisados</small></div><div><b>' + n$(r.quedan) + '</b><small>siguen en Me gusta</small></div><div><b>' + n$(r.salen) + '</b><small>solo en la época</small></div>'; h.querySelector('#epOk').disabled = !r.arts; h.querySelector('#epOk').textContent = r.arts ? 'Aplicar ' + r.arts + (r.arts === 1 ? ' artista' : ' artistas') : 'Revisa algún artista'; };
   hoja('<h2>Tu época EDM</h2><p class="soft"><b>' + n$(edm.length) + '</b> canciones de electrónica de <b>' + n$(A.length) + '</b> artistas. Toca un artista y <b>marca las canciones que sigues escuchando</b>: se quedan en Me gusta. Las demás salen de Me gusta pero no se pierden: <b>todas</b> van a la playlist «' + NOMBRE_EPOCA + '».</p>' +
     '<p class="tiny mute">Ya vienen marcadas las que escuchas estas semanas. No hace falta hacerlo todo hoy: se aplican solo los artistas que abras, y lo que marques se guarda.' + (sinGen > 200 ? ' Ojo: ' + n$(sinGen) + ' canciones aún no tienen género y no salen aquí.' : '') + '</p>' +
-    '<div class="ep-res"></div><div id="epL">' + A.map((a, i) => '<div class="ep-g' + (hechos.has(a.k) ? ' hecho' : '') + '" data-g="' + i + '">' + cab(a, i) + '<div class="ep-cs"></div></div>').join('') + '</div>' +
+    '<div class="ep-bar"><input class="field" id="epQ" placeholder="Buscar artista o canción" autocomplete="off"><select class="field" id="epOrd" style="flex:none;width:auto"><option value="n">Más canciones</option><option value="az">A-Z</option><option value="pend">Sin revisar primero</option></select><button class="btn sm ghost" id="epMapa">' + ic('grafica') + 'Mapa</button><button class="btn sm ghost" id="epVer">' + ic('repes') + 'Versiones</button></div>' +
+    '<div class="ep-fam" id="epFam"><button class="chip on" data-f="">Todos</button>' + FAMS.map(x => '<button class="chip" data-f="' + esc(x) + '">' + esc(x) + ' · ' + A.filter(a => a.fam === x).length + '</button>').join('') + '</div>' +
+    '<div class="ep-res"></div><div id="epL">' + A.map((a, i) => '<div class="ep-g' + (hechos.has(a.k) ? ' hecho' : '') + '" data-g="' + i + '" data-fam="' + esc(a.fam) + '">' + cab(a, i) + '<div class="ep-cs"></div></div>').join('') + '</div>' +
     '<button class="btn pri wide" id="epOk" style="position:sticky;bottom:0;margin-top:10px">Aplicar</button>' +
     '<p class="tiny mute" style="text-align:center">Se puede deshacer desde Cambios.</p>', h => {
       pintarRes(h);
+      /* buscar, estilo y orden */
+      let fFam = '';
+      const filtrar = () => {
+        const q = fold(h.querySelector('#epQ').value.trim());
+        h.querySelectorAll('.ep-g').forEach(g => { const a = A[+g.dataset.g]; const vale = (!fFam || a.fam === fFam) && (!q || fold(a.nombre).indexOf(q) >= 0 || a.ps.some(p => fold(p.title).indexOf(q) >= 0)); g.style.display = vale ? '' : 'none'; });
+      };
+      h.querySelector('#epQ').oninput = filtrar;
+      h.querySelector('#epFam').onclick = e => { const c = e.target.closest('[data-f]'); if (!c) return; fFam = c.dataset.f; h.querySelectorAll('#epFam .chip').forEach(x => x.classList.toggle('on', x === c)); filtrar(); };
+      h.querySelector('#epOrd').onchange = e => {
+        const L = h.querySelector('#epL'), gs = Array.from(L.children), o = e.target.value;
+        gs.sort((x, y) => { const a = A[+x.dataset.g], b = A[+y.dataset.g]; return o === 'az' ? a.nombre.localeCompare(b.nombre) : o === 'pend' ? (hechos.has(a.k) - hechos.has(b.k)) || b.ps.length - a.ps.length : b.ps.length - a.ps.length; });
+        gs.forEach(x => L.appendChild(x));
+      };
+      h.querySelector('#epMapa').onclick = () => { cerrarHoja(true); hojaMapaEDM(f); };
+      h.querySelector('#epVer').onclick = () => { cerrarHoja(true); hojaVersionesEDM(f); };
       const repintarCab = g => { const i = +g.dataset.g; g.querySelector('.ep-cab').outerHTML = cab(A[i], i); g.classList.toggle('hecho', hechos.has(A[i].k)); };
       h.querySelector('#epL').onclick = e => {
         const pb = e.target.closest('[data-play]'); if (pb) { e.stopPropagation(); reproducir({ uris: [pb.dataset.play] }); return; }
@@ -4007,12 +4183,13 @@ async function hojaEpocaEDM(f) {
         const a = A[+g.dataset.g];
         if (e.target.closest('.ep-cab')) {
           const cs = g.querySelector('.ep-cs');
-          if (!cs.innerHTML) cs.innerHTML = '<div class="ep-todo"><button class="btn sm" data-todo="si">Me quedo todas</button><button class="btn sm" data-todo="no">Ninguna</button><button class="btn sm ghost" data-noedm="1">No es EDM</button></div>' + a.ps.map(cancion).join('');
+          if (!cs.innerHTML) cs.innerHTML = '<div class="ep-todo"><button class="btn sm" data-todo="si">Me quedo todas</button><button class="btn sm" data-todo="no">Ninguna</button><button class="btn sm ghost" data-todas="1">' + ic('play') + 'Poner todas</button><button class="btn sm ghost" data-noedm="1">No es EDM</button></div>' + a.ps.map(cancion).join('');
           g.classList.toggle('abierto');
           /* abrirlo cuenta como revisado: lo que veas sin marcar, pasa a la época */
           if (!hechos.has(a.k)) { hechos.add(a.k); guardarB(); repintarCab(g); pintarRes(h); }
           return;
         }
+        if (e.target.closest('[data-todas]')) { reproducir({ uris: a.ps.slice(0, 100).map(p => p.uri) }); toast('Suenan las de ' + a.nombre + ': ve marcando las que sigues escuchando'); return; }
         if (e.target.closest('[data-noedm]')) {
           /* fuera de la época: el artista entero (y sus canciones, por si alguna era un remix suyo) */
           const N = PREFS.edmNo || (PREFS.edmNo = []);
@@ -4091,6 +4268,8 @@ function hojaBandeja(E) {
     '<button data-o="limpiar">' + ic('corazonRoto') + '<span>Limpiar mis Me gusta<span class="sub">25 al azar: se queda, a una playlist, «Para no olvidar» o fuera</span></span></button>' +
     '<button data-o="repes">' + ic('repes') + '<span>Revisar repetidas<span class="sub">la misma canción dos veces: eliges con cuál te quedas</span></span></button>' +
     '<button data-o="edm">' + ic('rayo') + '<span>Separar mi época EDM<span class="sub">toda a una playlist; de Me gusta sale solo lo que ya no escuchas</span></span></button>' +
+    '<button data-o="edmMapa">' + ic('grafica') + '<span>Mapa de mi época EDM<span class="sub">estilos, años y artistas de un vistazo</span></span></button>' +
+    '<button data-o="edmVer">' + ic('repes') + '<span>Versiones de la misma canción (EDM)<span class="sub">Radio Edit, Extended, remixes: eliges cuál se queda</span></span></button>' +
     '<button data-o="rescate">' + ic('reloj') + '<span>Rescatar del archivo<span class="sub">10 canciones viejas al azar, por si alguna merece una playlist (opcional)</span></span></button>' +
     '<button data-o="desde">' + ic('ajustes') + '<span>Cambiar desde cuándo cuenta como nuevo</span></button>' +
     '</div>', h => {
@@ -4102,6 +4281,8 @@ function hojaBandeja(E) {
         else if (o === 'limpiar') limpiarMeGusta();
         else if (o === 'repes') hojaRepesLikes();
         else if (o === 'edm') hojaEpocaEDM();
+        else if (o === 'edmMapa') hojaMapaEDM();
+        else if (o === 'edmVer') hojaVersionesEDM();
         else if (o === 'rescate') {
           const arch = (await likesGuardados()).filter(p => !p.local && p.added < (b.desde || 0) && !decidida(p));
           if (!arch.length) { toast('No hay nada en el archivo'); return; }
@@ -6948,6 +7129,8 @@ function hojaFuente(f) {
       lk ? b('limpiar', 'corazonRoto', 'Limpiar mis Me gusta', '25 al azar: se queda, a una playlist, «Para no olvidar» o fuera') : '',
       lk ? b('repes', 'repes', 'Revisar repetidas', 'la misma canción dos veces: eliges con cuál te quedas') : '',
       lk ? b('edm', 'rayo', 'Separar mi época EDM', 'toda a una playlist; de Me gusta sale solo lo que ya no escuchas') : '',
+      lk ? b('edmMapa', 'grafica', 'Mapa de mi época EDM', 'estilos, años y artistas de un vistazo') : '',
+      lk ? b('edmVer', 'repes', 'Versiones de la misma canción (EDM)', 'Radio Edit, Extended, remixes: eliges cuál se queda') : '',
       lk ? b('olvido', 'reloj', 'Mandar a «Para no olvidar»', S.sel.size ? 'las ' + S.sel.size + ' marcadas: salen de Me gusta pero se guardan' : 'marca antes las canciones') : '',
       lk ? b('limpieza', 'reloj', 'Limpieza mensual', 'marca lo que lleva más de 6 meses en Me gusta') : '',
       ed ? b('borrar', 'papelera', 'Eliminar la playlist', 'se puede recuperar desde Cambios', 'danger') : '',
@@ -6996,6 +7179,8 @@ function hojaFuente(f) {
         else if (o === 'repes') quitarRepetidas(f);
         else if (o === 'limpiar') limpiarMeGusta(f);
         else if (o === 'edm') hojaEpocaEDM(f);
+        else if (o === 'edmMapa') hojaMapaEDM(f);
+        else if (o === 'edmVer') hojaVersionesEDM(f);
         else if (o === 'olvido') {
           const sel = seleccionadas().filter(p => !p.local);
           if (!sel.length) { toast('Marca primero las canciones (toca su portada)'); return; }
