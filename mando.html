@@ -1060,7 +1060,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-08d';
+const VERSION = '2026-10-08e';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -5410,10 +5410,17 @@ function casaSugerida(p, ctx) {
 /* artistas con 2+ canciones cuyas etiquetas piden otra casa (la electrónica no: ahí las etiquetas son ruido) */
 function artistasMezcla(D) {
   const CU = PREFS.casaUri || {}, por = new Map(); D.sug = new Map();
+  /* el año del artista (no el del remaster), como al repartir */
+  const minY = new Map(); for (const p of D.ps) { const k = fold((p.artists[0] || {}).name || ''), y = +p.year || 0; if (y && (!minY.has(k) || y < minY.get(k))) minY.set(k, y); }
+  const ctx = Object.assign({}, D.ctx, { minY });
+  /* lo que solo cambia de época dentro del mismo estilo no es «mezcla» */
+  const FAMS = [/^Rock · /, /^Rap · /, /^Reggaeton /, /^(Pop en español|Pop en español antiguo|Infancia en España)$/, /^(EDM · |Boiler Room|House relajante|Afrohouse|Orígenes del|Dance Classics|Eurobeat|Disco$)/];
+  const mismaFam = (a, b) => FAMS.some(rx => rx.test(a) && rx.test(b));
+  const electronica = c => FAMS[4].test(c);
   for (const p of D.ps) {
-    if (CU[p.uri] || esEDM(p)) continue;
-    const c = D.asig.get(p.uri), sg = casaSugerida(p, D.ctx);
-    if (sg && casaBase(sg) !== casaBase(c) && esCasa(sg)) { D.sug.set(p.uri, sg); const k = claveArtCasa(p); por.set(k, (por.get(k) || 0) + 1); }
+    if (CU[p.uri] || esEDM(p) || electronica(casaBase(D.asig.get(p.uri)))) continue;
+    const c = D.asig.get(p.uri), sg = casaSugerida(p, ctx);
+    if (sg && casaBase(sg) !== casaBase(c) && esCasa(sg) && !mismaFam(casaBase(sg), casaBase(c))) { D.sug.set(p.uri, sg); const k = claveArtCasa(p); por.set(k, (por.get(k) || 0) + 1); }
   }
   const ps = D.ps.filter(p => (por.get(claveArtCasa(p)) || 0) >= 2);
   return { ps, n: Array.from(por.values()).filter(x => x >= 2).length, canc: ps.filter(p => D.sug.has(p.uri)).length };
