@@ -303,6 +303,11 @@
   .ca-cs { padding: 0 0 6px 12px; }
   .ca-bus small { display: block; font-size: 11px; color: var(--jade); font-weight: 800; margin: 8px 6px 0; }
   .ca-pie { position: sticky; bottom: -1px; background: var(--bg); padding: 10px 0; margin-top: 10px; }
+  .ca-disco { margin: 2px 0 8px; border-left: 2px solid var(--line); padding-left: 6px; }
+  .ca-dcab { display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 6px 4px 2px; }
+  .ca-dcab b { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+  .ca-sug { flex: none; font-size: 11px; padding: 4px 8px; color: var(--jade); max-width: 38%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ca-mz .ep-cab b { color: var(--jade); }
   .rp.moods .port { width: min(34vw, 132px); }
   .rp.moods .dest { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 6px; }
   .rp.moods .dest button { padding: 9px 8px; font-size: 14px; }
@@ -1055,7 +1060,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-08c';
+const VERSION = '2026-10-08d';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2009,7 +2014,7 @@ const S = {
   selObj: new Set(), buscar: { q: '', tipo: 'track', res: null }, suena: null, soloSel: false, indice: null
 };
 const PREFS = Object.assign({ saltarRepes: true }, leer(K_PREFS, {}));
-const CFG_SYNC = ['criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido', 'distintas', 'likesFuera', 'plEpoca', 'epocaArt', 'edmNo', 'casaUri', 'casaArt'];
+const CFG_SYNC = ['criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido', 'distintas', 'likesFuera', 'plEpoca', 'epocaArt', 'edmNo', 'casaUri', 'casaArt', 'casaAlb'];
 let _cfgSnap = null;
 const guardarPrefs = () => {
   escribir(K_PREFS, PREFS);
@@ -5072,7 +5077,7 @@ function subEDM(p) {
 /* ¿el DJ tiene algún género concreto? (si solo dice «edm», decide la mayoría de sus canciones) */
 const djConcreto = p => [genArt({ name: artistaEpoca(p) }), genArt(p.artists[0])].some(gs => gs.some(subDeGen)) || enLista(DUBSTEP_DURO, fold(artistaEpoca(p)));
 /* la casa que le toca a una canción (sin contar lo que hayas movido tú) */
-function casaAuto(p, ctx) {
+function casaAuto(p, ctx, gsF) {
   _sampM = _sampM || _parTit(SAMPLEADAS); _tristM = _tristM || _parTit(TRISTES);
   if (casaParEn(_sampM, p)) return 'Sampleadas';
   const a0 = p.artists[0] || { name: '' }, k0 = fold(a0.name), y0 = +p.year || 0, t = fold(p.title), al = fold(p.album || '');
@@ -5082,12 +5087,12 @@ function casaAuto(p, ctx) {
   if (p.artists.some(a => enLista(LIMINAL_ART, fold(a.name))) || /slowed|reverb|in an empty|in another room|playing in|underwater/.test(t) || (k0 === 'aphex twin' && /ambient/.test(al))) return CASA_BURN;
   if (p.artists.some(a => enLista(COMPOSITORES, fold(a.name)))) return 'Música clásica';
   if (/^scaring the hoes/.test(al)) return CASA_STH;
-  let gs = genArt(a0);
+  let gs = gsF || genArt(a0);
   if (!gs.length) for (const a of p.artists.slice(1)) { gs = genArt(a); if (gs.length) break; }
   const gc = (generosCancion(p) || []).map(fold);
   if (!gs.length) gs = gc;
   if (gs.some(g => RX_LIMINAL.test(g))) return CASA_BURN;
-  if (esEDM(p)) {
+  if (!gsF && esEDM(p)) {
     const c = subEDM(p), ge = genArt({ name: artistaEpoca(p) }).concat(genArt(a0));
     if (ge.some(g => /eurobeat|italo|hi-nrg/.test(g))) return 'Eurobeat e italo';
     if (c === 'Boiler Room' && y0 && y0 <= 1996 && ge.some(g => /house/.test(g))) return 'Orígenes del house';
@@ -5159,17 +5164,17 @@ function asignarCasas(ps, ctx) {
   /* año más antiguo de cada artista (para no mandar a los Beatles a 2009 por un remaster) */
   const minY = new Map(); for (const p of ps) { const k = fold((p.artists[0] || {}).name || ''), y = +p.year || 0; if (y && (!minY.has(k) || y < minY.get(k))) minY.set(k, y); }
   ctx.minY = minY;
-  const out = new Map(), CU = PREFS.casaUri || {}, CA = PREFS.casaArt || {}, fijas = ctx.fijas || new Map();
+  const out = new Map(), CU = PREFS.casaUri || {}, CA = PREFS.casaArt || {}, CALB = PREFS.casaAlb || {}, fijas = ctx.fijas || new Map();
   const kArt = p => fold(esEDM(p) ? artistaEpoca(p) : ((p.artists[0] || {}).name || ''));
   const quedan = [];
   for (const p of ps) {
     _sampM = _sampM || _parTit(SAMPLEADAS); _tristM = _tristM || _parTit(TRISTES);
-    const c = CU[p.uri] || CA[kArt(p)] || fijas.get(p.uri) || (casaParEn(_sampM, p) ? 'Sampleadas' : null) || ART_CASA[fold((p.artists[0] || {}).name || '')] || casaAuto(p, ctx);
+    const c = CU[p.uri] || CALB[p.albumUri] || CA[kArt(p)] || fijas.get(p.uri) || (casaParEn(_sampM, p) ? 'Sampleadas' : null) || ART_CASA[fold((p.artists[0] || {}).name || '')] || casaAuto(p, ctx);
     if (c) out.set(p.uri, c); else quedan.push(p);
   }
   /* EDM de DJs sin género concreto: todas las de un DJ, juntas, donde caigan más */
   const porDJ = new Map();
-  for (const p of ps) { const c = out.get(p.uri); if (!c || !/^EDM · /.test(c) || CU[p.uri] || fijas.has(p.uri) || djConcreto(p)) continue; const k = kArt(p); (porDJ.get(k) || porDJ.set(k, []).get(k)).push(p); }
+  for (const p of ps) { const c = out.get(p.uri); if (!c || !/^EDM · /.test(c) || CU[p.uri] || CALB[p.albumUri] || fijas.has(p.uri) || djConcreto(p)) continue; const k = kArt(p); (porDJ.get(k) || porDJ.set(k, []).get(k)).push(p); }
   for (const [k, l] of porDJ) { if (CA[k]) continue; const n = {}; for (const p of l) { const c = out.get(p.uri); n[c] = (n[c] || 0) + 1; } const m = Object.entries(n).sort((a, b) => b[1] - a[1])[0][0]; for (const p of l) out.set(p.uri, m); }
   /* sin género: por el resto del disco, por partes del nombre, por el título */
   const porAlb = new Map(); for (const p of ps) { const c = out.get(p.uri); if (c && p.albumUri) { const m = porAlb.get(p.albumUri) || porAlb.set(p.albumUri, {}).get(p.albumUri); m[c] = (m[c] || 0) + 1; } }
@@ -5392,6 +5397,27 @@ async function datosCasas() {
   const moodPl = new Map(); for (const pl of pls) if (esMood(pl.name)) moodPl.set(pl.name, pl);
   return { ps, ctx, plDe, moodPl, asig: asignarCasas(ps, ctx) };
 }
+/* La casa que dicen las etiquetas de la propia canción, solo si son claras:
+   3 o más de la misma familia y la mitad del total. Una etiqueta suelta no
+   basta (dicen que Hardwell es rock). */
+function casaSugerida(p, ctx) {
+  const gc = (generosCancion(p) || []).map(fold); if (gc.length < 3) return null;
+  const cnt = {}; for (const g of gc) { const f = FAM_CASA.find(x => x[1].test(g)); if (f) cnt[f[0]] = (cnt[f[0]] || 0) + 1; }
+  const e = Object.entries(cnt).sort((a, b) => b[1] - a[1])[0];
+  if (!e || e[1] < 3 || e[1] / gc.length < 0.5) return null;
+  return casaAuto(p, ctx, gc);
+}
+/* artistas con 2+ canciones cuyas etiquetas piden otra casa (la electrónica no: ahí las etiquetas son ruido) */
+function artistasMezcla(D) {
+  const CU = PREFS.casaUri || {}, por = new Map(); D.sug = new Map();
+  for (const p of D.ps) {
+    if (CU[p.uri] || esEDM(p)) continue;
+    const c = D.asig.get(p.uri), sg = casaSugerida(p, D.ctx);
+    if (sg && casaBase(sg) !== casaBase(c) && esCasa(sg)) { D.sug.set(p.uri, sg); const k = claveArtCasa(p); por.set(k, (por.get(k) || 0) + 1); }
+  }
+  const ps = D.ps.filter(p => (por.get(claveArtCasa(p)) || 0) >= 2);
+  return { ps, n: Array.from(por.values()).filter(x => x >= 2).length, canc: ps.filter(p => D.sug.has(p.uri)).length };
+}
 let _dc = null;
 async function hojaCasas(D) {
   if (!D) {
@@ -5415,7 +5441,15 @@ async function hojaCasas(D) {
       return '<optgroup label="' + esc(g) + '">' + ns.map(n => '<option value="' + esc(n) + '"' + (n === sel ? ' selected' : '') + '>' + esc(n) + '</option>').join('') + '</optgroup>'; }).join('');
   };
   const mover = (sel, val) => '<select class="field sm ca-mv" ' + val + '><option value="">Mover a…</option>' + opciones('') + '</select>';
-  const cancion = p => '<div class="ep-c"><span class="t">' + esc(p.title) + ' <span class="mute">· ' + esc(p.artists.map(a => a.name).join(', ')) + (p.year ? ' · ' + p.year : '') + '</span></span>' + mover('', 'data-u="' + esc(p.uri) + '"') + '</div>';
+  const cancion = p => { const sg = D.sug && D.sug.get(p.uri), c = D.asig.get(p.uri);
+    return '<div class="ep-c"><span class="t">' + esc(p.title) + ' <span class="mute">· ' + esc(p.artists.map(a => a.name).join(', ')) + (p.year ? ' · ' + p.year : '') + (sg || abierta === '__mz' ? ' · en ' + esc(c) : '') + '</span></span>' +
+      (sg ? '<button class="btn sm ca-sug" data-su="' + esc(p.uri) + '" data-sc="' + esc(sg) + '" title="Lo que dicen sus etiquetas">→ ' + esc(sg) + '</button>' : '') + mover('', 'data-u="' + esc(p.uri) + '"') + '</div>'; };
+  /* por discos: así se mueve un disco entero de un toque (El Mal Querer a Flamenco, Motomami a otra) */
+  const porDisco = ps => {
+    const A = new Map(); for (const p of ps) { const k = p.albumUri || p.album; (A.get(k) || A.set(k, { k, n: p.album, ps: [] }).get(k)).ps.push(p); }
+    const L = Array.from(A.values()); if (L.length < 2) return ps.map(cancion).join('');
+    return L.sort((a, b) => b.ps.length - a.ps.length).map(a => '<div class="ca-disco"><div class="ca-dcab"><b>' + ic('disco') + esc(a.n) + '</b><span class="mute">' + a.ps.length + '</span>' + (a.ps.length > 1 ? mover('', 'data-alb="' + esc(a.k) + '"').replace('>Mover a…<', '>Mover el disco a…<') : '') + '</div>' + a.ps.map(cancion).join('') + '</div>').join('');
+  };
   const pintarLista = h => {
     const M = porCasa(), cont = h.querySelector('#caLista');
     if (q) {
@@ -5424,6 +5458,8 @@ async function hojaCasas(D) {
       return;
     }
     let html = '';
+    if (!D.mezcla) D.mezcla = artistasMezcla(D);
+    if (D.mezcla.n) html += '<div class="ep-g ca-mz' + (abierta === '__mz' ? ' abierto' : '') + '" data-c="__mz"><div class="ep-cab"><span class="tx"><b>Artistas que mezclan estilos</b><small>' + D.mezcla.n + ' artistas con canciones que sus etiquetas ponen en otra casa. Abre uno: verás sus discos (se mueven de un toque) y, en verde, la casa que sugieren las etiquetas.</small></span><span class="ep-n">' + n$(D.mezcla.canc) + '</span>' + ic('chev', ' class="i flecha"') + '</div><div class="ep-cs">' + (abierta === '__mz' ? artistas(D.mezcla.ps) : '') + '</div></div>';
     for (const [g, l] of CASAS) {
       const nombres = Array.from(M.keys()).filter(n => l.indexOf(casaBase(n)) >= 0).sort((a, b) => l.indexOf(casaBase(a)) - l.indexOf(casaBase(b)) || (a < b ? -1 : 1));
       if (!nombres.length) continue;
@@ -5442,13 +5478,21 @@ async function hojaCasas(D) {
     }
     cont.innerHTML = html;
   };
+  const recalc = (h, txt) => {
+    D.asig = asignarCasas(D.ps, D.ctx); D.mezcla = null; D.moods = null;
+    toast(txt);
+    const y = h.scrollTop, abiertos = Array.from(h.querySelectorAll('.ca-a .ca-cs:not([hidden])')).map(x => x.closest('.ca-a').dataset.k);
+    pintarLista(h); h.querySelector('#caPaso').innerHTML = paso();
+    for (const k of abiertos) { const a = h.querySelector('.ca-a[data-k="' + CSS.escape(k) + '"]'); if (a) { a.querySelector('.ca-cs').hidden = false; const v = a.querySelector('[data-ver]'); if (v) v.textContent = 'Ocultar'; } }
+    h.scrollTop = y;
+  };
   const cabCasa = (n, ps) => '<div class="ep-todo"><button class="btn sm" data-rm="' + esc(n) + '">' + ic('play') + 'Repasar moods de estas ' + n$(ps.length) + '</button></div>';
   const artistas = ps => {
     const A = new Map(); for (const p of ps) { const k = claveArtCasa(p); if (!A.has(k)) A.set(k, { k, n: nombreArtCasa(p), ps: [] }); A.get(k).ps.push(p); }
     return Array.from(A.values()).sort((a, b) => b.ps.length - a.ps.length || (a.n < b.n ? -1 : 1)).map(a =>
       '<div class="ca-a" data-k="' + esc(a.k) + '"><div class="ep-a"><span class="tx"><b>' + esc(a.n) + '</b><small>' + n$(a.ps.length) + (a.ps.length === 1 ? ' canción · ' + esc(a.ps[0].title) : ' canciones') + '</small></span>' +
       (a.ps.length > 1 ? '<button class="btn sm ghost" data-ver="1">Ver</button>' : '') + mover('', 'data-a="' + esc(a.k) + '"') + '</div>' +
-      '<div class="ca-cs" hidden>' + a.ps.map(cancion).join('') + '</div></div>').join('');
+      '<div class="ca-cs" hidden>' + porDisco(a.ps) + '</div></div>').join('');
   };
   const paso = () => {
     const nC = new Set(D.asig.values()).size, faltan = Array.from(new Set(D.asig.values())).filter(n => !D.plDe.has(n)).length;
@@ -5474,27 +5518,32 @@ async function hojaCasas(D) {
         if (e.target.closest('select')) return;
         const rm = e.target.closest('[data-rm]');
         if (rm) { const n = rm.dataset.rm; cerrarHoja(true); repasarMoods({ kind: 'lista', id: 'casa', name: n, editable: false }, porCasa().get(n) || []); return; }
+        const su = e.target.closest('[data-su]');
+        if (su) { (PREFS.casaUri || (PREFS.casaUri = {}))[su.dataset.su] = su.dataset.sc; guardarPrefs(); recalc(h, 'Movida a «' + su.dataset.sc + '»'); return; }
         const ver = e.target.closest('[data-ver]');
         if (ver) { const cs = ver.closest('.ca-a').querySelector('.ca-cs'); cs.hidden = !cs.hidden; ver.textContent = cs.hidden ? 'Ver' : 'Ocultar'; return; }
         const cab = e.target.closest('.ep-cab'); if (!cab) return;
         const g = cab.parentNode, n = g.dataset.c;
         if (abierta === n) { abierta = null; g.classList.remove('abierto'); return; }
         h.querySelectorAll('.ep-g.abierto').forEach(x => { x.classList.remove('abierto'); x.querySelector('.ep-cs').innerHTML = ''; });
-        abierta = n; g.classList.add('abierto'); g.querySelector('.ep-cs').innerHTML = cabCasa(n, porCasa().get(n) || []) + artistas(porCasa().get(n) || []);
+        abierta = n; g.classList.add('abierto'); g.querySelector('.ep-cs').innerHTML = n === '__mz' ? artistas(D.mezcla.ps) : cabCasa(n, porCasa().get(n) || []) + artistas(porCasa().get(n) || []);
       });
       h.querySelector('#caLista').addEventListener('change', e => {
         const s = e.target.closest('.ca-mv'); if (!s || !s.value) return;
         const val = s.value;
-        if (s.dataset.u) { (PREFS.casaUri || (PREFS.casaUri = {}))[s.dataset.u] = val; }
+        const CU = PREFS.casaUri || (PREFS.casaUri = {}), CALB = PREFS.casaAlb || (PREFS.casaAlb = {});
+        if (s.dataset.u) CU[s.dataset.u] = val;
+        else if (s.dataset.alb) {
+          const k = s.dataset.alb; CALB[k] = val;
+          for (const p of D.ps) if ((p.albumUri || p.album) === k) { delete CU[p.uri]; if (!p.albumUri) CU[p.uri] = val; }
+        }
         else if (s.dataset.a) {
           const k = s.dataset.a; (PREFS.casaArt || (PREFS.casaArt = {}))[k] = val;
-          /* lo que movieras suelto de ese artista, también */
-          const CU = PREFS.casaUri || {}; for (const p of D.ps) if (CU[p.uri] && claveArtCasa(p) === k) delete CU[p.uri];
+          /* lo que movieras suelto o por disco de ese artista, también */
+          for (const p of D.ps) if (claveArtCasa(p) === k) { delete CU[p.uri]; if (p.albumUri) delete CALB[p.albumUri]; }
         }
         guardarPrefs();
-        D.asig = asignarCasas(D.ps, D.ctx);
-        toast('Movido a «' + val + '»');
-        const y = h.scrollTop; pintarLista(h); h.querySelector('#caPaso').innerHTML = paso(); h.scrollTop = y;
+        recalc(h, (s.dataset.alb ? 'Disco movido' : 'Movido') + ' a «' + val + '»');
       });
       const bC = h.querySelector('#caCrear'); if (bC) bC.onclick = () => crearCasas(D);
       const bV = h.querySelector('#caVaciar'); if (bV) bV.onclick = () => vaciarMeGusta(D);
