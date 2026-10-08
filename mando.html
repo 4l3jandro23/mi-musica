@@ -297,6 +297,12 @@
   .mapa .anyos div.pico { background: var(--rust); }
   .mapa .ejes { display: flex; gap: 3px; font-size: 10px; color: var(--fg-mute); }
   .mapa .ejes span { flex: 1; text-align: center; }
+  .ca-g { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--fg-mute); margin: 18px 4px 2px; }
+  .ca-a .ep-a { padding: 6px 4px; }
+  select.ca-mv { flex: none; width: auto; max-width: 44%; font-size: 12px; padding: 6px 8px; }
+  .ca-cs { padding: 0 0 6px 12px; }
+  .ca-bus small { display: block; font-size: 11px; color: var(--jade); font-weight: 800; margin: 8px 6px 0; }
+  .ca-pie { position: sticky; bottom: -1px; background: var(--bg); padding: 10px 0; margin-top: 10px; }
   .mapa .dato { background: var(--surface); border-radius: 14px; padding: 12px; box-shadow: var(--shadow-sm); margin: 8px 0; font-size: 14px; }
   .ver-g { background: var(--surface); border-radius: 16px; padding: 8px; margin-bottom: 10px; box-shadow: var(--shadow-sm); }
   .ver-g h4 { margin: 4px 6px 6px; font-size: 14px; }
@@ -1045,7 +1051,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-07h';
+const VERSION = '2026-10-08a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -1999,7 +2005,7 @@ const S = {
   selObj: new Set(), buscar: { q: '', tipo: 'track', res: null }, suena: null, soloSel: false, indice: null
 };
 const PREFS = Object.assign({ saltarRepes: true }, leer(K_PREFS, {}));
-const CFG_SYNC = ['criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido', 'distintas', 'likesFuera', 'plEpoca', 'epocaArt', 'edmNo'];
+const CFG_SYNC = ['criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido', 'distintas', 'likesFuera', 'plEpoca', 'epocaArt', 'edmNo', 'casaUri', 'casaArt'];
 let _cfgSnap = null;
 const guardarPrefs = () => {
   escribir(K_PREFS, PREFS);
@@ -2017,7 +2023,8 @@ function aplicarCfg() {
   for (const k of Object.keys(C)) {
     const x = C[k]; if (!x || (vistos[k] || 0) >= x.ts) continue;
     vistos[k] = x.ts;
-    if (k === 'portadas') { if (x.v) { escribir('portadas_coleccion_v2', x.v); if (typeof PCD !== 'undefined') { PCD.col = null; PCD.cache.clear(); } } }
+    if (k === 'likesFuera' && Array.isArray(x.v)) { const u = Array.from(new Set((PREFS.likesFuera || []).concat(x.v))); PREFS.likesFuera = u.slice(-4000); }
+    else if (k === 'portadas') { if (x.v) { escribir('portadas_coleccion_v2', x.v); if (typeof PCD !== 'undefined') { PCD.col = null; PCD.cache.clear(); } } }
     else if (x.v === null) delete PREFS[k]; else PREFS[k] = x.v;
     hubo = true;
   }
@@ -4327,12 +4334,11 @@ function hojaBandeja(E) {
     '<div class="opc">' +
     '<button data-o="crit">' + ic('lapiz') + '<span>Qué va en cada playlist<span class="sub">' + Object.keys(PREFS.criterios || {}).length + ' con frase</span></span></button>' +
     '<button data-o="todo">' + ic('lista') + '<span>Ver la bandeja como lista<span class="sub">' + n$((E.pend || []).length) + ' por decidir</span></span></button>' +
+    '<button data-o="casas">' + ic('casa') + '<span>Una casa para cada canción<span class="sub">reparte Me gusta en playlists de estilo, cada canción en una sola</span></span></button>' +
     '<button data-o="limpiar">' + ic('corazonRoto') + '<span>Limpiar mis Me gusta<span class="sub">25 al azar: se queda, a una playlist, «Para no olvidar» o fuera</span></span></button>' +
     '<button data-o="repes">' + ic('repes') + '<span>Revisar repetidas<span class="sub">la misma canción dos veces: eliges con cuál te quedas</span></span></button>' +
     '<button data-o="edm">' + ic('rayo') + '<span>Separar mi época EDM<span class="sub">toda a una playlist; de Me gusta sale solo lo que ya no escuchas</span></span></button>' +
     '<button data-o="edmMapa">' + ic('grafica') + '<span>Mapa de mi época EDM<span class="sub">estilos, años y artistas de un vistazo</span></span></button>' +
-    '<button data-o="edmTodo">' + ic('rayo') + '<span>Todo a la época salvo lo que rescate<span class="sub">sale todo de Me gusta; lo que eches de menos, ♥ y vuelve</span></span></button>' +
-    '<button data-o="edmRes">' + ic('corazon') + '<span>Rescatar canciones de mi época<span class="sub">la época en aleatorio: ♥ a lo que eches de menos</span></span></button>' +
     '<button data-o="edmVer">' + ic('repes') + '<span>Versiones de la misma canción (EDM)<span class="sub">Radio Edit, Extended, remixes: eliges cuál se queda</span></span></button>' +
     '<button data-o="rescate">' + ic('reloj') + '<span>Rescatar del archivo<span class="sub">10 canciones viejas al azar, por si alguna merece una playlist (opcional)</span></span></button>' +
     '<button data-o="desde">' + ic('ajustes') + '<span>Cambiar desde cuándo cuenta como nuevo</span></button>' +
@@ -4347,8 +4353,7 @@ function hojaBandeja(E) {
         else if (o === 'edm') hojaEpocaEDM();
         else if (o === 'edmMapa') hojaMapaEDM();
         else if (o === 'edmVer') hojaVersionesEDM();
-        else if (o === 'edmTodo') hojaTodoEpoca();
-        else if (o === 'edmRes') hojaRescatar();
+        else if (o === 'casas') hojaCasas();
         else if (o === 'rescate') {
           const arch = (await likesGuardados()).filter(p => !p.local && p.added < (b.desde || 0) && !decidida(p));
           if (!arch.length) { toast('No hay nada en el archivo'); return; }
@@ -4843,6 +4848,573 @@ async function repasar(f, ps) {
   limpiarSel();
   abrirVista({ repaso: true, pintar: pintarRepaso });
 }
+/* ---- Una casa para cada canción ----
+   Cada canción de Me gusta va a UNA playlist «casa» (por estilo, y dentro por
+   época si hace falta). Luego ya se verá qué va además en otras. Ninguna casa
+   pasa de 1.000: si se llena, se parte por años. */
+const CASA_MAX = 1000;
+const CASA_BURN = "It's just a burning memory";
+const CASAS = [
+  ['Tuyas', ['Pendientes', 'Para no olvidar', 'NRG']],
+  ['Especiales', ['Sampleadas', 'Tristes', CASA_BURN]],
+  ['EDM', ['EDM · Big room', 'EDM · Electro y progressive house', 'EDM · Dubstep', 'EDM · Dubstep duro', 'EDM · Hits y EDM pop', 'EDM · Future, bass y slap house', 'EDM · House y techno de club', 'EDM · Trance', 'EDM · Trap y moombahton', 'EDM · Hardstyle', 'EDM · Future bass y melódico', 'EDM · Drum & bass', 'EDM · Electro y big beat']],
+  ['Electrónica', ['Electrónica · IDM, ambient y trip hop']],
+  ['Rap', ['Rap · Clásico (hasta 2009)', 'Rap · 2010s', 'Rap · 2020s']],
+  ['Latino', ['Reggaeton antiguo', 'Reggaeton nuevo', 'Trap y rap en español', 'Infancia en España', 'Pop en español antiguo', 'Pop en español', 'Flamenco y rumba', 'Salsa']],
+  ['Rock', ['Rock Origins', 'Rock · 60s-70s', 'Rock · 80s-90s', 'Rock · 2000s-hoy', 'Rock en español', 'Metal y rock duro']],
+  ['Pop', ['White girl pop', 'Pop internacional', 'Indie, art pop e hyperpop', 'R&B, soul y funk']],
+  ['Otras', ['Jazz instrumental', 'Música clásica', 'Bandas sonoras']]
+];
+const CASA_NOMBRES = CASAS.reduce((a, g) => a.concat(g[1]), []);
+const CASA_DESC = {
+  'Sampleadas': 'Canciones que se usaron en otras más famosas (Bound → Bound 2…)',
+  'Tristes': 'Para los días de bajón',
+  [CASA_BURN]: 'Música liminal: backrooms, pasillos vacíos, recuerdos que se borran',
+  'Infancia en España': 'Canciones en español que ya no escucho pero me dan nostalgia',
+  'Rock Origins': 'Protorock y rock de los 50: de Robert Johnson a Chuck Berry',
+  'White girl pop': 'Pop de chicas: Taylor, Olivia, Sabrina, Lana…'
+};
+/* listas a mano: [artista, principio del título] */
+const SAMPLEADAS = [
+  ['ponderosa twins plus one', 'bound'], ['the ponderosa twins', 'bound'], ['chaka khan', 'through the fire'], ['king crimson', '21st century schizoid'],
+  ['nina simone', 'strange fruit'], ['can', 'sing swan song'], ['gil scott-heron', 'comment #1'], ['gil scott-heron', 'home is where the hatred'],
+  ['curtis mayfield', 'move on up'], ['otis redding', "it's too late"], ['the main ingredient', "let me prove my love"],
+  ['labi siffre', 'my song'], ['labi siffre', 'i got the'], ['aretha franklin', 'spirit in the dark'], ['the jackson 5', 'i wanna be where you are'], ['etta james', "something's got a hold"], ['eddie johns', 'more spell on you'], ['edwin birdsong', 'cola bottle baby'],
+  ['george duke', "i love you more"], ['tavares', 'heaven must be missing'], ['sister nancy', 'bam bam'], ['the delfonics', 'ready or not'],
+  ['the honey drippers', 'impeach the president'], ['james brown', 'funky drummer'], ['james brown', 'the payback'], ['the winstons', 'amen, brother'],
+  ['incredible bongo band', 'apache'], ['the incredible bongo band', 'apache'], ['lyn collins', 'think'], ['bob james', 'nautilus'], ['bob james', 'take me to the mardi gras'],
+  ['isaac hayes', 'walk on by'], ['isaac hayes', 'hung up on my baby'], ['isaac hayes', 'ike\'s rap'], ['marvin gaye', 'inner city blues'], ['bill withers', 'grandma\'s hands'],
+  ['ohio players', 'funky worm'], ['zapp', 'more bounce'], ['zapp & roger', 'more bounce'], ['parliament', 'flash light'], ['funkadelic', '(not just) knee deep'],
+  ['tom tom club', 'genius of love'], ['diana ross', "i'm coming out"], ['mtume', 'juicy fruit'],
+  ['bobby caldwell', 'open your eyes'], ['the isley brothers', 'between the sheets'], ['the isley brothers', 'footsteps in the dark'], ['the emotions', 'blind alley'],
+  ['al green', 'i\'m glad you\'re mine'], ['booker t. & the m.g.\'s', 'hip hug-her'], ['dennis coffey', 'scorpio'], ['the j.b.\'s', 'the grunt'],
+  ['manzel', 'midnight theme'], ['ann peebles', 'i can\'t stand the rain'], ['quincy jones', 'summer in the city'], ['lonnie liston smith', 'a garden of peace'], ['lonnie liston smith', 'expansions'], ['roy ayers', 'everybody loves the sunshine'],
+  ['ahmad jamal', 'pastures'], ['ahmad jamal', 'the awakening'], ['isaac hayes', 'ike\'s mood'], ['vanilla fudge', 'you keep me hangin'], ['the alan parsons project', 'sirius'], ['steely dan', 'peg'], ['steely dan', 'do it again'], ['mountain', 'long red'],
+  ['billy squier', 'the big beat'], ['the 45 king', 'the 900 number'], ['the turtles', 'you showed me'],
+  ['the jones girls', 'nights over egypt'], ['patti labelle', 'love, need and want you'],
+  ['mary jane girls', 'all night long'], ['the whispers', 'and the beat goes on'], ['debarge', 'stay with me'], ['the persuaders', 'thin line between love'],
+  ['the stylistics', 'people make the world go round'], ['the jackson 5', 'it\'s great to be here'], ['harold melvin & the blue notes', 'bad luck'],
+  ['the chi-lites', 'are you my woman'], ['syl johnson', 'different strokes'], ['syl johnson', 'is it because i\'m black'], ['william devaughn', 'be thankful for what you got'],
+  ['minnie riperton', 'les fleurs'], ['minnie riperton', 'inside my love'], ['minnie riperton', 'lovin\' you'], ['ramsey lewis', 'les fleurs'], ['rotary connection', 'memory band'],
+  ['kool & the gang', 'jungle boogie'], ['kool & the gang', 'summer madness'], ['nina simone', 'sinnerman'], ['nina simone', 'i get along without you'], ['ann-margret', 'i just don\'t understand'],
+  ['the persuaders', 'i didn\'t know'], ['the mojo men', 'sit down'], ['scott walker', 'it\'s raining today'],
+  ['the 5 stairsteps', 'ooh child'], ['the five stairsteps', 'ooh child'], ['the beginning of the end', 'funky nassau'], ['wee', 'aen ny e'],
+  ['brenda lee', 'all alone am i'], ['the jimmy castor bunch', 'it\'s just begun'], ['clyde mcphatter', 'think me a kiss'], ['marlena shaw', 'california soul'], ['dorothy ashby', 'come live with me'], ['alicia myers', 'i want to thank you'], ['the j.b.\'s', 'pass the peas'], ['bobby byrd', 'hot pants'], ['the commodores', 'zoom'],
+  ['commodores', 'zoom'], ['quincy jones', 'everything must change'], ['the honeycone', 'want ads'],
+  ['bobby womack', 'across 110th street'], ['curtis mayfield', 'little child runnin'], ['curtis mayfield', 'pusherman'], ['curtis mayfield', 'superfly'],
+  ['the delfonics', 'didn\'t i'], ['the moments', 'sexy mama'], ['the heath brothers', 'smilin\' billy'],
+  ['joe cocker', 'woman to woman'], ['the dramatics', 'in the rain'], ['the meters', 'cissy strut'], ['the meters', 'look-ka py py'],
+  ['cymande', 'bra'], ['cymande', 'dove'], ['skull snaps', 'it\'s a new day'], ['melvin bliss', 'synthetic substitution'], ['rufus thomas', 'do the funky penguin'],
+  ['ramp', 'daylight'], ['the mohawks', 'the champ'], ['bob james', 'westchester lady'], ['galt macdermot', 'space'], ['david axelrod', 'holy thursday'],
+  ['tom scott', 'today'], ['the charmels', 'as long as i\'ve got you'],
+  ['david mccallum', 'the edge'], ['ponderosa twins + one', 'bound'], ['the ponderosa twins + one', 'bound']
+];
+const TRISTES = [
+  ['johnny cash', 'hurt'], ['gary jules', 'mad world'], ['r.e.m.', 'everybody hurts'], ['eric clapton', 'tears in heaven'], ['jeff buckley', 'hallelujah'],
+  ['adele', 'someone like you'], ['coldplay', 'fix you'], ['coldplay', 'the scientist'], ['lord huron', 'the night we met'], ['lorde', 'liability'],
+  ['phoebe bridgers', 'motion sickness'], ['phoebe bridgers', 'funeral'], ['bon iver', 'skinny love'], ['xxxtentacion', 'jocelyn flores'], ['xxxtentacion', 'sad!'],
+  ['xxxtentacion', 'changes'], ['xxxtentacion', 'revenge'], ['radiohead', 'street spirit'], ['radiohead', 'exit music'], ['radiohead', 'how to disappear'],
+  ['radiohead', 'creep'], ['radiohead', 'no surprises'], ['radiohead', 'videotape'], ['nirvana', 'something in the way'], ['alice in chains', 'nutshell'],
+  ['elliott smith', 'between the bars'], ['elliott smith', 'say yes'], ['sufjan stevens', 'fourth of july'], ['sufjan stevens', 'death with dignity'],
+  ['mitski', 'nobody'], ['mitski', 'my love mine all mine'], ['billie eilish', 'when the party'], ['billie eilish', 'what was i made for'], ['billie eilish', 'happier than ever'],
+  ['billie eilish', 'everything i wanted'], ['billie eilish', 'lovely'], ['olivia rodrigo', 'drivers license'], ['olivia rodrigo', 'traitor'], ['taylor swift', 'all too well'],
+  ['lana del rey', 'video games'], ['lana del rey', 'summertime sadness'], ['kanye west', 'street lights'], ['kanye west', 'welcome to heartbreak'], ['kanye west', 'coldest winter'],
+  ['kanye west', 'blood on the leaves'], ['kanye west', 'runaway'], ['kanye west', 'only one'], ['kanye west', 'say you will'], ['kanye west', 'pinocchio story'],
+  ['kid cudi', 'soundtrack 2 my life'], ['kid cudi', 'day \'n\' nite'], ['kid cudi', 'the prayer'], ['frank ocean', 'ivy'], ['frank ocean', 'self control'], ['frank ocean', 'white ferrari'],
+  ['frank ocean', 'seigfried'], ['frank ocean', 'godspeed'], ['frank ocean', 'bad religion'], ['mac miller', 'good news'], ['mac miller', 'once a day'], ['mac miller', '2009'],
+  ['juice wrld', 'lucid dreams'], ['juice wrld', 'legends'], ['lil peep', 'star shopping'], ['lil peep', 'save that shit'], ['the weeknd', 'call out my name'],
+  ['the weeknd', 'wicked games'], ['joji', 'slow dancing in the dark'], ['joji', 'glimpse of us'], ['kendrick lamar', 'sing about me'], ['kendrick lamar', 'u'],
+  ['tyler, the creator', 'see you again'], ['tyler, the creator', 'are we still friends'], ['drake', 'marvins room'], ['simon & garfunkel', 'the sound of silence'],
+  ['pink floyd', 'wish you were here'], ['pink floyd', 'comfortably numb'], ['the beatles', 'yesterday'], ['the beatles', 'eleanor rigby'], ['the beatles', 'while my guitar'],
+  ['george harrison', 'isn\'t it a pity'], ['john lennon', 'mother'], ['john lennon', 'jealous guy'], ['david bowie', 'lazarus'], ['david bowie', 'blackstar'],
+  ['joy division', 'love will tear us apart'], ['the smiths', 'asleep'], ['the cure', 'pictures of you'], ['portishead', 'roads'], ['massive attack', 'teardrop'],
+  ['sinead o\'connor', 'nothing compares'], ['sinéad o\'connor', 'nothing compares'], ['whitney houston', 'i will always love you'], ['celine dion', 'my heart will go on'],
+  ['sam smith', 'stay with me'], ['lewis capaldi', 'someone you loved'], ['ed sheeran', 'supermarket flowers'], ['harry styles', 'falling'], ['passenger', 'let her go'],
+  ['mgmt', 'little dark age'], ['cigarettes after sex', 'apocalypse'], ['beach house', 'space song'], ['the national', 'about today'], ['bright eyes', 'first day of my life'],
+  ['linkin park', 'numb'], ['linkin park', 'leave out all the rest'], ['evanescence', 'my immortal'], ['green day', 'wake me up when september'], ['my chemical romance', 'cancer'],
+  ['avicii', 'the nights'], ['avicii', 'heaven'], ['porter robinson', 'goodbye to a world'], ['porter robinson', 'sad machine'],
+  ['porter robinson', 'fullmoon lullaby'], ['madeon', 'shelter'], ['illenium', 'good things fall apart'], ['seven lions', 'strangers'], ['gryffin', 'tie me down'],
+  ['alejandro sanz', 'corazón partío'], ['alejandro sanz', 'no es lo mismo'], ['la oreja de van gogh', 'rosas'], ['la oreja de van gogh', 'jueves'], ['la oreja de van gogh', 'puedes contar conmigo'],
+  ['pablo alborán', 'solamente tú'], ['pablo alborán', 'saturno'], ['vanesa martín', 'complicidad'], ['rosalía', 'de plata'], ['rosalía', 'catalina'], ['rosalía', 'di mi nombre'],
+  ['rosalía', 'bagdad'], ['bad bunny', 'si veo a tu mamá'], ['bad bunny', 'la canción'], ['bad bunny', 'después de la playa'], ['bad bunny', 'dtmf'],
+  ['bad bunny', 'turista'], ['bad bunny', 'baile inolvidable'], ['quevedo', 'columbia'], ['camilo sesto', 'perdóname'], ['camilo sesto', 'vivir así es morir de amor'],
+  ['nino bravo', 'un beso y una flor'], ['joaquín sabina', '19 días y 500 noches'], ['joaquin sabina', '19 dias y 500 noches'], 
+  ['extremoduro', 'so payaso'], ['marea', 'el perro verde'], ['vetusta morla', 'copenhague'], ['love of lesbian', 'club de fans de john boy'], ['amaral', 'sin ti no soy nada'],
+  ['jeanette', 'porque te vas'], ['mecano', 'mujer contra mujer'], ['mecano', 'hijo de la luna'], ['héroes del silencio', 'la chispa adecuada'], ['heroes del silencio', 'la chispa adecuada'],
+  ['soda stereo', 'en la ciudad de la furia'], ['gustavo cerati', 'adiós'], ['estopa', 'como camarón'], ['melendi', 'tu jardín con enanitos'], ['pereza', 'princesas'],
+  ['chopin', 'nocturne'], ['frédéric chopin', 'nocturne'], ['erik satie', 'gymnopédie'], ['samuel barber', 'adagio'], ['max richter', 'on the nature of daylight'],
+  ['the caretaker', 'it\'s just a burning memory'], ['radiohead', 'true love waits'], ['jeff buckley', 'lover, you should'], ['nick drake', 'pink moon'], ['nick drake', 'river man']
+];
+/* música liminal: backrooms, pasillos vacíos, salas de espera de 1995 */
+const LIMINAL_ART = ['the caretaker', 'leyland kirby', 'windows96', 'c418', 'boards of canada', 'macintosh plus', 'vektroid', 'blank banshee', 'saint pepsi', 'luxury elite',
+  'hiroshi yoshimura', 'midori takada', 'satoshi ashikawa', 'william basinski', 'harold budd', 'tim hecker', 'grouper', '2814', 'hkmori', 'george clanton', "death's dynamic shroud",
+  'nmesh', 'home', 'oneohtrix point never', 'chuck person', 'the ink spots', 'al bowlly', 'angelo badalamenti', 'brian eno', 'cluster', 'harold budd', 'ricky eat acid',
+  'hotel pools', 'televisor', 'lorn', 'mort garson', 'kevin macleod', 'jan jelinek', 'gas', 'stars of the lid', 'the advisory circle', 'ghost box', 'belbury poly', 'burial'];
+const RX_LIMINAL = /hauntology|plunderphonic|vaporwave|mallsoft|dark ambient|chillwave|dreamwave|dreamcore|liminal|weirdcore|future funk|sovietwave|signalwave|creepy ambient|glacial ambient|arctic ambient|ambient piano|lowercase/;
+const COMPOSITORES = ['wolfgang amadeus mozart', 'ludwig van beethoven', 'antonio vivaldi', 'johann sebastian bach', 'edvard grieg', 'giuseppe verdi', 'johann strauss ii', 'frédéric chopin',
+  'frederic chopin', 'claude debussy', 'erik satie', 'pyotr ilyich tchaikovsky', 'georges bizet', 'richard wagner', 'antonín dvořák', 'gustav holst', 'carl orff', 'franz schubert',
+  'felix mendelssohn', 'george frideric handel', 'maurice ravel', 'sergei rachmaninoff', 'gustav mahler', 'giacomo puccini', 'gioachino rossini', 'camille saint-saëns',
+  'modest mussorgsky', 'joaquín rodrigo', 'manuel de falla', 'isaac albéniz', 'enrique granados', 'franz liszt', 'johannes brahms', 'robert schumann', 'igor stravinsky',
+  'sergei prokofiev', 'dmitri shostakovich', 'samuel barber', 'philip glass', 'steve reich', 'arvo pärt', 'max richter', 'ludovico einaudi', 'johann pachelbel', 'tomaso albinoni',
+  'jules massenet', 'jacques offenbach', 'aram khachaturian', 'nikolai rimsky-korsakov', 'hector berlioz', 'leo delibes', 'pietro mascagni', 'ennio morricone'];
+/* pop de chicas (en inglés) */
+const WGP_ART = ['taylor swift', 'olivia rodrigo', 'sabrina carpenter', 'lana del rey', 'lorde', 'billie eilish', 'gracie abrams', 'katy perry', 'britney spears', 'miley cyrus',
+  'avril lavigne', 'kesha', 'ke$ha', 'ariana grande', 'dua lipa', 'adele', 'ellie goulding', 'halsey', 'selena gomez', 'demi lovato', 'hilary duff', 'lady gaga', 'madonna',
+  'kylie minogue', 'carly rae jepsen', 'marina', 'marina and the diamonds', 'chappell roan', 'tate mcrae', 'meghan trainor', 'lily allen', 'sia', 'phoebe bridgers', 'boygenius',
+  'clairo', 'beabadoobee', 'kim petras', 'zara larsson', 'ava max', 'bebe rexha', 'rita ora', 'hailee steinfeld', 'fergie', 'gwen stefani', 'jessie j', 'christina aguilera',
+  'p!nk', 'pink', 'kelly clarkson', 'natasha bedingfield', 'vanessa carlton', 'michelle branch', 'sky ferreira', 'renee rapp', 'reneé rapp', 'addison rae',
+  'troye sivan', 'conan gray', 'girl in red', 'maisie peters', 'florence + the machine', 'lizzy mcalpine', 'olivia newton-john', 'cyndi lauper', 'the pussycat dolls',
+  'spice girls', 'little mix', 'fifth harmony', 'nelly furtado', 'shania twain', 'alanis morissette', 'no doubt', 'paramore', 'the veronicas', 'aqua', 'kate nash', 'robyn',
+  'ashnikko', 'slayyyter', 'caroline polachek', 'laufey', 'suki waterhouse', 'gayle', 'bea miller', 'sigrid', 'aurora', 'ellie goulding',
+  'paris hilton', 'lindsay lohan', 'jojo', 'aly & aj', 'the cheetah girls', 'vanessa hudgens', 'ashley tisdale', 'jonas brothers', 'mandy moore', 'jessica simpson', 'the saturdays'];
+const NO_WGP = ['rihanna', 'm.i.a.', 'joel corry', 'beyonce', 'beyoncé', 'nicki minaj', 'doja cat', 'sza', 'normani', 'cardi b', 'megan thee stallion', 'icona pop', 'raffaella carrà'];
+const enLista = (L, a) => L.indexOf(a) >= 0;
+function _parTit(L) { const m = new Map(); for (const [a, t] of L) { const k = fold(a); (m.get(k) || m.set(k, []).get(k)).push(fold(t)); } return m; }
+let _sampM = null, _tristM = null;
+const casaParEn = (M, p) => { const ts = fold(p.title); if (/\b(remix|vip|bootleg|flip|rework)\b/.test(ts)) return false; const l = M.get(fold((p.artists[0] || {}).name || '')); return !!(l && l.some(t => ts.indexOf(t) === 0)); };
+/* géneros de un artista (Spotify, y si no, etiquetas) */
+function genArt(a) {
+  if (!a) return [];
+  const l = (ETQ || ETQ0()).lfa[fold(a.name)]; if (l && l.g && l.g.length) return l.g.map(fold);
+  const m = MIS && a.id && misPorId(a.id), g = (m && m.genres && m.genres.length && m.genres) || (a.id && GEN[a.id] && GEN[a.id].length && GEN[a.id]);
+  return g ? g.map(fold) : [];
+}
+/* familias por puntos: cada género cuenta para la primera familia en la que encaja
+   («urbano latino» es reggaeton, no pop latino); gana la que más suma (empate: la de arriba) */
+const FAM_CASA = [
+  ['clasica', /^(classical|baroque|romantic era|classical era|early music|opera|orchestral|orchestra|chamber music|contemporary classical|minimalism|neoclassical|neo-classical|impressionism|classical piano|post-romantic era|choral|requiem|classical performance|late romantic era|modern classical|italian opera|german opera)$/],
+  ['bso', /soundtrack|\bscore\b|video game music|chiptune|musicals|show tunes|broadway|disney|movie tunes|anime|cartoon|cinematic/],
+  ['origenes', /rock and roll|rockabilly|doo-?wop|early rock|rock-and-roll|delta blues|piedmont blues|country blues|acoustic blues|jump blues|boogie-woogie|gospel blues|chicago blues|electric blues|blues rock|^blues$|rhythm and blues|skiffle|surf rock|traditional blues/],
+  ['jazzv', /vocal jazz|adult standards|crooner|traditional pop|easy listening|lounge|torch song|swing music|^swing$|big band/],
+  ['jazz', /^(jazz|bebop|hard bop|cool jazz|bossa nova|free jazz|jazz fusion|fusion|modal jazz|post-bop|avant-garde jazz|spiritual jazz|jazz piano|jazz saxophone|jazz trumpet|jazz guitar|contemporary jazz|latin jazz|soul jazz|third stream|ethio-jazz|jazz quartet|jazz trio|straight-ahead jazz)$/],
+  ['flamenco', /flamenco|rumba|sevillanas|copla|cante|cuple|cancion espanola|cancion andaluza/],
+  ['salsa', /salsa|bachata|merengue|son cubano|timba|cumbia|mambo|boogaloo|guaracha|vallenato|charanga|cha-cha|^tropical$|musica tropical|bolero/],
+  ['regueton', /reggaeton|dembow|perreo|urbano latino|latin urban/],
+  ['trapes', /trap latino|trap argentino|trap espanol|rap espanol|spanish hip hop|hip hop espanol|rap latino|drill espanol|argentine hip hop|rap chileno|trap chileno|rap mexicano|corrido|sierreno|regional mexican|latin hip hop|rap conciencia|trap triste|spanish trap|rkt|cumbia 420/],
+  ['rap', /rap|hip.?hop|trap|drill|grime|boom bap|hyphy|crunk|phonk|g-funk|bounce|plugg|rage|cloud rap/],
+  ['metal', /metal|thrash|doom|sludge|grindcore|hard rock|hardcore punk|djent|deathcore|post-hardcore/],
+  ['rock', /rock|punk|grunge|new wave|post-punk|shoegaze|garage|britpop|psychedel|no wave|krautrock|prog|art rock|surf|merseybeat|madchester|beat music|^mod$|jangle|slowcore|noise/],
+  ['rnb', /r&b|rnb|soul|funk|disco|motown|gospel|quiet storm|new jack swing|boogie|philly/],
+  ['idm', /idm|trip hop|downtempo|electronica|ambient|glitch|braindance|chillout|nu jazz|leftfield|future garage|electroacoustic|experimental electronic|wonky|footwork|uk bass/],
+  ['espanol', /spanish|latin pop|espanol|cantautor|latin|spain|mexican|ranchera|catalan|cancion|balada|movida|euskal|galego|pop argentino|pop chileno|pop colombiano|latin rock|rock en espanol|eurovision|tecnorumba/],
+  ['indie', /indie|alternative|singer-songwriter|folk|lo-fi|bedroom|dream pop|art pop|chamber pop|experimental|hyperpop|baroque pop|emo|bubblegum bass|pc music|glitchcore|digicore|avant-garde/],
+  ['pop', /pop|teen|europop|boy band|girl group|british|american|female vocalists|dance|eurodance|electropop|synthpop|disco/]
+];
+function famCasa(gs) {
+  const cnt = {};
+  for (const g of gs) { const f = FAM_CASA.find(x => x[1].test(g)); if (f) cnt[f[0]] = (cnt[f[0]] || 0) + 1; }
+  let best = null, bn = 0;
+  for (const [n] of FAM_CASA) if ((cnt[n] || 0) > bn) { best = n; bn = cnt[n]; }
+  return best;
+}
+const esHispano = gs => gs.some(g => /spanish|espanol|latin|spain|argentin|mexic|chilean|chileno|colombian|puerto ric|cuban|venezuel|peruvian|catalan|andaluz|flamenco|rock en espanol|movida|cantautor|reggaeton|uruguay/.test(g));
+/* subestilo de EDM (por prioridad: el primero que encaje) */
+const SUB_EDM = [
+  ['EDM · Dubstep', /dubstep|bass music|colou?r bass|chillstep|wonky|midtempo/],
+  ['EDM · Drum & bass', /drum and bass|\bdnb\b|liquid funk|jungle|neurofunk/],
+  ['EDM · Hardstyle', /hardstyle|rawstyle|hard dance|jumpstyle|hardcore|frenchcore|hard techno|gabber/],
+  ['EDM · Trap y moombahton', /trap|moombahton|twerk|jersey club/],
+  ['EDM · Trance', /trance/],
+  ['EDM · Big room', /big room|melbourne bounce|dutch house|future rave|festival/],
+  ['EDM · Electro y progressive house', /electro house|complextro|progressive house|progressive electro|fidget/],
+  ['EDM · Future bass y melódico', /future bass|melodic|kawaii|tropical house|chill|edm pop|pop edm/],
+  ['EDM · Future, bass y slap house', /future house|bass house|slap house|g-house|brazilian bass|speed house/],
+  ['EDM · House y techno de club', /stutter house|^house$|deep house|tech house|french house|uk garage|^garage$|techno|minimal|acid|disco house|chicago house|microhouse|afro house|organic house|lo-fi house|nu disco|^disco$|uk funky/],
+  ['EDM · Electro y big beat', /^electro$|big beat|electroclash|breakbeat|^breaks$|electro swing|french electro|indietronica|electropunk/]
+];
+/* dubstep duro: por artista (Spotify casi nunca dice «riddim») */
+const DUBSTEP_DURO = ['borgore', 'zomboy', 'excision', 'datsik', 'eptic', '12th planet', 'kayzo', 'virtual riot', 'subtronics', 'svdden death', 'marauda', 'barely alive',
+  'sullivan king', 'modestep', 'downlink', 'getter', 'figure', 'ganja white night', 'snails', 'riot ten', 'space laces', 'trollphace', 'terravita', 'bear grillz', 'liquid stranger',
+  'doctor p', 'flux pavilion', 'funtcase', 'cookie monsta', 'dodge & fuski', 'kill the noise', '12th planet', 'protohype', 'xilent', 'must die!', 'phiso', 'level up', 'ray volpe',
+  'wooli', 'jessica audiffred', 'dirtyphonics', 'habstrakt', 'spag heddy', 'midnight tyrannosaurus', 'monxx', 'samplifire', 'ponicz', 'akeos', 'dubloadz', 'calcium', 'he$h', 'champagne drip'];
+const subDeGen = g => { for (const [n, rx] of SUB_EDM) if (rx.test(g)) return n; return null; };
+/* el primer género concreto del DJ (Spotify los da por orden); si no tiene, las etiquetas de la canción */
+function subEDM(p) {
+  if (enLista(DUBSTEP_DURO, fold(artistaEpoca(p))) || enLista(DUBSTEP_DURO, fold((p.artists[0] || {}).name || ''))) return 'EDM · Dubstep duro';
+  for (const gs of [genArt({ name: artistaEpoca(p) }), genArt(p.artists[0])]) for (const g of gs) { const n = subDeGen(g); if (n) return n; }
+  /* DJs que Spotify solo llama «edm» (Guetta, Avicii, Calvin Harris…): los hits */
+  if (genArt({ name: artistaEpoca(p) }).length || genArt(p.artists[0]).length) return 'EDM · Hits y EDM pop';
+  const cnt = {}; for (const g of (generosCancion(p) || []).map(fold)) { const n = subDeGen(g); if (n) cnt[n] = (cnt[n] || 0) + 1; }
+  let b = null, bn = 0; for (const [n] of SUB_EDM) if ((cnt[n] || 0) > bn) { b = n; bn = cnt[n]; }
+  return b || 'EDM · Hits y EDM pop';
+}
+/* ¿el DJ tiene algún género concreto? (si solo dice «edm», decide la mayoría de sus canciones) */
+const djConcreto = p => [genArt({ name: artistaEpoca(p) }), genArt(p.artists[0])].some(gs => gs.some(subDeGen)) || enLista(DUBSTEP_DURO, fold(artistaEpoca(p)));
+/* la casa que le toca a una canción (sin contar lo que hayas movido tú) */
+function casaAuto(p, ctx) {
+  _sampM = _sampM || _parTit(SAMPLEADAS); _tristM = _tristM || _parTit(TRISTES);
+  if (casaParEn(_sampM, p)) return 'Sampleadas';
+  if (casaParEn(_tristM, p)) return 'Tristes';
+  const a0 = p.artists[0] || { name: '' }, k0 = fold(a0.name), y0 = +p.year || 0, t = fold(p.title), al = fold(p.album || '');
+  const yA = ctx && ctx.minY && ctx.minY.get(k0), yR = yA && y0 ? Math.min(y0, yA) : y0;
+  let y = y0;
+  /* liminal */
+  if (p.artists.some(a => enLista(LIMINAL_ART, fold(a.name))) || /slowed|reverb|in an empty|in another room|playing in|underwater/.test(t) || (k0 === 'aphex twin' && /ambient/.test(al))) return CASA_BURN;
+  if (p.artists.some(a => enLista(COMPOSITORES, fold(a.name)))) return 'Música clásica';
+  let gs = genArt(a0);
+  if (!gs.length) for (const a of p.artists.slice(1)) { gs = genArt(a); if (gs.length) break; }
+  const gc = (generosCancion(p) || []).map(fold);
+  if (!gs.length) gs = gc;
+  if (gs.some(g => RX_LIMINAL.test(g))) return CASA_BURN;
+  if (esEDM(p)) return subEDM(p);
+  let f = famCasa(gs);
+  if (!f && gc.length) f = famCasa(gc);
+  if (!f) return ctx && ctx.porAlbum ? ctx.porAlbum(p) : null;
+  const hisp = esHispano(gs) || esHispano(gc);
+  if (f === 'rock' || f === 'origenes' || f === 'jazzv' || f === 'metal' || f === 'indie' && yR < 1980) y = yR;
+  const nost = ctx && ctx.ahora && !ctx.ahora.c.has(p.uri) && !ctx.ahora.a.has(k0);
+  switch (f) {
+    case 'clasica': return 'Música clásica';
+    case 'bso': return 'Bandas sonoras';
+    case 'origenes': return y && y >= 1966 && !gs.some(g => /rock and roll|rockabilly|doo-?wop|early rock|delta blues|jump blues|boogie-woogie/.test(g)) ? (hisp ? 'Rock en español' : y < 1980 ? 'Rock · 60s-70s' : 'R&B, soul y funk') : 'Rock Origins';
+    case 'jazzv': return y && y <= 1965 ? CASA_BURN : hisp ? 'Pop en español antiguo' : 'Pop internacional';
+    case 'jazz': return gs.some(g => /vocal/.test(g)) && y && y <= 1965 ? CASA_BURN : 'Jazz instrumental';
+    case 'flamenco': return y >= 2000 && y <= 2012 && nost && !gs.some(g => /^flamenco$|cante flamenco|flamenco tradicional|copla/.test(g)) ? 'Infancia en España' : 'Flamenco y rumba';
+    case 'salsa': return gs.some(g => /bolero/.test(g)) && !gs.some(g => /salsa/.test(g)) ? 'Pop en español antiguo' : 'Salsa';
+    case 'regueton': return y && y <= 2016 ? 'Reggaeton antiguo' : 'Reggaeton nuevo';
+    case 'trapes': return 'Trap y rap en español';
+    case 'rap':
+      if (k0 === 'black eyed peas') return y >= 2003 ? 'Pop internacional' : 'Rap · Clásico (hasta 2009)';
+      if (hisp) return 'Trap y rap en español';
+      return !y || y >= 2020 ? 'Rap · 2020s' : y >= 2010 ? 'Rap · 2010s' : 'Rap · Clásico (hasta 2009)';
+    case 'metal': return 'Metal y rock duro';
+    case 'rock':
+      if (hisp) return y >= 2000 && y <= 2012 && nost ? 'Infancia en España' : 'Rock en español';
+      return y && y < 1963 ? 'Rock Origins' : y && y < 1980 ? 'Rock · 60s-70s' : y && y < 2000 ? 'Rock · 80s-90s' : 'Rock · 2000s-hoy';
+    case 'rnb': return 'R&B, soul y funk';
+    case 'idm': return 'Electrónica · IDM, ambient y trip hop';
+    case 'espanol': return y && y < 2000 ? 'Pop en español antiguo' : y <= 2012 && nost ? 'Infancia en España' : 'Pop en español';
+    case 'indie': if (y && y < 1980 && !hisp) return 'Rock · 60s-70s';
+      return enLista(WGP_ART, k0) ? 'White girl pop' : hisp ? 'Pop en español' : 'Indie, art pop e hyperpop';
+    case 'pop':
+      if (hisp) return y && y < 2000 ? 'Pop en español antiguo' : y <= 2012 && nost ? 'Infancia en España' : 'Pop en español';
+      return enLista(WGP_ART, k0) || y >= 1998 && gc.indexOf('female vocalists') >= 0 && !enLista(NO_WGP, k0) && !gc.concat(gs).some(g => /r&b|soul|hip hop|rap|latin|reggae|dancehall|house|edm/.test(g)) ? 'White girl pop' : 'Pop internacional';
+  }
+  return null;
+}
+
+/* partes del nombre: «Diplo & GTA», «Axwell /\ Ingrosso» */
+const partesNombre = n => n.split(/\s*(?:&|,|\+| x | X |\/\\|\bfeat\.?|\bft\.?| and | y | vs\.? )\s*/).map(x => x.trim()).filter(Boolean);
+function casaPorPartes(p, ctx) {
+  for (const a of p.artists) { const ps = partesNombre(a.name); if (ps.length < 2) continue;
+    for (const n of ps) { if (!genArt({ name: n }).length && !ART_CASA[fold(n)]) continue;
+      const q = Object.assign({}, p, { artists: [{ name: n }].concat(p.artists.filter(x => x !== a)) }); const c = ART_CASA[fold(n)] || casaAuto(q, ctx); if (c) return c; } }
+  return null;
+}
+const RX_ESP_TIT = /[ñáéíóú¿¡]|\b(el|la|los|las|de|del|que|mi|tu|te|me|amor|corazon|noche|quiero|eres|como|por|para|una|sin|con)\b/;
+/* todas a la vez: lo tuyo, lo automático, y lo que no se sabe por el disco o el título */
+function asignarCasas(ps, ctx) {
+  ctx = Object.assign({}, ctx || {});
+  /* año más antiguo de cada artista (para no mandar a los Beatles a 2009 por un remaster) */
+  const minY = new Map(); for (const p of ps) { const k = fold((p.artists[0] || {}).name || ''), y = +p.year || 0; if (y && (!minY.has(k) || y < minY.get(k))) minY.set(k, y); }
+  ctx.minY = minY;
+  const out = new Map(), CU = PREFS.casaUri || {}, CA = PREFS.casaArt || {}, fijas = ctx.fijas || new Map();
+  const kArt = p => fold(esEDM(p) ? artistaEpoca(p) : ((p.artists[0] || {}).name || ''));
+  const quedan = [];
+  for (const p of ps) {
+    _sampM = _sampM || _parTit(SAMPLEADAS); _tristM = _tristM || _parTit(TRISTES);
+    const c = CU[p.uri] || CA[kArt(p)] || fijas.get(p.uri) || (casaParEn(_sampM, p) ? 'Sampleadas' : casaParEn(_tristM, p) ? 'Tristes' : null) || ART_CASA[fold((p.artists[0] || {}).name || '')] || casaAuto(p, ctx);
+    if (c) out.set(p.uri, c); else quedan.push(p);
+  }
+  /* EDM de DJs sin género concreto: todas las de un DJ, juntas, donde caigan más */
+  const porDJ = new Map();
+  for (const p of ps) { const c = out.get(p.uri); if (!c || !/^EDM · /.test(c) || CU[p.uri] || fijas.has(p.uri) || djConcreto(p)) continue; const k = kArt(p); (porDJ.get(k) || porDJ.set(k, []).get(k)).push(p); }
+  for (const [k, l] of porDJ) { if (CA[k]) continue; const n = {}; for (const p of l) { const c = out.get(p.uri); n[c] = (n[c] || 0) + 1; } const m = Object.entries(n).sort((a, b) => b[1] - a[1])[0][0]; for (const p of l) out.set(p.uri, m); }
+  /* sin género: por el resto del disco, por partes del nombre, por el título */
+  const porAlb = new Map(); for (const p of ps) { const c = out.get(p.uri); if (c && p.albumUri) { const m = porAlb.get(p.albumUri) || porAlb.set(p.albumUri, {}).get(p.albumUri); m[c] = (m[c] || 0) + 1; } }
+  for (const p of quedan) {
+    const m = porAlb.get(p.albumUri), y = +p.year || 0;
+    let c = m ? Object.entries(m).sort((a, b) => b[1] - a[1])[0][0] : null;
+    if (!c) c = casaPorPartes(p, ctx);
+    if (!c && /\b(remix|mix|edit|vip|bootleg|flip|rework)\b/i.test(p.title)) c = 'EDM · Hits y EDM pop';
+    if (!c && RX_ESP_TIT.test(fold(p.title))) c = y && y < 2000 ? 'Pop en español antiguo' : y && y <= 2012 ? 'Infancia en España' : 'Pop en español';
+    if (!c) c = y && y < 1960 ? CASA_BURN : 'Pop internacional';
+    out.set(p.uri, c); p._adivinada = true;
+  }
+  return partirLlenas(ps, out);
+}
+/* ninguna pasa de 1.000: la que se pase, se parte por años */
+function partirLlenas(ps, out) {
+  const por = new Map(); for (const p of ps) { const c = out.get(p.uri); (por.get(c) || por.set(c, []).get(c)).push(p); }
+  for (const [c, l] of por) {
+    if (l.length <= CASA_MAX || CASA_FIJAS.indexOf(c) >= 0) continue;
+    const ord = l.slice().sort((a, b) => (+a.year || 0) - (+b.year || 0)), k = Math.ceil(l.length / (CASA_MAX * 0.9));
+    let i = 0;
+    for (let t = 0; t < k; t++) {
+      const fin = t === k - 1 ? ord.length : Math.round(ord.length * (t + 1) / k);
+      /* no partir un año por la mitad */
+      let j = fin; while (j < ord.length && j > i && (+ord[j].year || 0) === (+ord[j - 1].year || 0) && j - i < CASA_MAX) j++;
+      const tr = ord.slice(i, j); if (!tr.length) continue;
+      const y0 = +tr[0].year || 0, y1 = +tr[tr.length - 1].year || 0;
+      const nom = c + (t === 0 ? ' (hasta ' + y1 + ')' : t === k - 1 ? ' (' + y0 + '-hoy)' : ' (' + y0 + '-' + y1 + ')');
+      for (const p of tr) out.set(p.uri, nom);
+      i = j;
+    }
+  }
+  return out;
+}
+const CASA_FIJAS = ['Pendientes', 'Para no olvidar', 'NRG'];
+/* artistas sin género en ningún sitio, a mano */
+const ART_CASA = (() => {
+  const B = CASA_BURN, M = {
+    'Indie, art pop e hyperpop': 'björk|100 gecs|magdalena bay|quadeca|sol seppy|magic man|billie the vision & the dancers|the last dinner party|juniore|jane remover|grimes|dorian electra|elohim|daniel johnston|ecco2k|devon hendryx|alice longyu gao',
+    'Pop internacional': 'pitbull|charles aznavour|nate ruess|michael sembello|conchita wurst|fleur east|nathan evans|nicky youre|milow|amy macdonald|metro station|alexander rybak|nick kamen|opus|omc|bobby mcferrin|desireless|black|oceana|c & c music factory|juice newton|katseye|baha men|daryl hall & john oates|barbra streisand|anastacia',
+    'White girl pop': 'sia|avril lavigne|p!nk|natasha bedingfield|olivia newton-john|natalie imbruglia|chappell roan|clairo|girl in red',
+    'Infancia en España': 'los sobraos|3+2|malena gracia|los tuneaos|daniel diges|raul|beth|agüita salá|floricienta|nena daconte|academia o.t. 1|coyote dax|la mosca',
+    'Pop en español antiguo': 'georgie dann|mecano|raphael|alex y christina|marcela morelo|chezina y pirin|modestia aparte|ole ole|miguel gallardo|formula v|el norte|luis aguile|nacho cano|los tucanes de tijuana|los payos|joan sebastian',
+    'Pop en español': 'osos cometa|nancys rubias|nathy peluso|adrián berenguer|joan dausà|els amics de les arts|el guincho|antònia font|carla morrison|camellos|luck ra',
+    'Rock en español': 'the refrescos|extrechinato y tu|antonio vega',
+    'Bandas sonoras': 'klaus doldinger|nino rota',
+    'Tristes': 'ji pyeong kwon',
+    'Sampleadas': 'david mccallum',
+    'Para no olvidar': 'nyan cat|legión española|corey feldman|the backyardigans|monty python|the kunts|bingo gazingo',
+    'Rap · Clásico (hasta 2009)': 'lady b|12 gauge|mc hammer|crime mob|epmd|d12|big daddy kane',
+    'Rap · 2010s': 'raury|ayo & teo|aminé',
+    'Rap · 2020s': 'masked wolf|king von|armani white|aesop rock',
+    'Trap y rap en español': 'beret|polimá westcoast|lablackie|junior h|frank t',
+    'Reggaeton nuevo': 'faraón love shady|bellakath|amenazzy',
+    'Salsa': 'buena vista social club|gilberto santa rosa|chichi peralta|eddie santiago',
+    'Flamenco y rumba': 'rosario de cádiz|bambino',
+    'R&B, soul y funk': 'steve lacy|the weeknd|jamiroquai|obongjayar|carl douglas|keyshia cole|jorge ben jor|isaac hayes|givēon|jackie wilson|genesis owusu|george clinton|debarge|deborah cox|erma franklin|fatback band|aaliyah|barrington levy|gilberto gil|candeia',
+    'Rock Origins': 'the little dippers|gene vincent|eddie cochran|elizabeth cotten|the diamonds|fats domino|bobby lewis|b.b. king',
+    'Rock · 60s-70s': 'the doors|santana|the beach boys|brian wilson|mark james|neil diamond|manfred mann|carly simon|mungo jerry|the dirty mac|jim croce|john mayall|freddie king|eric clapton|elvis costello|faces|the byrds|carole king|boston|barry ryan|al stewart',
+    'Rock · 80s-90s': 'no doubt|meredith brooks|chumbawamba|new radicals|hole|the gun club|a flock of seagulls|elastica|extreme|counting crows|all about eve',
+    'Rock · 2000s-hoy': 'band of horses|nine days|nothing but thieves|the libertines|john mayer|the interrupters|fat white family|black midi|amyl and the sniffers',
+    'Metal y rock duro': 'disturbed|burzum|aborted',
+    'Jazz instrumental': 'lennie tristano|herb alpert & the tijuana brass|getatchew mekurya|astrud gilberto',
+    'Música clásica': 'ravi shankar|coral sant jordi|kronos quartet|francisco tárrega|george gershwin|edgard varèse',
+    [B]: 'frank c. stanley|luciano tajoli|juan d\'arienzo|american quartet|paul whiteman\'s swing wing|achille togliani|fred astaire|dinah washington|fats waller',
+    'Electrónica · IDM, ambient y trip hop': 'ashtar command|marcelinho da lua|tzusing|groove armada|the glitch mob|autechre|amnesia scanner',
+    'EDM · Electro y big beat': 'the prodigy|sbcr|the chemical brothers|manuel|dave rodgers|go2|carpenter brut|black strobe',
+    'EDM · Hardstyle': 'dj mucus|hard bass school|dj blyatman|xs project|3 steps ahead',
+    'EDM · Big room': 'nause|erik arbores|nari & milani|nari|we are loud|florian paetzold|cormill|albert neve|sevenn|ahzee',
+    'EDM · Future bass y melódico': 'love harder|rüfüs du sol|mako|petit biscuit|omfg|bronson',
+    'EDM · Future, bass y slap house': 'meduza|cliq|tapo & raya|ofenbach|a7s|nathan dawe|kvsh|david puentez',
+    'EDM · House y techno de club': 'dave simon|the dream team|luie luie|oliver dollar|shouse|navos|dorian marko|alle farben|mason|da hool|the bucketheads|the adventures of stevie v|afro medusa|joe goddard|fish go deep|ayybo|blond:ish',
+    'EDM · Hits y EDM pop': 'breathe carolina|vassy|kris kross amsterdam|sound of legend|aaron smith|mondotek|bellini|global deejays|enur',
+    'EDM · Dubstep': 'benga',
+    'EDM · Drum & bass': 'kenya grace',
+    'EDM · Trance': 'blastoyz',
+    'Reggaeton antiguo': 'el general',
+    'EDM · Trap y moombahton': 'carnage'
+  }, o = {};
+  for (const [c, l] of Object.entries(M)) for (const a of l.split('|')) o[fold(a)] = c;
+  return o;
+})();
+
+/* nombre sin el trozo de años que se añade al partir («… (hasta 2016)») */
+const casaBase = n => String(n || '').replace(/ \((hasta \d{4}|\d{4}-hoy|\d{4}-\d{4})\)$/, '');
+const esCasa = n => CASA_NOMBRES.indexOf(casaBase(n)) >= 0;
+const claveArtCasa = p => fold(esEDM(p) ? artistaEpoca(p) : ((p.artists[0] || {}).name || ''));
+const nombreArtCasa = p => esEDM(p) ? artistaEpoca(p) : ((p.artists[0] || {}).name || '');
+/* lo guardado en este aparato: ids de las playlists casa, si ya se crearon, si se vació Me gusta */
+const K_CASAS = 'fonoteca_casas_v1';
+/* todo lo necesario para repartir: tus Me gusta, lo que ya está en una casa, lo que escuchas ahora */
+async function datosCasas() {
+  let ps = await likesGuardados();
+  if (!ps || !ps.length) return null;
+  await etqAsegurar();
+  ps = ps.filter(p => !p.local);
+  const pls = (await cargarPlaylists()).filter(esMia), fijas = new Map(), plDe = new Map();
+  const casasPl = pls.filter(pl => esCasa(pl.name));
+  for (let i = 0; i < casasPl.length; i++) {
+    const pl = casasPl[i];
+    progreso('Mirando lo que ya está en sus casas: ' + pl.name, i, casasPl.length);
+    let dentro = [];
+    /* borrada desde Spotify (la lista guardada aún la tenía): como si no existiera */
+    if (pl.total) { try { dentro = await pistasDePlaylist(pl.id); } catch (e) { if (e.status === 404) continue; throw e; } }
+    plDe.set(pl.name, pl);
+    for (const p of dentro) if (!fijas.has(p.uri)) fijas.set(p.uri, pl.name);
+  }
+  progreso(null);
+  let ahora = null; try { ahora = await escuchasAhora(); } catch (e) { if (e.message === 'DETENIDO') throw e; }
+  const ctx = { ahora, fijas };
+  return { ps, ctx, plDe, asig: asignarCasas(ps, ctx) };
+}
+let _dc = null;
+async function hojaCasas(D) {
+  if (!D) {
+    const ps0 = await likesGuardados(), R0 = leer(K_CASAS, {});
+    if ((!ps0 || !ps0.length) && R0.vaciado) {
+      hoja('<h2>Una casa para cada canción</h2><div class="aviso"><b>Hecho</b>Me gusta se vació el ' + fechaLarga(R0.vaciado) + '. Todo está en sus playlists casa.</div>' +
+        '<div class="btnrow"><button class="btn ghost" id="caRest">' + ic('deshacer') + 'Volver a llenar Me gusta</button></div>', h => { h.querySelector('#caRest').onclick = () => restaurarMeGusta(); });
+      return;
+    }
+    if (!ps0 || !ps0.length) { toast('Primero abre Me gusta para que se carguen'); irATab('likes'); return; }
+    D = await trabajo(datosCasas, 'Preparando el reparto'); if (!D) return;
+  }
+  _dc = D;
+  const R = leer(K_CASAS, {});
+  let abierta = null, q = '';
+  const porCasa = () => { const m = new Map(); for (const p of D.ps) { const c = D.asig.get(p.uri); (m.get(c) || m.set(c, []).get(c)).push(p); } return m; };
+  /* las casas tal como quedan (con sus trozos por años si se partieron) */
+  const opciones = sel => {
+    const hay = Array.from(new Set(D.asig.values()));
+    return CASAS.map(([g, l]) => { const ns = []; for (const b of l) { const t = hay.filter(n => casaBase(n) === b).sort(); ns.push(...(t.length ? t : [b])); }
+      return '<optgroup label="' + esc(g) + '">' + ns.map(n => '<option value="' + esc(n) + '"' + (n === sel ? ' selected' : '') + '>' + esc(n) + '</option>').join('') + '</optgroup>'; }).join('');
+  };
+  const mover = (sel, val) => '<select class="field sm ca-mv" ' + val + '><option value="">Mover a…</option>' + opciones('') + '</select>';
+  const cancion = p => '<div class="ep-c"><span class="t">' + esc(p.title) + ' <span class="mute">· ' + esc(p.artists.map(a => a.name).join(', ')) + (p.year ? ' · ' + p.year : '') + '</span></span>' + mover('', 'data-u="' + esc(p.uri) + '"') + '</div>';
+  const pintarLista = h => {
+    const M = porCasa(), cont = h.querySelector('#caLista');
+    if (q) {
+      const f = fold(q), r = D.ps.filter(p => p._f ? p._f.indexOf(f) >= 0 : fold(p.title + ' ' + p.artists.map(a => a.name).join(' ')).indexOf(f) >= 0).slice(0, 60);
+      cont.innerHTML = r.length ? r.map(p => '<div class="ca-bus"><small>' + esc(D.asig.get(p.uri)) + '</small>' + cancion(p) + '</div>').join('') : '<div class="vacio">Nada con «' + esc(q) + '»</div>';
+      return;
+    }
+    let html = '';
+    for (const [g, l] of CASAS) {
+      const nombres = Array.from(M.keys()).filter(n => l.indexOf(casaBase(n)) >= 0).sort((a, b) => l.indexOf(casaBase(a)) - l.indexOf(casaBase(b)) || (a < b ? -1 : 1));
+      if (!nombres.length) continue;
+      html += '<h3 class="ca-g">' + esc(g) + '</h3>';
+      for (const n of nombres) {
+        const ps = M.get(n), pl = D.plDe.get(n), lleno = ps.length > CASA_MAX * 0.95;
+        html += '<div class="ep-g' + (abierta === n ? ' abierto' : '') + '" data-c="' + esc(n) + '"><div class="ep-cab"><span class="tx"><b>' + esc(n) + '</b><small>' + (pl ? 'ya existe' + (pl.total ? ' · ' + n$(pl.total) + ' dentro' : '') : 'nueva') + (CASA_DESC[casaBase(n)] ? ' · ' + esc(CASA_DESC[casaBase(n)]) : '') + '</small></span>' +
+          '<span class="ep-n"' + (lleno ? ' style="background:var(--amber);color:var(--on-amber)"' : '') + '>' + n$(ps.length) + '</span>' + ic('chev', ' class="i flecha"') + '</div><div class="ep-cs">' + (abierta === n ? artistas(ps) : '') + '</div></div>';
+      }
+    }
+    cont.innerHTML = html;
+  };
+  const artistas = ps => {
+    const A = new Map(); for (const p of ps) { const k = claveArtCasa(p); if (!A.has(k)) A.set(k, { k, n: nombreArtCasa(p), ps: [] }); A.get(k).ps.push(p); }
+    return Array.from(A.values()).sort((a, b) => b.ps.length - a.ps.length || (a.n < b.n ? -1 : 1)).map(a =>
+      '<div class="ca-a" data-k="' + esc(a.k) + '"><div class="ep-a"><span class="tx"><b>' + esc(a.n) + '</b><small>' + n$(a.ps.length) + (a.ps.length === 1 ? ' canción · ' + esc(a.ps[0].title) : ' canciones') + '</small></span>' +
+      (a.ps.length > 1 ? '<button class="btn sm ghost" data-ver="1">Ver</button>' : '') + mover('', 'data-a="' + esc(a.k) + '"') + '</div>' +
+      '<div class="ca-cs" hidden>' + a.ps.map(cancion).join('') + '</div></div>').join('');
+  };
+  const paso = () => {
+    const nC = new Set(D.asig.values()).size, faltan = Array.from(new Set(D.asig.values())).filter(n => !D.plDe.has(n)).length;
+    if (R.vaciado) return '<div class="aviso"><b>Hecho</b>Me gusta se vació el ' + fechaLarga(R.vaciado) + '. Todo está en sus casas. Ahora Me gusta es tuyo para volver a llenarlo con lo que escuches estos días.</div>';
+    if (R.creado && !faltan) return '<div class="aviso"><b>Paso 2 de 2</b>Las playlists están creadas. Comprueba que todo cuadra y, cuando quieras, vacía Me gusta.</div>';
+    return '<div class="aviso"><b>Paso 1 de 2</b>' + n$(D.ps.length) + ' canciones → ' + nC + (nC === 1 ? ' playlist' : ' playlists') + ', ninguna de más de ' + n$(CASA_MAX) + '. Mira cada casa y mueve lo que no cuadre (un artista entero o una canción). Lo que muevas se recuerda. Nada cambia en Spotify hasta que pulses «Crear».</div>';
+  };
+  hoja('<h2>Una casa para cada canción</h2>' +
+    '<p class="soft">Cada canción de Me gusta va a <b>una sola</b> playlist. Luego ya decidirás cuáles van además en otras. No se tocan The Beatles, Shazam, Goosebumps, Albums ni Canciones favoritas.</p>' +
+    '<div id="caPaso">' + paso() + '</div>' +
+    '<div class="ep-bar"><input class="field" id="caQ" placeholder="Buscar canción o artista" autocomplete="off"></div>' +
+    '<div id="caLista"></div>' +
+    '<div class="btnrow ca-pie">' +
+    (R.vaciado ? '' : '<button class="btn pri" id="caCrear">' + ic('check') + (R.creado ? 'Crear lo que falte' : 'Crear las playlists') + '</button>') +
+    (R.creado && !R.vaciado ? '<button class="btn" id="caVaciar">' + ic('corazonRoto') + 'Vaciar Me gusta</button>' : '') +
+    (R.copia ? '<button class="btn ghost" id="caRest">' + ic('deshacer') + 'Volver a llenar Me gusta</button>' : '') +
+    '</div>', h => {
+      pintarLista(h);
+      let tq = 0;
+      h.querySelector('#caQ').oninput = e => { clearTimeout(tq); tq = setTimeout(() => { q = e.target.value.trim(); pintarLista(h); }, 200); };
+      h.querySelector('#caLista').addEventListener('click', e => {
+        if (e.target.closest('select')) return;
+        const ver = e.target.closest('[data-ver]');
+        if (ver) { const cs = ver.closest('.ca-a').querySelector('.ca-cs'); cs.hidden = !cs.hidden; ver.textContent = cs.hidden ? 'Ver' : 'Ocultar'; return; }
+        const cab = e.target.closest('.ep-cab'); if (!cab) return;
+        const g = cab.parentNode, n = g.dataset.c;
+        if (abierta === n) { abierta = null; g.classList.remove('abierto'); return; }
+        h.querySelectorAll('.ep-g.abierto').forEach(x => { x.classList.remove('abierto'); x.querySelector('.ep-cs').innerHTML = ''; });
+        abierta = n; g.classList.add('abierto'); g.querySelector('.ep-cs').innerHTML = artistas(porCasa().get(n) || []);
+      });
+      h.querySelector('#caLista').addEventListener('change', e => {
+        const s = e.target.closest('.ca-mv'); if (!s || !s.value) return;
+        const val = s.value;
+        if (s.dataset.u) { (PREFS.casaUri || (PREFS.casaUri = {}))[s.dataset.u] = val; }
+        else if (s.dataset.a) {
+          const k = s.dataset.a; (PREFS.casaArt || (PREFS.casaArt = {}))[k] = val;
+          /* lo que movieras suelto de ese artista, también */
+          const CU = PREFS.casaUri || {}; for (const p of D.ps) if (CU[p.uri] && claveArtCasa(p) === k) delete CU[p.uri];
+        }
+        guardarPrefs();
+        D.asig = asignarCasas(D.ps, D.ctx);
+        toast('Movido a «' + val + '»');
+        const y = h.scrollTop; pintarLista(h); h.querySelector('#caPaso').innerHTML = paso(); h.scrollTop = y;
+      });
+      const bC = h.querySelector('#caCrear'); if (bC) bC.onclick = () => crearCasas(D);
+      const bV = h.querySelector('#caVaciar'); if (bV) bV.onclick = () => vaciarMeGusta(D);
+      const bR = h.querySelector('#caRest'); if (bR) bR.onclick = () => restaurarMeGusta();
+    });
+}
+/* Paso 1: crea las que falten y mete en cada una lo suyo (si lo cortas, al
+   volver sigue donde iba: solo añade lo que no esté). Si moviste algo que
+   ya estaba en otra casa, sale de la vieja. */
+async function crearCasas(D) {
+  const M = new Map(); for (const p of D.ps) { const c = D.asig.get(p.uri); (M.get(c) || M.set(c, []).get(c)).push(p.uri); }
+  const nuevas = Array.from(M.keys()).filter(n => !D.plDe.has(n));
+  if (!(await confirmar('¿Crear las playlists?', 'Crear', (nuevas.length ? 'Se crean ' + nuevas.length + ' playlists privadas' : 'Ya existen todas') + ' y se meten ' + n$(D.ps.length) + ' canciones, cada una en su casa. Me gusta no se toca todavía. Spotify irá con pausas: deja la Fonoteca abierta.'))) { hojaCasas(D); return; }
+  const r = await trabajo(async () => {
+    const R = leer(K_CASAS, {}); R.ids = R.ids || {};
+    const mias = (await cargarPlaylists(true)).filter(esMia);
+    let i = 0, mete = 0, saca = 0;
+    for (const [n, uris] of M) {
+      progreso('Playlist ' + (++i) + ' de ' + M.size + ': ' + n, i, M.size);
+      let pl = (R.ids[n] && mias.find(x => x.id === R.ids[n])) || mias.find(x => x.name === n);
+      if (!pl) { const d = await crearPlaylist(n, CASA_DESC[casaBase(n)] || 'Casa de la Fonoteca: cada canción vive en una sola playlist.', false); pl = { id: d.id, name: n, total: 0 }; }
+      R.ids[n] = pl.id; escribir(K_CASAS, R); D.plDe.set(n, pl);
+      const ya = pl.total ? new Set((await pistasDePlaylist(pl.id)).map(x => x.uri)) : new Set();
+      const nu = uris.filter(u => !ya.has(u));
+      if (ya.size + nu.length > 10000) throw new Error('«' + n + '» pasaría de 10.000 canciones');
+      if (nu.length) { await plAnadir(pl.id, nu, null, 'Llenando «' + n + '»'); mete += nu.length; }
+    }
+    /* lo que cambiaste de casa sale de la vieja */
+    const fuera = new Map();
+    for (const [u, vieja] of D.ctx.fijas) { const c = D.asig.get(u); if (c && c !== vieja && D.plDe.has(vieja)) (fuera.get(vieja) || fuera.set(vieja, []).get(vieja)).push(u); }
+    for (const [vieja, us] of fuera) { await plQuitar(D.plDe.get(vieja).id, us, 'Sacando de «' + vieja + '»'); saca += us.length; }
+    R.creado = Date.now(); escribir(K_CASAS, R);
+    return { mete, saca };
+  }, 'Creando tus playlists');
+  S.playlists = null; S.indice = null;
+  if (!r) { hojaCasas(D); return; }
+  /* lo de ahora es lo que hay: no hace falta volver a leer las playlists */
+  for (const [n, uris] of M) { for (const u of uris) D.ctx.fijas.set(u, n); const pl = D.plDe.get(n); if (pl) pl.total = Math.max(pl.total || 0, uris.length); }
+  toast(_encolados > 0 ? 'Spotify va con pausas: lo que falta está en cola y se hará solo. Deja la Fonoteca abierta.' : 'Hecho: ' + n$(r.mete) + ' canciones en sus casas' + (r.saca ? ', ' + n$(r.saca) + ' cambiadas de casa' : ''), null, 7000);
+  hojaCasas(D);
+}
+/* ¿está cada canción en su casa? (por recuento: no gasta casi nada) */
+async function comprobarCasas(D) {
+  if (COLA.length) return { ok: false, txt: 'Aún quedan ' + n$(COLA.length) + ' cambios en cola para Spotify. Cuando se hagan, vuelve a probar.' };
+  const pls = await cargarPlaylists(true), M = new Map();
+  for (const p of D.ps) { const c = D.asig.get(p.uri); M.set(c, (M.get(c) || 0) + 1); }
+  const mal = [];
+  for (const [n, k] of M) { const pl = pls.find(x => esMia(x) && x.name === n); if (!pl || pl.total < k) mal.push(n + (pl ? ' (' + pl.total + ' de ' + k + ')' : ' (no existe)')); }
+  return mal.length ? { ok: false, txt: 'No cuadran: ' + mal.slice(0, 6).join(', ') + (mal.length > 6 ? '…' : '') + '. Pulsa «Crear lo que falte».' } : { ok: true };
+}
+/* Paso 2: con todo en su casa, Me gusta se vacía (antes se guarda una copia) */
+async function vaciarMeGusta(D) {
+  const ch = await trabajo(() => comprobarCasas(D), 'Comprobando las playlists');
+  if (!ch) return;
+  if (!ch.ok) { toast(ch.txt, null, 8000); return; }
+  if (!(await confirmar('¿Vaciar Me gusta?', 'Vaciar', 'Las ' + n$(D.ps.length) + ' canciones están en sus casas. Se quitan todas de Me gusta y guardo una copia por si quieres volver atrás.'))) { hojaCasas(D); return; }
+  const uris = D.ps.map(p => p.uri);
+  const ok = await trabajo(async () => {
+    const copia = { at: Date.now(), l: D.ps.map(p => [p.uri, p.added, D.asig.get(p.uri), p.title, nombreArtCasa(p)]) };
+    await cachePoner('copiaLikes', copia);
+    if (ghCfg()) {
+      progreso('Guardando la copia en GitHub');
+      try { const r = await ghLeer('copia-me-gusta.json'); await ghFetch(r.api, { method: 'PUT', body: JSON.stringify({ message: 'copia de Me gusta: ' + uris.length, content: b64enc(JSON.stringify(copia)), branch: 'main', sha: r.sha || undefined }) }); }
+      catch (e) { apuntarFallo(e, 'copia Me gusta'); }
+    }
+    const R = leer(K_CASAS, {}); R.copia = copia.at; escribir(K_CASAS, R);
+    await libQuitar(uris, 'Vaciando Me gusta');
+    R.vaciado = Date.now(); escribir(K_CASAS, R);
+    return true;
+  }, 'Vaciando Me gusta');
+  if (!ok) return;
+  await cachePoner('likes', { total: 0, pistas: [] }); await cachePoner('likesParcial', null);
+  S.likes = null; if (S.fuente && S.fuente.kind === 'likes') S.fuente = null;
+  toast(_encolados > 0 ? 'Guardado: Spotify va con pausas y lo terminará sola la Fonoteca. Déjala abierta.' : 'Me gusta está vacío. Todo sigue en sus casas.', null, 8000);
+  render();
+}
+/* por si te arrepientes: vuelve a dar ♥ a todo, en el orden de antes */
+async function restaurarMeGusta() {
+  const c = await cacheLeer('copiaLikes');
+  if (!c || !c.l || !c.l.length) { toast('No encuentro la copia en este aparato'); return; }
+  if (!(await confirmar('¿Volver a llenar Me gusta?', 'Llenar', 'Se vuelve a dar ♥ a las ' + n$(c.l.length) + ' canciones de la copia del ' + fechaLarga(c.at) + '. Las playlists casa se quedan como están.'))) return;
+  /* de la más vieja a la más nueva: así queda arriba lo último que añadiste */
+  const uris = c.l.slice().sort((a, b) => (a[1] || 0) - (b[1] || 0)).map(x => x[0]);
+  const ok = await trabajo(async () => { await libPoner(uris, 'Llenando Me gusta'); return true; }, 'Llenando Me gusta');
+  if (!ok) return;
+  const R = leer(K_CASAS, {}); delete R.vaciado; escribir(K_CASAS, R);
+  await cachePoner('likes', null); S.likes = null;
+  toast('Me gusta vuelve a estar como antes');
+  render();
+}
+
 /* «Para no olvidar»: lo que no escuchas pero no quieres perder (Gucci Gang,
    Dance Monkey…). Sale de Me gusta, que así no lía tus recomendaciones ni tu
    biblioteca, pero sigue en Spotify, en una playlist privada. */
@@ -7192,12 +7764,11 @@ function hojaFuente(f) {
       ed ? b('ordenar', 'ordenar', 'Ordenar', 'título, artista, año, duración, repartir artistas…') : '',
       ed ? b('aleatorio', 'aleat', 'Aleatorio', 'baraja el orden de verdad') : '',
       ed ? b('repes', 'repes', 'Deduplicar', 'quita repetidas, también otras ediciones de la misma canción') : '',
+      lk ? b('casas', 'casa', 'Una casa para cada canción', 'reparte Me gusta en playlists de estilo, cada canción en una sola') : '',
       lk ? b('limpiar', 'corazonRoto', 'Limpiar mis Me gusta', '25 al azar: se queda, a una playlist, «Para no olvidar» o fuera') : '',
       lk ? b('repes', 'repes', 'Revisar repetidas', 'la misma canción dos veces: eliges con cuál te quedas') : '',
       lk ? b('edm', 'rayo', 'Separar mi época EDM', 'toda a una playlist; de Me gusta sale solo lo que ya no escuchas') : '',
       lk ? b('edmMapa', 'grafica', 'Mapa de mi época EDM', 'estilos, años y artistas de un vistazo') : '',
-      lk ? b('edmTodo', 'rayo', 'Todo a la época salvo lo que rescate', 'sale todo de Me gusta; lo que eches de menos, ♥ y vuelve') : '',
-      lk ? b('edmRes', 'corazon', 'Rescatar canciones de mi época', 'la época en aleatorio: ♥ a lo que eches de menos') : '',
       lk ? b('edmVer', 'repes', 'Versiones de la misma canción (EDM)', 'Radio Edit, Extended, remixes: eliges cuál se queda') : '',
       lk ? b('olvido', 'reloj', 'Mandar a «Para no olvidar»', S.sel.size ? 'las ' + S.sel.size + ' marcadas: salen de Me gusta pero se guardan' : 'marca antes las canciones') : '',
       lk ? b('limpieza', 'reloj', 'Limpieza mensual', 'marca lo que lleva más de 6 meses en Me gusta') : '',
@@ -7249,8 +7820,7 @@ function hojaFuente(f) {
         else if (o === 'edm') hojaEpocaEDM(f);
         else if (o === 'edmMapa') hojaMapaEDM(f);
         else if (o === 'edmVer') hojaVersionesEDM(f);
-        else if (o === 'edmTodo') hojaTodoEpoca(f);
-        else if (o === 'edmRes') hojaRescatar();
+        else if (o === 'casas') hojaCasas();
         else if (o === 'olvido') {
           const sel = seleccionadas().filter(p => !p.local);
           if (!sel.length) { toast('Marca primero las canciones (toca su portada)'); return; }
