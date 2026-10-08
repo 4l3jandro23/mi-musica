@@ -1051,7 +1051,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-08a';
+const VERSION = '2026-10-08b';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -4859,7 +4859,7 @@ const CASAS = [
   ['Especiales', ['Sampleadas', 'Tristes', CASA_BURN]],
   ['EDM', ['EDM · Big room', 'EDM · Electro y progressive house', 'EDM · Dubstep', 'EDM · Dubstep duro', 'EDM · Hits y EDM pop', 'EDM · Future, bass y slap house', 'EDM · House y techno de club', 'EDM · Trance', 'EDM · Trap y moombahton', 'EDM · Hardstyle', 'EDM · Future bass y melódico', 'EDM · Drum & bass', 'EDM · Electro y big beat']],
   ['Electrónica', ['Electrónica · IDM, ambient y trip hop']],
-  ['Rap', ['Rap · Clásico (hasta 2009)', 'Rap · 2010s', 'Rap · 2020s']],
+  ['Rap', ['Rap · Clásico (2000s y antes)', 'Rap · 2010s', 'Rap · 2020s']],
   ['Latino', ['Reggaeton antiguo', 'Reggaeton nuevo', 'Trap y rap en español', 'Infancia en España', 'Pop en español antiguo', 'Pop en español', 'Flamenco y rumba', 'Salsa']],
   ['Rock', ['Rock Origins', 'Rock · 60s-70s', 'Rock · 80s-90s', 'Rock · 2000s-hoy', 'Rock en español', 'Metal y rock duro']],
   ['Pop', ['White girl pop', 'Pop internacional', 'Indie, art pop e hyperpop', 'R&B, soul y funk']],
@@ -5074,9 +5074,9 @@ function casaAuto(p, ctx) {
     case 'regueton': return y && y <= 2016 ? 'Reggaeton antiguo' : 'Reggaeton nuevo';
     case 'trapes': return 'Trap y rap en español';
     case 'rap':
-      if (k0 === 'black eyed peas') return y >= 2003 ? 'Pop internacional' : 'Rap · Clásico (hasta 2009)';
+      if (k0 === 'black eyed peas') return y >= 2003 ? 'Pop internacional' : 'Rap · Clásico (2000s y antes)';
       if (hisp) return 'Trap y rap en español';
-      return !y || y >= 2020 ? 'Rap · 2020s' : y >= 2010 ? 'Rap · 2010s' : 'Rap · Clásico (hasta 2009)';
+      return !y || y >= 2020 ? 'Rap · 2020s' : y >= 2010 ? 'Rap · 2010s' : 'Rap · Clásico (2000s y antes)';
     case 'metal': return 'Metal y rock duro';
     case 'rock':
       if (hisp) return y >= 2000 && y <= 2012 && nost ? 'Infancia en España' : 'Rock en español';
@@ -5168,7 +5168,7 @@ const ART_CASA = (() => {
     'Tristes': 'ji pyeong kwon',
     'Sampleadas': 'david mccallum',
     'Para no olvidar': 'nyan cat|legión española|corey feldman|the backyardigans|monty python|the kunts|bingo gazingo',
-    'Rap · Clásico (hasta 2009)': 'lady b|12 gauge|mc hammer|crime mob|epmd|d12|big daddy kane',
+    'Rap · Clásico (2000s y antes)': 'lady b|12 gauge|mc hammer|crime mob|epmd|d12|big daddy kane',
     'Rap · 2010s': 'raury|ayo & teo|aminé',
     'Rap · 2020s': 'masked wolf|king von|armani white|aesop rock',
     'Trap y rap en español': 'beret|polimá westcoast|lablackie|junior h|frank t',
