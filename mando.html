@@ -1060,7 +1060,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-08e';
+const VERSION = '2026-10-09a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -1306,7 +1306,9 @@ async function subirFallosYa(diag) {
 const K_COLA = 'mando_cola_v1';
 let COLA = leer(K_COLA, []), _encolados = 0, _colaCorre = false;
 const guardarCola = () => escribir(K_COLA, COLA);
+let _sinCola = false;
 function encolable(ruta, o) {
+  if (_sinCola) return false;
   if (!o.method || o.method === 'GET' || o.sinCola || o.raw) return false;
   const r = ruta.replace(API, '');
   return /^\/playlists\/\w+\/items/.test(r) || /^\/me\/library\?/.test(r) || (o.method === 'PUT' && /^\/playlists\/\w+$/.test(r));
@@ -5515,6 +5517,7 @@ async function hojaCasas(D) {
     '<div class="btnrow ca-pie">' +
     (R.vaciado ? '' : '<button class="btn pri" id="caCrear">' + ic('check') + (R.creado ? 'Crear lo que falte' : 'Crear las playlists') + '</button>') +
     (R.creado && !R.vaciado ? '<button class="btn" id="caVaciar">' + ic('corazonRoto') + 'Vaciar Me gusta</button>' : '') +
+    (R.creado ? '<button class="btn" id="caRep">' + ic('repes') + 'Quitar repetidas</button>' : '') +
     (R.creado ? '<button class="btn" id="caMoods">' + ic('lista') + (R.moods ? 'Añadir lo que falte a los moods' : 'Crear los moods') + '</button>' : '') +
     (R.copia ? '<button class="btn ghost" id="caRest">' + ic('deshacer') + 'Volver a llenar Me gusta</button>' : '') +
     '</div>', h => {
@@ -5556,25 +5559,44 @@ async function hojaCasas(D) {
       const bV = h.querySelector('#caVaciar'); if (bV) bV.onclick = () => vaciarMeGusta(D);
       const bR = h.querySelector('#caRest'); if (bR) bR.onclick = () => restaurarMeGusta();
       const bM = h.querySelector('#caMoods'); if (bM) bM.onclick = () => crearMoods(D);
+      const bRp = h.querySelector('#caRep'); if (bRp) bRp.onclick = () => repararCasas(D);
     });
 }
 /* Paso 1: crea las que falten y mete en cada una lo suyo (si lo cortas, al
    volver sigue donde iba: solo añade lo que no esté). Si moviste algo que
    ya estaba en otra casa, sale de la vieja. */
+
+/* Crear casas o moods solo con Spotify respondiendo: con la lista guardada de
+   antes (playlists vacías) se volvía a meter todo y salían duplicadas. */
+async function conSpotifyFresco(fn) {
+  if (COLA.length) throw new Error('Hay ' + COLA.length + ' cambios en cola esperando a Spotify. Cuando se hagan, vuelve a darle.');
+  if (esperaPendiente() > 0) throw new Error('Spotify ha pedido una pausa: vuelve a darle dentro de ' + Math.ceil(esperaPendiente() / 60) + ' min. Seguirá donde se quedó.');
+  _sinCola = true;
+  try {
+    const mias = (await cargarPlaylists(true)).filter(esMia);
+    if (S.guardado) throw new Error('Spotify no responde ahora mismo. Vuelve a darle en un rato: seguirá donde se quedó.');
+    return await fn(mias);
+  } finally { _sinCola = false; }
+}
+/* lo que hay en una playlist, siempre leído de Spotify (nunca lo guardado) */
+async function dentroFresco(pl) {
+  const ps = await pistasDePlaylist(pl.id);
+  if (S.guardado) throw new Error('Spotify no responde ahora mismo. Vuelve a darle en un rato.');
+  return ps;
+}
 async function crearCasas(D) {
   const M = new Map(); for (const p of D.ps) { const c = D.asig.get(p.uri); (M.get(c) || M.set(c, []).get(c)).push(p.uri); }
   const nuevas = Array.from(M.keys()).filter(n => !D.plDe.has(n));
   if (!(await confirmar('¿Crear las playlists?', 'Crear', (nuevas.length ? 'Se crean ' + nuevas.length + ' playlists privadas' : 'Ya existen todas') + ' y se meten ' + n$(D.ps.length) + ' canciones, cada una en su casa. Me gusta no se toca todavía. Spotify irá con pausas: deja la Fonoteca abierta.'))) { hojaCasas(D); return; }
-  const r = await trabajo(async () => {
+  const r = await trabajo(() => conSpotifyFresco(async mias => {
     const R = leer(K_CASAS, {}); R.ids = R.ids || {};
-    const mias = (await cargarPlaylists(true)).filter(esMia);
     let i = 0, mete = 0, saca = 0;
     for (const [n, uris] of M) {
       progreso('Playlist ' + (++i) + ' de ' + M.size + ': ' + n, i, M.size);
       let pl = (R.ids[n] && mias.find(x => x.id === R.ids[n])) || mias.find(x => x.name === n);
-      if (!pl) { const d = await crearPlaylist(n, CASA_DESC[casaBase(n)] || 'Casa de la Fonoteca: cada canción vive en una sola playlist.', false); pl = { id: d.id, name: n, total: 0 }; }
+      if (!pl) { const d = await crearPlaylist(n, CASA_DESC[casaBase(n)] || 'Casa de la Fonoteca: cada canción vive en una sola playlist.', false); pl = { id: d.id, name: n, total: 0, nueva: true }; }
       R.ids[n] = pl.id; escribir(K_CASAS, R); D.plDe.set(n, pl);
-      const ya = pl.total ? new Set((await pistasDePlaylist(pl.id)).map(x => x.uri)) : new Set();
+      const ya = pl.nueva ? new Set() : new Set((await dentroFresco(pl)).map(x => x.uri));
       const nu = uris.filter(u => !ya.has(u));
       if (ya.size + nu.length > 10000) throw new Error('«' + n + '» pasaría de 10.000 canciones');
       if (nu.length) { await plAnadir(pl.id, nu, null, 'Llenando «' + n + '»'); mete += nu.length; }
@@ -5585,12 +5607,37 @@ async function crearCasas(D) {
     for (const [vieja, us] of fuera) { await plQuitar(D.plDe.get(vieja).id, us, 'Sacando de «' + vieja + '»'); saca += us.length; }
     R.creado = Date.now(); escribir(K_CASAS, R);
     return { mete, saca };
-  }, 'Creando tus playlists');
+  }), 'Creando tus playlists');
   S.playlists = null; S.indice = null;
   if (!r) { hojaCasas(D); return; }
   /* lo de ahora es lo que hay: no hace falta volver a leer las playlists */
   for (const [n, uris] of M) { for (const u of uris) D.ctx.fijas.set(u, n); const pl = D.plDe.get(n); if (pl) pl.total = Math.max(pl.total || 0, uris.length); }
   toast(_encolados > 0 ? 'Spotify va con pausas: lo que falta está en cola y se hará solo. Deja la Fonoteca abierta.' : 'Hecho: ' + n$(r.mete) + ' canciones en sus casas' + (r.saca ? ', ' + n$(r.saca) + ' cambiadas de casa' : ''), null, 7000);
+  hojaCasas(D);
+}
+/* Reparar: en cada casa y mood, las canciones repetidas se quedan una vez
+   (se quitan todas las copias y se vuelve a poner una, al final). Solo se leen
+   las playlists que tienen más de lo que les toca, así gasta poco. */
+async function repararCasas(D) {
+  const r = await trabajo(() => conSpotifyFresco(async mias => {
+    const M = new Map(); for (const p of D.ps) { const c = D.asig.get(p.uri); M.set(c, (M.get(c) || 0) + 1); }
+    const sem = D.moods || (D.moods = semillasMoods(D.ps, D.asig, D.ctx));
+    const mirar = mias.filter(pl => (esCasa(pl.name) && pl.total > (M.get(pl.name) || 0)) || (esMood(pl.name) && pl.total > 0));
+    let i = 0, quitadas = 0, pls = 0;
+    for (const pl of mirar) {
+      progreso('Buscando repetidas en «' + pl.name + '»', ++i, mirar.length);
+      const us = (await dentroFresco(pl)).map(x => x.uri), vistas = new Set(), rep2 = new Set();
+      for (const u of us) { if (vistas.has(u)) rep2.add(u); vistas.add(u); }
+      if (!rep2.size) continue;
+      const l = Array.from(rep2);
+      await plQuitar(pl.id, l, 'Quitando repetidas de «' + pl.name + '»');
+      await plAnadir(pl.id, l, null, 'Dejando una de cada en «' + pl.name + '»');
+      quitadas += us.length - vistas.size; pls++;
+    }
+    return { quitadas, pls, mirar: mirar.length };
+  }), 'Reparando tus playlists');
+  S.playlists = null; S.indice = null;
+  if (r) toast(r.quitadas ? 'Hecho: ' + n$(r.quitadas) + ' repetidas quitadas en ' + r.pls + ' playlists' : 'No hay repetidas (' + r.mirar + ' playlists mirados)', null, 8000);
   hojaCasas(D);
 }
 /* ¿está cada canción en su casa? (por recuento: no gasta casi nada) */
@@ -5650,16 +5697,15 @@ async function crearMoods(D) {
   const sem = D.moods || (D.moods = semillasMoods(D.ps, D.asig, D.ctx));
   const n = Array.from(sem.values()).reduce((a, l) => a + l.length, 0);
   if (!(await confirmar('¿Crear los moods?', 'Crear', MOOD_PL.length + ' playlists privadas con ' + n$(n) + ' canciones para empezar (una canción puede estar en varios). Las que ya existan, como NRG, solo reciben lo que les falte. Luego los completas repasando cada casa.'))) { hojaCasas(D); return; }
-  const r = await trabajo(async () => {
+  const r = await trabajo(() => conSpotifyFresco(async mias => {
     const R = leer(K_CASAS, {}); R.moodIds = R.moodIds || {};
-    const mias = (await cargarPlaylists(true)).filter(esMia);
     let i = 0, mete = 0;
     for (const m of MOOD_PL) {
       progreso('Mood ' + (++i) + ' de ' + MOOD_PL.length + ': ' + m.n, i, MOOD_PL.length);
       let pl = (R.moodIds[m.n] && mias.find(x => x.id === R.moodIds[m.n])) || mias.find(x => x.name === m.n);
-      if (!pl) { const d = await crearPlaylist(m.n, m.d + '. Mood de la Fonoteca: aquí las canciones se pueden repetir.', false); pl = { id: d.id, name: m.n, total: 0 }; }
+      if (!pl) { const d = await crearPlaylist(m.n, m.d + '. Mood de la Fonoteca: aquí las canciones se pueden repetir.', false); pl = { id: d.id, name: m.n, total: 0, nueva: true }; }
       R.moodIds[m.n] = pl.id; escribir(K_CASAS, R); D.moodPl.set(m.n, pl);
-      const ya = pl.total ? new Set((await pistasDePlaylist(pl.id)).map(x => x.uri)) : new Set();
+      const ya = pl.nueva ? new Set() : new Set((await dentroFresco(pl)).map(x => x.uri));
       const nu = (sem.get(m.n) || []).filter(u => !ya.has(u));
       if (nu.length) { await plAnadir(pl.id, nu, null, 'Llenando «' + m.n + '»'); mete += nu.length; }
       pl.total = ya.size + nu.length;
@@ -5668,7 +5714,7 @@ async function crearMoods(D) {
     guardarPrefs();
     R.moods = Date.now(); escribir(K_CASAS, R);
     return { mete };
-  }, 'Creando tus moods');
+  }), 'Creando tus moods');
   S.playlists = null; S.indice = null;
   if (r) toast(_encolados > 0 ? 'Spotify va con pausas: lo que falta se hará solo. Deja la Fonoteca abierta.' : 'Moods listos: ' + n$(r.mete) + ' canciones. Ahora repasa cada casa para completarlos.', null, 7000);
   hojaCasas(D);
