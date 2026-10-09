@@ -1,12 +1,19 @@
 {
- "version": "2026-10-08e",
- "at": "2026-10-09T15:23:36.516Z",
+ "version": "2026-10-09a",
+ "at": "2026-10-09T15:39:04.560Z",
  "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
  "pantalla": "1368x617",
  "pausaSeg": 885,
  "cola": 0,
  "permisosQueFaltan": [],
  "fallos": [
+  {
+   "at": 1791560329443,
+   "donde": "freno",
+   "msg": "Spotify ha frenado: pausa de 15 min (nivel 3)",
+   "st": 429,
+   "ruta": "GET /me/playlists"
+  },
   {
    "at": 1791559401038,
    "donde": "freno",
@@ -207,13 +214,6 @@
    "at": 1790714514909,
    "donde": "freno",
    "msg": "Spotify pide esperar 4 s (429)",
-   "st": 429,
-   "ruta": "GET /me/following"
-  },
-  {
-   "at": 1790714511896,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 2 s (429)",
    "st": 429,
    "ruta": "GET /me/following"
   }
