@@ -1,12 +1,19 @@
 {
  "version": "2026-10-09a",
- "at": "2026-10-09T19:20:57.688Z",
+ "at": "2026-10-10T13:05:34.306Z",
  "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
  "pantalla": "1368x617",
  "pausaSeg": 885,
  "cola": 0,
  "permisosQueFaltan": [],
  "fallos": [
+  {
+   "at": 1791637519154,
+   "donde": "freno",
+   "msg": "Spotify ha frenado: pausa de 15 min (nivel 3)",
+   "st": 429,
+   "ruta": "GET /me/playlists"
+  },
   {
    "at": 1791573642210,
    "donde": "freno",
@@ -209,13 +216,6 @@
    "msg": "Spotify está frenando esa parte (me) un par de minutos. El resto funciona.",
    "st": 429,
    "ruta": "GET /me"
-  },
-  {
-   "at": 1790714514910,
-   "donde": "cargar",
-   "msg": "Spotify está frenando las peticiones: prueba en un rato",
-   "st": 429,
-   "ruta": "GET /me/following"
   }
  ],
  "diagnostico": null
