@@ -1060,7 +1060,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-09a';
+const VERSION = '2026-10-10a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -4877,7 +4877,7 @@ const CASAS = [
   ['Latino', ['Reggaeton antiguo', 'Reggaeton nuevo', 'Trap y rap en español', 'Infancia en España', 'Pop en español antiguo', 'Pop en español', 'Flamenco y rumba', 'Salsa']],
   ['Idiomas', ['En catalán', 'En francés', 'En italiano', 'En alemán']],
   ['Mundo', ['Reggae y dancehall', 'Música africana', 'World music']],
-  ['Rock', ['Rock Origins', 'Rock · 60s-70s', 'Rock psicodélico', 'Rock · 80s-90s', 'Rock · 2000s-hoy', 'Rock en español', 'Folk', 'Metal y rock duro', CASA_AAA]],
+  ['Rock', ['Rock · Orígenes (rock & roll)', 'Rock · Años 60: beat y British Invasion', 'Rock · Garage y protopunk', 'Rock · Psicodélico', 'Rock · Progresivo', 'Rock · Glam y art rock', 'Rock · Hard rock', 'Rock · Clásico y soft rock', 'Rock · Folk y folk rock', 'Rock · Punk', 'Rock · Post-punk y new wave', 'Rock · Alternativo 80s-90s', 'Rock · Grunge', 'Rock · Britpop', 'Rock · Shoegaze y dream pop', 'Rock · Indie 2000s-hoy', 'Rock en español', 'Rock · Metal', CASA_AAA]],
   ['Pop', ['White girl pop', 'Pop internacional', 'Indie, art pop e hyperpop', 'R&B, soul y funk']],
   ['Otras', ['Jazz instrumental', 'Música clásica', 'Bandas sonoras']]
 ];
@@ -5189,6 +5189,8 @@ function asignarCasas(ps, ctx) {
     if (!c) c = y && y < 1960 ? CASA_BURN : 'Pop internacional';
     out.set(p.uri, c); p._adivinada = true;
   }
+  /* lo que caía en las casas de rock por época va a su género */
+  for (const p of ps) { const c = out.get(p.uri); if (c && ROCK_VIEJAS.has(casaBase(c))) out.set(p.uri, rockGenero(p, ctx)); }
   return partirLlenas(ps, out);
 }
 /* ninguna pasa de 1.000: la que se pase, se parte por años */
@@ -5212,6 +5214,46 @@ function partirLlenas(ps, out) {
   return out;
 }
 const CASA_FIJAS = ['Pendientes', 'Para no olvidar', 'NRG'];
+/* ---- El rock por géneros (10-oct) ----
+   Las casas de rock por épocas pasan a géneros: lo de época será «Lo mejor · Rock
+   60s-70s» y compañía (selecciones que llenas tú con lo que más te gusta). */
+const ROCK_VIEJAS = new Set(['Rock Origins', 'Rock · 60s-70s', 'Rock psicodélico', 'Rock · 80s-90s', 'Rock · 2000s-hoy', 'Folk', 'Metal y rock duro']);
+const ROCK_GEN = [
+  ['Rock · Orígenes (rock & roll)', /^(rock and roll|rockabilly|doo-?wop|early rock|blues|classic blues|delta blues|chicago blues|rhythm and blues|electric blues|jump blues|piedmont blues|country blues)$/],
+  ['Rock · Años 60: beat y British Invasion', /british invasion|merseybeat|beat music|freakbeat|^mod$|beatlesque|sunshine pop|baroque pop/],
+  ['Rock · Garage y protopunk', /garage rock$|proto-punk|garage psych|^garage$/],
+  ['Rock · Psicodélico', /psychedel|acid rock|space rock|stoner rock|krautrock/],
+  ['Rock · Progresivo', /progressive rock|symphonic rock|canterbury|^prog/],
+  ['Rock · Glam y art rock', /glam rock|art rock/],
+  ['Rock · Hard rock', /hard rock|blues rock|boogie rock|glam metal|sleaze/],
+  ['Rock · Folk y folk rock', /folk|singer-songwriter|americana|country|bluegrass/],
+  ['Rock · Punk', /^punk|hardcore punk|pop punk|ska punk|^emo$|street punk|^oi$/],
+  ['Rock · Post-punk y new wave', /post-punk$|new wave|darkwave|cold wave|synthpop|gothic rock|new romantic/],
+  ['Rock · Grunge', /grunge/],
+  ['Rock · Britpop', /britpop/],
+  ['Rock · Shoegaze y dream pop', /shoegaze|dream pop|slowcore|post-rock|noise pop/],
+  ['IND', /alternative rock|indie rock|college rock|madchester|jangle|garage rock revival|post-punk revival|^indie$|^alternative$|noise rock/],
+  ['Rock · Clásico y soft rock', /soft rock|yacht rock|heartland rock|roots rock|arena rock|album rock|southern rock|pop rock|classic rock|^rock$/],
+  ['Rock · Metal', /metal|thrash|doom|sludge/]
+];
+const ROCK_OV = (() => { const M = {
+  'Rock · Años 60: beat y British Invasion': 'the beatles|paul mccartney|john lennon|george harrison|ringo starr|wings|the beach boys|brian wilson|the hollies|the zombies|the kinks 0',
+  'Rock · Glam y art rock': 'kate bush|david bowie|roxy music|t. rex',
+  'Rock · Alternativo 80s-90s': 'radiohead|sonic youth|no doubt|pixies|r.e.m.|the smiths',
+  'Rock · Indie 2000s-hoy': 'black country, new road|black midi|nothing but thieves|the strokes|arctic monkeys|tame impala 0',
+  'Rock · Hard rock': 'kiss|eric clapton|ac/dc|led zeppelin|deep purple|guns n\' roses',
+  'Rock · Clásico y soft rock': 'neil diamond|prince|queen|fleetwood mac|elton john|eagles',
+  'Rock · Shoegaze y dream pop': 'my bloody valentine|slowdive|cocteau twins|beach house|mazzy star',
+  'Rock · Folk y folk rock': 'the byrds|bob dylan|simon & garfunkel|leonard cohen|nick drake',
+  'Rock · Psicodélico': 'tame impala|pink floyd|the doors|the 13th floor elevators|jefferson airplane',
+  'Rock · Garage y protopunk': 'the velvet underground|the stooges|mc5|patti smith|the kinks'
+}, o = {}; for (const [c, l] of Object.entries(M)) for (const a of l.split('|')) if (!/ 0$/.test(a)) o[fold(a)] = c; return o; })();
+function rockGenero(p, ctx) {
+  const k = fold((p.artists[0] || {}).name || ''); if (ROCK_OV[k]) return ROCK_OV[k];
+  const yA = (ctx && ctx.minY && ctx.minY.get(k)) || +p.year || 0;
+  for (const g of genArt(p.artists[0])) for (const [n, rx] of ROCK_GEN) if (rx.test(g)) return n === 'IND' ? (yA && yA < 2000 ? 'Rock · Alternativo 80s-90s' : 'Rock · Indie 2000s-hoy') : n;
+  return !yA ? 'Rock · Clásico y soft rock' : yA < 1963 ? 'Rock · Orígenes (rock & roll)' : yA < 1970 ? 'Rock · Años 60: beat y British Invasion' : yA < 1985 ? 'Rock · Clásico y soft rock' : yA < 2000 ? 'Rock · Alternativo 80s-90s' : 'Rock · Indie 2000s-hoy';
+}
 /* artistas sin género en ningún sitio, a mano */
 const ART_CASA = (() => {
   const B = CASA_BURN, M = {
@@ -5337,7 +5379,10 @@ const MOOD_PL = [
   { n: 'Goofy ahh sounds', d: 'Música que me da risa', max: 150,
     pares: P_('nyan cat|nyan;crazy frog|axel f;psy|gangnam style;lil pump|gucci gang;ylvis|the fox;boney m.|rasputin;aqua|barbie girl;los del río|macarena;las ketchup|aserejé;rednex|cotton eye joe;eiffel 65|blue;o-zone|dragostea din tei;rick astley|never gonna give you up;eduard khil|trololo;manuel|gas gas gas;dave rodgers|deja vu;dave rodgers|space boy;max coveri|running in the 90s;baauer|harlem shake;darude|sandstorm;toby fox|megalovania;smash mouth|all star;bag raiders|shooting stars;daler mehndi|tunak tunak tun;loituma|ievan polkka;caramella girls|caramelldansen;zombie nation|kernkraft 400;gummy bear|i\'m a gummy bear;peanut butter jelly time|peanut butter;monty python|always look on the bright side of life;los tuneaos|paquito el chocolatero;blippi español|el baile de blippi;hard bass school|nash gimn;hard bass school|narkotik kal;dj blyatman|cyka blyat;6ix9ine|gummo;6ix9ine|gooba;corey feldman|go 4 it;bingo gazingo|i got a baby;the kunts|boris johnson;tiny tim|tiptoe through the tulips;pinkfong|baby shark;village people|ymca;village people|in the navy;chumbawamba|tubthumping;vengaboys|boom, boom;scatman john|scatman;lou bega|mambo no. 5;baha men|who let the dogs out;the outhere brothers|boom boom boom;los del mar|macarena;georgie dann|el chiringuito;georgie dann|la barbacoa;king africa|la bomba;chimo bayo|así me gusta a mí;the ketchup song|aserejé;carl douglas|kung fu fighting;gotye|somebody that i used to know;interworld|metamorphosis;kordhell|murder in my mind;jamiroquai|virtual insanity;daft punk|harder, better;pitbull|fireball;lmfao|sexy and i know it;lmfao|party rock anthem'),
     regla: (p, c) => c === 'Para no olvidar' },
-  { n: 'Tristes', d: 'Para los días de bajón', max: 200, pares: null, regla: null }
+  { n: 'Tristes', d: 'Para los días de bajón', max: 200, pares: null, regla: null },
+  { n: 'Lo mejor · Rock 60s-70s', d: 'Lo que más me gusta del rock de los 60 y 70 (de todos sus géneros)', max: 0, pares: [], regla: null },
+  { n: 'Lo mejor · Rock 80s-90s', d: 'Lo que más me gusta del rock de los 80 y 90', max: 0, pares: [], regla: null },
+  { n: 'Lo mejor · Rock 2000s-hoy', d: 'Lo que más me gusta del rock de 2000 hasta hoy', max: 0, pares: [], regla: null }
 ];
 const MOOD_NOMBRES = MOOD_PL.map(m => m.n);
 /* índice de tus canciones por artista (cualquiera de la canción) para buscar los pares rápido */
@@ -5384,7 +5429,10 @@ async function datosCasas() {
   ps = ps.filter(p => !p.local);
   const pls = (await cargarPlaylists()).filter(esMia), fijas = new Map(), plDe = new Map();
   const casasPl = pls.filter(pl => esCasa(pl.name));
-  for (let i = 0; i < casasPl.length; i++) {
+  /* con Me gusta ya repartido no hace falta leerlas todas: se miran al crear */
+  const ligero = ps.length < 2000;
+  if (ligero) for (const pl of casasPl) plDe.set(pl.name, pl);
+  for (let i = 0; i < casasPl.length && !ligero; i++) {
     const pl = casasPl[i];
     progreso('Mirando lo que ya está en sus casas: ' + pl.name, i, casasPl.length);
     let dentro = [];
@@ -5397,7 +5445,7 @@ async function datosCasas() {
   let ahora = null; try { ahora = await escuchasAhora(); } catch (e) { if (e.message === 'DETENIDO') throw e; }
   const ctx = { ahora, fijas };
   const moodPl = new Map(); for (const pl of pls) if (esMood(pl.name)) moodPl.set(pl.name, pl);
-  return { ps, ctx, plDe, moodPl, asig: asignarCasas(ps, ctx) };
+  return { ps, ctx, plDe, moodPl, rockViejo: pls.filter(pl => ROCK_VIEJAS.has(pl.name)), asig: asignarCasas(ps, ctx) };
 }
 /* La casa que dicen las etiquetas de la propia canción, solo si son claras:
    3 o más de la misma familia y la mitad del total. Una etiqueta suelta no
@@ -5517,6 +5565,7 @@ async function hojaCasas(D) {
     '<div class="btnrow ca-pie">' +
     (R.vaciado ? '' : '<button class="btn pri" id="caCrear">' + ic('check') + (R.creado ? 'Crear lo que falte' : 'Crear las playlists') + '</button>') +
     (R.creado && !R.vaciado ? '<button class="btn" id="caVaciar">' + ic('corazonRoto') + 'Vaciar Me gusta</button>' : '') +
+    (D.rockViejo && D.rockViejo.length ? '<button class="btn pri" id="caRock">' + ic('tijera') + 'Pasar el rock a géneros</button>' : '') +
     (R.creado ? '<button class="btn" id="caRep">' + ic('repes') + 'Quitar repetidas</button>' : '') +
     (R.creado ? '<button class="btn" id="caMoods">' + ic('lista') + (R.moods ? 'Añadir lo que falte a los moods' : 'Crear los moods') + '</button>' : '') +
     (R.copia ? '<button class="btn ghost" id="caRest">' + ic('deshacer') + 'Volver a llenar Me gusta</button>' : '') +
@@ -5560,6 +5609,7 @@ async function hojaCasas(D) {
       const bR = h.querySelector('#caRest'); if (bR) bR.onclick = () => restaurarMeGusta();
       const bM = h.querySelector('#caMoods'); if (bM) bM.onclick = () => crearMoods(D);
       const bRp = h.querySelector('#caRep'); if (bRp) bRp.onclick = () => repararCasas(D);
+      const bRk = h.querySelector('#caRock'); if (bRk) bRk.onclick = () => migrarRock(D);
     });
 }
 /* Paso 1: crea las que falten y mete en cada una lo suyo (si lo cortas, al
@@ -5639,6 +5689,45 @@ async function repararCasas(D) {
   S.playlists = null; S.indice = null;
   if (r) toast(r.quitadas ? 'Hecho: ' + n$(r.quitadas) + ' repetidas quitadas en ' + r.pls + ' playlists' : 'No hay repetidas (' + r.mirar + ' playlists mirados)', null, 8000);
   hojaCasas(D);
+}
+/* Pasar el rock a géneros: se lee lo que hay DE VERDAD en tus playlists de rock
+   (con lo que hayas cambiado tú), cada canción va a su género, se comprueba, y
+   solo entonces se quitan de tu biblioteca las playlists viejas por época. */
+async function migrarRock(D) {
+  if (!(await confirmar('¿Pasar el rock a géneros?', 'Pasar', 'Tus playlists de rock por época (' + D.rockViejo.map(p => p.name).join(', ') + ') se reparten en géneros: Psicodélico, Progresivo, Post-punk… Al final, las viejas salen de tu biblioteca (Spotify deja recuperarlas 90 días). Las de «Lo mejor · Rock…» las llenas tú luego.'))) { hojaCasas(D); return; }
+  const r = await trabajo(() => conSpotifyFresco(async mias => {
+    const viejas = mias.filter(pl => ROCK_VIEJAS.has(pl.name));
+    const todas = [], vistas = new Set();
+    for (let i = 0; i < viejas.length; i++) {
+      progreso('Leyendo «' + viejas[i].name + '»', i + 1, viejas.length);
+      for (const p of await dentroFresco(viejas[i])) if (!p.local && !vistas.has(p.uri)) { vistas.add(p.uri); todas.push(p); }
+    }
+    const copia = await cacheLeer('copiaLikesPistas'), base = (copia && copia.pistas) || [];
+    const minY = new Map(); for (const p of base.concat(todas)) { const k = fold((p.artists[0] || {}).name || ''), y = +p.year || 0; if (y && (!minY.has(k) || y < minY.get(k))) minY.set(k, y); }
+    const CU = PREFS.casaUri || {}, porG = new Map();
+    for (const p of todas) { const u = CU[p.uri], g = u && esCasa(u) && /^Rock · /.test(casaBase(u)) ? u : rockGenero(p, { minY }); (porG.get(g) || porG.set(g, []).get(g)).push(p.uri); }
+    const R = leer(K_CASAS, {}); R.ids = R.ids || {};
+    let i = 0, mete = 0;
+    for (const [g, us] of porG) {
+      progreso('Género ' + (++i) + ' de ' + porG.size + ': ' + g, i, porG.size);
+      let pl = mias.find(x => x.name === g);
+      if (!pl) { const d = await crearPlaylist(g, 'Género de la Fonoteca: mis canciones y clásicos del género.', false); pl = { id: d.id, name: g, total: 0, nueva: true }; }
+      R.ids[g] = pl.id; escribir(K_CASAS, R);
+      const ya = pl.nueva ? new Set() : new Set((await dentroFresco(pl)).map(x => x.uri));
+      const nu = us.filter(u => !ya.has(u));
+      if (nu.length) { await plAnadir(pl.id, nu, null, 'Llenando «' + g + '»'); mete += nu.length; }
+    }
+    /* comprobar antes de quitar nada */
+    const fin = (await cargarPlaylists(true)).filter(esMia); if (S.guardado) throw new Error('Spotify no responde: no quito nada todavía');
+    const mal = Array.from(porG).filter(([g, us]) => { const pl = fin.find(x => x.name === g); return !pl || pl.total < us.length; }).map(([g]) => g);
+    if (mal.length) throw new Error('No cuadran todavía: ' + mal.join(', ') + '. Vuelve a darle y lo termina.');
+    await libQuitar(viejas.map(pl => pl.uri || 'spotify:playlist:' + pl.id), 'Quitando las playlists viejas de rock');
+    R.rock = Date.now(); escribir(K_CASAS, R);
+    return { n: todas.length, g: porG.size, mete };
+  }), 'Pasando el rock a géneros');
+  S.playlists = null; S.indice = null;
+  if (r) toast('Rock repartido: ' + n$(r.n) + ' canciones en ' + r.g + ' géneros', null, 8000);
+  hojaCasas();
 }
 /* ¿está cada canción en su casa? (por recuento: no gasta casi nada) */
 async function comprobarCasas(D) {
