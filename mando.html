@@ -1110,7 +1110,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-12a';
+const VERSION = '2026-10-12b';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -5488,17 +5488,17 @@ function asignarCasas(ps, ctx) {
   /* año más antiguo de cada artista (para no mandar a los Beatles a 2009 por un remaster) */
   const minY = new Map(); for (const p of ps) { const k = fold((p.artists[0] || {}).name || ''), y = +p.year || 0; if (y && (!minY.has(k) || y < minY.get(k))) minY.set(k, y); }
   ctx.minY = minY;
-  const out = new Map(), CU = PREFS.casaUri || {}, CA = PREFS.casaArt || {}, CALB = PREFS.casaAlb || {}, fijas = ctx.fijas || new Map();
+  const out = new Map(), CU = PREFS.casaUri || {}, CA = PREFS.casaArt || {}, CALB = PREFS.casaAlb || {}, MV = PREFS.casaMov || {}, fijas = ctx.fijas || new Map();
   const kArt = p => fold(esEDM(p) ? artistaEpoca(p) : ((p.artists[0] || {}).name || ''));
   const quedan = [];
   for (const p of ps) {
     _sampM = _sampM || _parTit(SAMPLEADAS); _tristM = _tristM || _parTit(TRISTES);
-    const c = CU[p.uri] || CALB[p.albumUri] || CA[kArt(p)] || fijas.get(p.uri) || (casaParEn(_sampM, p) ? 'Sampleadas' : null) || ART_CASA[fold((p.artists[0] || {}).name || '')] || casaAuto(p, ctx);
+    const c = MV[p.uri] || fijas.get(p.uri) || CU[p.uri] || CALB[p.albumUri] || CA[kArt(p)] || (casaParEn(_sampM, p) ? 'Sampleadas' : null) || ART_CASA[fold((p.artists[0] || {}).name || '')] || casaAuto(p, ctx);
     if (c) out.set(p.uri, c); else quedan.push(p);
   }
   /* EDM de DJs sin género concreto: todas las de un DJ, juntas, donde caigan más */
   const porDJ = new Map();
-  for (const p of ps) { const c = out.get(p.uri); if (!c || !/^EDM · /.test(c) || CU[p.uri] || CALB[p.albumUri] || fijas.has(p.uri) || djConcreto(p)) continue; const k = kArt(p); (porDJ.get(k) || porDJ.set(k, []).get(k)).push(p); }
+  for (const p of ps) { const c = out.get(p.uri); if (!c || !/^EDM · /.test(c) || MV[p.uri] || CU[p.uri] || CALB[p.albumUri] || fijas.has(p.uri) || djConcreto(p)) continue; const k = kArt(p); (porDJ.get(k) || porDJ.set(k, []).get(k)).push(p); }
   for (const [k, l] of porDJ) { if (CA[k]) continue; const n = {}; for (const p of l) { const c = out.get(p.uri); n[c] = (n[c] || 0) + 1; } const m = Object.entries(n).sort((a, b) => b[1] - a[1])[0][0]; for (const p of l) out.set(p.uri, m); }
   /* sin género: por el resto del disco, por partes del nombre, por el título */
   const porAlb = new Map(); for (const p of ps) { const c = out.get(p.uri); if (c && p.albumUri) { const m = porAlb.get(p.albumUri) || porAlb.set(p.albumUri, {}).get(p.albumUri); m[c] = (m[c] || 0) + 1; } }
@@ -5755,7 +5755,8 @@ async function datosCasas() {
   const casasPl = pls.filter(pl => esCasa(pl.name));
   /* con Me gusta ya repartido no hace falta leerlas todas: se miran al crear */
   const ligero = ps.length < 2000;
-  if (ligero) for (const pl of casasPl) plDe.set(pl.name, pl);
+  /* sin leerlas: lo guardado basta para saber dónde vive cada una (y no duplicarla en otra casa) */
+  if (ligero) for (const pl of casasPl) { plDe.set(pl.name, pl); const c = await cacheLeer('pl:' + pl.id); if (c && c.pistas) for (const p of c.pistas) if (p && p.uri && !fijas.has(p.uri)) fijas.set(p.uri, pl.name); }
   for (let i = 0; i < casasPl.length && !ligero; i++) {
     const pl = casasPl[i];
     progreso('Mirando lo que ya está en sus casas: ' + pl.name, i, casasPl.length);
@@ -5914,7 +5915,8 @@ async function hojaCasas(D) {
       h.querySelector('#caLista').addEventListener('change', e => {
         const s = e.target.closest('.ca-mv'); if (!s || !s.value) return;
         const val = s.value;
-        const CU = PREFS.casaUri || (PREFS.casaUri = {}), CALB = PREFS.casaAlb || (PREFS.casaAlb = {});
+        const CU = PREFS.casaUri || (PREFS.casaUri = {}), CALB = PREFS.casaAlb || (PREFS.casaAlb = {}), MV = PREFS.casaMov || (PREFS.casaMov = {});
+        for (const p of D.ps) if (s.dataset.u ? p.uri === s.dataset.u : s.dataset.alb ? (p.albumUri || p.album) === s.dataset.alb : claveArtCasa(p) === s.dataset.a) MV[p.uri] = val;
         if (s.dataset.u) CU[s.dataset.u] = val;
         else if (s.dataset.alb) {
           const k = s.dataset.alb; CALB[k] = val;
@@ -5979,9 +5981,11 @@ async function crearCasas(D) {
     }
     /* lo que cambiaste de casa sale de la vieja */
     const fuera = new Map();
-    for (const [u, vieja] of D.ctx.fijas) { const c = D.asig.get(u); if (c && c !== vieja && D.plDe.has(vieja)) (fuera.get(vieja) || fuera.set(vieja, []).get(vieja)).push(u); }
+    const MV = PREFS.casaMov || {};
+    for (const [u, vieja] of D.ctx.fijas) { const c = D.asig.get(u); if (c && c !== vieja && D.plDe.has(vieja) && (MV[u] || casaBase(c) === casaBase(vieja))) (fuera.get(vieja) || fuera.set(vieja, []).get(vieja)).push(u); }
     for (const [vieja, us] of fuera) { await plQuitar(D.plDe.get(vieja).id, us, 'Sacando de «' + vieja + '»'); saca += us.length; }
     R.creado = Date.now(); escribir(K_CASAS, R);
+    if (PREFS.casaMov) { for (const p of D.ps) delete PREFS.casaMov[p.uri]; guardarPrefs(); }
     return { mete, saca };
   }), 'Creando tus playlists');
   S.playlists = null; S.indice = null;
