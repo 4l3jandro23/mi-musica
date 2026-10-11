@@ -1060,7 +1060,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-11a';
+const VERSION = '2026-10-11b';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -5630,6 +5630,8 @@ async function conSpotifyFresco(fn) {
 }
 /* lo que hay en una playlist, siempre leído de Spotify (nunca lo guardado) */
 async function dentroFresco(pl) {
+  /* sin la copia guardada: tras añadir, la foto de la lista aún es la vieja */
+  await cachePoner('pl:' + pl.id, null);
   const ps = await pistasDePlaylist(pl.id);
   if (S.guardado) throw new Error('Spotify no responde ahora mismo. Vuelve a darle en un rato.');
   return ps;
