@@ -1110,7 +1110,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-12b';
+const VERSION = '2026-10-12c';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -3179,7 +3179,8 @@ const ROCK_EPOCA = {
   'Rock · Orígenes (rock & roll)': '50s', 'Rock · Años 60: beat y British Invasion': '60s', 'Rock · Garage y protopunk': '60s-70s', 'Rock · Psicodélico': '60s',
   'Rock · Progresivo': '70s', 'Rock · Glam y art rock': '70s', 'Rock · Hard rock': '70s-80s', 'Rock · Clásico y soft rock': '70s-80s', 'Rock · Folk y folk rock': '60s-70s',
   'Rock · Punk': '1976-80s', 'Rock · Post-punk y new wave': '1978-80s', 'Rock · Alternativo 80s-90s': '80s-90s', 'Rock · Grunge': '90s', 'Rock · Britpop': '90s',
-  'Rock · Shoegaze y dream pop': '90s-hoy', 'Rock · Indie 2000s-hoy': '2000s-hoy', 'Rock · Metal': '70s-hoy'
+  'Rock · Shoegaze y dream pop': '90s-hoy', 'Rock · Indie 2000s-hoy': '2000s-hoy', 'Rock · Metal': '70s-hoy',
+  'Rock · Blues y blues rock': '20s-70s', 'Rock · Krautrock': '70s', 'Rock · Post-rock y math rock': '90s-hoy', 'Rock · Stoner y desert rock': '90s-hoy', 'Rock · Emo y post-hardcore': '90s-2000s', 'Rock · Pop punk': '1995-2000s', 'Rock · Nu metal y rap rock': '1995-2000s'
 };
 const nombreCorto = n => casaBase(n).replace(/^(Rock|EDM|Rap|Electrónica) · /, '');
 const parteDe = n => { const m = String(n).match(/ \(([^)]*)\)$/); return m && casaBase(n) !== n ? m[1] : ''; };
@@ -5196,7 +5197,7 @@ const CASAS = [
   ['Latino', ['Reggaeton antiguo', 'Reggaeton nuevo', 'Trap y rap en español', 'Infancia en España', 'Pop en español antiguo', 'Pop en español', 'Flamenco y rumba', 'Salsa']],
   ['Idiomas', ['En catalán', 'En francés', 'En italiano', 'En alemán']],
   ['Mundo', ['Reggae y dancehall', 'Música africana', 'Música brasileña antigua', 'Funk brasileño', 'World music']],
-  ['Rock', ['Rock · Orígenes (rock & roll)', 'Rock · Años 60: beat y British Invasion', 'Rock · Garage y protopunk', 'Rock · Psicodélico', 'Rock · Progresivo', 'Rock · Glam y art rock', 'Rock · Hard rock', 'Rock · Clásico y soft rock', 'Rock · Folk y folk rock', 'Rock · Punk', 'Rock · Post-punk y new wave', 'Rock · Alternativo 80s-90s', 'Rock · Grunge', 'Rock · Britpop', 'Rock · Shoegaze y dream pop', 'Rock · Indie 2000s-hoy', 'Rock en español', 'Rock · Metal', CASA_AAA]],
+  ['Rock', ['Rock · Blues y blues rock', 'Rock · Orígenes (rock & roll)', 'Rock · Años 60: beat y British Invasion', 'Rock · Garage y protopunk', 'Rock · Psicodélico', 'Rock · Progresivo', 'Rock · Krautrock', 'Rock · Glam y art rock', 'Rock · Hard rock', 'Rock · Clásico y soft rock', 'Rock · Folk y folk rock', 'Rock · Punk', 'Rock · Post-punk y new wave', 'Rock · Alternativo 80s-90s', 'Rock · Grunge', 'Rock · Britpop', 'Rock · Shoegaze y dream pop', 'Rock · Post-rock y math rock', 'Rock · Stoner y desert rock', 'Rock · Emo y post-hardcore', 'Rock · Pop punk', 'Rock · Nu metal y rap rock', 'Rock · Indie 2000s-hoy', 'Rock en español', 'Rock · Metal', CASA_AAA]],
   ['Pop', ['White girl pop', 'Pop internacional', 'Indie, art pop e hyperpop', 'R&B, soul y funk']],
   ['Otras', ['Jazz instrumental', 'Música clásica', 'Bandas sonoras']]
 ];
@@ -5211,7 +5212,14 @@ const CASA_DESC = {
   'White girl pop': 'Pop de chicas: Taylor, Olivia, Sabrina, Lana…',
   'Boiler Room': 'Lo que pincharía en un Boiler Room',
   'Dance Classics': 'Clásicos de pista de los 80 a los 2000',
-  'Disco': 'Disco de los 70 y principios de los 80'
+  'Disco': 'Disco de los 70 y principios de los 80',
+  'Rock · Blues y blues rock': 'La raíz de todo: del blues del Delta al blues rock',
+  'Rock · Krautrock': 'Rock alemán de los 70: motorik, ruido y viajes largos',
+  'Rock · Post-rock y math rock': 'Instrumental, épico o con compases raros',
+  'Rock · Stoner y desert rock': 'Riffs lentos y gordos, desierto y humo',
+  'Rock · Emo y post-hardcore': 'De Sunny Day Real Estate a My Chemical Romance',
+  'Rock · Pop punk': 'blink-182, Sum 41, Paramore y compañía',
+  'Rock · Nu metal y rap rock': 'Linkin Park, System of a Down, Rage Against the Machine…'
 };
 /* listas a mano: [artista, principio del título] */
 const SAMPLEADAS = [
@@ -5541,19 +5549,26 @@ const CASA_FIJAS = ['Pendientes', 'Para no olvidar', 'NRG'];
    60s-70s» y compañía (selecciones que llenas tú con lo que más te gusta). */
 const ROCK_VIEJAS = new Set(['Rock Origins', 'Rock · 60s-70s', 'Rock psicodélico', 'Rock · 80s-90s', 'Rock · 2000s-hoy', 'Folk', 'Metal y rock duro']);
 const ROCK_GEN = [
-  ['Rock · Orígenes (rock & roll)', /^(rock and roll|rockabilly|doo-?wop|early rock|blues|classic blues|delta blues|chicago blues|rhythm and blues|electric blues|jump blues|piedmont blues|country blues)$/],
+  ['Rock · Blues y blues rock', /^(blues|classic blues|delta blues|chicago blues|electric blues|jump blues|piedmont blues|country blues|acoustic blues|texas blues|british blues|modern blues|soul blues|traditional blues|blues rock)$/],
+  ['Rock · Orígenes (rock & roll)', /^(rock and roll|rockabilly|doo-?wop|early rock|rhythm and blues)$/],
+  ['Rock · Krautrock', /krautrock|kosmische/],
+  ['Rock · Stoner y desert rock', /stoner|desert rock|heavy psych/],
+  ['Rock · Post-rock y math rock', /post-rock|math rock|instrumental rock/],
+  ['Rock · Emo y post-hardcore', /^(emo|midwest emo|emocore|emo punk|post-hardcore|screamo|melodic hardcore)$/],
+  ['Rock · Pop punk', /pop punk|pop-punk|skate punk|neon pop punk/],
+  ['Rock · Nu metal y rap rock', /nu metal|nu-metal|rap metal|rap rock|funk metal|alternative metal|post-grunge/],
   ['Rock · Años 60: beat y British Invasion', /british invasion|merseybeat|beat music|freakbeat|^mod$|beatlesque|sunshine pop|baroque pop/],
   ['Rock · Garage y protopunk', /garage rock$|proto-punk|garage psych|^garage$/],
-  ['Rock · Psicodélico', /psychedel|acid rock|space rock|stoner rock|krautrock/],
+  ['Rock · Psicodélico', /psychedel|acid rock|space rock/],
   ['Rock · Progresivo', /progressive rock|symphonic rock|canterbury|^prog/],
   ['Rock · Glam y art rock', /glam rock|art rock/],
-  ['Rock · Hard rock', /hard rock|blues rock|boogie rock|glam metal|sleaze/],
+  ['Rock · Hard rock', /hard rock|boogie rock|glam metal|sleaze/],
   ['Rock · Folk y folk rock', /folk|singer-songwriter|americana|country|bluegrass/],
-  ['Rock · Punk', /^punk|hardcore punk|pop punk|ska punk|^emo$|street punk|^oi$/],
+  ['Rock · Punk', /^punk|hardcore punk|ska punk|street punk|^oi$/],
   ['Rock · Post-punk y new wave', /post-punk$|new wave|darkwave|cold wave|synthpop|gothic rock|new romantic/],
   ['Rock · Grunge', /grunge/],
   ['Rock · Britpop', /britpop/],
-  ['Rock · Shoegaze y dream pop', /shoegaze|dream pop|slowcore|post-rock|noise pop/],
+  ['Rock · Shoegaze y dream pop', /shoegaze|dream pop|slowcore|noise pop/],
   ['IND', /alternative rock|indie rock|college rock|madchester|jangle|garage rock revival|post-punk revival|^indie$|^alternative$|noise rock/],
   ['Rock · Clásico y soft rock', /soft rock|yacht rock|heartland rock|roots rock|arena rock|album rock|southern rock|pop rock|classic rock|^rock$/],
   ['Rock · Metal', /metal|thrash|doom|sludge/]
@@ -5568,7 +5583,14 @@ const ROCK_OV = (() => { const M = {
   'Rock · Shoegaze y dream pop': 'my bloody valentine|slowdive|cocteau twins|beach house|mazzy star',
   'Rock · Folk y folk rock': 'the byrds|bob dylan|simon & garfunkel|leonard cohen|nick drake',
   'Rock · Psicodélico': 'tame impala|pink floyd|the doors|the 13th floor elevators|jefferson airplane',
-  'Rock · Garage y protopunk': 'the velvet underground|the stooges|mc5|patti smith|the kinks'
+  'Rock · Garage y protopunk': 'the velvet underground|the stooges|mc5|patti smith|the kinks',
+  'Rock · Blues y blues rock': 'robert johnson|muddy waters|howlin\' wolf|john lee hooker|b.b. king|stevie ray vaughan|the black keys|gary clark jr.|buddy guy|john mayall|john mayall & the bluesbreakers|freddie king|albert king|elmore james|etta james 0|son house|lead belly|big mama thornton|janis joplin 0|joe bonamassa|the white stripes 0|rory gallagher|peter green|alvin lee|ten years after|canned heat|the allman brothers band 0',
+  'Rock · Krautrock': 'can|neu!|faust|harmonia|cluster|amon düül ii|ash ra tempel|la düsseldorf|tangerine dream 0|kraftwerk 0',
+  'Rock · Stoner y desert rock': 'kyuss|queens of the stone age|sleep|electric wizard|fu manchu|monster magnet|truckfighters|clutch|earthless|king buffalo|all them witches|yawning man',
+  'Rock · Post-rock y math rock': 'mogwai|explosions in the sky|godspeed you! black emperor|sigur rós|slint|tortoise|battles|this will destroy you|god is an astronaut|toe|don caballero|russian circles|mono|caspian|american football 0|black country, new road 0|chat pile 0',
+  'Rock · Emo y post-hardcore': 'american football|sunny day real estate|at the drive-in|refused|thursday|thrice|brand new|taking back sunday|the get up kids|jimmy eat world|mineral|cap\'n jazz|la dispute|touché amoré|title fight|glassjaw|saosin|underoath|alexisonfire|pierce the veil|sleeping with sirens|my chemical romance|dashboard confessional|senses fail|the used|hawthorne heights|silverstein|panic! at the disco',
+  'Rock · Pop punk': 'blink-182|sum 41|good charlotte|simple plan|paramore|fall out boy|all time low|the all-american rejects|new found glory|yellowcard|mayday parade|we the kings|state champs|neck deep|the story so far|a day to remember|boys like girls|forever the sickest kids|cute is what we aim for|3oh!3 0',
+  'Rock · Nu metal y rap rock': 'linkin park|limp bizkit|korn|system of a down|deftones|rage against the machine|papa roach|disturbed|p.o.d.|incubus|evanescence|staind|godsmack|chevelle|breaking benjamin|three days grace|hoobastank|crazy town|audioslave|mudvayne|drowning pool|trapt|seether|puddle of mudd|nickelback|creed|alien ant farm|static-x|sevendust|serj tankian|fort minor'
 }, o = {}; for (const [c, l] of Object.entries(M)) for (const a of l.split('|')) if (!/ 0$/.test(a)) o[fold(a)] = c; return o; })();
 function rockGenero(p, ctx) {
   const k = fold((p.artists[0] || {}).name || ''); if (ROCK_OV[k]) return ROCK_OV[k];
