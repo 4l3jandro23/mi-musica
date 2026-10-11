@@ -1060,7 +1060,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-10a';
+const VERSION = '2026-10-11a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -5445,7 +5445,7 @@ async function datosCasas() {
   let ahora = null; try { ahora = await escuchasAhora(); } catch (e) { if (e.message === 'DETENIDO') throw e; }
   const ctx = { ahora, fijas };
   const moodPl = new Map(); for (const pl of pls) if (esMood(pl.name)) moodPl.set(pl.name, pl);
-  return { ps, ctx, plDe, moodPl, rockViejo: pls.filter(pl => ROCK_VIEJAS.has(pl.name)), asig: asignarCasas(ps, ctx) };
+  return { ps, ctx, plDe, moodPl, rockViejo: pls.filter(pl => ROCK_VIEJAS.has(casaBase(pl.name))), asig: asignarCasas(ps, ctx) };
 }
 /* La casa que dicen las etiquetas de la propia canción, solo si son claras:
    3 o más de la misma familia y la mitad del total. Una etiqueta suelta no
@@ -5696,7 +5696,7 @@ async function repararCasas(D) {
 async function migrarRock(D) {
   if (!(await confirmar('¿Pasar el rock a géneros?', 'Pasar', 'Tus playlists de rock por época (' + D.rockViejo.map(p => p.name).join(', ') + ') se reparten en géneros: Psicodélico, Progresivo, Post-punk… Al final, las viejas salen de tu biblioteca (Spotify deja recuperarlas 90 días). Las de «Lo mejor · Rock…» las llenas tú luego.'))) { hojaCasas(D); return; }
   const r = await trabajo(() => conSpotifyFresco(async mias => {
-    const viejas = mias.filter(pl => ROCK_VIEJAS.has(pl.name));
+    const viejas = mias.filter(pl => ROCK_VIEJAS.has(casaBase(pl.name)));
     const todas = [], vistas = new Set();
     for (let i = 0; i < viejas.length; i++) {
       progreso('Leyendo «' + viejas[i].name + '»', i + 1, viejas.length);
@@ -5718,8 +5718,12 @@ async function migrarRock(D) {
       if (nu.length) { await plAnadir(pl.id, nu, null, 'Llenando «' + g + '»'); mete += nu.length; }
     }
     /* comprobar antes de quitar nada */
-    const fin = (await cargarPlaylists(true)).filter(esMia); if (S.guardado) throw new Error('Spotify no responde: no quito nada todavía');
-    const mal = Array.from(porG).filter(([g, us]) => { const pl = fin.find(x => x.name === g); return !pl || pl.total < us.length; }).map(([g]) => g);
+    const mal = [];
+    for (const [g, us] of porG) {
+      progreso('Comprobando «' + g + '»');
+      const dentro = new Set((await dentroFresco({ id: R.ids[g], name: g })).map(x => x.uri));
+      if (us.some(u => !dentro.has(u))) mal.push(g);
+    }
     if (mal.length) throw new Error('No cuadran todavía: ' + mal.join(', ') + '. Vuelve a darle y lo termina.');
     await libQuitar(viejas.map(pl => pl.uri || 'spotify:playlist:' + pl.id), 'Quitando las playlists viejas de rock');
     R.rock = Date.now(); escribir(K_CASAS, R);
