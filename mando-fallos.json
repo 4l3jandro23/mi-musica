@@ -1,12 +1,19 @@
 {
- "version": "2026-10-09a",
- "at": "2026-10-10T13:05:34.306Z",
+ "version": "2026-10-10a",
+ "at": "2026-10-11T11:17:44.483Z",
  "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
- "pantalla": "1368x617",
- "pausaSeg": 885,
+ "pantalla": "1368x673",
+ "pausaSeg": 0,
  "cola": 0,
  "permisosQueFaltan": [],
  "fallos": [
+  {
+   "at": 1791717448839,
+   "donde": "Pasando el rock a géneros",
+   "msg": "No cuadran todavía: Rock · Metal, Rock · Hard rock, Rock · Indie 2000s-hoy, Rock · Clásico y soft rock, Rock · Grunge, Rock · Alternativo 80s-90s, Rock · Punk, Rock · Psicodélico, Rock · Garage y protopunk, Rock · Años 60: beat y British Invasion, Rock · Progresivo, Rock · Folk y folk rock, Rock · B",
+   "st": 0,
+   "ruta": ""
+  },
   {
    "at": 1791637519154,
    "donde": "freno",
@@ -205,13 +212,6 @@
   },
   {
    "at": 1790714565112,
-   "donde": "cargar",
-   "msg": "Spotify está frenando esa parte (me) un par de minutos. El resto funciona.",
-   "st": 429,
-   "ruta": "GET /me"
-  },
-  {
-   "at": 1790714549089,
    "donde": "cargar",
    "msg": "Spotify está frenando esa parte (me) un par de minutos. El resto funciona.",
    "st": 429,
