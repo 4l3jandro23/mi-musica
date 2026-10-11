@@ -1,12 +1,19 @@
 {
- "version": "2026-10-10a",
- "at": "2026-10-11T11:17:44.483Z",
+ "version": "2026-10-11a",
+ "at": "2026-10-11T11:21:32.478Z",
  "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
- "pantalla": "1368x673",
+ "pantalla": "1368x616",
  "pausaSeg": 0,
  "cola": 0,
  "permisosQueFaltan": [],
  "fallos": [
+  {
+   "at": 1791717676822,
+   "donde": "Pasando el rock a géneros",
+   "msg": "No cuadran todavía: Rock · Años 60: beat y British Invasion, Rock · Clásico y soft rock, Rock · Post-punk y new wave, Rock · Hard rock, Rock · Glam y art rock. Vuelve a darle y lo termina.",
+   "st": 0,
+   "ruta": ""
+  },
   {
    "at": 1791717448839,
    "donde": "Pasando el rock a géneros",
@@ -209,13 +216,6 @@
    "msg": "Spotify pide esperar 2 s (429)",
    "st": 429,
    "ruta": "GET /me/following"
-  },
-  {
-   "at": 1790714565112,
-   "donde": "cargar",
-   "msg": "Spotify está frenando esa parte (me) un par de minutos. El resto funciona.",
-   "st": 429,
-   "ruta": "GET /me"
   }
  ],
  "diagnostico": null
