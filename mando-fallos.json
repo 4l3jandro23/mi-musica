@@ -1,12 +1,19 @@
 {
  "version": "2026-10-11c",
- "at": "2026-10-11T12:19:03.905Z",
+ "at": "2026-10-11T12:54:07.046Z",
  "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
- "pantalla": "1368x673",
+ "pantalla": "1368x617",
  "pausaSeg": 1785,
  "cola": 1,
  "permisosQueFaltan": [],
  "fallos": [
+  {
+   "at": 1791723231785,
+   "donde": "freno",
+   "msg": "Spotify ha frenado: pausa de 30 min (nivel 4)",
+   "st": 429,
+   "ruta": "GET /me/playlists"
+  },
   {
    "at": 1791721128297,
    "donde": "freno",
@@ -209,13 +216,6 @@
    "msg": "Spotify pide esperar 60 s (429)",
    "st": 429,
    "ruta": "GET /me/following"
-  },
-  {
-   "at": 1790715547889,
-   "donde": "freno",
-   "msg": "Spotify pide esperar 32 s (429)",
-   "st": 429,
-   "ruta": "GET /me/tracks"
   }
  ],
  "diagnostico": null
