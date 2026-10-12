@@ -1058,6 +1058,35 @@
   .tm-tecla + p { margin-top: 12px; }
   .ru-c { position: relative; }
   .ru-nom { position: absolute; left: 0; right: 0; bottom: 0; padding: 22px 10px 10px; color: #fff; font-weight: 800; font-size: 14px; line-height: 1.15; text-align: left; background: linear-gradient(transparent, rgba(0,0,0,.72)); }
+  /* ---- ¿Qué se queda? ---- */
+  .tr-barra { display: flex; height: 10px; border-radius: 99px; overflow: hidden; background: var(--surface-2); margin: 4px 0 8px; }
+  .tr-barra i { display: block; height: 100%; transition: width .3s var(--ease-out); }
+  .tr-barra .me, .tr-cnt i.me { background: #e0457b; } .tr-barra .ar, .tr-cnt i.ar { background: #8a7a66; } .tr-barra .pe, .tr-cnt i.pe { background: #2b8fd9; }
+  .tr-cnt { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12.5px; font-weight: 650; color: var(--fg-soft); margin-bottom: 12px; }
+  .tr-cnt i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
+  .tr-fil { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0 12px; }
+  .tr-a { background: var(--surface); border-radius: 14px; box-shadow: var(--shadow-sm); padding: 10px 10px 10px 14px; margin-bottom: 8px; transition: opacity .2s, transform .2s var(--ease-out); }
+  .tr-a.fuera { opacity: 0; transform: translateX(16px); }
+  .tr-top { display: flex; align-items: center; gap: 8px; }
+  .tr-n { flex: 1; min-width: 0; text-align: left; border: 0; background: transparent; color: inherit; cursor: pointer; padding: 2px 0; }
+  .tr-n b { display: block; font-size: 15px; font-weight: 750; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tr-n small { display: block; font-size: 12px; color: var(--fg-mute); font-weight: 600; margin-top: 1px; }
+  .tr-n em { font-style: normal; color: var(--jade); }
+  .tr-play { width: 36px; height: 36px; border-radius: 50%; border: 0; background: var(--surface-2); color: var(--fg); display: grid; place-items: center; cursor: pointer; flex: none; }
+  .tr-play svg { width: 16px; height: 16px; margin-left: 2px; }
+  .tr-d { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; }
+  .tr-d button { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 38px; border-radius: 10px; border: 1px solid var(--line-firm); background: transparent; color: var(--fg-soft); font-weight: 700; font-size: 13px; cursor: pointer; transition: background .15s, color .15s, transform .12s var(--ease-out); }
+  .tr-d button svg { width: 16px; height: 16px; }
+  .tr-d button:active, .tr-c button:active { transform: scale(.95); }
+  .tr-d button.on, .tr-c button.on { color: #fff; border-color: transparent; }
+  .tr-d .me.on, .tr-c .me.on { background: #e0457b; } .tr-d .ar.on, .tr-c .ar.on { background: #8a7a66; } .tr-d .pe.on, .tr-c .pe.on { background: #2b8fd9; }
+  .tr-cs { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 6px; }
+  .tr-c { display: flex; align-items: center; gap: 6px; padding: 4px 0; }
+  .tr-ct { flex: 1; min-width: 0; text-align: left; border: 0; background: transparent; color: inherit; cursor: pointer; padding: 4px 0; }
+  .tr-ct b { display: block; font-size: 13.5px; font-weight: 650; }
+  .tr-ct small { font-size: 11.5px; color: var(--fg-mute); font-weight: 600; }
+  .tr-c button[data-du] { width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--line-firm); background: transparent; color: var(--fg-mute); display: grid; place-items: center; cursor: pointer; flex: none; }
+  .tr-c button[data-du] svg { width: 15px; height: 15px; }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
 </head>
@@ -1110,7 +1139,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-12e';
+const VERSION = '2026-10-12f';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2067,7 +2096,7 @@ const S = {
   selObj: new Set(), buscar: { q: '', tipo: 'track', res: null }, suena: null, soloSel: false, indice: null
 };
 const PREFS = Object.assign({ saltarRepes: true }, leer(K_PREFS, {}));
-const CFG_SYNC = ['criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido', 'distintas', 'likesFuera', 'plEpoca', 'epocaArt', 'edmNo', 'casaUri', 'casaArt', 'casaAlb'];
+const CFG_SYNC = ['criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido', 'distintas', 'likesFuera', 'plEpoca', 'epocaArt', 'edmNo', 'casaUri', 'casaArt', 'casaAlb', 'triaje'];
 let _cfgSnap = null;
 const guardarPrefs = () => {
   escribir(K_PREFS, PREFS);
@@ -2139,6 +2168,7 @@ $('#bnav').onclick = e => {
   hoja('<h2>Más</h2><div class="opc">' + TABS.filter(t => PRINCIPALES.indexOf(t.id) < 0).map(t => '<button data-t="' + t.id + '">' + ic(t.ic) + '<span>' + t.txt + '</span></button>').join('') +
     '<div class="sec">Herramientas</div><button data-x="ira">' + ic('buscar') + '<span>Ir a…<span class="sub">busca cualquier playlist, disco, artista o herramienta</span></span></button>' +
     '<button data-x="sorpresa">' + ic('varita') + '<span>Ruleta de discos<span class="sub">un disco pendiente al azar</span></span></button>' +
+    '<button data-x="triaje">' + ic('check') + '<span>¿Qué se queda?<span class="sub">cada canción a Me gusta, Archivo o Pendientes, por artista</span></span></button>' +
     '<button data-x="rulgen">' + ic('aleat') + '<span>Ruleta de géneros<span class="sub">pone en Spotify una de tus casas al azar</span></span></button>' +
     '<button data-x="etq">' + ic('etiqueta') + '<span>Etiquetar mis Me gusta<span class="sub">año real y género de cada canción (mejor en el PC, una noche)</span></span></button>' +
     '<button data-x="juego">' + ic('estrella') + '<span>Juega con tu música<span class="sub">¿de qué año es?, ¿quién canta?…</span></span></button>' +
@@ -2148,7 +2178,7 @@ $('#bnav').onclick = e => {
       h.querySelector('.opc').onclick = ev => {
         const x = ev.target.closest('[data-t],[data-x]'); if (!x) return;
         cerrarHoja(true);
-        if (x.dataset.t) irATab(x.dataset.t); else if (x.dataset.x === 'cupo') hojaCupo(); else if (x.dataset.x === 'ira') hojaIrA(); else if (x.dataset.x === 'sorpresa') sorprendeme(); else if (x.dataset.x === 'rulgen') misCasasYMoods().then(C => ruletaCasas(C.casas)).catch(e => toast(explicarError(e))); else if (x.dataset.x === 'juego') hojaJuego(); else if (x.dataset.x === 'etq') etiquetarTodo(); else if (x.dataset.x === 'comparar') hojaComparar(); else if (x.dataset.x === 'imagen') hojaCompartir(); else hojaAjustes();
+        if (x.dataset.t) irATab(x.dataset.t); else if (x.dataset.x === 'cupo') hojaCupo(); else if (x.dataset.x === 'ira') hojaIrA(); else if (x.dataset.x === 'sorpresa') sorprendeme(); else if (x.dataset.x === 'triaje') abrirTriaje(); else if (x.dataset.x === 'rulgen') misCasasYMoods().then(C => ruletaCasas(C.casas)).catch(e => toast(explicarError(e))); else if (x.dataset.x === 'juego') hojaJuego(); else if (x.dataset.x === 'etq') etiquetarTodo(); else if (x.dataset.x === 'comparar') hojaComparar(); else if (x.dataset.x === 'imagen') hojaCompartir(); else hojaAjustes();
       };
     });
 };
@@ -3027,12 +3057,20 @@ function tarjetaMini(img, t1, t2, attrs, red) {
 async function vInicio(m) {
   const h = new Date().getHours(), sal = h < 6 ? 'Buenas noches' : h < 13 ? 'Buenos días' : h < 21 ? 'Buenas tardes' : 'Buenas noches';
   const nom = () => S.me && S.me.display_name ? ', ' + esc(S.me.display_name.split(' ')[0]) : '';
-  m.innerHTML = '<div class="saludo" id="inSal">' + sal + nom() + '</div><div id="inAhora"></div><div id="inPongo"></div><div id="inBj"></div><div id="inIdeas"></div><div id="inDia"></div><div class="atajos" id="inAtajos"></div><div id="inDiscos"></div><div id="inNuevas"></div><div id="inRec"></div><div id="inHoy"></div><div id="inCaps"></div><div id="inPls"></div><div id="inEtq"></div>';
+  m.innerHTML = '<div class="saludo" id="inSal">' + sal + nom() + '</div><div id="inAhora"></div><div id="inTri"></div><div id="inPongo"></div><div id="inBj"></div><div id="inIdeas"></div><div id="inDia"></div><div class="atajos" id="inAtajos"></div><div id="inDiscos"></div><div id="inNuevas"></div><div id="inRec"></div><div id="inHoy"></div><div id="inCaps"></div><div id="inPls"></div><div id="inEtq"></div>';
   const vivo = () => S.tab === 'inicio' && !S.vista && $('#inAtajos');
   if (!S.me) yo().then(() => { const x = $('#inSal'); if (x) x.innerHTML = sal + nom(); }).catch(() => {});
   pintarAhoraInicio();
   pintarBandeja(vivo).catch(() => {});
   pintarQuePongo(vivo).catch(() => {});
+  (async () => {
+    const el = $('#inTri'); if (!el) return;
+    const ps = (await musicaSiempre()).filter(p => !p.local); if (!ps.length || !vivo()) return;
+    const T = triaje(); let no = 0; for (const p of ps) if (!destDe(p, T)) no++;
+    if (!no) return;
+    el.innerHTML = '<button class="idea-ent"><span class="ic">' + ic('check') + '</span><span><b>¿Qué se queda?</b><small>' + n$(no) + ' de ' + n$(ps.length) + ' canciones sin decidir: Me gusta, Archivo o Pendientes, por artista.</small></span>' + ic('abajoV', ' style="transform:rotate(-90deg)"') + '</button>';
+    el.querySelector('button').onclick = abrirTriaje;
+  })().catch(() => {});
   (async () => {
     const el = $('#inIdeas'); if (!el) return;
     const n = ((await cacheLeer('likes')) || { pistas: [] }).pistas.length; if (!n || !vivo()) return;
@@ -3300,7 +3338,7 @@ async function vCasas(m) {
   const nCanc = C.casas.reduce((a, pl) => a + (pl.total || 0), 0);
   const ahora = moodsAhora().filter(([n]) => porNombre.has(n) && porNombre.get(n).total > 0).slice(0, 3);
   let html = '<div class="saludo">Tu música</div><p class="soft" style="margin:-8px 0 16px">' + n$(C.casas.length) + ' géneros · ' + n$(nCanc) + ' canciones · ' + n$(C.moods.length) + ' moods</p>' +
-    '<div class="btnrow tm-acc"><button class="btn pri" id="tmRul">' + ic('aleat') + 'Ruleta de géneros</button><button class="btn" id="tmRock">' + ic('reloj') + 'Viaje por el rock</button><button class="btn" id="tmJuego">' + ic('varita') + '¿Qué género es?</button><button class="btn" id="tmOrd">' + ic('casa') + 'Ordenar</button></div>';
+    '<div class="btnrow tm-acc"><button class="btn pri" id="tmTri">' + ic('check') + '¿Qué se queda?</button><button class="btn" id="tmRul">' + ic('aleat') + 'Ruleta de géneros</button><button class="btn" id="tmRock">' + ic('reloj') + 'Viaje por el rock</button><button class="btn" id="tmJuego">' + ic('varita') + '¿Qué género es?</button><button class="btn" id="tmOrd">' + ic('casa') + 'Ordenar</button></div>';
   if (ahora.length) html += '<div class="fila-sec"><h3>Ahora te pega</h3></div><div class="tm-ahora">' + ahora.map(([n, por]) => htmlMood(porNombre.get(n), por, true)).join('') + '</div>';
   if (C.moods.length) html += '<div class="fila-sec"><h3>Moods</h3></div><div class="tm-moods">' + C.moods.slice().sort((a, b) => MOOD_NOMBRES.indexOf(a.name) - MOOD_NOMBRES.indexOf(b.name)).filter(pl => pl.total > 0).map(pl => htmlMood(pl)).join('') + '</div>';
   for (const [fam, nombres] of CASAS) {
@@ -3324,6 +3362,7 @@ async function vCasas(m) {
     const t = e.target.closest('[data-pl]'); if (t) { const pl = porId.get(t.dataset.pl); if (pl) abrirPlaylist(pl); }
   };
   $('#tmRul').onclick = () => ruletaCasas(C.casas);
+  $('#tmTri').onclick = () => abrirTriaje();
   $('#tmRock').onclick = () => {
     const l = ROCK_VIAJE().map(n => C.casas.find(pl => casaBase(pl.name) === n && pl.total > 0)).filter(Boolean);
     if (!l.length) { toast('Aún no tienes los géneros de rock'); return; }
@@ -3393,6 +3432,152 @@ function hojaTeclas() {
     '<p class="tiny mute">En «Repasar»: ← → para moverte, 1-9 para elegir playlist, espacio para escuchar.</p>');
 }
 
+
+/* ============================================================
+   ¿QUÉ SE QUEDA? Cada canción de siempre va a Me gusta (te sigue
+   gustando), Archivo (ya no te llama) o Pendientes (para más
+   adelante). Se decide por artista y, si hace falta, canción a
+   canción. Lo decidido se guarda y se aplica de una vez. Las
+   playlists de géneros no se tocan.
+   ============================================================ */
+const TRI_DEST = { me: ['Me gusta', 'corazon'], ar: ['Archivo', 'disco'], pe: ['Pendientes', 'reloj'] };
+const K_TRIH = 'fonoteca_triaje_hecho_v1';
+const triaje = () => PREFS.triaje || (PREFS.triaje = { art: {}, uri: {} });
+const destDe = (p, T) => T.uri[p.uri] || T.art[fold(artPpal(p))] || null;
+async function abrirTriaje() {
+  const ps = (await musicaSiempre()).filter(p => !p.local && p.uri);
+  if (!ps.length) { toast('No encuentro tus canciones de siempre en este aparato'); return; }
+  const grupos = new Map();
+  for (const p of ps) { const k = fold(artPpal(p)) || '?'; let g = grupos.get(k); if (!g) grupos.set(k, g = { k, nombre: artPpal(p) || 'Sin artista', ps: [] }); g.ps.push(p); }
+  const lista = Array.from(grupos.values()).sort((a, b) => b.ps.length - a.ps.length || a.nombre.localeCompare(b.nombre));
+  for (const g of lista) g.ps.sort((a, b) => (anyo(a) || 9999) - (anyo(b) || 9999));
+  const V = { ps, lista, filtro: 'sin', q: '', ver: 60, abierto: null, ahora: null };
+  abrirVista({ triaje: true, pintar: m => pintarTriaje(m, V) });
+  escuchasAhora().then(a => { V.ahora = a; if (S.vista && S.vista.triaje) pintarListaTri(V); }).catch(() => {});
+}
+function cuentaTri(V) {
+  const T = triaje(), H = leer(K_TRIH, {}), c = { me: 0, ar: 0, pe: 0, no: 0, pend: 0 };
+  for (const p of V.ps) { const d = destDe(p, T); c[d || 'no']++; if (d && H[p.uri] !== d) c.pend++; }
+  return c;
+}
+function pintarCabTri(V) {
+  const c = cuentaTri(V), N = V.ps.length || 1, pc = x => (100 * x / N).toFixed(2) + '%';
+  const el = $('#trCab'); if (!el) return;
+  el.innerHTML = '<div class="tr-barra"><i class="me" style="width:' + pc(c.me) + '"></i><i class="ar" style="width:' + pc(c.ar) + '"></i><i class="pe" style="width:' + pc(c.pe) + '"></i></div>' +
+    '<div class="tr-cnt"><span><i class="me"></i>' + n$(c.me) + ' Me gusta</span><span><i class="ar"></i>' + n$(c.ar) + ' Archivo</span><span><i class="pe"></i>' + n$(c.pe) + ' Pendientes</span><span>' + n$(c.no) + ' sin decidir</span></div>' +
+    '<div class="btnrow"><button class="btn pri" id="trAp"' + (c.pend ? '' : ' disabled') + '>' + ic('check') + (c.pend ? 'Aplicar ' + n$(c.pend) + ' cambios' : 'Todo aplicado') + '</button>' +
+    '<button class="btn" id="trAhora">' + ic('corazon') + 'Lo que escuchas ahora → Me gusta</button></div>';
+  $('#trAp').onclick = () => aplicarTriaje(V);
+  $('#trAhora').onclick = () => {
+    if (!V.ahora) { toast('Aún estoy mirando lo que escuchas: prueba en unos segundos'); return; }
+    const T = triaje(); let n = 0;
+    for (const g of V.lista) if (!T.art[g.k] && (V.ahora.a.has(g.k) || g.ps.some(p => V.ahora.c.has(p.uri)))) { T.art[g.k] = 'me'; n++; }
+    guardarPrefs(); pintarCabTri(V); pintarListaTri(V);
+    toast(n ? n$(n) + ' artistas que escuchas ahora → Me gusta. Cámbialo si alguno no va.' : 'Los que escuchas ya estaban decididos');
+  };
+}
+function pintarTriaje(m, V) {
+  m.innerHTML = '<button class="btn ghost sm back" id="trAtras">' + ic('atras') + 'Atrás</button>' +
+    '<div class="saludo" style="margin-top:4px">¿Qué se queda?</div>' +
+    '<p class="soft" style="margin:-8px 0 14px">Tus ' + n$(V.ps.length) + ' canciones de siempre. Decide por artista y, si dudas, ábrelo y elige canción a canción. ' +
+    '<b>Me gusta</b>: te sigue gustando · <b>Archivo</b>: ya no te llama · <b>Pendientes</b>: para más adelante. Las playlists de géneros no se tocan.</p>' +
+    '<div id="trCab"></div>' +
+    '<div class="herr"><input class="field" id="trQ" type="search" placeholder="Buscar artista" value="' + esc(V.q) + '"></div>' +
+    '<div class="tr-fil" id="trF">' + [['sin', 'Sin decidir'], ['me', 'Me gusta'], ['ar', 'Archivo'], ['pe', 'Pendientes'], ['todos', 'Todos']].map(([k, t]) => '<button class="chip' + (V.filtro === k ? ' on' : '') + '" data-f="' + k + '">' + t + '</button>').join('') + '</div>' +
+    '<div id="trL"></div>';
+  $('#trAtras').onclick = atras;
+  let tq; $('#trQ').oninput = e => { clearTimeout(tq); tq = setTimeout(() => { V.q = e.target.value; V.ver = 60; pintarListaTri(V); }, 180); };
+  $('#trF').onclick = e => { const b = e.target.closest('[data-f]'); if (!b) return; V.filtro = b.dataset.f; V.ver = 60; $('#trF').querySelectorAll('.chip').forEach(x => x.classList.toggle('on', x === b)); pintarListaTri(V); };
+  pintarCabTri(V); pintarListaTri(V);
+  $('#trL').onclick = e => clicTri(e, V);
+}
+function estadoGrupo(g, T) { let d0; for (const p of g.ps) { const d = destDe(p, T) || 'no'; if (d0 === undefined) d0 = d; else if (d !== d0) return 'mezcla'; } return d0 || 'no'; }
+function pintarListaTri(V) {
+  const el = $('#trL'); if (!el) return;
+  const T = triaje(), q = fold(V.q).trim();
+  const vis = V.lista.filter(g => {
+    if (q && fold(g.nombre).indexOf(q) < 0) return false;
+    if (V.filtro === 'todos') return true;
+    if (V.filtro === 'sin') return g.ps.some(p => !destDe(p, T));
+    return g.ps.some(p => destDe(p, T) === V.filtro);
+  });
+  const fila = g => {
+    const est = estadoGrupo(g, T), oye = V.ahora && (V.ahora.a.has(g.k) || g.ps.some(p => V.ahora.c.has(p.uri)));
+    const ab = V.abierto === g.k;
+    return '<div class="tr-a' + (ab ? ' abierto' : '') + '" data-k="' + esc(g.k) + '">' +
+      '<div class="tr-top"><button class="tr-n" data-x="abrir"><b>' + esc(g.nombre) + '</b><small>' + n$(g.ps.length) + (g.ps.length === 1 ? ' canción' : ' canciones') + (oye ? ' · <em>lo escuchas</em>' : '') + (est === 'mezcla' ? ' · repartido' : '') + '</small></button>' +
+      '<button class="tr-play" data-x="play" aria-label="Escuchar ' + esc(g.nombre) + '">' + ic('play') + '</button></div>' +
+      '<div class="tr-d">' + ['me', 'ar', 'pe'].map(d => '<button data-d="' + d + '" class="' + d + (est === d ? ' on' : '') + '">' + ic(TRI_DEST[d][1]) + '<span>' + TRI_DEST[d][0] + '</span></button>').join('') + '</div>' +
+      (ab ? '<div class="tr-cs">' + g.ps.map(p => { const d = destDe(p, T); return '<div class="tr-c" data-u="' + esc(p.uri) + '"><button class="tr-ct" data-x="sonar"><b class="nowrap">' + esc(p.title) + '</b><small>' + (anyo(p) || '') + '</small></button>' +
+        ['me', 'ar', 'pe'].map(x => '<button data-du="' + x + '" class="' + x + (d === x ? ' on' : '') + '" aria-label="' + TRI_DEST[x][0] + '">' + ic(TRI_DEST[x][1]) + '</button>').join('') + '</div>'; }).join('') + '</div>' : '') +
+      '</div>';
+  };
+  el.innerHTML = vis.length ? vis.slice(0, V.ver).map(fila).join('') + (vis.length > V.ver ? '<div class="btnrow" style="justify-content:center;margin:14px 0"><button class="btn" data-x="mas">Ver ' + Math.min(60, vis.length - V.ver) + ' más (quedan ' + n$(vis.length - V.ver) + ')</button></div>' : '')
+    : '<div class="vacio">' + (V.filtro === 'sin' && !q ? '¡Todo decidido! Dale a «Aplicar» arriba.' : 'Nada por aquí.') + '</div>';
+}
+function clicTri(e, V) {
+  if (e.target.closest('[data-x="mas"]')) { V.ver += 60; pintarListaTri(V); return; }
+  const a = e.target.closest('.tr-a'); if (!a) return;
+  const g = V.lista.find(x => x.k === a.dataset.k); if (!g) return;
+  const T = triaje();
+  const bx = e.target.closest('[data-x]'), x = bx && bx.dataset.x;
+  if (x === 'abrir') { V.abierto = V.abierto === g.k ? null : g.k; pintarListaTri(V); return; }
+  if (x === 'play') { reproducir({ uris: barajar(g.ps.slice()).slice(0, 30).map(p => p.uri) }); toast('Suena ' + g.nombre + ' en aleatorio'); return; }
+  if (x === 'sonar') { const c = e.target.closest('[data-u]'); if (c) reproducir({ uris: [c.dataset.u] }); return; }
+  const bd = e.target.closest('[data-d]');
+  if (bd) {
+    const d = bd.dataset.d, ya = estadoGrupo(g, T) === d;
+    for (const p of g.ps) delete T.uri[p.uri];
+    if (ya) delete T.art[g.k]; else T.art[g.k] = d;
+    guardarPrefs(); pintarCabTri(V);
+    /* en «Sin decidir», lo decidido sale de la lista con un pequeño fundido */
+    if (!ya && V.filtro === 'sin' && V.abierto !== g.k) { a.classList.add('fuera'); setTimeout(() => pintarListaTri(V), 220); } else pintarListaTri(V);
+    try { navigator.vibrate && navigator.vibrate(10); } catch (er) {}
+    return;
+  }
+  const bu = e.target.closest('[data-du]');
+  if (bu) {
+    const u = bu.closest('[data-u]').dataset.u, d = bu.dataset.du, p = g.ps.find(z => z.uri === u);
+    if (destDe(p, T) === d && T.uri[u]) delete T.uri[u]; else T.uri[u] = d;
+    guardarPrefs(); pintarCabTri(V); pintarListaTri(V);
+  }
+}
+async function aplicarTriaje(V) {
+  const T = triaje(), H = leer(K_TRIH, {});
+  const dest = new Map(), added = new Map();
+  for (const p of V.ps) { const d = destDe(p, T); added.set(p.uri, p.added || 0); if (d && H[p.uri] !== d) dest.set(p.uri, d); }
+  if (!dest.size) { toast('No hay nada nuevo que aplicar'); return; }
+  const n = { me: 0, ar: 0, pe: 0 }; dest.forEach(d => n[d]++);
+  if (!(await confirmar('¿Aplicar lo decidido?', 'Aplicar', n$(n.me) + ' a Me gusta, ' + n$(n.ar) + ' a Archivo y ' + n$(n.pe) + ' a Pendientes. Si alguna estaba en otro de los tres sitios, sale de allí. Las playlists de géneros no se tocan.'))) return;
+  const r = await trabajo(() => conSpotifyFresco(async mias => {
+    const R = leer(K_CASAS, {}); R.ids = R.ids || {};
+    const pl = async (nombre, desc) => {
+      let x = (R.ids[nombre] && mias.find(y => y.id === R.ids[nombre])) || mias.find(y => y.name === nombre);
+      if (!x) { const d = await crearPlaylist(nombre, desc, false); x = { id: d.id, name: nombre, nueva: true }; }
+      R.ids[nombre] = x.id; escribir(K_CASAS, R); return x;
+    };
+    const ar = await pl('Archivo', 'Lo que ya no me llama: aquí queda guardado.'), pe = await pl('Pendientes', 'Para escuchar más adelante.');
+    progreso('Mirando lo que ya hay');
+    const enAr = new Set(ar.nueva ? [] : (await dentroFresco(ar)).map(x => x.uri)), enPe = new Set(pe.nueva ? [] : (await dentroFresco(pe)).map(x => x.uri));
+    const likes = new Set((await pistasMeGusta()).map(x => x.uri));
+    const M = { me: [], ar: [], pe: [] }, Q = { me: [], ar: [], pe: [] }, en = { me: likes, ar: enAr, pe: enPe };
+    for (const [u, d] of dest) for (const k of ['me', 'ar', 'pe']) { if (k === d && !en[k].has(u)) M[k].push(u); if (k !== d && en[k].has(u)) Q[k].push(u); }
+    M.me.sort((a, b) => added.get(a) - added.get(b));
+    if (M.me.length) await libPoner(M.me, 'Dando ♥ a ' + n$(M.me.length));
+    if (Q.me.length) await libQuitar(Q.me, 'Quitando de Me gusta');
+    if (M.ar.length) await plAnadir(ar.id, M.ar, null, 'Llenando Archivo');
+    if (Q.ar.length) await plQuitar(ar.id, Q.ar, 'Sacando de Archivo');
+    if (M.pe.length) await plAnadir(pe.id, M.pe, null, 'Llenando Pendientes');
+    if (Q.pe.length) await plQuitar(pe.id, Q.pe, 'Sacando de Pendientes');
+    for (const [u, d] of dest) H[u] = d; escribir(K_TRIH, H);
+    return { M, Q };
+  }), 'Aplicando');
+  S.playlists = null; S.likes = null; cachePoner('likes', null);
+  if (!r) { pintarCabTri(V); return; }
+  toast('Hecho: ' + n$(r.M.me.length) + ' a Me gusta, ' + n$(r.M.ar.length) + ' a Archivo, ' + n$(r.M.pe.length) + ' a Pendientes', null, 7000);
+  pintarCabTri(V);
+}
+
 /* ============================================================
    IR A… (Ctrl+K o desde «Más»): una caja para saltar a cualquier
    playlist, disco, artista, pestaña o herramienta escribiendo
@@ -3401,6 +3586,7 @@ function hojaIrA() {
   const acciones = [
     ['Repasar Me gusta una a una', 'play', () => { irATab('likes'); let n = 0; const t = setInterval(() => { if (S.fuente && S.fuente.kind === 'likes' && S.fuente.pistas) { clearInterval(t); repasar(S.fuente); } else if (++n > 120) clearInterval(t); }, 250); }],
     ['Toda mi música', 'buscar', () => abrirTodaMiMusica()],
+    ['¿Qué se queda? Me gusta, Archivo o Pendientes', 'check', () => abrirTriaje()],
     ['Ruleta de géneros: que decida el azar', 'aleat', () => misCasasYMoods().then(C => ruletaCasas(C.casas)).catch(e => toast(explicarError(e)))],
     ['Viaje por el rock: de los 50 a hoy', 'reloj', () => { irATab('casas'); let n = 0; const t = setInterval(() => { const b = $('#tmRock'); if (b) { clearInterval(t); b.click(); } else if (++n > 40) clearInterval(t); }, 250); }],
     ['Jugar: ¿qué género es?', 'nota', () => hojaJuego('genero')],
@@ -5189,7 +5375,7 @@ const CASA_BURN = "It's just a burning memory";
 const CASA_STH = 'Scaring the hoes', CASA_AAA = 'AAAAAAAAAAAAAAAA';
 const AAA_ARTS = 'burzum|aborted|slipknot|lamb of god|cannibal corpse|napalm death|carcass|deafheaven|lingua ignota|full of hell|converge|the dillinger escape plan|botch|code orange|knocked loose|vein.fm|suicide silence|whitechapel|mayhem|darkthrone|emperor|gorgoroth|cradle of filth|behemoth|dimmu borgir|meshuggah|ghostemane|city morgue|scarlxrd|zillakami|ho99o9|show me the body|sunn o)))|sepultura|pantera|slayer|death|morbid angel|bring me the horizon|attila|asking alexandria|the devil wears prada|black dresses|machine girl|igorrr';
 const CASAS = [
-  ['Tuyas', ['Pendientes', 'Para no olvidar']],
+  ['Tuyas', ['Archivo', 'Pendientes', 'Para no olvidar']],
   ['Especiales', ['Sampleadas', CASA_BURN, CASA_STH]],
   ['EDM', ['EDM · Big room', 'EDM · Electro y progressive house', 'EDM · Dubstep', 'EDM · Dubstep duro', 'EDM · Hits y EDM pop', 'EDM · Future, bass y slap house', 'EDM · Trance', 'EDM · Psytrance', 'EDM · Trap y moombahton', 'EDM · Hardstyle', 'EDM · Future bass y melódico', 'EDM · Drum & bass', 'EDM · Electro y big beat']],
   ['House y techno', ['Orígenes del house', 'Orígenes del techno', 'French house', 'Deep house', 'House relajante', 'Tropical house', 'Tech house', 'Melodic house y techno', 'Techno duro', 'Afrohouse', 'Boiler Room']],
