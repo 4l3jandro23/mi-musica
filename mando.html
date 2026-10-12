@@ -1110,7 +1110,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-12d';
+const VERSION = '2026-10-12e';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -3174,7 +3174,7 @@ const MOOD_LOOK = {
 };
 const moodLook = n => MOOD_LOOK[n] || ['#3a2c15', '#a3690f', 'estrella'];
 /* color de cada familia de casas */
-const FAM_LOOK = { 'Tuyas': '#a3690f', 'Especiales': '#7a2fd0', 'EDM': '#2b5fd9', 'House y techno': '#128a64', 'Clásicos de pista': '#d4568a', 'Electrónica': '#3a7ca5', 'Rap': '#d0442f', 'Latino': '#e07a1f', 'Idiomas': '#5a4a3a', 'Mundo': '#2a9d8f', 'Rock': '#b03f30', 'Pop': '#ff6fa8', 'Otras': '#6b6b8a' };
+const FAM_LOOK = { 'Tuyas': '#a3690f', 'Especiales': '#7a2fd0', 'EDM': '#2b5fd9', 'House y techno': '#128a64', 'Clásicos de pista': '#d4568a', 'Electrónica': '#3a7ca5', 'Rap': '#d0442f', 'Latino': '#e07a1f', 'Idiomas': '#5a4a3a', 'Mundo': '#2a9d8f', 'Rock': '#b03f30', 'Pop': '#ff6fa8', 'R&B y soul': '#8e4dd0', 'Jazz': '#3a6ea5', 'Clásica': '#6b6b8a', 'Bandas sonoras': '#4a5a3a' };
 /* la época de cada género de rock, para leerlo como una línea del tiempo */
 const ROCK_EPOCA = {
   'Rock · Orígenes (rock & roll)': '50s', 'Rock · Años 60: beat y British Invasion': '60s', 'Rock · Garage y protopunk': '60s-70s', 'Rock · Psicodélico': '60s',
@@ -5192,16 +5192,19 @@ const CASAS = [
   ['Tuyas', ['Pendientes', 'Para no olvidar']],
   ['Especiales', ['Sampleadas', CASA_BURN, CASA_STH]],
   ['EDM', ['EDM · Big room', 'EDM · Electro y progressive house', 'EDM · Dubstep', 'EDM · Dubstep duro', 'EDM · Hits y EDM pop', 'EDM · Future, bass y slap house', 'EDM · Trance', 'EDM · Psytrance', 'EDM · Trap y moombahton', 'EDM · Hardstyle', 'EDM · Future bass y melódico', 'EDM · Drum & bass', 'EDM · Electro y big beat']],
-  ['House y techno', ['Boiler Room', 'House relajante', 'Afrohouse', 'Orígenes del house', 'Orígenes del techno']],
+  ['House y techno', ['Orígenes del house', 'Orígenes del techno', 'French house', 'Deep house', 'House relajante', 'Tropical house', 'Tech house', 'Melodic house y techno', 'Techno duro', 'Afrohouse', 'Boiler Room']],
   ['Clásicos de pista', ['Disco', 'Dance Classics', 'Eurobeat e italo']],
-  ['Electrónica', ['Electrónica · IDM, ambient y trip hop']],
+  ['Electrónica', ['Electrónica · IDM, ambient y trip hop', 'Electrónica · IDM', 'Electrónica · Braindance', 'Electrónica · Ambient', 'Electrónica · Trip hop', 'Electrónica · Downtempo y chillout', 'Electrónica · Synthwave y outrun', 'Electrónica · UK garage y 2-step']],
   ['Rap', ['Rap · Clásico (2000s y antes)', 'Rap · 2010s', 'Rap · 2020s', 'Phonk']],
-  ['Latino', ['Reggaeton antiguo', 'Reggaeton nuevo', 'Trap y rap en español', 'Infancia en España', 'Pop en español antiguo', 'Pop en español', 'Flamenco y rumba', 'Salsa']],
+  ['Latino', ['Reggaeton antiguo', 'Reggaeton nuevo', 'Trap y rap en español', 'Infancia en España', 'Pop en español antiguo', 'Pop en español', 'Flamenco y rumba', 'Salsa', 'Bachata y merengue', 'Cumbia']],
   ['Idiomas', ['En catalán', 'En francés', 'En italiano', 'En alemán']],
-  ['Mundo', ['Reggae y dancehall', 'Música africana', 'Música brasileña antigua', 'Funk brasileño', 'World music']],
+  ['Mundo', ['Reggae y dancehall', 'Música africana', 'Música brasileña antigua', 'Funk brasileño', 'K-pop', 'Japón: city pop y J-pop', 'India y Bollywood', 'World music']],
   ['Rock', ['Rock · Blues y blues rock', 'Rock · Orígenes (rock & roll)', 'Rock · Años 60: beat y British Invasion', 'Rock · Garage y protopunk', 'Rock · Psicodélico', 'Rock · Progresivo', 'Rock · Krautrock', 'Rock · Glam y art rock', 'Rock · Hard rock', 'Rock · Clásico y soft rock', 'Rock · Folk y folk rock', 'Rock · Punk', 'Rock · Post-punk y new wave', 'Rock · Alternativo 80s-90s', 'Rock · Grunge', 'Rock · Britpop', 'Rock · Shoegaze y dream pop', 'Rock · Post-rock y math rock', 'Rock · Stoner y desert rock', 'Rock · Emo y post-hardcore', 'Rock · Pop punk', 'Rock · Nu metal y rap rock', 'Rock · Indie 2000s-hoy', 'Rock en español', 'Rock · Metal']],
-  ['Pop', ['White girl pop', 'Pop internacional', 'Indie, art pop e hyperpop', 'R&B, soul y funk']],
-  ['Otras', ['Jazz instrumental', 'Música clásica', 'Bandas sonoras']]
+  ['Pop', ['White girl pop', 'Pop internacional', 'Indie, art pop e hyperpop', 'Synth-pop y pop de los 80']],
+  ['R&B y soul', ['R&B, soul y funk', 'Soul y Motown', 'Funk', 'R&B 90s-2000s', 'R&B alternativo y neo soul']],
+  ['Jazz', ['Jazz instrumental']],
+  ['Clásica', ['Música clásica']],
+  ['Bandas sonoras', ['Bandas sonoras']]
 ];
 const CASA_NOMBRES = CASAS.reduce((a, g) => a.concat(g[1]), []);
 const CASA_DESC = {
@@ -5221,6 +5224,18 @@ const CASA_DESC = {
   'Rock · Stoner y desert rock': 'Riffs lentos y gordos, desierto y humo',
   'Rock · Emo y post-hardcore': 'De Sunny Day Real Estate a My Chemical Romance',
   'Rock · Pop punk': 'blink-182, Sum 41, Paramore y compañía',
+  'Tropical house': 'Kygo, Thomas Jack, Lost Frequencies: verano y marimbas',
+  'French house': 'Daft Punk, Stardust, Cassius: filtros y disco cortado',
+  'Deep house': 'House profundo, cálido y lento',
+  'Tech house': 'Groove de club: Fisher, Chris Lake, Green Velvet',
+  'Melodic house y techno': 'Afterlife, Tale Of Us, Anyma: melodías oscuras y épicas',
+  'Techno duro': 'Industrial, hard techno y rave',
+  'Electrónica · Braindance': 'Aphex Twin, Squarepusher, Rephlex: ritmos rotos y melodías raras',
+  'Electrónica · Trip hop': 'Massive Attack, Portishead, Tricky: Bristol, humo y bajo',
+  'Electrónica · Ambient': 'Brian Eno, Stars of the Lid: música para flotar',
+  'Electrónica · Synthwave y outrun': 'Kavinsky, Carpenter Brut, The Midnight: neón y coches de los 80',
+  'Electrónica · UK garage y 2-step': 'Craig David, MJ Cole, Burial: 2-step y garage londinense',
+  'Synth-pop y pop de los 80': 'Depeche Mode, Pet Shop Boys, a-ha, Eurythmics',
   'Rock · Nu metal y rap rock': 'Linkin Park, System of a Down, Rage Against the Machine…'
 };
 /* listas a mano: [artista, principio del título] */
