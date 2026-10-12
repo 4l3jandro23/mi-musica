@@ -1110,7 +1110,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-12c';
+const VERSION = '2026-10-12d';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -3169,7 +3169,8 @@ const MOOD_LOOK = {
   'Sensual': ['#6a0f2b', '#d1477a', 'corazon'],
   'Chispa creativa': ['#008c8c', '#f9c80e', 'varita'],
   'Goofy ahh sounds': ['#5aa21a', '#ffca3a', 'estrella'],
-  'Tristes': ['#2b3a55', '#7d8ca3', 'corazonRoto']
+  'Tristes': ['#2b3a55', '#7d8ca3', 'corazonRoto'],
+  'AAAAAAAAAAAAAAAA': ['#1a1414', '#c1121f', 'rayo']
 };
 const moodLook = n => MOOD_LOOK[n] || ['#3a2c15', '#a3690f', 'estrella'];
 /* color de cada familia de casas */
@@ -5186,6 +5187,7 @@ async function repasar(f, ps) {
 const CASA_MAX = 1000;
 const CASA_BURN = "It's just a burning memory";
 const CASA_STH = 'Scaring the hoes', CASA_AAA = 'AAAAAAAAAAAAAAAA';
+const AAA_ARTS = 'burzum|aborted|slipknot|lamb of god|cannibal corpse|napalm death|carcass|deafheaven|lingua ignota|full of hell|converge|the dillinger escape plan|botch|code orange|knocked loose|vein.fm|suicide silence|whitechapel|mayhem|darkthrone|emperor|gorgoroth|cradle of filth|behemoth|dimmu borgir|meshuggah|ghostemane|city morgue|scarlxrd|zillakami|ho99o9|show me the body|sunn o)))|sepultura|pantera|slayer|death|morbid angel|bring me the horizon|attila|asking alexandria|the devil wears prada|black dresses|machine girl|igorrr';
 const CASAS = [
   ['Tuyas', ['Pendientes', 'Para no olvidar']],
   ['Especiales', ['Sampleadas', CASA_BURN, CASA_STH]],
@@ -5197,7 +5199,7 @@ const CASAS = [
   ['Latino', ['Reggaeton antiguo', 'Reggaeton nuevo', 'Trap y rap en español', 'Infancia en España', 'Pop en español antiguo', 'Pop en español', 'Flamenco y rumba', 'Salsa']],
   ['Idiomas', ['En catalán', 'En francés', 'En italiano', 'En alemán']],
   ['Mundo', ['Reggae y dancehall', 'Música africana', 'Música brasileña antigua', 'Funk brasileño', 'World music']],
-  ['Rock', ['Rock · Blues y blues rock', 'Rock · Orígenes (rock & roll)', 'Rock · Años 60: beat y British Invasion', 'Rock · Garage y protopunk', 'Rock · Psicodélico', 'Rock · Progresivo', 'Rock · Krautrock', 'Rock · Glam y art rock', 'Rock · Hard rock', 'Rock · Clásico y soft rock', 'Rock · Folk y folk rock', 'Rock · Punk', 'Rock · Post-punk y new wave', 'Rock · Alternativo 80s-90s', 'Rock · Grunge', 'Rock · Britpop', 'Rock · Shoegaze y dream pop', 'Rock · Post-rock y math rock', 'Rock · Stoner y desert rock', 'Rock · Emo y post-hardcore', 'Rock · Pop punk', 'Rock · Nu metal y rap rock', 'Rock · Indie 2000s-hoy', 'Rock en español', 'Rock · Metal', CASA_AAA]],
+  ['Rock', ['Rock · Blues y blues rock', 'Rock · Orígenes (rock & roll)', 'Rock · Años 60: beat y British Invasion', 'Rock · Garage y protopunk', 'Rock · Psicodélico', 'Rock · Progresivo', 'Rock · Krautrock', 'Rock · Glam y art rock', 'Rock · Hard rock', 'Rock · Clásico y soft rock', 'Rock · Folk y folk rock', 'Rock · Punk', 'Rock · Post-punk y new wave', 'Rock · Alternativo 80s-90s', 'Rock · Grunge', 'Rock · Britpop', 'Rock · Shoegaze y dream pop', 'Rock · Post-rock y math rock', 'Rock · Stoner y desert rock', 'Rock · Emo y post-hardcore', 'Rock · Pop punk', 'Rock · Nu metal y rap rock', 'Rock · Indie 2000s-hoy', 'Rock en español', 'Rock · Metal']],
   ['Pop', ['White girl pop', 'Pop internacional', 'Indie, art pop e hyperpop', 'R&B, soul y funk']],
   ['Otras', ['Jazz instrumental', 'Música clásica', 'Bandas sonoras']]
 ];
@@ -5465,7 +5467,7 @@ function casaAuto(p, ctx, gsF) {
       return 'World music';
     case 'reggae': return 'Reggae y dancehall';
     case 'phonk': return 'Phonk';
-    case 'aaa': return CASA_AAA;
+    case 'aaa': return gs.some(g => /harsh noise|^noise$|power electronics|noisecore/.test(g)) ? CASA_STH : gs.some(g => /hardcore punk|powerviolence|crust/.test(g)) ? 'Rock · Punk' : gs.some(g => /screamo|mathcore|metalcore/.test(g)) ? 'Rock · Emo y post-hardcore' : gs.some(g => /trap metal/.test(g)) ? 'Rap · 2020s' : 'Rock · Metal';
     case 'sth': return CASA_STH;
     case 'folk': return hisp ? 'Pop en español' : 'Folk';
     case 'psych': return hisp ? 'Rock en español' : 'Rock psicodélico';
@@ -5553,10 +5555,10 @@ const ROCK_GEN = [
   ['Rock · Orígenes (rock & roll)', /^(rock and roll|rockabilly|doo-?wop|early rock|rhythm and blues)$/],
   ['Rock · Krautrock', /krautrock|kosmische/],
   ['Rock · Stoner y desert rock', /stoner|desert rock|heavy psych/],
-  ['Rock · Post-rock y math rock', /post-rock|math rock|instrumental rock/],
+  ['Rock · Post-rock y math rock', /post-rock|math rock/],
   ['Rock · Emo y post-hardcore', /^(emo|midwest emo|emocore|emo punk|post-hardcore|screamo|melodic hardcore)$/],
   ['Rock · Pop punk', /pop punk|pop-punk|skate punk|neon pop punk/],
-  ['Rock · Nu metal y rap rock', /nu metal|nu-metal|rap metal|rap rock|funk metal|alternative metal|post-grunge/],
+  ['Rock · Nu metal y rap rock', /nu metal|nu-metal|rap metal|rap rock|funk metal|alternative metal/],
   ['Rock · Años 60: beat y British Invasion', /british invasion|merseybeat|beat music|freakbeat|^mod$|beatlesque|sunshine pop|baroque pop/],
   ['Rock · Garage y protopunk', /garage rock$|proto-punk|garage psych|^garage$/],
   ['Rock · Psicodélico', /psychedel|acid rock|space rock/],
@@ -5584,6 +5586,10 @@ const ROCK_OV = (() => { const M = {
   'Rock · Folk y folk rock': 'the byrds|bob dylan|simon & garfunkel|leonard cohen|nick drake',
   'Rock · Psicodélico': 'tame impala|pink floyd|the doors|the 13th floor elevators|jefferson airplane',
   'Rock · Garage y protopunk': 'the velvet underground|the stooges|mc5|patti smith|the kinks',
+  'Rock · Orígenes (rock & roll)': 'bo diddley|sister rosetta tharpe|roy brown|ben e. king|chuck berry|little richard|fats domino|elvis presley|jerry lee lewis|buddy holly',
+  'Rock · Alternativo 80s-90s': 'radiohead|sonic youth|no doubt|pixies|r.e.m.|the smiths|foo fighters',
+  'Rock · Indie 2000s-hoy': 'hozier|kaleo|black country, new road|black midi|nothing but thieves|the strokes|arctic monkeys',
+  'Rock · Clásico y soft rock': 'joe satriani|steve vai|neil diamond|prince|queen|fleetwood mac|elton john|eagles',
   'Rock · Blues y blues rock': 'robert johnson|muddy waters|howlin\' wolf|john lee hooker|b.b. king|stevie ray vaughan|the black keys|gary clark jr.|buddy guy|john mayall|john mayall & the bluesbreakers|freddie king|albert king|elmore james|etta james 0|son house|lead belly|big mama thornton|janis joplin 0|joe bonamassa|the white stripes 0|rory gallagher|peter green|alvin lee|ten years after|canned heat|the allman brothers band 0',
   'Rock · Krautrock': 'can|neu!|faust|harmonia|cluster|amon düül ii|ash ra tempel|la düsseldorf|tangerine dream 0|kraftwerk 0',
   'Rock · Stoner y desert rock': 'kyuss|queens of the stone age|sleep|electric wizard|fu manchu|monster magnet|truckfighters|clutch|earthless|king buffalo|all them witches|yawning man',
@@ -5654,7 +5660,7 @@ const ART_CASA = (() => {
     'World music': 'astrud gilberto|joão gilberto|joao gilberto|antônio carlos jobim|antonio carlos jobim|tom jobim|sérgio mendes|sergio mendes|jorge ben jor|gilberto gil|caetano veloso|chico buarque|os mutantes|gal costa|elis regina|tim maia|marcos valle|candeia|cartola|seu jorge|bts|blackpink|newjeans|twice|psy|mariya takeuchi|miki matsubara|tatsuro yamashita|anri|taeko ohnuki|a.r. rahman|nusrat fateh ali khan|goran bregović|fanfare ciocărlia|shantel|natacha atlas|rachid taha|khaled|cheb khaled|omar souleyman|altın gün|barış manço|erkin koray|loreena mckennitt|clannad|carlos gardel|astor piazzolla|gotan project|yma sumac|ofra haza|kaoma|ravi shankar|ji pyeong kwon|só pra contrariar|grupo menos é mais|kawan oliveira|link do zap',
     'Folk': 'bob dylan|simon & garfunkel|woody guthrie|joan baez|nick drake|bon iver|fleet foxes|sufjan stevens|iron & wine|the tallest man on earth|joni mitchell|leonard cohen|cat stevens|yusuf / cat stevens|donovan|crosby, stills, nash & young|neil young|the lumineers|mumford & sons|of monsters and men|the head and the heart|glen campbell|dolly parton|johnny cash|willie nelson|kacey musgraves|zach bryan|noah kahan|josé gonzález|jose gonzalez|vashti bunyan|john denver|gordon lightfoot|townes van zandt|big thief|adrianne lenker|jim croce|elizabeth cotten|nick mulvey|passenger|ben howard|keaton henson|the paper kites|novo amor|gregory alan isakov|shakey graves|lord huron|hozier',
     'Rock psicodélico': 'tame impala|the 13th floor elevators|13th floor elevators|jefferson airplane|the doors|pink floyd|king gizzard & the lizard wizard|pond|unknown mortal orchestra|the brian jonestown massacre|love|the jimi hendrix experience|jimi hendrix|cream|grateful dead|syd barrett|khruangbin|temples|allah-las|ty segall|osees|thee oh sees|the black angels|the flaming lips|mercury rev|spacemen 3|hawkwind|can|neu!|amon düül ii|gong|soft machine|caravan|the zombies|the electric prunes|the chocolate watchband|iron butterfly|the moody blues|procol harum|traffic|the yardbirds|the kinks|the byrds',
-    [CASA_AAA]: 'burzum|aborted|slipknot|lamb of god|cannibal corpse|napalm death|carcass|deafheaven|lingua ignota|full of hell|converge|the dillinger escape plan|botch|code orange|knocked loose|vein.fm|suicide silence|whitechapel|mayhem|darkthrone|emperor|gorgoroth|cradle of filth|behemoth|dimmu borgir|meshuggah|ghostemane|city morgue|scarlxrd|zillakami|ho99o9|show me the body|sunn o)))|sepultura|pantera|slayer|death|morbid angel|bring me the horizon|attila|asking alexandria|the devil wears prada|black dresses|machine girl|igorrr',
+    'Rock · Metal': AAA_ARTS,
     [CASA_STH]: 'swans|arca|death grips|black midi|spellling|yoko ono|the shaggs|100 gecs|sophie|clipping.|xiu xiu|captain beefheart & his magic band|captain beefheart|throbbing gristle|merzbow|the residents|scott walker|lightning bolt|boredoms|amnesia scanner|dorian electra|jane remover|alice longyu gao|frank zappa|daughters|injury reserve|yeule|the garden|ween|jpegmafia & danny brown|danny brown & jpegmafia|lucrecia dalt|arca & sia|oneohtrix point never & arca|laurie anderson|diamanda galás|pere ubu|suicide|silver apples|liars|health'
   }, o = {};
   for (const [c, l] of Object.entries(M)) for (const a of l.split('|')) o[fold(a)] = c;
@@ -5725,6 +5731,8 @@ const MOOD_PL = [
   { n: 'Goofy ahh sounds', d: 'Música que me da risa', max: 150,
     pares: P_('nyan cat|nyan;crazy frog|axel f;psy|gangnam style;lil pump|gucci gang;ylvis|the fox;boney m.|rasputin;aqua|barbie girl;los del río|macarena;las ketchup|aserejé;rednex|cotton eye joe;eiffel 65|blue;o-zone|dragostea din tei;rick astley|never gonna give you up;eduard khil|trololo;manuel|gas gas gas;dave rodgers|deja vu;dave rodgers|space boy;max coveri|running in the 90s;baauer|harlem shake;darude|sandstorm;toby fox|megalovania;smash mouth|all star;bag raiders|shooting stars;daler mehndi|tunak tunak tun;loituma|ievan polkka;caramella girls|caramelldansen;zombie nation|kernkraft 400;gummy bear|i\'m a gummy bear;peanut butter jelly time|peanut butter;monty python|always look on the bright side of life;los tuneaos|paquito el chocolatero;blippi español|el baile de blippi;hard bass school|nash gimn;hard bass school|narkotik kal;dj blyatman|cyka blyat;6ix9ine|gummo;6ix9ine|gooba;corey feldman|go 4 it;bingo gazingo|i got a baby;the kunts|boris johnson;tiny tim|tiptoe through the tulips;pinkfong|baby shark;village people|ymca;village people|in the navy;chumbawamba|tubthumping;vengaboys|boom, boom;scatman john|scatman;lou bega|mambo no. 5;baha men|who let the dogs out;the outhere brothers|boom boom boom;los del mar|macarena;georgie dann|el chiringuito;georgie dann|la barbacoa;king africa|la bomba;chimo bayo|así me gusta a mí;the ketchup song|aserejé;carl douglas|kung fu fighting;gotye|somebody that i used to know;interworld|metamorphosis;kordhell|murder in my mind;jamiroquai|virtual insanity;daft punk|harder, better;pitbull|fireball;lmfao|sexy and i know it;lmfao|party rock anthem'),
     regla: (p, c) => c === 'Para no olvidar' },
+  { n: CASA_AAA, d: 'Gritos, metal extremo, noise', max: 300, pares: null,
+    regla: p => { const a = p.artists[0]; if (!a) return false; if (('|' + AAA_ARTS + '|').indexOf('|' + fold(a.name) + '|') >= 0) return true; const rx = (FAM_CASA.find(f => f[0] === 'aaa') || [0, /^$/])[1]; return genArt(a).some(g => rx.test(g)); } },
   { n: 'Tristes', d: 'Para los días de bajón', max: 200, pares: null, regla: null },
   { n: 'Lo mejor · Rock 60s-70s', d: 'Lo que más me gusta del rock de los 60 y 70 (de todos sus géneros)', max: 0, pares: [], regla: null },
   { n: 'Lo mejor · Rock 80s-90s', d: 'Lo que más me gusta del rock de los 80 y 90', max: 0, pares: [], regla: null },
