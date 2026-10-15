@@ -2,19 +2,22 @@ HISTORIAS.push({
   id: "india",
   familia: "Mundo",
   titulo: "Historia de la música india",
-  periodo: "1949 – 2022",
+  periodo: "1931 – 2022",
   color: "#e07a1f",
   lema: "De los ragas a Bollywood, el bhangra y el rap de Mumbai.",
   intro: "Miles de años de música clásica (los ragas del norte y del sur) y, desde 1931, el cine sonoro: en la India la música popular es, sobre todo, música de películas. Voces que cantaron miles de canciones, compositores que mezclaron todo lo que oían y, hoy, una escena de rap, indie y punjabi que suena en todo el mundo.",
   capitulos: [
     {
       titulo: "La edad de oro de Bollywood",
-      periodo: "1949 – 1975",
+      corto: "Bollywood",
+      periodo: "1931 – 1975",
       intro: "Las «playback singers»: los actores mueven los labios y ellas y ellos cantan.",
       items: [
+        { a: 1931, art: "«Alam Ara»", t: "La primera película sonora de la India", tipo: "hito", n: "Desde entonces, el cine y la música van de la mano." },
         { a: 1949, art: "Lata Mangeshkar", t: "Aayega Aanewala", n: "De «Mahal». La voz más grabada de la historia: decenas de miles de canciones." },
         { a: 1960, art: "Lata Mangeshkar", t: "Pyar Kiya To Darna Kya", n: "De «Mughal-e-Azam»: la escena del palacio de espejos." },
         { a: 1960, art: "Mohammed Rafi", t: "Chaudhvin Ka Chand", n: "La voz masculina más querida del cine indio." },
+        { a: 1966, art: "George Harrison", t: "Viaja a la India para estudiar sitar con Ravi Shankar", tipo: "hito", n: "La música india llega al pop occidental." },
         { a: 1966, art: "Ravi Shankar & Yehudi Menuhin", t: "West Meets East", tipo: "disco", n: "El sitar y el violín: la música clásica india llega a Occidente. George Harrison se hizo alumno de Shankar." },
         { a: 1969, art: "Kishore Kumar", t: "Mere Sapno Ki Rani", n: "De «Aradhana»: Kishore se convierte en la voz de una generación." },
         { a: 1971, art: "Asha Bhosle", t: "Dum Maro Dum", n: "Psicodelia y hippies con R.D. Burman, el gran innovador del cine indio." },
@@ -24,7 +27,9 @@ HISTORIAS.push({
     },
     {
       titulo: "Fusión, disco y bhangra",
+      corto: "Fusión y bhangra",
       periodo: "1976 – 1998",
+      intro: "Disco, fusión con el jazz y el bhangra de la diáspora británica.",
       items: [
         { a: 1976, art: "Shakti", t: "Shakti with John McLaughlin", tipo: "disco", n: "Jazz y música clásica india con Zakir Hussain a la tabla." },
         { a: 1980, art: "Nazia Hassan", t: "Aap Jaisa Koi", n: "Una adolescente pakistaní lleva el disco al cine indio." },
@@ -40,11 +45,14 @@ HISTORIAS.push({
     },
     {
       titulo: "Óscar, streaming y rap",
+      corto: "Siglo XXI",
       periodo: "2008 – 2022",
+      intro: "Óscar, streaming y una escena propia de rap e indie.",
       items: [
         { a: 2008, art: "A.R. Rahman", t: "Jai Ho", n: "De «Slumdog Millionaire»: dos premios Óscar." },
         { a: 2013, art: "Arijit Singh", t: "Tum Hi Ho", n: "El cantante más escuchado de la India en Spotify." },
         { a: 2015, art: "DIVINE", t: "Mere Gully Mein", n: "Con Naezy: el «gully rap» de Mumbai, que inspiró la película «Gully Boy»." },
+        { a: 2016, art: "Jio", t: "Internet móvil barato para todo el país", tipo: "hito", n: "Cientos de millones de personas empiezan a escuchar música en streaming." },
         { a: 2018, art: "Prateek Kuhad", t: "cold/mess", n: "Indie folk que Barack Obama puso en su lista de favoritas del año." },
         { a: 2020, art: "Diljit Dosanjh", t: "G.O.A.T.", n: "El pop punjabi: el sonido más exportado de la India actual." },
         { a: 2021, art: "Sidhu Moose Wala", t: "295", n: "Rap punjabi. Su asesinato en 2022 conmocionó a la India." },

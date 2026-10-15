@@ -11,11 +11,13 @@ HISTORIAS.push({
       titulo: "James Brown inventa el groove",
       corto: "Los orígenes",
       periodo: "1965 – 1972",
+      intro: "El ritmo pasa al primer plano: todos los instrumentos son percusión.",
       items: [
         { a: 1965, art: "James Brown", t: "Papa's Got a Brand New Bag", n: "El acento en «el uno»: se considera la primera canción funk." },
         { a: 1969, art: "The Meters", t: "Cissy Strut", n: "El funk de Nueva Orleans: casi solo ritmo." },
         { a: 1969, art: "Sly & The Family Stone", t: "Thank You (Falettinme Be Mice Elf Agin)", n: "Larry Graham inventa el bajo «slap»." },
         { a: 1970, art: "James Brown", t: "Get Up (I Feel Like Being a) Sex Machine", n: "Con Bootsy Collins al bajo: puro trance." },
+        { a: 1971, art: "Soul Train", t: "Empieza a emitirse en todo EE. UU.", tipo: "hito", n: "El programa de baile de la América negra: el escaparate del soul y el funk." },
         { a: 1971, art: "Funkadelic", t: "Maggot Brain", n: "Diez minutos de guitarra psicodélica de Eddie Hazel." },
         { a: 1972, art: "Lyn Collins", t: "Think (About It)", n: "Producida por James Brown: sus «woo! yeah!» se samplearon en «It Takes Two»." },
         { a: 1972, art: "The J.B.'s", t: "Pass the Peas", n: "La banda de James Brown por su cuenta." }
@@ -31,6 +33,7 @@ HISTORIAS.push({
         { a: 1973, art: "Herbie Hancock", t: "Chameleon", n: "El jazz se vuelve funk con sintetizadores." },
         { a: 1975, art: "Ohio Players", t: "Love Rollercoaster", n: "Una montaña rusa de groove." },
         { a: 1975, art: "Parliament", t: "Give Up the Funk (Tear the Roof off the Sucker)", n: "George Clinton y su nave nodriza: el P-Funk." },
+        { a: 1976, art: "P-Funk Earth Tour", t: "Una nave espacial aterriza en el escenario", tipo: "hito", n: "Los conciertos de Parliament-Funkadelic, pura ciencia ficción." },
         { a: 1978, art: "Earth, Wind & Fire", t: "September", n: "«Ba-dee-ya»: la canción más feliz del mundo." }
       ]
     },
@@ -38,6 +41,7 @@ HISTORIAS.push({
       titulo: "Electrofunk y herencia",
       corto: "Electrofunk",
       periodo: "1980 – 2016",
+      intro: "Sintetizadores, talk box y una herencia que llega al hip hop.",
       items: [
         { a: 1980, art: "Zapp", t: "More Bounce to the Ounce", n: "El talk box de Roger Troutman: base de medio rap de la costa oeste." },
         { a: 1981, art: "Rick James", t: "Super Freak", n: "Funk punk. Luego MC Hammer lo convirtió en «U Can't Touch This»." },

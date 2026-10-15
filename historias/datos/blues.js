@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "blues",
   familia: "Raíces americanas",
   titulo: "Historia del blues",
-  periodo: "1920 – 2010",
+  periodo: "1903 – 2010",
   color: "#2f4f8a",
   lema: "Del delta del Misisipi a Chicago, Londres y The Black Keys.",
   intro: "El blues nace en el sur de EE. UU. entre los descendientes de esclavos: doce compases, «notas tristes» y letras sobre la vida dura. Viaja al norte con la gran migración, se electrifica en Chicago y, a través de los grupos británicos de los 60, se convierte en la raíz del rock.",
@@ -10,8 +10,10 @@ HISTORIAS.push({
     {
       titulo: "Los primeros discos y el delta",
       corto: "El delta",
-      periodo: "1920 – 1936",
+      periodo: "1903 – 1936",
+      intro: "Las canciones de los descendientes de esclavos del sur de EE. UU. llegan al disco.",
       items: [
+        { a: 1903, art: "W. C. Handy", t: "Escucha el blues en una estación de tren", tipo: "hito", n: "Un hombre toca la guitarra deslizando un cuchillo por las cuerdas. Handy sería el «padre del blues»." },
         { a: 1920, art: "Mamie Smith", t: "Crazy Blues", n: "El primer blues grabado por una cantante negra: vendió un millón y abrió la industria." },
         { a: 1923, art: "Bessie Smith", t: "Downhearted Blues", n: "La «emperatriz del blues»." },
         { a: 1927, art: "Blind Lemon Jefferson", t: "Matchbox Blues", n: "El blues de Texas: guitarra y voz solas." },
@@ -28,6 +30,7 @@ HISTORIAS.push({
       items: [
         { a: 1948, art: "John Lee Hooker", t: "Boogie Chillen'", n: "Un solo acorde y un pie marcando el ritmo." },
         { a: 1948, art: "Muddy Waters", t: "I Can't Be Satisfied", n: "El blues del delta con guitarra eléctrica en Chicago." },
+        { a: 1950, art: "Chess Records", t: "Nace en Chicago", tipo: "hito", n: "El sello de Muddy Waters, Howlin' Wolf y Chuck Berry." },
         { a: 1951, art: "Elmore James", t: "Dust My Broom", n: "El riff de slide más famoso del blues." },
         { a: 1951, art: "B.B. King", t: "Three O'Clock Blues", n: "El primer éxito del rey del blues y de su guitarra «Lucille»." },
         { a: 1954, art: "Muddy Waters", t: "Hoochie Coochie Man", n: "Compuesta por Willie Dixon: el blues de Chicago en su cumbre." },
@@ -39,8 +42,10 @@ HISTORIAS.push({
     {
       titulo: "Del blues británico a hoy",
       corto: "Blues rock",
-      periodo: "1964 – 2010",
+      periodo: "1962 – 2010",
+      intro: "Los jóvenes británicos descubren a los maestros y el blues se convierte en rock.",
       items: [
+        { a: 1962, art: "The Rolling Stones", t: "Toman su nombre de una canción de Muddy Waters", tipo: "hito", n: "«Rollin' Stone»: el blues es su raíz." },
         { a: 1964, art: "The Rolling Stones", t: "Little Red Rooster", n: "Un blues de Howlin' Wolf en el número uno británico: los jóvenes ingleses descubren a los maestros." },
         { a: 1968, art: "Cream", t: "Crossroads", n: "Eric Clapton convierte a Robert Johnson en rock." },
         { a: 1983, art: "Stevie Ray Vaughan", t: "Pride and Joy", n: "El blues texano vuelve con fuerza." },

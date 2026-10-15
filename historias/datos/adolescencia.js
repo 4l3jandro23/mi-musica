@@ -13,6 +13,7 @@ HISTORIAS.push({
       periodo: "2009 – 2010 · de 12 a 13 años",
       intro: "David Guetta convierte el pop americano en dance y todo suena a discoteca.",
       items: [
+        { a: 2009, art: "Tuenti", t: "La red social de tu generación", tipo: "hito", n: "Fotos de las fiestas, eventos y canciones compartidas." },
         { a: 2009, art: "The Black Eyed Peas", t: "I Gotta Feeling", n: "«Tonight's gonna be a good night»: la canción de todas las fiestas de fin de curso." },
         { a: 2009, art: "The Black Eyed Peas", t: "Boom Boom Pow", n: "Autotune y futuro." },
         { a: 2009, art: "David Guetta", t: "When Love Takes Over", n: "Con Kelly Rowland: el giro dance del pop." },
@@ -64,7 +65,9 @@ HISTORIAS.push({
       titulo: "Fin de la adolescencia",
       corto: "16 – 18 años",
       periodo: "2013 – 2015 · de 16 a 18 años",
+      intro: "Avicii, Daft Punk y Pharrell: el final de una época.",
       items: [
+        { a: 2013, art: "Spotify", t: "Se puede usar gratis en el móvil", tipo: "hito", n: "Desde diciembre: la música deja de descargarse y se escucha en streaming." },
         { a: 2013, art: "Avicii", t: "Wake Me Up", n: "EDM con guitarra country: un éxito mundial." },
         { a: 2013, art: "Daft Punk", t: "Get Lucky", n: "Con Pharrell y Nile Rodgers: la canción del verano de 2013." },
         { a: 2013, art: "Pharrell Williams", t: "Happy", n: "Un vídeo de 24 horas y mil versiones en cada ciudad." },

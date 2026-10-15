@@ -11,11 +11,14 @@ HISTORIAS.push({
       titulo: "El glam británico",
       corto: "Glam británico",
       periodo: "1971 – 1974",
+      intro: "Purpurina, plataformas y personajes: el rock juega con la identidad y el género.",
       items: [
         { a: 1971, art: "T. Rex", t: "Get It On", n: "Marc Bolan con purpurina en la cara en la tele: empieza el glam." },
+        { a: 1972, art: "David Bowie", t: "Nace Ziggy Stardust", tipo: "hito", n: "Una estrella del rock extraterrestre y andrógina: Bowie se convierte en su personaje durante año y medio." },
         { a: 1972, art: "David Bowie", t: "Starman", n: "Bowie aparece como Ziggy Stardust en «Top of the Pops» y abraza a su guitarrista: un escándalo que cambió a una generación." },
         { a: 1972, art: "Roxy Music", t: "Virginia Plain", n: "Bryan Ferry y Brian Eno: glam artístico y futurista." },
         { a: 1972, art: "Mott the Hoople", t: "All the Young Dudes", n: "Escrita y regalada por Bowie." },
+        { a: 1973, art: "Bowie «mata» a Ziggy", t: "Anuncia el final en pleno concierto en Londres", tipo: "hito", n: "Nadie en la banda lo sabía." },
         { a: 1973, art: "Slade", t: "Cum On Feel the Noize", n: "Glam para corear en el fútbol." },
         { a: 1973, art: "Lou Reed", t: "Walk on the Wild Side", n: "Producida por Bowie: historias de la Factory de Warhol." },
         { a: 1973, art: "Sweet", t: "Ballroom Blitz", n: "Glam pop de chicle con guitarras." },
@@ -30,6 +33,7 @@ HISTORIAS.push({
       items: [
         { a: 1983, art: "Quiet Riot", t: "Cum On Feel the Noize", n: "Una versión de Slade: el primer disco de metal en llegar al número uno en EE. UU." },
         { a: 1984, art: "Twisted Sister", t: "We're Not Gonna Take It", n: "Un vídeo con un padre autoritario y un juicio en el Senado contra la censura." },
+        { a: 1985, art: "El PMRC", t: "Audiencias en el Senado de EE. UU. contra las letras del rock", tipo: "hito", n: "Dee Snider, de Twisted Sister, defiende la libertad de expresión. De ahí sale la etiqueta «Parental Advisory»." },
         { a: 1987, art: "Mötley Crüe", t: "Girls, Girls, Girls", n: "Los excesos del Sunset Strip de Los Ángeles." },
         { a: 1987, art: "Def Leppard", t: "Pour Some Sugar on Me", n: "El glam metal más pulido y radiofónico." }
       ]

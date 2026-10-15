@@ -11,8 +11,10 @@ HISTORIAS.push({
       titulo: "Los pioneros",
       corto: "Pioneros",
       periodo: "1978 – 1981",
+      intro: "Sintetizadores baratos y nuevas ideas: el pop sin guitarras.",
       items: [
         { a: 1978, art: "Yellow Magic Orchestra", t: "Computer Game (Theme from the Circus)", n: "Desde Tokio: sonidos de videojuego y pop electrónico." },
+        { a: 1979, art: "Gary Numan", t: "Número uno con «Are \"Friends\" Electric?»", tipo: "hito", n: "Con Tubeway Army: un sintetizador en lo más alto de las listas británicas." },
         { a: 1980, art: "Orchestral Manoeuvres in the Dark", t: "Enola Gay", n: "Una canción pop alegre sobre el avión que lanzó la bomba de Hiroshima." },
         { a: 1980, art: "Visage", t: "Fade to Grey", n: "La estética «new romantic»: maquillaje y sintetizadores." },
         { a: 1981, art: "Kraftwerk", t: "Computer Love", n: "La soledad en la era de los ordenadores, antes de internet." }
@@ -25,6 +27,7 @@ HISTORIAS.push({
       intro: "Dúos de chico con sintetizador y voz que lo dice todo.",
       items: [
         { a: 1982, art: "Yazoo", t: "Only You", n: "Vince Clarke, recién salido de Depeche Mode, con la voz soul de Alison Moyet." },
+        { a: 1983, art: "Yamaha DX7", t: "El sintetizador digital más vendido", tipo: "hito", n: "Su sonido brillante define el pop de los 80." },
         { a: 1983, art: "Eurythmics", t: "Love Is a Stranger", n: "Annie Lennox y Dave Stewart." },
         { a: 1984, art: "Bronski Beat", t: "Smalltown Boy", n: "Un chico gay que huye de su pueblo: un himno LGTB." },
         { a: 1985, art: "Pet Shop Boys", t: "West End Girls", n: "Ironía y elegancia londinense: el dúo de synth-pop más exitoso." },

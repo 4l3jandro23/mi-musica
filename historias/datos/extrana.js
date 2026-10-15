@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "extrana",
   familia: "Especiales",
   titulo: "Música extraña",
-  periodo: "1969 – 2023",
+  periodo: "1966 – 2023",
   color: "#6b8e23",
   lema: "Yoko Ono, Captain Beefheart, The Residents, Aphex Twin, Death Grips y 100 gecs.",
   intro: "Música hecha a propósito para romper las reglas: voces que gritan, ritmos imposibles, humor absurdo o sonidos que nadie había oído antes. No es música mal hecha (para eso está la historia de la «outsider music»): es gente que sabía exactamente lo que hacía y decidió hacerlo raro.",
@@ -10,8 +10,10 @@ HISTORIAS.push({
     {
       titulo: "Vanguardia en el rock",
       corto: "Vanguardia rock",
-      periodo: "1969 – 1981",
+      periodo: "1966 – 1981",
+      intro: "El rock de los 60 y 70 abre la puerta a la vanguardia.",
       items: [
+        { a: 1966, art: "Frank Zappa & The Mothers of Invention", t: "«Freak Out!»", tipo: "hito", n: "Uno de los primeros discos dobles del rock: sátira, collage y caos." },
         { a: 1969, art: "Captain Beefheart & His Magic Band", t: "Ella Guru", n: "De «Trout Mask Replica», producido por Frank Zappa: blues desarmado pieza a pieza. Para unos, genio; para otros, ruido." },
         { a: 1970, art: "Yoko Ono", t: "Why", n: "Con la Plastic Ono Band: gritos y aullidos sobre la guitarra de John Lennon. Hoy se la reivindica como pionera." },
         { a: 1978, art: "DEVO", t: "(I Can't Get No) Satisfaction", n: "Los Rolling Stones en versión robótica y espasmódica." },
@@ -23,6 +25,7 @@ HISTORIAS.push({
       titulo: "Los raros de los 90",
       corto: "Los 90",
       periodo: "1992 – 2004",
+      intro: "Humor absurdo, electrónica violenta y canciones de pesadilla.",
       items: [
         { a: 1992, art: "Ween", t: "Push th' Little Daisies", n: "Voces aceleradas y humor absurdo: la MTV la puso, para sorpresa de todos." },
         { a: 1995, art: "Scott Walker", t: "Farmer in the City", n: "El crooner de los 60 reconvertido en compositor de pesadillas." },
@@ -34,8 +37,10 @@ HISTORIAS.push({
       titulo: "Internet y lo experimental",
       corto: "Internet",
       periodo: "2011 – 2023",
+      intro: "Internet permite que lo raro encuentre a su público.",
       items: [
         { a: 2011, art: "Death Grips", t: "Guillotine", n: "Hip hop experimental, furioso y caótico. Regalaron su música, filtraron discos y desaparecieron de conciertos." },
+        { a: 2012, art: "Death Grips", t: "Filtran su propio disco", tipo: "hito", n: "Publican «No Love Deep Web» gratis, contra la voluntad de su discográfica, que los echó." },
         { a: 2012, art: "Death Grips", t: "I've Seen Footage", n: "Su tema más «accesible»… dentro de lo que cabe." },
         { a: 2013, art: "SOPHIE", t: "Bipp", n: "Pop de plástico, burbujas y látex: una pionera del hyperpop." },
         { a: 2018, art: "JPEGMAFIA", t: "Baby I'm Bleeding", n: "Rap cortado, samples rotos y mucha mala leche." },

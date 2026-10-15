@@ -9,12 +9,14 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Del hardcore rave a la jungla",
+      corto: "Jungla",
       periodo: "1969 – 1994",
       intro: "Breaks acelerados, samples de reggae y piratas de radio.",
       items: [
         { a: 1969, art: "The Winstons", t: "Amen, Brother", n: "Seis segundos de batería de Gregory Coleman: el «Amen break», el corazón de la jungla." },
         { a: 1989, art: "Shut Up and Dance", t: "£10 to Get In", n: "Breakbeat y hip hop desde el este de Londres: el sonido hardcore empieza." },
         { a: 1990, art: "4hero", t: "Mr. Kirk's Nightmare", n: "Breaks rapidísimos y una historia oscura: el hardcore se vuelve inquietante." },
+        { a: 1991, art: "Kool FM", t: "La radio pirata de la jungla", tipo: "hito", n: "Desde azoteas del este de Londres, la jungla suena antes en las piratas que en ninguna otra parte." },
         { a: 1992, art: "SL2", t: "On a Ragga Tip", n: "Reggae y rave: la fórmula de la jungla llega a las listas." },
         { a: 1992, art: "Rufige Kru", t: "Terminator", n: "Goldie juega con la velocidad de los breaks sin cambiar el tono: una revolución técnica." },
         { a: 1993, art: "Omni Trio", t: "Renegade Snares", n: "Melancolía y breaks: el lado más bonito de la jungla." },
@@ -25,10 +27,12 @@ HISTORIAS.push({
     },
     {
       titulo: "El drum & bass",
+      corto: "Drum & bass",
       periodo: "1994 – 1998",
       intro: "El sonido se refina: jazz, atmósferas y, al final, el techstep oscuro.",
       items: [
         { a: 1994, art: "Goldie", t: "Inner City Life", n: "Orquestal y con voz soul: el drum & bass como arte." },
+        { a: 1995, art: "Metalheadz", t: "Goldie abre sus noches de domingo", tipo: "hito", n: "En el Blue Note de Londres: el club más importante del drum & bass." },
         { a: 1995, art: "LTJ Bukem", t: "Horizons", n: "Liquid antes de que existiera la palabra: atmosférico y jazzístico." },
         { a: 1997, art: "Photek", t: "Ni Ten Ichi Ryu", n: "Precisión de samurái: cada golpe de caja medido al milímetro." },
         { a: 1997, art: "Roni Size", t: "Brown Paper Bag", n: "Con Reprazent. «New Forms» ganó el Mercury Prize." },

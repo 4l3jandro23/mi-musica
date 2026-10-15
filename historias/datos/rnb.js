@@ -27,6 +27,7 @@ HISTORIAS.push({
       items: [
         { a: 1992, art: "Mary J. Blige", t: "Real Love", n: "La «reina del hip hop soul»." },
         { a: 1994, art: "TLC", t: "Creep", n: "Tres chicas de Atlanta con actitud: luego llegaría «Waterfalls»." },
+        { a: 1995, art: "TLC", t: "«Waterfalls», número uno", tipo: "hito", n: "Una canción sobre el sida y las drogas en lo más alto de las listas." },
         { a: 1996, art: "Toni Braxton", t: "Un-Break My Heart", n: "La balada de desamor de los 90." },
         { a: 1996, art: "Aaliyah", t: "One in a Million", n: "Timbaland y Missy Elliott: ritmos entrecortados que cambiaron la producción." },
         { a: 1998, art: "Brandy & Monica", t: "The Boy Is Mine", n: "Dos rivales en un mismo dúo: 13 semanas número uno." },
@@ -38,6 +39,7 @@ HISTORIAS.push({
       titulo: "Los 2000: Timbaland y The Neptunes",
       corto: "2000s",
       periodo: "2000 – 2008",
+      intro: "Productores futuristas: ritmos entrecortados, sonidos raros y estribillos enormes.",
       items: [
         { a: 2000, art: "D'Angelo", t: "Untitled (How Does It Feel)", n: "El neo soul en su cumbre." },
         { a: 2002, art: "Justin Timberlake", t: "Cry Me a River", n: "Producida por Timbaland: un exmiembro de boy band se vuelve serio." },
@@ -53,6 +55,7 @@ HISTORIAS.push({
       periodo: "2011 – 2022",
       intro: "Más íntimo, más oscuro y más personal.",
       items: [
+        { a: 2011, art: "Mixtapes gratis", t: "The Weeknd y Frank Ocean regalan su música por internet", tipo: "hito", n: "El R&B alternativo nace fuera de las discográficas." },
         { a: 2011, art: "The Weeknd", t: "Wicked Games", n: "Mixtapes gratis por internet y un R&B de madrugada." },
         { a: 2012, art: "Frank Ocean", t: "Thinkin Bout You", n: "Poco antes de su disco publicó una carta hablando de su primer amor, un chico." },
         { a: 2016, art: "Beyoncé", t: "Formation", n: "De «Lemonade»: R&B político y visual." },

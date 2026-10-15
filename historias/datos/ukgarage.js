@@ -11,7 +11,9 @@ HISTORIAS.push({
       titulo: "Speed garage",
       corto: "Speed garage",
       periodo: "1997 – 1998",
+      intro: "El garage house de Nueva York se acelera en las fiestas de domingo de Londres.",
       items: [
+        { a: 1997, art: "Las «Sunday sessions»", t: "El garage se baila el domingo", tipo: "hito", n: "Después del club del sábado, fiestas elegantes el domingo por la mañana." },
         { a: 1997, art: "Double 99", t: "RIP Groove", n: "Bajos de jungla en el house: el «speed garage»." },
         { a: 1997, art: "187 Lockdown", t: "Gunman", n: "Un western convertido en himno de pista." },
         { a: 1997, art: "Tina Moore", t: "Never Gonna Let You Go", n: "El remix de Kelly G llevó una canción de R&B a lo más alto." },
@@ -33,6 +35,7 @@ HISTORIAS.push({
         { a: 2001, art: "So Solid Crew", t: "21 Seconds", n: "Un colectivo de MCs del sur de Londres: cada uno, 21 segundos. Puerta hacia el grime." },
         { a: 2001, art: "DJ Pied Piper and the Masters of Ceremonies", t: "Do You Really Like It?", n: "Otro número uno." },
         { a: 2001, art: "The Streets", t: "Has It Come to This?", n: "Mike Skinner cuenta la vida de barrio sobre garage." },
+        { a: 2002, art: "So Solid Crew", t: "Brit Award al mejor vídeo", tipo: "hito", n: "Un colectivo de MCs del sur de Londres, en la gala más importante de la música británica." },
         { a: 2002, art: "Ms. Dynamite", t: "It Takes More", n: "Ganó el Mercury Prize." }
       ]
     },
@@ -40,6 +43,7 @@ HISTORIAS.push({
       titulo: "Herencia y revival",
       corto: "Revival",
       periodo: "2003 – 2023",
+      intro: "Del garage salen el grime y el dubstep, y el garage vuelve una y otra vez.",
       items: [
         { a: 2003, art: "Dizzee Rascal", t: "I Luv U", n: "El garage se oscurece y nace el grime." },
         { a: 2007, art: "Burial", t: "Archangel", n: "El 2-step convertido en fantasma melancólico." },

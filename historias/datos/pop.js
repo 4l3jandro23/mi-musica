@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Los 50 y 60",
       corto: "50 y 60",
       periodo: "1956 – 1968",
+      intro: "La radio y la televisión crean las primeras estrellas pop.",
       items: [
         { a: 1956, art: "Doris Day", t: "Que Sera, Sera (Whatever Will Be, Will Be)", n: "De una película de Hitchcock: el pop de antes del rock." },
         { a: 1957, art: "Paul Anka", t: "Diana", n: "Un chaval de 15 años y uno de los singles más vendidos de su época." },
@@ -25,6 +26,7 @@ HISTORIAS.push({
       titulo: "Los 70",
       corto: "70",
       periodo: "1970 – 1977",
+      intro: "Cantautores, ABBA y el pop de estudio.",
       items: [
         { a: 1970, art: "Carpenters", t: "(They Long to Be) Close to You", n: "Suavidad absoluta." },
         { a: 1970, art: "Elton John", t: "Your Song", n: "Una canción de amor sencilla y perfecta." },
@@ -36,11 +38,14 @@ HISTORIAS.push({
     {
       titulo: "Los 80: MTV y superestrellas",
       corto: "80",
-      periodo: "1982 – 1989",
+      periodo: "1981 – 1989",
+      intro: "El vídeo musical lo cambia todo.",
       items: [
+        { a: 1981, art: "MTV", t: "Nace la televisión de los vídeos musicales", tipo: "hito", n: "Ser fotogénico empieza a ser tan importante como cantar bien." },
         { a: 1982, art: "Michael Jackson", t: "Billie Jean", n: "De «Thriller», el disco más vendido de la historia, y su primer moonwalk en televisión." },
         { a: 1984, art: "Prince", t: "When Doves Cry", n: "Sin línea de bajo y número uno." },
         { a: 1984, art: "Wham!", t: "Wake Me Up Before You Go-Go", n: "George Michael y la alegría de los 80." },
+        { a: 1985, art: "Live Aid", t: "Dos conciertos para Etiopía", tipo: "hito", n: "Londres y Filadelfia a la vez, vistos por cientos de millones de personas." },
         { a: 1987, art: "Whitney Houston", t: "I Wanna Dance with Somebody (Who Loves Me)", n: "La gran voz del pop." },
         { a: 1989, art: "Madonna", t: "Like a Prayer", n: "Gospel y polémica: el Vaticano y Pepsi contra Madonna." }
       ]
@@ -49,6 +54,7 @@ HISTORIAS.push({
       titulo: "Los 90 y 2000: boy bands y divas",
       corto: "90 y 2000",
       periodo: "1995 – 2007",
+      intro: "Boy bands, divas y el boom latino.",
       items: [
         { a: 1995, art: "Mariah Carey", t: "Fantasy", n: "Pop y hip hop juntos, con un sample de Tom Tom Club." },
         { a: 1999, art: "Backstreet Boys", t: "I Want It That Way", n: "La letra no tiene sentido y da igual." },
@@ -63,9 +69,12 @@ HISTORIAS.push({
     {
       titulo: "La era del streaming",
       corto: "Streaming",
-      periodo: "2013 – 2022",
+      periodo: "2008 – 2022",
+      intro: "Spotify, TikTok y el pop global.",
       items: [
+        { a: 2008, art: "Spotify", t: "Nace en Suecia", tipo: "hito", n: "En pocos años cambia cómo escucha música el mundo entero." },
         { a: 2013, art: "Lorde", t: "Royals", n: "Una chica de 16 años de Nueva Zelanda contra el lujo del pop." },
+        { a: 2018, art: "TikTok", t: "Llega a Occidente", tipo: "hito", n: "Una canción viral puede triunfar en una semana." },
         { a: 2019, art: "The Weeknd", t: "Blinding Lights", n: "Sintetizadores ochenteros: la canción más escuchada de la historia de Spotify." },
         { a: 2022, art: "Harry Styles", t: "As It Was", n: "De boy band a estrella mundial." }
       ]

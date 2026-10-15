@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Del punk a la nueva ola",
       corto: "Los inicios",
       periodo: "1977 – 1980",
+      intro: "Tras el punk, la energía se queda pero llegan las melodías y la ironía.",
       items: [
         { a: 1977, art: "Talking Heads", t: "Psycho Killer", n: "Nerviosos, intelectuales y bailables: del CBGB al mundo." },
         { a: 1977, art: "Elvis Costello", t: "Watching the Detectives", n: "Rabia punk con reggae y canción clásica." },
@@ -20,6 +21,7 @@ HISTORIAS.push({
         { a: 1979, art: "Blondie", t: "Heart of Glass", n: "El punk de Nueva York se pasa a la disco." },
         { a: 1979, art: "Gary Numan", t: "Cars", n: "Un sintetizador y una voz fría: el futuro." },
         { a: 1979, art: "The Buggles", t: "Video Killed the Radio Star", n: "En 1981, el primer vídeo que emitió la MTV." },
+        { a: 1980, art: "Concierto homenaje a Canito", t: "Empieza la Movida madrileña", tipo: "hito", n: "Un concierto en la Escuela de Caminos de Madrid, en febrero, se considera el inicio." },
         { a: 1980, art: "Nacha Pop", t: "La chica de ayer", n: "El himno generacional de la Movida madrileña." }
       ]
     },
@@ -29,6 +31,7 @@ HISTORIAS.push({
       periodo: "1981 – 1986",
       intro: "Vídeos, sintetizadores baratos y peinados enormes.",
       items: [
+        { a: 1981, art: "MTV", t: "Empieza a emitir", tipo: "hito", n: "1 de agosto: «Video Killed the Radio Star» es el primer vídeo. La imagen ya importa tanto como la música." },
         { a: 1981, art: "Soft Cell", t: "Tainted Love", n: "Un soul olvidado de los 60 convertido en synth-pop." },
         { a: 1981, art: "Depeche Mode", t: "Just Can't Get Enough", n: "Su primer éxito, antes de volverse oscuros." },
         { a: 1981, art: "The Human League", t: "Don't You Want Me", n: "Número uno a ambos lados del Atlántico." },

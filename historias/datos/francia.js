@@ -9,7 +9,9 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Music-hall y la canción realista",
+      corto: "Music-hall",
       periodo: "1920 – 1949",
+      intro: "Cabarets, music-hall y la canción realista de las calles de París.",
       items: [
         { a: 1920, art: "Mistinguett", t: "Mon homme", n: "La reina del music-hall parisino." },
         { a: 1930, art: "Lucienne Boyer", t: "Parlez-moi d'amour", n: "Uno de los primeros grandes éxitos internacionales de la chanson." },
@@ -21,9 +23,11 @@ HISTORIAS.push({
     },
     {
       titulo: "La edad de oro de la chanson",
-      periodo: "1951 – 1960",
+      corto: "Chanson",
+      periodo: "1949 – 1960",
       intro: "Los cafés de Saint-Germain-des-Prés: existencialismo y canción de autor.",
       items: [
+        { a: 1949, art: "Saint-Germain-des-Prés", t: "Existencialistas y sótanos de jazz", tipo: "hito", n: "Sartre, Boris Vian y Juliette Gréco: la noche de París." },
         { a: 1951, art: "Juliette Gréco", t: "Sous le ciel de Paris", n: "La musa de los existencialistas." },
         { a: 1952, art: "Georges Brassens", t: "Le gorille", n: "Humor anarquista contra la pena de muerte. La prohibieron en la radio." },
         { a: 1955, art: "Boris Vian", t: "Le déserteur", n: "Una carta al presidente negándose a ir a la guerra. Censurada durante años." },
@@ -33,10 +37,12 @@ HISTORIAS.push({
     },
     {
       titulo: "Yeyé y Gainsbourg",
+      corto: "Yeyé",
       periodo: "1960 – 1972",
       intro: "Los adolescentes franceses descubren el rock and roll y lo hacen elegante.",
       items: [
         { a: 1960, art: "Johnny Hallyday", t: "Souvenirs, souvenirs", n: "El «Elvis francés»: estrella durante 50 años." },
+        { a: 1962, art: "«Salut les copains»", t: "La revista de los yeyés", tipo: "hito", n: "Del programa de radio sale una revista que vende un millón de ejemplares." },
         { a: 1962, art: "Françoise Hardy", t: "Tous les garçons et les filles", n: "La melancolía adolescente hecha icono de estilo." },
         { a: 1964, art: "Sylvie Vartan", t: "La plus belle pour aller danser", n: "La yeyé por excelencia." },
         { a: 1965, art: "France Gall", t: "Poupée de cire, poupée de son", n: "Escrita por Gainsbourg: gana Eurovisión por Luxemburgo." },
@@ -51,7 +57,9 @@ HISTORIAS.push({
     },
     {
       titulo: "Disco, rock y los 80",
+      corto: "Los 80",
       periodo: "1977 – 1986",
+      intro: "Disco, punk de broma, new wave y grandes divas.",
       items: [
         { a: 1977, art: "Plastic Bertrand", t: "Ça plane pour moi", n: "Desde Bélgica, punk de broma… y un éxito mundial." },
         { a: 1978, art: "Claude François", t: "Alexandrie Alexandra", n: "El rey de la disco francesa. Salió a la venta el día de su entierro." },
@@ -64,10 +72,13 @@ HISTORIAS.push({
     },
     {
       titulo: "Rap francés y French touch",
+      corto: "Rap y French touch",
       periodo: "1990 – 2019",
+      intro: "Francia se convierte en potencia del rap y de la electrónica.",
       items: [
         { a: 1990, art: "MC Solaar", t: "Bouge de là", n: "Juegos de palabras: el rap francés llega a las listas." },
         { a: 1993, art: "IAM", t: "Je danse le Mia", n: "Marsella y la nostalgia de los 80." },
+        { a: 1994, art: "Ley Toubon", t: "Cuotas de canciones en francés en la radio", tipo: "hito", n: "Desde 1996, el 40 % de las canciones deben ser en francés: el rap francés sale ganando." },
         { a: 1995, art: "Daft Punk", t: "Da Funk", n: "Nace la «French touch»: house filtrado y robots." },
         { a: 1998, art: "Stardust", t: "Music Sounds Better with You", n: "Thomas Bangalter y compañía: el himno de la French touch." },
         { a: 1998, art: "Air", t: "Sexy Boy", n: "Electrónica suave de Versalles." },

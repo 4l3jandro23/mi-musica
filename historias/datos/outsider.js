@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "outsider",
   familia: "Especiales",
   titulo: "Outsider music",
-  periodo: "1944 – 1995",
+  periodo: "1944 – 2005",
   color: "#b07d2b",
   lema: "The Shaggs, Daniel Johnston, Wesley Willis: música hecha fuera de todas las reglas.",
   intro: "La «outsider music» la hacen personas sin formación musical o fuera de la industria, a veces con enfermedades mentales o una visión del mundo muy suya. Desafinan, se saltan compases o cantan cosas inesperadas, pero tienen una sinceridad que la música «correcta» casi nunca consigue. El término lo popularizó Irwin Chusid.",
@@ -11,7 +11,9 @@ HISTORIAS.push({
       titulo: "Los primeros raros",
       corto: "Los primeros",
       periodo: "1944 – 1969",
+      intro: "Personas sin formación ni contactos que grabaron discos únicos.",
       items: [
+        { a: 1944, art: "Carnegie Hall", t: "Florence Foster Jenkins agota las entradas", tipo: "hito", n: "Se rieron de ella y la adoraron a la vez. Murió un mes después." },
         { a: 1944, art: "Florence Foster Jenkins", t: "Der Hölle Rache (Queen of the Night Aria)", q: "Florence Foster Jenkins Queen of the Night", n: "Una soprano rica y convencida de su talento, que no daba una nota. Llenó el Carnegie Hall." },
         { a: 1962, art: "The Tornados", t: "Telstar", n: "Producida por Joe Meek, un genio paranoico que grababa en su piso de Londres con trucos caseros." },
         { a: 1968, art: "Tiny Tim", t: "Tiptoe Through the Tulips", n: "Falsete y ukelele: un fenómeno televisivo imposible de clasificar." },
@@ -24,13 +26,16 @@ HISTORIAS.push({
     {
       titulo: "Grabaciones caseras",
       corto: "Caseras",
-      periodo: "1977 – 1995",
+      periodo: "1977 – 2005",
+      intro: "Cintas de casete, discos autoeditados y una sinceridad brutal.",
       items: [
         { a: 1977, art: "The Langley Schools Music Project", t: "Space Oddity", n: "Un profesor canadiense grabó a sus alumnos de primaria cantando a Bowie. Precioso e inquietante." },
         { a: 1978, art: "Jandek", t: "Ready for the House", tipo: "disco", n: "Un misterio de Houston: decenas de discos con guitarras desafinadas y casi ninguna entrevista." },
         { a: 1983, art: "Daniel Johnston", t: "Speeding Motorcycle", n: "Cintas grabadas en casa y regaladas por la calle. Kurt Cobain llevaba su camiseta." },
         { a: 1990, art: "Daniel Johnston", t: "True Love Will Find You in the End", n: "Una de las canciones más tiernas y versionadas del indie." },
-        { a: 1995, art: "Wesley Willis", t: "Rock 'n' Roll McDonald's", n: "Un músico de Chicago con esquizofrenia y cientos de canciones con la misma base de teclado." }
+        { a: 1995, art: "Wesley Willis", t: "Rock 'n' Roll McDonald's", n: "Un músico de Chicago con esquizofrenia y cientos de canciones con la misma base de teclado." },
+        { a: 2000, art: "Irwin Chusid", t: "Publica «Songs in the Key of Z»", tipo: "hito", n: "El libro y el recopilatorio que pusieron nombre a la «outsider music»." },
+        { a: 2005, art: "«The Devil and Daniel Johnston»", t: "Un documental sobre su vida", tipo: "hito", n: "Entre la genialidad y la enfermedad mental." }
       ]
     }
   ]

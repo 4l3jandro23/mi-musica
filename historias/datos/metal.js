@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Los orígenes",
       corto: "Orígenes",
       periodo: "1969 – 1972",
+      intro: "Birmingham, el blues ralentizado y el terror: nace el heavy.",
       items: [
         { a: 1969, art: "Led Zeppelin", t: "Whole Lotta Love", n: "Blues a un volumen nunca oído: la raíz del hard rock." },
         { a: 1970, art: "Black Sabbath", t: "Black Sabbath", n: "Lluvia, campanas y un tritono, «el intervalo del diablo»: nace el heavy metal." },
@@ -24,6 +25,7 @@ HISTORIAS.push({
       periodo: "1980 – 1990",
       intro: "Más velocidad, más técnica y chupas de cuero.",
       items: [
+        { a: 1980, art: "La NWOBHM", t: "La «nueva ola del heavy metal británico»", tipo: "hito", n: "Iron Maiden, Def Leppard y Saxon: el metal se acelera." },
         { a: 1980, art: "Judas Priest", t: "Breaking the Law", n: "Inventaron la estética de cuero y tachuelas." },
         { a: 1980, art: "Motörhead", t: "Ace of Spades", n: "Lemmy: velocidad punk con volumen metal." },
         { a: 1982, art: "Barón Rojo", t: "Los rockeros van al infierno", n: "El heavy metal en castellano, desde Madrid." },
@@ -40,9 +42,11 @@ HISTORIAS.push({
       titulo: "Metal extremo y metal de masas",
       corto: "Extremo y masas",
       periodo: "1988 – 1998",
+      intro: "Por un lado, el metal más extremo; por otro, estadios y MTV.",
       items: [
         { a: 1988, art: "Death", t: "Pull the Plug", n: "Desde Florida: nace el death metal." },
         { a: 1991, art: "Metallica", t: "Enter Sandman", n: "El «álbum negro»: el metal llega a todo el mundo." },
+        { a: 1992, art: "Noruega", t: "Quemas de iglesias", tipo: "hito", n: "La escena del black metal noruego mezcla música con crímenes reales." },
         { a: 1992, art: "Pantera", t: "Walk", n: "El groove metal: pesadez y ritmo." },
         { a: 1994, art: "Mayhem", t: "Freezing Moon", n: "El black metal noruego, una escena con iglesias quemadas y crímenes reales." },
         { a: 1998, art: "Korn", t: "Freak on a Leash", n: "El nu metal: guitarras de siete cuerdas y rap." }
@@ -52,6 +56,7 @@ HISTORIAS.push({
       titulo: "El metal del siglo XXI",
       corto: "Siglo XXI",
       periodo: "2000 – 2020",
+      intro: "Nu metal, metal progresivo y nuevas voces.",
       items: [
         { a: 2000, art: "Linkin Park", t: "In the End", n: "Nu metal melódico: uno de los grupos más escuchados de su generación." },
         { a: 2001, art: "System of a Down", t: "Chop Suey!", n: "Armenios de Los Ángeles: caos, ironía y melodías de Oriente." },

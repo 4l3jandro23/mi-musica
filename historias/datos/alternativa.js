@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Los 80: post-punk y raíces",
       corto: "Los 80",
       periodo: "1980 – 1990",
+      intro: "Sellos pequeños, radios universitarias y guitarras raras.",
       items: [
         { a: 1980, art: "Joy Division", t: "Love Will Tear Us Apart", n: "Salió un mes antes del suicidio de Ian Curtis: el post-punk más triste." },
         { a: 1987, art: "The Cure", t: "Just Like Heaven", n: "El pop más luminoso de un grupo conocido por su oscuridad." },
@@ -25,11 +26,13 @@ HISTORIAS.push({
       periodo: "1991 – 1996",
       intro: "Camisas de franela, Seattle y la MTV.",
       items: [
+        { a: 1991, art: "Lollapalooza", t: "Primera edición", tipo: "hito", n: "Un festival itinerante creado por Perry Farrell: el rock alternativo tiene su casa." },
         { a: 1991, art: "Nirvana", t: "Smells Like Teen Spirit", n: "«Nevermind» desbancó a Michael Jackson del número uno: el rock alternativo se vuelve mainstream." },
         { a: 1991, art: "Pearl Jam", t: "Alive", n: "La otra gran banda de Seattle." },
         { a: 1992, art: "Alice in Chains", t: "Would?", n: "El grunge más oscuro." },
         { a: 1992, art: "Radiohead", t: "Creep", n: "Una canción que el propio grupo acabó odiando." },
         { a: 1993, art: "Beck", t: "Loser", n: "Rap, slide y folk grabado en una cocina: «I'm a loser, baby»." },
+        { a: 1994, art: "Kurt Cobain", t: "Muere con 27 años", tipo: "hito", n: "El final de una época." },
         { a: 1994, art: "Soundgarden", t: "Black Hole Sun", n: "Un vídeo de pesadilla suburbana." },
         { a: 1994, art: "Weezer", t: "Buddy Holly", n: "Un vídeo dentro de la serie «Happy Days»." },
         { a: 1995, art: "The Smashing Pumpkins", t: "1979", n: "La nostalgia adolescente perfecta." },
@@ -41,6 +44,7 @@ HISTORIAS.push({
       titulo: "Del britpop a los 2000",
       corto: "Hasta los 2000",
       periodo: "1997 – 2005",
+      intro: "Del britpop a Radiohead: el rock alternativo se vuelve ambicioso.",
       items: [
         { a: 1997, art: "Blur", t: "Song 2", n: "«Woo-hoo!»: una parodia del grunge que se convirtió en himno de estadio." },
         { a: 1997, art: "Radiohead", t: "Paranoid Android", n: "De «OK Computer»: el rock alternativo se vuelve ambicioso." },

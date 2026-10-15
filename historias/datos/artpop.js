@@ -11,8 +11,10 @@ HISTORIAS.push({
       titulo: "Los pioneros",
       corto: "Pioneros",
       periodo: "1966 – 1985",
+      intro: "El estudio de grabación, el arte y el teatro entran en el pop.",
       items: [
         { a: 1966, art: "The Beach Boys", t: "Good Vibrations", n: "Grabada en partes durante meses en cuatro estudios: «sinfonía de bolsillo»." },
+        { a: 1967, art: "«Sgt. Pepper's»", t: "El disco como obra de arte", tipo: "hito", n: "Los Beatles convierten el álbum en una pieza completa, con portada de arte pop." },
         { a: 1967, art: "The Velvet Underground & Nico", t: "Femme Fatale", n: "Producido por Andy Warhol, con un plátano en la portada." },
         { a: 1977, art: "David Bowie", t: "Heroes", n: "Grabada en Berlín junto al Muro, con Brian Eno." },
         { a: 1978, art: "Kate Bush", t: "Wuthering Heights", n: "Con 19 años y una novela de Emily Brontë: la primera mujer en llegar al número uno británico con una canción propia." },
@@ -24,13 +26,16 @@ HISTORIAS.push({
       titulo: "Del 90 a hoy",
       corto: "De los 90 a hoy",
       periodo: "1993 – 2022",
+      intro: "Vídeos que son cortometrajes y discos que son mundos propios.",
       items: [
         { a: 1993, art: "Björk", t: "Human Behaviour", n: "Desde Islandia: el pop más imaginativo de su década." },
         { a: 1997, art: "Björk", t: "Jóga", n: "Cuerdas y ritmos que suenan como volcanes." },
         { a: 2000, art: "Radiohead", t: "Everything in Its Right Place", n: "El grupo de rock más grande del mundo se pasa a la electrónica." },
         { a: 2009, art: "Lady Gaga", t: "Paparazzi", n: "Un vídeo de cortometraje sobre la fama y la muerte." },
         { a: 2014, art: "FKA twigs", t: "Two Weeks", n: "R&B experimental y baile contemporáneo." },
+        { a: 2016, art: "«Lemonade»", t: "Beyoncé publica un «álbum visual»", tipo: "hito", n: "Una película entera acompaña al disco." },
         { a: 2016, art: "Frank Ocean", t: "Nikes", n: "De «Blonde»: R&B íntimo y desestructurado." },
+        { a: 2022, art: "Kate Bush", t: "Vuelve al número uno 37 años después", tipo: "hito", n: "«Running Up That Hill», gracias a «Stranger Things»." },
         { a: 2022, art: "Rosalía", t: "SAOKO", n: "De «Motomami»: reguetón deformado y jazz en dos minutos." }
       ]
     }

@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Bolero, jazz y chanson",
       corto: "Bolero y jazz",
       periodo: "1940 – 1969",
+      intro: "Boleros, jazz susurrado y una canción francesa escandalosa.",
       items: [
         { a: 1940, art: "Trío Los Panchos", t: "Bésame mucho", n: "Escrita en 1940 por la mexicana Consuelo Velázquez, casi una adolescente: el bolero más grabado de la historia." },
         { a: 1958, art: "Peggy Lee", t: "Fever", n: "Solo chasquidos de dedos, contrabajo y una voz susurrada." },
@@ -27,6 +28,7 @@ HISTORIAS.push({
         { a: 1973, art: "Marvin Gaye", t: "Let's Get It On", n: "La canción sensual por excelencia." },
         { a: 1974, art: "Barry White", t: "Can't Get Enough of Your Love, Babe", n: "La voz más grave del soul y sus cuerdas de terciopelo." },
         { a: 1975, art: "Donna Summer", t: "Love to Love You Baby", n: "17 minutos de suspiros producidos por Moroder: la BBC la prohibió." },
+        { a: 1976, art: "La «quiet storm»", t: "Un programa de radio da nombre al soul lento", tipo: "hito", n: "Melvin Lindsey, en una emisora de Washington, pone soul suave por la noche: nace un formato y un estilo." },
         { a: 1982, art: "Marvin Gaye", t: "Sexual Healing", n: "Con caja de ritmos: el soul entra en los 80." }
       ]
     },
@@ -34,6 +36,7 @@ HISTORIAS.push({
       titulo: "Los 80 y 90",
       corto: "80 y 90",
       periodo: "1984 – 1996",
+      intro: "Del soul elegante al R&B, pasando por vídeos prohibidos.",
       items: [
         { a: 1984, art: "Sade", t: "Smooth Operator", n: "Elegancia jazz-soul: la banda sonora de las cenas a la luz de las velas." },
         { a: 1986, art: "Prince", t: "Kiss", n: "Falsete, guitarra funky y casi nada más." },
@@ -49,6 +52,7 @@ HISTORIAS.push({
       titulo: "R&B del siglo XXI",
       corto: "R&B moderno",
       periodo: "2000 – 2017",
+      intro: "El R&B moderno: íntimo, oscuro y sin miedo.",
       items: [
         { a: 2000, art: "D'Angelo", t: "Untitled (How Does It Feel)", n: "El neo soul en su forma más pura (y un vídeo legendario)." },
         { a: 2001, art: "Aaliyah", t: "Rock the Boat", n: "Su último single, R&B suave como el agua." },

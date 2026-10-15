@@ -9,11 +9,13 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Los primeros recuerdos",
+      corto: "3 – 5 años",
       periodo: "2000 – 2002 · de 3 a 5 años",
       intro: "El fin del milenio, la radio en el coche y la primera Operación Triunfo.",
       items: [
         { a: 2000, art: "Mägo de Oz", t: "Fiesta pagana", n: "El himno de todas las fiestas de pueblo." },
         { a: 2000, art: "Paulina Rubio", t: "Y yo sigo aquí", n: "Pop latino en todas las radios." },
+        { a: 2001, art: "Operación Triunfo", t: "Paraliza España", tipo: "hito", n: "Cada lunes, millones de personas viendo a Bisbal, Chenoa, Bustamante y compañía." },
         { a: 2001, art: "David Civera", t: "Que la detengan", n: "Eurovisión 2001 y la canción del verano. Imposible no saberse el estribillo." },
         { a: 2002, art: "Operación Triunfo", t: "Mi música es tu voz", n: "OT1 paralizó el país. Todos los concursantes juntos en un himno." },
         { a: 2002, art: "Las Ketchup", t: "Aserejé", n: "Un fenómeno mundial con un baile que se aprendió todo el patio del colegio." },
@@ -25,9 +27,11 @@ HISTORIAS.push({
     },
     {
       titulo: "En plena infancia",
+      corto: "6 – 9 años",
       periodo: "2003 – 2006 · de 6 a 9 años",
       intro: "Series familiares, canciones del verano y el reguetón llegando a España.",
       items: [
+        { a: 2003, art: "«Los Serrano»", t: "La serie de la familia más famosa de la tele", tipo: "hito", n: "Su sintonía, «1+1 son 7», la sabía todo el mundo." },
         { a: 2003, art: "Fran Perea", t: "1+1 son 7", q: "Fran Perea 1 1 son 7", n: "La sintonía de «Los Serrano». Se cantaba en casa todas las semanas." },
         { a: 2003, art: "La Oreja de Van Gogh", t: "Rosas", n: "Amaia y la canción que todo el mundo sabía de memoria." },
         { a: 2003, art: "Andy & Lucas", t: "Son de amores", n: "Flamenco pop de Cádiz que no paraba de sonar." },
@@ -46,6 +50,7 @@ HISTORIAS.push({
     },
     {
       titulo: "Hacia la adolescencia",
+      corto: "10 – 13 años",
       periodo: "2007 – 2010 · de 10 a 13 años",
       intro: "Eurovisión en clave de humor, los primeros móviles con politonos y la música en el Tuenti.",
       items: [
@@ -53,6 +58,7 @@ HISTORIAS.push({
         { a: 2008, art: "Melendi", t: "Un violinista en tu tejado", n: "Melendi en su mejor momento: no había fiesta sin ella." },
         { a: 2008, art: "El Canto del Loco", t: "La suerte de mi vida", n: "Su última gran época antes de separarse." },
         { a: 2009, art: "Fito & Fitipaldis", t: "Antes de que cuente diez", n: "Saxofón y una letra para cantarla a gritos." },
+        { a: 2010, art: "Mundial de Sudáfrica", t: "España campeona del mundo", tipo: "hito", n: "El «Waka Waka» en todas partes y el gol de Iniesta." },
         { a: 2010, art: "Enrique Iglesias", t: "Cuando me enamoro", n: "Con Juan Luis Guerra. Sonaba en todas las bodas y todos los coches." },
         { a: 2010, art: "Shakira", t: "Loca", n: "Con El Cata, en el verano del Mundial." },
         { a: 2010, art: "Don Omar & Lucenzo", t: "Danza Kuduro", n: "El final de la infancia: verano, piscina y verbenas." },

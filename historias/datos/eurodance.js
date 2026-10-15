@@ -11,9 +11,11 @@ HISTORIAS.push({
       titulo: "Los inicios",
       corto: "Inicios",
       periodo: "1989 – 1992",
+      intro: "Productores europeos, raperos y divas: nace una fórmula.",
       items: [
         { a: 1989, art: "Technotronic", t: "Pump Up the Jam", n: "Desde Bélgica, la plantilla del género (la modelo del vídeo ni siquiera cantaba)." },
         { a: 1990, art: "Snap!", t: "The Power", n: "«I've got the power!»: rap y house alemanes." },
+        { a: 1991, art: "La Ruta del Bakalao", t: "Valencia baila de viernes a lunes", tipo: "hito", n: "El eurodance y la música de importación suenan en las discotecas valencianas." },
         { a: 1991, art: "2 Unlimited", t: "Get Ready for This", n: "Desde Holanda: la canción de todos los estadios." },
         { a: 1991, art: "Chimo Bayo", t: "Así me gusta a mí", n: "«Uh ah, uh ah»: la ruta del bakalao valenciana llega a las listas." },
         { a: 1992, art: "Ace of Base", t: "All That She Wants", n: "Eurodance con reggae desde Suecia." },
@@ -43,6 +45,7 @@ HISTORIAS.push({
       titulo: "El final pop",
       corto: "Final",
       periodo: "1996 – 1998",
+      intro: "El eurodance se vuelve pop casi infantil y se despide.",
       items: [
         { a: 1996, art: "Gala", t: "Freed from Desire", n: "Una italiana y un «na na na» que hoy cantan los estadios de fútbol." },
         { a: 1997, art: "Alexia", t: "Uh La La La", n: "Eurodance italiano en clave pop." },

@@ -9,7 +9,9 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Las pioneras",
+      corto: "Pioneras",
       periodo: "1983 – 1999",
+      intro: "Las que inventaron el pop para cantar a gritos.",
       items: [
         { a: 1983, art: "Cyndi Lauper", t: "Girls Just Want to Have Fun", n: "El himno fundacional." },
         { a: 1984, art: "Madonna", t: "Like a Virgin", n: "La reina del pop, provocando desde el primer día." },
@@ -23,9 +25,11 @@ HISTORIAS.push({
     },
     {
       titulo: "La era MTV, Disney y pop-punk",
+      corto: "MTV y Disney",
       periodo: "2001 – 2007",
       intro: "CDs grabados, MySpace y series de Disney Channel.",
       items: [
+        { a: 2001, art: "Disney Channel", t: "«Lizzie McGuire»", tipo: "hito", n: "La tele de Disney empieza a fabricar las estrellas pop de los 2000." },
         { a: 2001, art: "Michelle Branch", t: "Everywhere", n: "Guitarra acústica y diario personal." },
         { a: 2002, art: "Vanessa Carlton", t: "A Thousand Miles", n: "El piano más reconocible de los 2000 (y de «¿Y dónde están las rubias?»)." },
         { a: 2002, art: "Avril Lavigne", t: "Complicated", n: "Corbata, pantalón ancho y actitud." },
@@ -41,7 +45,9 @@ HISTORIAS.push({
     },
     {
       titulo: "La edad de oro: Tumblr y el electropop",
+      corto: "Tumblr",
       periodo: "2008 – 2014",
+      intro: "Electropop, Tumblr y los vídeos de YouTube.",
       items: [
         { a: 2008, art: "Lady Gaga", t: "Just Dance", n: "El debut que cambió el pop de los 2010." },
         { a: 2008, art: "Taylor Swift", t: "Love Story", n: "Romeo y Julieta con final feliz." },
@@ -63,7 +69,9 @@ HISTORIAS.push({
     },
     {
       titulo: "Pop triste, TikTok y la nueva generación",
+      corto: "TikTok",
       periodo: "2017 – 2024",
+      intro: "Tristeza, TikTok y una nueva generación de estrellas.",
       items: [
         { a: 2017, art: "Lorde", t: "Green Light", n: "Bailar llorando: el himno del despecho indie." },
         { a: 2018, art: "Ariana Grande", t: "thank u, next", n: "Dar las gracias a los ex: reina." },
@@ -71,6 +79,7 @@ HISTORIAS.push({
         { a: 2019, art: "Taylor Swift", t: "Cruel Summer", n: "Tardó cuatro años en ser single y acabó número uno." },
         { a: 2021, art: "Olivia Rodrigo", t: "drivers license", n: "Del carné de conducir al corazón roto de todo TikTok." },
         { a: 2021, art: "Olivia Rodrigo", t: "good 4 u", n: "Pop-punk vengativo, como Paramore." },
+        { a: 2023, art: "The Eras Tour", t: "Taylor Swift hace la gira más taquillera de la historia", tipo: "hito", n: "Más de 2.000 millones de dólares." },
         { a: 2023, art: "Tate McRae", t: "greedy", n: "Pop de baile con actitud." },
         { a: 2024, art: "Sabrina Carpenter", t: "Espresso", n: "«That's that me espresso»: la canción del verano." },
         { a: 2024, art: "Chappell Roan", t: "Good Luck, Babe!", n: "La nueva diva del pop." },

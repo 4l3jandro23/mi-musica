@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Los clásicos del horror",
       corto: "Clásicos",
       periodo: "1966 – 1978",
+      intro: "Las primeras canciones en ganarse el odio (o el culto) del público.",
       items: [
         { a: 1966, art: "Mrs. Miller", t: "Downtown", n: "Una ama de casa de California que cantaba éxitos pop con vibrato de ópera… y vendió miles de discos." },
         { a: 1968, art: "Richard Harris", t: "MacArthur Park", n: "Siete minutos de lamento por una tarta olvidada bajo la lluvia. Fija en todas las listas de peores letras." },
@@ -24,6 +25,7 @@ HISTORIAS.push({
       titulo: "Los 80 y 90",
       corto: "80 y 90",
       periodo: "1982 – 1999",
+      intro: "Grandes éxitos que el tiempo convirtió en vergüenza ajena.",
       items: [
         { a: 1982, art: "Paul McCartney", t: "Ebony and Ivory", n: "Con Stevie Wonder: buena intención y metáfora del piano. Votada el peor dueto en una encuesta de la BBC." },
         { a: 1985, art: "Starship", t: "We Built This City", n: "La número uno en la lista de las 50 peores canciones de la revista Blender." },
@@ -35,8 +37,10 @@ HISTORIAS.push({
     {
       titulo: "La era de internet",
       corto: "Internet",
-      periodo: "2005 – 2011",
+      periodo: "2004 – 2011",
+      intro: "Internet convierte el odio en viralidad.",
       items: [
+        { a: 2004, art: "Revista Blender", t: "Publica «las 50 peores canciones de la historia»", tipo: "hito", n: "«We Built This City» encabeza la lista." },
         { a: 2005, art: "The Black Eyed Peas", t: "My Humps", n: "Votada entre las peores de su década por los lectores de Rolling Stone." },
         { a: 2005, art: "Nickelback", t: "Photograph", n: "«Look at this photograph»: el grupo más odiado de internet y un meme eterno." },
         { a: 2011, art: "Rebecca Black", t: "Friday", n: "El vídeo con más «no me gusta» de su época. Hoy ella misma se ríe y la canta en directo." }

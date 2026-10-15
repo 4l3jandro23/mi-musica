@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "bandassonoras",
   familia: "Clásica y cine",
   titulo: "Historia de las bandas sonoras",
-  periodo: "1933 – 2023",
+  periodo: "1927 – 2023",
   color: "#c08a2a",
   lema: "De King Kong a Interstellar: la música que hizo inolvidable el cine.",
   intro: "Con el cine sonoro llegaron los compositores de Hollywood, herederos de la ópera romántica. Luego vinieron el jazz, el pop y los sintetizadores, y de nuevo la gran orquesta con John Williams. Hoy las bandas sonoras se escuchan como discos propios. También hay series y videojuegos.",
@@ -10,8 +10,10 @@ HISTORIAS.push({
     {
       titulo: "La edad de oro de Hollywood",
       corto: "Edad de oro",
-      periodo: "1933 – 1962",
+      periodo: "1927 – 1962",
+      intro: "Los compositores europeos llevan la orquesta romántica a Hollywood.",
       items: [
+        { a: 1927, art: "«El cantor de jazz»", t: "Llega el cine sonoro", tipo: "hito", n: "Las películas empiezan a hablar y a cantar." },
         { a: 1933, art: "Max Steiner", t: "King Kong", n: "La primera gran banda sonora sinfónica: Hollywood descubre que la música asusta." },
         { a: 1939, art: "Judy Garland", t: "Over the Rainbow", n: "De «El mago de Oz». Casi la cortan del montaje." },
         { a: 1942, art: "Dooley Wilson", t: "As Time Goes By", n: "«Tócala otra vez, Sam» (aunque en «Casablanca» nadie dice exactamente eso)." },
@@ -55,8 +57,10 @@ HISTORIAS.push({
       titulo: "De Titanic a Interstellar",
       corto: "Siglo XXI",
       periodo: "1993 – 2023",
+      intro: "Grandes orquestas, piano, electrónica y videojuegos.",
       items: [
         { a: 1993, art: "John Williams", t: "Theme from Jurassic Park", n: "El asombro hecho música." },
+        { a: 1997, art: "«Titanic»", t: "La banda sonora orquestal más vendida de la historia", tipo: "hito", n: "James Horner y una flauta irlandesa." },
         { a: 1997, art: "Nobuo Uematsu", t: "One-Winged Angel", n: "De «Final Fantasy VII»: coro latino y orquesta en un videojuego." },
         { a: 1997, art: "Céline Dion", t: "My Heart Will Go On", n: "De «Titanic»: una de las canciones más vendidas de la historia." },
         { a: 2000, art: "Hans Zimmer", t: "Now We Are Free", n: "Con Lisa Gerrard, de «Gladiator»." },
