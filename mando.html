@@ -1139,7 +1139,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-15b';
+const VERSION = '2026-10-15c';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -9354,10 +9354,11 @@ function confirmar(titulo, boton, texto) {
    Lo hace la Fonoteca para usar su sesión, su ritmo y sus pausas.
    ============================================================ */
 const K_HISTORIAS = 'fonoteca_historias_v1';
-const normH = s => fold(s).replace(/[^a-z0-9぀-ヿ一-鿿 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+const normH = s => fold(s).replace(/[^a-z0-9\u0400-\u04ff\u1100-\u11ff\u3040-\u30ff\u3130-\u318f\u4e00-\u9fff\uac00-\ud7af ]+/g, ' ').replace(/\s+/g, ' ').trim();
 /* la pista buena: algún artista coincide y el título se parece; entre las buenas, la de disco más antiguo */
 function elegirPista(items, i) {
-  const partes = String(i.art).split(/\s*(?:&|,|\by\b|\band\b|\bvs\.?|\bfeat\.?|\bcon\b)\s*/i).map(normH).filter(Boolean);
+  /* i.alias: el nombre del artista en otro alfabeto (鄧麗君, Кино…), tal como sale en Spotify */
+  const partes = [i.art].concat(i.alias || []).join(' & ').split(/\s*(?:&|,|\by\b|\band\b|\bvs\.?|\bfeat\.?|\bcon\b)\s*/i).map(normH).filter(Boolean);
   const claves = partes.map(p => p.split(' ').filter(w => w.length > 1).pop() || p);
   const artOk = it => (it.artists || []).some(a => { const n = normH(a.name); return claves.some(k => n.split(' ').indexOf(k) >= 0 || n === k); });
   const tw = normH(i.t).split(' ').filter(Boolean);
