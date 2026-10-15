@@ -36,6 +36,7 @@ HISTORIAS.push({
         { a: 2019, art: "Nicki Nicole", t: "Wapo Traketero", n: "Una chica de Rosario grabando en su casa: su sesión con Bizarrap la hizo estallar." },
         { a: 2019, art: "Natanael Cano", t: "Soy el Diablo", n: "Desde México, los corridos tumbados: guitarras de corrido con letras de trap." },
         { a: 2020, art: "Trueno", t: "Mamichula", n: "Con Nicki Nicole: el campeón de freestyle de La Boca en el pop." },
+        { a: 2022, art: "Bad Bunny", t: "El artista más escuchado del mundo en Spotify", tipo: "hito", n: "Tres años seguidos, cantando en español." },
         { a: 2022, art: "Bizarrap", t: "Duki: Bzrp Music Sessions, Vol. 50", q: "Bizarrap Duki Music Sessions 50", n: "Las «sesiones» de un productor argentino en su habitación se convierten en un fenómeno mundial." },
         { a: 2023, art: "Eladio Carrión", t: "Coco Chanel", n: "Con Bad Bunny: el trap latino, ya convertido en la música más escuchada del planeta." }
       ]

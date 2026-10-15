@@ -14,6 +14,7 @@ HISTORIAS.push({
       intro: "Marzo a junio de 2020: aplausos, balcones y pantallas.",
       items: [
         { a: 2020, art: "Los balcones", t: "Aplausos a las ocho y conciertos desde casa", tipo: "hito", n: "En Italia y España la gente canta y toca en los balcones. Cada tarde se aplaude a los sanitarios." },
+        { a: 2020, art: "Travis Scott en Fortnite", t: "Un concierto dentro de un videojuego", tipo: "hito", n: "Más de 12 millones de personas a la vez, cada una desde su casa." },
         { a: 2020, art: "Dúo Dinámico", t: "Resistiré", n: "Una canción de 1988 que se convirtió en el himno del confinamiento en España." },
         { a: 2020, art: "Tony Igy", t: "Astronomia", n: "La «Coffin Dance» se vuelve el meme más compartido de la pandemia." },
         { a: 2020, art: "The Weeknd", t: "Blinding Lights", n: "Su baile se volvió reto en TikTok con familias enteras encerradas en casa." },

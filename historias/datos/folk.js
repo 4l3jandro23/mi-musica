@@ -11,10 +11,12 @@ HISTORIAS.push({
       titulo: "Raíces y renacimiento",
       corto: "Renacimiento",
       periodo: "1944 – 1964",
+      intro: "Canciones de trabajo, de protesta y baladas tradicionales.",
       items: [
         { a: 1944, art: "Woody Guthrie", t: "This Land Is Your Land", n: "En su guitarra ponía: «Esta máquina mata fascistas»." },
         { a: 1950, art: "The Weavers", t: "Goodnight, Irene", n: "Con Pete Seeger: el folk llega al número uno… hasta que la caza de brujas los vetó." },
         { a: 1958, art: "The Kingston Trio", t: "Tom Dooley", n: "Empieza el gran renacimiento del folk." },
+        { a: 1959, art: "Festival de Newport", t: "Nace el gran festival folk", tipo: "hito", n: "Allí se presentó Joan Baez y, años después, Dylan con guitarra eléctrica." },
         { a: 1964, art: "Bob Dylan", t: "The Times They Are a-Changin'", n: "La canción de protesta convertida en profecía." }
       ]
     },
@@ -22,6 +24,7 @@ HISTORIAS.push({
       titulo: "La edad de oro de los cantautores",
       corto: "Cantautores",
       periodo: "1965 – 1972",
+      intro: "Los cantautores convierten la canción en confesión.",
       items: [
         { a: 1965, art: "Bob Dylan", t: "Se electrifica en Newport", tipo: "hito", n: "Le abuchean por tocar con guitarra eléctrica: el folk y el rock ya no se separarán." },
         { a: 1965, art: "Simon & Garfunkel", t: "The Sound of Silence", n: "El productor le añadió batería y guitarra eléctrica sin avisarles, y llegó al número uno." },
@@ -37,6 +40,7 @@ HISTORIAS.push({
       titulo: "Del folk íntimo al indie folk",
       corto: "Indie folk",
       periodo: "1988 – 2017",
+      intro: "Del folk íntimo al indie folk de banjos.",
       items: [
         { a: 1988, art: "Tracy Chapman", t: "Fast Car", n: "Una guitarra y el sueño de escapar de la pobreza." },
         { a: 1997, art: "Elliott Smith", t: "Between the Bars", n: "Susurros y dolor." },

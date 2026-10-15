@@ -11,8 +11,10 @@ HISTORIAS.push({
       titulo: "El ruido del Lower East Side",
       corto: "El ruido",
       periodo: "1978 – 1980",
+      intro: "Artistas, músicos sin formación y pisos abandonados: el ruido como rebeldía.",
       items: [
         { a: 1978, art: "No New York", t: "El recopilatorio de Brian Eno", tipo: "hito", n: "Eno graba a cuatro grupos (Contortions, Teenage Jesus, Mars y DNA) y la escena queda documentada." },
+        { a: 1978, art: "Artists Space", t: "Cinco noches con los grupos de la escena", tipo: "hito", n: "De ese festival salió la selección de Brian Eno para «No New York»." },
         { a: 1978, art: "Teenage Jesus and the Jerks", t: "Orphans", n: "Lydia Lunch gritando sobre guitarras desafinadas: canciones de un minuto." },
         { a: 1979, art: "James Chance and the Contortions", t: "Contort Yourself", n: "Funk y jazz destrozados a propósito; James Chance se peleaba con el público." },
         { a: 1980, art: "Bush Tetras", t: "Too Many Creeps", n: "Post-punk funky y cortante." },

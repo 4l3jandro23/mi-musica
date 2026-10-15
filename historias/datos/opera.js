@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "opera",
   familia: "Clásica y cine",
   titulo: "Historia de la ópera",
-  periodo: "1689 – 1990",
+  periodo: "1637 – 1990",
   color: "#7a2836",
   lema: "De Purcell a «Nessun dorma»: las arias que todo el mundo ha oído alguna vez.",
   intro: "La ópera nace en Italia hacia 1600 para contar historias cantando. Pasa por el lucimiento vocal del barroco, la perfección de Mozart, el «bel canto», los dramas de Verdi, la obra total de Wagner y el realismo de Puccini. Y en España tiene su propia versión popular: la zarzuela.",
@@ -10,8 +10,10 @@ HISTORIAS.push({
     {
       titulo: "Barroco y Mozart",
       corto: "Barroco y Mozart",
-      periodo: "1689 – 1791",
+      periodo: "1637 – 1791",
+      intro: "La ópera nace en Italia y Mozart la lleva a la perfección.",
       items: [
+        { a: 1637, art: "Venecia", t: "Abre el primer teatro de ópera público", tipo: "hito", n: "La ópera deja de ser solo para las cortes: cualquiera puede comprar entrada." },
         { a: 1689, art: "Henry Purcell", t: "Dido and Aeneas: When I Am Laid in Earth", q: "Purcell Dido's Lament When I Am Laid in Earth", n: "El «lamento de Dido»: una despedida desgarradora sobre un bajo que se repite." },
         { a: 1711, art: "George Frideric Handel", t: "Rinaldo: Lascia ch'io pianga", n: "Una de las arias más bellas del barroco." },
         { a: 1786, art: "Wolfgang Amadeus Mozart", t: "Le nozze di Figaro: Overture", n: "Una comedia de enredos que se burlaba de los nobles." },
@@ -36,9 +38,11 @@ HISTORIAS.push({
       titulo: "Wagner, Carmen y Puccini",
       corto: "Wagner y Puccini",
       periodo: "1865 – 1926",
+      intro: "Drama total, exotismo y realismo.",
       items: [
         { a: 1865, art: "Richard Wagner", t: "Tristan und Isolde: Liebestod", n: "La armonía que no se resuelve nunca: el principio del fin de la música tonal." },
         { a: 1875, art: "Georges Bizet", t: "Carmen: Habanera", n: "Una cigarrera de Sevilla, libre y peligrosa: una de las óperas más representadas del mundo." },
+        { a: 1876, art: "Bayreuth", t: "Wagner construye su propio teatro", tipo: "hito", n: "Pensado solo para sus óperas: todavía hoy es un festival." },
         { a: 1883, art: "Léo Delibes", t: "Lakmé: Flower Duet", n: "El dúo de las flores, que hoy suena en anuncios y películas." },
         { a: 1892, art: "Ruggero Leoncavallo", t: "Pagliacci: Vesti la giubba", n: "El payaso que debe hacer reír con el corazón roto. Caruso vendió un millón con ella." },
         { a: 1894, art: "Tomás Bretón", t: "La verbena de la Paloma", n: "La zarzuela: la ópera popular madrileña, con chotis y verbenas." },
@@ -51,9 +55,11 @@ HISTORIAS.push({
       titulo: "Ópera en el siglo XX",
       corto: "Siglo XX",
       periodo: "1935 – 1990",
+      intro: "Musicales, grandes divas y la ópera en la tele.",
       items: [
         { a: 1935, art: "George Gershwin", t: "Porgy and Bess: Summertime", n: "Una «ópera folk» americana: Summertime se convirtió en estándar del jazz." },
         { a: 1958, art: "Maria Callas", t: "La Divina", tipo: "hito", n: "En los años 50 la soprano greco-estadounidense revoluciona el canto: actuar tanto como cantar." },
+        { a: 1990, art: "Los Tres Tenores", t: "Pavarotti, Domingo y Carreras en Roma", tipo: "hito", n: "La víspera de la final del Mundial: uno de los discos clásicos más vendidos." },
         { a: 1990, art: "Luciano Pavarotti", t: "Nessun dorma", q: "Pavarotti Nessun dorma", n: "Sintonía del Mundial de Italia 90 y concierto de los Tres Tenores: la ópera llega a las masas." }
       ]
     }

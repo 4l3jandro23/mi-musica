@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Los pioneros",
       corto: "Pioneros",
       periodo: "1990 – 1999",
+      intro: "De Puerto Rico a Chile y México: el rap llega al español.",
       items: [
         { a: 1990, art: "Vico C", t: "La recta final", n: "Puerto Rico: el «filósofo del rap», padre del rap en español." },
         { a: 1995, art: "Illya Kuryaki and the Valderramas", t: "Abarajame", n: "Argentina: funk, rap y psicodelia con Dante Spinetta y Emmanuel Horvilleur." },
@@ -29,14 +30,16 @@ HISTORIAS.push({
         { a: 2009, art: "Ana Tijoux", t: "1977", n: "Chilena nacida en el exilio en Francia: rap feminista y político." },
         { a: 2010, art: "ChocQuibTown", t: "De donde vengo yo", n: "Desde el Pacífico colombiano: rap afrocolombiano. Ganó un Grammy Latino." },
         { a: 2011, art: "Calle 13", t: "Latinoamérica", n: "Con Totó la Momposina, Susana Baca y María Rita: el himno de todo un continente." },
+        { a: 2012, art: "El Quinto Escalón", t: "Batallas de freestyle en Buenos Aires", tipo: "hito", n: "Unas batallas en un parque de Buenos Aires de las que salieron Duki, Wos y Trueno." },
         { a: 2012, art: "Canserbero", t: "Es épico", n: "Desde Venezuela: uno de los raperos más queridos y admirados del idioma." },
-        { a: 2012, art: "El Quinto Escalón", t: "Batallas de freestyle en Buenos Aires", tipo: "hito", n: "Unas batallas en un parque de Buenos Aires de las que salieron Duki, Wos y Trueno." }
+        { a: 2016, art: "Red Bull Batalla y FMS", t: "El freestyle llena estadios", tipo: "hito", n: "Las batallas de improvisación se convierten en un fenómeno en toda Latinoamérica y España." }
       ]
     },
     {
       titulo: "La nueva generación",
       corto: "Nueva generación",
       periodo: "2019 – 2022",
+      intro: "Batallas de freestyle, streaming y nuevas estrellas.",
       items: [
         { a: 2019, art: "WOS", t: "Canguro", n: "Campeón de freestyle convertido en estrella: rap, rock y canción." },
         { a: 2020, art: "Residente", t: "René", n: "El cantante de Calle 13 abre su corazón: depresión, infancia y fama." },

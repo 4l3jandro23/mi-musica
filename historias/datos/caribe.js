@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Calipso, bomba y plena",
       corto: "Calipso y bomba",
       periodo: "1948 – 1959",
+      intro: "Las primeras músicas caribeñas que viajan a Londres y Nueva York.",
       items: [
         { a: 1948, art: "Lord Kitchener", t: "London Is the Place for Me", n: "Improvisada al bajar del barco Windrush: los inmigrantes caribeños llegan a Reino Unido." },
         { a: 1956, art: "Harry Belafonte", t: "Day-O (The Banana Boat Song)", n: "El primer disco en vender un millón de copias en EE. UU. («Calypso»): la fiebre del calipso." },
@@ -22,6 +23,7 @@ HISTORIAS.push({
       titulo: "Soca, kompa, zouk y merengue",
       corto: "Soca y merengue",
       periodo: "1973 – 1998",
+      intro: "Carnavales, discotecas y nuevas mezclas en cada isla.",
       items: [
         { a: 1973, art: "Lord Shorty", t: "Nace la soca", tipo: "hito", n: "«Soul of calypso»: el calipso se acelera, con ritmos indios, para el carnaval de Trinidad." },
         { a: 1974, art: "Tabou Combo", t: "New York City", n: "El kompa haitiano, número uno en Francia." },
@@ -36,10 +38,12 @@ HISTORIAS.push({
       titulo: "Del Caribe al mundo",
       corto: "Siglo XXI",
       periodo: "2003 – 2021",
+      intro: "Del Caribe salen éxitos globales y nuevos ritmos urbanos.",
       items: [
         { a: 2003, art: "Kevin Lyttle", t: "Turn Me On", n: "Desde San Vicente: la soca en las listas de todo el mundo." },
         { a: 2005, art: "Rihanna", t: "Pon de Replay", n: "Una chica de Barbados con ritmo de dancehall: su debut." },
         { a: 2007, art: "Andy Palacio & The Garifuna Collective", t: "Watina", n: "La música garífuna de Belice, de raíz africana y caribe." },
+        { a: 2016, art: "UNESCO", t: "El merengue, patrimonio de la humanidad", tipo: "hito", n: "La música de la República Dominicana, reconocida." },
         { a: 2021, art: "El Alfa", t: "La Mamá de la Mamá", n: "El dembow dominicano: ritmo frenético de los barrios de Santo Domingo." }
       ]
     }

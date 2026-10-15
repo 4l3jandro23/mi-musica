@@ -10,7 +10,8 @@ HISTORIAS.push({
     {
       titulo: "Colombia: de la costa a las orquestas",
       corto: "Colombia",
-      periodo: "1950 – 1960",
+      periodo: "1950 – 1955",
+      intro: "Tambores africanos, gaitas indígenas y versos españoles en la costa caribe colombiana.",
       items: [
         { a: 1950, art: "Los orígenes", t: "Tambores, gaitas y velas", tipo: "hito", n: "En la costa caribe de Colombia, las parejas bailan en círculo con velas encendidas al ritmo de tambores y flautas de millo." },
         { a: 1954, art: "Lucho Bermúdez", t: "Colombia tierra querida", n: "Lleva los ritmos de la costa a las grandes orquestas de salón." },
@@ -20,9 +21,10 @@ HISTORIAS.push({
     {
       titulo: "La cumbia viaja: Perú y México",
       corto: "Perú y México",
-      periodo: "1968 – 1996",
+      periodo: "1965 – 1996",
       intro: "Guitarras eléctricas en los Andes y sonideros en México.",
       items: [
+        { a: 1965, art: "Los sonideros", t: "La cumbia llega a los barrios de México", tipo: "hito", n: "Equipos de sonido enormes y un DJ que saluda a todo el mundo entre canción y canción." },
         { a: 1968, art: "Los Destellos", t: "Elsa", n: "Guitarras eléctricas con efectos y surf: nace la «chicha» peruana." },
         { a: 1970, art: "Juaneco y su Combo", t: "Ya se ha muerto mi abuelo", n: "Cumbia amazónica con trajes indígenas." },
         { a: 1972, art: "Los Mirlos", t: "Sonido amazónico", n: "La selva peruana hecha guitarra psicodélica." },
@@ -34,10 +36,12 @@ HISTORIAS.push({
       titulo: "Villera, rebajada y digital",
       corto: "Siglo XXI",
       periodo: "2000 – 2018",
+      intro: "La cumbia se vuelve electrónica, de barrio y de festival.",
       items: [
         { a: 2000, art: "Los Palmeras", t: "Bombón asesino", n: "La cumbia santafesina argentina." },
         { a: 2000, art: "Damas Gratis", t: "Se te ve la tanga", n: "La «cumbia villera»: los barrios pobres de Buenos Aires tras la crisis." },
         { a: 2001, art: "Celso Piña", t: "Cumbia sobre el río", n: "Desde Monterrey, el «rebelde del acordeón» mezcla cumbia con hip hop y ska." },
+        { a: 2006, art: "ZZK", t: "Nace la «cumbia digital» en Buenos Aires", tipo: "hito", n: "Un club y un sello mezclan la cumbia con la electrónica." },
         { a: 2008, art: "Bomba Estéreo", t: "Fuego", n: "La cumbia digital colombiana: electrónica y champeta." },
         { a: 2018, art: "Los Ángeles Azules", t: "Nunca es suficiente", n: "Con Natalia Lafourcade: más de mil millones de reproducciones." }
       ]

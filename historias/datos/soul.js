@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Del gospel al soul",
       corto: "Los orígenes",
       periodo: "1954 – 1964",
+      intro: "El gospel sale de la iglesia y se convierte en canción de amor.",
       items: [
         { a: 1954, art: "Ray Charles", t: "I Got a Woman", n: "Un himno gospel convertido en canción de amor: escándalo en las iglesias y nacimiento del soul." },
         { a: 1957, art: "Sam Cooke", t: "You Send Me", n: "La voz más elegante del soul deja el gospel por el pop." },
@@ -30,6 +31,7 @@ HISTORIAS.push({
         { a: 1967, art: "Aretha Franklin", t: "Respect", n: "Una canción de Otis Redding convertida en himno feminista y de los derechos civiles." },
         { a: 1967, art: "Sam & Dave", t: "Soul Man", n: "Stax en estado puro." },
         { a: 1967, art: "Marvin Gaye & Tammi Terrell", t: "Ain't No Mountain High Enough", n: "El gran dúo de Motown." },
+        { a: 1968, art: "Asesinato de Martin Luther King", t: "James Brown calma Boston con un concierto televisado", tipo: "hito", n: "Mientras ardían otras ciudades." },
         { a: 1968, art: "Otis Redding", t: "(Sittin' On) The Dock of the Bay", n: "La grabó tres días antes de morir en un accidente de avión. Fue su primer número uno." },
         { a: 1968, art: "James Brown", t: "Say It Loud – I'm Black and I'm Proud", n: "Orgullo negro en plena lucha por los derechos civiles." }
       ]
@@ -38,12 +40,14 @@ HISTORIAS.push({
       titulo: "Soul político y sinfónico",
       corto: "Los 70",
       periodo: "1970 – 1972",
+      intro: "El soul habla de Vietnam, del racismo y de la vida en el gueto.",
       items: [
         { a: 1970, art: "Curtis Mayfield", t: "Move On Up", n: "Metales, percusión y optimismo." },
         { a: 1971, art: "Marvin Gaye", t: "What's Going On", n: "Motown no quería publicarla: un disco sobre la guerra de Vietnam y la vida en el gueto." },
         { a: 1971, art: "Bill Withers", t: "Ain't No Sunshine", n: "«I know, I know, I know…» (26 veces)." },
         { a: 1971, art: "Isaac Hayes", t: "Theme from Shaft", n: "Wah-wah y orquesta: ganó el Óscar." },
         { a: 1971, art: "Al Green", t: "Let's Stay Together", n: "Seda pura desde Memphis." },
+        { a: 1972, art: "Wattstax", t: "El «Woodstock negro»", tipo: "hito", n: "Stax reúne a más de 100.000 personas en Los Ángeles." },
         { a: 1972, art: "Stevie Wonder", t: "Superstition", n: "Un clavinet funky: Stevie se convierte en genio absoluto." },
         { a: 1972, art: "The O'Jays", t: "Love Train", n: "El «sonido Filadelfia», con cuerdas: el puente hacia la música disco." }
       ]
@@ -52,6 +56,7 @@ HISTORIAS.push({
       titulo: "Neo soul y regreso",
       corto: "Neo soul",
       periodo: "1997 – 2021",
+      intro: "El soul vuelve, con hip hop, jazz y voces únicas.",
       items: [
         { a: 1997, art: "Erykah Badu", t: "On & On", n: "Nace el «neo soul»: soul con hip hop y jazz." },
         { a: 1998, art: "Lauryn Hill", t: "Ex-Factor", n: "De «The Miseducation of Lauryn Hill», que ganó cinco Grammy." },

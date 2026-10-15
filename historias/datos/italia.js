@@ -9,7 +9,9 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Ópera y canción napolitana",
+      corto: "Caruso",
       periodo: "1907 – 1916",
+      intro: "La ópera y Nápoles: Italia exporta la melodía.",
       items: [
         { a: 1907, art: "Enrico Caruso", t: "Vesti la giubba", n: "Uno de los primeros discos en vender un millón de copias. Caruso hizo famoso el gramófono." },
         { a: 1916, art: "Enrico Caruso", t: "'O sole mio", n: "La canción napolitana que se convirtió en símbolo de Italia." }
@@ -17,12 +19,14 @@ HISTORIAS.push({
     },
     {
       titulo: "Sanremo y la dolce vita",
+      corto: "Sanremo",
       periodo: "1951 – 1966",
       intro: "El festival de la canción y la Italia del milagro económico.",
       items: [
         { a: 1951, art: "Festival de Sanremo", t: "Primera edición", tipo: "hito", n: "Nace el festival que marcará la canción italiana y que inspiró Eurovisión." },
         { a: 1956, art: "Renato Carosone", t: "Tu vuò fà l'americano", n: "Swing napolitano riéndose de los italianos que imitan a los americanos." },
         { a: 1958, art: "Domenico Modugno", t: "Nel blu dipinto di blu", n: "«Volare»: gana Sanremo y es número uno en Estados Unidos." },
+        { a: 1959, art: "«Volare»", t: "Primer Grammy a la canción del año", tipo: "hito", n: "Una canción en italiano gana en la primera edición de los Grammy." },
         { a: 1959, art: "Mina", t: "Tintarella di luna", n: "La «tigre de Cremona»: la voz más grande de Italia." },
         { a: 1960, art: "Mina", t: "Il cielo in una stanza", n: "De Gino Paoli: los cantautores genoveses empiezan." },
         { a: 1963, art: "Rita Pavone", t: "Il ballo del mattone", n: "Yeyé a la italiana, muy famosa también en España." },
@@ -33,7 +37,9 @@ HISTORIAS.push({
     },
     {
       titulo: "Cantautores, prog y terror",
+      corto: "Cantautores",
       periodo: "1970 – 1978",
+      intro: "Canciones con mensaje, rock progresivo y bandas sonoras de terror.",
       items: [
         { a: 1970, art: "Lucio Battisti", t: "Emozioni", n: "El gran renovador del pop italiano, con letras de Mogol." },
         { a: 1970, art: "Fabrizio De André", t: "Il pescatore", n: "Una balada popular que todos cantan." },
@@ -47,6 +53,7 @@ HISTORIAS.push({
     },
     {
       titulo: "Italo disco y los 80",
+      corto: "Italo disco",
       periodo: "1981 – 1987",
       intro: "Sintetizadores, inglés macarrónico y pistas de toda Europa.",
       items: [
@@ -62,7 +69,9 @@ HISTORIAS.push({
     },
     {
       titulo: "Eurodance, baladas y Måneskin",
+      corto: "Hasta hoy",
       periodo: "1993 – 2021",
+      intro: "Baladas, eurodance y el rock de Måneskin.",
       items: [
         { a: 1993, art: "Laura Pausini", t: "La solitudine", n: "Ganó Sanremo con 18 años. En España, «La soledad»." },
         { a: 1995, art: "Andrea Bocelli", t: "Con te partirò", n: "Ópera pop: en inglés, «Time to Say Goodbye»." },

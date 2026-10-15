@@ -10,12 +10,14 @@ HISTORIAS.push({
     {
       titulo: "Ruido de vanguardia e industrial",
       corto: "Vanguardia e industrial",
-      periodo: "1913 – 1984",
+      periodo: "1913 – 1981",
+      intro: "Futuristas, rock de vanguardia y música industrial: el ruido se toma en serio.",
       items: [
         { a: 1913, art: "Luigi Russolo", t: "El arte de los ruidos", tipo: "hito", n: "El manifiesto futurista: el ruido de las máquinas también es música." },
         { a: 1968, art: "The Velvet Underground", t: "Sister Ray", n: "17 minutos de acoples y distorsión grabados en una sola toma." },
         { a: 1975, art: "Lou Reed", t: "Metal Machine Music", tipo: "disco", n: "Una hora de puro acople. Muchos creyeron que era una broma para romper su contrato; hoy es un clásico del noise." },
         { a: 1978, art: "Throbbing Gristle", t: "Hamburger Lady", n: "Inventan la «música industrial»: ruido, cintas y temas perturbadores." },
+        { a: 1980, art: "Merzbow", t: "Masami Akita empieza su proyecto", tipo: "hito", n: "Más de cuatrocientos discos de ruido extremo desde Tokio." },
         { a: 1981, art: "Einstürzende Neubauten", t: "Kollaps", tipo: "disco", n: "Desde Berlín, tocando con taladros, chapas y martillos." }
       ]
     },
@@ -36,6 +38,7 @@ HISTORIAS.push({
       titulo: "Japanoise y el ruido del siglo XXI",
       corto: "Japanoise y siglo XXI",
       periodo: "1996 – 2019",
+      intro: "Japón lleva el ruido al extremo y el siglo XXI lo mezcla con todo.",
       items: [
         { a: 1996, art: "Merzbow", t: "Pulse Demon", tipo: "disco", n: "El rey del noise japonés: el ruido más extremo, convertido en arte." },
         { a: 2003, art: "Lightning Bolt", t: "Dracula Mountain", n: "Bajo y batería a volumen salvaje: el noise rock más físico." },

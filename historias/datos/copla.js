@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Del cuplé a la copla",
       corto: "Cuplé",
       periodo: "1918 – 1937",
+      intro: "El cuplé picante de los cafés cantantes se convierte en canción española.",
       items: [
         { a: 1918, art: "Raquel Meller", t: "El relicario", n: "La gran estrella del cuplé, aplaudida en París y Nueva York." },
         { a: 1918, art: "Raquel Meller", t: "La violetera", n: "Chaplin la usó en «Luces de la ciudad»." },
@@ -21,9 +22,10 @@ HISTORIAS.push({
     {
       titulo: "La edad de oro",
       corto: "Edad de oro",
-      periodo: "1941 – 1957",
+      periodo: "1940 – 1957",
       intro: "Cine folclórico, giras con compañía y la radio de la posguerra.",
       items: [
+        { a: 1940, art: "La censura", t: "Letras cambiadas y coplas prohibidas", tipo: "hito", n: "Las historias de amores prohibidos se disimulan con metáforas para pasar el filtro." },
         { a: 1941, art: "Concha Piquer", t: "Tatuaje", n: "Una mujer busca por los puertos a un marinero que lleva su nombre tatuado. La copla por excelencia." },
         { a: 1949, art: "Juanito Valderrama", t: "El emigrante", n: "La canción de los que se fueron de España: millones de copias." },
         { a: 1953, art: "Lola Flores", t: "Pena, penita, pena", n: "«La Faraona»: no cantaba ni bailaba perfecto, pero nadie tenía más arte." },

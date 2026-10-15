@@ -9,6 +9,7 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "El protopunk",
+      corto: "Protopunk",
       periodo: "1965 – 1975",
       intro: "Garajes, ruido y la cara oscura de los 60.",
       items: [
@@ -23,8 +24,12 @@ HISTORIAS.push({
     },
     {
       titulo: "La explosión",
+      corto: "Explosión",
       periodo: "1976 – 1978",
+      intro: "Nueva York y Londres: tres acordes que cambian la música.",
       items: [
+        { a: 1976, art: "Sex Pistols en Mánchester", t: "Un concierto con unas 40 personas", tipo: "hito", n: "Entre el público estaban futuros miembros de Joy Division, The Smiths y Buzzcocks." },
+        { a: 1976, art: "Bill Grundy", t: "Los Sex Pistols insultan en directo en la tele", tipo: "hito", n: "Escándalo nacional en Reino Unido: el punk sale en todas las portadas." },
         { a: 1976, art: "Ramones", t: "Blitzkrieg Bop", n: "«Hey! Ho! Let's go!»: dos minutos y todo dicho." },
         { a: 1976, art: "The Saints", t: "(I'm) Stranded", n: "Desde Australia, a la vez que Nueva York y antes que Londres." },
         { a: 1976, art: "The Damned", t: "New Rose", n: "El primer single del punk británico." },
@@ -39,6 +44,7 @@ HISTORIAS.push({
     },
     {
       titulo: "Después del punk",
+      corto: "Después",
       periodo: "1979 – 1985",
       intro: "El punk se divide: post-punk, hardcore y, en España, la Movida y el rock radical vasco.",
       items: [

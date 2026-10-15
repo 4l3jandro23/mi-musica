@@ -11,8 +11,10 @@ HISTORIAS.push({
       titulo: "Eno inventa el ambient",
       corto: "Los orígenes",
       periodo: "1917 – 1983",
+      intro: "De la «música de mobiliario» de Satie a los aeropuertos de Eno.",
       items: [
         { a: 1917, art: "Erik Satie", t: "La «música de mobiliario»", tipo: "hito", n: "Satie compone piezas para que nadie las escuche, como un mueble más. La idea llegaría sesenta años antes de tiempo." },
+        { a: 1978, art: "«Ambient 1»", t: "Eno define el ambient", tipo: "hito", n: "«Tan ignorable como interesante», escribió en las notas del disco." },
         { a: 1978, art: "Brian Eno", t: "1/1", n: "De «Music for Airports»: música para tranquilizar a los viajeros. El nombre del género sale de aquí." },
         { a: 1980, art: "Harold Budd & Brian Eno", t: "First Light", n: "Piano con eco infinito." },
         { a: 1983, art: "Brian Eno", t: "An Ending (Ascent)", n: "Para un documental sobre la llegada a la Luna: una de las piezas más bellas del género." },
@@ -22,9 +24,10 @@ HISTORIAS.push({
     {
       titulo: "La sala chill-out",
       corto: "Los 90",
-      periodo: "1990 – 1994",
+      periodo: "1989 – 1994",
       intro: "Después de bailar toda la noche, alguien tenía que poner algo tranquilo.",
       items: [
+        { a: 1989, art: "Las salas chill-out", t: "Las raves crean salas para descansar", tipo: "hito", n: "Allí nace el ambient house." },
         { a: 1990, art: "The KLF", t: "Chill Out", tipo: "disco", n: "Un viaje en tren nocturno por EE. UU. hecho con samples." },
         { a: 1990, art: "The Orb", t: "Little Fluffy Clouds", n: "Una voz de Rickie Lee Jones hablando de las nubes de su infancia: el «ambient house»." },
         { a: 1992, art: "Aphex Twin", t: "Xtal", n: "De «Selected Ambient Works 85–92»: compuesto cuando era adolescente." },
@@ -35,6 +38,7 @@ HISTORIAS.push({
       titulo: "Drones, cintas y nostalgia",
       corto: "Siglo XXI",
       periodo: "2000 – 2016",
+      intro: "Cintas que se deshacen, drones y la nostalgia de internet.",
       items: [
         { a: 2000, art: "Gas", t: "Pop", tipo: "disco", n: "Techno ambient alemán, como un bosque en la niebla." },
         { a: 2001, art: "Stars of the Lid", t: "Requiem for Dying Mothers, Part 1", n: "Drones lentísimos de guitarra y cuerdas." },

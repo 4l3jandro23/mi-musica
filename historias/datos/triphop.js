@@ -11,9 +11,11 @@ HISTORIAS.push({
       titulo: "El sonido de Bristol",
       corto: "Bristol",
       periodo: "1985 – 1998",
+      intro: "Grafiteros, sound systems y una ciudad portuaria: el sonido de Bristol.",
       items: [
         { a: 1985, art: "The Wild Bunch", t: "Fiestas y sound system en Bristol", tipo: "hito", n: "Grafiteros y DJs que pinchaban de todo: de ahí saldrían Massive Attack y Tricky." },
         { a: 1991, art: "Massive Attack", t: "Unfinished Sympathy", n: "Cuerdas y la voz de Shara Nelson: una de las mejores canciones británicas de la historia." },
+        { a: 1994, art: "Mixmag", t: "Una revista inventa la palabra «trip hop»", tipo: "hito", n: "A Massive Attack y Portishead nunca les gustó la etiqueta." },
         { a: 1994, art: "Portishead", t: "Sour Times", n: "Samples de Lalo Schifrin y la voz frágil de Beth Gibbons." },
         { a: 1994, art: "Portishead", t: "Glory Box", n: "«Give me a reason to love you»: ganaron el Mercury Prize." },
         { a: 1995, art: "Tricky", t: "Overcome", n: "Más oscuro y claustrofóbico, con la voz de Martina Topley-Bird." },

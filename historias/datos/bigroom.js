@@ -9,12 +9,16 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "El sonido de los mainstages",
+      corto: "Mainstage",
       periodo: "2011 – 2016",
+      intro: "Bombos gigantes, subidas con silencio y drops para cien mil personas.",
       items: [
         { a: 2011, art: "Sandro Silva & Quintino", t: "Epic", n: "La plantilla del big room: subida, silencio y un drop con bombo y un lead seco." },
         { a: 2012, art: "Hardwell", t: "Spaceman", n: "Uno de los grandes himnos de festival de la época. Hardwell sería DJ nº 1 del mundo al año siguiente." },
         { a: 2012, art: "Nicky Romero", t: "Toulouse", n: "Un clásico del sello Protocol: progressive con mucha pegada." },
         { a: 2012, art: "Showtek & Justin Prime", t: "Cannonball", n: "Showtek venía del hardstyle y se nota en la contundencia." },
+        { a: 2013, art: "DJ Mag", t: "Hardwell, DJ número uno del mundo con 25 años", tipo: "hito", n: "El big room en la cima de la encuesta más famosa." },
+        { a: 2013, art: "Tomorrowland", t: "Entradas agotadas en segundos", tipo: "hito", n: "El festival belga se convierte en el más famoso del mundo." },
         { a: 2013, art: "Martin Garrix", t: "Animals", n: "Un chaval de 17 años y un drop de cinco notas. El himno definitivo del género." },
         { a: 2013, art: "DVBBS & Borgeous", t: "Tsunami", n: "Una subida coreadísima y un drop que se hizo omnipresente en 2013." },
         { a: 2013, art: "Dimitri Vegas & Like Mike", t: "Mammoth", n: "Con Moguai. Los anfitriones de Tomorrowland en estado puro." },

@@ -11,8 +11,10 @@ HISTORIAS.push({
       titulo: "Warp y la «inteligencia artificial»",
       corto: "Los 90",
       periodo: "1992 – 1999",
+      intro: "Electrónica para escuchar en casa, después de la fiesta.",
       items: [
         { a: 1992, art: "Warp Records", t: "«Artificial Intelligence»", tipo: "hito", n: "Un recopilatorio con un robot en un sofá: música electrónica para escuchar tras la fiesta." },
+        { a: 1993, art: "La lista de correo IDM", t: "El nombre sale de internet", tipo: "hito", n: "Una lista de correo de fans bautiza el género, para disgusto de los artistas." },
         { a: 1993, art: "Autechre", t: "Bike", n: "Desde Rochdale: melancolía de máquinas." },
         { a: 1997, art: "Squarepusher", t: "Come On My Selector", n: "Drum & bass acelerado hasta lo absurdo y un bajo virtuoso." },
         { a: 1998, art: "Boards of Canada", t: "Roygbiv", n: "Nostalgia de documentales de los 70 y cintas gastadas." },
@@ -23,6 +25,7 @@ HISTORIAS.push({
       titulo: "Más allá del IDM",
       corto: "2000s",
       periodo: "2000 – 2014",
+      intro: "Lo que se llamaba «IDM» se mezcla con el rock, el hip hop y el folk.",
       items: [
         { a: 2000, art: "Radiohead", t: "Idioteque", n: "Radiohead se pasan a la electrónica de Warp en «Kid A»." },
         { a: 2001, art: "Aphex Twin", t: "Avril 14th", n: "Un piano sencillo: su pieza más escuchada (Kanye la sampleó)." },

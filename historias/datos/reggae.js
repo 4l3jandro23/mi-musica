@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Ska y rocksteady",
       corto: "Ska",
       periodo: "1962 – 1968",
+      intro: "Jamaica se independiza y baila: primero el ska y luego el rocksteady, más lento.",
       items: [
         { a: 1962, art: "Independencia de Jamaica", t: "Nace el ska", tipo: "hito", n: "Un ritmo alegre con el acento a contratiempo para celebrar el fin del dominio británico." },
         { a: 1964, art: "Millie Small", t: "My Boy Lollipop", n: "El primer gran éxito internacional de Jamaica, con 17 años." },
@@ -23,7 +24,7 @@ HISTORIAS.push({
     {
       titulo: "Reggae roots y dub",
       corto: "Roots y dub",
-      periodo: "1969 – 1981",
+      periodo: "1969 – 1980",
       intro: "Rastafarismo, protesta, África y estudios convertidos en instrumentos.",
       items: [
         { a: 1969, art: "The Upsetters", t: "Return of Django", n: "Lee «Scratch» Perry, el productor loco que inventaría el dub en su estudio Black Ark." },
@@ -34,6 +35,7 @@ HISTORIAS.push({
         { a: 1976, art: "Peter Tosh", t: "Legalize It", n: "La reivindicación más famosa del reggae." },
         { a: 1976, art: "Junior Murvin", t: "Police and Thieves", n: "The Clash la versionaron: punk y reggae unidos." },
         { a: 1976, art: "Augustus Pablo", t: "King Tubby Meets Rockers Uptown", n: "El dub de King Tubby: la canción desnuda, con ecos y reverb. El origen del remix." },
+        { a: 1978, art: "One Love Peace Concert", t: "Bob Marley junta las manos de dos políticos rivales", tipo: "hito", n: "En plena violencia política en Kingston." },
         { a: 1980, art: "Bob Marley & The Wailers", t: "Redemption Song", n: "Solo su voz y una guitarra. Murió un año después, con 36 años." }
       ]
     },

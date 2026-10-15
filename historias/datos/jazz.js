@@ -9,6 +9,7 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Nueva Orleans y la era del jazz",
+      corto: "Nueva Orleans",
       periodo: "1895 – 1928",
       intro: "Del ragtime y las bandas de calle a los primeros discos y a los solos de Louis Armstrong.",
       items: [
@@ -24,21 +25,25 @@ HISTORIAS.push({
     },
     {
       titulo: "La era del swing",
-      periodo: "1929 – 1944",
+      corto: "Swing",
+      periodo: "1932 – 1941",
       intro: "Grandes orquestas, salas de baile y el jazz como la música popular de su época.",
       items: [
         { a: 1932, art: "Duke Ellington", t: "It Don't Mean a Thing (If It Ain't Got That Swing)", n: "La canción que le dio nombre a la era." },
         { a: 1937, art: "Count Basie", t: "One O'Clock Jump", n: "El swing de Kansas City: riffs, blues y una sección rítmica que flota." },
         { a: 1937, art: "Benny Goodman", t: "Sing, Sing, Sing", n: "El tambor de Gene Krupa y una locura de baile." },
         { a: 1937, art: "Django Reinhardt", t: "Minor Swing", n: "Con Stéphane Grappelli y el Quintette du Hot Club de France: el jazz europeo y gitano." },
+        { a: 1938, art: "Carnegie Hall", t: "Benny Goodman lleva el jazz al templo de la música clásica", tipo: "hito", n: "Con músicos blancos y negros juntos en el escenario." },
         { a: 1938, art: "Ella Fitzgerald", t: "A-Tisket, A-Tasket", n: "Con la orquesta de Chick Webb. Una canción infantil convertida en éxito." },
         { a: 1939, art: "Billie Holiday", t: "Strange Fruit", n: "Una canción sobre los linchamientos. El jazz como protesta." },
         { a: 1939, art: "Coleman Hawkins", t: "Body and Soul", n: "Un solo de saxo que casi se olvida de la melodía. Anuncia el bebop." },
-        { a: 1939, art: "Glenn Miller", t: "In the Mood", n: "El swing más popular de todos, a las puertas de la guerra." }
+        { a: 1939, art: "Glenn Miller", t: "In the Mood", n: "El swing más popular de todos, a las puertas de la guerra." },
+        { a: 1941, art: "Minton's Playhouse", t: "Las jam sessions de Harlem", tipo: "hito", n: "Allí, de madrugada, Monk, Parker y Gillespie inventan el bebop." }
       ]
     },
     {
       titulo: "Bebop, cool y el año milagroso",
+      corto: "Bebop y cool",
       periodo: "1945 – 1959",
       intro: "El jazz deja de ser música de baile y se convierte en arte: rápido, complejo y libre.",
       items: [

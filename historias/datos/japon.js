@@ -9,7 +9,9 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Tradición y posguerra",
+      corto: "Posguerra",
       periodo: "1929 – 1961",
+      intro: "El koto se moderniza y la posguerra se consuela con boogie y enka.",
       items: [
         { a: 1929, art: "Michio Miyagi", alias: ["宮城道雄"], t: "El mar en primavera", q: "宮城道雄 春の海", n: "Koto y shakuhachi: tradición modernizada. Suena en todos los Años Nuevos de Japón." },
         { a: 1947, art: "Shizuko Kasagi", alias: ["笠置シヅ子"], t: "Tokyo Boogie-Woogie", q: "笠置シヅ子 東京ブギウギ", n: "La reina del boogie animando a un país en ruinas." },
@@ -19,11 +21,13 @@ HISTORIAS.push({
     },
     {
       titulo: "Rock en japonés y la era dorada del city pop",
+      corto: "City pop",
       periodo: "1971 – 1984",
       intro: "Bonanza económica, coches y walkman: la banda sonora de Tokio de noche.",
       items: [
         { a: 1971, art: "Happy End", alias: ["はっぴいえんど"], t: "Kaze wo Atsumete", q: "はっぴいえんど 風をあつめて", n: "Demostraron que el rock se podía cantar en japonés. Salió en «Lost in Translation»." },
         { a: 1978, art: "Taeko Ohnuki", alias: ["大貫妙子"], t: "4:00 A.M.", n: "Elegancia jazz-pop." },
+        { a: 1979, art: "Walkman", t: "Sony lanza el reproductor portátil", tipo: "hito", n: "La música sale a la calle: la banda sonora del city pop." },
         { a: 1979, art: "Yellow Magic Orchestra", t: "Rydeen", n: "Hosono, Sakamoto y Takahashi: electrónica que influyó en el hip hop y el techno." },
         { a: 1979, art: "Miki Matsubara", alias: ["松原みき"], t: "Mayonaka no Door / Stay With Me", q: "松原みき 真夜中のドア", n: "En 2020 se volvió viral en TikTok, cuarenta años después." },
         { a: 1980, art: "Tatsuro Yamashita", alias: ["山下達郎"], t: "Ride on Time", n: "El rey del city pop." },
@@ -36,7 +40,9 @@ HISTORIAS.push({
     },
     {
       titulo: "Anime, visual kei y J-pop",
+      corto: "J-pop",
       periodo: "1989 – 1999",
+      intro: "Anime, rock de estética extrema y la década dorada de las ventas de CD.",
       items: [
         { a: 1989, art: "Hironobu Kageyama", alias: ["影山ヒロノブ"], t: "Cha-La Head-Cha-La", n: "La sintonía de «Dragon Ball Z». En España se cantaba en castellano, catalán, gallego y euskera." },
         { a: 1989, art: "Hibari Misora", alias: ["美空ひばり"], t: "Kawa no Nagare no Yō ni", q: "美空ひばり 川の流れのように", n: "Su último single antes de morir: considerada la mejor canción japonesa de la historia." },
@@ -48,12 +54,15 @@ HISTORIAS.push({
     },
     {
       titulo: "Vocaloid, metal idol y la era del streaming",
+      corto: "Siglo XXI",
       periodo: "2007 – 2023",
+      intro: "Cantantes virtuales, ídolos con metal y éxitos virales.",
       items: [
         { a: 2007, art: "Hatsune Miku", t: "Nace la cantante virtual", tipo: "hito", n: "Un programa que canta: miles de productores crean canciones para ella." },
         { a: 2007, art: "Perfume", t: "Polyrhythm", q: "Perfume ポリリズム", n: "Electropop de Yasutaka Nakata: el futuro sonaba así." },
         { a: 2014, art: "BABYMETAL", t: "Gimme Chocolate!!", n: "Ídolos con metal: absurdo y genial." },
         { a: 2016, art: "RADWIMPS", t: "Zenzenzense", q: "RADWIMPS 前前前世", n: "De la película «Your Name»." },
+        { a: 2017, art: "«Plastic Love»", t: "El algoritmo de YouTube resucita el city pop", tipo: "hito", n: "Millones de personas de todo el mundo descubren la música japonesa de los 80." },
         { a: 2018, art: "Kenshi Yonezu", alias: ["米津玄師"], t: "Lemon", n: "De productor de vocaloid a la canción más vendida de la década en Japón." },
         { a: 2019, art: "YOASOBI", t: "Yoru ni Kakeru", q: "YOASOBI 夜に駆ける", n: "Canciones basadas en relatos de internet: el pop japonés de la era del streaming." },
         { a: 2020, art: "Ado", t: "Usseewa", q: "Ado うっせぇわ", n: "Una voz anónima de 17 años gritando contra los adultos." },

@@ -11,8 +11,10 @@ HISTORIAS.push({
       titulo: "Orquestas, guitarras y órganos",
       corto: "1949 – 1968",
       periodo: "1949 – 1968",
+      intro: "Orquestas de baile, guitarras eléctricas y órganos: éxitos sin cantante.",
       items: [
         { a: 1949, art: "Pérez Prado", t: "Mambo No. 5", n: "El rey del mambo y su famoso «¡Ugh!»." },
+        { a: 1958, art: "The Champs", t: "«Tequila», número uno con una sola palabra", tipo: "hito", n: "Un saxofón y un grito: el instrumental llega a lo más alto." },
         { a: 1959, art: "Santo & Johnny", t: "Sleep Walk", n: "Una guitarra steel que suena como un sueño." },
         { a: 1960, art: "The Ventures", t: "Walk, Don't Run", n: "El grupo instrumental más vendido de la historia." },
         { a: 1962, art: "Booker T. & the M.G.'s", t: "Green Onions", n: "La banda de Stax y un órgano Hammond irresistible." },
@@ -24,6 +26,7 @@ HISTORIAS.push({
       titulo: "Viajes largos y virtuosos",
       corto: "1973 – 1987",
       periodo: "1973 – 1987",
+      intro: "Discos de una sola pieza y guitarristas virtuosos.",
       items: [
         { a: 1973, art: "Mike Oldfield", t: "Tubular Bells, Pt. I", q: "Mike Oldfield Tubular Bells Part One", n: "Un chaval de 19 años toca casi todos los instrumentos. El inicio sonó en «El exorcista»." },
         { a: 1976, art: "Santana", t: "Europa (Earth's Cry Heaven's Smile)", n: "Una guitarra que llora." },
@@ -35,6 +38,7 @@ HISTORIAS.push({
       titulo: "Post-rock, lo-fi y virtuosos de internet",
       corto: "Post-rock y lo-fi",
       periodo: "1997 – 2022",
+      intro: "Post-rock, lo-fi para estudiar y virtuosos de YouTube.",
       items: [
         { a: 1997, art: "Mogwai", t: "Mogwai Fear Satan", n: "El post-rock: calma, tormenta y calma." },
         { a: 2003, art: "Explosions in the Sky", t: "Your Hand in Mine", n: "Guitarras que crecen hasta emocionar." },
