@@ -1,0 +1,31 @@
+HISTORIAS.push({
+  id: "bigroom",
+  familia: "Electrónica",
+  titulo: "Época dorada del big room house",
+  periodo: "2011 – 2016",
+  color: "#2b7de0",
+  lema: "Bombo, silencio y lead chillón: la era Tomorrowland.",
+  intro: "Crece a partir del dutch house y del progressive. Lleva un bombo enorme y sincopado, unos drops casi sin melodía y subidas con «¡manos arriba!». Fue el sonido de los mainstages de Tomorrowland y Ultra en plena fiebre EDM.",
+  capitulos: [
+    {
+      titulo: "El sonido de los mainstages",
+      periodo: "2011 – 2016",
+      items: [
+        { a: 2011, art: "Sandro Silva & Quintino", t: "Epic", n: "La plantilla del big room: subida, silencio y un drop con bombo y un lead seco." },
+        { a: 2012, art: "Hardwell", t: "Spaceman", n: "Uno de los grandes himnos de festival de la época. Hardwell sería DJ nº 1 del mundo al año siguiente." },
+        { a: 2012, art: "Nicky Romero", t: "Toulouse", n: "Un clásico del sello Protocol: progressive con mucha pegada." },
+        { a: 2012, art: "Showtek & Justin Prime", t: "Cannonball", n: "Showtek venía del hardstyle y se nota en la contundencia." },
+        { a: 2013, art: "Martin Garrix", t: "Animals", n: "Un chaval de 17 años y un drop de cinco notas. El himno definitivo del género." },
+        { a: 2013, art: "DVBBS & Borgeous", t: "Tsunami", n: "Una subida coreadísima y un drop que se hizo omnipresente en 2013." },
+        { a: 2013, art: "Dimitri Vegas & Like Mike", t: "Mammoth", n: "Con Moguai. Los anfitriones de Tomorrowland en estado puro." },
+        { a: 2013, art: "Showtek", t: "Booyah", n: "Con We Are Loud y Sonny Wilson: big room con voz de MC, que saltó de los festivales a las listas." },
+        { a: 2014, art: "W&W", t: "Bigfoot", n: "Pisotones de gigante: el bombo como protagonista absoluto." },
+        { a: 2014, art: "Martin Garrix & Firebeatz", t: "Helicopter", n: "Garrix intentando repetir «Animals»… y casi lo consigue." },
+        { a: 2014, art: "Martin Garrix & Afrojack", t: "Turn Up the Speakers", n: "El dutch house de Afrojack se encuentra con el big room." },
+        { a: 2015, art: "Dimitri Vegas & Like Mike vs. Ummet Ozcan", t: "The Hum", n: "Melodía psytrance con un drop de big room. Fue de lo último grande del género." },
+        { a: 2015, art: "Hardwell & W&W", t: "Jumper", n: "Su nombre lo dice todo: para saltar." },
+        { a: 2016, art: "Fin de una era", t: "El future bass y el tropical toman el relevo", tipo: "hito", n: "Hacia 2016, los mainstages se cansan de la fórmula: llegan el future house, el future bass y el pop electrónico." }
+      ]
+    }
+  ]
+});

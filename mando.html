@@ -1139,7 +1139,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-12f';
+const VERSION = '2026-10-15a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -1194,7 +1194,8 @@ const ICO = {
   nota: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
   abajoV: '<path d="m6 9 6 6 6-6"/>',
   movil: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
-  repes: '<rect x="3" y="3" width="12" height="12" rx="2"/><rect x="9" y="9" width="12" height="12" rx="2"/>'
+  repes: '<rect x="3" y="3" width="12" height="12" rx="2"/><rect x="9" y="9" width="12" height="12" rx="2"/>',
+  libro: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5V21h16"/>'
 };
 const ic = (n, extra) => '<svg class="i" viewBox="0 0 24 24"' + (extra || '') + '>' + (ICO[n] || '') + '</svg>';
 
@@ -2147,6 +2148,7 @@ const TABS = [
   { id: 'buscar', txt: 'Buscar', ic: 'buscar' },
   { id: 'escuchas', txt: 'Estadísticas', ic: 'grafica' },
   { id: 'historia', txt: 'Tu historia', ic: 'reloj' },
+  { id: 'historias', txt: 'Historias de la música', ic: 'libro', url: 'historias.html' },
   { id: 'portadas', txt: 'Portadas', ic: 'imagen' },
   { id: 'cambios', txt: 'Cambios', ic: 'deshacer' }
 ];
@@ -2159,6 +2161,8 @@ function pintarTabs() {
     '<button class="' + (otra ? 'on' : '') + '" data-t="_mas">' + ic(otra ? (TABS.find(x => x.id === S.tab) || {}).ic || 'mas' : 'mas') + '<span>' + (otra ? (TABS.find(x => x.id === S.tab) || {}).txt || 'Más' : 'Más') + '</span></button>';
 }
 function irATab(id) {
+  const ext = TABS.find(t => t.id === id && t.url);
+  if (ext) { location.href = ext.url; return; }
   S.tab = id; S.vista = null; S.pila = []; S.fuente = null; S.filtro = ''; modoSelPl = false; limpiarSel();
   render(); scrollTo(0, 0);
 }
@@ -2184,8 +2188,7 @@ $('#bnav').onclick = e => {
 };
 $('#tabs').onclick = e => {
   const b = e.target.closest('[data-t]'); if (!b) return;
-  S.tab = b.dataset.t; S.vista = null; S.pila = []; S.fuente = null; S.filtro = ''; modoSelPl = false; limpiarSel();
-  render(); scrollTo(0, 0);
+  irATab(b.dataset.t);
 };
 /* Una "vista" es una pantalla dentro de una pestaña (una playlist, un
    disco, un artista). La pila permite volver atras. */
