@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "flamenco",
-  familia: "En español",
+  familia: "España",
   titulo: "Historia del flamenco",
   periodo: "1910 – 2018",
   color: "#b8233a",

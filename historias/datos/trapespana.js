@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "trapespana",
-  familia: "En español",
+  familia: "España",
   titulo: "Historia del trap en España",
   periodo: "2014 – 2023",
   color: "#d1495b",

@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "infancia",
-  familia: "En español",
+  familia: "España",
   titulo: "Canciones de infancia en España",
   periodo: "2000 – 2010",
   color: "#d9503f",

@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "rapespana",
-  familia: "En español",
+  familia: "España",
   titulo: "Historia del rap en España",
   periodo: "1989 – 2017",
   color: "#4f6d7a",
