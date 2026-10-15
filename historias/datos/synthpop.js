@@ -1,0 +1,50 @@
+HISTORIAS.push({
+  id: "synthpop",
+  familia: "Pop",
+  titulo: "Historia del synth-pop",
+  periodo: "1978 – 2019",
+  color: "#00bcd4",
+  lema: "Canciones pop hechas con sintetizadores: de Kraftwerk a Depeche Mode, Pet Shop Boys y The Weeknd.",
+  intro: "Cuando los sintetizadores se abaratan a finales de los 70, cualquiera puede montar un grupo sin guitarras. Nace el synth-pop: melodías pegadizas, ritmos programados y una mezcla de frialdad y emoción. Domina los 80, sobrevive en el pop de baile de los 90 y vuelve en el siglo XXI como «synthwave» y con artistas como The Weeknd.",
+  capitulos: [
+    {
+      titulo: "Los pioneros",
+      corto: "Pioneros",
+      periodo: "1978 – 1981",
+      items: [
+        { a: 1978, art: "Yellow Magic Orchestra", t: "Computer Game (Theme from the Circus)", n: "Desde Tokio: sonidos de videojuego y pop electrónico." },
+        { a: 1980, art: "Orchestral Manoeuvres in the Dark", t: "Enola Gay", n: "Una canción pop alegre sobre el avión que lanzó la bomba de Hiroshima." },
+        { a: 1980, art: "Visage", t: "Fade to Grey", n: "La estética «new romantic»: maquillaje y sintetizadores." },
+        { a: 1981, art: "Kraftwerk", t: "Computer Love", n: "La soledad en la era de los ordenadores, antes de internet." }
+      ]
+    },
+    {
+      titulo: "La edad de oro",
+      corto: "Los 80",
+      periodo: "1982 – 1989",
+      intro: "Dúos de chico con sintetizador y voz que lo dice todo.",
+      items: [
+        { a: 1982, art: "Yazoo", t: "Only You", n: "Vince Clarke, recién salido de Depeche Mode, con la voz soul de Alison Moyet." },
+        { a: 1983, art: "Eurythmics", t: "Love Is a Stranger", n: "Annie Lennox y Dave Stewart." },
+        { a: 1984, art: "Bronski Beat", t: "Smalltown Boy", n: "Un chico gay que huye de su pueblo: un himno LGTB." },
+        { a: 1985, art: "Pet Shop Boys", t: "West End Girls", n: "Ironía y elegancia londinense: el dúo de synth-pop más exitoso." },
+        { a: 1987, art: "Depeche Mode", t: "Never Let Me Down Again", n: "Oscuros y enormes: llenaban estadios." },
+        { a: 1988, art: "Erasure", t: "A Little Respect", n: "Vince Clarke otra vez, con Andy Bell." },
+        { a: 1989, art: "Depeche Mode", t: "Personal Jesus", n: "Una guitarra de blues sobre sintetizadores." }
+      ]
+    },
+    {
+      titulo: "El regreso: synthwave y pop retro",
+      corto: "Synthwave",
+      periodo: "2004 – 2019",
+      intro: "La nostalgia de los 80 vuelve con «Drive», «Stranger Things» y el pop del streaming.",
+      items: [
+        { a: 2004, art: "The Killers", t: "Somebody Told Me", n: "Guitarras y sintes de los 80 en el indie de los 2000." },
+        { a: 2010, art: "Kavinsky", t: "Nightcall", n: "De la película «Drive»: el himno del synthwave." },
+        { a: 2015, art: "CHVRCHES", t: "Leave a Trace", n: "Synth-pop escocés con alma de indie." },
+        { a: 2016, art: "Kyle Dixon & Michael Stein", t: "Stranger Things", n: "La sintonía de la serie: sintetizadores analógicos y miedo." },
+        { a: 2019, art: "The Weeknd", t: "Blinding Lights", n: "Synth-pop ochentero: la canción más escuchada de la historia de Spotify." }
+      ]
+    }
+  ]
+});

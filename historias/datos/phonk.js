@@ -2,9 +2,9 @@ HISTORIAS.push({
   id: "phonk",
   familia: "Hip hop",
   titulo: "Esenciales phonk",
-  periodo: "1994 – 2022",
+  periodo: "1994 – 2023",
   color: "#8a8f2e",
-  lema: "De las cintas de Memphis al drift phonk de TikTok.",
+  lema: "De las cintas de Memphis al drift phonk de TikTok y el phonk brasileño.",
   intro: "El phonk tiene dos vidas. Primero, el rap de Memphis de los 90: cintas caseras, voces oscuras y cencerros de la 808. Después, en los 2010, SoundCloud lo resucita con samples de esas cintas, y en los 2020 el «drift phonk» lo convierte en fenómeno mundial.",
   capitulos: [
     {
@@ -38,6 +38,17 @@ HISTORIAS.push({
         { a: 2021, art: "KSLV Noh", t: "Override", n: "Desde Corea del Sur, el cencerro llevado al extremo." },
         { a: 2021, art: "Hensonn", t: "Sahara", n: "Phonk con aires orientales, otra variante." },
         { a: 2022, art: "Dxrk ダーク", t: "RAVE", n: "La versión más rave y agresiva: el phonk a punto de mezclarse con todo." }
+      ]
+    },
+    {
+      titulo: "Phonk brasileño",
+      corto: "Phonk brasileño",
+      periodo: "2022 – 2023",
+      intro: "El funk de las favelas de São Paulo se cruza con el phonk: cencerros, graves saturados y voces cortadas.",
+      items: [
+        { a: 2022, art: "Funk mandelão + phonk", t: "Nace el phonk brasileño", tipo: "hito", n: "Productores brasileños mezclan el funk «mandelão» de São Paulo, más duro que el carioca, con los cencerros del drift phonk." },
+        { a: 2023, art: "Las «montagens»", t: "Virales en TikTok y vídeos de gimnasio", tipo: "hito", n: "Montajes de funk acelerado con graves distorsionados: el sonido de los «edits» de deporte y anime." },
+        { a: 2023, art: "MXZI", t: "MONTAGEM TOMADA", n: "Una de las «montagens» que llevó el phonk brasileño a las listas virales de medio mundo." }
       ]
     }
   ]

@@ -1,0 +1,41 @@
+HISTORIAS.push({
+  id: "postpunk",
+  familia: "Rock",
+  titulo: "Historia del post-punk",
+  periodo: "1978 – 2018",
+  color: "#37474f",
+  lema: "Después del punk: bajos al frente, guitarras frías y ganas de experimentar.",
+  intro: "Cuando el punk se queda en tres acordes, muchos de sus hijos quieren ir más allá: bajos de dub, ritmos de funk y disco, sintetizadores, letras intelectuales y sombrías. Es el post-punk: Joy Division, Siouxsie, The Cure, Talking Heads… De él salen el gótico, el rock alternativo y, años después, revivals que llegan hasta Molchat Doma.",
+  capitulos: [
+    {
+      titulo: "La primera ola",
+      corto: "Primera ola",
+      periodo: "1978 – 1981",
+      items: [
+        { a: 1978, art: "Public Image Ltd.", t: "Public Image", n: "Johnny Rotten tras los Sex Pistols: bajo de dub y rabia." },
+        { a: 1978, art: "Siouxsie and the Banshees", t: "Hong Kong Garden", n: "Del punk al gótico." },
+        { a: 1978, art: "Gang of Four", t: "Damaged Goods", n: "Funk frío y marxista desde Leeds." },
+        { a: 1979, art: "Joy Division", t: "Disorder", n: "De «Unknown Pleasures» y su portada de ondas de un púlsar, hoy en millones de camisetas." },
+        { a: 1979, art: "Bauhaus", t: "Bela Lugosi's Dead", n: "Nueve minutos de vampiro: nace el rock gótico." },
+        { a: 1980, art: "Joy Division", t: "Atmosphere", n: "Tras el suicidio de Ian Curtis, sus compañeros formarían New Order." },
+        { a: 1980, art: "Killing Joke", t: "Requiem", n: "Tribal y amenazante: influyó en el metal industrial." },
+        { a: 1980, art: "Talking Heads", t: "Once in a Lifetime", n: "Ritmos africanos y un predicador nervioso." },
+        { a: 1980, art: "The Cure", t: "A Forest", n: "Un bosque oscuro: el sonido gótico que los hizo famosos." },
+        { a: 1981, art: "The Sound", t: "Winning", n: "Uno de los grandes olvidados del post-punk." }
+      ]
+    },
+    {
+      titulo: "Revivals",
+      corto: "Revivals",
+      periodo: "2002 – 2018",
+      intro: "Cada generación redescubre esos bajos y guitarras frías.",
+      items: [
+        { a: 2002, art: "Interpol", t: "Obstacle 1", n: "Nueva York vestida de negro, como Joy Division." },
+        { a: 2004, art: "Bloc Party", t: "Banquet", n: "Guitarras cortantes del revival británico." },
+        { a: 2013, art: "Savages", t: "Husbands", n: "Post-punk feroz con voz femenina." },
+        { a: 2018, art: "IDLES", t: "Danny Nedelko", n: "Una canción a favor de los inmigrantes en el Reino Unido del Brexit." },
+        { a: 2018, art: "Molchat Doma", t: "Sudno (Boris Ryzhy)", q: "Molchat Doma Судно", n: "El «doomer» bielorruso que se hizo viral en TikTok." }
+      ]
+    }
+  ]
+});

@@ -1,0 +1,38 @@
+HISTORIAS.push({
+  id: "artpop",
+  familia: "Pop",
+  titulo: "Historia del art pop",
+  periodo: "1966 – 2022",
+  color: "#ad1457",
+  lema: "Pop con ambición de arte: de los Beach Boys y Kate Bush a Björk, Radiohead, FKA twigs y Rosalía.",
+  intro: "El art pop es pop que no se conforma: canciones accesibles, pero con ideas de la vanguardia, el arte o el cine. Producciones extrañas, personajes, discos conceptuales y vídeos que son pequeñas obras. Una línea que va de «Pet Sounds» a Kate Bush, Björk, Radiohead, Lady Gaga, FKA twigs o Rosalía.",
+  capitulos: [
+    {
+      titulo: "Los pioneros",
+      corto: "Pioneros",
+      periodo: "1966 – 1985",
+      items: [
+        { a: 1966, art: "The Beach Boys", t: "Good Vibrations", n: "Grabada en partes durante meses en cuatro estudios: «sinfonía de bolsillo»." },
+        { a: 1967, art: "The Velvet Underground & Nico", t: "Femme Fatale", n: "Producido por Andy Warhol, con un plátano en la portada." },
+        { a: 1977, art: "David Bowie", t: "Heroes", n: "Grabada en Berlín junto al Muro, con Brian Eno." },
+        { a: 1978, art: "Kate Bush", t: "Wuthering Heights", n: "Con 19 años y una novela de Emily Brontë: la primera mujer en llegar al número uno británico con una canción propia." },
+        { a: 1982, art: "Laurie Anderson", t: "Big Science", n: "Arte de performance hecho pop." },
+        { a: 1985, art: "Kate Bush", t: "Running Up That Hill (A Deal with God)", n: "Volvió al número uno en 2022 gracias a «Stranger Things»." }
+      ]
+    },
+    {
+      titulo: "Del 90 a hoy",
+      corto: "De los 90 a hoy",
+      periodo: "1993 – 2022",
+      items: [
+        { a: 1993, art: "Björk", t: "Human Behaviour", n: "Desde Islandia: el pop más imaginativo de su década." },
+        { a: 1997, art: "Björk", t: "Jóga", n: "Cuerdas y ritmos que suenan como volcanes." },
+        { a: 2000, art: "Radiohead", t: "Everything in Its Right Place", n: "El grupo de rock más grande del mundo se pasa a la electrónica." },
+        { a: 2009, art: "Lady Gaga", t: "Paparazzi", n: "Un vídeo de cortometraje sobre la fama y la muerte." },
+        { a: 2014, art: "FKA twigs", t: "Two Weeks", n: "R&B experimental y baile contemporáneo." },
+        { a: 2016, art: "Frank Ocean", t: "Nikes", n: "De «Blonde»: R&B íntimo y desestructurado." },
+        { a: 2022, art: "Rosalía", t: "SAOKO", n: "De «Motomami»: reguetón deformado y jazz en dos minutos." }
+      ]
+    }
+  ]
+});

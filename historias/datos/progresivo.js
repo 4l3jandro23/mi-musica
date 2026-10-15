@@ -1,0 +1,38 @@
+HISTORIAS.push({
+  id: "progresivo",
+  familia: "Rock",
+  titulo: "Historia del rock progresivo",
+  periodo: "1967 – 2007",
+  color: "#4a6fa5",
+  lema: "Canciones de veinte minutos, discos conceptuales y virtuosismo: de King Crimson a Tool.",
+  intro: "A finales de los 60, el rock quiere ser arte serio: mezcla la música clásica, el jazz y la psicodelia en piezas largas, con cambios de compás, mellotrones, sintetizadores y discos que cuentan una historia. Los punks lo odiaron, pero dejó algunos de los discos más vendidos de todos los tiempos y una herencia que llega al metal progresivo.",
+  capitulos: [
+    {
+      titulo: "La edad de oro",
+      corto: "Edad de oro",
+      periodo: "1967 – 1977",
+      items: [
+        { a: 1967, art: "The Moody Blues", t: "Nights in White Satin", n: "Rock con orquesta: uno de los primeros discos «conceptuales»." },
+        { a: 1969, art: "King Crimson", t: "21st Century Schizoid Man", n: "El disco que inaugura el rock progresivo: jazz, metal y caos." },
+        { a: 1971, art: "Yes", t: "Roundabout", n: "Bajo galopante y teclados virtuosos (y meme de JoJo décadas después)." },
+        { a: 1972, art: "Jethro Tull", t: "Thick as a Brick", tipo: "disco", n: "Una sola canción de 43 minutos, en broma… y fue número uno." },
+        { a: 1972, art: "Genesis", t: "Supper's Ready", n: "23 minutos con Peter Gabriel disfrazado de flor." },
+        { a: 1973, art: "Pink Floyd", t: "Time", n: "De «The Dark Side of the Moon»: más de 900 semanas en las listas de EE. UU." },
+        { a: 1973, art: "Emerson, Lake & Palmer", t: "Karn Evil 9: 1st Impression, Part 2", n: "Teclados y sintetizador Moog a lo grande." },
+        { a: 1973, art: "Mike Oldfield", t: "Tubular Bells, Pt. I", q: "Mike Oldfield Tubular Bells Part One", n: "El primer disco de Virgin Records y la música de «El exorcista»." },
+        { a: 1977, art: "Rush", t: "Xanadu", n: "Prog con pegada de hard rock desde Canadá." }
+      ]
+    },
+    {
+      titulo: "Supervivencia y metal progresivo",
+      corto: "Herencia",
+      periodo: "1979 – 2007",
+      items: [
+        { a: 1979, art: "Pink Floyd", t: "Comfortably Numb", n: "De «The Wall»: uno de los mejores solos de guitarra de la historia." },
+        { a: 1992, art: "Dream Theater", t: "Pull Me Under", n: "El metal progresivo, técnico y virtuoso." },
+        { a: 2001, art: "Tool", t: "Schism", n: "Compases imposibles: ganaron un Grammy." },
+        { a: 2007, art: "Porcupine Tree", t: "Fear of a Blank Planet", n: "Steven Wilson y el prog del siglo XXI." }
+      ]
+    }
+  ]
+});
