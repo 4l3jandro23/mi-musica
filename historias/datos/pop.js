@@ -1,0 +1,74 @@
+HISTORIAS.push({
+  id: "pop",
+  familia: "Pop",
+  titulo: "Historia del pop",
+  periodo: "1956 – 2022",
+  color: "#ff6fae",
+  lema: "Setenta años de canciones para todo el mundo: de Doris Day a The Weeknd.",
+  intro: "«Pop» viene de «popular»: canciones hechas para gustar a mucha gente, con estribillos que se recuerdan. Cada década lo reinventa con su tecnología: la radio, la televisión, el vídeo musical, la MTV, el CD y hoy el streaming y TikTok. Un recorrido por los grandes momentos, década a década.",
+  capitulos: [
+    {
+      titulo: "Los 50 y 60",
+      corto: "50 y 60",
+      periodo: "1956 – 1968",
+      items: [
+        { a: 1956, art: "Doris Day", t: "Que Sera, Sera (Whatever Will Be, Will Be)", n: "De una película de Hitchcock: el pop de antes del rock." },
+        { a: 1957, art: "Paul Anka", t: "Diana", n: "Un chaval de 15 años y uno de los singles más vendidos de su época." },
+        { a: 1963, art: "The Ronettes", t: "Be My Baby", n: "El «muro de sonido» de Phil Spector: un redoble de batería legendario." },
+        { a: 1964, art: "Frank Sinatra", t: "Fly Me to the Moon", n: "Con arreglos de Quincy Jones: sonó en el Apolo 10 y el 11." },
+        { a: 1966, art: "The Beach Boys", t: "God Only Knows", n: "Paul McCartney la consideraba la mejor canción jamás escrita." },
+        { a: 1966, art: "The Monkees", t: "I'm a Believer", n: "Un grupo creado para una serie de televisión, con canción de Neil Diamond." },
+        { a: 1968, art: "Dusty Springfield", t: "Son of a Preacher Man", n: "Pop británico con alma de soul." }
+      ]
+    },
+    {
+      titulo: "Los 70",
+      corto: "70",
+      periodo: "1970 – 1977",
+      items: [
+        { a: 1970, art: "Carpenters", t: "(They Long to Be) Close to You", n: "Suavidad absoluta." },
+        { a: 1970, art: "Elton John", t: "Your Song", n: "Una canción de amor sencilla y perfecta." },
+        { a: 1974, art: "ABBA", t: "Waterloo", n: "Ganan Eurovisión: empieza el pop sueco." },
+        { a: 1975, art: "Queen", t: "Bohemian Rhapsody", n: "Seis minutos y ópera en mitad de una canción pop. Nadie creía que fuera a funcionar." },
+        { a: 1977, art: "Fleetwood Mac", t: "Dreams", n: "De «Rumours», grabado mientras la banda se separaba en parejas." }
+      ]
+    },
+    {
+      titulo: "Los 80: MTV y superestrellas",
+      corto: "80",
+      periodo: "1982 – 1989",
+      items: [
+        { a: 1982, art: "Michael Jackson", t: "Billie Jean", n: "De «Thriller», el disco más vendido de la historia, y su primer moonwalk en televisión." },
+        { a: 1984, art: "Prince", t: "When Doves Cry", n: "Sin línea de bajo y número uno." },
+        { a: 1984, art: "Wham!", t: "Wake Me Up Before You Go-Go", n: "George Michael y la alegría de los 80." },
+        { a: 1987, art: "Whitney Houston", t: "I Wanna Dance with Somebody (Who Loves Me)", n: "La gran voz del pop." },
+        { a: 1989, art: "Madonna", t: "Like a Prayer", n: "Gospel y polémica: el Vaticano y Pepsi contra Madonna." }
+      ]
+    },
+    {
+      titulo: "Los 90 y 2000: boy bands y divas",
+      corto: "90 y 2000",
+      periodo: "1995 – 2007",
+      items: [
+        { a: 1995, art: "Mariah Carey", t: "Fantasy", n: "Pop y hip hop juntos, con un sample de Tom Tom Club." },
+        { a: 1999, art: "Backstreet Boys", t: "I Want It That Way", n: "La letra no tiene sentido y da igual." },
+        { a: 1999, art: "Christina Aguilera", t: "Genie in a Bottle", n: "La otra gran estrella pop del fin de siglo." },
+        { a: 1999, art: "Ricky Martin", t: "Livin' la Vida Loca", n: "El boom latino en el pop en inglés." },
+        { a: 2000, art: "*NSYNC", t: "Bye Bye Bye", n: "Marionetas y coreografías: la boy band de Justin Timberlake." },
+        { a: 2001, art: "Kylie Minogue", t: "Can't Get You Out of My Head", n: "La-la-la: imposible sacársela de la cabeza." },
+        { a: 2003, art: "Beyoncé", t: "Crazy in Love", n: "Con Jay-Z: el debut en solitario más potente del siglo." },
+        { a: 2007, art: "Rihanna", t: "Umbrella", n: "«Ella, ella, eh, eh»." }
+      ]
+    },
+    {
+      titulo: "La era del streaming",
+      corto: "Streaming",
+      periodo: "2013 – 2022",
+      items: [
+        { a: 2013, art: "Lorde", t: "Royals", n: "Una chica de 16 años de Nueva Zelanda contra el lujo del pop." },
+        { a: 2019, art: "The Weeknd", t: "Blinding Lights", n: "Sintetizadores ochenteros: la canción más escuchada de la historia de Spotify." },
+        { a: 2022, art: "Harry Styles", t: "As It Was", n: "De boy band a estrella mundial." }
+      ]
+    }
+  ]
+});

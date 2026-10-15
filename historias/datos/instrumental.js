@@ -1,0 +1,49 @@
+HISTORIAS.push({
+  id: "instrumental",
+  familia: "Especiales",
+  titulo: "Historia de la música instrumental",
+  periodo: "1949 – 2022",
+  color: "#5f8f8f",
+  lema: "Sin una palabra: del mambo y el surf al post-rock, el lo-fi y los virtuosos de internet.",
+  intro: "Fuera de la música clásica, también ha habido grandes éxitos sin letra: orquestas de mambo, guitarras surf, el soul de Memphis, los easy listening de los 60, los discos conceptuales de los 70, el post-rock y la música para estudiar. Ideal para trabajar, leer o conducir.",
+  capitulos: [
+    {
+      titulo: "Orquestas, guitarras y órganos",
+      corto: "1949 – 1968",
+      periodo: "1949 – 1968",
+      items: [
+        { a: 1949, art: "Pérez Prado", t: "Mambo No. 5", n: "El rey del mambo y su famoso «¡Ugh!»." },
+        { a: 1959, art: "Santo & Johnny", t: "Sleep Walk", n: "Una guitarra steel que suena como un sueño." },
+        { a: 1960, art: "The Ventures", t: "Walk, Don't Run", n: "El grupo instrumental más vendido de la historia." },
+        { a: 1962, art: "Booker T. & the M.G.'s", t: "Green Onions", n: "La banda de Stax y un órgano Hammond irresistible." },
+        { a: 1965, art: "Herb Alpert & The Tijuana Brass", t: "A Taste of Honey", n: "Trompetas alegres: el «easy listening»." },
+        { a: 1968, art: "Paul Mauriat", t: "L'amour est bleu", n: "Una orquesta francesa en el número uno de EE. UU." }
+      ]
+    },
+    {
+      titulo: "Viajes largos y virtuosos",
+      corto: "1973 – 1987",
+      periodo: "1973 – 1987",
+      items: [
+        { a: 1973, art: "Mike Oldfield", t: "Tubular Bells, Pt. I", q: "Mike Oldfield Tubular Bells Part One", n: "Un chaval de 19 años toca casi todos los instrumentos. El inicio sonó en «El exorcista»." },
+        { a: 1976, art: "Santana", t: "Europa (Earth's Cry Heaven's Smile)", n: "Una guitarra que llora." },
+        { a: 1986, art: "Kenny G", t: "Songbird", n: "El saxo suave más vendido (y más criticado) de la historia." },
+        { a: 1987, art: "Joe Satriani", t: "Surfing with the Alien", n: "El guitarrista de los guitarristas." }
+      ]
+    },
+    {
+      titulo: "Post-rock, lo-fi y virtuosos de internet",
+      corto: "Post-rock y lo-fi",
+      periodo: "1997 – 2022",
+      items: [
+        { a: 1997, art: "Mogwai", t: "Mogwai Fear Satan", n: "El post-rock: calma, tormenta y calma." },
+        { a: 2003, art: "Explosions in the Sky", t: "Your Hand in Mine", n: "Guitarras que crecen hasta emocionar." },
+        { a: 2004, art: "Nujabes", t: "Aruarian Dance", n: "De «Samurai Champloo»: el padre del lo-fi hip hop." },
+        { a: 2010, art: "Bonobo", t: "Kiara", n: "Electrónica orgánica para viajar." },
+        { a: 2014, art: "Snarky Puppy", t: "Lingus", n: "Jazz fusión que se hizo viral en YouTube." },
+        { a: 2017, art: "Lofi Girl", t: "La chica que estudia", tipo: "hito", n: "Un directo de YouTube de lo-fi para estudiar, con una chica dibujada que nunca deja de escribir." },
+        { a: 2022, art: "Polyphia", t: "Playing God", n: "Guitarras virtuosas con influencia del trap y del flamenco." }
+      ]
+    }
+  ]
+});
