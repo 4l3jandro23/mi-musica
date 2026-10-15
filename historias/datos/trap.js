@@ -1,8 +1,8 @@
 HISTORIAS.push({
   id: "trap",
   familia: "Hip hop",
-  titulo: "Orígenes del trap",
-  periodo: "1992 – 2017",
+  titulo: "Historia del trap",
+  periodo: "1992 – 2022",
   color: "#7b6cf0",
   lema: "De las «trap houses» de Atlanta al sonido dominante del planeta.",
   intro: "La «trap» es la casa donde se vende droga en el sur de EE. UU. Primero fue un tema de las letras y luego un sonido: 808 profundos, charles a toda velocidad y sintes oscuros. De Atlanta pasó al EDM, al latino y a todo lo demás.",
@@ -41,6 +41,18 @@ HISTORIAS.push({
         { a: 2016, art: "De La Ghetto", t: "La Ocasión", n: "Con Arcángel, Ozuna y Anuel AA: el himno fundacional del trap latino." },
         { a: 2016, art: "Bad Bunny", t: "Soy Peor", n: "Un chaval de Puerto Rico que subía temas a SoundCloud mientras trabajaba en un súper." },
         { a: 2017, art: "Duki", t: "She Don't Give a FO", n: "Desde las batallas de freestyle de Buenos Aires al trap argentino." }
+      ]
+    },
+    {
+      titulo: "Rage y hard trap",
+      corto: "Rage",
+      periodo: "2020 – 2022",
+      intro: "Sintetizadores distorsionados como de videojuego, 808 saturados y pogos en los conciertos.",
+      items: [
+        { a: 2020, art: "Playboi Carti", t: "Sky", n: "De «Whole Lotta Red»: odiado al salir, hoy un disco de culto que creó una estética." },
+        { a: 2021, art: "Trippie Redd", t: "Miss the Rage", n: "Con Playboi Carti: la canción que le dio nombre al «rage»." },
+        { a: 2022, art: "Yeat", t: "Gët Busy", n: "Campanas, sintes y un vocabulario propio: el rage se vuelve masivo." },
+        { a: 2022, art: "Lil Uzi Vert", t: "Just Wanna Rock", n: "Jersey club acelerado: un éxito viral en todo el mundo." }
       ]
     }
   ]

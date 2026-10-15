@@ -2,9 +2,9 @@ HISTORIAS.push({
   id: "electronica",
   familia: "Electrónica",
   titulo: "Historia de la música electrónica",
-  periodo: "1897 – 1977",
+  periodo: "1897 – 2022",
   color: "#7c5cd6",
-  lema: "Del ruido futurista a «I Feel Love»: 80 años inventando sonidos.",
+  lema: "Del ruido futurista a «I Feel Love» y de las raves a Fred again..: un siglo inventando sonidos.",
   intro: "Antes de los sintetizadores hubo máquinas imposibles, cintas cortadas a tijera y laboratorios de radio. Tres capítulos, en orden, desde los primeros instrumentos eléctricos hasta la pista de baile.",
   capitulos: [
     {
@@ -73,6 +73,33 @@ HISTORIAS.push({
         { a: 1977, art: "Space", t: "Magic Fly", n: "Space disco francés con escafandras. Un número uno en media Europa." },
         { a: 1977, art: "Suicide", t: "Ghost Rider", n: "Un teclado barato, una caja de ritmos y Alan Vega gritando. El punk electrónico." },
         { a: 1977, art: "Donna Summer", t: "I Feel Love", n: "Moroder lo graba todo con sintetizador menos la voz. Al oírla, Eno le dijo a Bowie que había escuchado el futuro." }
+      ]
+    },
+    {
+      titulo: "La era rave",
+      corto: "La era rave",
+      periodo: "1984 – 1999",
+      intro: "House en Chicago, techno en Detroit, raves en Reino Unido y superclubs. (Cada género tiene su propia historia.)",
+      items: [
+        { a: 1984, art: "Chicago y Detroit", t: "Nacen el house y el techno", tipo: "hito", n: "Dos ciudades industriales de EE. UU. inventan la música de baile electrónica moderna." },
+        { a: 1988, art: "El verano del amor", t: "Raves en Reino Unido", tipo: "hito", n: "Acid house en almacenes y campos: la electrónica se convierte en cultura juvenil." },
+        { a: 1996, art: "The Prodigy", t: "Firestarter", n: "La electrónica con actitud punk: número uno en Reino Unido." },
+        { a: 1997, art: "The Chemical Brothers", t: "Block Rockin' Beats", n: "El «big beat»: breaks y guitarras." },
+        { a: 1997, art: "Daft Punk", t: "Around the World", n: "La French touch conquista el mundo." },
+        { a: 1998, art: "Fatboy Slim", t: "Praise You", n: "Un vídeo grabado a escondidas en un cine: el big beat en su cumbre." }
+      ]
+    },
+    {
+      titulo: "Del superclub al streaming",
+      corto: "Hasta hoy",
+      periodo: "2000 – 2022",
+      intro: "Ibiza, los DJs estrella, la era EDM y la electrónica íntima de dormitorio.",
+      items: [
+        { a: 2000, art: "Daft Punk", t: "One More Time", n: "El autotune entra en la pista de baile." },
+        { a: 2010, art: "Skrillex", t: "Scary Monsters and Nice Sprites", n: "El dubstep americano y el principio de la era EDM." },
+        { a: 2011, art: "Avicii", t: "Levels", n: "El himno de una generación de festivales." },
+        { a: 2013, art: "Disclosure", t: "Latch", n: "El house británico vuelve a las listas." },
+        { a: 2022, art: "Fred again..", t: "Delilah (pull me out of this)", n: "La electrónica emocional hecha con notas de voz y vídeos del móvil." }
       ]
     }
   ]

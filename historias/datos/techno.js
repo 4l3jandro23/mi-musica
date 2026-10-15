@@ -1,10 +1,10 @@
 HISTORIAS.push({
   id: "techno",
   familia: "Electrónica",
-  titulo: "Orígenes del techno",
-  periodo: "1981 – 1997",
+  titulo: "Historia del techno",
+  periodo: "1981 – 2024",
   color: "#4a5560",
-  lema: "Detroit sueña con el futuro y Berlín lo hace realidad.",
+  lema: "Detroit sueña con el futuro, Berlín lo hace realidad y hoy llena festivales en todo el mundo.",
   intro: "Tres amigos de Belleville, cerca de Detroit (Juan Atkins, Derrick May y Kevin Saunderson), mezclan Kraftwerk con funk en una ciudad industrial en ruinas. Tras la caída del Muro, el techno encuentra su segunda casa en Berlín.",
   capitulos: [
     {
@@ -32,6 +32,19 @@ HISTORIAS.push({
         { a: 1993, art: "Plastikman", t: "Spastik", n: "Richie Hawtin: solo percusión. El minimal en estado puro." },
         { a: 1994, art: "Robert Hood", t: "Minimal Nation", tipo: "disco", n: "El disco que define el techno minimal." },
         { a: 1997, art: "Jeff Mills", t: "The Bells", n: "El DJ más técnico del techno y su himno." }
+      ]
+    },
+    {
+      titulo: "Berlín, Berghain y el techno de festival",
+      corto: "Berlín y hoy",
+      periodo: "2000 – 2024",
+      intro: "Clubs que abren de sábado a lunes, el minimal, el techno melódico y la vuelta al techno duro.",
+      items: [
+        { a: 2000, art: "Laurent Garnier", t: "The Man with the Red Face", n: "Un saxofón sobre techno: el gran DJ francés." },
+        { a: 2004, art: "Berghain", t: "Abre el club más famoso del mundo", tipo: "hito", n: "En una antigua central eléctrica de Berlín: sin móviles, sin fotos y con una puerta legendaria." },
+        { a: 2015, art: "Stephan Bodzin", t: "Powers of Ten", n: "El techno melódico: emoción y sintetizadores." },
+        { a: 2018, art: "Adam Beyer & Bart Skils", t: "Your Mind", n: "El techno de Drumcode que llena los grandes escenarios." },
+        { a: 2024, art: "La cultura techno de Berlín", t: "Patrimonio cultural de Alemania", tipo: "hito", n: "Alemania la incluye en su inventario de patrimonio inmaterial." }
       ]
     }
   ]
