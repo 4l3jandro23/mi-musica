@@ -1139,7 +1139,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-15a';
+const VERSION = '2026-10-15b';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -9347,6 +9347,128 @@ function confirmar(titulo, boton, texto) {
 }
 
 /* ============================================================
+   HISTORIAS DE LA MÚSICA → playlist en Spotify
+   historias.html abre mando.html?historia=<id>; aquí se carga
+   historias/datos/<id>.js, se busca cada pieza (una búsqueda por
+   pieza, guardada para no repetirla) y se crea la playlist en orden.
+   Lo hace la Fonoteca para usar su sesión, su ritmo y sus pausas.
+   ============================================================ */
+const K_HISTORIAS = 'fonoteca_historias_v1';
+const normH = s => fold(s).replace(/[^a-z0-9぀-ヿ一-鿿 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+/* la pista buena: algún artista coincide y el título se parece; entre las buenas, la de disco más antiguo */
+function elegirPista(items, i) {
+  const partes = String(i.art).split(/\s*(?:&|,|\by\b|\band\b|\bvs\.?|\bfeat\.?|\bcon\b)\s*/i).map(normH).filter(Boolean);
+  const claves = partes.map(p => p.split(' ').filter(w => w.length > 1).pop() || p);
+  const artOk = it => (it.artists || []).some(a => { const n = normH(a.name); return claves.some(k => n.split(' ').indexOf(k) >= 0 || n === k); });
+  const tw = normH(i.t).split(' ').filter(Boolean);
+  const titOk = it => {
+    if (i.q) return true;
+    const nw = normH(it.name).split(' ');
+    return tw.filter(w => nw.indexOf(w) >= 0).length >= Math.max(1, Math.ceil(tw.length / 2));
+  };
+  const buenas = (items || []).filter(it => it && artOk(it) && titOk(it));
+  buenas.sort((a, b) => String((a.album || {}).release_date || '9').localeCompare(String((b.album || {}).release_date || '9')));
+  return buenas[0] || null;
+}
+function cargarHistoria(id) {
+  return new Promise((ok, mal) => {
+    if (!/^[a-z0-9-]+$/.test(id)) return mal(new Error('Historia desconocida'));
+    window.HISTORIAS = [];
+    const s = document.createElement('script');
+    s.src = 'historias/datos/' + id + '.js?v=' + Date.now();
+    s.onload = () => { const h = (window.HISTORIAS || []).find(x => x.id === id); h ? ok(h) : mal(new Error('Historia desconocida')); };
+    s.onerror = () => mal(new Error('No se pudo cargar la historia'));
+    document.head.append(s);
+  });
+}
+async function buscarPiezaH(i, cache) {
+  const k = (i.tipo === 'disco' ? 'd|' : 't|') + normH(i.art) + '|' + normH(i.t);
+  if (cache[k] !== undefined) return cache[k];
+  let r = null;
+  if (i.tipo === 'disco') {
+    const d = await sp('/search?type=album&limit=10&q=' + encodeURIComponent(i.q || 'album:"' + i.t + '" artist:"' + i.art + '"'));
+    const al = ((d.albums || {}).items || []).map(a => Object.assign({ album: a }, a));
+    const a = elegirPista(al, i);
+    if (a) {
+      const tr = await sp('/albums/' + a.id + '/tracks?limit=50');
+      const uris = (tr.items || []).map(x => x.uri).filter(Boolean);
+      if (uris.length) r = { disco: true, uris: uris, nombre: a.name, artistas: a.artists.map(x => x.name).join(', '), anyo: String(a.release_date || '').slice(0, 4) };
+    }
+  } else {
+    let d = await sp('/search?type=track&limit=10&q=' + encodeURIComponent(i.q || 'track:"' + i.t + '" artist:"' + i.art + '"'));
+    let p = elegirPista((d.tracks || {}).items, i);
+    if (!p && !i.q) {
+      d = await sp('/search?type=track&limit=10&q=' + encodeURIComponent(i.t + ' ' + i.art));
+      p = elegirPista((d.tracks || {}).items, i);
+    }
+    if (p) r = { uris: [p.uri], nombre: p.name, artistas: p.artists.map(x => x.name).join(', '), anyo: String((p.album || {}).release_date || '').slice(0, 4) };
+  }
+  cache[k] = r;
+  escribir(K_HISTORIAS, cache);
+  return r;
+}
+async function crearDesdeHistoria(id) {
+  const c = cred();
+  if (!c || !c.refreshToken) { toast('Conecta primero la Fonoteca con Spotify y vuelve a darle al botón en Historias', null, 7000); return; }
+  let h;
+  try { h = await cargarHistoria(id); } catch (e) { toast(e.message); return; }
+  const piezas = h.capitulos.flatMap(cp => cp.items).filter(i => i.tipo !== 'hito');
+  const cache = leer(K_HISTORIAS, {});
+  const faltan = piezas.filter(i => cache[(i.tipo === 'disco' ? 'd|' : 't|') + normH(i.art) + '|' + normH(i.t)] === undefined).length;
+  hoja('<h2>' + esc(h.titulo) + '</h2><p class="soft">' + piezas.length + ' piezas en orden cronológico. ' +
+    (faltan ? 'Hay que buscar ' + faltan + ' en Spotify (una petición cada una, y las encontradas se recuerdan).' : 'Ya están todas buscadas: no gasta búsquedas.') + '</p>' +
+    '<div class="btnrow" style="margin-top:14px"><button class="btn" id="hNo" style="flex:1">Ahora no</button><button class="btn pri" id="hSi" style="flex:1">Buscar canciones</button></div>', hh => {
+      hh.querySelector('#hNo').onclick = () => cerrarHoja();
+      hh.querySelector('#hSi').onclick = async () => {
+        cerrarHoja(true);
+        if (faltan && !(await avisoCoste(faltan * 1.3 | 0, 'Buscar las canciones de «' + h.titulo + '»'))) return;
+        _parar = false;
+        const res = [];
+        try {
+          for (let n = 0; n < piezas.length; n++) {
+            progreso('Buscando «' + piezas[n].t + '»', n, piezas.length);
+            res.push({ i: piezas[n], r: await buscarPiezaH(piezas[n], cache) });
+          }
+        } catch (e) { progreso(null); toast(e.message === 'DETENIDO' ? 'Detenido: lo encontrado queda guardado' : explicarError(e), null, 6000); return; }
+        progreso(null);
+        revisarHistoria(h, res);
+      };
+    });
+}
+function revisarHistoria(h, res) {
+  const ok = res.filter(x => x.r).length;
+  hoja('<h2>' + esc(h.titulo) + '</h2><p class="soft">Encontradas ' + ok + ' de ' + res.length + '. Desmarca las que no sean la buena.</p>' +
+    '<label class="tiny soft" style="display:flex;gap:8px;align-items:center;margin:8px 0"><input type="checkbox" id="hDisc"> Discos enteros (si no, solo su primera canción)</label>' +
+    '<div id="hLista" style="max-height:52vh;overflow:auto;margin:6px -4px">' + res.map((x, n) => x.r
+      ? '<label style="display:flex;gap:10px;align-items:flex-start;padding:7px 4px"><input type="checkbox" data-n="' + n + '" checked style="margin-top:3px">' +
+        '<span><b>' + esc(x.i.a) + '</b> · ' + esc(x.r.nombre) + (x.r.disco ? ' <span class="tiny mute">(disco, ' + x.r.uris.length + ')</span>' : '') +
+        '<br><span class="tiny mute">' + esc(x.r.artistas) + (x.r.anyo ? ' · ' + x.r.anyo : '') + '</span></span></label>'
+      : '<div style="display:flex;gap:10px;padding:7px 4px;opacity:.6"><span style="width:13px;text-align:center">✗</span><span><b>' + esc(x.i.a) + '</b> · ' + esc(x.i.art) + ' — ' + esc(x.i.t) +
+        '<br><span class="tiny mute">No está en Spotify o no la encuentro con seguridad</span></span></div>').join('') + '</div>' +
+    '<div class="btnrow" style="margin-top:14px"><button class="btn" id="hNo" style="flex:1">Cancelar</button><button class="btn pri" id="hSi" style="flex:1"' + (ok ? '' : ' disabled') + '>Crear la playlist</button></div>', hh => {
+      hh.querySelector('#hNo').onclick = () => cerrarHoja();
+      hh.querySelector('#hSi').onclick = async () => {
+        const enteros = hh.querySelector('#hDisc').checked;
+        const uris = [];
+        hh.querySelectorAll('#hLista input:checked').forEach(cb => { const r = res[+cb.dataset.n].r; (enteros ? r.uris : r.uris.slice(0, 1)).forEach(u => { if (uris.indexOf(u) < 0) uris.push(u); }); });
+        if (!uris.length) return;
+        cerrarHoja(true);
+        if (COLA.length || esperaPendiente() > 0) { toast('Spotify está en pausa o hay cambios en cola: vuelve a darle en un rato. Lo buscado queda guardado.', null, 7000); return; }
+        _sinCola = true;
+        try {
+          progreso('Creando «' + h.titulo + '»', 0, uris.length);
+          const pl = await crearPlaylist(h.titulo, 'Historias de la música · ' + h.periodo + ' · en orden cronológico', false);
+          await plAnadir(pl.id, uris, null, 'Añadiendo canciones');
+          progreso(null);
+          const url = (pl.external_urls || {}).spotify || 'https://open.spotify.com/playlist/' + pl.id;
+          toast('Creada «' + h.titulo + '» con ' + uris.length + ' canciones', { txt: 'Abrir', fn: () => open(url, '_blank') }, 12000);
+        } catch (e) { progreso(null); toast(explicarError(e), null, 7000); }
+        finally { _sinCola = false; }
+      };
+    });
+}
+
+/* ============================================================
    ARRANQUE
    ============================================================ */
 $('#bRecargar').innerHTML = ic('recargar');
@@ -9368,8 +9490,11 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.se
 window.addEventListener('unhandledrejection', e => apuntarFallo(e.reason, 'sin capturar'));
 (async () => {
   if (await alVolverDeSpotify()) return;
+  const pideHistoria = new URLSearchParams(location.search).get('historia');
+  if (pideHistoria) history.replaceState({}, '', location.pathname);
   pintarFreno();
   render();
+  if (pideHistoria) setTimeout(() => crearDesdeHistoria(pideHistoria), 400);
   if (esperaPendiente() === 0) leerReproductor();
   setTimeout(procesarCola, 4000);
   /* al abrir, se trae lo de otros aparatos en segundo plano */

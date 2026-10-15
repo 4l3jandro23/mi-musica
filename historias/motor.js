@@ -80,7 +80,8 @@
       '<a class="btn sm atras" href="#">' + ic('atras') + 'Todas</a>' +
       '<span class="eti">' + esc(h.familia) + ' · ' + esc(h.periodo) + '</span>' +
       '<h2>' + esc(h.titulo) + '</h2><p>' + esc(h.intro) + '</p>' +
-      '<div class="btnrow"><button class="btn pri" id="copiar">' + ic('copia') + 'Copiar lista</button>' +
+      '<div class="btnrow"><a class="btn pri" href="mando.html?historia=' + h.id + '" title="La Fonoteca busca cada canción y crea la playlist en tu Spotify">' + ic('play') + 'Crear en mi Spotify</a>' +
+      '<button class="btn" id="copiar">' + ic('copia') + 'Copiar lista</button>' +
       (varios ? h.capitulos.map((c, k) => '<a class="chip" href="#h/' + h.id + '/' + (k + 1) + '">Cap. ' + (k + 1) + '</a>').join('') : '') +
       '</div></div>' +
       h.capitulos.map((c, k) => '<section class="capitulo" id="cap-' + (k + 1) + '" style="--tinte:' + h.color + '">' +
