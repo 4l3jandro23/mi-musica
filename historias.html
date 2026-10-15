@@ -196,13 +196,83 @@
     .oir span { display: none; }
     .oir { padding: 8px 10px; }
   }
+
+  /* ============================================================
+     DISEÑO 2 · más fluido: línea del tiempo, índice fijo,
+     transiciones suaves y detalles.
+     ============================================================ */
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .22s; }
+  body { background:
+      radial-gradient(1200px 500px at 85% -10%, color-mix(in srgb, var(--amber) 9%, transparent), transparent 70%),
+      var(--bg); background-attachment: fixed; }
+  mark { background: color-mix(in srgb, var(--amber) 35%, transparent); color: inherit; border-radius: 3px; padding: 0 1px; }
+  #aFono span { margin-left: 2px; }
+  @media (max-width: 560px) { #aFono span { display: none; } }
+
+  /* portada */
+  .portada-cab h2 { font-size: clamp(34px, 7vw, 64px); letter-spacing: -0.035em; line-height: .98;
+    background: linear-gradient(100deg, var(--fg) 30%, color-mix(in srgb, var(--amber) 80%, #d4568a)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .familia > .eti i { font-style: normal; color: var(--fg-mute); font-weight: 650; margin-left: 4px; }
+  .tarj { isolation: isolate; transition: transform .25s var(--ease-out), box-shadow .25s; }
+  .tarj:hover { transform: translateY(-4px) rotate(-.3deg); box-shadow: 0 18px 40px color-mix(in srgb, var(--c) 30%, transparent); }
+  .tarj .deco { position: absolute; right: -6px; bottom: -18px; z-index: -1; font-family: var(--f-disp); font-weight: 800; font-size: 86px; letter-spacing: -0.06em;
+    color: color-mix(in srgb, var(--fg) 7%, transparent); pointer-events: none; transition: transform .4s var(--ease-out); }
+  .tarj:hover .deco { transform: translateX(-6px); }
+
+  /* cabecera de historia con brillo que respira */
+  .hero { position: relative; overflow: hidden; isolation: isolate; padding-bottom: 30px; }
+  .hero::before { content: ""; position: absolute; inset: -40% -20% auto auto; width: 70%; aspect-ratio: 1; z-index: -1; border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in srgb, var(--tinte) 55%, transparent), transparent 65%); filter: blur(10px);
+    animation: respira 9s ease-in-out infinite alternate; }
+  @keyframes respira { from { transform: translate(0, 0) scale(1); } to { transform: translate(-8%, 6%) scale(1.15); } }
+  .hero .lema-h { font-size: 17px; font-weight: 650; color: var(--fg); margin-bottom: 8px; }
+  .hero .datos { margin: 14px 0 0; font-size: 12.5px; font-weight: 700; color: var(--fg-mute); letter-spacing: .02em; }
+
+  /* índice de capítulos fijo bajo la cabecera */
+  .indice { position: sticky; top: calc(56px + env(safe-area-inset-top)); z-index: 30; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
+    margin: 0 -16px; padding: 8px 16px; background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); box-shadow: 0 1px 0 var(--line); }
+  .indice::-webkit-scrollbar { display: none; }
+  .indice .chip { background: var(--surface-2); transition: background .2s, color .2s; }
+  .indice .chip.on { background: var(--tinte); color: #fff; }
+  .capitulo { scroll-margin-top: 112px; }
+
+  /* línea del tiempo que une los años */
+  .lista { position: relative; }
+  .lista::before { content: ""; position: absolute; left: 28px; top: 18px; bottom: 18px; width: 2px; border-radius: 2px;
+    background: linear-gradient(to bottom, color-mix(in srgb, var(--tinte) 45%, transparent), color-mix(in srgb, var(--tinte) 12%, transparent)); }
+  .row { position: relative; transition: background .15s, transform .2s var(--ease-out); }
+  .row:hover { transform: translateX(2px); }
+  .anyo { position: relative; z-index: 1; }
+  .row.hito .anyo { background: var(--bg); }
+  .row.hito { background: color-mix(in srgb, var(--tinte) 6%, transparent); }
+  .row.hito .t1 { font-style: italic; }
+
+  /* búsqueda */
+  .busca-cab h2 { font-size: clamp(28px, 5vw, 44px); }
+  .grupo { margin-top: 24px; }
+  .grupo-cab { display: flex; align-items: center; gap: 10px; padding: 8px 4px; position: sticky; top: calc(56px + env(safe-area-inset-top)); z-index: 5;
+    background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .grupo-cab .pto { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+  .grupo-cab b { font-family: var(--f-disp); font-size: 18px; letter-spacing: -0.02em; flex: 1; }
+  .grupo-cab span { font-size: 12.5px; font-weight: 700; color: var(--fg-mute); }
+  #buscar { transition: box-shadow .2s, background .2s, flex-basis .3s var(--ease-out); }
+
+  /* volver arriba */
+  .arriba { position: fixed; right: 16px; bottom: calc(18px + env(safe-area-inset-bottom)); z-index: 45; width: 46px; height: 46px; border-radius: 50%; border: 0;
+    background: var(--fg); color: var(--bg); display: grid; place-items: center; box-shadow: var(--shadow-md); cursor: pointer;
+    opacity: 0; transform: translateY(14px) scale(.9); pointer-events: none; transition: opacity .25s, transform .25s var(--ease-out); }
+  .arriba.ver { opacity: 1; transform: none; pointer-events: auto; }
+  .arriba svg { width: 20px; height: 20px; stroke-width: 2.4; }
 </style>
 </head>
 <body>
 <header class="top">
   <div class="bar">
     <a class="logo" href="#"><i class="marca"></i>Historias<span class="mute">&nbsp;de la música</span></a>
-    <input class="field" id="buscar" type="search" placeholder="Buscar artista, tema o año…" autocomplete="off">
+    <input class="field" id="buscar" type="search" placeholder="Busca artista, canción, año o «80s»…  ( / )" autocomplete="off">
     <a class="btn ghost sm" href="mando.html" id="aFono" title="Volver a la Fonoteca"></a>
   </div>
 </header>
@@ -281,6 +351,6 @@
 <script src="historias/datos/liminal.js"></script>
 <script src="historias/datos/instrumental.js"></script>
 <script src="historias/datos/peores.js"></script>
-<script src="historias/motor.js?v=4"></script>
+<script src="historias/motor.js?v=5"></script>
 </body>
 </html>
