@@ -1,0 +1,55 @@
+HISTORIAS.push({
+  id: "alternativa",
+  familia: "Rock",
+  titulo: "Historia del rock alternativo",
+  periodo: "1980 – 2005",
+  color: "#4c6b3c",
+  lema: "Del post-punk al grunge, el britpop y Radiohead: cuando lo alternativo se volvió masivo.",
+  intro: "En los 80, el rock alternativo vivía en sellos pequeños y radios universitarias. En 1991, «Smells Like Teen Spirit» lo cambió todo: lo alternativo pasó a ser lo que más se vendía. Grunge en Seattle, britpop en Inglaterra, Héroes del Silencio y Extremoduro en España, y luego Radiohead, Muse o Gorillaz.",
+  capitulos: [
+    {
+      titulo: "Los 80: post-punk y raíces",
+      corto: "Los 80",
+      periodo: "1980 – 1990",
+      items: [
+        { a: 1980, art: "Joy Division", t: "Love Will Tear Us Apart", n: "Salió un mes antes del suicidio de Ian Curtis: el post-punk más triste." },
+        { a: 1987, art: "The Cure", t: "Just Like Heaven", n: "El pop más luminoso de un grupo conocido por su oscuridad." },
+        { a: 1988, art: "Pixies", t: "Where Is My Mind?", n: "Estrofas suaves y estribillos explosivos: la fórmula que copiaría Nirvana. Suena al final de «El club de la lucha»." },
+        { a: 1990, art: "Jane's Addiction", t: "Been Caught Stealing", n: "Perry Farrell crearía al año siguiente el festival Lollapalooza." },
+        { a: 1990, art: "Héroes del Silencio", t: "Entre dos tierras", n: "Desde Zaragoza: el rock español que triunfó en Europa y Latinoamérica." }
+      ]
+    },
+    {
+      titulo: "El grunge y la explosión alternativa",
+      corto: "Grunge",
+      periodo: "1991 – 1996",
+      intro: "Camisas de franela, Seattle y la MTV.",
+      items: [
+        { a: 1991, art: "Nirvana", t: "Smells Like Teen Spirit", n: "«Nevermind» desbancó a Michael Jackson del número uno: el rock alternativo se vuelve mainstream." },
+        { a: 1991, art: "Pearl Jam", t: "Alive", n: "La otra gran banda de Seattle." },
+        { a: 1992, art: "Alice in Chains", t: "Would?", n: "El grunge más oscuro." },
+        { a: 1992, art: "Radiohead", t: "Creep", n: "Una canción que el propio grupo acabó odiando." },
+        { a: 1993, art: "Beck", t: "Loser", n: "Rap, slide y folk grabado en una cocina: «I'm a loser, baby»." },
+        { a: 1994, art: "Soundgarden", t: "Black Hole Sun", n: "Un vídeo de pesadilla suburbana." },
+        { a: 1994, art: "Weezer", t: "Buddy Holly", n: "Un vídeo dentro de la serie «Happy Days»." },
+        { a: 1995, art: "The Smashing Pumpkins", t: "1979", n: "La nostalgia adolescente perfecta." },
+        { a: 1995, art: "Oasis", t: "Wonderwall", n: "El britpop: la respuesta británica al grunge." },
+        { a: 1996, art: "Extremoduro", t: "So payaso", n: "Robe Iniesta y el rock transgresivo de Extremadura." }
+      ]
+    },
+    {
+      titulo: "Del britpop a los 2000",
+      corto: "Hasta los 2000",
+      periodo: "1997 – 2005",
+      items: [
+        { a: 1997, art: "Blur", t: "Song 2", n: "«Woo-hoo!»: una parodia del grunge que se convirtió en himno de estadio." },
+        { a: 1997, art: "Radiohead", t: "Paranoid Android", n: "De «OK Computer»: el rock alternativo se vuelve ambicioso." },
+        { a: 1997, art: "Foo Fighters", t: "Everlong", n: "Dave Grohl, el batería de Nirvana, convertido en líder." },
+        { a: 1999, art: "Red Hot Chili Peppers", t: "Californication", n: "El lado oscuro del sueño californiano." },
+        { a: 2001, art: "Muse", t: "Plug In Baby", n: "Riff virtuoso y épica." },
+        { a: 2002, art: "Queens of the Stone Age", t: "No One Knows", n: "Con Dave Grohl a la batería: rock del desierto." },
+        { a: 2005, art: "Gorillaz", t: "Feel Good Inc.", n: "Un grupo de dibujos animados creado por Damon Albarn." }
+      ]
+    }
+  ]
+});

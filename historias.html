@@ -158,6 +158,34 @@
   .oir { flex: none; margin-top: 4px; }
   .oir:hover { background: #1db954; border-color: #1db954; color: #fff; }
 
+  /* mejoras: escuchadas, «la tienes», filtros, progreso */
+  .cab .resumen { margin: 10px 0 14px; font-size: 13.5px; font-weight: 650; color: var(--fg-mute); }
+  .cab .btnrow { margin-top: 2px; }
+  .filtros { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 18px -16px 0; padding: 2px 16px 4px; }
+  .filtros::-webkit-scrollbar { display: none; }
+  .filtros .chip { background: var(--surface-2); }
+  .filtros .chip.on { background: var(--fg); color: var(--bg); }
+  .tarj .mini { height: 4px; border-radius: 999px; background: color-mix(in srgb, var(--fg) 12%, transparent); overflow: hidden; }
+  .tarj .mini i { display: block; height: 100%; background: var(--fg); opacity: .7; }
+  .progreso { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; font-size: 13px; font-weight: 650; color: var(--fg-soft); }
+  .progreso .barra { width: 120px; height: 6px; border-radius: 999px; background: color-mix(in srgb, var(--fg) 12%, transparent); overflow: hidden; flex: none; }
+  .progreso .barra i { display: block; height: 100%; background: var(--tinte); transition: width .3s var(--ease-out); }
+  .tuya { display: inline-block; vertical-align: 1px; margin-left: 4px; font-size: 10.5px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+    padding: 1px 7px; border-radius: 999px; background: color-mix(in srgb, #1db954 18%, transparent); color: color-mix(in srgb, #1db954 70%, var(--fg)); }
+  .oida { flex: none; width: 34px; height: 34px; margin-top: 4px; border-radius: 50%; border: 1.5px solid var(--line-firm); background: transparent;
+    color: var(--fg-mute); display: grid; place-items: center; cursor: pointer; transition: background .15s, color .15s, transform .12s var(--ease-out); -webkit-tap-highlight-color: transparent; }
+  .oida svg { width: 16px; height: 16px; stroke-width: 2.6; opacity: .45; }
+  .oida:hover { color: var(--fg); }
+  .oida:active { transform: scale(.9); }
+  .oida.on { background: var(--tinte); border-color: transparent; color: #fff; }
+  .oida.on svg { opacity: 1; }
+  .row.oida-on .t1 { color: var(--fg-soft); }
+  .siguiente { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin: 40px 0 10px; padding: 18px; border-radius: 16px; box-shadow: var(--shadow-sm);
+    background: linear-gradient(120deg, color-mix(in srgb, var(--c) 45%, var(--surface)), var(--surface)); }
+  .siguiente .eti { width: 100%; }
+  .siguiente b { font-family: var(--f-disp); font-size: 22px; letter-spacing: -0.02em; flex: 1; }
+  .siguiente svg { width: 22px; height: 22px; }
+
   .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
     background: var(--fg); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-weight: 650; font-size: 14px; transition: .25s var(--ease-out); z-index: 60; }
   .toast.ver { opacity: 1; transform: translate(-50%, 0); }
@@ -201,13 +229,19 @@
 <script src="historias/datos/hippie.js"></script>
 <script src="historias/datos/psicodelia.js"></script>
 <script src="historias/datos/punk.js"></script>
+<script src="historias/datos/newwave.js"></script>
+<script src="historias/datos/nowave.js"></script>
 <script src="historias/datos/noise.js"></script>
 <script src="historias/datos/metal.js"></script>
+<script src="historias/datos/alternativa.js"></script>
+<script src="historias/datos/indie.js"></script>
+<script src="historias/datos/shoegaze.js"></script>
 <script src="historias/datos/reggaeton.js"></script>
 <script src="historias/datos/rapespanol.js"></script>
 <script src="historias/datos/salsa.js"></script>
 <script src="historias/datos/soul.js"></script>
 <script src="historias/datos/funk.js"></script>
+<script src="historias/datos/disco.js"></script>
 <script src="historias/datos/blues.js"></script>
 <script src="historias/datos/country.js"></script>
 <script src="historias/datos/folk.js"></script>
@@ -236,6 +270,6 @@
 <script src="historias/datos/extrana.js"></script>
 <script src="historias/datos/outsider.js"></script>
 <script src="historias/datos/sampling.js"></script>
-<script src="historias/motor.js?v=3"></script>
+<script src="historias/motor.js?v=4"></script>
 </body>
 </html>
