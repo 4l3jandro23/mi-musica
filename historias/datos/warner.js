@@ -1,0 +1,53 @@
+HISTORIAS.push({
+  id: "warner",
+  familia: "Discográficas",
+  titulo: "Warner Records",
+  periodo: "1958 – 2020",
+  color: "#4a6fd1",
+  lema: "Del sello de un estudio de cine a Prince, Madonna, R.E.M. y Linkin Park.",
+  intro: "Warner Bros. Records nació en 1958 como el sello de los estudios de cine. Compró Reprise, el sello de Sinatra, y luego Elektra y Atlantic, y en los 70 y 80 fue la casa de algunos de los artistas más libres del rock y el pop. Hoy Warner Music Group es una de las tres grandes discográficas del mundo.",
+  capitulos: [
+    {
+      titulo: "El sello del estudio de cine",
+      corto: "Orígenes",
+      periodo: "1958 – 1967",
+      intro: "Warner Bros., Sinatra y el folk.",
+      items: [
+        { a: 1958, art: "Warner Bros.", t: "Nace el sello del estudio", tipo: "hito", n: "Al principio pierde dinero con discos de actores." },
+        { a: 1960, art: "The Everly Brothers", t: "Cathy's Clown", n: "El primer gran éxito del sello." },
+        { a: 1963, art: "Warner", t: "Compra Reprise, el sello de Sinatra", tipo: "hito", n: "Sinatra se convierte en socio de Warner." },
+        { a: 1963, art: "Peter, Paul and Mary", t: "Blowin' in the Wind", n: "Dylan en versión trío folk." },
+        { a: 1966, art: "Frank Sinatra", t: "Strangers in the Night", n: "El «dubidubidú» más famoso." },
+        { a: 1967, art: "The Jimi Hendrix Experience", t: "Purple Haze", n: "Reprise lo publica en EE. UU." }
+      ]
+    },
+    {
+      titulo: "Los artistas libres",
+      corto: "Libertad",
+      periodo: "1971 – 1993",
+      intro: "Fleetwood Mac, Prince, Madonna y R.E.M.",
+      items: [
+        { a: 1971, art: "WEA", t: "Warner, Elektra y Atlantic se unen", tipo: "hito", n: "Nace una de las grandes distribuidoras del mundo." },
+        { a: 1977, art: "Fleetwood Mac", t: "Dreams", n: "Rumours, uno de los discos más vendidos de la historia." },
+        { a: 1984, art: "Van Halen", t: "Jump", n: "Sintetizadores en el hard rock." },
+        { a: 1984, art: "Prince", t: "When Doves Cry", n: "Sin bajo y número uno." },
+        { a: 1984, art: "Madonna", t: "Like a Virgin", n: "En Sire, filial de Warner." },
+        { a: 1991, art: "R.E.M.", t: "Losing My Religion", n: "Una mandolina en la radio." },
+        { a: 1992, art: "Red Hot Chili Peppers", t: "Under the Bridge", n: "La balada de Los Ángeles." },
+        { a: 1993, art: "Prince", t: "Se escribe «slave» en la cara", tipo: "hito", n: "En guerra con Warner por la propiedad de sus grabaciones." }
+      ]
+    },
+    {
+      titulo: "Siglo XXI",
+      corto: "Siglo XXI",
+      periodo: "1994 – 2020",
+      intro: "Green Day, Linkin Park y Dua Lipa.",
+      items: [
+        { a: 1994, art: "Green Day", t: "Basket Case", n: "El punk vuelve a la radio desde Reprise." },
+        { a: 2000, art: "Linkin Park", t: "In the End", n: "Hybrid Theory, el debut más vendido del siglo." },
+        { a: 2004, art: "Warner Music Group", t: "Se independiza de Time Warner", tipo: "hito", n: "La compra un grupo de inversores liderado por Edgar Bronfman Jr." },
+        { a: 2020, art: "Dua Lipa", t: "Levitating", n: "Future Nostalgia y la era del streaming." }
+      ]
+    }
+  ]
+});
