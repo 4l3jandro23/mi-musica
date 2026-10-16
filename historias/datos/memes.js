@@ -58,6 +58,7 @@ HISTORIAS.push({
         { a: 2014, art: "Kevin MacLeod", t: "Monkeys Spinning Monkeys", n: "Música libre de derechos: el sonido de un millón de vídeos de YouTube." },
         { a: 2014, art: "LazyTown", t: "We Are Number One", n: "Robbie Rotten y su banda. En 2016 internet la remezcló hasta el infinito." },
         { a: 2015, art: "Toby Fox", t: "Megalovania", n: "De Undertale. Aparece hasta en Smash Bros. y en los sitios más inesperados." },
+        { a: 2015, art: "John Cena", t: "The Time Is Now", q: "WWE The Time Is Now John Cena", n: "«And his name is John Cena»: el vídeo trampa con su tema de entrada." },
         { a: 2016, art: "PIKOTARO", t: "PPAP (Pen-Pineapple-Apple-Pen)", n: "45 segundos absurdos que entraron en el libro Guinness." },
         { a: 2016, art: "Leticia Sabater", t: "Toma Pepinazo", n: "Un clásico del meme en España." }
       ]
