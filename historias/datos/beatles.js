@@ -14,8 +14,16 @@ HISTORIAS.push({
       intro: "Un grupo de skiffle de Liverpool aprende el oficio tocando horas cada noche en Hamburgo.",
       items: [
         { a: 1957, art: "John y Paul", t: "Se conocen en una verbena de Woolton", tipo: "hito", n: "6 de julio: Paul, con 15 años, impresiona a John tocando «Twenty Flight Rock». Al poco entra George." },
+        { a: 1958, art: "George Harrison", t: "Se une al grupo", tipo: "hito", n: "Con 15 años, tras tocar «Raunchy» en el piso de arriba de un autobús." },
+        { a: 1958, art: "The Quarrymen", t: "That'll Be the Day", q: "Quarrymen That'll Be the Day", n: "Su primera grabación, pagada de su bolsillo en un pequeño estudio de Liverpool." },
+        { a: 1960, art: "Hamburgo", t: "Primera temporada en los clubes del puerto", tipo: "hito", n: "Tocan hasta ocho horas por noche: ahí se convierten en un grupo de verdad." },
+        { a: 1961, art: "The Cavern Club", t: "Primer concierto en el Cavern", tipo: "hito", n: "Tocarán allí casi 300 veces." },
+        { a: 1961, art: "Brian Epstein", t: "Los descubre en el Cavern", tipo: "hito", n: "El dueño de una tienda de discos se convierte en su mánager." },
         { a: 1961, art: "Tony Sheridan", t: "My Bonnie", n: "Con los Beatles de grupo de acompañamiento, grabado en Hamburgo, donde tocaban horas y horas cada noche." },
-        { a: 1962, art: "The Beatles", t: "Love Me Do", n: "Su primer single, ya con Ringo y con George Martin de productor." }
+        { a: 1962, art: "Decca", t: "Los rechaza tras una audición", tipo: "hito", n: "«Los grupos de guitarras están pasados de moda»." },
+        { a: 1962, art: "Ringo Starr", t: "Sustituye a Pete Best", tipo: "hito", n: "Llega el último Beatle, semanas antes de grabar con George Martin." },
+        { a: 1962, art: "The Beatles", t: "Love Me Do", n: "Su primer single, ya con Ringo y con George Martin de productor." },
+        { a: 1962, art: "The Beatles", t: "P.S. I Love You", n: "La cara B de su primer single." }
       ]
     },
     {
@@ -24,14 +32,24 @@ HISTORIAS.push({
       periodo: "1963 – 1965",
       intro: "Gritos, giras y películas: el primer fenómeno de masas del pop.",
       items: [
+        { a: 1963, art: "Royal Variety Performance", t: "«Los de las butacas baratas, aplaudan»", tipo: "hito", n: "John pide a los ricos que agiten sus joyas, delante de la reina madre." },
         { a: 1963, art: "The Beatles", t: "Please Please Me", n: "Su primer gran éxito. El disco del mismo nombre lo grabaron entero en un solo día." },
         { a: 1963, art: "The Beatles", t: "She Loves You", n: "«Yeah, yeah, yeah»: la beatlemanía explota en Reino Unido." },
         { a: 1963, art: "The Beatles", t: "I Want to Hold Your Hand", n: "El single que abrió las puertas de Estados Unidos." },
+        { a: 1963, art: "The Beatles", t: "From Me to You", n: "Su primer número uno británico, según la mayoría de listas." },
+        { a: 1963, art: "The Beatles", t: "Twist and Shout", n: "John grabó la voz al final de una sesión de doce horas, con la garganta destrozada." },
+        { a: 1963, art: "The Beatles", t: "All My Loving", n: "La abrieron en el Ed Sullivan Show." },
         { a: 1964, art: "Ed Sullivan Show", t: "73 millones de estadounidenses los ven por la tele", tipo: "hito", n: "Empieza la «invasión británica»." },
+        { a: 1964, art: "Billboard", t: "Ocupan los cinco primeros puestos", tipo: "hito", n: "El 4 de abril de 1964: algo que nadie ha repetido." },
         { a: 1964, art: "The Beatles", t: "Can't Buy Me Love", n: "En abril de 1964 ocupaban los cinco primeros puestos del Billboard." },
         { a: 1964, art: "The Beatles", t: "A Hard Day's Night", n: "Ese acorde inicial que nadie supo tocar durante décadas." },
+        { a: 1964, art: "The Beatles", t: "And I Love Her", n: "La balada de A Hard Day's Night." },
+        { a: 1964, art: "The Beatles", t: "I Feel Fine", n: "El primer acople de guitarra grabado a propósito." },
+        { a: 1964, art: "The Beatles", t: "Eight Days a Week", n: "Una frase que, según Paul, le dijo un chófer." },
+        { a: 1965, art: "Shea Stadium", t: "Primer gran concierto en un estadio", tipo: "hito", n: "55.600 personas gritando: nadie, ni ellos, oye la música." },
         { a: 1965, art: "The Beatles", t: "Help!", n: "Un grito de auxilio de Lennon disfrazado de canción alegre." },
-        { a: 1965, art: "The Beatles", t: "Yesterday", n: "Paul solo con un cuarteto de cuerda: la canción más versionada de la historia." }
+        { a: 1965, art: "The Beatles", t: "Yesterday", n: "Paul solo con un cuarteto de cuerda: la canción más versionada de la historia." },
+        { a: 1965, art: "The Beatles", t: "Ticket to Ride", n: "Más pesada y oscura de lo habitual." }
       ]
     },
     {
@@ -42,14 +60,30 @@ HISTORIAS.push({
       items: [
         { a: 1965, art: "The Beatles", t: "Norwegian Wood (This Bird Has Flown)", n: "George mete un sitar en una canción pop por primera vez." },
         { a: 1965, art: "The Beatles", t: "In My Life", n: "Lennon mirando atrás con nostalgia; el solo de piano, acelerado en cinta." },
+        { a: 1965, art: "The Beatles", t: "Drive My Car", n: "Abre Rubber Soul con humor." },
+        { a: 1965, art: "The Beatles", t: "Nowhere Man", n: "John habla de sí mismo." },
+        { a: 1965, art: "The Beatles", t: "Michelle", n: "Con una estrofa en francés." },
         { a: 1966, art: "Candlestick Park", t: "Su último concierto", tipo: "hito", n: "29 de agosto en San Francisco: ya no se oían entre tanto grito." },
+        { a: 1966, art: "«Más populares que Jesús»", t: "La polémica en EE. UU.", tipo: "hito", n: "Una frase de John en una entrevista provoca quemas de discos en el sur." },
         { a: 1966, art: "The Beatles", t: "Eleanor Rigby", n: "Ninguno de ellos toca: solo cuerdas y una historia de soledad." },
         { a: 1966, art: "The Beatles", t: "Tomorrow Never Knows", n: "Bucles de cinta, voz a través de un altavoz giratorio: psicodelia pura." },
+        { a: 1966, art: "The Beatles", t: "Paperback Writer", n: "Un single de rock con bajo enorme." },
+        { a: 1966, art: "The Beatles", t: "Rain", n: "Cintas al revés por primera vez en un disco de pop." },
+        { a: 1966, art: "The Beatles", t: "Taxman", n: "George contra los impuestos británicos del 95 %." },
+        { a: 1966, art: "The Beatles", t: "Here, There and Everywhere", n: "La favorita de Paul entre las suyas." },
+        { a: 1966, art: "The Beatles", t: "Yellow Submarine", n: "Ringo canta para los niños." },
+        { a: 1966, art: "The Beatles", t: "Got to Get You into My Life", n: "Vientos de soul de Motown." },
+        { a: 1967, art: "«Our World»", t: "Estrenan «All You Need Is Love» en la primera emisión mundial por satélite", tipo: "hito", n: "Unos 400 millones de espectadores." },
+        { a: 1967, art: "Brian Epstein", t: "Muere su mánager", tipo: "hito", n: "Sin él, el grupo empieza a desmoronarse." },
         { a: 1967, art: "The Beatles", t: "Strawberry Fields Forever", n: "Dos tomas distintas pegadas a mano, a velocidades diferentes." },
         { a: 1967, art: "The Beatles", t: "Penny Lane", n: "La cara de Paul del mismo single: Liverpool en tecnicolor." },
         { a: 1967, art: "The Beatles", t: "A Day in the Life", n: "El final de «Sgt. Pepper's»: una orquesta subiendo al caos y un acorde de piano eterno." },
         { a: 1967, art: "The Beatles", t: "All You Need Is Love", n: "Estrenada en directo en la primera emisión mundial por satélite." },
-        { a: 1967, art: "The Beatles", t: "I Am the Walrus", n: "Lennon escribiendo letras sin sentido a propósito para confundir a los que las analizaban." }
+        { a: 1967, art: "The Beatles", t: "I Am the Walrus", n: "Lennon escribiendo letras sin sentido a propósito para confundir a los que las analizaban." },
+        { a: 1967, art: "The Beatles", t: "Sgt. Pepper's Lonely Hearts Club Band", n: "Una banda imaginaria para dejar de ser los Beatles." },
+        { a: 1967, art: "The Beatles", t: "With a Little Help from My Friends", n: "Ringo, con ayuda de sus amigos." },
+        { a: 1967, art: "The Beatles", t: "Lucy in the Sky with Diamonds", n: "Inspirada en un dibujo del hijo de John." },
+        { a: 1967, art: "The Beatles", t: "Hello, Goodbye", n: "Pop puro tras la psicodelia." }
       ]
     },
     {
@@ -58,15 +92,33 @@ HISTORIAS.push({
       periodo: "1968 – 1970",
       intro: "Peleas, negocios y obras maestras: el grupo se rompe mientras graba algunos de sus mejores discos.",
       items: [
+        { a: 1968, art: "Rishikesh", t: "Meditación en la India con el Maharishi", tipo: "hito", n: "Allí escriben buena parte del Álbum Blanco." },
+        { a: 1968, art: "Apple Corps", t: "Fundan su propia empresa", tipo: "hito", n: "Discográfica, tienda de ropa y caos financiero." },
         { a: 1968, art: "The Beatles", t: "Hey Jude", n: "Paul la escribió para consolar a Julian, el hijo de John. Siete minutos y un «na na na» eterno." },
         { a: 1968, art: "The Beatles", t: "While My Guitar Gently Weeps", n: "George, con Eric Clapton a la guitarra solista." },
         { a: 1968, art: "The Beatles", t: "Blackbird", n: "Paul solo con la guitarra, pensando en la lucha por los derechos civiles." },
         { a: 1968, art: "The Beatles", t: "Helter Skelter", n: "Paul queriendo hacer la canción más ruidosa posible: un precursor del heavy metal." },
+        { a: 1968, art: "The Beatles", t: "Lady Madonna", n: "Vuelta al rock and roll al piano." },
+        { a: 1968, art: "The Beatles", t: "Revolution", n: "La respuesta de John a la política de 1968." },
+        { a: 1968, art: "The Beatles", t: "Back in the U.S.S.R.", n: "Parodia de los Beach Boys y Chuck Berry." },
+        { a: 1968, art: "The Beatles", t: "Dear Prudence", n: "Para la hermana de Mia Farrow, que no salía de su cabaña en la India." },
+        { a: 1968, art: "The Beatles", t: "Ob-La-Di, Ob-La-Da", n: "Ska a la británica; John la odiaba." },
+        { a: 1968, art: "The Beatles", t: "Julia", n: "Para su madre, muerta cuando él tenía 17 años." },
         { a: 1969, art: "Azotea de Apple", t: "El último concierto, en el tejado", tipo: "hito", n: "30 de enero en Londres, hasta que llega la policía." },
+        { a: 1969, art: "Abbey Road", t: "La foto del paso de cebra", tipo: "hito", n: "Diez minutos de sesión un 8 de agosto: la portada más imitada de la historia." },
         { a: 1969, art: "The Beatles", t: "Come Together", n: "Abre «Abbey Road», su último disco grabado." },
         { a: 1969, art: "The Beatles", t: "Something", n: "George, por fin, a la altura de John y Paul: Sinatra la llamó la mejor canción de amor." },
         { a: 1969, art: "The Beatles", t: "Here Comes the Sun", n: "La canción de los Beatles más escuchada en streaming." },
-        { a: 1970, art: "The Beatles", t: "Let It Be", n: "Paul soñó con su madre Mary diciéndole «déjalo estar». En abril, el grupo se separa." }
+        { a: 1969, art: "The Beatles", t: "Get Back", n: "Con Billy Preston al piano." },
+        { a: 1969, art: "The Beatles", t: "Don't Let Me Down", n: "John a Yoko, tocada en la azotea." },
+        { a: 1969, art: "The Beatles", t: "The Ballad of John and Yoko", n: "Grabada solo por John y Paul." },
+        { a: 1969, art: "The Beatles", t: "Because", n: "Tres voces grabadas tres veces: nueve voces en armonía." },
+        { a: 1969, art: "The Beatles", t: "Golden Slumbers", n: "El inicio del medley final de Abbey Road." },
+        { a: 1969, art: "The Beatles", t: "The End", n: "El único solo de batería de Ringo y un intercambio de guitarras de los tres." },
+        { a: 1970, art: "Paul McCartney", t: "Anuncia que deja el grupo", tipo: "hito", n: "El 10 de abril de 1970: fin oficial de los Beatles." },
+        { a: 1970, art: "The Beatles", t: "Let It Be", n: "Paul soñó con su madre Mary diciéndole «déjalo estar». En abril, el grupo se separa." },
+        { a: 1970, art: "The Beatles", t: "Across the Universe", n: "«Jai guru deva om»." },
+        { a: 1970, art: "The Beatles", t: "The Long and Winding Road", n: "La versión con orquesta de Phil Spector que Paul detestaba." }
       ]
     },
     {
@@ -76,10 +128,22 @@ HISTORIAS.push({
       intro: "Cada uno por su lado, con éxitos propios, una tragedia y una despedida inesperada.",
       items: [
         { a: 1970, art: "George Harrison", t: "My Sweet Lord", n: "El primer número uno de un ex-Beatle." },
+        { a: 1970, art: "John Lennon", t: "Instant Karma!", n: "Escrita, grabada y publicada en diez días." },
+        { a: 1970, art: "Paul McCartney", t: "Maybe I'm Amazed", n: "Para Linda, en su primer disco en solitario." },
+        { a: 1970, art: "George Harrison", t: "What Is Life", n: "All Things Must Pass: el Beatle callado tenía muchas canciones guardadas." },
+        { a: 1971, art: "George Harrison", t: "Concierto para Bangladesh", tipo: "hito", n: "El primer gran concierto benéfico de la historia del rock." },
         { a: 1971, art: "John Lennon", t: "Imagine", n: "El himno pacifista por excelencia." },
+        { a: 1971, art: "John Lennon", t: "Jealous Guy", n: "Una disculpa en forma de balada." },
+        { a: 1971, art: "Ringo Starr", t: "It Don't Come Easy", n: "Su primer gran éxito en solitario." },
         { a: 1973, art: "Paul McCartney & Wings", t: "Band on the Run", n: "Grabado en Lagos, Nigeria, tras robarles las maquetas a punta de cuchillo." },
         { a: 1973, art: "Ringo Starr", t: "Photograph", n: "Compuesta con George: su mayor éxito." },
+        { a: 1973, art: "Paul McCartney & Wings", t: "Live and Let Die", n: "Para James Bond." },
         { a: 1980, art: "John Lennon", t: "Asesinado en Nueva York", tipo: "hito", n: "8 de diciembre, a la puerta de su casa. El mundo entero se paró." },
+        { a: 1980, art: "John Lennon", t: "Watching the Wheels", n: "Semanas antes de su asesinato." },
+        { a: 1995, art: "«Anthology»", t: "Los tres vuelven a grabar sobre una maqueta de John", tipo: "hito", n: "Nace «Free as a Bird»." },
+        { a: 1995, art: "The Beatles", t: "Free as a Bird", n: "Una maqueta de John de 1977 completada por los otros tres." },
+        { a: 2001, art: "George Harrison", t: "Muere de cáncer", tipo: "hito", n: "«El Beatle callado» tenía 58 años." },
+        { a: 2021, art: "«Get Back»", t: "Peter Jackson restaura las sesiones de 1969", tipo: "hito", n: "Un documental de casi ocho horas que cambia la historia de la ruptura." },
         { a: 2023, art: "The Beatles", t: "Now and Then", n: "Una maqueta de Lennon recuperada con inteligencia artificial: «la última canción de los Beatles»." }
       ]
     }
