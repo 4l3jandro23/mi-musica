@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Los precursores",
       corto: "Precursores",
       periodo: "1989 – 1993",
+      intro: "Manchester baila y Londres se viste de glam: el terreno se prepara.",
       items: [
         { a: 1989, art: "The Stone Roses", t: "She Bangs the Drums", n: "El «Madchester»: la fiesta de Manchester abre el camino." },
         { a: 1993, art: "Suede", t: "Animal Nitrate", n: "Glam y decadencia: la prensa los presenta como la respuesta al grunge." }
@@ -35,6 +36,7 @@ HISTORIAS.push({
       titulo: "El final",
       corto: "El final",
       periodo: "1997 – 1999",
+      intro: "Después de la fiesta, la melancolía: el britpop se apaga.",
       items: [
         { a: 1997, art: "The Verve", t: "Bitter Sweet Symphony", n: "Un sample de los Stones que les costó todos los derechos." },
         { a: 1997, art: "Blur", t: "Song 2", n: "Blur abandona el britpop parodiando el grunge." },

@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Trovadores cubanos y Agustín Lara",
       corto: "Los orígenes",
       periodo: "1885 – 1941",
+      intro: "Trovadores de Santiago de Cuba y el cabaret de Ciudad de México.",
       items: [
         { a: 1885, art: "Pepe Sánchez", t: "«Tristezas», el primer bolero", tipo: "hito", n: "Un sastre y trovador de Santiago de Cuba compone el que se considera el primer bolero." },
         { a: 1935, art: "Agustín Lara", t: "Noche de ronda", n: "El «flaco de oro» convierte el bolero en canción de cabaret elegante." },
@@ -37,6 +38,7 @@ HISTORIAS.push({
       titulo: "El regreso",
       corto: "Regreso",
       periodo: "1991",
+      intro: "Un ídolo pop recupera los boleros clásicos para una nueva generación.",
       items: [
         { a: 1991, art: "Luis Miguel", t: "No sé tú", n: "Del disco «Romance»: boleros clásicos para una nueva generación. Vendió millones." }
       ]

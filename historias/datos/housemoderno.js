@@ -25,6 +25,7 @@ HISTORIAS.push({
       titulo: "Electro y dutch house",
       corto: "Dutch house",
       periodo: "2010",
+      intro: "Chirridos y bombos holandeses que preparan el big room.",
       items: [
         { a: 2010, art: "Afrojack", t: "Take Over Control", n: "Con Eva Simons: chirridos holandeses que prepararon el big room." }
       ]

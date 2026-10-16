@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Chicago, del disco a la caja de ritmos",
       corto: "Chicago",
       periodo: "1977 – 1986",
+      intro: "Los DJs de Chicago mantienen viva la disco con cajas de ritmos.",
       items: [
         { a: 1977, art: "Frankie Knuckles", t: "El Warehouse abre en Chicago", tipo: "hito", n: "El padrino del house llega de Nueva York y pincha disco, soul y electrónica europea. El club le da nombre al género." },
         { a: 1979, art: "Disco Demolition Night", t: "Queman discos de disco en un estadio", tipo: "hito", n: "Para el gran público, el disco había muerto. En los clubs de Chicago, no." },
@@ -29,9 +30,9 @@ HISTORIAS.push({
       periodo: "1987 – 1990",
       intro: "Una caja de ritmos para bajos que nadie sabía usar, caritas sonrientes y raves ilegales.",
       items: [
+        { a: 1987, art: "Ibiza", t: "Cuatro DJs británicos descubren Amnesia", tipo: "hito", n: "Paul Oakenfold y sus amigos oyen a DJ Alfredo pinchar de todo en Ibiza y se llevan esa idea a Londres." },
         { a: 1987, art: "Phuture", t: "Acid Tracks", n: "Una Roland TB-303, un aparato pensado para hacer bajos, «mal usada»: sus chirridos crean el acid house." },
         { a: 1987, art: "Frankie Knuckles", t: "Your Love", n: "Con Jamie Principle. Una de las canciones de house más bonitas de la historia." },
-        { a: 1987, art: "Ibiza", t: "Cuatro DJs británicos descubren Amnesia", tipo: "hito", n: "Paul Oakenfold y sus amigos oyen a DJ Alfredo pinchar de todo en Ibiza y se llevan esa idea a Londres." },
         { a: 1988, art: "Segundo verano del amor", t: "Raves en Reino Unido", tipo: "hito", n: "Acid house, caritas sonrientes y fiestas en almacenes y campos. El gobierno acabaría aprobando leyes contra las raves." },
         { a: 1988, art: "Inner City", t: "Good Life", n: "Desde Detroit, Kevin Saunderson une house y techno con pop." },
         { a: 1988, art: "D-Mob", t: "We Call It Acieeed", n: "El acid house llega al top 3 británico… y la BBC lo prohíbe por las drogas." },
@@ -59,6 +60,7 @@ HISTORIAS.push({
       titulo: "Electro house, Ibiza y el house de hoy",
       corto: "2000s hasta hoy",
       periodo: "2002 – 2020",
+      intro: "Ibiza, los DJs estrella y el house que llega a las listas.",
       items: [
         { a: 2002, art: "Benny Benassi", t: "Satisfaction", n: "Un sintetizador que zumba: nace el electro house." },
         { a: 2004, art: "Eric Prydz", t: "Call on Me", n: "Un sample de Steve Winwood y un vídeo de aeróbic: número uno." },

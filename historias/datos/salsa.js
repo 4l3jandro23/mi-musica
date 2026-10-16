@@ -9,7 +9,9 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Las raíces cubanas",
+      corto: "Raíces cubanas",
       periodo: "1930 – 1962",
+      intro: "El son y el mambo cubanos, la base de todo.",
       items: [
         { a: 1930, art: "Don Azpiazu", t: "El manisero", n: "El primer gran éxito latino en Estados Unidos: la «rumba» se pone de moda." },
         { a: 1943, art: "Machito", t: "Tanga", n: "Con sus Afro-Cubans y los arreglos de Mario Bauzá: nace el jazz afrocubano." },
@@ -21,7 +23,8 @@ HISTORIAS.push({
     },
     {
       titulo: "Nueva York y Fania",
-      periodo: "1964 – 1980",
+      corto: "Fania",
+      periodo: "1964 – 1978",
       intro: "El barrio latino de Nueva York pone nombre y actitud a esta música.",
       items: [
         { a: 1964, art: "Fania Records", t: "Johnny Pacheco y Jerry Masucci fundan Fania", tipo: "hito", n: "El sello que será la «Motown latina»." },
@@ -29,6 +32,7 @@ HISTORIAS.push({
         { a: 1966, art: "Joe Cuba Sextet", t: "Bang Bang", n: "El boogaloo: latino y soul mezclados por los jóvenes de Nueva York." },
         { a: 1967, art: "Willie Colón", t: "El malo", n: "Un chaval del Bronx de 17 años con un trombón y Héctor Lavoe cantando." },
         { a: 1971, art: "Fania All-Stars", t: "Live at the Cheetah", tipo: "hito", n: "Todas las estrellas del sello en un concierto mítico. La palabra «salsa» se generaliza." },
+        { a: 1972, art: "«Nuestra cosa latina»", t: "La película de la Fania All-Stars", tipo: "hito", n: "El concierto del Cheetah, convertido en documental: la salsa llega a los cines." },
         { a: 1973, art: "Willie Colón", t: "Calle Luna, Calle Sol", n: "Con Héctor Lavoe: la calle y el peligro del barrio." },
         { a: 1973, art: "Ray Barretto", t: "Indestructible", n: "Conga y orgullo." },
         { a: 1974, art: "Celia Cruz", t: "Quimbara", n: "Con Johnny Pacheco: Celia, ya en Nueva York, se convierte en la reina de la salsa." },
@@ -40,7 +44,9 @@ HISTORIAS.push({
     },
     {
       titulo: "Colombia y la salsa romántica",
+      corto: "Colombia y romántica",
       periodo: "1984 – 1993",
+      intro: "Cali, la salsa romántica y una nueva generación.",
       items: [
         { a: 1984, art: "Grupo Niche", t: "Cali pachanguero", n: "Cali se convierte en la capital mundial de la salsa." },
         { a: 1985, art: "Frankie Ruiz", t: "Tú con él", n: "La salsa romántica: más suave y para bailar en pareja." },

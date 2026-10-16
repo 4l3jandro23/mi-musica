@@ -9,7 +9,9 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Trot, bases americanas y folk de protesta",
+      corto: "Trot y folk",
       periodo: "1935 – 1980",
+      intro: "Canciones bajo la ocupación japonesa, la guerra y la dictadura.",
       items: [
         { a: 1935, art: "Lee Nan-young", alias: ["이난영"], t: "Las lágrimas de Mokpo", q: "이난영 목포의 눈물", n: "El trot: la tristeza de un país ocupado escondida en una canción de amor." },
         { a: 1959, art: "The Kim Sisters", t: "Triunfan en Las Vegas", tipo: "hito", n: "Tres hermanas que aprendieron cantando para los soldados americanos: las primeras estrellas coreanas en EE. UU." },
@@ -21,6 +23,7 @@ HISTORIAS.push({
     },
     {
       titulo: "El nacimiento del K-pop",
+      corto: "Nace el K-pop",
       periodo: "1992 – 2002",
       intro: "Rap, baile y las grandes agencias que fabrican estrellas.",
       items: [
@@ -34,6 +37,7 @@ HISTORIAS.push({
     },
     {
       titulo: "La ola coreana",
+      corto: "Hallyu",
       periodo: "2007 – 2013",
       intro: "El «hallyu»: series y K-pop conquistan Asia y luego YouTube.",
       items: [
@@ -49,10 +53,13 @@ HISTORIAS.push({
     },
     {
       titulo: "Conquista mundial",
+      corto: "Conquista mundial",
       periodo: "2014 – 2022",
+      intro: "BTS, BLACKPINK y NewJeans: el K-pop ya es pop mundial.",
       items: [
         { a: 2014, art: "HYUKOH", alias: ["혁오"], t: "Wi Ing Wi Ing", q: "혁오 위잉위잉", n: "Indie coreano: la otra cara de la música del país." },
         { a: 2017, art: "BTS", alias: ["방탄소년단"], t: "Spring Day", q: "BTS 봄날", n: "Su canción más querida en Corea, sobre la pérdida y la espera." },
+        { a: 2018, art: "BTS en la ONU", t: "Un discurso ante la Asamblea General", tipo: "hito", n: "Sobre quererse a uno mismo, dentro de una campaña de UNICEF." },
         { a: 2018, art: "BLACKPINK", t: "DDU-DU DDU-DU", n: "El grupo femenino más grande del mundo." },
         { a: 2019, art: "Red Velvet", alias: ["레드벨벳"], t: "Psycho", n: "Considerada por muchos la mejor canción del K-pop moderno." },
         { a: 2020, art: "BTS", alias: ["방탄소년단"], t: "Dynamite", n: "Primer número uno de un grupo coreano en el Billboard Hot 100." },

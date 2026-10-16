@@ -9,6 +9,7 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "El Shanghái de los años 30 y 40",
+      corto: "Shanghái",
       periodo: "1927 – 1947",
       intro: "El «shidaiqu»: canción china con jazz de Hollywood.",
       items: [
@@ -20,7 +21,9 @@ HISTORIAS.push({
     },
     {
       titulo: "Revolución y exilio musical",
+      corto: "Revolución",
       periodo: "1949 – 1977",
+      intro: "Himnos revolucionarios en el continente; canciones de amor en Hong Kong y Taiwán.",
       items: [
         { a: 1949, art: "República Popular", t: "La música popular se va a Hong Kong y Taiwán", tipo: "hito", n: "En el continente, la canción de amor se ve como «decadente»." },
         { a: 1966, art: "Revolución Cultural", t: "Las «óperas modelo»", tipo: "hito", n: "Durante diez años solo se pueden representar unas pocas obras aprobadas." },
@@ -30,7 +33,9 @@ HISTORIAS.push({
     },
     {
       titulo: "Rock de Pekín y la edad de oro del cantopop",
+      corto: "Rock y cantopop",
       periodo: "1984 – 1994",
+      intro: "China se abre: llega el rock a Pekín y Hong Kong vive su edad de oro.",
       items: [
         { a: 1984, art: "Leslie Cheung", alias: ["張國榮"], t: "Monica", n: "El gran ídolo de Hong Kong, también actor de Wong Kar-wai." },
         { a: 1985, art: "Anita Mui", alias: ["梅艷芳"], t: "Bad Girl", q: "梅艷芳 壞女孩", n: "La «Madonna de Asia»." },
@@ -43,7 +48,9 @@ HISTORIAS.push({
     },
     {
       titulo: "Mandopop y rap",
+      corto: "Mandopop y rap",
       periodo: "2001 – 2017",
+      intro: "Las estrellas del mandopop y el rap que llega a la tele.",
       items: [
         { a: 2001, art: "Jay Chou", alias: ["周杰倫"], t: "Nunchucks", q: "周杰倫 雙截棍", n: "R&B, rap y kung-fu: el rey del mandopop." },
         { a: 2007, art: "Jay Chou", alias: ["周杰倫"], t: "Porcelana azul y blanca", q: "周杰倫 青花瓷", n: "Estilo «chino tradicional» con pop. Hasta salió en los exámenes de acceso a la universidad." },

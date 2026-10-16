@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "El boom",
       corto: "El boom",
       periodo: "2009 – 2016",
+      intro: "DJs estrella, festivales gigantes y el pop electrónico.",
       items: [
         { a: 2009, art: "David Guetta", t: "Sexy Bitch", n: "Con Akon: el DJ francés convierte el house en el sonido de la radio americana." },
         { a: 2011, art: "Los grandes festivales", t: "Ultra, EDC y Tomorrowland explotan", tipo: "hito", n: "Cientos de miles de personas, escenarios como castillos y entradas agotadas en minutos." },

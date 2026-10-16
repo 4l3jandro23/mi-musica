@@ -9,7 +9,9 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Del wobble al festival",
+      corto: "Brostep",
       periodo: "2009 – 2012",
+      intro: "El dubstep cruza el Atlántico y se vuelve ruidoso, agresivo y de festival.",
       items: [
         { a: 2009, art: "Rusko", t: "Woo Boost", n: "El puente entre el dubstep londinense y el estadounidense: bajo saltarín y descarado." },
         { a: 2010, art: "Doctor P", t: "Sweet Shop", n: "Con el sello Circus Records: wobble pegadizo, casi para cantar." },

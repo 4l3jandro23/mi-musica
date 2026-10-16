@@ -9,17 +9,19 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Del garage oscuro al dubstep",
+      corto: "Croydon y Brixton",
       periodo: "2001 – 2008",
+      intro: "Del garage oscuro al sub-bajo: la escena del sur de Londres.",
       items: [
         { a: 2001, art: "FWD>>", t: "Club en el Plastic People", tipo: "hito", n: "La noche londinense donde el garage se vuelve oscuro y lento. Por allí pasaron todos los pioneros." },
         { a: 2002, art: "Horsepower Productions", t: "In Fine Style", tipo: "disco", n: "Dub, garage y cine negro: un álbum fundacional, cuando el género ni siquiera tenía nombre." },
         { a: 2004, art: "Kode9 & The Spaceape", t: "Sine of the Dub", n: "Primera referencia del sello Hyperdub: una versión espectral de Prince." },
-        { a: 2005, art: "Skream", t: "Midnight Request Line", n: "El primer gran himno del dubstep: melodía triste sobre un bajo enorme." },
         { a: 2005, art: "DMZ", t: "Noches en Brixton", tipo: "hito", n: "Mala, Coki y Loefah montan DMZ: sistemas de sonido enormes y el lema «medita en el bajo»." },
+        { a: 2005, art: "Skream", t: "Midnight Request Line", n: "El primer gran himno del dubstep: melodía triste sobre un bajo enorme." },
+        { a: 2006, art: "Mary Anne Hobbs", t: "Dubstep Warz (BBC Radio 1)", tipo: "hito", n: "Un programa especial con todos los pioneros. Al día siguiente, medio mundo sabía qué era el dubstep." },
         { a: 2006, art: "Digital Mystikz", t: "Anti-War Dub", n: "Mala y Coki: dub espiritual y político. La esencia de DMZ." },
         { a: 2006, art: "Pinch", t: "Qawwali", n: "Desde Bristol, con voces sufíes y espacio. Prueba de que el género ya no era solo de Londres." },
         { a: 2006, art: "Burial", t: "Distant Lights", n: "Un productor anónimo con ritmos crujientes y voces de rave fantasma. Melancolía urbana." },
-        { a: 2006, art: "Mary Anne Hobbs", t: "Dubstep Warz (BBC Radio 1)", tipo: "hito", n: "Un programa especial con todos los pioneros. Al día siguiente, medio mundo sabía qué era el dubstep." },
         { a: 2007, art: "Burial", t: "Archangel", n: "De «Untrue», uno de los discos más influyentes de la década en cualquier género." },
         { a: 2007, art: "Benga & Coki", t: "Night", n: "Un bajo que rebota y un ritmo casi tribal. El tema que llenó las pistas." },
         { a: 2007, art: "Coki", t: "Spongebob", n: "Un bajo áspero y retorcido. Aquí empieza a asomar el «wobble» que luego exagerará el brostep." },

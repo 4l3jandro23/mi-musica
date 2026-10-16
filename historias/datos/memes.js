@@ -9,6 +9,7 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Canciones antiguas que acabaron siendo meme",
+      corto: "Antes de ser meme",
       periodo: "1971 – 1998",
       intro: "Llevaban años existiendo hasta que internet las encontró.",
       items: [
@@ -24,6 +25,7 @@ HISTORIAS.push({
     },
     {
       titulo: "Los primeros virales de internet",
+      corto: "Primeros virales",
       periodo: "1999 – 2008",
       intro: "Foros, Flash, MSN y los primeros años de YouTube.",
       items: [
@@ -42,7 +44,9 @@ HISTORIAS.push({
     },
     {
       titulo: "La época dorada de los memes de YouTube",
+      corto: "YouTube",
       periodo: "2010 – 2016",
+      intro: "Vídeos virales, remixes infinitos y música libre de derechos.",
       items: [
         { a: 2010, art: "Tony Igy", t: "Astronomia", n: "En 2020 se convirtió en la «Coffin Dance»: los portadores de ataúdes de Ghana bailando." },
         { a: 2011, art: "Rebecca Black", t: "Friday", n: "«Friday, Friday, gotta get down on Friday»: el vídeo más odiado de su año y un clásico de culto." },
@@ -60,7 +64,9 @@ HISTORIAS.push({
     },
     {
       titulo: "Shitpost y TikTok",
+      corto: "TikTok",
       periodo: "2018 – 2023",
+      intro: "TikTok convierte cualquier canción en un baile o un sonido.",
       items: [
         { a: 2018, art: "El Chombo", t: "Dame Tu Cosita", n: "Un alien verde bailando: uno de los vídeos más vistos de YouTube." },
         { a: 2018, art: "iLOVEFRiDAY", t: "Mia Khalifa", n: "«Hit or miss, I guess they never miss, huh?»: el primer gran meme de TikTok." },
@@ -70,6 +76,7 @@ HISTORIAS.push({
     },
     {
       titulo: "Italian brainrot",
+      corto: "Italian brainrot",
       periodo: "2025",
       intro: "Personajes hechos con IA, nombres que suenan a italiano y una voz que los recita. Pura «podredumbre cerebral».",
       items: [

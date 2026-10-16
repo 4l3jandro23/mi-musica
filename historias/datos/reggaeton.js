@@ -9,7 +9,8 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Las raíces: Jamaica y Panamá",
-      periodo: "1990 – 1993",
+      corto: "Jamaica y Panamá",
+      periodo: "1990 – 1991",
       intro: "El reggae en español panameño y el riddim que le dio nombre al ritmo.",
       items: [
         { a: 1990, art: "Shabba Ranks", t: "Dem Bow", n: "La canción de dancehall que da nombre al «dembow», el ritmo base del reggaetón." },
@@ -20,7 +21,8 @@ HISTORIAS.push({
     },
     {
       titulo: "El underground de Puerto Rico",
-      periodo: "1992 – 2001",
+      corto: "Underground",
+      periodo: "1992 – 1997",
       intro: "Cintas caseras, mezclas en los caseríos y redadas de la policía.",
       items: [
         { a: 1992, art: "DJ Playero", t: "Las cintas «Playero»", tipo: "hito", n: "Las mezclas de DJ Playero, con un Daddy Yankee adolescente entre sus voces, inventan el sonido underground." },
@@ -31,6 +33,7 @@ HISTORIAS.push({
     },
     {
       titulo: "El boom",
+      corto: "El boom",
       periodo: "2002 – 2005",
       intro: "Luny Tunes modernizan la producción y el reggaetón sale de la isla.",
       items: [

@@ -21,6 +21,7 @@ HISTORIAS.push({
       titulo: "La webcam que lo cambió todo",
       corto: "2010 – 2016",
       periodo: "2010 – 2016",
+      intro: "Una retransmisión casera se convierte en el escaparate del underground mundial.",
       items: [
         { a: 2010, art: "Boiler Room", t: "Primera sesión en Londres", tipo: "hito", n: "Una webcam pegada con cinta adhesiva y un puñado de amigos detrás del DJ." },
         { a: 2012, art: "Disclosure", t: "Latch", n: "Con Sam Smith: el house y el garage británicos vuelven a las listas." },

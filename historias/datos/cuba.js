@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Danzón y son",
       corto: "Danzón y son",
       periodo: "1879 – 1930",
+      intro: "Los bailes de salón y los tríos de guitarras del oriente de la isla.",
       items: [
         { a: 1879, art: "Miguel Faílde", t: "«Las alturas de Simpson», el primer danzón", tipo: "hito", n: "Un baile de salón que se convierte en el primer baile nacional cubano." },
         { a: 1922, art: "Trío Matamoros", t: "Son de la loma", n: "El son oriental: guitarra, tres y voces. «¿De dónde son los cantantes?»." },
@@ -20,7 +21,7 @@ HISTORIAS.push({
     {
       titulo: "Mambo, chachachá y las grandes orquestas",
       corto: "Mambo y chachachá",
-      periodo: "1949 – 1958",
+      periodo: "1949 – 1959",
       intro: "La Habana de los casinos y las orquestas que conquistan el mundo.",
       items: [
         { a: 1949, art: "Dámaso Pérez Prado", t: "Qué rico el mambo", n: "El mambo: metales afilados y gruñidos." },
@@ -33,6 +34,7 @@ HISTORIAS.push({
       titulo: "Nueva trova y jazz cubano",
       corto: "Nueva trova",
       periodo: "1972 – 1982",
+      intro: "La revolución trae canción de autor con mensaje y jazz cubano de altísimo nivel.",
       items: [
         { a: 1972, art: "Irakere", t: "Bacalao con pan", n: "Chucho Valdés mezcla jazz, rock y tambores afrocubanos." },
         { a: 1978, art: "Silvio Rodríguez", t: "Ojalá", n: "La nueva trova: poesía y guitarra." },
@@ -42,8 +44,10 @@ HISTORIAS.push({
     {
       titulo: "Buena Vista y el mundo",
       corto: "Buena Vista y hoy",
-      periodo: "1997 – 2017",
+      periodo: "1996 – 2017",
+      intro: "El mundo vuelve a mirar a Cuba: Buena Vista, el exilio y el reguetón cubano.",
       items: [
+        { a: 1996, art: "Buena Vista Social Club", t: "Ry Cooder graba en La Habana", tipo: "hito", n: "Un disco grabado en seis días con músicos veteranos: vendió millones." },
         { a: 1997, art: "Buena Vista Social Club", t: "Chan Chan", n: "Músicos olvidados de los años 40 y 50, con 70 y 90 años: un éxito mundial y un Grammy." },
         { a: 1998, art: "Celia Cruz", t: "La vida es un carnaval", n: "Desde el exilio: «¡Azúcar!»." },
         { a: 2015, art: "Gente de Zona", t: "La Gozadera", n: "Con Marc Anthony: el reggaetón cubano." },

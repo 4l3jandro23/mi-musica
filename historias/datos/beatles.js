@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Liverpool y Hamburgo",
       corto: "Liverpool y Hamburgo",
       periodo: "1957 – 1962",
+      intro: "Un grupo de skiffle de Liverpool aprende el oficio tocando horas cada noche en Hamburgo.",
       items: [
         { a: 1957, art: "John y Paul", t: "Se conocen en una verbena de Woolton", tipo: "hito", n: "6 de julio: Paul, con 15 años, impresiona a John tocando «Twenty Flight Rock». Al poco entra George." },
         { a: 1961, art: "Tony Sheridan", t: "My Bonnie", n: "Con los Beatles de grupo de acompañamiento, grabado en Hamburgo, donde tocaban horas y horas cada noche." },
@@ -41,9 +42,9 @@ HISTORIAS.push({
       items: [
         { a: 1965, art: "The Beatles", t: "Norwegian Wood (This Bird Has Flown)", n: "George mete un sitar en una canción pop por primera vez." },
         { a: 1965, art: "The Beatles", t: "In My Life", n: "Lennon mirando atrás con nostalgia; el solo de piano, acelerado en cinta." },
+        { a: 1966, art: "Candlestick Park", t: "Su último concierto", tipo: "hito", n: "29 de agosto en San Francisco: ya no se oían entre tanto grito." },
         { a: 1966, art: "The Beatles", t: "Eleanor Rigby", n: "Ninguno de ellos toca: solo cuerdas y una historia de soledad." },
         { a: 1966, art: "The Beatles", t: "Tomorrow Never Knows", n: "Bucles de cinta, voz a través de un altavoz giratorio: psicodelia pura." },
-        { a: 1966, art: "Candlestick Park", t: "Su último concierto", tipo: "hito", n: "29 de agosto en San Francisco: ya no se oían entre tanto grito." },
         { a: 1967, art: "The Beatles", t: "Strawberry Fields Forever", n: "Dos tomas distintas pegadas a mano, a velocidades diferentes." },
         { a: 1967, art: "The Beatles", t: "Penny Lane", n: "La cara de Paul del mismo single: Liverpool en tecnicolor." },
         { a: 1967, art: "The Beatles", t: "A Day in the Life", n: "El final de «Sgt. Pepper's»: una orquesta subiendo al caos y un acorde de piano eterno." },
@@ -55,6 +56,7 @@ HISTORIAS.push({
       titulo: "El final",
       corto: "El final",
       periodo: "1968 – 1970",
+      intro: "Peleas, negocios y obras maestras: el grupo se rompe mientras graba algunos de sus mejores discos.",
       items: [
         { a: 1968, art: "The Beatles", t: "Hey Jude", n: "Paul la escribió para consolar a Julian, el hijo de John. Siete minutos y un «na na na» eterno." },
         { a: 1968, art: "The Beatles", t: "While My Guitar Gently Weeps", n: "George, con Eric Clapton a la guitarra solista." },
@@ -71,6 +73,7 @@ HISTORIAS.push({
       titulo: "Después de los Beatles",
       corto: "En solitario",
       periodo: "1970 – 2023",
+      intro: "Cada uno por su lado, con éxitos propios, una tragedia y una despedida inesperada.",
       items: [
         { a: 1970, art: "George Harrison", t: "My Sweet Lord", n: "El primer número uno de un ex-Beatle." },
         { a: 1971, art: "John Lennon", t: "Imagine", n: "El himno pacifista por excelencia." },

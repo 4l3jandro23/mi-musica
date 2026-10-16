@@ -9,6 +9,7 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Las raíces y los primeros experimentos",
+      corto: "Raíces",
       periodo: "1897 – 1939",
       intro: "Instrumentos eléctricos pioneros y compositores que empiezan a ver el ruido como música. De esta época casi no hay grabaciones: muchas piezas se conocen por interpretaciones posteriores.",
       items: [
@@ -27,7 +28,8 @@ HISTORIAS.push({
     },
     {
       titulo: "La cinta magnética y la vanguardia académica",
-      periodo: "1940 – 1959",
+      corto: "Cinta magnética",
+      periodo: "1944 – 1958",
       intro: "La grabadora permite cortar, pegar, invertir y acelerar sonidos. París apuesta por los ruidos reales (musique concrète); Colonia, por los tonos puros generados electrónicamente.",
       items: [
         { a: 1944, art: "Halim El-Dabh", t: "The Expression of Zaar", q: "Halim El-Dabh Wire Recorder Piece", n: "En El Cairo y con una grabadora de alambre: posiblemente la primera pieza de música manipulada con grabación, antes que París." },
@@ -39,16 +41,17 @@ HISTORIAS.push({
         { a: 1956, art: "Karlheinz Stockhausen", t: "Gesang der Jünglinge", n: "La voz de un niño mezclada con sonido electrónico y repartida entre altavoces. Una obra maestra del siglo XX." },
         { a: 1956, art: "Louis and Bebe Barron", t: "Forbidden Planet", q: "Louis and Bebe Barron Forbidden Planet Main Titles", n: "La primera banda sonora de cine totalmente electrónica. Hollywood ni siquiera se atrevió a llamarla «música»." },
         { a: 1957, art: "Tom Dissevelt & Kid Baltan", t: "Song of the Second Moon", n: "En los laboratorios de Philips: electrónica que ya suena casi a pop." },
+        { a: 1958, art: "BBC Radiophonic Workshop", t: "Fundación", tipo: "hito", n: "Daphne Oram y Desmond Briscoe montan en la BBC el taller que pondrá sonido electrónico a la radio y la tele británicas." },
         { a: 1958, art: "Edgard Varèse", t: "Poème électronique", n: "Para el pabellón Philips de la Expo de Bruselas, diseñado por Le Corbusier y Xenakis: sonaba por cientos de altavoces." },
         { a: 1958, art: "Iannis Xenakis", t: "Concret PH", n: "Brasas de carbón ardiendo, grabadas y multiplicadas. También se escuchaba en el pabellón Philips." },
         { a: 1958, art: "Luciano Berio", t: "Thema (Omaggio a Joyce)", n: "La voz de Cathy Berberian leyendo a Joyce y descompuesta en cinta." },
-        { a: 1958, art: "György Ligeti", t: "Artikulation", n: "Un «idioma» inventado de sonidos electrónicos. Ligeti saldría después en «2001: Una odisea del espacio»." },
-        { a: 1958, art: "BBC Radiophonic Workshop", t: "Fundación", tipo: "hito", n: "Daphne Oram y Desmond Briscoe montan en la BBC el taller que pondrá sonido electrónico a la radio y la tele británicas." }
+        { a: 1958, art: "György Ligeti", t: "Artikulation", n: "Un «idioma» inventado de sonidos electrónicos. Ligeti saldría después en «2001: Una odisea del espacio»." }
       ]
     },
     {
       titulo: "Sintetizadores, krautrock y el nacimiento del baile",
-      periodo: "1960 – 1977",
+      corto: "Sintetizadores",
+      periodo: "1963 – 1977",
       intro: "Moog y Buchla sacan la electrónica del laboratorio. En Alemania el krautrock la convierte en viaje y en ritmo, y en 1977 Moroder la lleva a la pista de baile.",
       items: [
         { a: 1963, art: "Delia Derbyshire", t: "Doctor Who Theme", q: "Delia Derbyshire Doctor Who Theme", n: "Ron Grainer escribió la melodía; Delia la construyó nota a nota con osciladores y cinta. Sigue sonando a futuro." },
@@ -78,7 +81,7 @@ HISTORIAS.push({
     {
       titulo: "La era rave",
       corto: "La era rave",
-      periodo: "1984 – 1999",
+      periodo: "1984 – 1998",
       intro: "House en Chicago, techno en Detroit, raves en Reino Unido y superclubs. (Cada género tiene su propia historia.)",
       items: [
         { a: 1984, art: "Chicago y Detroit", t: "Nacen el house y el techno", tipo: "hito", n: "Dos ciudades industriales de EE. UU. inventan la música de baile electrónica moderna." },

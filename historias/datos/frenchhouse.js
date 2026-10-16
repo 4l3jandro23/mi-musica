@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "La French touch",
       corto: "French touch",
       periodo: "1995 – 2001",
+      intro: "Discos de disco cortados en bucles y filtros que abren y cierran el sonido.",
       items: [
         { a: 1995, art: "Daft Punk", t: "Da Funk", n: "Su primer éxito: un hombre con cabeza de perro paseando por Nueva York." },
         { a: 1997, art: "Daft Punk", t: "Around the World", n: "La misma frase repetida 144 veces y un vídeo de Michel Gondry." },
@@ -28,9 +29,9 @@ HISTORIAS.push({
       intro: "Más distorsión, más rock y camisetas de estética de heavy metal.",
       items: [
         { a: 2003, art: "Ed Banger Records", t: "Pedro Winter, mánager de Daft Punk, funda el sello", tipo: "hito", n: "Justice, SebastiAn, Breakbot o Mr. Oizo: el sonido sucio de los 2000." },
+        { a: 2007, art: "Daft Punk", t: "Alive 2007", tipo: "hito", n: "Una pirámide de luces en el escenario: el concierto que inspiró a toda la generación EDM." },
         { a: 2007, art: "Justice", t: "D.A.N.C.E.", n: "Un coro infantil y un homenaje a Michael Jackson." },
         { a: 2007, art: "Justice", t: "Genesis", n: "Electro con alma de rock épico." },
-        { a: 2007, art: "Daft Punk", t: "Alive 2007", tipo: "hito", n: "Una pirámide de luces en el escenario: el concierto que inspiró a toda la generación EDM." },
         { a: 2010, art: "Breakbot", t: "Baby I'm Yours", n: "Nu-disco elegante de Ed Banger." },
         { a: 2013, art: "Daft Punk", t: "Get Lucky", n: "Con Pharrell y Nile Rodgers: vuelven a la música disco tocada por músicos." }
       ]

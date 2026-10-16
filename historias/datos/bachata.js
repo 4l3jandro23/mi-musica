@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Música de amargue",
       corto: "Los orígenes",
       periodo: "1962 – 1990",
+      intro: "Guitarras, bongó y desamor en los barrios pobres de la República Dominicana.",
       items: [
         { a: 1962, art: "José Manuel Calderón", t: "Borracho de amor", n: "Considerada la primera bachata grabada, justo tras la muerte del dictador Trujillo." },
         { a: 1975, art: "La «música de amargue»", t: "Despreciada por la radio y las élites", tipo: "hito", n: "Se escuchaba en colmados, barras y prostíbulos: la clase alta la veía como vulgar." },

@@ -10,7 +10,7 @@ HISTORIAS.push({
     {
       titulo: "La Nova Cançó",
       corto: "Nova Cançó",
-      periodo: "1961 – 1974",
+      periodo: "1961 – 1968",
       intro: "Cantautores con guitarra frente a la censura.",
       items: [
         { a: 1961, art: "Els Setze Jutges", t: "Nace la Nova Cançó", tipo: "hito", n: "Un grupo de cantautores que se propone normalizar la canción en catalán en plena dictadura." },
@@ -38,6 +38,7 @@ HISTORIAS.push({
       titulo: "Pop, indie y una nueva generación",
       corto: "Siglo XXI",
       periodo: "2008 – 2019",
+      intro: "Pop, indie, dancehall y rumba: el catalán suena en todos los estilos.",
       items: [
         { a: 2008, art: "Manel", t: "Al mar!", n: "Indie pop con letras ingeniosas: un fenómeno inesperado." },
         { a: 2011, art: "Els Catarres", t: "Jenifer", n: "Un amor imposible entre un chico de pueblo y una chica de Castelldefels." },

@@ -9,7 +9,9 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Detroit",
+      corto: "Detroit",
       periodo: "1981 – 1988",
+      intro: "Tres amigos de Belleville mezclan Kraftwerk y funk en una ciudad en ruinas.",
       items: [
         { a: 1981, art: "Cybotron", t: "Alleys of Your Mind", n: "Juan Atkins y Rick Davis: electro con aires de ciencia ficción. La semilla." },
         { a: 1983, art: "Cybotron", t: "Clear", n: "Kraftwerk con funk. Puro electro." },
@@ -21,12 +23,14 @@ HISTORIAS.push({
     },
     {
       titulo: "El techno se hace global",
+      corto: "Global",
       periodo: "1990 – 1997",
+      intro: "Reino Unido, Nueva York y Berlín adoptan el techno y lo llevan al extremo.",
       items: [
         { a: 1990, art: "LFO", t: "LFO", n: "Desde Sheffield, el «bleep techno»: unos graves que reventaban los altavoces." },
         { a: 1990, art: "Joey Beltram", t: "Energy Flash", n: "Desde Nueva York, techno oscuro e hipnótico." },
-        { a: 1991, art: "Second Phase", t: "Mentasm", n: "El sonido «hoover», que se oirá en todas las raves y en el hardcore." },
         { a: 1991, art: "Tresor", t: "El club abre en Berlín", tipo: "hito", n: "En una cámara acorazada del Berlín recién reunificado: Detroit y Berlín, unidos." },
+        { a: 1991, art: "Second Phase", t: "Mentasm", n: "El sonido «hoover», que se oirá en todas las raves y en el hardcore." },
         { a: 1992, art: "Aphex Twin", t: "Digeridoo", n: "Un chaval de Cornualles llevando el techno a lo experimental." },
         { a: 1993, art: "Galaxy 2 Galaxy", t: "Hi-Tech Jazz", n: "Underground Resistance, el colectivo militante de Detroit, en su versión más bonita." },
         { a: 1993, art: "Plastikman", t: "Spastik", n: "Richie Hawtin: solo percusión. El minimal en estado puro." },

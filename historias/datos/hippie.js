@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Folk y protesta",
       corto: "Protesta",
       periodo: "1963 – 1966",
+      intro: "Guitarras acústicas, protesta y el folk que se electrifica.",
       items: [
         { a: 1963, art: "Bob Dylan", t: "Blowin' in the Wind", n: "Preguntas sin respuesta sobre la guerra y la libertad: el himno de una generación." },
         { a: 1965, art: "The Byrds", t: "Mr. Tambourine Man", n: "Dylan con guitarras eléctricas: nace el folk rock." },
@@ -25,8 +26,8 @@ HISTORIAS.push({
       periodo: "1967 – 1968",
       intro: "Haight-Ashbury, San Francisco: flores en el pelo.",
       items: [
-        { a: 1967, art: "Scott McKenzie", t: "San Francisco (Be Sure to Wear Flowers in Your Hair)", n: "La invitación que llevó a miles de jóvenes a San Francisco." },
         { a: 1967, art: "Verano del amor", t: "100.000 jóvenes en San Francisco", tipo: "hito", n: "Comunas, conciertos gratis en el parque y el festival de Monterey." },
+        { a: 1967, art: "Scott McKenzie", t: "San Francisco (Be Sure to Wear Flowers in Your Hair)", n: "La invitación que llevó a miles de jóvenes a San Francisco." },
         { a: 1967, art: "Buffalo Springfield", t: "For What It's Worth", n: "«Something's happening here»: sobre las protestas en Los Ángeles." },
         { a: 1967, art: "Country Joe and the Fish", t: "I-Feel-Like-I'm-Fixin'-to-Die Rag", n: "Sátira contra Vietnam: la cantaron medio millón de personas en Woodstock." },
         { a: 1967, art: "The Youngbloods", t: "Get Together", n: "«Come on people now, smile on your brother»." },
@@ -38,12 +39,13 @@ HISTORIAS.push({
       titulo: "Woodstock y el final del sueño",
       corto: "Woodstock",
       periodo: "1969 – 1970",
+      intro: "El festival que lo resumió todo y el concierto que lo terminó.",
       items: [
-        { a: 1969, art: "The 5th Dimension", t: "Aquarius / Let the Sunshine In", n: "Del musical «Hair»: llega la «era de Acuario»." },
         { a: 1969, art: "Woodstock", t: "Tres días de paz y música", tipo: "hito", n: "Medio millón de personas en una granja de Nueva York, del 15 al 18 de agosto." },
+        { a: 1969, art: "Altamont", t: "El concierto de los Rolling Stones acaba en tragedia", tipo: "hito", n: "Diciembre: un asesinato durante el concierto. Se acaba la inocencia de los 60." },
+        { a: 1969, art: "The 5th Dimension", t: "Aquarius / Let the Sunshine In", n: "Del musical «Hair»: llega la «era de Acuario»." },
         { a: 1969, art: "Santana", t: "Soul Sacrifice", n: "Un grupo casi desconocido que en Woodstock se convirtió en leyenda." },
         { a: 1969, art: "Jimi Hendrix", t: "The Star-Spangled Banner (Live at Woodstock)", q: "Jimi Hendrix Star Spangled Banner Woodstock", n: "El himno de EE. UU. con sonidos de bombas: una protesta sin palabras." },
-        { a: 1969, art: "Altamont", t: "El concierto de los Rolling Stones acaba en tragedia", tipo: "hito", n: "Diciembre: un asesinato durante el concierto. Se acaba la inocencia de los 60." },
         { a: 1970, art: "Crosby, Stills, Nash & Young", t: "Woodstock", n: "La canción de Joni Mitchell sobre un festival al que ella no pudo ir." },
         { a: 1970, art: "Crosby, Stills, Nash & Young", t: "Ohio", n: "Escrita tras la matanza de estudiantes en la Universidad de Kent State." },
         { a: 1970, art: "Melanie", t: "Lay Down (Candles in the Rain)", n: "Inspirada por las velas encendidas bajo la lluvia en Woodstock." }

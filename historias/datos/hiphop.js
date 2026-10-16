@@ -2,27 +2,29 @@ HISTORIAS.push({
   id: "hiphop",
   familia: "Hip hop",
   titulo: "Orígenes del hip hop",
-  periodo: "1969 – 1988",
+  periodo: "1970 – 1988",
   color: "#e0702b",
   lema: "De una fiesta en el Bronx a la edad de oro: breaks, MCs y samplers.",
   intro: "Nace en las fiestas del Bronx, cuando los DJs alargan los breaks de los discos de funk para que la gente baile. Encima llegan los MCs y luego las cajas de ritmos. Tres capítulos, de los ingredientes al primer gran salto.",
   capitulos: [
     {
       titulo: "Los ingredientes",
-      periodo: "1969 – 1978",
+      corto: "Ingredientes",
+      periodo: "1970 – 1975",
       intro: "Funk con breaks de batería que los DJs repetían con dos platos y poesía hablada con conciencia política.",
       items: [
         { a: 1970, art: "James Brown", t: "Funky Drummer", n: "El break de Clyde Stubblefield es uno de los ritmos más sampleados de la historia." },
         { a: 1970, art: "The Last Poets", t: "When the Revolution Comes", n: "Poesía hablada sobre percusión. Los abuelos del rap." },
         { a: 1971, art: "Gil Scott-Heron", t: "The Revolution Will Not Be Televised", n: "Spoken word con groove: el mensaje político que heredará el hip hop." },
         { a: 1972, art: "The Jimmy Castor Bunch", t: "It's Just Begun", n: "Otro clásico de los b-boys: perfecto para el breakdance." },
-        { a: 1973, art: "Incredible Bongo Band", t: "Apache", n: "Se considera el himno nacional del hip hop: su break de bongos era sagrado en las fiestas." },
         { a: 1973, art: "DJ Kool Herc", t: "Fiesta en el 1520 de Sedgwick Avenue", tipo: "hito", n: "11 de agosto, en el Bronx: Herc repite los breaks con dos copias del mismo disco. Se toma como el nacimiento del hip hop." },
+        { a: 1973, art: "Incredible Bongo Band", t: "Apache", n: "Se considera el himno nacional del hip hop: su break de bongos era sagrado en las fiestas." },
         { a: 1975, art: "Grandmaster Flash", t: "La técnica del «quick mix»", tipo: "hito", n: "Flash perfecciona el scratch, el backspin y el cueing: convierte los platos en un instrumento." }
       ]
     },
     {
       titulo: "Del parque al disco",
+      corto: "Del parque al disco",
       periodo: "1979 – 1982",
       intro: "El rap llega al vinilo y a la radio. Al principio con músicos de estudio y luego con máquinas.",
       items: [
@@ -36,6 +38,7 @@ HISTORIAS.push({
     },
     {
       titulo: "La nueva escuela y la edad de oro",
+      corto: "Nueva escuela",
       periodo: "1983 – 1988",
       intro: "Run-DMC endurece el sonido, el sampler lo cambia todo y las letras se vuelven complejas.",
       items: [
@@ -47,6 +50,7 @@ HISTORIAS.push({
         { a: 1987, art: "Boogie Down Productions", t: "South Bronx", n: "KRS-One reivindica el Bronx como cuna del hip hop en plena guerra de barrios." },
         { a: 1987, art: "Eric B. & Rakim", t: "Paid in Full", n: "Y su remix de Coldcut convierte el sampleo en arte." },
         { a: 1987, art: "Public Enemy", t: "Rebel Without a Pause", n: "Muros de samples y un pitido de saxo como sirena: puro ruido con mensaje." },
+        { a: 1988, art: "«Yo! MTV Raps»", t: "El rap entra en la MTV", tipo: "hito", n: "Un programa semanal lleva el hip hop a todas las casas de EE. UU." },
         { a: 1988, art: "Public Enemy", t: "Don't Believe the Hype", n: "De «It Takes a Nation of Millions…», que para muchos es el mejor disco de rap." },
         { a: 1988, art: "N.W.A", t: "Straight Outta Compton", n: "La costa oeste irrumpe: el gangsta rap llega a todo el país." }
       ]

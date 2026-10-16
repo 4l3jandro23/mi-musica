@@ -9,7 +9,8 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Las raíces: Memphis y Houston",
-      periodo: "1994 – 1999",
+      corto: "Memphis",
+      periodo: "1994 – 1996",
       intro: "Lo que luego se samplearía mil veces.",
       items: [
         { a: 1994, art: "Tommy Wright III", t: "Ashes 2 Ashes, Dust 2 Dust", tipo: "disco", n: "Rap de Memphis crudo y paranoico, con la producción lo-fi de cinta que definirá el sonido." },
@@ -19,7 +20,8 @@ HISTORIAS.push({
     },
     {
       titulo: "El renacimiento en SoundCloud",
-      periodo: "2010 – 2019",
+      corto: "SoundCloud",
+      periodo: "2012",
       intro: "Aquí nace la palabra «phonk»: productores jóvenes recuperan y samplean aquellas cintas.",
       items: [
         { a: 2012, art: "SpaceGhostPurrp", t: "Mysterious Phonk: The Chronicles of SpaceGhostPurrp", tipo: "disco", n: "Desde Miami, el que pone nombre al género." },
@@ -28,6 +30,7 @@ HISTORIAS.push({
     },
     {
       titulo: "La explosión del drift phonk",
+      corto: "Drift phonk",
       periodo: "2020 – 2022",
       intro: "Cencerros a toda velocidad, bajos saturados y vídeos de coches derrapando. TikTok hace el resto.",
       items: [

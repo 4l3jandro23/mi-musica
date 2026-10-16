@@ -11,9 +11,10 @@ HISTORIAS.push({
       titulo: "Gabber y happy hardcore",
       corto: "Gabber",
       periodo: "1992 – 1995",
+      intro: "Róterdam acelera el techno y distorsiona el bombo.",
       items: [
-        { a: 1992, art: "Euromasters", t: "Alles naar de kl*te", q: "Euromasters Alles naar de klote", n: "El himno gabber de Róterdam: rápido, bruto y provocador." },
         { a: 1992, art: "Thunderdome", t: "Las fiestas y recopilatorios de ID&T", tipo: "hito", n: "Chándales, cabezas rapadas y bombos a 180 BPM: la cultura gabber." },
+        { a: 1992, art: "Euromasters", t: "Alles naar de kl*te", q: "Euromasters Alles naar de klote", n: "El himno gabber de Róterdam: rápido, bruto y provocador." },
         { a: 1995, art: "Paul Elstak", t: "Luv U More", n: "El happy hardcore: gabber con melodías alegres y voces aceleradas." }
       ]
     },

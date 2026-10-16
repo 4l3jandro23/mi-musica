@@ -10,7 +10,8 @@ HISTORIAS.push({
     {
       titulo: "Los primeros pasos",
       corto: "Primeros pasos",
-      periodo: "1989 – 1999",
+      periodo: "1989 – 1997",
+      intro: "Recopilatorios, fanzines y los primeros grupos de Madrid y Barcelona.",
       items: [
         { a: 1989, art: "Madrid Hip Hop", t: "El primer recopilatorio de rap español", tipo: "hito", n: "Grupos de Madrid en un disco: el rap en castellano existe." },
         { a: 1994, art: "El Club de los Poetas Violentos", t: "Madrid zona bruta", n: "CPV: el rap madrileño con mala leche. Un disco fundacional." },
@@ -35,6 +36,7 @@ HISTORIAS.push({
       titulo: "Freestyle y nueva era",
       corto: "Freestyle",
       periodo: "2005 – 2017",
+      intro: "Las batallas de improvisación llevan el rap a las plazas y la televisión.",
       items: [
         { a: 2005, art: "Red Bull Batalla de los Gallos", t: "Primera edición en España", tipo: "hito", n: "Las batallas de improvisación empiezan a llenar plazas." },
         { a: 2016, art: "Kase.O", t: "Mazas y catapultas", n: "De «El Círculo», el esperadísimo disco en solitario de Kase.O tras años de silencio." },

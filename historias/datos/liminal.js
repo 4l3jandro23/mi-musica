@@ -36,6 +36,7 @@ HISTORIAS.push({
       titulo: "Backrooms y recuerdos borrosos",
       corto: "Backrooms",
       periodo: "1994 – 2019",
+      intro: "Recuerdos que no son tuyos: ambient, videojuegos y la leyenda de las oficinas infinitas.",
       items: [
         { a: 1994, art: "Aphex Twin", t: "#3", q: "Aphex Twin Selected Ambient Works Volume II #3", n: "Conocida como «Rhubarb»: un órgano infinito y suave." },
         { a: 1998, art: "Boards of Canada", t: "Olson", n: "Un minuto de recuerdo infantil que no sabes si es tuyo." },

@@ -10,7 +10,7 @@ HISTORIAS.push({
     {
       titulo: "La edad de oro: radio y cine",
       corto: "Edad de oro",
-      periodo: "1930 – 1959",
+      periodo: "1930 – 1949",
       intro: "La radio y el cine mexicano convierten a sus cantantes en ídolos de todo el continente.",
       items: [
         { a: 1930, art: "La XEW", t: "«La voz de la América Latina desde México»", tipo: "hito", n: "Una emisora de radio de Ciudad de México que lanza a casi todas las estrellas de la época." },
@@ -35,6 +35,7 @@ HISTORIAS.push({
       titulo: "Baladas, ídolos y rock en español",
       corto: "Baladas y rock",
       periodo: "1970 – 1998",
+      intro: "Baladistas, divas y el rock en español.",
       items: [
         { a: 1970, art: "José José", t: "El triste", n: "La actuación en un festival que lo convirtió en «el príncipe de la canción»." },
         { a: 1984, art: "Juan Gabriel", t: "Querida", n: "El divo de Juárez: compositor de cientos de éxitos." },
@@ -51,6 +52,7 @@ HISTORIAS.push({
       titulo: "El boom latino y la era del streaming",
       corto: "Boom y streaming",
       periodo: "1998 – 2023",
+      intro: "Del boom latino de 1999 a la música más escuchada del mundo.",
       items: [
         { a: 1998, art: "Ricky Martin", t: "La copa de la vida", n: "El Mundial de Francia y el principio del «boom latino» de 1999." },
         { a: 1999, art: "Enrique Iglesias", t: "Bailamos", n: "El hijo de Julio Iglesias conquista EE. UU." },

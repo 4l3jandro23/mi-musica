@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Hi-NRG y la fábrica de éxitos",
       corto: "Los 80",
       periodo: "1984 – 1987",
+      intro: "Productores británicos e italianos fabrican pop rapidísimo.",
       items: [
         { a: 1984, art: "Dead or Alive", t: "You Spin Me Round (Like a Record)", n: "Stock Aitken Waterman: el primer número uno de la «fábrica de éxitos»." },
         { a: 1986, art: "Bananarama", t: "Venus", n: "Otra de SAW: pop rapidísimo." },

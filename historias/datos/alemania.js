@@ -9,7 +9,9 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Weimar y la guerra",
+      corto: "Weimar",
       periodo: "1928 – 1939",
+      intro: "El cabaret de Berlín, las películas sonoras y la persecución nazi.",
       items: [
         { a: 1928, art: "Kurt Weill", t: "Die Moritat von Mackie Messer", n: "De «La ópera de cuatro cuartos» de Brecht. En inglés, «Mack the Knife»." },
         { a: 1930, art: "Comedian Harmonists", t: "Veronika, der Lenz ist da", n: "Un grupo vocal que los nazis disolvieron por tener miembros judíos." },
@@ -20,7 +22,9 @@ HISTORIAS.push({
     },
     {
       titulo: "Posguerra y Schlager",
+      corto: "Posguerra",
       periodo: "1951 – 1965",
+      intro: "Un país en ruinas busca consuelo en canciones amables, mientras llega el rock.",
       items: [
         { a: 1951, art: "Cornelia Froboess", t: "Pack die Badehose ein", n: "Una niña de ocho años y el verano en el Berlín en ruinas." },
         { a: 1956, art: "Freddy Quinn", t: "Heimweh", n: "El Schlager: nostalgia y melodía para olvidar la guerra." },
@@ -30,6 +34,7 @@ HISTORIAS.push({
     },
     {
       titulo: "Krautrock y el futuro",
+      corto: "Krautrock",
       periodo: "1970 – 1979",
       intro: "Una generación que no quiere ni el Schlager ni copiar a los americanos.",
       items: [
@@ -46,6 +51,7 @@ HISTORIAS.push({
     },
     {
       titulo: "Neue Deutsche Welle y los 80",
+      corto: "NDW",
       periodo: "1981 – 1985",
       intro: "La «nueva ola alemana»: punk, synth y letras en alemán.",
       items: [
@@ -60,7 +66,9 @@ HISTORIAS.push({
     },
     {
       titulo: "Techno, Rammstein y rap",
+      corto: "Techno y rap",
       periodo: "1989 – 2019",
+      intro: "El Muro cae y Berlín se convierte en la capital mundial del techno.",
       items: [
         { a: 1989, art: "Love Parade", t: "Primera edición en Berlín", tipo: "hito", n: "150 personas en 1989. Tras la caída del Muro llegaría a más de un millón: Berlín, capital del techno." },
         { a: 1992, art: "Die Fantastischen Vier", t: "Die da!?!", n: "El primer gran éxito del rap en alemán." },

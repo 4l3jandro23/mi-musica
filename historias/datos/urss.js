@@ -9,7 +9,9 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Jazz, clásicos y la Gran Guerra Patria",
+      corto: "Jazz y guerra",
       periodo: "1934 – 1942",
+      intro: "Jazz tolerado, música clásica de Estado y canciones para el frente.",
       items: [
         { a: 1934, art: "Leonid Utyosov", alias: ["Леонид Утёсов"], t: "Serdtse", q: "Леонид Утёсов Сердце", n: "El jazz soviético: tolerado mientras fuera alegre." },
         { a: 1936, art: "Sergei Prokofiev", t: "Peter and the Wolf", n: "Un cuento musical para niños que se escucha en todo el mundo." },
@@ -20,18 +22,21 @@ HISTORIAS.push({
     },
     {
       titulo: "El deshielo",
+      corto: "Deshielo",
       periodo: "1950 – 1966",
       intro: "Tras Stalin, un poco más de libertad… y mucho contrabando.",
       items: [
         { a: 1950, art: "Música «en los huesos»", t: "Discos grabados en radiografías", tipo: "hito", n: "Rock and roll y jazz prohibidos, copiados en placas de rayos X recortadas: el «roentgenizdat»." },
-        { a: 1957, art: "Vladimir Troshin", alias: ["Владимир Трошин"], t: "Podmoskovnye vechera", q: "Владимир Трошин Подмосковные вечера", n: "«Noches de Moscú»: la canción soviética que conoció todo el mundo." },
         { a: 1957, art: "Festival de la Juventud", t: "Moscú se abre al mundo", tipo: "hito", n: "Miles de jóvenes extranjeros traen jazz, rock and roll y vaqueros." },
+        { a: 1957, art: "Vladimir Troshin", alias: ["Владимир Трошин"], t: "Podmoskovnye vechera", q: "Владимир Трошин Подмосковные вечера", n: "«Noches de Moscú»: la canción soviética que conoció todo el mundo." },
         { a: 1966, art: "Eduard Khil", alias: ["Эдуард Хиль"], t: "Trololo", q: "Eduard Khil Trololo", n: "Una canción sin letra (la original fue censurada). En 2010 se convirtió en meme mundial." }
       ]
     },
     {
       titulo: "Bardos, divas y rock clandestino",
-      periodo: "1972 – 1984",
+      corto: "Bardos y divas",
+      periodo: "1972 – 1982",
+      intro: "Casetes copiadas a mano, ídolos del pop y rock en clubs vigilados.",
       items: [
         { a: 1972, art: "Vladimir Vysotsky", alias: ["Владимир Высоцкий"], t: "Koni priveredlivye", q: "Владимир Высоцкий Кони привередливые", n: "El bardo más querido: casi nada se publicaba oficialmente, pero todo el país tenía sus cintas." },
         { a: 1979, art: "Mashina Vremeni", alias: ["Машина времени"], t: "Povorot", q: "Машина времени Поворот", n: "Rock soviético que por fin sonó en la radio." },
@@ -42,6 +47,7 @@ HISTORIAS.push({
     },
     {
       titulo: "Perestroika: «¡Queremos cambios!»",
+      corto: "Perestroika",
       periodo: "1986 – 1991",
       intro: "Gorbachov abre la mano y el rock sale a los estadios.",
       items: [
@@ -57,7 +63,9 @@ HISTORIAS.push({
     },
     {
       titulo: "Epílogo: la nostalgia postsoviética",
+      corto: "Epílogo",
       periodo: "2018",
+      intro: "Nuevas generaciones convierten el frío soviético en estética.",
       items: [
         { a: 2018, art: "Molchat Doma", alias: ["Молчат Дома"], t: "Sudno (Boris Ryzhy)", q: "Molchat Doma Судно", n: "Desde Bielorrusia, post-punk con el frío de los bloques soviéticos. Viral en TikTok." }
       ]

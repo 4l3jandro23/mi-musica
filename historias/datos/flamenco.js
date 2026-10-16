@@ -9,6 +9,7 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Del cante jondo a la ópera flamenca",
+      corto: "Cante jondo",
       periodo: "1910 – 1962",
       intro: "Las primeras grabaciones, los grandes cantaores y el debate entre lo puro y lo popular.",
       items: [
@@ -21,6 +22,7 @@ HISTORIAS.push({
     },
     {
       titulo: "Paco, Camarón y el rock andaluz",
+      corto: "Paco y Camarón",
       periodo: "1969 – 1979",
       intro: "Una revolución desde dentro: armonías nuevas, instrumentos nuevos y otro público.",
       items: [
@@ -36,7 +38,9 @@ HISTORIAS.push({
     },
     {
       titulo: "Nuevo flamenco y fusión",
+      corto: "Nuevo flamenco",
       periodo: "1983 – 2018",
+      intro: "El flamenco se mezcla con el blues, el pop, el rock y la electrónica.",
       items: [
         { a: 1983, art: "Remedios Amaya", t: "¿Quién maneja mi barca?", n: "Eurovisión 1983, cero puntos… y hoy es una canción de culto." },
         { a: 1987, art: "Pata Negra", t: "Blues de la frontera", n: "Los hermanos Amador: blues y flamenco. Un disco clave del nuevo flamenco." },

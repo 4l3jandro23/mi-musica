@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Los clubs de Nueva York",
       corto: "Los orígenes",
       periodo: "1970 – 1975",
+      intro: "Fiestas en lofts y clubs gais, negros y latinos de Nueva York.",
       items: [
         { a: 1970, art: "David Mancuso", t: "Abre The Loft", tipo: "hito", n: "Fiestas privadas en su casa de Nueva York, con el mejor sonido posible: el modelo de todos los clubs." },
         { a: 1974, art: "The Hues Corporation", t: "Rock the Boat", n: "Uno de los primeros éxitos disco en llegar al número uno." },
@@ -37,16 +38,17 @@ HISTORIAS.push({
         { a: 1978, art: "Village People", t: "Y.M.C.A.", n: "Un guiño a la cultura gay que el mundo entero baila sin saberlo." },
         { a: 1978, art: "Gloria Gaynor", t: "I Will Survive", n: "Era la cara B del single. Se convirtió en himno de supervivencia." },
         { a: 1978, art: "Sylvester", t: "You Make Me Feel (Mighty Real)", n: "Falsete y sintetizadores: puente hacia el hi-NRG y el house." },
+        { a: 1979, art: "Disco Demolition Night", t: "«La disco ha muerto»", tipo: "hito", n: "Queman discos de disco en un estadio de Chicago: una reacción racista y homófoba." },
         { a: 1979, art: "Sister Sledge", t: "We Are Family", n: "Otra producción de Chic." },
         { a: 1979, art: "Michael Jackson", t: "Don't Stop 'Til You Get Enough", n: "De «Off the Wall», con Quincy Jones." },
-        { a: 1979, art: "Patrick Hernandez", t: "Born to Be Alive", n: "Un francés con apellido español: éxito mundial (y una joven Madonna en su gira)." },
-        { a: 1979, art: "Disco Demolition Night", t: "«La disco ha muerto»", tipo: "hito", n: "Queman discos de disco en un estadio de Chicago: una reacción racista y homófoba." }
+        { a: 1979, art: "Patrick Hernandez", t: "Born to Be Alive", n: "Un francés con apellido español: éxito mundial (y una joven Madonna en su gira)." }
       ]
     },
     {
       titulo: "La disco nunca muere",
       corto: "Revivals",
       periodo: "1980 – 2020",
+      intro: "Después de «morir», la disco vuelve en cada década.",
       items: [
         { a: 1980, art: "Diana Ross", t: "I'm Coming Out", n: "Producida por Chic: himno del orgullo LGTB." },
         { a: 2000, art: "Kylie Minogue", t: "Spinning Around", n: "El regreso de Kylie con hot pants doradas." },

@@ -9,6 +9,7 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Raíces y tradición",
+      corto: "Raíces",
       periodo: "1235 – 1953",
       intro: "Música oral transmitida durante siglos y las primeras grabaciones.",
       items: [
@@ -20,6 +21,7 @@ HISTORIAS.push({
     },
     {
       titulo: "Las independencias: highlife, rumba congoleña y jazz",
+      corto: "Independencias",
       periodo: "1960 – 1969",
       intro: "Nacen decenas de países y cada uno busca su sonido moderno.",
       items: [
@@ -33,7 +35,8 @@ HISTORIAS.push({
     },
     {
       titulo: "Afrobeat, afrofunk y la edad de oro",
-      periodo: "1972 – 1979",
+      corto: "Afrobeat",
+      periodo: "1972 – 1978",
       intro: "James Brown llega a África y África le contesta.",
       items: [
         { a: 1972, art: "Manu Dibango", t: "Soul Makossa", n: "Desde Camerún. Su «mama-ko, mama-sa» acabó en «Wanna Be Startin' Somethin'» de Michael Jackson." },
@@ -49,6 +52,7 @@ HISTORIAS.push({
     },
     {
       titulo: "La world music: África conquista el mundo",
+      corto: "World music",
       periodo: "1982 – 1997",
       intro: "Discográficas europeas, giras mundiales y colaboraciones con estrellas del pop.",
       items: [
@@ -68,6 +72,7 @@ HISTORIAS.push({
     },
     {
       titulo: "Del desierto a las pistas: el siglo XXI",
+      corto: "Siglo XXI",
       periodo: "2000 – 2023",
       intro: "Rock tuareg, kwaito, afrobeats y amapiano: el pop africano domina el mundo.",
       items: [

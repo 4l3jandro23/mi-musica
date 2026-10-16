@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "PC Music y SOPHIE",
       corto: "Los orígenes",
       periodo: "2013 – 2018",
+      intro: "Un sello londinense hace pop exagerado entre la broma y el arte.",
       items: [
         { a: 2013, art: "PC Music", t: "A. G. Cook funda el sello", tipo: "hito", n: "Pop de plástico, irónico y brillante: ¿broma o futuro?" },
         { a: 2014, art: "A. G. Cook", t: "Beautiful", n: "La estética PC Music en estado puro." },
@@ -26,6 +27,7 @@ HISTORIAS.push({
       titulo: "La explosión de internet",
       corto: "Explosión",
       periodo: "2019 – 2024",
+      intro: "Una playlist le pone nombre y la generación de internet lo adopta.",
       items: [
         { a: 2019, art: "Spotify", t: "La lista «hyperpop»", tipo: "hito", n: "Una playlist le da nombre a toda una escena." },
         { a: 2019, art: "100 gecs", t: "stupid horse", n: "Ska, dubstep y caos en dos minutos." },

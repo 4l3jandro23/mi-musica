@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Los orígenes",
       corto: "Orígenes",
       periodo: "1990 – 1995",
+      intro: "Arpegios hipnóticos y subidas larguísimas en Alemania e Ibiza.",
       items: [
         { a: 1990, art: "Age of Love", t: "The Age of Love", n: "Su remix de Jam & Spoon de 1992 se considera uno de los primeros temas de trance." },
         { a: 1993, art: "Energy 52", t: "Café del Mar", n: "Un homenaje a la terraza del atardecer de Ibiza. Un clásico eterno." },
@@ -49,6 +50,7 @@ HISTORIAS.push({
       titulo: "El trance de festival",
       corto: "Festival",
       periodo: "2011 – 2013",
+      intro: "El trance más emocional llena estadios.",
       items: [
         { a: 2011, art: "Above & Beyond", t: "Sun & Moon", n: "Con Richard Bedford: el trance emocional que se canta a gritos." },
         { a: 2013, art: "Armin van Buuren", t: "This Is What It Feels Like", n: "Con Trevor Guthrie: el trance se acerca al pop." }

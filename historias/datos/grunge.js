@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Seattle y Sub Pop",
       corto: "Sub Pop",
       periodo: "1986 – 1990",
+      intro: "Grupos de Seattle, lejos de la industria, y un sello pequeño que los reúne.",
       items: [
         { a: 1986, art: "Deep Six", t: "El recopilatorio de los grupos de Seattle", tipo: "hito", n: "Soundgarden, Melvins, Green River…: la primera foto de la escena." },
         { a: 1988, art: "Mudhoney", t: "Touch Me I'm Sick", n: "El single que define el sonido Sub Pop: sucio y gamberro." },
@@ -22,6 +23,7 @@ HISTORIAS.push({
       titulo: "La explosión",
       corto: "La explosión",
       periodo: "1991 – 1993",
+      intro: "«Nevermind» lo cambia todo: Seattle se convierte en el centro del rock.",
       items: [
         { a: 1991, art: "Nirvana", t: "Smells Like Teen Spirit", n: "«Nevermind» desbanca a Michael Jackson del número uno." },
         { a: 1991, art: "Pearl Jam", t: "Even Flow", n: "Del disco «Ten», uno de los más vendidos de la década." },
@@ -35,9 +37,10 @@ HISTORIAS.push({
       titulo: "El final",
       corto: "El final",
       periodo: "1994 – 1995",
+      intro: "La muerte de Kurt Cobain marca el final del sueño.",
       items: [
-        { a: 1994, art: "Nirvana", t: "Where Did You Sleep Last Night", q: "Nirvana Where Did You Sleep Last Night MTV Unplugged", n: "Del Unplugged de la MTV: el último grito de Cobain." },
         { a: 1994, art: "Kurt Cobain", t: "Muere con 27 años", tipo: "hito", n: "5 de abril de 1994: el grunge pierde a su líder y su inocencia." },
+        { a: 1994, art: "Nirvana", t: "Where Did You Sleep Last Night", q: "Nirvana Where Did You Sleep Last Night MTV Unplugged", n: "Del Unplugged de la MTV: el último grito de Cobain." },
         { a: 1994, art: "Soundgarden", t: "Black Hole Sun", n: "El grunge más psicodélico." },
         { a: 1994, art: "Silverchair", t: "Tomorrow", n: "Unos adolescentes australianos de 15 años: la herencia del grunge." },
         { a: 1995, art: "Foo Fighters", t: "I'll Stick Around", n: "Dave Grohl, el batería de Nirvana, empieza de nuevo grabándolo todo él solo." }

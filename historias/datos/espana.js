@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Zarzuela, cuplé y vanguardia",
       corto: "1894 – 1936",
       periodo: "1894 – 1936",
+      intro: "Zarzuela, cuplé y flamenco, hasta que la guerra lo rompe todo.",
       items: [
         { a: 1894, art: "Tomás Bretón", t: "La verbena de la Paloma", n: "La zarzuela: la ópera popular madrileña." },
         { a: 1918, art: "Raquel Meller", t: "La violetera", n: "El cuplé triunfa en París y Nueva York." },
@@ -21,7 +22,7 @@ HISTORIAS.push({
     {
       titulo: "La dictadura",
       corto: "Franquismo",
-      periodo: "1939 – 1975",
+      periodo: "1941 – 1972",
       intro: "Lo cuenta con detalle la historia de la música en el franquismo.",
       items: [
         { a: 1941, art: "Concha Piquer", t: "Tatuaje", n: "La copla, música oficial de la posguerra." },
@@ -32,7 +33,7 @@ HISTORIAS.push({
     {
       titulo: "Transición y Movida",
       corto: "Transición y Movida",
-      periodo: "1976 – 1989",
+      periodo: "1976 – 1988",
       intro: "Libertad, rock andaluz, la Movida madrileña y el pop que se canta en castellano.",
       items: [
         { a: 1976, art: "Jarcha", t: "Libertad sin ira", n: "El himno de la Transición." },
@@ -50,6 +51,7 @@ HISTORIAS.push({
       titulo: "Los 90",
       corto: "Los 90",
       periodo: "1993 – 1999",
+      intro: "Grandes discos de pop, rock y rumba, y estrellas que llenan estadios.",
       items: [
         { a: 1993, art: "Los Rodríguez", t: "Sin documentos", n: "Andrés Calamaro y Ariel Rot: un argentino que se hizo madrileño." },
         { a: 1996, art: "Jarabe de Palo", t: "La flaca", n: "Pau Donés y un éxito en todo el mundo hispano." },

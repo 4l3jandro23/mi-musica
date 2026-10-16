@@ -9,20 +9,23 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Las raíces: rhythm & blues y gospel",
+      corto: "Raíces",
       periodo: "1944 – 1954",
+      intro: "El rhythm & blues y el gospel de los músicos negros preparan la revolución.",
       items: [
         { a: 1944, art: "Sister Rosetta Tharpe", t: "Strange Things Happening Every Day", n: "La madrina del rock and roll: gospel con guitarra eléctrica." },
         { a: 1946, art: "Arthur Crudup", t: "That's All Right", n: "El blues que Elvis grabaría en su primer single." },
         { a: 1948, art: "Wynonie Harris", t: "Good Rocking Tonight", n: "«Rock» ya aparece en el título, con sus dobles sentidos." },
         { a: 1949, art: "Fats Domino", t: "The Fat Man", n: "Piano de Nueva Orleans: uno de los primeros discos de rock and roll en vender un millón." },
-        { a: 1951, art: "Jackie Brenston and his Delta Cats", t: "Rocket 88", n: "En realidad era la banda de Ike Turner. Muchos la consideran el primer rock and roll." },
         { a: 1951, art: "Alan Freed", t: "Bautiza el «rock and roll» en la radio", tipo: "hito", n: "Un DJ de Cleveland populariza el nombre y pone música negra para un público blanco." },
+        { a: 1951, art: "Jackie Brenston and his Delta Cats", t: "Rocket 88", n: "En realidad era la banda de Ike Turner. Muchos la consideran el primer rock and roll." },
         { a: 1953, art: "Big Mama Thornton", t: "Hound Dog", n: "La original, mucho más salvaje que la de Elvis." },
         { a: 1954, art: "Big Joe Turner", t: "Shake, Rattle and Roll", n: "Rhythm & blues de Kansas City listo para explotar." }
       ]
     },
     {
       titulo: "La explosión",
+      corto: "La explosión",
       periodo: "1954 – 1959",
       intro: "Los adolescentes descubren que tienen su propia música.",
       items: [
@@ -46,7 +49,9 @@ HISTORIAS.push({
     },
     {
       titulo: "Del surf a la invasión británica",
+      corto: "Surf e invasión británica",
       periodo: "1960 – 1964",
+      intro: "Guitarras surf en California y grupos británicos que devuelven el rock a EE. UU.",
       items: [
         { a: 1960, art: "The Shadows", t: "Apache", n: "La guitarra instrumental británica que inspiró a medio mundo, también a los grupos españoles." },
         { a: 1960, art: "Los Teen Tops", t: "La plaga", n: "Rock and roll traducido al español desde México. Llegó a toda Latinoamérica." },

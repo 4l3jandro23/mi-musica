@@ -9,6 +9,7 @@ HISTORIAS.push({
   capitulos: [
     {
       titulo: "Samba, choro y baião",
+      corto: "Samba",
       periodo: "1917 – 1947",
       intro: "Río de Janeiro y la radio crean la música nacional.",
       items: [
@@ -23,6 +24,7 @@ HISTORIAS.push({
     },
     {
       titulo: "La bossa nova",
+      corto: "Bossa nova",
       periodo: "1958 – 1966",
       intro: "Samba lento, armonías de jazz y una voz casi susurrada.",
       items: [
@@ -36,6 +38,7 @@ HISTORIAS.push({
     },
     {
       titulo: "MPB y Tropicália contra la dictadura",
+      corto: "Tropicália",
       periodo: "1965 – 1976",
       intro: "Festivales de la canción, guitarras eléctricas y censura.",
       items: [
@@ -56,12 +59,15 @@ HISTORIAS.push({
     },
     {
       titulo: "Rock, axé, lambada y rap",
+      corto: "Los 80 y 90",
       periodo: "1985 – 1997",
+      intro: "Llega la democracia: rock, carnaval de Bahía, lambada y el rap de las periferias.",
       items: [
+        { a: 1985, art: "Fin de la dictadura y Rock in Rio", t: "Brasil vuelve a la democracia y celebra el primer gran festival", tipo: "hito", n: "Más de un millón de personas en diez días." },
         { a: 1985, art: "Cazuza", t: "Exagerado", n: "El poeta del rock brasileño de los 80." },
         { a: 1986, art: "Legião Urbana", t: "Tempo Perdido", n: "El himno de una generación tras la dictadura." },
-        { a: 1989, art: "Kaoma", t: "Lambada", n: "El verano del 89 en España y en medio mundo." },
         { a: 1989, art: "DJ Marlboro", t: "Funk Brasil", tipo: "hito", n: "El Miami bass llega a los bailes de las favelas de Río: nace el funk carioca." },
+        { a: 1989, art: "Kaoma", t: "Lambada", n: "El verano del 89 en España y en medio mundo." },
         { a: 1992, art: "Daniela Mercury", t: "O Canto da Cidade", n: "El axé de Bahía: carnaval en una canción." },
         { a: 1994, art: "Chico Science & Nação Zumbi", t: "A Praieira", n: "Desde Recife, el manguebeat: maracatu y rock." },
         { a: 1996, art: "Sepultura", t: "Roots Bloody Roots", n: "Metal brasileño con percusión indígena: famoso en todo el mundo." },
@@ -70,7 +76,9 @@ HISTORIAS.push({
     },
     {
       titulo: "El siglo XXI",
+      corto: "Siglo XXI",
       periodo: "2000 – 2021",
+      intro: "Del sertanejo al funk de las favelas: Brasil manda en el streaming.",
       items: [
         { a: 2000, art: "Marisa Monte", t: "Amor I Love You", n: "La gran voz de la MPB moderna." },
         { a: 2011, art: "Michel Teló", t: "Ai Se Eu Te Pego", n: "El sertanejo universitario: un fenómeno en España y en todo el mundo." },

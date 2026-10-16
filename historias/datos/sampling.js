@@ -11,6 +11,7 @@ HISTORIAS.push({
       titulo: "Cintas, collages y bucles",
       corto: "Cintas y collages",
       periodo: "1948 – 1981",
+      intro: "Cintas cortadas, collages y los breaks que el hip hop convertiría en oro.",
       items: [
         { a: 1948, art: "Pierre Schaeffer", t: "Étude aux chemins de fer", n: "Grabaciones de trenes cortadas y repetidas: el sampling antes de los samplers." },
         { a: 1956, art: "Buchanan & Goodman", t: "The Flying Saucer", n: "Una noticia de platillos volantes hecha con trozos de canciones de éxito. Les denunciaron, y ganaron." },
@@ -42,6 +43,7 @@ HISTORIAS.push({
       titulo: "Arte, pleitos y chipmunk soul",
       corto: "Arte y pleitos",
       periodo: "1993 – 2006",
+      intro: "Discos hechos solo de samples, juicios millonarios y el «chipmunk soul».",
       items: [
         { a: 1993, art: "Wu-Tang Clan", t: "C.R.E.A.M.", n: "RZA convierte un trozo de soul de The Charmels en un clásico." },
         { a: 1996, art: "DJ Shadow", t: "Midnight in a Perfect World", n: "De «Endtroducing…», un disco entero hecho solo con samples." },
