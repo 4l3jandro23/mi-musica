@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "india",
   familia: "Mundo",
   titulo: "Historia de la música india",
-  periodo: "1931 – 2022",
+  periodo: "1931 – 2024",
   color: "#e07a1f",
   lema: "De los ragas a Bollywood, el bhangra y el rap de Mumbai.",
   intro: "Miles de años de música clásica (los ragas del norte y del sur) y, desde 1931, el cine sonoro: en la India la música popular es, sobre todo, música de películas. Voces que cantaron miles de canciones, compositores que mezclaron todo lo que oían y, hoy, una escena de rap, indie y punjabi que suena en todo el mundo.",
@@ -38,6 +38,7 @@ HISTORIAS.push({
         { a: 1992, art: "A.R. Rahman", t: "Chinna Chinna Aasai", n: "De «Roja»: el debut de A.R. Rahman, que cambió el sonido del cine indio." },
         { a: 1995, art: "Lata Mangeshkar", t: "Tujhe Dekha To", n: "Con Kumar Sanu, de «Dilwale Dulhania Le Jayenge»: la película que lleva 25 años en cartel." },
         { a: 1995, art: "Alisha Chinai", t: "Made in India", n: "El indipop: pop indio fuera del cine." },
+        { a: 1997, art: "Ravi Shankar", t: "Vandanaa Trayee", n: "De «Chants of India», producido por su amigo George Harrison: cantos sagrados con orquesta." },
         { a: 1998, art: "A.R. Rahman", t: "Chaiyya Chaiyya", n: "Bailando sobre un tren en marcha, de «Dil Se»." },
         { a: 1998, art: "Daler Mehndi", t: "Tunak Tunak Tun", n: "Bhangra punjabi y un vídeo que fue meme mundial." },
         { a: 1998, art: "Panjabi MC", t: "Mundian To Bach Ke", n: "Bhangra británico con la sintonía de «El coche fantástico». Un éxito en toda Europa en 2002." }
@@ -46,7 +47,7 @@ HISTORIAS.push({
     {
       titulo: "Óscar, streaming y rap",
       corto: "Siglo XXI",
-      periodo: "2008 – 2022",
+      periodo: "2008 – 2024",
       intro: "Óscar, streaming y una escena propia de rap e indie.",
       items: [
         { a: 2008, art: "A.R. Rahman", t: "Jai Ho", n: "De «Slumdog Millionaire»: dos premios Óscar." },
@@ -56,7 +57,8 @@ HISTORIAS.push({
         { a: 2018, art: "Prateek Kuhad", t: "cold/mess", n: "Indie folk que Barack Obama puso en su lista de favoritas del año." },
         { a: 2020, art: "Diljit Dosanjh", t: "G.O.A.T.", n: "El pop punjabi: el sonido más exportado de la India actual." },
         { a: 2021, art: "Sidhu Moose Wala", t: "295", n: "Rap punjabi. Su asesinato en 2022 conmocionó a la India." },
-        { a: 2022, art: "Rahul Sipligunj", t: "Naatu Naatu", n: "Con Kaala Bhairava, de «RRR»: el primer Óscar a mejor canción para una película india." }
+        { a: 2022, art: "Rahul Sipligunj", t: "Naatu Naatu", n: "Con Kaala Bhairava, de «RRR»: el primer Óscar a mejor canción para una película india." },
+        { a: 2024, art: "Hanumankind", t: "Big Dawgs (feat. Kalmi)", n: "Un rapero de Kerala grabando entre motos en un «pozo de la muerte»: viral en todo el mundo." }
       ]
     }
   ]

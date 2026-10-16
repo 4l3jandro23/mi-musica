@@ -302,10 +302,11 @@
     if (on && h && oidas(h) === escuchables(h).length) toast('¡Historia completa!');
   });
 
-  // Transición suave entre pantallas cuando el navegador lo permite
+  // Cambio de pantalla con una entrada suave. (Las View Transitions del navegador
+  // podían dejar la ruta esperando a un fotograma que no llegaba: se pinta ya.)
   function cambiar(fn) {
-    if (MOV && document.startViewTransition) document.startViewTransition(fn);
-    else { fn(); main.classList.remove('entra'); void main.offsetWidth; main.classList.add('entra'); }
+    fn();
+    if (MOV) { main.classList.remove('entra'); void main.offsetWidth; main.classList.add('entra'); }
   }
 
   function ruta(mantenerScroll) {

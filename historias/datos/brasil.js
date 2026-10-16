@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "brasil",
   familia: "Mundo",
   titulo: "Historia de la música brasileña",
-  periodo: "1917 – 2021",
+  periodo: "1917 – 2023",
   color: "#1f9e4a",
   lema: "Del samba al funk carioca, pasando por la bossa nova y la Tropicália.",
   intro: "Raíces africanas, portuguesas e indígenas en un país enorme. Brasil inventa el samba, enseña al mundo a susurrar con la bossa nova, se rebela contra la dictadura con la Tropicália y hoy hace bailar a todos con el funk de las favelas.",
@@ -77,13 +77,15 @@ HISTORIAS.push({
     {
       titulo: "El siglo XXI",
       corto: "Siglo XXI",
-      periodo: "2000 – 2021",
+      periodo: "2000 – 2023",
       intro: "Del sertanejo al funk de las favelas: Brasil manda en el streaming.",
       items: [
         { a: 2000, art: "Marisa Monte", t: "Amor I Love You", n: "La gran voz de la MPB moderna." },
         { a: 2011, art: "Michel Teló", t: "Ai Se Eu Te Pego", n: "El sertanejo universitario: un fenómeno en España y en todo el mundo." },
+        { a: 2011, art: "Gusttavo Lima", t: "Balada", n: "«Tchê tcherere tchê tchê»: el sertanejo que bailó medio mundo, también en España." },
         { a: 2017, art: "MC Fioti", t: "Bum Bum Tam Tam", n: "Funk carioca con una flauta de Bach: más de mil millones de visitas." },
-        { a: 2021, art: "Anitta", t: "Envolver", n: "La primera artista brasileña en llegar a lo más alto del Spotify mundial." }
+        { a: 2021, art: "Anitta", t: "Envolver", n: "La primera artista brasileña en llegar a lo más alto del Spotify mundial." },
+        { a: 2023, art: "Grupo Menos É Mais", t: "Coração Partido (Corazón Partío) - Ao Vivo", n: "El pagode de Brasília versiona en portugués «Corazón partío» de Alejandro Sanz: un éxito enorme en Brasil." }
       ]
     }
   ]

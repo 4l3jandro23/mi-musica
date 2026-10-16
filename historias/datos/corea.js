@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "corea",
   familia: "Mundo",
   titulo: "Historia de la música coreana",
-  periodo: "1935 – 2022",
+  periodo: "1935 – 2025",
   color: "#7e57d6",
   lema: "Del trot de la ocupación japonesa a BTS: un siglo hasta conquistar el mundo.",
   intro: "La canción coreana nace bajo la ocupación japonesa con el trot, crece en las bases militares americanas, resiste la censura de la dictadura con folk y rock, y en 1992 se reinventa: Seo Taiji abre la puerta al K-pop, que veinte años después domina el planeta.",
@@ -48,22 +48,30 @@ HISTORIAS.push({
         { a: 2010, art: "IU", alias: ["아이유"], t: "Good Day", q: "IU 좋은 날", n: "La nota alta del final la convirtió en «la hermanita de la nación»." },
         { a: 2011, art: "2NE1", t: "I Am the Best", q: "2NE1 내가 제일 잘 나가", n: "Actitud y electro: el K-pop femenino más duro." },
         { a: 2012, art: "PSY", t: "Gangnam Style", q: "PSY 강남스타일", n: "El primer vídeo de YouTube en llegar a mil millones de visitas." },
-        { a: 2013, art: "EXO", t: "Growl", q: "EXO 으르렁", n: "El grupo que dominó la segunda mitad de la década." }
+        { a: 2013, art: "EXO", t: "Growl", q: "EXO 으르렁", n: "El grupo que dominó la segunda mitad de la década." },
+        { a: 2013, art: "PSY", t: "Gentleman", n: "Intentar repetir «Gangnam Style» con otro baile: cientos de millones de visitas igualmente." }
       ]
     },
     {
       titulo: "Conquista mundial",
       corto: "Conquista mundial",
-      periodo: "2014 – 2022",
+      periodo: "2014 – 2025",
       intro: "BTS, BLACKPINK y NewJeans: el K-pop ya es pop mundial.",
       items: [
         { a: 2014, art: "HYUKOH", alias: ["혁오"], t: "Wi Ing Wi Ing", q: "혁오 위잉위잉", n: "Indie coreano: la otra cara de la música del país." },
+        { a: 2014, art: "PSY", t: "Hangover", n: "Con Snoop Dogg: el K-pop colabora con las estrellas de EE. UU." },
         { a: 2017, art: "BTS", alias: ["방탄소년단"], t: "Spring Day", q: "BTS 봄날", n: "Su canción más querida en Corea, sobre la pérdida y la espera." },
         { a: 2018, art: "BTS en la ONU", t: "Un discurso ante la Asamblea General", tipo: "hito", n: "Sobre quererse a uno mismo, dentro de una campaña de UNICEF." },
         { a: 2018, art: "BLACKPINK", t: "DDU-DU DDU-DU", n: "El grupo femenino más grande del mundo." },
         { a: 2019, art: "Red Velvet", alias: ["레드벨벳"], t: "Psycho", n: "Considerada por muchos la mejor canción del K-pop moderno." },
         { a: 2020, art: "BTS", alias: ["방탄소년단"], t: "Dynamite", n: "Primer número uno de un grupo coreano en el Billboard Hot 100." },
-        { a: 2022, art: "NewJeans", alias: ["뉴진스"], t: "Hype Boy", n: "Pop suave y nostálgico de los 2000: una nueva era del K-pop." }
+        { a: 2022, art: "NewJeans", alias: ["뉴진스"], t: "Hype Boy", n: "Pop suave y nostálgico de los 2000: una nueva era del K-pop." },
+        { a: 2023, art: "FIFTY FIFTY", t: "Cupid - Twin Version", n: "Un grupo de una agencia pequeña que se hizo viral en TikTok y entró en el Billboard Hot 100." },
+        { a: 2023, art: "Jung Kook", alias: ["정국"], t: "Seven (feat. Latto)", n: "El más joven de BTS, en solitario: número uno en EE. UU. con su primer single." },
+        { a: 2023, art: "NewJeans", alias: ["뉴진스"], t: "Super Shy", n: "Pop suave con ritmos de jersey club: el sonido del verano de 2023." },
+        { a: 2024, art: "LISA", t: "New Woman (feat. ROSALÍA)", n: "La tailandesa de BLACKPINK con Rosalía: K-pop, inglés y español a la vez." },
+        { a: 2024, art: "ROSÉ", alias: ["로제"], t: "APT.", n: "Con Bruno Mars: un juego de beber coreano convertido en éxito mundial." },
+        { a: 2025, art: "HUNTR/X", t: "Golden", n: "De la película de animación «KPop Demon Hunters»: un grupo ficticio que llegó al número uno de EE. UU." }
       ]
     }
   ]

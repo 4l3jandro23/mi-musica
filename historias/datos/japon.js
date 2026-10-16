@@ -31,10 +31,12 @@ HISTORIAS.push({
         { a: 1979, art: "Yellow Magic Orchestra", t: "Rydeen", n: "Hosono, Sakamoto y Takahashi: electrónica que influyó en el hip hop y el techno." },
         { a: 1979, art: "Miki Matsubara", alias: ["松原みき"], t: "Mayonaka no Door / Stay With Me", q: "松原みき 真夜中のドア", n: "En 2020 se volvió viral en TikTok, cuarenta años después." },
         { a: 1980, art: "Tatsuro Yamashita", alias: ["山下達郎"], t: "Ride on Time", n: "El rey del city pop." },
+        { a: 1980, art: "Saki Kubota", alias: ["久保田早紀"], t: "Misekake dake no yasashisa", q: "Saki Kubota みせかけだけの優しさ", n: "De la cantante de «Ihōjin», el gran éxito de 1979: melancolía con aires de city pop." },
         { a: 1982, art: "Anri", alias: ["杏里"], t: "Last Summer Whisper", n: "City pop de verano eterno." },
         { a: 1982, art: "Seiko Matsuda", alias: ["松田聖子"], t: "Akai Sweet Pea", q: "松田聖子 赤いスイートピー", n: "La gran ídolo de los 80." },
         { a: 1982, art: "Hiroshi Yoshimura", alias: ["吉村弘"], t: "Music for Nine Postcards", tipo: "disco", n: "Ambient japonés, redescubierto gracias al algoritmo de YouTube." },
         { a: 1983, art: "Ryuichi Sakamoto", alias: ["坂本龍一"], t: "Merry Christmas Mr. Lawrence", n: "Una de las melodías de piano más bonitas del siglo." },
+        { a: 1983, art: "Tomoko Aran", alias: ["亜蘭知子"], t: "Midnight Pretenders", n: "Redescubierta en internet: The Weeknd la sampleó en «Out of Time» en 2022." },
         { a: 1984, art: "Mariya Takeuchi", alias: ["竹内まりや"], t: "Plastic Love", n: "El himno del city pop, que YouTube convirtió en leyenda en 2017." }
       ]
     },
