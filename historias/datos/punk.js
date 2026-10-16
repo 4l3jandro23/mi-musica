@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "punk",
   familia: "Rock",
   titulo: "Orígenes del punk",
-  periodo: "1965 – 1985",
+  periodo: "1965 – 1999",
   color: "#e33d8f",
   lema: "Tres acordes, nada que perder: del garaje al «hazlo tú mismo».",
   intro: "Contra el rock de estadio y los solos de veinte minutos: canciones cortas, rápidas y crudas. Nace entre Nueva York y Londres y enseña a toda una generación que cualquiera puede montar una banda, un sello o un fanzine.",
@@ -45,7 +45,7 @@ HISTORIAS.push({
     {
       titulo: "Después del punk",
       corto: "Después",
-      periodo: "1979 – 1985",
+      periodo: "1979 – 1999",
       intro: "El punk se divide: post-punk, hardcore y, en España, la Movida y el rock radical vasco.",
       items: [
         { a: 1979, art: "Joy Division", t: "Transmission", n: "El post-punk: más lento, oscuro y atmosférico." },
@@ -54,7 +54,8 @@ HISTORIAS.push({
         { a: 1981, art: "Black Flag", t: "Rise Above", n: "El hardcore de California: más rápido y más furioso." },
         { a: 1981, art: "Minor Threat", t: "Straight Edge", n: "Hardcore de Washington y una filosofía sin drogas ni alcohol." },
         { a: 1982, art: "Siniestro Total", t: "Ayatolah! No me toques la pirola", n: "Desde Vigo, humor gamberro: el punk en español." },
-        { a: 1985, art: "Kortatu", t: "Sarri, Sarri", n: "El rock radical vasco, con Fermin Muguruza y ritmo de ska." }
+        { a: 1985, art: "Kortatu", t: "Sarri, Sarri", n: "El rock radical vasco, con Fermin Muguruza y ritmo de ska." },
+        { a: 1999, art: "Fugazi", t: "I'm So Tired", n: "Ian MacKaye, de Minor Threat, fundó Fugazi: post-hardcore «hazlo tú mismo» con entradas a cinco dólares. Aquí, en su lado más tranquilo." }
       ]
     }
   ]
