@@ -20,6 +20,8 @@ HISTORIAS.push({
         { a: 1987, art: "Nobuo Uematsu", t: "Prelude (Final Fantasy)", n: "Arpegios que abren cada Final Fantasy." },
         { a: 1989, art: "Tetris", t: "Korobeiniki", q: "Tetris Theme Korobeiniki", n: "Una canción popular rusa que el Game Boy hizo universal." },
         { a: 1991, art: "Masato Nakamura", t: "Green Hill Zone", n: "Sonic, del bajista de Dreams Come True." },
+        { a: 1991, art: "Yoko Shimomura", t: "Guile's Theme", q: "Guile's Theme Street Fighter", n: "El tema de Guile, que «va con todo» según el meme." },
+        { a: 1992, art: "Yuzo Koshiro", t: "Go Straight", q: "Yuzo Koshiro Go Straight", n: "Yuzo Koshiro lleva el house y el techno al Mega Drive." },
         { a: 1995, art: "Yasunori Mitsuda", t: "Corridors of Time", n: "Chrono Trigger, la banda sonora de culto del Super Nintendo." }
       ]
     },
@@ -31,6 +33,7 @@ HISTORIAS.push({
       items: [
         { a: 1997, art: "Nobuo Uematsu", t: "One-Winged Angel", n: "Coro en latín y el combate contra Sefirot." },
         { a: 1998, art: "Koji Kondo", t: "Song of Storms", n: "Ocarina of Time: la ocarina en tu mano." },
+        { a: 1998, art: "Koji Kondo", t: "Gerudo Valley", q: "Gerudo Valley Ocarina of Time", n: "Guitarras españolas en «Zelda: Ocarina of Time»." },
         { a: 2001, art: "Martin O'Donnell & Michael Salvatori", t: "Halo Theme", n: "Monjes gregorianos y guitarras." },
         { a: 2002, art: "GTA: Vice City", t: "Emisoras de radio ochenteras", tipo: "hito", n: "Las canciones con licencia convierten el juego en una cápsula del tiempo." }
       ]
@@ -42,11 +45,13 @@ HISTORIAS.push({
       intro: "Minecraft, Undertale y auditorios llenos.",
       items: [
         { a: 2005, art: "Video Games Live", t: "Conciertos de música de videojuegos", tipo: "hito", n: "Las orquestas llenan auditorios con música de juegos." },
-        { a: 2011, art: "C418", t: "Sweden", n: "La calma de Minecraft." },
+        { a: 2011, art: "C418", t: "Sweden", n: "Daniel Rosenfeld (C418) la compuso para Minecraft. Para una generación entera es el sonido de la calma y la nostalgia." },
         { a: 2011, art: "Jeremy Soule", t: "Dragonborn", n: "El coro nórdico de Skyrim." },
         { a: 2013, art: "Gustavo Santaolalla", t: "The Last of Us", n: "Guitarra desnuda para el fin del mundo." },
         { a: 2015, art: "Toby Fox", t: "MEGALOVANIA", n: "Undertale, compuesto casi entero por una sola persona." },
         { a: 2017, art: "Koji Kondo & Naoto Kubo", t: "Jump Up, Super Star!", n: "Super Mario Odyssey en versión big band." },
+        { a: 2018, art: "Lena Raine", t: "Resurrections", q: "Lena Raine Resurrections", n: "La banda sonora de «Celeste», un juego sobre la ansiedad y la superación." },
+        { a: 2018, art: "Bear McCreary", t: "God of War", q: "Bear McCreary God of War", n: "Coro nórdico y orquesta para el regreso de Kratos." },
         { a: 2020, art: "Darren Korb", t: "Good Riddance", n: "Hades, el roguelike con banda sonora de rock." },
         { a: 2023, art: "Grammy", t: "Primer Grammy a una banda sonora de videojuego", tipo: "hito", n: "Lo gana Stephanie Economou por Assassin's Creed Valhalla: Dawn of Ragnarök." }
       ]

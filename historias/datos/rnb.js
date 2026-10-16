@@ -46,7 +46,7 @@ HISTORIAS.push({
         { a: 2002, art: "Justin Timberlake", t: "Cry Me a River", n: "Producida por Timbaland: un exmiembro de boy band se vuelve serio." },
         { a: 2003, art: "The Neptunes", t: "Producen el 43 % de lo que suena en la radio", tipo: "hito", n: "Pharrell y Chad Hugo dominan las ondas." },
         { a: 2004, art: "Usher", t: "Yeah!", n: "Con Lil Jon y Ludacris: el «crunk&B»." },
-        { a: 2004, art: "Alicia Keys", t: "If I Ain't Got You", n: "Piano y una voz enorme." },
+        { a: 2004, art: "Alicia Keys", t: "If I Ain't Got You", n: "Alicia Keys al piano con una voz enorme: la balada de R&B más querida de su carrera." },
         { a: 2006, art: "Ne-Yo", t: "So Sick", n: "Compositor de éxitos para otros, y para sí mismo." },
         { a: 2006, art: "Nelly Furtado & Timbaland", t: "Promiscuous", n: "Timbaland lleva a Nelly al R&B." },
         { a: 2006, art: "Nelly Furtado", t: "Say It Right", n: "La más hipnótica de Loose, producida por Timbaland." },

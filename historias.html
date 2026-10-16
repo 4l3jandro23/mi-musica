@@ -389,6 +389,61 @@
     .cifras span { padding: 9px 10px; font-size: 10.5px; letter-spacing: .03em; }
     .cifras b { font-size: 20px; }
   }
+
+  /* ============================================================
+     DISEÑO 4 · mitos con veredicto, cronología y juego
+     ============================================================ */
+  .filtros.quieto { position: static; background: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .cab .eti svg, .jcarta .eti svg { width: 14px; height: 14px; vertical-align: -2px; }
+
+  /* veredicto de los mitos */
+  .veredicto { display: inline-block; vertical-align: 1px; margin-left: 6px; font-size: 10.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 999px; --vc: #8a8a96; background: color-mix(in srgb, var(--vc) 18%, transparent); color: color-mix(in srgb, var(--vc) 80%, var(--fg)); }
+  .veredicto.falso { --vc: #e0484d; }
+  .veredicto.cierto { --vc: #1fa45a; }
+  .veredicto.medias { --vc: #d99a12; }
+
+  /* cronología */
+  .saltos { margin-top: 14px; --tinte: var(--amber); }
+  .saltos .chip { flex: none; }
+  .crono-sec { margin-top: 30px; }
+  .crono-sec h3 { position: relative; }
+  .de-h { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; padding: 3px 10px 3px 8px; border-radius: 999px; font-size: 12px; font-weight: 700;
+    text-decoration: none; color: var(--fg-soft); background: color-mix(in srgb, var(--c) 14%, var(--surface-2)); transition: background .15s; }
+  .de-h:hover { background: color-mix(in srgb, var(--c) 28%, var(--surface-2)); color: var(--fg); }
+
+  /* juego */
+  .marcador { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .marcador span { padding: 7px 14px; border-radius: 999px; background: var(--surface); box-shadow: var(--shadow-sm); font-size: 13px; font-weight: 650; color: var(--fg-mute); }
+  .marcador b { color: var(--fg); font-family: var(--f-disp); font-size: 16px; }
+  .jcarta { max-width: 680px; margin: 22px 0 30px; padding: 24px 22px 22px; border-radius: 22px; position: relative; overflow: hidden;
+    background: linear-gradient(150deg, color-mix(in srgb, var(--c) 26%, var(--surface)), var(--surface) 70%); box-shadow: var(--shadow-sm);
+    border: 1.5px solid transparent; transition: border-color .25s, box-shadow .25s; display: flex; flex-direction: column; gap: 8px; }
+  .jcarta.ok { border-color: #1fa45a; box-shadow: 0 10px 30px color-mix(in srgb, #1fa45a 22%, transparent); }
+  .jcarta.mal { border-color: #e0484d; box-shadow: 0 10px 30px color-mix(in srgb, #e0484d 18%, transparent); }
+  .jcarta .eti { color: color-mix(in srgb, var(--c) 70%, var(--fg)); }
+  .jcarta .pregunta { font-family: var(--f-disp); font-size: clamp(21px, 4.6vw, 28px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; }
+  .jcarta .sub { font-size: 14.5px; font-weight: 600; color: var(--fg-soft); }
+  .jops { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 12px; }
+  .jop { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 10px 14px; border-radius: 14px; cursor: pointer;
+    border: 1.5px solid var(--line-firm); background: var(--surface); color: var(--fg); font: inherit; font-family: var(--f-disp); font-size: 18px; font-weight: 800;
+    transition: transform .12s var(--ease-out), background .15s, border-color .15s, opacity .2s; -webkit-tap-highlight-color: transparent; }
+  .jop:hover:not([disabled]) { border-color: var(--c); background: color-mix(in srgb, var(--c) 10%, var(--surface)); transform: translateY(-2px); }
+  .jop:active:not([disabled]) { transform: scale(.96); }
+  .jop kbd { font: 700 11px var(--f-body, inherit); color: var(--fg-mute); border: 1px solid var(--line-firm); border-radius: 6px; padding: 1px 6px; }
+  @media (hover: none) { .jop kbd { display: none; } }
+  .jop.bien { background: #1fa45a; border-color: #1fa45a; color: #fff; }
+  .jop.fallo { background: #e0484d; border-color: #e0484d; color: #fff; }
+  .jop.bien kbd, .jop.fallo kbd { color: #fff; border-color: rgba(255,255,255,.5); }
+  .jop.apagada { opacity: .45; }
+  .jop[disabled] { cursor: default; }
+  .jsol { margin-top: 10px; padding-top: 14px; border-top: 1px solid var(--line); animation: jsol .3s var(--ease-out); }
+  .jsol > b { font-family: var(--f-disp); font-size: 20px; }
+  .jcarta.ok .jsol > b { color: #1fa45a; }
+  .jcarta.mal .jsol > b { color: #e0484d; }
+  .jsol p { margin: 6px 0 14px; font-size: 14.5px; color: var(--fg-soft); }
+  @keyframes jsol { from { opacity: 0; transform: translateY(6px); } }
+  @media (prefers-reduced-motion: reduce) { .jsol { animation: none; } }
 </style>
 </head>
 <body>
@@ -539,6 +594,7 @@
 <script src="historias/datos/alegre.js"></script>
 <script src="historias/datos/preliminares.js"></script>
 <script src="historias/datos/explicita.js"></script>
+<script src="historias/datos/mitos.js"></script>
 <script src="historias/datos/ww2.js"></script>
 <script src="historias/datos/origenes.js"></script>
 <script src="historias/datos/motown.js"></script>
@@ -548,6 +604,6 @@
 <script src="historias/datos/sony.js"></script>
 <script src="historias/datos/universal.js"></script>
 <script src="historias/datos/spinnin.js"></script>
-<script src="historias/motor.js?v=7"></script>
+<script src="historias/motor.js?v=8"></script>
 </body>
 </html>

@@ -33,8 +33,12 @@
     izq: '<path d="M15 18l-6-6 6-6"/>',
     der: '<path d="M9 18l6-6-6-6"/>',
     hito: '<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
-    chispa: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>'
+    chispa: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>',
+    reloj: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    mando: '<rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="16" cy="11.5" r="1"/><circle cx="18" cy="14" r="1"/>'
   };
+  // Veredicto de los mitos: v = 'falso' | 'cierto' | 'medias'
+  const VER = { falso: 'Mito', cierto: 'Verdad', medias: 'A medias' };
   const ic = (n) => '<svg class="i" viewBox="0 0 24 24">' + ICO[n] + '</svg>';
   $('.marca').innerHTML = ic('nota');
   $('#aFono').innerHTML = ic('atras') + '<span>Fonoteca</span>';
@@ -72,7 +76,7 @@
   const fa = (a) => a < 0 ? (a <= -10000 ? fmt(-a) : String(-a)) + ' a. C.' : String(a);
   const inicio = (h) => Math.min(...piezas(h).map((i) => i.a));
   // Historias añadidas hace poco (salen en «Novedades» y con la etiqueta «Nueva»)
-  const NUEVAS = ['origenes', 'ww2', 'videojuegos', 'kanye', 'triste', 'alegre', 'preliminares', 'explicita', 'psytrance', 'movida', 'popespanol',
+  const NUEVAS = ['mitos', 'origenes','ww2', 'videojuegos', 'kanye', 'triste', 'alegre', 'preliminares', 'explicita', 'psytrance', 'movida', 'popespanol',
     'neosoul', 'folclore', 'rumba', 'afrobeat', 'bossanova', 'yachtrock', 'grime', 'gfunk', 'jazzrap', 'cloudrap', 'mumblerap', 'industrialrap',
     'drill', 'emorap', 'altrap', 'rage', 'tropicalhouse', 'electrohouse', 'dutchhouse', 'berghain', 'dub', 'dembow', 'concreta', 'jungle',
     'motown', 'defjam', 'atlantic', 'warner', 'sony', 'universal', 'spinnin'];
@@ -143,6 +147,8 @@
     $('#lado').innerHTML = '<div class="tit">Historias</div>' +
       '<a class="volver" href="mando.html">' + ic('atras') + 'Fonoteca</a>' +
       '<a href="#"' + (actual ? '' : ' class="on"') + '>' + ic('nota') + 'Todas</a>' +
+      '<a href="#crono"' + (actual === 'crono' ? ' class="on"' : '') + '>' + ic('reloj') + 'Cronología</a>' +
+      '<a href="#juego"' + (actual === 'juego' ? ' class="on"' : '') + '>' + ic('mando') + 'Juego</a>' +
       familias().map((f) => {
         const hs = H.filter((h) => h.familia === f);
         const abierta = hs.some((h) => h.id === actual);
@@ -166,14 +172,16 @@
     return out + s.slice(ult);
   }
 
-  function fila(i, h, terms) {
+  // extra: html opcional bajo el artista (p. ej. la historia a la que pertenece)
+  function fila(i, h, terms, extra) {
     const hito = i.tipo === 'hito';
-    const etiqueta = hito ? '<span class="tipo">' + ic('hito') + 'momento clave</span>' : i.tipo === 'disco' ? '<span class="tipo">disco</span>' : '';
+    const etiqueta = (hito ? '<span class="tipo">' + ic('hito') + 'momento clave</span>' : i.tipo === 'disco' ? '<span class="tipo">disco</span>' : '') +
+      (VER[i.v] ? '<span class="veredicto ' + i.v + '">' + VER[i.v] + '</span>' : '');
     const k = clave(h, i), oida = OIDAS.has(k);
     return '<li class="row' + (hito ? ' hito' : '') + (oida ? ' oida-on' : '') + '" style="--tinte:' + h.color + '">' +
       (i.a < 0 ? '<span class="anyo ac">' + (i.a <= -10000 ? fmt(-i.a) : -i.a) + '<small>a. C.</small></span>' : '<span class="anyo">' + esc(i.a) + '</span>') +
       '<div class="txt"><div class="t1">' + marcar(i.t, terms) + etiqueta + '</div><div class="t2">' + marcar(i.art, terms) +
-      (laTienes(i) ? ' <span class="tuya">la tienes</span>' : '') + '</div>' +
+      (laTienes(i) ? ' <span class="tuya">la tienes</span>' : '') + '</div>' + (extra || '') +
       (i.n ? '<p class="nota">' + marcar(i.n, terms) + '</p>' : '') + '</div>' +
       (hito ? '' : '<button class="oida' + (oida ? ' on' : '') + '" data-k="' + esc(k) + '" title="' + (oida ? 'Escuchada' : 'Marcar como escuchada') + '" aria-pressed="' + oida + '">' + ic('check') + '</button>' +
         '<a class="btn sm oir" href="' + urlSpotify(i) + '" target="_blank" rel="noopener" title="Buscar en Spotify">' + ic('play') + '<span>Escuchar</span></a>') +
@@ -234,7 +242,8 @@
       '<div class="cifras"><span><b>' + H.length + '</b>historias</span><span><b>' + fmt(total) + '</b>piezas</span><span><b>' + fmt(nHitos) + '</b>momentos clave</span>' +
       (oTot ? '<span><b>' + fmt(oTot) + '</b>escuchadas</span>' : '') + '</div>' +
       '<div class="btnrow">' + (ultima ? '<a class="btn pri" href="#h/' + ultima.id + '" style="--tinte:' + ultima.color + '">' + ic('sig') + 'Sigue con «' + esc(ultima.titulo) + '»</a>' : '') +
-      '<button class="btn" id="azar">' + ic('dado') + 'Una al azar</button><button class="btn" id="aBuscar">' + ic('lupa') + 'Buscar</button></div></div>';
+      '<button class="btn" id="azar">' + ic('dado') + 'Una al azar</button><a class="btn" href="#crono">' + ic('reloj') + 'Cronología</a>' +
+      '<a class="btn" href="#juego">' + ic('mando') + 'Juego</a><button class="btn" id="aBuscar">' + ic('lupa') + 'Buscar</button></div></div>';
     html += '<div class="filtros" role="tablist"><button class="chip' + (filtro ? '' : ' on') + '" data-f="">Todas</button>' +
       fams.map((f) => '<button class="chip' + (f === filtro ? ' on' : '') + '" data-f="' + esc(f) + '" style="--c:' + colorFam(f) + '"><i class="pto"></i>' + esc(f) + '</button>').join('') + '</div>';
     if (filtro) {
@@ -296,7 +305,8 @@
       '<h2>' + esc(h.titulo) + '</h2><p class="lema-h">' + esc(h.lema) + '</p><p>' + esc(h.intro) + '</p>' +
       '<div id="prog">' + progreso(h) + '</div>' +
       '<div class="btnrow"><a class="btn pri" href="mando.html?historia=' + h.id + '" title="La Fonoteca busca cada canción y crea la playlist en tu Spotify">' + ic('play') + 'Crear en mi Spotify</a>' +
-      '<button class="btn" id="copiar">' + ic('copia') + 'Copiar lista</button></div>' +
+      '<button class="btn" id="copiar">' + ic('copia') + 'Copiar lista</button>' +
+      '<a class="btn" href="#juego/' + h.id + '" title="Adivina el año de las piezas de esta historia">' + ic('mando') + 'Ponte a prueba</a></div>' +
       '<p class="datos">' + escuchables(h).length + ' piezas' + (nHitos ? ' · ' + nHitos + ' momentos clave' : '') + (varios ? ' · ' + h.capitulos.length + ' capítulos' : '') + '</p>' +
       (varios ? '<div class="linea" aria-label="Capítulos">' + h.capitulos.map((c, k) => '<a href="#h/' + h.id + '/' + (k + 1) + '" style="flex:' + Math.max(2, c.items.length) + '" title="' + esc(c.titulo + ' · ' + c.periodo) + '"><i></i><span>' + esc(c.corto || c.titulo) + '</span></a>').join('') + '</div>' : '') +
       '</div>' +
@@ -310,7 +320,7 @@
       '<a class="siguiente" href="#h/' + sig.id + '" style="--c:' + sig.color + '"><span class="eti">Siguiente' + (fam.length > 1 ? ' en ' + esc(h.familia) : ' historia') + '</span><b>' + esc(sig.titulo) + '</b>' + ic('sig') + '</a></div>';
     main.querySelector('[data-fam]').onclick = (e) => { e.preventDefault(); guardar(K_FILTRO, h.familia); if (location.hash.length > 1) location.hash = '#'; else cambiar(portada); };
     $('#copiar').onclick = () => {
-      const txt = escuchables(h).map((i) => i.a + ' · ' + i.art + ' — ' + i.t).join('\n');
+      const txt = escuchables(h).map((i) => fa(i.a) + ' · ' + i.art + ' — ' + i.t).join('\n');
       navigator.clipboard.writeText(txt).then(() => toast('Lista copiada'), () => toast('No se pudo copiar'));
     };
     // El índice de capítulos marca dónde estás al hacer scroll
@@ -327,6 +337,119 @@
       document.querySelectorAll('.capitulo').forEach((s) => espia.observe(s));
     }
   }
+
+  /* ---------- cronología: todos los momentos clave en una sola línea del tiempo ---------- */
+  let cronoFam = '';
+  const ROM = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX'];
+  const etapa = (a) => a < 0 ? 'Antes de Cristo' : a < 1500 ? 'Antigüedad y Edad Media' : a < 1900 ? 'Siglo ' + ROM[Math.floor(a / 100) + 1] : Math.floor(a / 10) * 10 + 's';
+  function cronologia() {
+    main.onclick = null;
+    lado('crono');
+    const todos = [];
+    H.forEach((h) => h.capitulos.forEach((c, k) => c.items.forEach((i) => {
+      if (i.tipo === 'hito' && (!cronoFam || h.familia === cronoFam)) todos.push({ h, i, k });
+    })));
+    todos.sort((x, y) => x.i.a - y.i.a || x.h.titulo.localeCompare(y.h.titulo, 'es'));
+    const grupos = [];
+    let g = null;
+    for (const e of todos) { const n = etapa(e.i.a); if (!g || g.n !== n) grupos.push(g = { n, l: [] }); g.l.push(e); }
+    main.innerHTML = '<div class="cab"><span class="eti">' + ic('reloj') + ' Toda la historia de un vistazo</span><h2>Cronología</h2>' +
+      '<p>Los ' + fmt(todos.length) + ' momentos clave de todas las historias, ordenados del más antiguo al más reciente. Pulsa en la historia para leer el contexto.</p></div>' +
+      '<div class="filtros quieto"><button class="chip' + (cronoFam ? '' : ' on') + '" data-cf="">Todas</button>' +
+      familias().map((f) => '<button class="chip' + (f === cronoFam ? ' on' : '') + '" data-cf="' + esc(f) + '" style="--c:' + colorFam(f) + '"><i class="pto"></i>' + esc(f) + '</button>').join('') + '</div>' +
+      '<nav class="indice saltos">' + grupos.map((g, n) => '<button class="chip" data-s="' + n + '">' + esc(g.n) + '</button>').join('') + '</nav>' +
+      grupos.map((g, n) => '<section class="capitulo crono-sec" id="ct-' + n + '"><h3>' + esc(g.n) + '<span>' + g.l.length + ' momento' + (g.l.length === 1 ? '' : 's') + '</span></h3>' +
+        '<ol class="lista">' + g.l.map(({ h, i, k }) => fila(i, h, null, '<a class="de-h" href="#h/' + h.id + '/' + (k + 1) + '" style="--c:' + h.color + '"><i class="pto"></i>' + esc(h.titulo) + '</a>')).join('') + '</ol></section>').join('');
+    main.onclick = (e) => {
+      const f = e.target.closest('[data-cf]');
+      if (f) { cronoFam = f.dataset.cf; cambiar(cronologia); scrollTo(0, 0); return; }
+      const s = e.target.closest('[data-s]');
+      if (s) { const el = document.getElementById('ct-' + s.dataset.s); if (el) el.scrollIntoView({ behavior: MOV ? 'smooth' : 'auto' }); }
+    };
+  }
+
+  /* ---------- juego: ¿de qué año es? y ¿mito o verdad? ---------- */
+  const K_JUEGO = 'historias_juego_v1';
+  let JG = null;
+  const azar = (l) => l[Math.floor(Math.random() * l.length)];
+  const barajar = (l) => { for (let n = l.length - 1; n > 0; n--) { const m = Math.floor(Math.random() * (n + 1)); [l[n], l[m]] = [l[m], l[n]]; } return l; };
+  // Tres años falsos cerca del bueno (más separados cuanto más antiguo)
+  function opcionesAnyo(a) {
+    const paso = a < 0 ? Math.max(100, Math.round(-a * 0.12 / 100) * 100) : a < 1800 ? 20 : a < 1950 ? 4 : 2;
+    const s = new Set([a]);
+    for (let n = 0; s.size < 4 && n < 300; n++) {
+      let y = a + (Math.floor(Math.random() * 6) + 1) * paso * (Math.random() < 0.5 ? -1 : 1);
+      if (a > 0 && y > 2026) y = a - (y - a);
+      if (a > 0 && y <= 0) continue;
+      s.add(y);
+    }
+    return barajar([...s]);
+  }
+  const partes = (n) => { const m = String(n).match(/^Se dice: (.*?)\s*Realidad: (.*)$/); return m ? { dice: m[1], real: m[2] } : { dice: n, real: '' }; };
+  function juego(id) {
+    main.onclick = null;
+    lado('juego');
+    const h0 = H.find((x) => x.id === id) || null;
+    const hayMitos = (h) => piezas(h).some((i) => VER[i.v]);
+    let modo = JG && JG.id === (h0 ? h0.id : '') ? JG.modo : (h0 && hayMitos(h0) ? 'mito' : 'anyo');
+    if (h0 && modo === 'mito' && !hayMitos(h0)) modo = 'anyo';
+    if (!JG || JG.id !== (h0 ? h0.id : '') || JG.modo !== modo) JG = { id: h0 ? h0.id : '', modo, ac: 0, ro: 0, racha: 0, q: null, resp: null };
+    const st = leer(K_JUEGO, { anyo: 0, mito: 0 });
+    if (!JG.q) {
+      const pool = [];
+      (h0 ? [h0] : H).forEach((h) => h.capitulos.forEach((c, k) => c.items.forEach((i) => {
+        if (modo === 'mito' ? VER[i.v] : i.a != null) pool.push({ h, i, k });
+      })));
+      let q = azar(pool);
+      if (JG.ult && pool.length > 1) for (let n = 0; n < 5 && q.i === JG.ult; n++) q = azar(pool);
+      JG.q = q; JG.ult = q.i; JG.resp = null;
+      JG.ops = modo === 'mito' ? ['falso', 'cierto', 'medias'] : opcionesAnyo(q.i.a);
+    }
+    const { h, i, k } = JG.q, resp = JG.resp, bien = modo === 'mito' ? i.v : i.a;
+    const p = partes(i.n);
+    const etOp = (o) => modo === 'mito' ? VER[o] : fa(o);
+    let html = '<div class="cab"><span class="eti">' + ic('mando') + (h0 ? ' Con «' + esc(h0.titulo) + '»' : ' Con todas las historias') + '</span><h2>' + (modo === 'mito' ? '¿Mito o verdad?' : '¿De qué año es?') + '</h2>' +
+      '<div class="filtros quieto"><button class="chip' + (modo === 'anyo' ? ' on' : '') + '" data-jm="anyo">¿De qué año?</button>' +
+      (!h0 || hayMitos(h0) ? '<button class="chip' + (modo === 'mito' ? ' on' : '') + '" data-jm="mito">¿Mito o verdad?</button>' : '') +
+      (h0 ? '<a class="chip" href="#juego">Todas las historias</a>' : '') + '</div>' +
+      '<div class="marcador"><span><b>' + JG.ac + '</b> de ' + JG.ro + '</span><span>Racha <b>' + JG.racha + '</b></span><span>Mejor racha <b>' + (st[modo] || 0) + '</b></span></div></div>' +
+      '<div class="jcarta' + (resp == null ? '' : resp === bien ? ' ok' : ' mal') + '" style="--c:' + h.color + '">' +
+      '<span class="eti">' + (modo === 'mito' ? 'Se dice que…' : i.tipo === 'hito' ? ic('hito') + 'Momento clave' : i.tipo === 'disco' ? 'Disco' : 'Canción') + '</span>' +
+      (modo === 'mito' ? '<b class="pregunta">' + esc(p.dice) + '</b><span class="sub">' + esc(i.art) + ' · ' + esc(i.t) + '</span>'
+        : '<b class="pregunta">' + esc(i.t) + '</b><span class="sub">' + esc(i.art) + '</span>') +
+      '<div class="jops">' + JG.ops.map((o, n) => '<button class="jop' + (resp == null ? '' : o === bien ? ' bien' : o === resp ? ' fallo' : ' apagada') + '" data-op="' + n + '"' + (resp == null ? '' : ' disabled') + '><kbd>' + (n + 1) + '</kbd>' + esc(etOp(o)) + '</button>').join('') + '</div>' +
+      (resp == null ? '' : '<div class="jsol"><b>' + (resp === bien ? '¡Bien!' : modo === 'mito' ? 'Es «' + VER[bien] + '»' : 'Es de ' + fa(bien)) + '</b>' +
+        '<p>' + esc(modo === 'mito' ? (p.real ? 'Realidad: ' + p.real : i.n) : i.n) + '</p>' +
+        '<div class="btnrow"><button class="btn pri" id="jsig" style="--tinte:' + h.color + '">' + ic('sig') + 'Siguiente</button>' +
+        (i.tipo === 'hito' ? '' : '<a class="btn" href="' + urlSpotify(i) + '" target="_blank" rel="noopener">' + ic('play') + 'Escuchar</a>') +
+        '<a class="btn" href="#h/' + h.id + '/' + (k + 1) + '">' + ic('nota') + esc(h.titulo) + '</a></div></div>') +
+      '</div>';
+    main.innerHTML = html;
+    main.onclick = (e) => {
+      const m = e.target.closest('[data-jm]');
+      if (m) { JG = { id: JG.id, modo: m.dataset.jm, ac: 0, ro: 0, racha: 0, q: null }; cambiar(() => juego(id)); return; }
+      const o = e.target.closest('[data-op]');
+      if (o && JG.resp == null) return responder(+o.dataset.op, id);
+      if (e.target.closest('#jsig')) { JG.q = null; cambiar(() => juego(id)); }
+    };
+  }
+  function responder(n, id) {
+    const bien = JG.modo === 'mito' ? JG.q.i.v : JG.q.i.a;
+    JG.resp = JG.ops[n]; JG.ro++;
+    if (JG.resp === bien) {
+      JG.ac++; JG.racha++;
+      const st = leer(K_JUEGO, { anyo: 0, mito: 0 });
+      if (JG.racha > (st[JG.modo] || 0)) { st[JG.modo] = JG.racha; guardar(K_JUEGO, st); if (JG.racha > 2) toast('¡Nueva mejor racha: ' + JG.racha + '!'); }
+    } else JG.racha = 0;
+    juego(id);
+  }
+  // Teclas 1-4 para responder y Intro para la siguiente
+  addEventListener('keydown', (e) => {
+    if (!JG || !/^#juego/.test(location.hash) || document.activeElement === buscar || e.metaKey || e.ctrlKey || e.altKey) return;
+    const id = location.hash.split('/')[1];
+    if (JG.resp == null && /^[1-4]$/.test(e.key) && +e.key <= JG.ops.length) { e.preventDefault(); responder(+e.key - 1, id); }
+    else if (JG.resp != null && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); JG.q = null; juego(id); }
+  });
 
   /* ---------- búsqueda ---------- */
   // Entiende décadas («80s», «años 80», «1980s»), años sueltos («1977») y varias palabras a la vez.
@@ -409,6 +532,9 @@
   function ruta(mantenerScroll) {
     if (buscar.value.trim().length > 1) return resultados(buscar.value.trim());
     filtroBusca = 'todo';
+    if (location.hash === '#crono') { document.title = 'Cronología · Historias'; const y = scrollY; cronologia(); scrollTo(0, mantenerScroll ? y : 0); return; }
+    const j = location.hash.match(/^#juego(?:\/([^/]+))?/);
+    if (j) { document.title = 'Juego · Historias'; juego(j[1]); if (!mantenerScroll) scrollTo(0, 0); return; }
     const m = location.hash.match(/^#h\/([^/]+)(?:\/(\d+))?/) || [];
     const h = H.find((x) => x.id === m[1]);
     document.title = h ? h.titulo + ' · Historias' : 'Historias de la música';

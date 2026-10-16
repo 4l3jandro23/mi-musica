@@ -10,7 +10,7 @@ HISTORIAS.push({
     {
       titulo: "SoundCloud y remixes",
       corto: "SoundCloud",
-      periodo: "2013 – 2014",
+      periodo: "2013 – 2015",
       intro: "Remixes lentos de canciones acústicas.",
       items: [
         { a: 2013, art: "Klingande", t: "Jubel", n: "Saxo y piano: el tropical house antes de tener nombre." },
@@ -19,7 +19,9 @@ HISTORIAS.push({
         { a: 2014, art: "Robin Schulz", t: "Prayer in C", n: "El remix de Lilly Wood & The Prick, número uno en media Europa." },
         { a: 2014, art: "Mr. Probz", t: "Waves (Robin Schulz Remix)", n: "La canción que hizo famoso a Robin Schulz." },
         { a: 2014, art: "Felix Jaehn", t: "Ain't Nobody (Loves Me Better)", n: "Una versión de Chaka Khan con Jasmine Thompson." },
-        { a: 2014, art: "Lost Frequencies", t: "Are You With Me", n: "Un remix belga de una canción country, número uno en el Reino Unido." }
+        { a: 2014, art: "Lost Frequencies", t: "Are You With Me", n: "Un remix belga de una canción country, número uno en el Reino Unido." },
+        { a: 2014, art: "Robin Schulz", t: "Sun Goes Down", n: "Con Jasmine Thompson. El remix fácil para el verano." },
+        { a: 2015, art: "Kygo", t: "Stay", n: "Con Maty Noyes. Más Kygo de piano y flauta." }
       ]
     },
     {
@@ -34,7 +36,12 @@ HISTORIAS.push({
         { a: 2015, art: "Jonas Blue", t: "Fast Car", n: "Tracy Chapman en versión tropical." },
         { a: 2015, art: "Mike Posner", t: "I Took a Pill in Ibiza (Seeb Remix)", n: "Una canción triste convertida en himno de discoteca." },
         { a: 2015, art: "Justin Bieber", t: "Sorry", n: "Skrillex y Blood Diamonds llevan el estilo al número uno." },
+        { a: 2015, art: "Major Lazer & DJ Snake", t: "Lean On", n: "Con MØ. Ritmos de dancehall y de la India: fue la canción más escuchada de Spotify en su momento." },
+        { a: 2015, art: "Lost Frequencies", t: "Reality", n: "Con Janieck Devy. El belga Lost Frequencies, de nuevo en las listas." },
+        { a: 2015, art: "Kygo", t: "Here for You", n: "Con Ella Henderson. Kygo en su año más grande, con piano, flauta de pan y bombo suave." },
+        { a: 2015, art: "Robin Schulz", t: "Headlights", n: "Con Ilsey. Robin Schulz, ya fuera de los remixes, con un tema propio para la radio." },
         { a: 2016, art: "Kygo", t: "Toca en la clausura de los Juegos de Río", tipo: "hito", n: "El tropical house en la ceremonia olímpica." },
+        { a: 2016, art: "Alan Walker", t: "Faded", n: "Alan Walker y su capucha: más melancólico que tropical." },
         { a: 2017, art: "Kygo & Selena Gomez", t: "It Ain't Me", n: "El final de la ola tropical." }
       ]
     }

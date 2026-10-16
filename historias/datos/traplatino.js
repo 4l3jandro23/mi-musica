@@ -18,10 +18,12 @@ HISTORIAS.push({
         { a: 2016, art: "Bryant Myers", t: "Esclava", n: "Con Anonimus, Anuel AA y Almighty: la voz grave de Bryant Myers y el trap más oscuro." },
         { a: 2016, art: "Bad Bunny", t: "Diles", n: "Con Ozuna, Farruko, Arcángel y Ñengo Flow: el debut que puso a Bad Bunny en el mapa." },
         { a: 2016, art: "Bad Bunny", t: "Soy Peor", n: "Escrita mientras trabajaba de cajero en un supermercado. Su primer éxito en solitario." },
+        { a: 2016, art: "Anuel AA", t: "Sola", n: "Anuel AA, uno de los fundadores del trap de Puerto Rico." },
         { a: 2017, art: "Farruko", t: "Krippy Kush", n: "Con Bad Bunny y Rvssian: luego llegaron los remixes con Nicki Minaj, 21 Savage y Travis Scott." },
         { a: 2017, art: "Bad Bunny", t: "Chambea", n: "Trap con humor y actitud: «chambea, bebé»." },
         { a: 2018, art: "Anuel AA", t: "Real Hasta la Muerte", tipo: "disco", n: "Salió mientras él seguía en la cárcel: sus fans esperaron su liberación en 2019 como un acontecimiento." },
-        { a: 2018, art: "Cardi B", t: "I Like It", n: "Con Bad Bunny y J Balvin: el trap latino llega al número uno de Estados Unidos." }
+        { a: 2018, art: "Cardi B", t: "I Like It", n: "Con Bad Bunny y J Balvin: el trap latino llega al número uno de Estados Unidos." },
+        { a: 2018, art: "Ozuna", t: "Te vas", n: "Ozuna mezcla trap y R&B." }
       ]
     },
     {
@@ -35,10 +37,12 @@ HISTORIAS.push({
         { a: 2018, art: "Paulo Londra", t: "Adán y Eva", n: "Trap romántico de Córdoba: uno de los más escuchados del año en todo el mundo hispano." },
         { a: 2019, art: "Nicki Nicole", t: "Wapo Traketero", n: "Una chica de Rosario grabando en su casa: su sesión con Bizarrap la hizo estallar." },
         { a: 2019, art: "Natanael Cano", t: "Soy el Diablo", n: "Desde México, los corridos tumbados: guitarras de corrido con letras de trap." },
+        { a: 2019, art: "Duki", t: "Goteo", n: "Duki, de Buenos Aires, uno de los grandes del trap argentino." },
         { a: 2020, art: "Trueno", t: "Mamichula", n: "Con Nicki Nicole: el campeón de freestyle de La Boca en el pop." },
         { a: 2022, art: "Bad Bunny", t: "El artista más escuchado del mundo en Spotify", tipo: "hito", n: "Tres años seguidos, cantando en español." },
         { a: 2022, art: "Bizarrap", t: "Duki: Bzrp Music Sessions, Vol. 50", q: "Bizarrap Duki Music Sessions 50", n: "Las «sesiones» de un productor argentino en su habitación se convierten en un fenómeno mundial." },
-        { a: 2023, art: "Eladio Carrión", t: "Coco Chanel", n: "Con Bad Bunny: el trap latino, ya convertido en la música más escuchada del planeta." }
+        { a: 2023, art: "Eladio Carrión", t: "Coco Chanel", n: "Con Bad Bunny: el trap latino, ya convertido en la música más escuchada del planeta." },
+        { a: 2023, art: "Peso Pluma & Eslabón Armado", t: "Ella baila sola", n: "Los corridos tumbados llegan a lo más alto del mundo: número uno global en Spotify." }
       ]
     }
   ]

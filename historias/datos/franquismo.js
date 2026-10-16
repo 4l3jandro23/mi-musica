@@ -17,6 +17,7 @@ HISTORIAS.push({
         { a: 1941, art: "Concha Piquer", t: "Tatuaje", n: "La copla, música oficial del régimen… con historias que a veces se le escapaban." },
         { a: 1946, art: "Bonet de San Pedro", t: "Raska-yú", n: "Swing y canción ligera: el jazz se cuela disfrazado." },
         { a: 1947, art: "Antonio Machín", t: "Angelitos negros", n: "Un cubano negro cantando contra el racismo en la España de la posguerra." },
+        { a: 1950, art: "Jorge Sepúlveda", t: "Mirando al mar", n: "El bolero más famoso de la posguerra española, cantado por el valenciano Jorge Sepúlveda." },
         { a: 1957, art: "Sara Montiel", t: "Fumando espero", n: "Sensualidad en el cine, con la censura vigilando." }
       ]
     },
@@ -28,6 +29,8 @@ HISTORIAS.push({
       items: [
         { a: 1959, art: "Festival de Benidorm", t: "Primera edición", tipo: "hito", n: "Creado para promocionar el turismo: un escaparate de la canción ligera que lanzó a Julio Iglesias y Raphael." },
         { a: 1962, art: "Dúo Dinámico", t: "Quisiera ser", n: "Los primeros ídolos juveniles del pop español." },
+        { a: 1962, art: "Marisol", t: "Tómbola", n: "Marisol, la niña prodigio del cine español del desarrollismo." },
+        { a: 1964, art: "Los Brincos", t: "Flamenco", n: "Los «Beatles españoles»: el pop beat llega a la España de Franco." },
         { a: 1965, art: "Concha Velasco", t: "La chica ye-yé", n: "La moda yeyé: guateques y minifaldas (con permiso)." },
         { a: 1966, art: "Los Bravos", t: "Black Is Black", n: "Un grupo español en las listas de medio mundo, cantando en inglés." },
         { a: 1966, art: "Raphael", t: "Yo soy aquel", n: "El gran showman de la canción melódica." },
@@ -47,8 +50,8 @@ HISTORIAS.push({
         { a: 1971, art: "Karina", t: "En un mundo nuevo", n: "Segundo puesto en Eurovisión: optimismo para un país que quería cambiar." },
         { a: 1972, art: "Nino Bravo", t: "Libre", n: "Inspirada en un joven que murió intentando cruzar el Muro de Berlín. Muchos la oían como un himno de libertad." },
         { a: 1973, art: "Mocedades", t: "Eres tú", n: "Segundo puesto en Eurovisión y un éxito en Estados Unidos." },
-        { a: 1975, art: "Cecilia", t: "Dama, dama", n: "Una sátira de la señora de bien. Cecilia moriría un año después en un accidente." },
-        { a: 1975, art: "Muere Franco", t: "20 de noviembre", tipo: "hito", n: "Empieza la Transición: llegan la libertad, el fin de la censura y la Movida." }
+        { a: 1975, art: "Muere Franco", t: "20 de noviembre", tipo: "hito", n: "Empieza la Transición: llegan la libertad, el fin de la censura y la Movida." },
+        { a: 1975, art: "Cecilia", t: "Dama, dama", n: "Una sátira de la señora de bien. Cecilia moriría un año después en un accidente." }
       ]
     }
   ]

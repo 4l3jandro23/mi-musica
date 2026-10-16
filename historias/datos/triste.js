@@ -44,7 +44,7 @@ HISTORIAS.push({
       periodo: "2003 – 2023",
       intro: "Indie triste, piano y TikTok.",
       items: [
-        { a: 2003, art: "Coldplay", t: "The Scientist", n: "Volver al principio." },
+        { a: 2003, art: "Coldplay", t: "The Scientist", n: "Chris Martin canta sobre querer volver al principio; el vídeo se grabó al revés y él aprendió la letra al revés." },
         { a: 2003, art: "Gary Jules", t: "Mad World", n: "Una versión de Tears for Fears al piano." },
         { a: 2007, art: "Bon Iver", t: "Skinny Love", n: "Grabado en una cabaña de Wisconsin tras una ruptura." },
         { a: 2011, art: "Psicología", t: "Por qué nos gusta la música triste", tipo: "hito", n: "Investigadores proponen que la música triste consuela porque activa la prolactina, la hormona del consuelo, sin una pérdida real." },

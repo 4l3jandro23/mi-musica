@@ -32,6 +32,8 @@ HISTORIAS.push({
         { a: 1967, art: "Buffalo Springfield", t: "For What It's Worth", n: "«Something's happening here»: sobre las protestas en Los Ángeles." },
         { a: 1967, art: "Country Joe and the Fish", t: "I-Feel-Like-I'm-Fixin'-to-Die Rag", n: "Sátira contra Vietnam: la cantaron medio millón de personas en Woodstock." },
         { a: 1967, art: "The Youngbloods", t: "Get Together", n: "«Come on people now, smile on your brother»." },
+        { a: 1967, art: "The Beatles", t: "All You Need Is Love", n: "La canción que los Beatles cantaron para todo el mundo en la primera emisión mundial por satélite." },
+        { a: 1967, art: "Jefferson Airplane", t: "Somebody to Love", n: "Grace Slick y la psicodelia de San Francisco." },
         { a: 1968, art: "Big Brother & The Holding Company", t: "Piece of My Heart", n: "La voz desgarrada de Janis Joplin." },
         { a: 1968, art: "Canned Heat", t: "Going Up the Country", n: "Dejar la ciudad e irse al campo: el sueño de las comunas." }
       ]
@@ -47,6 +49,7 @@ HISTORIAS.push({
         { a: 1969, art: "The 5th Dimension", t: "Aquarius / Let the Sunshine In", n: "Del musical «Hair»: llega la «era de Acuario»." },
         { a: 1969, art: "Santana", t: "Soul Sacrifice", n: "Un grupo casi desconocido que en Woodstock se convirtió en leyenda." },
         { a: 1969, art: "Jimi Hendrix", t: "The Star-Spangled Banner (Live at Woodstock)", q: "Jimi Hendrix Star Spangled Banner Woodstock", n: "El himno de EE. UU. con sonidos de bombas: una protesta sin palabras." },
+        { a: 1969, art: "Joni Mitchell", t: "Woodstock", n: "Joni Mitchell no fue a Woodstock, pero escribió su himno viéndolo por la tele." },
         { a: 1970, art: "Crosby, Stills, Nash & Young", t: "Woodstock", n: "La canción de Joni Mitchell sobre un festival al que ella no pudo ir." },
         { a: 1970, art: "Crosby, Stills, Nash & Young", t: "Ohio", n: "Escrita tras la matanza de estudiantes en la Universidad de Kent State." },
         { a: 1970, art: "Melanie", t: "Lay Down (Candles in the Rain)", n: "Inspirada por las velas encendidas bajo la lluvia en Woodstock." }

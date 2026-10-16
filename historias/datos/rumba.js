@@ -16,6 +16,7 @@ HISTORIAS.push({
         { a: 1955, art: "Gitanos de Barcelona", t: "Nace la rumba catalana", tipo: "hito", n: "En Gràcia y Hostafrancs mezclan flamenco con mambo y guaracha." },
         { a: 1965, art: "Peret", t: "El muerto vivo", n: "El rey de la rumba catalana y su primer gran éxito." },
         { a: 1971, art: "Peret", t: "Borriquito", n: "Un éxito en media Europa." },
+        { a: 1971, art: "Peret", t: "Una lágrima", q: "Peret", n: "Peret, el «rey de la rumba», en una de sus canciones más populares." },
         { a: 1974, art: "Peret", t: "Canta y sé feliz", tipo: "hito", n: "Representa a España en Eurovisión." }
       ]
     },
@@ -27,8 +28,12 @@ HISTORIAS.push({
       items: [
         { a: 1974, art: "Las Grecas", t: "Te estoy amando locamente", n: "Rock gitano: para muchos, la primera fusión flamenca." },
         { a: 1974, art: "Los Chichos", t: "Quiero ser libre", n: "La rumba de los barrios y la cárcel." },
+        { a: 1974, art: "Los Chichos", t: "Ni más ni menos", n: "Los Chichos, de Madrid: la rumba de los barrios y la cárcel." },
+        { a: 1975, art: "Las Grecas", t: "Orgullo", n: "Las hermanas Muñoz mezclan rumba y rock: una mezcla que llamaron «gipsy rock»." },
         { a: 1978, art: "Cine quinqui", t: "La rumba de los barrios", tipo: "hito", n: "Las películas de Eloy de la Iglesia y José Antonio de la Loma ponen banda sonora a los barrios." },
         { a: 1980, art: "Los Chunguitos", t: "Me quedo contigo", n: "Rumba romántica, versionada por Rosalía décadas después." },
+        { a: 1981, art: "Gato Pérez", t: "Gitanitos y morenos", n: "El argentino Gato Pérez se enamora de la rumba catalana y la defiende como la música de Barcelona." },
+        { a: 1983, art: "Los Chunguitos", t: "Ay qué dolor", n: "Los Chunguitos, de Badajoz y luego Madrid: más rumba quinqui." },
         { a: 1992, art: "Kiko Veneno", t: "Échate un cantecito", n: "Rumba sevillana y alegría." }
       ]
     },
@@ -39,10 +44,14 @@ HISTORIAS.push({
       intro: "La rumba llega al mundo.",
       items: [
         { a: 1987, art: "Gipsy Kings", t: "Bamboléo", n: "Rumba francesa que dio la vuelta al mundo." },
-        { a: 1991, art: "Los Manolos", t: "All My Loving", n: "Los Beatles en rumba." },
+        { a: 1987, art: "Gipsy Kings", t: "Djobi Djoba", n: "La rumba francesa de los Gipsy Kings, que vendió millones en todo el mundo." },
+        { a: 1991, art: "Los Manolos", t: "All My Loving", n: "Los Manolos llevan a los Beatles a la rumba catalana y la cantan en la clausura de los Juegos de Barcelona 92." },
         { a: 1992, art: "Juegos de Barcelona", t: "Peret y Los Manolos en la clausura", tipo: "hito", n: "La rumba catalana ante todo el mundo." },
         { a: 1999, art: "Estopa", t: "La raja de tu falda", n: "Dos hermanos de Cornellà y un Seat Panda." },
+        { a: 1999, art: "Estopa", t: "Como Camarón", n: "Estopa, de Cornellà, homenajean a Camarón desde una rumba de guitarra." },
+        { a: 1999, art: "Estopa", t: "Tu calorro", n: "Del primer disco de Estopa, que vendió más de un millón de copias." },
         { a: 2001, art: "Los Delinqüentes", t: "El aire de la calle", n: "El «garrapateo» de Jerez." },
+        { a: 2002, art: "Ojos de Brujo", t: "Tiempo de soleá", n: "Desde Barcelona, mezclan rumba, flamenco, hip hop y reggae." },
         { a: 2019, art: "Rosalía", t: "Milionària", n: "Rumba catalana en catalán, en el siglo XXI." }
       ]
     }

@@ -39,7 +39,7 @@ HISTORIAS.push({
         { a: 1978, art: "Gloria Gaynor", t: "I Will Survive", n: "Era la cara B del single. Se convirtió en himno de supervivencia." },
         { a: 1978, art: "Sylvester", t: "You Make Me Feel (Mighty Real)", n: "Falsete y sintetizadores: puente hacia el hi-NRG y el house." },
         { a: 1979, art: "Disco Demolition Night", t: "«La disco ha muerto»", tipo: "hito", n: "Queman discos de disco en un estadio de Chicago: una reacción racista y homófoba." },
-        { a: 1979, art: "Sister Sledge", t: "We Are Family", n: "Otra producción de Chic." },
+        { a: 1979, art: "Sister Sledge", t: "We Are Family", n: "Nile Rodgers y Bernard Edwards, de Chic, la escribieron y produjeron para Sister Sledge. Se convirtió en himno de unidad." },
         { a: 1979, art: "Michael Jackson", t: "Don't Stop 'Til You Get Enough", n: "De «Off the Wall», con Quincy Jones." },
         { a: 1979, art: "Patrick Hernandez", t: "Born to Be Alive", n: "Un francés con apellido español: éxito mundial (y una joven Madonna en su gira)." }
       ]

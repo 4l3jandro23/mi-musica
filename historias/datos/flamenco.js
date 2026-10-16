@@ -15,8 +15,10 @@ HISTORIAS.push({
       items: [
         { a: 1910, art: "La Niña de los Peines", t: "Peteneras", n: "Pastora Pavón, la gran voz de su tiempo. Lorca la admiraba." },
         { a: 1922, art: "Concurso de Cante Jondo", t: "Granada, junto a la Alhambra", tipo: "hito", n: "Manuel de Falla y Lorca lo organizan para salvar el cante «puro». Entre los ganadores, un niño de 12 años: Manolo Caracol." },
+        { a: 1922, art: "Manuel Torre", t: "Siguiriyas", q: "Manuel Torre seguiriyas", n: "Manuel Torre, el cantaor que según García Lorca tenía «duende»." },
         { a: 1928, art: "Pepe Marchena", t: "Fandangos", n: "La «ópera flamenca»: flamenco para teatros y plazas de toros, con mucho éxito y muchas críticas de los puristas." },
         { a: 1936, art: "Ramón Montoya", t: "Rondeña", n: "La guitarra flamenca se vuelve instrumento de concierto, no solo de acompañamiento." },
+        { a: 1955, art: "Antonio Mairena", t: "Soleá de Alcalá", q: "Antonio Mairena soleá", n: "Antonio Mairena, el gran defensor del cante gitano tradicional." },
         { a: 1962, art: "Antonio Mairena", t: "Recibe la Llave de Oro del Cante", tipo: "hito", n: "La reivindicación del cante gitano y antiguo. Empieza la era de los festivales." }
       ]
     },
@@ -46,7 +48,9 @@ HISTORIAS.push({
         { a: 1983, art: "Remedios Amaya", t: "¿Quién maneja mi barca?", n: "Eurovisión 1983, cero puntos… y hoy es una canción de culto." },
         { a: 1987, art: "Pata Negra", t: "Blues de la frontera", n: "Los hermanos Amador: blues y flamenco. Un disco clave del nuevo flamenco." },
         { a: 1992, art: "Kiko Veneno", t: "Echo de menos", n: "Rumba pop con una letra tierna. Imposible no cantarla." },
+        { a: 1995, art: "Ketama", t: "No estamos lokos", n: "Ketama mezcla flamenco y pop: el nuevo flamenco llega a la radio." },
         { a: 1996, art: "Enrique Morente", t: "Omega", n: "Con Lagartija Nick, desde Granada: Lorca, Leonard Cohen y rock. Una obra maestra de la fusión." },
+        { a: 2003, art: "Diego el Cigala & Bebo Valdés", t: "Lágrimas negras", n: "El cantaor madrileño y el pianista cubano juntan flamenco y bolero." },
         { a: 2010, art: "UNESCO", t: "El flamenco, patrimonio de la humanidad", tipo: "hito", n: "Reconocido como patrimonio cultural inmaterial." },
         { a: 2018, art: "Rosalía", t: "Malamente", n: "El flamenco con producción urbana. Polémica y fenómeno mundial." }
       ]

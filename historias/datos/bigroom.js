@@ -17,18 +17,25 @@ HISTORIAS.push({
         { a: 2012, art: "Hardwell", t: "Spaceman", n: "Uno de los grandes himnos de festival de la época. Hardwell sería DJ nº 1 del mundo al año siguiente." },
         { a: 2012, art: "Nicky Romero", t: "Toulouse", n: "Un clásico del sello Protocol: progressive con mucha pegada." },
         { a: 2012, art: "Showtek & Justin Prime", t: "Cannonball", n: "Showtek venía del hardstyle y se nota en la contundencia." },
+        { a: 2012, art: "Swedish House Mafia", t: "Don't You Worry Child", n: "La despedida de Swedish House Mafia, con la voz de John Martin: el himno que cerró una era." },
+        { a: 2012, art: "Hardwell", t: "Apollo", n: "Con Amba Shepherd. Hardwell en su año de número uno en DJ Mag." },
         { a: 2013, art: "DJ Mag", t: "Hardwell, DJ número uno del mundo con 25 años", tipo: "hito", n: "El big room en la cima de la encuesta más famosa." },
         { a: 2013, art: "Tomorrowland", t: "Entradas agotadas en segundos", tipo: "hito", n: "El festival belga se convierte en el más famoso del mundo." },
         { a: 2013, art: "Martin Garrix", t: "Animals", n: "Un chaval de 17 años y un drop de cinco notas. El himno definitivo del género." },
         { a: 2013, art: "DVBBS & Borgeous", t: "Tsunami", n: "Una subida coreadísima y un drop que se hizo omnipresente en 2013." },
         { a: 2013, art: "Dimitri Vegas & Like Mike", t: "Mammoth", n: "Con Moguai. Los anfitriones de Tomorrowland en estado puro." },
         { a: 2013, art: "Showtek", t: "Booyah", n: "Con We Are Loud y Sonny Wilson: big room con voz de MC, que saltó de los festivales a las listas." },
+        { a: 2013, art: "Avicii", t: "Wake Me Up", n: "Avicii mezcla el country con el EDM y lo abuchean en Ultra: luego es número uno en medio mundo." },
         { a: 2014, art: "W&W", t: "Bigfoot", n: "Pisotones de gigante: el bombo como protagonista absoluto." },
         { a: 2014, art: "Martin Garrix & Firebeatz", t: "Helicopter", n: "Garrix intentando repetir «Animals»… y casi lo consigue." },
         { a: 2014, art: "Martin Garrix & Afrojack", t: "Turn Up the Speakers", n: "El dutch house de Afrojack se encuentra con el big room." },
+        { a: 2014, art: "Martin Garrix", t: "Proxy", n: "Garrix después de «Animals»: un drop pensado para el escenario principal." },
+        { a: 2014, art: "Hardwell & Joey Dale", t: "Arcadia", n: "Con Luciana. El big room más épico de Hardwell." },
         { a: 2015, art: "Dimitri Vegas & Like Mike vs. Ummet Ozcan", t: "The Hum", n: "Melodía psytrance con un drop de big room. Fue de lo último grande del género." },
         { a: 2015, art: "Hardwell & W&W", t: "Jumper", n: "Su nombre lo dice todo: para saltar." },
-        { a: 2016, art: "Fin de una era", t: "El future bass y el tropical toman el relevo", tipo: "hito", n: "Hacia 2016, los mainstages se cansan de la fórmula: llegan el future house, el future bass y el pop electrónico." }
+        { a: 2015, art: "Hardwell", t: "Mad World", n: "Con Jake Reese. El lado más melódico de Hardwell." },
+        { a: 2016, art: "Fin de una era", t: "El future bass y el tropical toman el relevo", tipo: "hito", n: "Hacia 2016, los mainstages se cansan de la fórmula: llegan el future house, el future bass y el pop electrónico." },
+        { a: 2016, art: "Martin Garrix", t: "In the Name of Love", n: "Con Bebe Rexha. Garrix se pasa al pop: el final de la era big room." }
       ]
     }
   ]

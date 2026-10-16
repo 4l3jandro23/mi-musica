@@ -17,6 +17,8 @@ HISTORIAS.push({
         { a: 2010, art: "Doctor P", t: "Sweet Shop", n: "Con el sello Circus Records: wobble pegadizo, casi para cantar." },
         { a: 2010, art: "Nero", t: "Me & You", n: "Dubstep épico y cinematográfico, con aire de los 80." },
         { a: 2010, art: "Skrillex", t: "Scary Monsters and Nice Sprites", n: "El tema que lo cambió todo: el bajo «que habla» se convierte en la seña del género." },
+        { a: 2010, art: "Skrillex", t: "Kill Everybody", n: "Del mismo EP que «Scary Monsters»: sonidos metálicos y gritos." },
+        { a: 2010, art: "Datsik & Excision", t: "Swagga", n: "Dos canadienses y un dubstep pesado que sonaba en todas las salas." },
         { a: 2011, art: "Flux Pavilion", t: "Bass Cannon", n: "Su título resume la época." },
         { a: 2011, art: "Flux Pavilion", t: "I Can't Stop", n: "Jay-Z y Kanye la samplearon en «Who Gon Stop Me»." },
         { a: 2011, art: "Skrillex", t: "First of the Year (Equinox)", n: "Y el videoclip, que dio miedo a medio YouTube." },
@@ -25,7 +27,11 @@ HISTORIAS.push({
         { a: 2011, art: "Skrillex", t: "Bangarang", n: "Con Sirah. El EP le dio dos Grammy." },
         { a: 2012, art: "Skrillex", t: "Grammy al mejor álbum dance", tipo: "hito", n: "El brostep llega a lo más alto de la industria. Desde ahí, todo festival quería su drop." },
         { a: 2012, art: "Knife Party", t: "Centipede", n: "El documental de naturaleza más amenazante de la historia." },
-        { a: 2012, art: "Borgore", t: "Decisions", n: "Con Miley Cyrus. El brostep ya es puro pop." }
+        { a: 2012, art: "Borgore", t: "Decisions", n: "Con Miley Cyrus. El brostep ya es puro pop." },
+        { a: 2012, art: "Skrillex & Damian Marley", t: "Make It Bun Dem", n: "El brostep se junta con el reggae: Skrillex con el hijo de Bob Marley." },
+        { a: 2012, art: "Excision & Downlink", t: "Existence", q: "Excision Downlink", n: "Bajos que hacían vibrar los escenarios de los festivales de 2012." },
+        { a: 2012, art: "Zomboy", t: "Nuclear (Hands Up)", n: "Zomboy, británico, con un brostep de terror." },
+        { a: 2012, art: "Virtual Riot", t: "Energy Drink", n: "Virtual Riot, alemán, empieza su carrera en el dubstep de los 2010." }
       ]
     },
     {
@@ -36,6 +42,7 @@ HISTORIAS.push({
       items: [
         { a: 2015, art: "El riddim", t: "Nace en SoundCloud", tipo: "hito", n: "Productores británicos y americanos repiten un mismo bajo una y otra vez: más hipnótico que melódico." },
         { a: 2016, art: "Lost Lands", t: "El festival de Excision", tipo: "hito", n: "Un festival entero de bass music en Ohio, con dinosaurios gigantes." },
+        { a: 2016, art: "Excision & Space Laces", t: "Throwin' Elbows", n: "Excision sigue en lo más alto con un dubstep de festival." },
         { a: 2019, art: "GRiZ & Subtronics", t: "Griztronics", n: "La nueva generación del dubstep, de lo más escuchado del género." }
       ]
     }

@@ -21,7 +21,7 @@ HISTORIAS.push({
         { a: 1966, art: "Ravi Shankar & Yehudi Menuhin", t: "West Meets East", tipo: "disco", n: "El sitar y el violín: la música clásica india llega a Occidente. George Harrison se hizo alumno de Shankar." },
         { a: 1969, art: "Kishore Kumar", t: "Mere Sapno Ki Rani", n: "De «Aradhana»: Kishore se convierte en la voz de una generación." },
         { a: 1971, art: "Asha Bhosle", t: "Dum Maro Dum", n: "Psicodelia y hippies con R.D. Burman, el gran innovador del cine indio." },
-        { a: 1973, art: "Kishore Kumar", t: "Pal Pal Dil Ke Paas", n: "Romanticismo puro." },
+        { a: 1973, art: "Kishore Kumar", t: "Pal Pal Dil Ke Paas", n: "Kishore Kumar, la gran voz de Bollywood, en una balada de la película «Blackmail»: romanticismo de los 70." },
         { a: 1975, art: "R.D. Burman", t: "Mehbooba Mehbooba", n: "De «Sholay», la película más famosa de la India." }
       ]
     },

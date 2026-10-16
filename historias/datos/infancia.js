@@ -20,7 +20,7 @@ HISTORIAS.push({
         { a: 2002, art: "Operación Triunfo", t: "Mi música es tu voz", n: "OT1 paralizó el país. Todos los concursantes juntos en un himno." },
         { a: 2002, art: "Las Ketchup", t: "Aserejé", n: "Un fenómeno mundial con un baile que se aprendió todo el patio del colegio." },
         { a: 2002, art: "David Bisbal", t: "Ave María", n: "El primer gran éxito de Bisbal tras OT, con los rizos y los saltos." },
-        { a: 2002, art: "Chenoa", t: "Cuando tú vas", n: "La otra estrella de OT1." },
+        { a: 2002, art: "Chenoa", t: "Cuando tú vas", n: "Chenoa, la otra gran estrella de la primera Operación Triunfo, con su primer gran éxito en 2002." },
         { a: 2002, art: "Amaral", t: "Sin ti no soy nada", n: "La balada que sonaba en todas partes." },
         { a: 2002, art: "Juanes", t: "A Dios le pido", n: "Rock latino de Colombia que triunfó también aquí." }
       ]

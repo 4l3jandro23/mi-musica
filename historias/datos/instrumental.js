@@ -18,6 +18,8 @@ HISTORIAS.push({
         { a: 1959, art: "Santo & Johnny", t: "Sleep Walk", n: "Una guitarra steel que suena como un sueño." },
         { a: 1960, art: "The Ventures", t: "Walk, Don't Run", n: "El grupo instrumental más vendido de la historia." },
         { a: 1962, art: "Booker T. & the M.G.'s", t: "Green Onions", n: "La banda de Stax y un órgano Hammond irresistible." },
+        { a: 1962, art: "The Tornados", t: "Telstar", n: "Un órgano futurista dedicado a un satélite: primer número uno en EE. UU. de un grupo británico." },
+        { a: 1962, art: "Dick Dale & His Del-Tones", t: "Misirlou", n: "La guitarra surf que años después abrió «Pulp Fiction»." },
         { a: 1965, art: "Herb Alpert & The Tijuana Brass", t: "A Taste of Honey", n: "Trompetas alegres: el «easy listening»." },
         { a: 1968, art: "Paul Mauriat", t: "L'amour est bleu", n: "Una orquesta francesa en el número uno de EE. UU." }
       ]
@@ -30,7 +32,9 @@ HISTORIAS.push({
       items: [
         { a: 1973, art: "«Tubular Bells»", t: "El debut de Mike Oldfield y de Virgin", tipo: "hito", n: "Un disco instrumental de 49 minutos vende millones." },
         { a: 1973, art: "Mike Oldfield", t: "Tubular Bells, Pt. I", q: "Mike Oldfield Tubular Bells Part One", n: "Un chaval de 19 años toca casi todos los instrumentos. El inicio sonó en «El exorcista»." },
-        { a: 1976, art: "Santana", t: "Europa (Earth's Cry Heaven's Smile)", n: "Una guitarra que llora." },
+        { a: 1976, art: "Santana", t: "Europa (Earth's Cry Heaven's Smile)", n: "La guitarra de Carlos Santana suena casi como una voz llorando. Un clásico del rock instrumental." },
+        { a: 1976, art: "Jean-Michel Jarre", t: "Oxygène, Pt. IV", n: "Jarre convierte los sintetizadores en un éxito de ventas." },
+        { a: 1981, art: "Vangelis", t: "Chariots of Fire", n: "El tema de la película «Carros de fuego»: Óscar y número uno." },
         { a: 1986, art: "Kenny G", t: "Songbird", n: "El saxo suave más vendido (y más criticado) de la historia." },
         { a: 1987, art: "Joe Satriani", t: "Surfing with the Alien", n: "El guitarrista de los guitarristas." }
       ]

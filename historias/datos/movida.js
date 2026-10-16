@@ -15,8 +15,9 @@ HISTORIAS.push({
       items: [
         { a: 1975, art: "Muere Franco", t: "Llega la libertad", tipo: "hito", n: "Los jóvenes de Madrid descubren el punk y la new wave." },
         { a: 1978, art: "Burning", t: "¿Qué hace una chica como tú en un sitio como este?", n: "Rock urbano para la película de Fernando Colomo." },
+        { a: 1979, art: "Kaka de Luxe", t: "Pero qué público más tonto tengo", q: "Kaka de Luxe", n: "Kaka de Luxe, el grupo punk del que salieron Alaska, Nacho Canut y Los Secretos." },
         { a: 1980, art: "Concierto homenaje a Canito", t: "El arranque de la Movida", tipo: "hito", n: "En la Escuela de Caminos, Alaska, Nacha Pop, Mamá y otros tocan por un batería fallecido." },
-        { a: 1980, art: "Nacha Pop", t: "La chica de ayer", n: "El himno de la Movida." },
+        { a: 1980, art: "Nacha Pop", t: "La chica de ayer", n: "Antonio Vega la escribió con veintipocos años: la canción más querida de la Movida y del pop español." },
         { a: 1980, art: "Radio Futura", t: "Enamorado de la moda juvenil", n: "Una burla de las modas que acabó siendo una de ellas." },
         { a: 1980, art: "Zombies", t: "Groenlandia", n: "Bernardo Bonezzi y el pop helado." }
       ]
@@ -30,25 +31,30 @@ HISTORIAS.push({
         { a: 1981, art: "Rock-Ola", t: "Abre la sala de la Movida", tipo: "hito", n: "Por su escenario pasan todos los grupos hasta su cierre en 1985." },
         { a: 1981, art: "Los Secretos", t: "Déjame", n: "Pop melancólico y eterno." },
         { a: 1981, art: "Mecano", t: "Hoy no me puedo levantar", n: "El lado más comercial de la Movida." },
+        { a: 1981, art: "Aviador Dro", t: "Nuclear sí", q: "Aviador Dro", n: "El tecnopop irónico de Aviador Dro." },
         { a: 1982, art: "Alaska y los Pegamoides", t: "Bailando", n: "«Bailando, me paso el día bailando»." },
         { a: 1982, art: "Parálisis Permanente", t: "Autosuficiencia", n: "El lado oscuro y siniestro." },
+        { a: 1982, art: "Glutamato Ye-Yé", t: "Todos los negritos tienen hambre y frío", q: "Glutamato Ye-Yé", n: "Humor absurdo y punk en plena Movida." },
+        { a: 1982, art: "Derribos Arias", t: "Branquias bajo el agua", q: "Derribos Arias", n: "Poch y su post-punk raro." },
         { a: 1983, art: "La Edad de Oro", t: "Paloma Chamorro y TVE", tipo: "hito", n: "Un programa de televisión pública dedicado a la vanguardia." },
-        { a: 1983, art: "Tino Casal", t: "Embrujada", n: "El rey del glam español." },
-        { a: 1983, art: "Golpes Bajos", t: "Malos tiempos para la lírica", n: "Desde la movida de Vigo." },
+        { a: 1983, art: "Tino Casal", t: "Embrujada", n: "Tino Casal, el gran icono glam de los 80 en España, con un tema de sintes y misterio." },
+        { a: 1983, art: "Golpes Bajos", t: "Malos tiempos para la lírica", n: "Golpes Bajos, desde Vigo, demuestra que la Movida no era solo madrileña: post-punk elegante y triste." },
+        { a: 1983, art: "Loquillo y los Trogloditas", t: "Cadillac solitario", n: "Loquillo, de Barcelona, con un rock and roll de chupa de cuero." },
         { a: 1984, art: "Tierno Galván", t: "«Rockeros: el que no esté colocado, que se coloque»", tipo: "hito", n: "El alcalde de Madrid, en un concierto, se convierte en mito." },
-        { a: 1984, art: "Radio Futura", t: "Escuela de calor", n: "La Movida madura." }
+        { a: 1984, art: "Radio Futura", t: "Escuela de calor", n: "Radio Futura canta una ciudad que arde en verano, con ritmo bailable: la Movida se vuelve madura y propia." }
       ]
     },
     {
       titulo: "El final",
       corto: "Final",
-      periodo: "1985 – 1987",
+      periodo: "1984 – 1987",
       intro: "De los garitos a las listas.",
       items: [
+        { a: 1984, art: "La Unión", t: "Lobo hombre en París", n: "La Unión, con un pop elegante y misterioso." },
         { a: 1985, art: "Rock-Ola", t: "Cierra la sala", tipo: "hito", n: "Una pelea mortal a la salida precipita el cierre: es el final simbólico de la Movida." },
         { a: 1985, art: "Hombres G", t: "Devuélveme a mi chica", n: "El pop de los niños bien." },
         { a: 1986, art: "Alaska y Dinarama", t: "¿A quién le importa?", n: "Un himno de libertad que sigue vivo." },
-        { a: 1987, art: "Gabinete Caligari", t: "Camino Soria", n: "Rock torero y castizo." }
+        { a: 1987, art: "Gabinete Caligari", t: "Camino Soria", n: "Gabinete Caligari se define como «rock torero»: castizo, chulesco y madrileño a más no poder." }
       ]
     }
   ]

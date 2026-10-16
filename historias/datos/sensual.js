@@ -15,7 +15,7 @@ HISTORIAS.push({
       items: [
         { a: 1940, art: "Trío Los Panchos", t: "Bésame mucho", n: "Escrita en 1940 por la mexicana Consuelo Velázquez, casi una adolescente: el bolero más grabado de la historia." },
         { a: 1958, art: "Peggy Lee", t: "Fever", n: "Solo chasquidos de dedos, contrabajo y una voz susurrada." },
-        { a: 1960, art: "Etta James", t: "At Last", n: "La balada definitiva." },
+        { a: 1960, art: "Etta James", t: "At Last", n: "Etta James en su balada definitiva, con cuerdas: la canción de boda por excelencia." },
         { a: 1969, art: "Je t'aime… moi non plus", t: "Condenada por el Vaticano", tipo: "hito", n: "La canción más escandalosa de los 60." },
         { a: 1969, art: "Jane Birkin & Serge Gainsbourg", t: "Je t'aime… moi non plus", n: "La canción más escandalosa de su década." }
       ]

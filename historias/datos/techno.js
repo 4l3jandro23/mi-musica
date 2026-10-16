@@ -18,7 +18,8 @@ HISTORIAS.push({
         { a: 1985, art: "Model 500", t: "No UFO's", n: "Juan Atkins por su cuenta: aquí ya suena a techno." },
         { a: 1987, art: "Rhythim Is Rhythim", t: "Strings of Life", n: "Derrick May: piano y cuerdas a toda velocidad. Un clásico eterno." },
         { a: 1988, art: "Techno! The New Dance Sound of Detroit", t: "El recopilatorio que le pone nombre", tipo: "hito", n: "Un sello británico reúne a los de Detroit y el género recibe su nombre." },
-        { a: 1988, art: "Reese", t: "Just Want Another Chance", n: "Kevin Saunderson y su bajo, el «Reese bass», que luego se usaría mil veces en el drum & bass." }
+        { a: 1988, art: "Reese", t: "Just Want Another Chance", n: "Kevin Saunderson y su bajo, el «Reese bass», que luego se usaría mil veces en el drum & bass." },
+        { a: 1988, art: "Rhythim Is Rhythim", t: "It Is What It Is", n: "Derrick May, uno de los tres de Belleville, con techno hipnótico." }
       ]
     },
     {
@@ -32,6 +33,7 @@ HISTORIAS.push({
         { a: 1991, art: "Tresor", t: "El club abre en Berlín", tipo: "hito", n: "En una cámara acorazada del Berlín recién reunificado: Detroit y Berlín, unidos." },
         { a: 1991, art: "Second Phase", t: "Mentasm", n: "El sonido «hoover», que se oirá en todas las raves y en el hardcore." },
         { a: 1992, art: "Aphex Twin", t: "Digeridoo", n: "Un chaval de Cornualles llevando el techno a lo experimental." },
+        { a: 1992, art: "Underground Resistance", t: "Jupiter Jazz", q: "Underground Resistance Jupiter Jazz", n: "Underground Resistance, el colectivo militante de Detroit." },
         { a: 1993, art: "Galaxy 2 Galaxy", t: "Hi-Tech Jazz", n: "Underground Resistance, el colectivo militante de Detroit, en su versión más bonita." },
         { a: 1993, art: "Plastikman", t: "Spastik", n: "Richie Hawtin: solo percusión. El minimal en estado puro." },
         { a: 1994, art: "Robert Hood", t: "Minimal Nation", tipo: "disco", n: "El disco que define el techno minimal." },
@@ -46,8 +48,11 @@ HISTORIAS.push({
       items: [
         { a: 2000, art: "Laurent Garnier", t: "The Man with the Red Face", n: "Un saxofón sobre techno: el gran DJ francés." },
         { a: 2004, art: "Berghain", t: "Abre el club más famoso del mundo", tipo: "hito", n: "En una antigua central eléctrica de Berlín: sin móviles, sin fotos y con una puerta legendaria." },
+        { a: 2006, art: "Ricardo Villalobos", t: "Fizheuer Zieheuer", n: "Treinta y siete minutos de minimal hipnótico con una melodía balcánica." },
+        { a: 2008, art: "Paul Kalkbrenner", t: "Sky and Sand", n: "El himno de «Berlin Calling»: techno melódico para el gran público." },
         { a: 2015, art: "Stephan Bodzin", t: "Powers of Ten", n: "El techno melódico: emoción y sintetizadores." },
         { a: 2018, art: "Adam Beyer & Bart Skils", t: "Your Mind", n: "El techno de Drumcode que llena los grandes escenarios." },
+        { a: 2018, art: "Amelie Lens", t: "Hypnotized", n: "Amelie Lens, belga, la cara del techno duro de los festivales." },
         { a: 2024, art: "La cultura techno de Berlín", t: "Patrimonio cultural de Alemania", tipo: "hito", n: "Alemania la incluye en su inventario de patrimonio inmaterial." }
       ]
     }

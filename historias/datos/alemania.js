@@ -75,7 +75,7 @@ HISTORIAS.push({
         { a: 1989, art: "Love Parade", t: "Primera edición en Berlín", tipo: "hito", n: "150 personas en 1989. Tras la caída del Muro llegaría a más de un millón: Berlín, capital del techno." },
         { a: 1992, art: "Die Fantastischen Vier", t: "Die da!?!", n: "El primer gran éxito del rap en alemán." },
         { a: 1993, art: "Die Ärzte", t: "Schrei nach Liebe", n: "Punk contra los neonazis." },
-        { a: 1994, art: "Paul van Dyk", t: "For an Angel", n: "El trance de Berlín." },
+        { a: 1994, art: "Paul van Dyk", t: "For an Angel", n: "El tema que puso a Paul van Dyk en el mapa y definió el trance melódico de Berlín tras la caída del muro." },
         { a: 1997, art: "Rammstein", t: "Du hast", n: "El metal industrial alemán: lo que más se escucha en alemán fuera de Alemania." },
         { a: 1998, art: "Scooter", t: "How Much Is the Fish?", n: "Hard trance y gritos: kitsch glorioso." },
         { a: 2008, art: "Paul Kalkbrenner", t: "Sky and Sand", n: "De la película «Berlin Calling»: el himno del Berlín de los clubs." },

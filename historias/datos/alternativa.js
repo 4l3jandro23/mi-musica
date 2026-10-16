@@ -30,10 +30,10 @@ HISTORIAS.push({
         { a: 1991, art: "Lollapalooza", t: "Primera edición", tipo: "hito", n: "Un festival itinerante creado por Perry Farrell: el rock alternativo tiene su casa." },
         { a: 1991, art: "Nirvana", t: "Smells Like Teen Spirit", n: "«Nevermind» desbancó a Michael Jackson del número uno: el rock alternativo se vuelve mainstream." },
         { a: 1991, art: "Pearl Jam", t: "Alive", n: "La otra gran banda de Seattle." },
-        { a: 1992, art: "Alice in Chains", t: "Would?", n: "El grunge más oscuro." },
+        { a: 1992, art: "Alice in Chains", t: "Would?", n: "Jerry Cantrell la escribió para Andrew Wood, el cantante de Mother Love Bone, que murió de sobredosis. Salió en la banda sonora de «Singles»." },
         { a: 1992, art: "Radiohead", t: "Creep", n: "Una canción que el propio grupo acabó odiando." },
         { a: 1993, art: "Beck", t: "Loser", n: "Rap, slide y folk grabado en una cocina: «I'm a loser, baby»." },
-        { a: 1994, art: "Kurt Cobain", t: "Muere con 27 años", tipo: "hito", n: "El final de una época." },
+        { a: 1994, art: "Kurt Cobain", t: "Muere con 27 años", tipo: "hito", n: "Kurt Cobain muere en Seattle en abril de 1994. El grunge pierde a su voz y el rock alternativo cambia de rumbo." },
         { a: 1994, art: "Soundgarden", t: "Black Hole Sun", n: "Un vídeo de pesadilla suburbana." },
         { a: 1994, art: "Weezer", t: "Buddy Holly", n: "Un vídeo dentro de la serie «Happy Days»." },
         { a: 1995, art: "The Smashing Pumpkins", t: "1979", n: "La nostalgia adolescente perfecta." },
@@ -52,7 +52,7 @@ HISTORIAS.push({
         { a: 1997, art: "Radiohead", t: "Paranoid Android", n: "De «OK Computer»: el rock alternativo se vuelve ambicioso." },
         { a: 1997, art: "Foo Fighters", t: "Everlong", n: "Dave Grohl, el batería de Nirvana, convertido en líder." },
         { a: 1999, art: "Red Hot Chili Peppers", t: "Californication", n: "El lado oscuro del sueño californiano." },
-        { a: 2001, art: "Muse", t: "Plug In Baby", n: "Riff virtuoso y épica." },
+        { a: 2001, art: "Muse", t: "Plug In Baby", n: "El riff de Matt Bellamy, a medio camino entre Bach y el metal, que hizo de Muse una banda de estadio." },
         { a: 2002, art: "Queens of the Stone Age", t: "No One Knows", n: "Con Dave Grohl a la batería: rock del desierto." },
         { a: 2005, art: "Gorillaz", t: "Feel Good Inc.", n: "Un grupo de dibujos animados creado por Damon Albarn." }
       ]

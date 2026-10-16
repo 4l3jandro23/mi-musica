@@ -34,7 +34,7 @@ HISTORIAS.push({
         { a: 1951, art: "Elmore James", t: "Dust My Broom", n: "El riff de slide más famoso del blues." },
         { a: 1951, art: "B.B. King", t: "Three O'Clock Blues", n: "El primer éxito del rey del blues y de su guitarra «Lucille»." },
         { a: 1954, art: "Muddy Waters", t: "Hoochie Coochie Man", n: "Compuesta por Willie Dixon: el blues de Chicago en su cumbre." },
-        { a: 1956, art: "Howlin' Wolf", t: "Smokestack Lightnin'", n: "Una voz como un trueno." },
+        { a: 1956, art: "Howlin' Wolf", t: "Smokestack Lightnin'", n: "La voz rasgada de Howlin' Wolf con un riff hipnótico de un solo acorde: los Yardbirds y medio rock británico la versionaron." },
         { a: 1967, art: "Albert King", t: "Born Under a Bad Sign", n: "El blues de Stax, con los músicos del soul de Memphis." },
         { a: 1969, art: "B.B. King", t: "The Thrill Is Gone", n: "Con cuerdas: su mayor éxito." }
       ]
@@ -47,8 +47,10 @@ HISTORIAS.push({
       items: [
         { a: 1962, art: "The Rolling Stones", t: "Toman su nombre de una canción de Muddy Waters", tipo: "hito", n: "«Rollin' Stone»: el blues es su raíz." },
         { a: 1964, art: "The Rolling Stones", t: "Little Red Rooster", n: "Un blues de Howlin' Wolf en el número uno británico: los jóvenes ingleses descubren a los maestros." },
+        { a: 1966, art: "John Mayall & the Bluesbreakers", t: "All Your Love", n: "Con un jovencísimo Eric Clapton: del disco al que llamaron «el Beano» por el cómic que lee en la portada." },
         { a: 1968, art: "Cream", t: "Crossroads", n: "Eric Clapton convierte a Robert Johnson en rock." },
         { a: 1983, art: "Stevie Ray Vaughan", t: "Pride and Joy", n: "El blues texano vuelve con fuerza." },
+        { a: 1990, art: "Gary Moore", t: "Still Got the Blues", n: "Gary Moore abandona el hard rock y se pasa al blues con su mayor éxito." },
         { a: 2000, art: "The White Stripes", t: "Death Letter", n: "Un blues de Son House a todo volumen." },
         { a: 2010, art: "The Black Keys", t: "Tighten Up", n: "Garage blues de Ohio para el siglo XXI." }
       ]

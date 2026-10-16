@@ -33,10 +33,10 @@ HISTORIAS.push({
         { a: 2000, art: "Sweet Female Attitude", t: "Flowers", n: "Un clásico absoluto (PinkPantheress lo samplearía veinte años después)." },
         { a: 2000, art: "Oxide & Neutrino", t: "Bound 4 da Reload (Casualty)", n: "Samplea la sintonía de una serie de hospitales y llega al número uno." },
         { a: 2001, art: "So Solid Crew", t: "21 Seconds", n: "Un colectivo de MCs del sur de Londres: cada uno, 21 segundos. Puerta hacia el grime." },
-        { a: 2001, art: "DJ Pied Piper and the Masters of Ceremonies", t: "Do You Really Like It?", n: "Otro número uno." },
+        { a: 2001, art: "DJ Pied Piper and the Masters of Ceremonies", t: "Do You Really Like It?", n: "DJ Pied Piper and the Masters of Ceremonies llegan al número uno británico con este clásico del garage." },
         { a: 2001, art: "The Streets", t: "Has It Come to This?", n: "Mike Skinner cuenta la vida de barrio sobre garage." },
         { a: 2002, art: "So Solid Crew", t: "Brit Award al mejor vídeo", tipo: "hito", n: "Un colectivo de MCs del sur de Londres, en la gala más importante de la música británica." },
-        { a: 2002, art: "Ms. Dynamite", t: "It Takes More", n: "Ganó el Mercury Prize." }
+        { a: 2002, art: "Ms. Dynamite", t: "It Takes More", n: "Ms. Dynamite, con mensaje y garage, gana el Mercury Prize de 2002 con su primer disco." }
       ]
     },
     {

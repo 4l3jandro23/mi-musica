@@ -21,7 +21,7 @@ HISTORIAS.push({
         { a: 1992, art: "Ace of Base", t: "All That She Wants", n: "Eurodance con reggae desde Suecia." },
         { a: 1992, art: "Dr. Alban", t: "It's My Life", n: "Un dentista nigeriano en Suecia." },
         { a: 1992, art: "Captain Hollywood Project", t: "More and More", n: "Un exbailarín estadounidense en Alemania." },
-        { a: 1992, art: "Double You", t: "Please Don't Go", n: "El sonido italiano." }
+        { a: 1992, art: "Double You", t: "Please Don't Go", n: "Double You, desde Italia, versiona a KC and the Sunshine Band y la convierte en un éxito de discoteca en toda Europa." }
       ]
     },
     {
@@ -34,12 +34,12 @@ HISTORIAS.push({
         { a: 1993, art: "Culture Beat", t: "Mr. Vain", n: "Número uno en media Europa." },
         { a: 1993, art: "Corona", t: "The Rhythm of the Night", n: "El himno italiano del verano." },
         { a: 1993, art: "Real McCoy", t: "Another Night", n: "Desde Berlín: triunfó también en EE. UU." },
-        { a: 1993, art: "2 Unlimited", t: "No Limit", n: "«No no, no no no no»." },
+        { a: 1993, art: "2 Unlimited", t: "No Limit", n: "La letra casi no existe: «no no, no no no no». 2 Unlimited, desde Bélgica, en lo más alto del eurodance." },
         { a: 1994, art: "Los recopilatorios", t: "La era de los «Max Mix» y «Bit Mania»", tipo: "hito", n: "En España, los recopilatorios de eurodance venden millones." },
         { a: 1994, art: "Whigfield", t: "Saturday Night", n: "El baile del verano en España." },
         { a: 1994, art: "Masterboy", t: "Feel the Heat of the Night", n: "Pura discoteca de los 90." },
         { a: 1994, art: "Scatman John", t: "Scatman (Ski-Ba-Bop-Ba-Dop-Bop)", n: "Un jazzista tartamudo que convirtió su tartamudez en scat." },
-        { a: 1995, art: "La Bouche", t: "Be My Lover", n: "La fórmula perfecta." }
+        { a: 1995, art: "La Bouche", t: "Be My Lover", n: "Voz femenina potente, rap masculino y sintes: La Bouche resume la fórmula del eurodance del 95." }
       ]
     },
     {

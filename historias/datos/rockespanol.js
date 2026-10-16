@@ -29,6 +29,7 @@ HISTORIAS.push({
         { a: 1978, art: "Burning", t: "¿Qué hace una chica como tú en un sitio como éste?", n: "El rock de Madrid, de los barrios: canción y película." },
         { a: 1981, art: "Leño", t: "Maneras de vivir", n: "Rosendo y el himno del rock urbano." },
         { a: 1982, art: "Guerra de las Malvinas", t: "Las radios argentinas dejan de poner música en inglés", tipo: "hito", n: "El rock nacional se dispara." },
+        { a: 1983, art: "Los Abuelos de la Nada", t: "Mil horas", n: "Andrés Calamaro, con 22 años, compone uno de los clásicos del rock argentino." },
         { a: 1984, art: "Charly García", t: "Demoliendo hoteles", n: "El rock argentino tras la dictadura." },
         { a: 1986, art: "Los Prisioneros", t: "El baile de los que sobran", n: "Desde Chile, contra Pinochet: un himno que volvió a cantarse en las protestas de 2019." }
       ]
@@ -41,21 +42,24 @@ HISTORIAS.push({
       items: [
         { a: 1988, art: "Caifanes", t: "La negra Tomasa", n: "Un son cubano convertido en rock mexicano." },
         { a: 1990, art: "Soda Stereo", t: "De música ligera", n: "«Gracias totales»: el himno del rock latino." },
+        { a: 1990, art: "Héroes del Silencio", t: "Entre dos tierras", n: "Los zaragozanos Héroes del Silencio, el grupo español más famoso en el extranjero." },
         { a: 1991, art: "Maldita Vecindad y los Hijos del Quinto Patio", t: "Kumbala", n: "Rock con danzón y ska desde Ciudad de México." },
         { a: 1993, art: "MTV Latino", t: "Empieza a emitir", tipo: "hito", n: "Los videoclips unen a todo el rock en español, de México a Argentina." },
         { a: 1993, art: "Los Fabulosos Cadillacs", t: "Matador", n: "Ska, rock y percusión: un himno de Latinoamérica." },
         { a: 1994, art: "Café Tacvba", t: "Las flores", n: "Rock con todo lo mexicano: son jarocho, norteño y punk." },
         { a: 1994, art: "Enanitos Verdes", t: "Lamento boliviano", n: "La canción para cantar a coro en cualquier país." },
         { a: 1995, art: "Aterciopelados", t: "Bolero falaz", n: "Desde Bogotá, rock con bolero y actitud." },
-        { a: 1997, art: "M-Clan", t: "Carolina", n: "Rock con alma sureña desde Murcia." }
+        { a: 1997, art: "M-Clan", t: "Carolina", n: "Rock con alma sureña desde Murcia." },
+        { a: 1997, art: "Andrés Calamaro", t: "Flaca", n: "Del disco «Alta suciedad», grabado en Nueva York: la canción más famosa de Calamaro." }
       ]
     },
     {
       titulo: "El nuevo siglo",
       corto: "2000s",
-      periodo: "2006",
+      periodo: "2004 – 2006",
       intro: "Una nueva generación hereda el rock en español.",
       items: [
+        { a: 2004, art: "Café Tacvba", t: "Eres", n: "Café Tacvba con su canción de amor más querida." },
         { a: 2006, art: "Fiberfib y FIB", t: "La era de los festivales", tipo: "hito", n: "Los festivales cambian la escena." },
         { a: 2006, art: "Zoé", t: "Labios rotos", n: "Rock psicodélico mexicano para una nueva generación." }
       ]

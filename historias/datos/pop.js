@@ -29,9 +29,9 @@ HISTORIAS.push({
       periodo: "1970 – 1977",
       intro: "Cantautores, ABBA y el pop de estudio.",
       items: [
-        { a: 1970, art: "Carpenters", t: "(They Long to Be) Close to You", n: "Suavidad absoluta." },
+        { a: 1970, art: "Carpenters", t: "(They Long to Be) Close to You", n: "Escrita por Bacharach y David; los Carpenters la convierten en número uno con la voz suave de Karen." },
         { a: 1970, art: "Elton John", t: "Your Song", n: "Una canción de amor sencilla y perfecta." },
-        { a: 1974, art: "ABBA", t: "Ganan Eurovisión con «Waterloo»", tipo: "hito", n: "Nace el pop sueco." },
+        { a: 1974, art: "ABBA", t: "Ganan Eurovisión con «Waterloo»", tipo: "hito", n: "ABBA gana en Brighton en 1974 y Suecia se convierte en una potencia del pop mundial." },
         { a: 1974, art: "ABBA", t: "Waterloo", n: "Ganan Eurovisión: empieza el pop sueco." },
         { a: 1975, art: "Queen", t: "Bohemian Rhapsody", n: "Seis minutos y ópera en mitad de una canción pop. Nadie creía que fuera a funcionar." },
         { a: 1977, art: "Fleetwood Mac", t: "Dreams", n: "De «Rumours», grabado mientras la banda se separaba en parejas." }
@@ -48,7 +48,7 @@ HISTORIAS.push({
         { a: 1984, art: "Prince", t: "When Doves Cry", n: "Sin línea de bajo y número uno." },
         { a: 1984, art: "Wham!", t: "Wake Me Up Before You Go-Go", n: "George Michael y la alegría de los 80." },
         { a: 1985, art: "Live Aid", t: "Dos conciertos para Etiopía", tipo: "hito", n: "Londres y Filadelfia a la vez, vistos por cientos de millones de personas." },
-        { a: 1987, art: "Whitney Houston", t: "I Wanna Dance with Somebody (Who Loves Me)", n: "La gran voz del pop." },
+        { a: 1987, art: "Whitney Houston", t: "I Wanna Dance with Somebody (Who Loves Me)", n: "La gran voz de Whitney Houston en su tema más alegre: número uno en todo el mundo y Grammy." },
         { a: 1987, art: "Madonna", t: "La Isla Bonita", n: "Madonna se va a San Pedro con guitarra española." },
         { a: 1989, art: "Madonna", t: "Like a Prayer", n: "Gospel y polémica: el Vaticano y Pepsi contra Madonna." }
       ]
@@ -69,7 +69,7 @@ HISTORIAS.push({
         { a: 2000, art: "*NSYNC", t: "Bye Bye Bye", n: "Marionetas y coreografías: la boy band de Justin Timberlake." },
         { a: 2001, art: "Kylie Minogue", t: "Can't Get You Out of My Head", n: "La-la-la: imposible sacársela de la cabeza." },
         { a: 2003, art: "Beyoncé", t: "Crazy in Love", n: "Con Jay-Z: el debut en solitario más potente del siglo." },
-        { a: 2007, art: "Rihanna", t: "Umbrella", n: "«Ella, ella, eh, eh»." }
+        { a: 2007, art: "Rihanna", t: "Umbrella", n: "Iba a ser para Britney Spears. Rihanna la grabó, estuvo diez semanas de número uno en el Reino Unido y se volvió estrella mundial." }
       ]
     },
     {

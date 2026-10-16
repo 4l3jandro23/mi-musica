@@ -46,7 +46,7 @@ HISTORIAS.push({
       intro: "Forajidos, estadios y un country cada vez más diverso.",
       items: [
         { a: 1977, art: "Waylon Jennings", t: "Luckenbach, Texas (Back to the Basics of Love)", n: "El «outlaw country»: los forajidos contra el Nashville comercial." },
-        { a: 1980, art: "Willie Nelson", t: "On the Road Again", n: "La vida en la carretera." },
+        { a: 1980, art: "Willie Nelson", t: "On the Road Again", n: "Willie Nelson la escribió en pleno vuelo, en unos minutos: la canción oficial de quien vive de gira." },
         { a: 1990, art: "Garth Brooks", t: "Friends in Low Places", n: "El country llena estadios como el rock." },
         { a: 1998, art: "Shania Twain", t: "You're Still the One", n: "El country pop más vendido." },
         { a: 2002, art: "Johnny Cash", t: "Hurt", n: "Una canción de Nine Inch Nails cantada por un Cash anciano: despedida desgarradora." },

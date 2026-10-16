@@ -14,9 +14,12 @@ HISTORIAS.push({
       intro: "Fonógrafos, cilindros y viajes por el campo.",
       items: [
         { a: 1906, art: "Béla Bartók", t: "Graba canciones campesinas con fonógrafo", tipo: "hito", n: "Él y Kodály recorren Hungría y Rumanía grabando miles de melodías." },
+        { a: 1906, art: "Béla Bartók", t: "Canciones populares húngaras", q: "Bartók Hungarian Folk Songs", tipo: "disco", n: "Bartók recorre los pueblos con un fonógrafo para grabar canciones antes de que desaparezcan." },
         { a: 1933, art: "John y Alan Lomax", t: "Graban para la Biblioteca del Congreso", tipo: "hito", n: "Recorren cárceles y granjas del sur de EE. UU.; allí descubren a Lead Belly." },
+        { a: 1939, art: "Lead Belly", t: "Goodnight, Irene", q: "Lead Belly Goodnight Irene", n: "Alan Lomax descubrió a Lead Belly en una cárcel de Luisiana grabando canciones populares." },
         { a: 1952, art: "Alan Lomax", t: "Graba en España", tipo: "hito", n: "Recorre la península grabando jotas, cantos de trabajo y romances." },
-        { a: 1952, art: "Harry Smith", t: "«Anthology of American Folk Music»", tipo: "hito", n: "Seis discos de grabaciones antiguas que inspirarán a Bob Dylan." }
+        { a: 1952, art: "Harry Smith", t: "«Anthology of American Folk Music»", tipo: "hito", n: "Seis discos de grabaciones antiguas que inspirarán a Bob Dylan." },
+        { a: 1952, art: "Harry Smith", t: "Anthology of American Folk Music", tipo: "disco", n: "Harry Smith reúne viejos discos de 78 r. p. m.: inspiró a Bob Dylan y a todo el folk de los 60." }
       ]
     },
     {
@@ -46,7 +49,7 @@ HISTORIAS.push({
         { a: 1986, art: "4AD", t: "Reedita las voces búlgaras", tipo: "hito", n: "El folclore búlgaro fascina al pop británico." },
         { a: 1987, art: "The Dubliners & The Pogues", t: "The Irish Rover", n: "Una canción popular irlandesa a toda velocidad." },
         { a: 1989, art: "Mari Boine", t: "Gula Gula", n: "El joik sami del norte de Escandinavia." },
-        { a: 1997, art: "Loreena McKennitt", t: "The Mummers' Dance", n: "Folk celta en la radio." },
+        { a: 1997, art: "Loreena McKennitt", t: "The Mummers' Dance", n: "La canadiense Loreena McKennitt mezcla folk celta y ritmos modernos y llega a las radios de EE. UU." },
         { a: 1998, art: "Hevia", t: "Busindre Reel", n: "La gaita electrónica asturiana que vendió millones." }
       ]
     },
@@ -59,6 +62,7 @@ HISTORIAS.push({
         { a: 1990, art: "Nusrat Fateh Ali Khan", t: "Mustt Mustt", n: "El qawwali sufí de Pakistán, remezclado por Massive Attack." },
         { a: 1993, art: "Israel Kamakawiwoʻole", t: "Over the Rainbow / What a Wonderful World", n: "Un ukelele hawaiano y una voz inmensa." },
         { a: 2003, art: "UNESCO", t: "Patrimonio cultural inmaterial", tipo: "hito", n: "La UNESCO aprueba proteger las tradiciones orales, música incluida." },
+        { a: 2007, art: "Tinariwen", t: "Cler Achel", n: "Tinariwen, músicos tuareg de Malí, con guitarras eléctricas del desierto." },
         { a: 2019, art: "The HU", t: "Wolf Totem", n: "Canto de garganta mongol y metal." }
       ]
     }

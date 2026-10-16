@@ -16,7 +16,9 @@ HISTORIAS.push({
         { a: 1969, art: "The Winstons", t: "Amen, Brother", n: "Seis segundos de batería que acabaron en miles de canciones de jungle." },
         { a: 1991, art: "Raves", t: "El hardcore se acelera", tipo: "hito", n: "Los breaks se aceleran en los raves británicos." },
         { a: 1991, art: "Lennie De Ice", t: "We Are I.E.", n: "Para muchos, la primera canción de jungle." },
+        { a: 1991, art: "The Prodigy", t: "Charly", n: "Un anuncio infantil sampleado sobre breakbeat: del rave al jungle." },
         { a: 1992, art: "SL2", t: "On a Ragga Tip", n: "Ragga y breakbeat hardcore en el top 2 británico." },
+        { a: 1992, art: "Rufige Kru", t: "Terminator", n: "Goldie acelera los breakbeats con técnicas nuevas: anticipa el jungle." },
         { a: 1993, art: "Origin Unknown", t: "Valley of the Shadows", n: "Un clásico oscuro y atmosférico." }
       ]
     },
@@ -30,7 +32,9 @@ HISTORIAS.push({
         { a: 1994, art: "M-Beat & General Levy", t: "Incredible", n: "El jungle llega al top 10 británico." },
         { a: 1994, art: "Shy FX & UK Apachi", t: "Original Nuttah", n: "El himno del ragga jungle." },
         { a: 1994, art: "Remarc", t: "R.I.P.", n: "Breaks troceados hasta lo imposible." },
-        { a: 1994, art: "Goldie", t: "Inner City Life", n: "Con Diane Charlemagne: el jungle se vuelve emocional." }
+        { a: 1994, art: "Goldie", t: "Inner City Life", n: "Con Diane Charlemagne: el jungle se vuelve emocional." },
+        { a: 1994, art: "Ed Rush", t: "Bludclot Artattack", q: "Ed Rush", n: "Ed Rush, en su etapa de jungle más ragga." },
+        { a: 1994, art: "Leviticus", t: "The Burial", n: "Jumpin Jack Frost bajo el nombre de Leviticus: un clásico del jungle más oscuro." }
       ]
     },
     {
@@ -40,6 +44,9 @@ HISTORIAS.push({
       intro: "El jungle se pule y cambia de nombre.",
       items: [
         { a: 1995, art: "LTJ Bukem", t: "Horizons", n: "El jungle «inteligente» y atmosférico." },
+        { a: 1996, art: "The Ganja Kru", t: "Super Sharp Shooter", n: "DJ Zinc, DJ Hype y Pascal: el sample de rap y el bajo que hicieron saltar todas las raves." },
+        { a: 1996, art: "Photek", t: "The Hidden Camera", n: "Photek, con un jungle más frío y técnico." },
+        { a: 1996, art: "Aphex Twin", t: "Girl/Boy Song", n: "Aphex Twin juega con breakbeats de jungle sobre cuerdas preciosas." },
         { a: 1997, art: "Mercury Prize", t: "Gana Roni Size", tipo: "hito", n: "El jungle y el drum and bass son reconocidos como la música británica del momento." },
         { a: 1997, art: "Roni Size & Reprazent", t: "Brown Paper Bag", n: "New Forms gana el Mercury Prize." }
       ]
@@ -52,7 +59,8 @@ HISTORIAS.push({
       items: [
         { a: 2021, art: "PinkPantheress", t: "Break It Off", n: "Pop de TikTok sobre breaks de jungle." },
         { a: 2022, art: "TikTok", t: "El jungle vuelve", tipo: "hito", n: "Los breaks acelerados triunfan en el pop de una nueva generación." },
-        { a: 2022, art: "Nia Archives", t: "Forbidden Feelingz", n: "La cara del revival del jungle." }
+        { a: 2022, art: "Nia Archives", t: "Forbidden Feelingz", n: "La cara del revival del jungle." },
+        { a: 2022, art: "Nia Archives", t: "Off Wiv Ya Headz", n: "Nia Archives sigue llevando el jungle a una nueva generación." }
       ]
     }
   ]

@@ -20,9 +20,11 @@ HISTORIAS.push({
         { a: 1964, art: "Martha and the Vandellas", t: "Dancing in the Street", n: "Un himno de fiesta que acabó siendo político." },
         { a: 1964, art: "The Supremes", t: "Where Did Our Love Go", n: "El primero de doce números uno de las Supremes." },
         { a: 1964, art: "The Temptations", t: "My Girl", n: "Escrita por Smokey Robinson." },
+        { a: 1964, art: "Mary Wells", t: "My Guy", n: "El primer número uno de Mary Wells, escrito por Smokey Robinson." },
         { a: 1965, art: "Los Funk Brothers", t: "La banda que tocó en todos los discos", tipo: "hito", n: "Músicos de jazz anónimos que tocaron en más números uno que los Beatles, Elvis y los Stones juntos." },
         { a: 1965, art: "Four Tops", t: "I Can't Help Myself (Sugar Pie Honey Bunch)", n: "El trío Holland-Dozier-Holland en estado de gracia." },
         { a: 1966, art: "Stevie Wonder", t: "Uptight (Everything's Alright)", n: "El niño prodigio se hace mayor." },
+        { a: 1966, art: "The Supremes", t: "You Can't Hurry Love", n: "Otra de Holland-Dozier-Holland para las Supremes." },
         { a: 1968, art: "Marvin Gaye", t: "I Heard It Through the Grapevine", n: "El mayor éxito de Motown en los 60." },
         { a: 1969, art: "The Jackson 5", t: "I Want You Back", n: "Un niño de once años llamado Michael." }
       ]
@@ -36,10 +38,12 @@ HISTORIAS.push({
         { a: 1971, art: "Marvin Gaye", t: "What's Going On", n: "Gordy no quería publicarla: hoy es una de las mejores canciones de la historia." },
         { a: 1972, art: "Motown", t: "Se muda a Los Ángeles", tipo: "hito", n: "Gordy apuesta por el cine y deja Detroit." },
         { a: 1972, art: "Stevie Wonder", t: "Superstition", n: "Stevie consigue el control creativo total." },
+        { a: 1972, art: "The Temptations", t: "Papa Was a Rollin' Stone", n: "Doce minutos de psicodelia soul en la versión larga." },
+        { a: 1976, art: "Stevie Wonder", t: "Sir Duke", n: "Stevie Wonder homenajea a Duke Ellington y a los grandes del jazz." },
         { a: 1977, art: "Commodores", t: "Easy", n: "Soul suave con Lionel Richie." },
-        { a: 1981, art: "Rick James", t: "Super Freak", n: "Funk descarado." },
+        { a: 1981, art: "Rick James", t: "Super Freak", n: "El riff que luego samplearía MC Hammer en «U Can't Touch This»: Rick James lleva el funk a lo más descarado." },
         { a: 1983, art: "Motown 25", t: "Michael Jackson presenta el moonwalk", tipo: "hito", n: "En la gala del 25 aniversario, ante 47 millones de espectadores." },
-        { a: 1983, art: "Lionel Richie", t: "All Night Long (All Night)", n: "La fiesta según Lionel." },
+        { a: 1983, art: "Lionel Richie", t: "All Night Long (All Night)", n: "Lionel Richie con ritmos caribeños y un estribillo inventado: la canción de fiesta de 1983. La tocó en la clausura de los Juegos de Los Ángeles 1984." },
         { a: 1988, art: "Motown", t: "Gordy vende la discográfica", tipo: "hito", n: "Hoy forma parte de Universal." },
         { a: 1992, art: "Boyz II Men", t: "End of the Road", n: "Récord de semanas en el número uno de su época." }
       ]

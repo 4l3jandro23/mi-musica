@@ -13,7 +13,7 @@ HISTORIAS.push({
       periodo: "1978 – 1998",
       intro: "Sellos independientes, fanzines y radios universitarias.",
       items: [
-        { a: 1978, art: "Rough Trade", t: "Una tienda de discos de Londres se convierte en sello", tipo: "hito", n: "La casa de The Smiths." },
+        { a: 1978, art: "Rough Trade", t: "Una tienda de discos de Londres se convierte en sello", tipo: "hito", n: "Rough Trade nace como tienda en 1976 y se hace sello: publicará a The Smiths y definirá el indie británico." },
         { a: 1981, art: "R.E.M.", t: "Radio Free Europe", n: "Desde Georgia, las radios universitarias de EE. UU. crean un circuito alternativo." },
         { a: 1983, art: "The Smiths", t: "This Charming Man", n: "La guitarra de Johnny Marr y las letras de Morrissey, en el sello Rough Trade." },
         { a: 1986, art: "C86", t: "La cinta del NME", tipo: "hito", n: "Una cinta regalada con la revista NME da nombre al «indie pop» de guitarras." },
@@ -34,7 +34,7 @@ HISTORIAS.push({
         { a: 2001, art: "The Strokes", t: "Last Nite", n: "Cinco chavales de Nueva York que devolvieron el rock de guitarras a la moda." },
         { a: 2003, art: "The White Stripes", t: "Seven Nation Army", n: "Un riff que hoy cantan todos los estadios de fútbol." },
         { a: 2003, art: "Yeah Yeah Yeahs", t: "Maps", n: "La balada indie de Karen O." },
-        { a: 2004, art: "Franz Ferdinand", t: "Take Me Out", n: "Guitarras para bailar." },
+        { a: 2004, art: "Franz Ferdinand", t: "Take Me Out", n: "El cambio de tempo a mitad de canción es famoso: guitarras de post-punk hechas para bailar." },
         { a: 2004, art: "The Killers", t: "Mr. Brightside", n: "La canción que sigue en las listas británicas veinte años después." },
         { a: 2004, art: "Arcade Fire", t: "Wake Up", n: "Indie épico desde Montreal." },
         { a: 2005, art: "MySpace", t: "Los grupos se descubren en internet", tipo: "hito", n: "Arctic Monkeys, Lily Allen y una generación entera." },

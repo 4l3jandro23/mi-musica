@@ -15,7 +15,9 @@ HISTORIAS.push({
       items: [
         { a: 1879, art: "Miguel Faílde", t: "«Las alturas de Simpson», el primer danzón", tipo: "hito", n: "Un baile de salón que se convierte en el primer baile nacional cubano." },
         { a: 1922, art: "Trío Matamoros", t: "Son de la loma", n: "El son oriental: guitarra, tres y voces. «¿De dónde son los cantantes?»." },
-        { a: 1930, art: "Septeto Nacional Ignacio Piñeiro", t: "Échale salsita", n: "Gershwin la oyó en La Habana y la usó en su «Obertura cubana». Y aparece la palabra «salsa»." }
+        { a: 1928, art: "Septeto Habanero", t: "Tres lindas cubanas", q: "Septeto Habanero", n: "Uno de los primeros grupos de son que grabaron, con tres, guitarra y bongó." },
+        { a: 1930, art: "Septeto Nacional Ignacio Piñeiro", t: "Échale salsita", n: "Gershwin la oyó en La Habana y la usó en su «Obertura cubana». Y aparece la palabra «salsa»." },
+        { a: 1930, art: "Don Azpiazú", t: "El manisero", n: "«El manisero» llega a Nueva York y empieza la fiebre de la rumba en EE. UU." }
       ]
     },
     {
@@ -26,6 +28,8 @@ HISTORIAS.push({
       items: [
         { a: 1949, art: "Dámaso Pérez Prado", t: "Qué rico el mambo", n: "El mambo: metales afilados y gruñidos." },
         { a: 1953, art: "Orquesta América", t: "La engañadora", n: "Compuesta por Enrique Jorrín: nace el chachachá." },
+        { a: 1953, art: "Celia Cruz & La Sonora Matancera", t: "Burundanga", n: "Celia Cruz en su etapa cubana, con la Sonora Matancera." },
+        { a: 1955, art: "Orquesta Aragón", t: "El bodeguero", n: "La Orquesta Aragón, de flautas y violines, la reina del chachachá." },
         { a: 1956, art: "Benny Moré", t: "Santa Isabel de las Lajas", n: "El «Bárbaro del Ritmo» canta a su pueblo natal." },
         { a: 1959, art: "Revolución cubana", t: "Llega Fidel Castro al poder", tipo: "hito", n: "Muchos músicos se exilian (Celia Cruz entre ellos) y la música cubana se divide en dos orillas." }
       ]
@@ -33,13 +37,15 @@ HISTORIAS.push({
     {
       titulo: "Nueva trova y jazz cubano",
       corto: "Nueva trova",
-      periodo: "1972 – 1982",
+      periodo: "1972 – 1985",
       intro: "La revolución trae canción de autor con mensaje y jazz cubano de altísimo nivel.",
       items: [
         { a: 1972, art: "Nueva trova", t: "Silvio y Pablo, voces de la revolución", tipo: "hito", n: "Canción de autor en la Cuba de Fidel." },
         { a: 1972, art: "Irakere", t: "Bacalao con pan", n: "Chucho Valdés mezcla jazz, rock y tambores afrocubanos." },
         { a: 1978, art: "Silvio Rodríguez", t: "Ojalá", n: "La nueva trova: poesía y guitarra." },
-        { a: 1982, art: "Pablo Milanés", t: "Yolanda", n: "Una de las canciones de amor más bonitas en español." }
+        { a: 1982, art: "Pablo Milanés", t: "Yolanda", n: "Una de las canciones de amor más bonitas en español." },
+        { a: 1982, art: "Silvio Rodríguez", t: "Unicornio", n: "La nueva trova de Silvio, poética y triste." },
+        { a: 1985, art: "Los Van Van", t: "Muévete", n: "Los Van Van, de Juan Formell, inventores del songo y reyes del baile en La Habana." }
       ]
     },
     {
@@ -50,8 +56,10 @@ HISTORIAS.push({
       items: [
         { a: 1996, art: "Buena Vista Social Club", t: "Ry Cooder graba en La Habana", tipo: "hito", n: "Un disco grabado en seis días con músicos veteranos: vendió millones." },
         { a: 1997, art: "Buena Vista Social Club", t: "Chan Chan", n: "Músicos olvidados de los años 40 y 50, con 70 y 90 años: un éxito mundial y un Grammy." },
+        { a: 1997, art: "Ibrahim Ferrer", t: "Dos gardenias", n: "Ibrahim Ferrer, rescatado por el Buena Vista Social Club a los 70 años, canta un bolero clásico." },
         { a: 1998, art: "Celia Cruz", t: "La vida es un carnaval", n: "Desde el exilio: «¡Azúcar!»." },
         { a: 2015, art: "Gente de Zona", t: "La Gozadera", n: "Con Marc Anthony: el reggaetón cubano." },
+        { a: 2016, art: "Cimafunk", t: "Me voy", q: "Cimafunk", n: "Cimafunk mezcla funk y música cubana desde La Habana." },
         { a: 2017, art: "Camila Cabello", t: "Havana", n: "Nacida en Cuba: un homenaje pop a La Habana." }
       ]
     }

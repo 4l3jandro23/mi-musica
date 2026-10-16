@@ -15,9 +15,11 @@ HISTORIAS.push({
       items: [
         { a: 1978, art: "Yellow Magic Orchestra", t: "Computer Game (Theme from the Circus)", n: "Desde Tokio: sonidos de videojuego y pop electrónico." },
         { a: 1979, art: "Gary Numan", t: "Número uno con «Are \"Friends\" Electric?»", tipo: "hito", n: "Con Tubeway Army: un sintetizador en lo más alto de las listas británicas." },
+        { a: 1979, art: "Gary Numan", t: "Cars", n: "Gary Numan, solo con sintes: número uno en el Reino Unido." },
         { a: 1980, art: "Orchestral Manoeuvres in the Dark", t: "Enola Gay", n: "Una canción pop alegre sobre el avión que lanzó la bomba de Hiroshima." },
         { a: 1980, art: "Visage", t: "Fade to Grey", n: "La estética «new romantic»: maquillaje y sintetizadores." },
-        { a: 1981, art: "Kraftwerk", t: "Computer Love", n: "La soledad en la era de los ordenadores, antes de internet." }
+        { a: 1981, art: "Kraftwerk", t: "Computer Love", n: "La soledad en la era de los ordenadores, antes de internet." },
+        { a: 1981, art: "The Human League", t: "Don't You Want Me", n: "Número uno en el Reino Unido y en EE. UU.: el synth-pop llega al gran público." }
       ]
     },
     {
@@ -29,7 +31,9 @@ HISTORIAS.push({
         { a: 1982, art: "Yazoo", t: "Only You", n: "Vince Clarke, recién salido de Depeche Mode, con la voz soul de Alison Moyet." },
         { a: 1983, art: "Yamaha DX7", t: "El sintetizador digital más vendido", tipo: "hito", n: "Su sonido brillante define el pop de los 80." },
         { a: 1983, art: "Eurythmics", t: "Love Is a Stranger", n: "Annie Lennox y Dave Stewart." },
+        { a: 1983, art: "Eurythmics", t: "Sweet Dreams (Are Made of This)", n: "Annie Lennox y Dave Stewart con un sinte, una caja de ritmos y una frase que todo el mundo conoce." },
         { a: 1984, art: "Bronski Beat", t: "Smalltown Boy", n: "Un chico gay que huye de su pueblo: un himno LGTB." },
+        { a: 1984, art: "Alphaville", t: "Forever Young", n: "La balada de Alphaville que se convirtió en himno de graduaciones." },
         { a: 1985, art: "Pet Shop Boys", t: "West End Girls", n: "Ironía y elegancia londinense: el dúo de synth-pop más exitoso." },
         { a: 1987, art: "Depeche Mode", t: "Never Let Me Down Again", n: "Oscuros y enormes: llenaban estadios." },
         { a: 1988, art: "Erasure", t: "A Little Respect", n: "Vince Clarke otra vez, con Andy Bell." },

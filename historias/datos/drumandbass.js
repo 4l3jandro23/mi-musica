@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "drumandbass",
   familia: "Bass music",
   titulo: "Orígenes del drum & bass",
-  periodo: "1969 – 1998",
+  periodo: "1969 – 2010",
   color: "#1f9d6b",
   lema: "Un break de batería de 1969, las raves británicas y el bajo del sound system jamaicano.",
   intro: "Las raves británicas aceleran los breaks de funk. Los hijos de la inmigración jamaicana les ponen debajo el bajo del sound system. El resultado se llama jungle, y cuando se vuelve más limpio y técnico, drum & bass. Una música 100 % británica.",
@@ -28,7 +28,7 @@ HISTORIAS.push({
     {
       titulo: "El drum & bass",
       corto: "Drum & bass",
-      periodo: "1994 – 1998",
+      periodo: "1994 – 2010",
       intro: "El sonido se refina: jazz, atmósferas y, al final, el techstep oscuro.",
       items: [
         { a: 1994, art: "Goldie", t: "Inner City Life", n: "Orquestal y con voz soul: el drum & bass como arte." },
@@ -37,8 +37,13 @@ HISTORIAS.push({
         { a: 1997, art: "Photek", t: "Ni Ten Ichi Ryu", n: "Precisión de samurái: cada golpe de caja medido al milímetro." },
         { a: 1997, art: "Roni Size", t: "Brown Paper Bag", n: "Con Reprazent. «New Forms» ganó el Mercury Prize." },
         { a: 1997, art: "Adam F", t: "Circles", n: "Liquid melódico que aún suena en todos los sets." },
+        { a: 1997, art: "Roni Size & Reprazent", t: "Share the Fall", n: "Del disco «New Forms», que ganó el Mercury Prize: drum and bass con contrabajo." },
         { a: 1998, art: "Ed Rush & Optical", t: "Wormhole", tipo: "disco", n: "El techstep: oscuro, mecánico y con bajos que rugen. El futuro del género." },
-        { a: 1998, art: "Bad Company", t: "The Nine", n: "Uno de los temas de drum & bass más famosos de todos los tiempos." }
+        { a: 1998, art: "Bad Company", t: "The Nine", n: "Uno de los temas de drum & bass más famosos de todos los tiempos." },
+        { a: 1998, art: "Dillinja", t: "The Angels Fell", q: "Dillinja The Angels Fell", n: "Dillinja y sus bajos que hacían temblar los clubs." },
+        { a: 2002, art: "Shy FX & T Power", t: "Bambaataa", q: "Shy FX T Power Bambaataa", n: "El drum and bass con un toque de hip hop." },
+        { a: 2008, art: "Pendulum", t: "Propane Nightmares", n: "Pendulum, australianos en Londres, mezclan drum and bass con rock de estadio." },
+        { a: 2010, art: "Netsky", t: "Iron Heart", n: "El drum and bass melódico y luminoso de Netsky." }
       ]
     }
   ]

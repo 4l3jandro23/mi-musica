@@ -15,6 +15,7 @@ HISTORIAS.push({
       items: [
         { a: 1995, art: "D'Angelo", t: "Brown Sugar", n: "El debut que abrió la puerta a todo el neo soul." },
         { a: 1996, art: "Maxwell", t: "Ascension (Don't Ever Wonder)", n: "Falsete y groove setentero." },
+        { a: 1996, art: "Erykah Badu", t: "Next Lifetime", n: "Erykah Badu canta sobre un amor para la próxima vida." },
         { a: 1997, art: "Kedar Massenburg", t: "Bautiza el «neo soul»", tipo: "hito", n: "El ejecutivo de Erykah Badu y D'Angelo le pone nombre al estilo." },
         { a: 1997, art: "Erykah Badu", t: "On & On", n: "Turbante, jazz y Billie Holiday en clave de hip hop." },
         { a: 1998, art: "Lauryn Hill", t: "Doo Wop (That Thing)", n: "The Miseducation of Lauryn Hill: el disco del movimiento." },
@@ -32,7 +33,8 @@ HISTORIAS.push({
         { a: 2000, art: "Erykah Badu", t: "Bag Lady", n: "Un sample de Dr. Dre y un consejo: soltar lastre." },
         { a: 2000, art: "Jill Scott", t: "A Long Walk", n: "Poesía y soul de Filadelfia." },
         { a: 2000, art: "Common", t: "The Light", n: "Una canción de amor sobre un sample de Bobby Caldwell." },
-        { a: 2000, art: "Musiq Soulchild", t: "Love", n: "Neo soul de Filadelfia." },
+        { a: 2000, art: "Musiq Soulchild", t: "Love", n: "Musiq Soulchild, desde Filadelfia, con una de las baladas de neo soul más bonitas del año 2000." },
+        { a: 2000, art: "D'Angelo", t: "Untitled (How Does It Feel)", n: "El vídeo de D'Angelo sin camiseta y una canción de soul lento y perfecto." },
         { a: 2001, art: "India.Arie", t: "Video", n: "Contra los estándares de belleza." },
         { a: 2001, art: "Alicia Keys", t: "Fallin'", n: "Piano clásico y soul: el neo soul llega al número uno." }
       ]
@@ -47,8 +49,9 @@ HISTORIAS.push({
         { a: 2014, art: "D'Angelo", t: "Publica «Black Messiah» por sorpresa", tipo: "hito", n: "Catorce años después de Voodoo, en plena protesta por Ferguson." },
         { a: 2014, art: "D'Angelo", t: "Really Love", n: "Cuerdas, guitarra española y falsete." },
         { a: 2016, art: "Solange", t: "Cranes in the Sky", n: "A Seat at the Table: tristeza y dignidad." },
-        { a: 2016, art: "Anderson .Paak", t: "Come Down", n: "Funk tocado en directo." },
+        { a: 2016, art: "Anderson .Paak", t: "Come Down", n: "Anderson .Paak toca la batería mientras canta: el funk de «Malibu» suena a banda en directo." },
         { a: 2017, art: "Daniel Caesar", t: "Get You", n: "Con Kali Uchis: el soul canadiense." },
+        { a: 2018, art: "H.E.R.", t: "Hard Place", n: "H.E.R., heredera del neo soul en los 2010." },
         { a: 2023, art: "Victoria Monét", t: "On My Mama", n: "Soul de los 90 y Grammy a la artista revelación." }
       ]
     }

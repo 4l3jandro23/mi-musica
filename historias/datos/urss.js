@@ -49,7 +49,7 @@ HISTORIAS.push({
     {
       titulo: "Perestroika: «¡Queremos cambios!»",
       corto: "Perestroika",
-      periodo: "1986 – 1991",
+      periodo: "1986 – 1992",
       intro: "Gorbachov abre la mano y el rock sale a los estadios.",
       items: [
         { a: 1986, art: "Nautilus Pompilius", alias: ["Наутилус Помпилиус"], t: "Skovannye odnoy tsepyu", q: "Наутилус Помпилиус Скованные одной цепью", n: "«Encadenados con la misma cadena»: una crítica directa al sistema." },
@@ -59,7 +59,8 @@ HISTORIAS.push({
         { a: 1988, art: "Laskovyi Mai", alias: ["Ласковый май"], t: "Belye rozy", q: "Ласковый май Белые розы", n: "Pop de sintetizador de unos chavales de orfanato: histeria en todo el país." },
         { a: 1989, art: "Kino", alias: ["Кино"], t: "Khochu peremen!", q: "Кино Хочу перемен", n: "«¡Quiero cambios!»: el himno de la perestroika." },
         { a: 1990, art: "Kino", alias: ["Кино"], t: "Kukushka", q: "Кино Кукушка", n: "Tsoi muere ese verano en un accidente de coche. En Moscú aún hay un muro lleno de mensajes para él." },
-        { a: 1991, art: "Fin de la URSS", t: "Se disuelve la Unión Soviética", tipo: "hito", n: "Termina una época… y su música se convierte en nostalgia." }
+        { a: 1991, art: "Fin de la URSS", t: "Se disuelve la Unión Soviética", tipo: "hito", n: "Termina una época… y su música se convierte en nostalgia." },
+        { a: 1992, art: "DDT", t: "Osen'", q: "DDT Осень", n: "DDT, de Yuri Shevchuk, con una de las baladas de rock más queridas de Rusia." }
       ]
     },
     {

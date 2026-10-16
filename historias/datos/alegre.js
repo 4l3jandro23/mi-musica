@@ -26,7 +26,7 @@ HISTORIAS.push({
       periodo: "1964 – 1988",
       intro: "Beatles, Motown y ABBA.",
       items: [
-        { a: 1964, art: "The Beatles", t: "I Feel Fine", n: "Feedback y buen humor." },
+        { a: 1964, art: "The Beatles", t: "I Feel Fine", n: "Empieza con un acople de guitarra puesto a propósito, uno de los primeros feedbacks grabados en un disco pop. Pura alegría de 1964." },
         { a: 1965, art: "The Supremes", t: "Stop! In the Name of Love", n: "Motown en su momento más alegre." },
         { a: 1967, art: "The Turtles", t: "Happy Together", n: "Una canción sobre ser feliz juntos." },
         { a: 1969, art: "The Beatles", t: "Here Comes the Sun", n: "George Harrison huyendo de las reuniones de Apple." },
@@ -34,9 +34,9 @@ HISTORIAS.push({
         { a: 1976, art: "Stevie Wonder", t: "Sir Duke", n: "Un homenaje a los músicos que le hacían feliz." },
         { a: 1976, art: "ABBA", t: "Dancing Queen", n: "Diecisiete años y la pista de baile." },
         { a: 1978, art: "Earth, Wind & Fire", t: "September", n: "«Ba-dee-ya»: la canción más alegre de la disco." },
-        { a: 1983, art: "Cyndi Lauper", t: "Girls Just Want to Have Fun", n: "Diversión como derecho." },
+        { a: 1983, art: "Cyndi Lauper", t: "Girls Just Want to Have Fun", n: "Era una canción de un hombre; Cyndi Lauper le cambió la letra y la convirtió en un himno al derecho a divertirse." },
         { a: 1985, art: "Katrina and the Waves", t: "Walking on Sunshine", n: "El sol en forma de canción." },
-        { a: 1988, art: "Bobby McFerrin", t: "Don't Worry, Be Happy", n: "Hecha solo con la voz." }
+        { a: 1988, art: "Bobby McFerrin", t: "Don't Worry, Be Happy", n: "McFerrin grabó todo con su voz y su cuerpo, sin un solo instrumento. Fue el primer tema a capela en llegar al número uno en EE. UU." }
       ]
     },
     {
@@ -50,7 +50,7 @@ HISTORIAS.push({
         { a: 2013, art: "Pharrell Williams", t: "Happy", n: "Un vídeo de 24 horas de gente bailando." },
         { a: 2014, art: "Mark Ronson & Bruno Mars", t: "Uptown Funk", n: "Funk para todas las bodas." },
         { a: 2015, art: "Estudio de la «canción feliz»", t: "La fórmula de la felicidad", tipo: "hito", n: "Un neurocientífico concluye que las canciones alegres rondan los 150 BPM, en tono mayor." },
-        { a: 2016, art: "Justin Timberlake", t: "Can't Stop the Feeling!", n: "De la película Trolls." },
+        { a: 2016, art: "Justin Timberlake", t: "Can't Stop the Feeling!", n: "Escrita para la película Trolls; Justin Timberlake la convirtió en la canción más alegre de 2016 y fue nominada al Óscar." },
         { a: 2020, art: "Dua Lipa", t: "Levitating", n: "Disco para un año encerrados." },
         { a: 2024, art: "Sabrina Carpenter", t: "Espresso", n: "La alegría del verano de 2024." }
       ]

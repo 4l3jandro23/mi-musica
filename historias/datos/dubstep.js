@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "dubstep",
   familia: "Bass music",
   titulo: "Orígenes del dubstep",
-  periodo: "2001 – 2008",
+  periodo: "2001 – 2009",
   color: "#2f9e8f",
   lema: "Sur de Londres, sub-bajo y espacio: el dubstep antes del ruido.",
   intro: "Nace en Croydon y Brixton a partir del garage oscuro, el dub jamaicano y el drum & bass. Tenía 140 BPM y medio tempo, más silencio que notas y un sub-bajo pensado para sentirse en el pecho. Se movía en la tienda Big Apple Records, en la noche FWD>> y en la emisora Rinse FM.",
@@ -10,11 +10,12 @@ HISTORIAS.push({
     {
       titulo: "Del garage oscuro al dubstep",
       corto: "Croydon y Brixton",
-      periodo: "2001 – 2008",
+      periodo: "2001 – 2009",
       intro: "Del garage oscuro al sub-bajo: la escena del sur de Londres.",
       items: [
         { a: 2001, art: "FWD>>", t: "Club en el Plastic People", tipo: "hito", n: "La noche londinense donde el garage se vuelve oscuro y lento. Por allí pasaron todos los pioneros." },
         { a: 2002, art: "Horsepower Productions", t: "In Fine Style", tipo: "disco", n: "Dub, garage y cine negro: un álbum fundacional, cuando el género ni siquiera tenía nombre." },
+        { a: 2003, art: "Big Apple Records", t: "La tienda de Croydon", tipo: "hito", n: "En una tienda de discos de Croydon, al sur de Londres, se juntan los primeros productores: Skream trabajaba allí." },
         { a: 2004, art: "Kode9 & The Spaceape", t: "Sine of the Dub", n: "Primera referencia del sello Hyperdub: una versión espectral de Prince." },
         { a: 2005, art: "DMZ", t: "Noches en Brixton", tipo: "hito", n: "Mala, Coki y Loefah montan DMZ: sistemas de sonido enormes y el lema «medita en el bajo»." },
         { a: 2005, art: "Skream", t: "Midnight Request Line", n: "El primer gran himno del dubstep: melodía triste sobre un bajo enorme." },
@@ -22,12 +23,22 @@ HISTORIAS.push({
         { a: 2006, art: "Digital Mystikz", t: "Anti-War Dub", n: "Mala y Coki: dub espiritual y político. La esencia de DMZ." },
         { a: 2006, art: "Pinch", t: "Qawwali", n: "Desde Bristol, con voces sufíes y espacio. Prueba de que el género ya no era solo de Londres." },
         { a: 2006, art: "Burial", t: "Distant Lights", n: "Un productor anónimo con ritmos crujientes y voces de rave fantasma. Melancolía urbana." },
+        { a: 2006, art: "Kode9", t: "9 Samurai", n: "Kode9, fundador del sello Hyperdub, que publicará a Burial." },
+        { a: 2006, art: "Loefah", t: "Mud", q: "Loefah Mud", n: "El dubstep más mínimo y pesado de DMZ." },
+        { a: 2006, art: "Skream", t: "Rutten", n: "Skream, que trabajaba en la tienda Big Apple de Croydon, con uno de sus clásicos." },
         { a: 2007, art: "Burial", t: "Archangel", n: "De «Untrue», uno de los discos más influyentes de la década en cualquier género." },
         { a: 2007, art: "Benga & Coki", t: "Night", n: "Un bajo que rebota y un ritmo casi tribal. El tema que llenó las pistas." },
         { a: 2007, art: "Coki", t: "Spongebob", n: "Un bajo áspero y retorcido. Aquí empieza a asomar el «wobble» que luego exagerará el brostep." },
         { a: 2007, art: "Rusko", t: "Cockney Thug", n: "El dubstep se pone gamberro y de fiesta. Rusko pronto se iría a América." },
         { a: 2007, art: "Shackleton", t: "Blood on My Hands", n: "Percusión hipnótica y oscura en el sello Skull Disco. El dubstep más experimental." },
-        { a: 2008, art: "Benga", t: "Diary of an Afro Warrior", tipo: "disco", n: "Un álbum entero del joven prodigio de Croydon, que había empezado a los 15 años." }
+        { a: 2007, art: "Mala", t: "Changes", q: "Mala Changes", n: "Mala, de Digital Mystikz, en su tema más espacial." },
+        { a: 2007, art: "Burial", t: "Untrue", tipo: "disco", n: "El segundo disco de Burial: ritmos de garage rotos, voces fantasmales y la tristeza de las raves que ya pasaron." },
+        { a: 2007, art: "Burial", t: "Ghost Hardware", n: "De «Untrue»: el Londres nocturno y lluvioso convertido en música." },
+        { a: 2008, art: "El dubstep", t: "Hacia el brostep", tipo: "hito", n: "Algunos productores endurecen el sonido y llegan a EE. UU.: el dubstep original se separa del que vendrá después." },
+        { a: 2008, art: "Benga", t: "Diary of an Afro Warrior", tipo: "disco", n: "Un álbum entero del joven prodigio de Croydon, que había empezado a los 15 años." },
+        { a: 2008, art: "Joker", t: "Digidesign", n: "Desde Bristol, el «purple sound»: sintes violetas, melodía y ritmo lento." },
+        { a: 2008, art: "Caspa", t: "Rubber Chicken", n: "Caspa endurece el bajo: el wobble que llevará al brostep." },
+        { a: 2009, art: "Joker & Ginz", t: "Purple City", n: "El «purple sound» de Bristol: sintes violetas, melodía y ritmo lento." }
       ]
     }
   ]

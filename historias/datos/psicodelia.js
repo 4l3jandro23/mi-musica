@@ -25,6 +25,7 @@ HISTORIAS.push({
         { a: 1967, art: "Cream", t: "Sunshine of Your Love", n: "Un riff pesado: la psicodelia empieza a sonar a hard rock." },
         { a: 1967, art: "Procol Harum", t: "A Whiter Shade of Pale", n: "Un órgano de Bach en el verano del amor." },
         { a: 1967, art: "Love", t: "Alone Again Or", n: "Guitarras españolas y trompetas mariachi." },
+        { a: 1967, art: "The Beatles", t: "Strawberry Fields Forever", n: "Los Beatles se pasan a la psicodelia con cintas al revés y mellotrón." },
         { a: 1968, art: "Iron Butterfly", t: "In-A-Gadda-Da-Vida", n: "17 minutos, con un solo de batería eterno." },
         { a: 1968, art: "Grateful Dead", t: "Dark Star", n: "La base de sus improvisaciones infinitas en directo." }
       ]
@@ -40,6 +41,7 @@ HISTORIAS.push({
         { a: 2007, art: "MGMT", t: "Kids", n: "Pop psicodélico que sonó en todas las fiestas indies." },
         { a: 2010, art: "Tame Impala", t: "Publican «Innerspeaker»", tipo: "hito", n: "Kevin Parker reinventa la psicodelia desde Perth." },
         { a: 2012, art: "Tame Impala", t: "Feels Like We Only Go Backwards", n: "Kevin Parker, desde Australia, resucita el sonido de los Beatles de 1966." },
+        { a: 2012, art: "Pond", t: "Giant Tortoise", n: "Pond, banda hermana de Tame Impala, con psicodelia australiana." },
         { a: 2015, art: "Tame Impala", t: "The Less I Know the Better", n: "Psicodelia bailable: su canción más escuchada." },
         { a: 2017, art: "King Gizzard & The Lizard Wizard", t: "Rattlesnake", n: "Cinco discos en un año: la banda más prolífica del rock actual." },
         { a: 2018, art: "Khruangbin", t: "Maria También", n: "Psicodelia con sonido tailandés, iraní y funk." }

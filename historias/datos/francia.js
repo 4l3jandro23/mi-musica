@@ -45,10 +45,10 @@ HISTORIAS.push({
         { a: 1960, art: "Johnny Hallyday", t: "Souvenirs, souvenirs", n: "El «Elvis francés»: estrella durante 50 años." },
         { a: 1962, art: "«Salut les copains»", t: "La revista de los yeyés", tipo: "hito", n: "Del programa de radio sale una revista que vende un millón de ejemplares." },
         { a: 1962, art: "Françoise Hardy", t: "Tous les garçons et les filles", n: "La melancolía adolescente hecha icono de estilo." },
-        { a: 1964, art: "Sylvie Vartan", t: "La plus belle pour aller danser", n: "La yeyé por excelencia." },
+        { a: 1964, art: "Sylvie Vartan", t: "La plus belle pour aller danser", n: "Escrita por Aznavour para Sylvie Vartan: el gran éxito de la era yeyé francesa." },
         { a: 1965, art: "France Gall", t: "Poupée de cire, poupée de son", n: "Escrita por Gainsbourg: gana Eurovisión por Luxemburgo." },
         { a: 1965, art: "Charles Aznavour", t: "La Bohème", n: "Nostalgia de la juventud pobre en Montmartre." },
-        { a: 1966, art: "Jacques Dutronc", t: "Et moi, et moi, et moi", n: "Ironía y garaje." },
+        { a: 1966, art: "Jacques Dutronc", t: "Et moi, et moi, et moi", n: "Dutronc se ríe de su generación con garaje rock e ironía: «700 millones de chinos… y yo, y yo, y yo»." },
         { a: 1967, art: "Brigitte Bardot", t: "Harley Davidson", n: "Otra de Gainsbourg, que escribía para todas." },
         { a: 1969, art: "Jane Birkin & Serge Gainsbourg", t: "Je t'aime… moi non plus", n: "Prohibida por el Vaticano y por media Europa. Número uno en Reino Unido." },
         { a: 1970, art: "Léo Ferré", t: "Avec le temps", n: "Sobre cómo el tiempo lo borra todo. Desgarradora." },
@@ -67,7 +67,7 @@ HISTORIAS.push({
         { a: 1982, art: "Fête de la Musique", t: "Nace la Fiesta de la Música", tipo: "hito", n: "Jack Lang crea el día de la música en la calle, cada 21 de junio." },
         { a: 1982, art: "Indochine", t: "L'aventurier", n: "New wave francesa. Siguen llenando estadios." },
         { a: 1984, art: "Téléphone", t: "Un autre monde", n: "El gran grupo de rock francés." },
-        { a: 1984, art: "Étienne Daho", t: "Week-end à Rome", n: "Pop elegante." },
+        { a: 1984, art: "Étienne Daho", t: "Week-end à Rome", n: "Étienne Daho reinventa el pop francés de los 80 con elegancia y aire de «nouvelle vague»." },
         { a: 1986, art: "Desireless", t: "Voyage, voyage", n: "Número uno en España y media Europa." },
         { a: 1986, art: "Mylène Farmer", t: "Libertine", n: "La diva más misteriosa del pop francés." }
       ]

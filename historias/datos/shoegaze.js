@@ -27,13 +27,16 @@ HISTORIAS.push({
       items: [
         { a: 1990, art: "Ride", t: "Vapour Trail", n: "Guitarras brillantes y un final con cuerdas." },
         { a: 1990, art: "Lush", t: "De-Luxe", n: "Voces femeninas y guitarras como algodón." },
-        { a: 1990, art: "Cocteau Twins", t: "Heaven or Las Vegas", n: "Su disco más luminoso." },
+        { a: 1990, art: "Cocteau Twins", t: "Heaven or Las Vegas", n: "Cocteau Twins en su disco más luminoso: la voz de Elizabeth Fraser es casi otro instrumento." },
         { a: 1991, art: "«Loveless»", t: "Casi arruina a Creation Records", tipo: "hito", n: "Dos años de grabación y un coste altísimo para un sello independiente." },
         { a: 1991, art: "My Bloody Valentine", t: "When You Sleep", n: "De «Loveless», que casi arruina a su discográfica: la obra maestra del género." },
         { a: 1991, art: "Chapterhouse", t: "Pearl", n: "Shoegaze con ritmo de baile." },
+        { a: 1991, art: "My Bloody Valentine", t: "Soon", n: "El tema que cierra «Loveless»: Brian Eno dijo que era lo más vago y borroso que había llegado al número uno de nada." },
+        { a: 1991, art: "Ride", t: "Leave Them All Behind", n: "Ride en su momento más épico, con ocho minutos de guitarras." },
+        { a: 1992, art: "Swervedriver", t: "Duel", q: "Swervedriver Duel", n: "Shoegaze con más rock y motores." },
         { a: 1993, art: "El britpop", t: "Barre al shoegaze", tipo: "hito", n: "La prensa británica se pasa a Oasis y Blur." },
         { a: 1993, art: "Slowdive", t: "Alison", n: "La prensa los destrozó y su discográfica los echó. Hoy son de lo más escuchado del género." },
-        { a: 1993, art: "Slowdive", t: "When the Sun Hits", n: "Pura ingravidez." },
+        { a: 1993, art: "Slowdive", t: "When the Sun Hits", n: "Slowdive en «Souvlaki»: muros de guitarra y una melodía que parece flotar." },
         { a: 1993, art: "Mazzy Star", t: "Fade Into You", n: "Dream pop desde California: lento y precioso." }
       ]
     },
@@ -46,8 +49,10 @@ HISTORIAS.push({
         { a: 1995, art: "Hum", t: "Stars", n: "Desde Illinois: shoegaze con riffs pesados." },
         { a: 2000, art: "Deftones", t: "Digital Bath", n: "El metal también aprendió del shoegaze." },
         { a: 2012, art: "DIIV", t: "Doused", n: "El revival del nuevo siglo." },
+        { a: 2013, art: "My Bloody Valentine", t: "new you", n: "El regreso de MBV con «m b v», 22 años después de «Loveless»." },
         { a: 2015, art: "Beach House", t: "Space Song", n: "Dream pop que años después se volvió viral en TikTok." },
-        { a: 2017, art: "Slowdive y Ride", t: "Vuelven con discos nuevos", tipo: "hito", n: "Veinte años después, mejor recibidos que nunca." }
+        { a: 2017, art: "Slowdive y Ride", t: "Vuelven con discos nuevos", tipo: "hito", n: "Veinte años después, mejor recibidos que nunca." },
+        { a: 2017, art: "Slowdive", t: "Star Roving", n: "El regreso de Slowdive, más de 20 años después." }
       ]
     }
   ]

@@ -35,7 +35,7 @@ HISTORIAS.push({
         { a: 1971, art: "Fania All-Stars", t: "Live at the Cheetah", tipo: "hito", n: "Todas las estrellas del sello en un concierto mítico. La palabra «salsa» se generaliza." },
         { a: 1972, art: "«Nuestra cosa latina»", t: "La película de la Fania All-Stars", tipo: "hito", n: "El concierto del Cheetah, convertido en documental: la salsa llega a los cines." },
         { a: 1973, art: "Willie Colón", t: "Calle Luna, Calle Sol", n: "Con Héctor Lavoe: la calle y el peligro del barrio." },
-        { a: 1973, art: "Ray Barretto", t: "Indestructible", n: "Conga y orgullo." },
+        { a: 1973, art: "Ray Barretto", t: "Indestructible", n: "Ray Barretto, el «manos duras» de la conga, con un himno de orgullo de la salsa neoyorquina." },
         { a: 1974, art: "Celia Cruz", t: "Quimbara", n: "Con Johnny Pacheco: Celia, ya en Nueva York, se convierte en la reina de la salsa." },
         { a: 1975, art: "Dimensión Latina", t: "Llorarás", n: "Con Oscar D'León: la salsa en Venezuela." },
         { a: 1978, art: "Héctor Lavoe", t: "El cantante", n: "Escrita por Rubén Blades. La tristeza detrás del ídolo." },

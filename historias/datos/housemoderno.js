@@ -24,11 +24,12 @@ HISTORIAS.push({
     {
       titulo: "Electro y dutch house",
       corto: "Dutch house",
-      periodo: "2010",
+      periodo: "2010 – 2011",
       intro: "Chirridos y bombos holandeses que preparan el big room.",
       items: [
         { a: 2010, art: "Dirty Dutch", t: "Los holandeses toman las pistas", tipo: "hito", n: "Afrojack y Chuckie exportan su sonido." },
-        { a: 2010, art: "Afrojack", t: "Take Over Control", n: "Con Eva Simons: chirridos holandeses que prepararon el big room." }
+        { a: 2010, art: "Afrojack", t: "Take Over Control", n: "Con Eva Simons: chirridos holandeses que prepararon el big room." },
+        { a: 2011, art: "Afrojack & Steve Aoki", t: "No Beef", n: "Dutch house de 2011, de los que llenaban los clubs." }
       ]
     },
     {
@@ -42,6 +43,7 @@ HISTORIAS.push({
         { a: 2018, art: "FISHER", t: "Losing It", n: "Un australiano y un drop que medio mundo coreó." },
         { a: 2018, art: "Chris Lake", t: "Turn Off the Lights", n: "Con Alexis Roberts: tech house con voz." },
         { a: 2019, art: "Dom Dolla", t: "San Frandisco", n: "Los australianos dominan el tech house." },
+        { a: 2019, art: "Fisher", t: "You Little Beauty", n: "Fisher, australiano, con tech house divertido y bailable." },
         { a: 2020, art: "John Summit", t: "Deep End", n: "El tech house de la nueva generación de EE. UU." }
       ]
     },

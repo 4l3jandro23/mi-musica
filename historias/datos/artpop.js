@@ -16,8 +16,11 @@ HISTORIAS.push({
         { a: 1966, art: "The Beach Boys", t: "Good Vibrations", n: "Grabada en partes durante meses en cuatro estudios: «sinfonía de bolsillo»." },
         { a: 1967, art: "«Sgt. Pepper's»", t: "El disco como obra de arte", tipo: "hito", n: "Los Beatles convierten el álbum en una pieza completa, con portada de arte pop." },
         { a: 1967, art: "The Velvet Underground & Nico", t: "Femme Fatale", n: "Producido por Andy Warhol, con un plátano en la portada." },
+        { a: 1967, art: "The Beatles", t: "A Day in the Life", n: "La canción que cierra «Sgt. Pepper's»: el pop se convierte en arte con una orquesta en caos." },
         { a: 1977, art: "David Bowie", t: "Heroes", n: "Grabada en Berlín junto al Muro, con Brian Eno." },
         { a: 1978, art: "Kate Bush", t: "Wuthering Heights", n: "Con 19 años y una novela de Emily Brontë: la primera mujer en llegar al número uno británico con una canción propia." },
+        { a: 1979, art: "Talking Heads", t: "Life During Wartime", n: "David Byrne y su new wave nerviosa e intelectual." },
+        { a: 1981, art: "Kate Bush", t: "Sat in Your Lap", n: "Kate Bush produce ella sola su música: tambores, coros y rarezas." },
         { a: 1982, art: "Laurie Anderson", t: "Big Science", n: "Arte de performance hecho pop." },
         { a: 1985, art: "Kate Bush", t: "Running Up That Hill (A Deal with God)", n: "Volvió al número uno en 2022 gracias a «Stranger Things»." }
       ]
@@ -31,10 +34,13 @@ HISTORIAS.push({
         { a: 1993, art: "Björk", t: "Human Behaviour", n: "Desde Islandia: el pop más imaginativo de su década." },
         { a: 1997, art: "Björk", t: "Jóga", n: "Cuerdas y ritmos que suenan como volcanes." },
         { a: 2000, art: "Radiohead", t: "Everything in Its Right Place", n: "El grupo de rock más grande del mundo se pasa a la electrónica." },
+        { a: 2000, art: "Radiohead", t: "Idioteque", n: "Radiohead mezcla electrónica y pánico en «Kid A»." },
         { a: 2009, art: "Lady Gaga", t: "Paparazzi", n: "Un vídeo de cortometraje sobre la fama y la muerte." },
+        { a: 2010, art: "Janelle Monáe", t: "Tightrope", n: "Con Big Boi. Janelle Monáe y su universo de androides y funk." },
         { a: 2014, art: "FKA twigs", t: "Two Weeks", n: "R&B experimental y baile contemporáneo." },
         { a: 2016, art: "«Lemonade»", t: "Beyoncé publica un «álbum visual»", tipo: "hito", n: "Una película entera acompaña al disco." },
         { a: 2016, art: "Frank Ocean", t: "Nikes", n: "De «Blonde»: R&B íntimo y desestructurado." },
+        { a: 2016, art: "Solange", t: "Cranes in the Sky", n: "Solange, la hermana de Beyoncé, con un R&B delicado sobre cómo llevar la tristeza." },
         { a: 2019, art: "Caroline Polachek", t: "So Hot You're Hurting My Feelings", n: "Viral en TikTok años después de salir." },
         { a: 2022, art: "Kate Bush", t: "Vuelve al número uno 37 años después", tipo: "hito", n: "«Running Up That Hill», gracias a «Stranger Things»." },
         { a: 2022, art: "Rosalía", t: "SAOKO", n: "De «Motomami»: reguetón deformado y jazz en dos minutos." }

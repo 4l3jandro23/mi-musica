@@ -30,8 +30,8 @@ HISTORIAS.push({
         { a: 1913, art: "Igor Stravinsky", t: "The Rite of Spring", n: "Su estreno en París acabó en tumulto." },
         { a: 1914, art: "John McCormack", t: "It's a Long Way to Tipperary", n: "La canción de los soldados británicos en la Primera Guerra Mundial." },
         { a: 1917, art: "Original Dixieland Jass Band", t: "El primer disco de jazz", tipo: "hito", n: "Una banda de blancos de Nueva Orleans graba el primer jazz." },
-        { a: 1917, art: "Original Dixieland Jass Band", t: "Livery Stable Blues", n: "El primer disco de jazz." },
-        { a: 1917, art: "Carlos Gardel", t: "Mi noche triste", n: "Nace el tango cantado." },
+        { a: 1917, art: "Original Dixieland Jass Band", t: "Livery Stable Blues", n: "Grabada en 1917 por una banda blanca de Nueva Orleans, es el primer disco de jazz de la historia y vendió más de un millón." },
+        { a: 1917, art: "Carlos Gardel", t: "Mi noche triste", n: "Gardel la estrena en 1917: es el primer tango con letra para escuchar, no solo para bailar. Nace el tango-canción." },
         { a: 1918, art: "Raquel Meller", t: "El relicario", n: "El cuplé español triunfa en París." }
       ]
     },
@@ -62,9 +62,9 @@ HISTORIAS.push({
         { a: 1936, art: "Guerra Civil española", t: "Empieza la guerra", tipo: "hito", n: "Exilio, canciones de trinchera y el fin de una época cultural." },
         { a: 1936, art: "Robert Johnson", t: "Cross Road Blues", n: "El blues del delta y su leyenda del diablo." },
         { a: 1937, art: "Benny Goodman", t: "Sing, Sing, Sing", n: "El swing hace bailar a los jóvenes." },
-        { a: 1937, art: "Concha Piquer", t: "Ojos verdes", n: "La copla española." },
+        { a: 1937, art: "Concha Piquer", t: "Ojos verdes", n: "De Quintero, León y Quiroga, el gran trío de la copla. Concha Piquer la hizo eterna pese a la censura por su letra." },
         { a: 1939, art: "Billie Holiday", t: "Strange Fruit", n: "Una canción contra los linchamientos." },
-        { a: 1939, art: "Judy Garland", t: "Over the Rainbow", n: "De «El mago de Oz»." }
+        { a: 1939, art: "Judy Garland", t: "Over the Rainbow", n: "Casi la quitan de «El mago de Oz» por lenta; acabó ganando el Óscar y siendo la canción del siglo para muchos." }
       ]
     },
     {
@@ -77,10 +77,10 @@ HISTORIAS.push({
         { a: 1941, art: "Concha Piquer", t: "Tatuaje", n: "La copla de la posguerra." },
         { a: 1944, art: "Frank Sinatra", t: "El Paramount de Nueva York", tipo: "hito", n: "Miles de chicas gritando por un cantante: el primer ídolo adolescente." },
         { a: 1945, art: "Charlie Parker", t: "Ko-Ko", n: "El bebop: el jazz se vuelve arte." },
-        { a: 1947, art: "Édith Piaf", t: "La vie en rose", n: "La gran voz de Francia." },
+        { a: 1947, art: "Édith Piaf", t: "La vie en rose", n: "Édith Piaf escribió la letra y la convirtió en el himno de la Francia de posguerra." },
         { a: 1948, art: "El disco LP", t: "Llega el vinilo de larga duración", tipo: "hito", n: "Columbia lanza el disco de 33 revoluciones: más de veinte minutos por cara." },
         { a: 1948, art: "Muddy Waters", t: "I Can't Be Satisfied", n: "El blues se electrifica en Chicago." },
-        { a: 1949, art: "Dámaso Pérez Prado", t: "Qué rico el mambo", n: "La fiebre del mambo." }
+        { a: 1949, art: "Dámaso Pérez Prado", t: "Qué rico el mambo", n: "Pérez Prado, el «rey del mambo», desata una fiebre que va de La Habana y México a todo el mundo." }
       ]
     },
     {
@@ -92,11 +92,11 @@ HISTORIAS.push({
         { a: 1953, art: "Lola Flores", t: "Pena, penita, pena", n: "La Faraona, en plena posguerra española." },
         { a: 1954, art: "El transistor", t: "La primera radio de bolsillo", tipo: "hito", n: "Los jóvenes escuchan su música lejos de sus padres." },
         { a: 1954, art: "Bill Haley & His Comets", t: "Rock Around the Clock", n: "El himno de una generación." },
-        { a: 1955, art: "Little Richard", t: "Tutti Frutti", n: "Desenfreno y piano." },
+        { a: 1955, art: "Little Richard", t: "Tutti Frutti", n: "Little Richard grita «a-wop-bop-a-loo-bop» y el rock and roll se vuelve salvaje. La letra original era demasiado subida de tono." },
         { a: 1956, art: "Eurovisión", t: "Primera edición", tipo: "hito", n: "Siete países en Lugano: empieza el concurso." },
-        { a: 1956, art: "Elvis Presley", t: "Heartbreak Hotel", n: "Empieza la elvismanía." },
+        { a: 1956, art: "Elvis Presley", t: "Heartbreak Hotel", n: "El primer gran éxito de Elvis en RCA: ocho semanas de número uno y empieza la elvismanía." },
         { a: 1958, art: "Domenico Modugno", t: "Nel blu dipinto di blu", n: "«Volare»: número uno en EE. UU. en italiano." },
-        { a: 1958, art: "João Gilberto", t: "Chega de Saudade", n: "Nace la bossa nova." },
+        { a: 1958, art: "João Gilberto", t: "Chega de Saudade", n: "João Gilberto canta bajito sobre una guitarra que marca un ritmo nuevo: nace la bossa nova." },
         { a: 1958, art: "Chuck Berry", t: "Johnny B. Goode", n: "El riff del rock and roll." },
         { a: 1959, art: "Miles Davis", t: "So What", n: "«Kind of Blue», el disco de jazz más vendido." }
       ]
@@ -107,14 +107,14 @@ HISTORIAS.push({
       periodo: "1963 – 1969",
       intro: "Beatlemanía, Motown, protesta, psicodelia y Woodstock. En España, yeyés y Eurovisión.",
       items: [
-        { a: 1963, art: "The Beatles", t: "She Loves You", n: "Empieza la beatlemanía." },
-        { a: 1963, art: "Bob Dylan", t: "Blowin' in the Wind", n: "La canción protesta." },
+        { a: 1963, art: "The Beatles", t: "She Loves You", n: "El «yeah, yeah, yeah» que desató la beatlemanía en el Reino Unido y fue durante años su single más vendido." },
+        { a: 1963, art: "Bob Dylan", t: "Blowin' in the Wind", n: "Dylan hace preguntas sin respuesta y la canción protesta se vuelve masiva con la lucha por los derechos civiles." },
         { a: 1965, art: "The Rolling Stones", t: "(I Can't Get No) Satisfaction", n: "El riff más famoso de los 60." },
         { a: 1966, art: "Los Bravos", t: "Black Is Black", n: "Un grupo español en las listas de medio mundo." },
         { a: 1966, art: "The Beach Boys", t: "Good Vibrations", n: "El estudio como instrumento." },
         { a: 1967, art: "Aretha Franklin", t: "Respect", n: "Himno feminista y de los derechos civiles." },
-        { a: 1967, art: "The Jimi Hendrix Experience", t: "Purple Haze", n: "La guitarra reinventada." },
-        { a: 1968, art: "Massiel", t: "La, la, la", n: "España gana Eurovisión." },
+        { a: 1967, art: "The Jimi Hendrix Experience", t: "Purple Haze", n: "El riff con el «acorde Hendrix»: la guitarra eléctrica deja de sonar como antes." },
+        { a: 1968, art: "Massiel", t: "La, la, la", n: "Massiel la canta en Londres en 1968 (sustituyendo a Serrat, que quería hacerla en catalán) y España gana Eurovisión." },
         { a: 1969, art: "Woodstock", t: "Tres días de paz y música", tipo: "hito", n: "Medio millón de personas en una granja." }
       ]
     },
@@ -125,7 +125,7 @@ HISTORIAS.push({
       intro: "Una década que inventa casi todo: hard rock, reggae, disco, punk, electrónica y rap.",
       items: [
         { a: 1971, art: "Marvin Gaye", t: "What's Going On", n: "El soul habla de la guerra y del gueto." },
-        { a: 1971, art: "Led Zeppelin", t: "Stairway to Heaven", n: "El rock de estadio." },
+        { a: 1971, art: "Led Zeppelin", t: "Stairway to Heaven", n: "Nunca salió como single y aun así es la canción más pedida de la radio rock de los 70. Ocho minutos de folk a rock de estadio." },
         { a: 1972, art: "Nino Bravo", t: "Libre", n: "Un himno de libertad en la España del tardofranquismo." },
         { a: 1973, art: "DJ Kool Herc", t: "Nace el hip hop en el Bronx", tipo: "hito", n: "Una fiesta y dos platos repitiendo los breaks." },
         { a: 1974, art: "Kraftwerk", t: "Autobahn", n: "La electrónica empieza a cantar." },
@@ -136,7 +136,7 @@ HISTORIAS.push({
         { a: 1977, art: "Sex Pistols", t: "God Save the Queen", n: "El punk escandaliza Reino Unido." },
         { a: 1979, art: "Sony Walkman", t: "La música sale a la calle", tipo: "hito", n: "Un casete y unos auriculares: la banda sonora personal." },
         { a: 1979, art: "Camarón", t: "Volando voy", n: "«La leyenda del tiempo» revoluciona el flamenco." },
-        { a: 1979, art: "The Sugarhill Gang", t: "Rapper's Delight", n: "El rap llega al disco." }
+        { a: 1979, art: "The Sugarhill Gang", t: "Rapper's Delight", n: "La primera canción de rap que entra en las listas: quince minutos rapeando sobre el «Good Times» de Chic." }
       ]
     },
     {
@@ -145,15 +145,15 @@ HISTORIAS.push({
       periodo: "1980 – 1989",
       intro: "El vídeo musical, las superestrellas, el synth-pop, el house y, en España, la Movida.",
       items: [
-        { a: 1980, art: "Nacha Pop", t: "La chica de ayer", n: "La Movida madrileña." },
+        { a: 1980, art: "Nacha Pop", t: "La chica de ayer", n: "Antonio Vega la escribió con veintipocos años. Es la canción que mejor resume la Movida madrileña." },
         { a: 1981, art: "MTV", t: "Nace la tele de los vídeos", tipo: "hito", n: "La imagen se vuelve tan importante como la música." },
         { a: 1982, art: "El CD", t: "Llega el disco compacto", tipo: "hito", n: "Sonido digital y sin ruido: en pocos años sustituye al vinilo." },
         { a: 1982, art: "Michael Jackson", t: "Billie Jean", n: "«Thriller», el disco más vendido de la historia." },
-        { a: 1983, art: "New Order", t: "Blue Monday", n: "Synth-pop para la pista." },
-        { a: 1984, art: "Prince", t: "When Doves Cry", n: "Sin bajo y número uno." },
+        { a: 1983, art: "New Order", t: "Blue Monday", n: "El maxi más vendido de la historia en 12 pulgadas: synth-pop de Manchester hecho para la pista de baile." },
+        { a: 1984, art: "Prince", t: "When Doves Cry", n: "Prince quitó el bajo en el último momento y aun así fue el single más vendido de 1984 en EE. UU." },
         { a: 1985, art: "Live Aid", t: "Queen en Wembley", tipo: "hito", n: "Un concierto para Etiopía visto en todo el mundo." },
         { a: 1985, art: "a-ha", t: "Take On Me", n: "Un vídeo dibujado a lápiz." },
-        { a: 1986, art: "Run-DMC", t: "Walk This Way", n: "El rap entra en la MTV." },
+        { a: 1986, art: "Run-DMC", t: "Walk This Way", n: "Run-DMC y Aerosmith juntos en un vídeo que derriba una pared: el rap entra en la MTV y en las listas." },
         { a: 1986, art: "Mecano", t: "Hijo de la luna", n: "El grupo español más vendido." },
         { a: 1987, art: "Guns N' Roses", t: "Sweet Child o' Mine", n: "El último gran riff de los 80." },
         { a: 1989, art: "Madonna", t: "Like a Prayer", n: "La reina del pop y la polémica." }
@@ -169,14 +169,14 @@ HISTORIAS.push({
         { a: 1992, art: "Dr. Dre", t: "Nuthin' but a \"G\" Thang", n: "Con Snoop Dogg: el G-funk de la costa oeste." },
         { a: 1993, art: "El MP3", t: "Nace el formato que lo cambiará todo", tipo: "hito", n: "Una canción cabe en un archivo pequeño: internet podrá mover la música." },
         { a: 1994, art: "The Notorious B.I.G.", t: "Juicy", n: "El rap de Nueva York, de la pobreza a la fama." },
-        { a: 1995, art: "Oasis", t: "Wonderwall", n: "El britpop." },
+        { a: 1995, art: "Oasis", t: "Wonderwall", n: "El himno del britpop: cualquiera que haya cogido una guitarra en los 90 se sabe estos acordes." },
         { a: 1996, art: "Spice Girls", t: "Wannabe", n: "El «girl power» en los patios del mundo." },
         { a: 1996, art: "Los Del Río", t: "Macarena", n: "Desde Dos Hermanas: el baile del planeta." },
-        { a: 1997, art: "Daft Punk", t: "Around the World", n: "La electrónica francesa." },
+        { a: 1997, art: "Daft Punk", t: "Around the World", n: "La frase repetida 144 veces en la versión del disco: la «French touch» de Daft Punk conquista el mundo." },
         { a: 1997, art: "Alejandro Sanz", t: "Corazón partío", n: "Flamenco pop para todo el mundo hispano." },
         { a: 1998, art: "Britney Spears", t: "...Baby One More Time", n: "El pop adolescente de fin de siglo." },
         { a: 1999, art: "Napster", t: "Se comparten canciones gratis", tipo: "hito", n: "La industria discográfica entra en pánico." },
-        { a: 1999, art: "Ricky Martin", t: "Livin' la Vida Loca", n: "El boom latino." }
+        { a: 1999, art: "Ricky Martin", t: "Livin' la Vida Loca", n: "Ricky Martin abre la puerta del mercado anglosajón a la música latina. Fue de las primeras grabadas enteras en ordenador." }
       ]
     },
     {
@@ -186,16 +186,16 @@ HISTORIAS.push({
       intro: "La música se descarga, se lleva en el bolsillo y se descubre en internet.",
       items: [
         { a: 2001, art: "iPod", t: "«Mil canciones en tu bolsillo»", tipo: "hito", n: "Apple cambia cómo escuchamos música." },
-        { a: 2001, art: "The Strokes", t: "Last Nite", n: "Vuelven las guitarras." },
+        { a: 2001, art: "The Strokes", t: "Last Nite", n: "The Strokes devuelven las guitarras al centro: empieza el revival del rock de garaje de los 2000." },
         { a: 2002, art: "Las Ketchup", t: "Aserejé", n: "Un fenómeno mundial español." },
         { a: 2002, art: "Eminem", t: "Lose Yourself", n: "El primer rap que gana el Óscar a la mejor canción." },
         { a: 2003, art: "OutKast", t: "Hey Ya!", n: "Pop, funk y rap en una canción perfecta." },
-        { a: 2003, art: "Beyoncé", t: "Crazy in Love", n: "Nace una superestrella." },
+        { a: 2003, art: "Beyoncé", t: "Crazy in Love", n: "El primer gran éxito en solitario de Beyoncé, con Jay-Z y un sample de los Chi-Lites. Nace una superestrella." },
         { a: 2004, art: "Daddy Yankee", t: "Gasolina", n: "El reguetón se vuelve mundial." },
         { a: 2005, art: "YouTube", t: "Nace la web de vídeos", tipo: "hito", n: "Cualquiera puede hacerse famoso con un vídeo." },
         { a: 2006, art: "Shakira", t: "Hips Don't Lie", n: "Con Wyclef Jean: número uno en todo el mundo." },
         { a: 2006, art: "Amy Winehouse", t: "Rehab", n: "El soul de los 60 vuelve." },
-        { a: 2007, art: "Rihanna", t: "Umbrella", n: "La canción del año." },
+        { a: 2007, art: "Rihanna", t: "Umbrella", n: "Rihanna estuvo diez semanas de número uno en el Reino Unido; el «ella, ella, eh, eh» se oyó en todas partes en 2007." },
         { a: 2008, art: "Spotify", t: "Nace en Suecia", tipo: "hito", n: "El streaming empieza a ganar a la piratería." },
         { a: 2009, art: "The Black Eyed Peas", t: "I Gotta Feeling", n: "La canción de todas las fiestas." }
       ]
@@ -206,10 +206,10 @@ HISTORIAS.push({
       periodo: "2010 – 2019",
       intro: "Spotify, YouTube y luego TikTok: la música en español y el rap dominan el mundo.",
       items: [
-        { a: 2010, art: "Adele", t: "Rolling in the Deep", n: "La voz de la década." },
-        { a: 2011, art: "Avicii", t: "Levels", n: "El himno del EDM." },
+        { a: 2010, art: "Adele", t: "Rolling in the Deep", n: "Adele canta su ruptura con rabia de gospel: la canción más vendida de 2011 en EE. UU." },
+        { a: 2011, art: "Avicii", t: "Levels", n: "Avicii samplea a Etta James y crea el himno del EDM: la música electrónica se vuelve mayoritaria en EE. UU." },
         { a: 2012, art: "PSY", t: "Gangnam Style", n: "El primer vídeo con mil millones de visitas." },
-        { a: 2013, art: "Daft Punk", t: "Get Lucky", n: "La disco vuelve." },
+        { a: 2013, art: "Daft Punk", t: "Get Lucky", n: "Daft Punk con Nile Rodgers y Pharrell: la disco de los 70 vuelve a ser la canción del verano en 2013." },
         { a: 2015, art: "Kendrick Lamar", t: "Alright", n: "Un himno de las protestas contra la violencia policial." },
         { a: 2015, art: "Drake", t: "Hotline Bling", n: "Un vídeo convertido en meme mundial." },
         { a: 2017, art: "Luis Fonsi", t: "Despacito", n: "El español conquista el mundo." },
@@ -233,7 +233,7 @@ HISTORIAS.push({
         { a: 2022, art: "Harry Styles", t: "As It Was", n: "La canción más escuchada del año." },
         { a: 2023, art: "La inteligencia artificial", t: "Una canción falsa de Drake y The Weeknd", tipo: "hito", n: "«Heart on My Sleeve», hecha con IA, se hace viral y abre un debate enorme." },
         { a: 2023, art: "Miley Cyrus", t: "Flowers", n: "Comprarse flores a una misma: número uno mundial." },
-        { a: 2024, art: "Sabrina Carpenter", t: "Espresso", n: "La canción del verano." },
+        { a: 2024, art: "Sabrina Carpenter", t: "Espresso", n: "Sabrina Carpenter se convierte en estrella con el tema del verano de 2024; la frase «that's that me espresso» fue meme." },
         { a: 2024, art: "Kendrick Lamar", t: "Not Like Us", n: "Una pelea de rap con Drake convertida en himno." },
         { a: 2024, art: "Billie Eilish", t: "BIRDS OF A FEATHER", n: "Una canción de amor tranquila y una de las más escuchadas del año." }
       ]

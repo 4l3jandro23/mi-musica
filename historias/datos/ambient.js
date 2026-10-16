@@ -10,15 +10,17 @@ HISTORIAS.push({
     {
       titulo: "Eno inventa el ambient",
       corto: "Los orígenes",
-      periodo: "1917 – 1983",
+      periodo: "1917 – 1986",
       intro: "De la «música de mobiliario» de Satie a los aeropuertos de Eno.",
       items: [
         { a: 1917, art: "Erik Satie", t: "La «música de mobiliario»", tipo: "hito", n: "Satie compone piezas para que nadie las escuche, como un mueble más. La idea llegaría sesenta años antes de tiempo." },
+        { a: 1975, art: "Brian Eno", t: "Discreet Music", tipo: "disco", n: "Eno, en cama tras un accidente, no podía subir el volumen del disco: así descubrió la música para escuchar casi sin escuchar." },
         { a: 1978, art: "«Ambient 1»", t: "Eno define el ambient", tipo: "hito", n: "«Tan ignorable como interesante», escribió en las notas del disco." },
         { a: 1978, art: "Brian Eno", t: "1/1", n: "De «Music for Airports»: música para tranquilizar a los viajeros. El nombre del género sale de aquí." },
-        { a: 1980, art: "Harold Budd & Brian Eno", t: "First Light", n: "Piano con eco infinito." },
+        { a: 1980, art: "Harold Budd & Brian Eno", t: "First Light", n: "Del disco «The Plateaux of Mirror»: piano de Budd y la reverberación infinita de Eno. Ambient para quedarse quieto." },
         { a: 1983, art: "Brian Eno", t: "An Ending (Ascent)", n: "Para un documental sobre la llegada a la Luna: una de las piezas más bellas del género." },
-        { a: 1983, art: "Midori Takada", t: "Mr. Henri Rousseau's Dream", n: "El «kankyō ongaku», ambient japonés de los 80: hoy redescubierto gracias a YouTube." }
+        { a: 1983, art: "Midori Takada", t: "Mr. Henri Rousseau's Dream", n: "El «kankyō ongaku», ambient japonés de los 80: hoy redescubierto gracias a YouTube." },
+        { a: 1986, art: "Hiroshi Yoshimura", t: "Wet Land", q: "Hiroshi Yoshimura Wet Land", n: "Del disco «Green»: ambient japonés de los 80 que el algoritmo de YouTube rescató y que se reeditó en 2020." }
       ]
     },
     {
@@ -30,8 +32,10 @@ HISTORIAS.push({
         { a: 1989, art: "Las salas chill-out", t: "Las raves crean salas para descansar", tipo: "hito", n: "Allí nace el ambient house." },
         { a: 1990, art: "The KLF", t: "Chill Out", tipo: "disco", n: "Un viaje en tren nocturno por EE. UU. hecho con samples." },
         { a: 1990, art: "The Orb", t: "Little Fluffy Clouds", n: "Una voz de Rickie Lee Jones hablando de las nubes de su infancia: el «ambient house»." },
+        { a: 1991, art: "The Orb", t: "A Huge Ever Growing Pulsating Brain That Rules from the Centre of the Ultraworld", n: "Casi veinte minutos con un sample de Minnie Riperton: el ambient house de la sala chill-out." },
         { a: 1992, art: "Aphex Twin", t: "Xtal", n: "De «Selected Ambient Works 85–92»: compuesto cuando era adolescente." },
-        { a: 1994, art: "Global Communication", t: "14:31", n: "Un reloj que hace tic-tac y un ambient enorme." }
+        { a: 1994, art: "Global Communication", t: "14:31", n: "Un reloj que hace tic-tac y un ambient enorme." },
+        { a: 1994, art: "Aphex Twin", t: "#3", n: "De «Selected Ambient Works Volume II»: ambient sin título, como un sueño." }
       ]
     },
     {

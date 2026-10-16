@@ -53,7 +53,7 @@ HISTORIAS.push({
         { a: 1990, art: "Shabba Ranks", t: "Dem Bow", n: "El riddim que daría nombre al ritmo del reggaetón." },
         { a: 1997, art: "Beenie Man", t: "Who Am I", n: "El rey del dancehall de los 90." },
         { a: 2002, art: "Sean Paul", t: "Get Busy", n: "El dancehall llega al número uno de EE. UU." },
-        { a: 2005, art: "Sean Paul", t: "Temperature", n: "Otro número uno mundial." },
+        { a: 2005, art: "Sean Paul", t: "Temperature", n: "El segundo número uno de Sean Paul en EE. UU.: dancehall rápido y pegadizo para todas las fiestas de 2006." },
         { a: 2016, art: "Vybz Kartel", t: "Fever", n: "Uno de los artistas más influyentes del dancehall moderno." },
         { a: 2019, art: "Koffee", t: "Toast", n: "La persona más joven y la primera mujer en ganar el Grammy al mejor disco de reggae." }
       ]

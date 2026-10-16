@@ -28,6 +28,7 @@ HISTORIAS.push({
       items: [
         { a: 1965, art: "Bob Dylan", t: "Se electrifica en Newport", tipo: "hito", n: "Le abuchean por tocar con guitarra eléctrica: el folk y el rock ya no se separarán." },
         { a: 1965, art: "Simon & Garfunkel", t: "The Sound of Silence", n: "El productor le añadió batería y guitarra eléctrica sin avisarles, y llegó al número uno." },
+        { a: 1966, art: "Simon & Garfunkel", t: "Scarborough Fair / Canticle", n: "Una canción tradicional inglesa convertida en un clásico del folk." },
         { a: 1967, art: "Leonard Cohen", t: "Suzanne", n: "Un poeta canadiense que empezó a cantar con 33 años." },
         { a: 1969, art: "Fairport Convention", t: "Who Knows Where the Time Goes?", n: "La voz de Sandy Denny y el folk británico." },
         { a: 1970, art: "Cat Stevens", t: "Father and Son", n: "Un diálogo entre un padre y un hijo." },
@@ -43,12 +44,14 @@ HISTORIAS.push({
       intro: "Del folk íntimo al indie folk de banjos.",
       items: [
         { a: 1988, art: "Tracy Chapman", t: "Fast Car", n: "Una guitarra y el sueño de escapar de la pobreza." },
-        { a: 1997, art: "Elliott Smith", t: "Between the Bars", n: "Susurros y dolor." },
+        { a: 1997, art: "Elliott Smith", t: "Between the Bars", n: "Elliott Smith susurra sobre la bebida y la dependencia. Salió en «El indomable Will Hunting»." },
         { a: 2005, art: "Sufjan Stevens", t: "Chicago", n: "Folk orquestal con trompetas y coros." },
         { a: 2007, art: "Bon Iver", t: "Skinny Love", n: "Grabado solo en una cabaña de Wisconsin tras una ruptura." },
         { a: 2008, art: "Bon Iver", t: "«For Emma, Forever Ago»", tipo: "hito", n: "Grabado en una cabaña: nace el indie folk de la década." },
         { a: 2008, art: "Fleet Foxes", t: "White Winter Hymnal", n: "Armonías vocales que parecen de otro siglo." },
+        { a: 2008, art: "Fleet Foxes", t: "Mykonos", n: "Las armonías vocales de Fleet Foxes, desde Seattle." },
         { a: 2009, art: "Mumford & Sons", t: "Little Lion Man", n: "Banjos a toda velocidad: el folk llena estadios." },
+        { a: 2011, art: "Bon Iver", t: "Holocene", n: "Bon Iver, más allá de la cabaña: una canción que ganó el Grammy." },
         { a: 2017, art: "Phoebe Bridgers", t: "Motion Sickness", n: "El folk triste de la nueva generación." }
       ]
     }
