@@ -45,6 +45,7 @@ HISTORIAS.push({
       periodo: "1985 – 1987",
       intro: "De los garitos a las listas.",
       items: [
+        { a: 1985, art: "Rock-Ola", t: "Cierra la sala", tipo: "hito", n: "Una pelea mortal a la salida precipita el cierre: es el final simbólico de la Movida." },
         { a: 1985, art: "Hombres G", t: "Devuélveme a mi chica", n: "El pop de los niños bien." },
         { a: 1986, art: "Alaska y Dinarama", t: "¿A quién le importa?", n: "Un himno de libertad que sigue vivo." },
         { a: 1987, art: "Gabinete Caligari", t: "Camino Soria", n: "Rock torero y castizo." }

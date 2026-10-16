@@ -13,6 +13,7 @@ HISTORIAS.push({
       periodo: "1907 – 1916",
       intro: "La ópera y Nápoles: Italia exporta la melodía.",
       items: [
+        { a: 1907, art: "Enrico Caruso", t: "El primer cantante de discos", tipo: "hito", n: "Su «Vesti la giubba» vende un millón de copias." },
         { a: 1907, art: "Enrico Caruso", t: "Vesti la giubba", n: "Uno de los primeros discos en vender un millón de copias. Caruso hizo famoso el gramófono." },
         { a: 1916, art: "Enrico Caruso", t: "'O sole mio", n: "La canción napolitana que se convirtió en símbolo de Italia." }
       ]
@@ -47,6 +48,7 @@ HISTORIAS.push({
         { a: 1971, art: "Premiata Forneria Marconi", t: "Impressioni di settembre", n: "Rock progresivo italiano: uno de los mejores del mundo." },
         { a: 1972, art: "Adriano Celentano", t: "Prisencolinensinainciusol", n: "Una canción en inglés inventado: cómo suena el inglés a un italiano. Proto-rap." },
         { a: 1972, art: "Mina", t: "Grande grande grande", n: "Un clásico que versionaron en medio mundo." },
+        { a: 1974, art: "Años de plomo", t: "Cantautores en tiempos difíciles", tipo: "hito", n: "De André, Guccini y De Gregori cantan la Italia del terrorismo." },
         { a: 1977, art: "Goblin", t: "Suspiria", n: "Prog para el cine de terror de Dario Argento." },
         { a: 1978, art: "Raffaella Carrà", t: "Tanti auguri", n: "«Para hacer bien el amor…»: Raffaella era una estrella en España." }
       ]
@@ -58,6 +60,7 @@ HISTORIAS.push({
       intro: "Sintetizadores, inglés macarrónico y pistas de toda Europa.",
       items: [
         { a: 1981, art: "Franco Battiato", t: "Centro di gravità permanente", n: "Pop electrónico culto y bailable." },
+        { a: 1983, art: "Italo disco", t: "Sintetizadores para Europa", tipo: "hito", n: "El italo disco triunfa en las discotecas europeas." },
         { a: 1983, art: "Gazebo", t: "I Like Chopin", n: "El italo disco en su forma más melancólica." },
         { a: 1983, art: "Righeira", t: "Vamos a la playa", n: "Parece la canción del verano, pero habla de una bomba atómica." },
         { a: 1983, art: "Ryan Paris", t: "Dolce Vita", n: "Italo disco y nostalgia de Fellini." },
@@ -80,6 +83,7 @@ HISTORIAS.push({
         { a: 1999, art: "Gigi D'Agostino", t: "L'amour toujours", n: "La melodía de todas las discotecas, desde entonces." },
         { a: 2001, art: "Tiziano Ferro", t: "Perdono", n: "Pop italiano del nuevo siglo, también en español." },
         { a: 2019, art: "Mahmood", t: "Soldi", n: "Trap y melodía árabe: segundo en Eurovisión." },
+        { a: 2021, art: "Måneskin", t: "Ganan Eurovisión", tipo: "hito", n: "El rock italiano conquista el mundo." },
         { a: 2021, art: "Måneskin", t: "Zitti e buoni", n: "Ganan Eurovisión y el rock italiano conquista el mundo." }
       ]
     }

@@ -52,6 +52,7 @@ HISTORIAS.push({
         { a: 1947, art: "Thelonious Monk", t: "'Round Midnight", n: "Las armonías raras y bellas de Monk. Un estándar eterno." },
         { a: 1949, art: "Miles Davis", t: "Boplicity", n: "De «Birth of the Cool»: el jazz se relaja y se vuelve elegante." },
         { a: 1958, art: "Art Blakey & The Jazz Messengers", t: "Moanin'", n: "Hard bop: el jazz vuelve al gospel y al blues." },
+        { a: 1959, art: "Año milagroso", t: "Kind of Blue, Mingus Ah Um y The Shape of Jazz to Come", tipo: "hito", n: "Tres discos que cambian el jazz en un solo año." },
         { a: 1959, art: "Miles Davis", t: "So What", n: "De «Kind of Blue», el disco de jazz más vendido de la historia. Jazz modal." },
         { a: 1959, art: "The Dave Brubeck Quartet", t: "Take Five", n: "En 5/4, y aun así un éxito." },
         { a: 1959, art: "Charles Mingus", t: "Better Git It in Your Soul", n: "Gospel, gritos y caos controlado." },

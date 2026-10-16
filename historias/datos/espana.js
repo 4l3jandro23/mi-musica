@@ -26,6 +26,7 @@ HISTORIAS.push({
       intro: "Lo cuenta con detalle la historia de la música en el franquismo.",
       items: [
         { a: 1941, art: "Concha Piquer", t: "Tatuaje", n: "La copla, música oficial de la posguerra." },
+        { a: 1962, art: "El turismo", t: "Llegan los extranjeros", tipo: "hito", n: "Los guateques y el ye-yé traen la música pop a España." },
         { a: 1968, art: "Massiel", t: "La, la, la", n: "La primera victoria de España en Eurovisión." },
         { a: 1972, art: "Nino Bravo", t: "Libre", n: "Un himno de libertad en los últimos años del régimen." }
       ]
@@ -37,6 +38,7 @@ HISTORIAS.push({
       intro: "Libertad, rock andaluz, la Movida madrileña y el pop que se canta en castellano.",
       items: [
         { a: 1976, art: "Jarcha", t: "Libertad sin ira", n: "El himno de la Transición." },
+        { a: 1977, art: "Primeras elecciones", t: "La Transición", tipo: "hito", n: "Fin de la censura y explosión de libertad musical." },
         { a: 1981, art: "Los Secretos", t: "Déjame", n: "Pop melancólico madrileño." },
         { a: 1982, art: "Miguel Ríos", t: "Bienvenidos", n: "La gira «Rock & Ríos»: el rock español llena estadios." },
         { a: 1983, art: "Golpes Bajos", t: "Malos tiempos para la lírica", n: "Desde Vigo: la Movida también estaba en Galicia." },
@@ -50,9 +52,10 @@ HISTORIAS.push({
     {
       titulo: "Los 90",
       corto: "Los 90",
-      periodo: "1993 – 1999",
+      periodo: "1992 – 1999",
       intro: "Grandes discos de pop, rock y rumba, y estrellas que llenan estadios.",
       items: [
+        { a: 1992, art: "Barcelona y Sevilla", t: "El año de España", tipo: "hito", n: "Juegos Olímpicos y Expo: la música española sale al mundo." },
         { a: 1993, art: "Los Rodríguez", t: "Sin documentos", n: "Andrés Calamaro y Ariel Rot: un argentino que se hizo madrileño." },
         { a: 1996, art: "Jarabe de Palo", t: "La flaca", n: "Pau Donés y un éxito en todo el mundo hispano." },
         { a: 1997, art: "Alejandro Sanz", t: "Corazón partío", n: "Flamenco pop: la canción española más famosa de su década." },

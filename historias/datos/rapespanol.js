@@ -18,6 +18,7 @@ HISTORIAS.push({
         { a: 1996, art: "Control Machete", t: "¿Comprendes Mendes?", n: "Desde Monterrey: el rap mexicano llega a todo el continente." },
         { a: 1997, art: "Molotov", t: "Gimme tha Power", n: "Rap-rock mexicano contra la corrupción. Lo censuraron y se hizo himno." },
         { a: 1997, art: "Tiro de Gracia", t: "Viaje sin rumbo", n: "Chile: el gran grupo del rap chileno de los 90." },
+        { a: 1998, art: "Hip hop español", t: "Llegan los discos clave", tipo: "hito", n: "SFDK, Violadores del Verso y 7 Notas 7 Colores sacan el rap de los parques." },
         { a: 1999, art: "Orishas", t: "Represent", n: "Cubanos en París: rap con son, rumba y guaguancó." }
       ]
     },
@@ -42,6 +43,7 @@ HISTORIAS.push({
       intro: "Batallas de freestyle, streaming y nuevas estrellas.",
       items: [
         { a: 2019, art: "WOS", t: "Canguro", n: "Campeón de freestyle convertido en estrella: rap, rock y canción." },
+        { a: 2020, art: "Bzrp Music Sessions", t: "Bizarrap revoluciona el rap", tipo: "hito", n: "Sesiones en YouTube que lanzan carreras." },
         { a: 2020, art: "Residente", t: "René", n: "El cantante de Calle 13 abre su corazón: depresión, infancia y fama." },
         { a: 2022, art: "Trueno", t: "Dance Crip", n: "Rap y orgullo latinoamericano desde La Boca." },
         { a: 2022, art: "Bizarrap", t: "Residente: Bzrp Music Sessions, Vol. 49", q: "Bizarrap Residente Music Sessions 49", n: "Una tiradera de ocho minutos contra J Balvin que dio la vuelta al mundo." }

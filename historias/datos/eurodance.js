@@ -35,6 +35,7 @@ HISTORIAS.push({
         { a: 1993, art: "Corona", t: "The Rhythm of the Night", n: "El himno italiano del verano." },
         { a: 1993, art: "Real McCoy", t: "Another Night", n: "Desde Berlín: triunfó también en EE. UU." },
         { a: 1993, art: "2 Unlimited", t: "No Limit", n: "«No no, no no no no»." },
+        { a: 1994, art: "Los recopilatorios", t: "La era de los «Max Mix» y «Bit Mania»", tipo: "hito", n: "En España, los recopilatorios de eurodance venden millones." },
         { a: 1994, art: "Whigfield", t: "Saturday Night", n: "El baile del verano en España." },
         { a: 1994, art: "Masterboy", t: "Feel the Heat of the Night", n: "Pura discoteca de los 90." },
         { a: 1994, art: "Scatman John", t: "Scatman (Ski-Ba-Bop-Ba-Dop-Bop)", n: "Un jazzista tartamudo que convirtió su tartamudez en scat." },
@@ -49,6 +50,7 @@ HISTORIAS.push({
       items: [
         { a: 1996, art: "Gala", t: "Freed from Desire", n: "Una italiana y un «na na na» que hoy cantan los estadios de fútbol." },
         { a: 1997, art: "Alexia", t: "Uh La La La", n: "Eurodance italiano en clave pop." },
+        { a: 1998, art: "Eurodance", t: "El estilo se apaga", tipo: "hito", n: "El trance y el pop adolescente toman el relevo en las radios." },
         { a: 1998, art: "Vengaboys", t: "Boom, Boom, Boom, Boom!!", n: "El eurodance se vuelve dibujos animados." },
         { a: 2007, art: "September", t: "Cry for You", n: "Un eurodance tardío de Suecia que triunfó en toda Europa." }
       ]

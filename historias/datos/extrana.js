@@ -29,6 +29,7 @@ HISTORIAS.push({
       items: [
         { a: 1992, art: "Ween", t: "Push th' Little Daisies", n: "Voces aceleradas y humor absurdo: la MTV la puso, para sorpresa de todos." },
         { a: 1995, art: "Scott Walker", t: "Farmer in the City", n: "El crooner de los 60 reconvertido en compositor de pesadillas." },
+        { a: 1996, art: "Internet", t: "Las rarezas encuentran público", tipo: "hito", n: "Foros y páginas web hacen famosos a los raros." },
         { a: 1997, art: "Aphex Twin", t: "Come to Daddy", n: "Electrónica violenta y un vídeo con niños con su cara que traumatizó a una generación." },
         { a: 2004, art: "Animal Collective", t: "Who Could Win a Rabbit", n: "Folk hiperactivo, gritos y alegría infantil." }
       ]

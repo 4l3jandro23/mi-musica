@@ -27,6 +27,7 @@ HISTORIAS.push({
       items: [
         { a: 2021, art: "Trippie Redd & Playboi Carti", t: "Miss the Rage", n: "Le da nombre al género." },
         { a: 2021, art: "Yeat", t: "Monëy so big", n: "Campanas y palabras inventadas." },
+        { a: 2022, art: "Conciertos", t: "El rap se baila en pogos", tipo: "hito", n: "Los conciertos de rage parecen de punk." },
         { a: 2022, art: "Yeat", t: "Gët Busy", n: "El rapero de las campanitas." },
         { a: 2022, art: "Ken Carson", t: "Overseas", n: "El sonido de Opium, del disco X." },
         { a: 2022, art: "Lil Uzi Vert", t: "Just Wanna Rock", n: "El rage se baila en TikTok con Jersey club." },

@@ -13,6 +13,7 @@ HISTORIAS.push({
       periodo: "1984 – 1987",
       intro: "Productores británicos e italianos fabrican pop rapidísimo.",
       items: [
+        { a: 1984, art: "Stock Aitken Waterman", t: "La fábrica de éxitos de Londres", tipo: "hito", n: "Producen hi-NRG en cadena para Dead or Alive, Kylie y Rick Astley." },
         { a: 1984, art: "Dead or Alive", t: "You Spin Me Round (Like a Record)", n: "Stock Aitken Waterman: el primer número uno de la «fábrica de éxitos»." },
         { a: 1986, art: "Bananarama", t: "Venus", n: "Otra de SAW: pop rapidísimo." },
         { a: 1986, art: "Ken Laszlo", t: "Tonight", n: "Italo disco que en Japón se convertiría en clásico del eurobeat." },

@@ -46,6 +46,7 @@ HISTORIAS.push({
       intro: "Ritmos digitales, MCs y la fiesta de los sound systems.",
       items: [
         { a: 1979, art: "Janet Kay", t: "Silly Games", n: "El «lovers rock» británico: reggae romántico." },
+        { a: 1981, art: "Muere Bob Marley", t: "El reggae pierde a su icono", tipo: "hito", n: "El dancehall toma el relevo en Jamaica." },
         { a: 1983, art: "UB40", t: "Red Red Wine", n: "Una canción de Neil Diamond convertida en reggae de Birmingham." },
         { a: 1983, art: "Yellowman", t: "Zungguzungguguzungguzeng", n: "Un DJ albino que se convirtió en la primera estrella del dancehall." },
         { a: 1985, art: "Wayne Smith", t: "Under Mi Sleng Teng", n: "Un ritmo de un teclado Casio: empieza el dancehall digital." },

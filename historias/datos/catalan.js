@@ -43,6 +43,7 @@ HISTORIAS.push({
         { a: 2008, art: "Manel", t: "Al mar!", n: "Indie pop con letras ingeniosas: un fenómeno inesperado." },
         { a: 2011, art: "Els Catarres", t: "Jenifer", n: "Un amor imposible entre un chico de pueblo y una chica de Castelldefels." },
         { a: 2016, art: "Bad Gyal", t: "Pai", n: "Dancehall con autotune en catalán desde Vilassar de Mar." },
+        { a: 2017, art: "Referéndum", t: "Música y política", tipo: "hito", n: "La canción en catalán vive un auge de público joven, del pop al trap." },
         { a: 2017, art: "ZOO", t: "Estiu", n: "Desde Valencia: rap y mestizaje en valenciano." },
         { a: 2019, art: "ROSALÍA", t: "Milionària", n: "Rumba catalana en catalán por la artista española más global." }
       ]

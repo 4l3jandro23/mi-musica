@@ -14,6 +14,7 @@ HISTORIAS.push({
       intro: "Las primeras músicas caribeñas que viajan a Londres y Nueva York.",
       items: [
         { a: 1948, art: "Lord Kitchener", t: "London Is the Place for Me", n: "Improvisada al bajar del barco Windrush: los inmigrantes caribeños llegan a Reino Unido." },
+        { a: 1956, art: "Harry Belafonte", t: "«Calypso», el primer disco que vende un millón", tipo: "hito", n: "El calipso de Trinidad conquista EE. UU." },
         { a: 1956, art: "Harry Belafonte", t: "Day-O (The Banana Boat Song)", n: "El primer disco en vender un millón de copias en EE. UU. («Calypso»): la fiebre del calipso." },
         { a: 1956, art: "Mighty Sparrow", t: "Jean and Dinah", n: "El rey del calipso de Trinidad, con humor y crítica." },
         { a: 1959, art: "Cortijo y su Combo", t: "El bombón de Elena", n: "Con Ismael Rivera: la bomba y la plena puertorriqueñas en la radio." }

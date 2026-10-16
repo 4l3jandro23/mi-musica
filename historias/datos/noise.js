@@ -28,6 +28,7 @@ HISTORIAS.push({
       intro: "El ruido se mete dentro de las canciones.",
       items: [
         { a: 1984, art: "Sonic Youth", t: "Death Valley '69", n: "Con Lydia Lunch: guitarras con afinaciones raras y destornilladores entre las cuerdas." },
+        { a: 1985, art: "The Jesus and Mary Chain", t: "«Psychocandy»", tipo: "hito", n: "Pop de los 60 bajo una tormenta de feedback." },
         { a: 1985, art: "The Jesus and Mary Chain", t: "Never Understand", n: "Melodías de los 60 enterradas bajo acoples: el noise pop." },
         { a: 1987, art: "Swans", t: "Children of God", tipo: "disco", n: "Lento, pesado y abrumador." },
         { a: 1988, art: "Sonic Youth", t: "Teen Age Riot", n: "De «Daydream Nation»: el noise rock se vuelve himno." },
@@ -40,6 +41,7 @@ HISTORIAS.push({
       periodo: "1996 – 2019",
       intro: "Japón lleva el ruido al extremo y el siglo XXI lo mezcla con todo.",
       items: [
+        { a: 1996, art: "Merzbow", t: "El japanoise", tipo: "hito", n: "Masami Akita convierte el ruido en una obra inmensa." },
         { a: 1996, art: "Merzbow", t: "Pulse Demon", tipo: "disco", n: "El rey del noise japonés: el ruido más extremo, convertido en arte." },
         { a: 2003, art: "Lightning Bolt", t: "Dracula Mountain", n: "Bajo y batería a volumen salvaje: el noise rock más físico." },
         { a: 2007, art: "Crystal Castles", t: "Crimewave", n: "Remix de HEALTH: chiptune, ruido y pista de baile." },

@@ -39,6 +39,7 @@ HISTORIAS.push({
       periodo: "1981 – 2009",
       intro: "Grandes voces, la canción andaluza y una nueva mirada.",
       items: [
+        { a: 1981, art: "La Transición", t: "La copla, de moda otra vez", tipo: "hito", n: "Rocío Jurado, Isabel Pantoja y la copla en la tele de la democracia." },
         { a: 1981, art: "Rocío Jurado", t: "Como una ola", n: "«La más grande», de Chipiona: copla y balada a la vez." },
         { a: 1985, art: "Isabel Pantoja", t: "Marinero de luces", n: "Un homenaje a su marido torero: un éxito enorme." },
         { a: 1985, art: "Carlos Cano", t: "María la portuguesa", n: "El granadino que renovó la copla con mirada de cantautor." },

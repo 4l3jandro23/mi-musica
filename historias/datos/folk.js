@@ -46,6 +46,7 @@ HISTORIAS.push({
         { a: 1997, art: "Elliott Smith", t: "Between the Bars", n: "Susurros y dolor." },
         { a: 2005, art: "Sufjan Stevens", t: "Chicago", n: "Folk orquestal con trompetas y coros." },
         { a: 2007, art: "Bon Iver", t: "Skinny Love", n: "Grabado solo en una cabaña de Wisconsin tras una ruptura." },
+        { a: 2008, art: "Bon Iver", t: "«For Emma, Forever Ago»", tipo: "hito", n: "Grabado en una cabaña: nace el indie folk de la década." },
         { a: 2008, art: "Fleet Foxes", t: "White Winter Hymnal", n: "Armonías vocales que parecen de otro siglo." },
         { a: 2009, art: "Mumford & Sons", t: "Little Lion Man", n: "Banjos a toda velocidad: el folk llena estadios." },
         { a: 2017, art: "Phoebe Bridgers", t: "Motion Sickness", n: "El folk triste de la nueva generación." }

@@ -14,6 +14,7 @@ HISTORIAS.push({
       intro: "Discos más antiguos que la propia Boiler Room y que no faltan en sus sesiones.",
       items: [
         { a: 1999, art: "Moodymann", t: "Shades of Jae", n: "House de Detroit con alma soul." },
+        { a: 2001, art: "Ibiza", t: "Los clásicos de club", tipo: "hito", n: "Las sesiones de las superclubs fijan el canon de himnos que aún suenan." },
         { a: 2009, art: "Ben Klock", t: "Subzero", n: "El techno de Berghain: oscuro, largo e hipnótico." }
       ]
     },

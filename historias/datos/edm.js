@@ -42,6 +42,7 @@ HISTORIAS.push({
       periodo: "2012 – 2014",
       intro: "Los ritmos del trap de Atlanta con drops de festival.",
       items: [
+        { a: 2012, art: "Baauer", t: "«Harlem Shake»", tipo: "hito", n: "El trap EDM se vuelve meme mundial en 2013." },
         { a: 2012, art: "TNGHT", t: "Higher Ground", n: "Hudson Mohawke y Lunice: trompetas y 808 gigantes. Kanye fichó a los dos." },
         { a: 2012, art: "Baauer", t: "Harlem Shake", n: "Un meme lo llevó al número uno en 2013." },
         { a: 2014, art: "RL Grime", t: "Core", n: "El trap de festival más duro." }
@@ -54,6 +55,7 @@ HISTORIAS.push({
       intro: "Sintetizadores que vibran como olas, voces cortadas y melancolía.",
       items: [
         { a: 2012, art: "Flume", t: "Holdin On", n: "Un australiano de 20 años crea el sonido que copiarán todos." },
+        { a: 2014, art: "Flume y Porter Robinson", t: "Nace el future bass", tipo: "hito", n: "Sintetizadores que suben y bajan y estética de anime." },
         { a: 2014, art: "ODESZA", t: "Say My Name", n: "Electrónica emotiva para atardeceres de festival." },
         { a: 2015, art: "Louis The Child", t: "It's Strange", n: "Future bass alegre de dos adolescentes de Chicago." },
         { a: 2015, art: "The Chainsmokers", t: "Roses", n: "El future bass se vuelve pop." },

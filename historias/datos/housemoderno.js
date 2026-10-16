@@ -27,6 +27,7 @@ HISTORIAS.push({
       periodo: "2010",
       intro: "Chirridos y bombos holandeses que preparan el big room.",
       items: [
+        { a: 2010, art: "Dirty Dutch", t: "Los holandeses toman las pistas", tipo: "hito", n: "Afrojack y Chuckie exportan su sonido." },
         { a: 2010, art: "Afrojack", t: "Take Over Control", n: "Con Eva Simons: chirridos holandeses que prepararon el big room." }
       ]
     },
@@ -50,6 +51,7 @@ HISTORIAS.push({
       periodo: "2014 – 2016",
       intro: "Bajos «metálicos» que suben y bajan, y graves heredados del dubstep.",
       items: [
+        { a: 2014, art: "Oliver Heldens", t: "Nace el future house", tipo: "hito", n: "«Gecko» llega al número uno en el Reino Unido." },
         { a: 2014, art: "Tchami", t: "Promesses", n: "El francés que bautizó el «future house» con su sonido de bajo." },
         { a: 2014, art: "Oliver Heldens", t: "Gecko (Overdrive)", n: "Un chaval holandés de 19 años: número uno en Reino Unido con la voz de Becky Hill." },
         { a: 2015, art: "Jauz", t: "Feel the Volume", n: "Bass house: house con la potencia del dubstep." },
@@ -64,6 +66,7 @@ HISTORIAS.push({
       intro: "Percusión africana y melodías hipnóticas, de Sudáfrica a los clubs de Berlín e Ibiza.",
       items: [
         { a: 2009, art: "Black Coffee", t: "Superman", n: "Con Bucie: el DJ sudafricano que llevaría el afro house a Ibiza." },
+        { a: 2019, art: "Black Coffee", t: "El afro house llega a Ibiza", tipo: "hito", n: "El sudafricano se convierte en estrella mundial." },
         { a: 2019, art: "Master KG", t: "Jerusalema", n: "Con Nomcebo Zikode: el baile que dio la vuelta al mundo." },
         { a: 2024, art: "Adam Port", t: "Move", n: "Con Stryv y Malachiii, del colectivo Keinemusik: el afro house llega a las listas de todo el mundo." }
       ]

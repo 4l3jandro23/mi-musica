@@ -16,6 +16,7 @@ HISTORIAS.push({
         { a: 1956, art: "Doris Day", t: "Que Sera, Sera (Whatever Will Be, Will Be)", n: "De una película de Hitchcock: el pop de antes del rock." },
         { a: 1957, art: "Paul Anka", t: "Diana", n: "Un chaval de 15 años y uno de los singles más vendidos de su época." },
         { a: 1963, art: "The Ronettes", t: "Be My Baby", n: "El «muro de sonido» de Phil Spector: un redoble de batería legendario." },
+        { a: 1964, art: "Ed Sullivan Show", t: "Llegan los Beatles", tipo: "hito", n: "La invasión británica cambia el pop." },
         { a: 1964, art: "Frank Sinatra", t: "Fly Me to the Moon", n: "Con arreglos de Quincy Jones: sonó en el Apolo 10 y el 11." },
         { a: 1966, art: "The Beach Boys", t: "God Only Knows", n: "Paul McCartney la consideraba la mejor canción jamás escrita." },
         { a: 1966, art: "The Monkees", t: "I'm a Believer", n: "Un grupo creado para una serie de televisión, con canción de Neil Diamond." },
@@ -30,6 +31,7 @@ HISTORIAS.push({
       items: [
         { a: 1970, art: "Carpenters", t: "(They Long to Be) Close to You", n: "Suavidad absoluta." },
         { a: 1970, art: "Elton John", t: "Your Song", n: "Una canción de amor sencilla y perfecta." },
+        { a: 1974, art: "ABBA", t: "Ganan Eurovisión con «Waterloo»", tipo: "hito", n: "Nace el pop sueco." },
         { a: 1974, art: "ABBA", t: "Waterloo", n: "Ganan Eurovisión: empieza el pop sueco." },
         { a: 1975, art: "Queen", t: "Bohemian Rhapsody", n: "Seis minutos y ópera en mitad de una canción pop. Nadie creía que fuera a funcionar." },
         { a: 1977, art: "Fleetwood Mac", t: "Dreams", n: "De «Rumours», grabado mientras la banda se separaba en parejas." }
@@ -60,6 +62,7 @@ HISTORIAS.push({
         { a: 1995, art: "Mariah Carey", t: "Fantasy", n: "Pop y hip hop juntos, con un sample de Tom Tom Club." },
         { a: 1998, art: "Cher", t: "Believe", n: "El primer gran éxito con Auto-Tune usado a propósito." },
         { a: 1998, art: "Madonna", t: "Ray of Light", n: "Madonna se pasa a la electrónica con William Orbit." },
+        { a: 1999, art: "Max Martin", t: "La fábrica sueca de éxitos", tipo: "hito", n: "Britney, Backstreet Boys y NSYNC salen del mismo estudio de Estocolmo." },
         { a: 1999, art: "Backstreet Boys", t: "I Want It That Way", n: "La letra no tiene sentido y da igual." },
         { a: 1999, art: "Christina Aguilera", t: "Genie in a Bottle", n: "La otra gran estrella pop del fin de siglo." },
         { a: 1999, art: "Ricky Martin", t: "Livin' la Vida Loca", n: "El boom latino en el pop en inglés." },

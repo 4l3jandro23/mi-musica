@@ -14,6 +14,7 @@ HISTORIAS.push({
       intro: "En Atlanta, el rap habla de las «trap houses» antes de que exista el sonido.",
       items: [
         { a: 1992, art: "UGK", t: "Pocket Full of Stones", n: "Desde Texas, el rap que ya hablaba de la vida en la trap una década antes del nombre." },
+        { a: 2003, art: "T.I.", t: "Le da nombre al trap", tipo: "hito", n: "Su disco «Trap Muzik» bautiza el género." },
         { a: 2003, art: "T.I.", t: "Trap Muzik", tipo: "disco", n: "El disco que le pone nombre al género." },
         { a: 2005, art: "Young Jeezy", t: "Soul Survivor", n: "Con Akon. El trap llega a lo más alto de las listas." },
         { a: 2005, art: "Gucci Mane", t: "Icy", n: "Con Young Jeezy. Gucci, el padrino del trap, en sus inicios." },
@@ -45,6 +46,7 @@ HISTORIAS.push({
       periodo: "2016 – 2017",
       intro: "Puerto Rico y Argentina adoptan el trap y lo hacen suyo.",
       items: [
+        { a: 2016, art: "El trap en español", t: "Llega desde Puerto Rico y Argentina", tipo: "hito", n: "Bad Bunny y Duki cambian el idioma del trap." },
         { a: 2016, art: "De La Ghetto", t: "La Ocasión", n: "Con Arcángel, Ozuna y Anuel AA: el himno fundacional del trap latino." },
         { a: 2016, art: "Bad Bunny", t: "Soy Peor", n: "Un chaval de Puerto Rico que subía temas a SoundCloud mientras trabajaba en un súper." },
         { a: 2017, art: "Duki", t: "She Don't Give a FO", n: "Desde las batallas de freestyle de Buenos Aires al trap argentino." }
@@ -56,6 +58,7 @@ HISTORIAS.push({
       periodo: "2020 – 2022",
       intro: "Sintetizadores distorsionados como de videojuego, 808 saturados y pogos en los conciertos.",
       items: [
+        { a: 2020, art: "«Whole Lotta Red»", t: "Nace el rage", tipo: "hito", n: "Playboi Carti cambia el sonido del trap." },
         { a: 2020, art: "Playboi Carti", t: "Sky", n: "De «Whole Lotta Red»: odiado al salir, hoy un disco de culto que creó una estética." },
         { a: 2021, art: "Trippie Redd", t: "Miss the Rage", n: "Con Playboi Carti: la canción que le dio nombre al «rage»." },
         { a: 2022, art: "Yeat", t: "Gët Busy", n: "Campanas, sintes y un vocabulario propio: el rage se vuelve masivo." },

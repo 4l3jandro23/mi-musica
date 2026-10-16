@@ -31,6 +31,7 @@ HISTORIAS.push({
       periodo: "2000 – 2001",
       intro: "El trip hop se suaviza y se convierte en la música de los bares de los 2000.",
       items: [
+        { a: 2000, art: "Café del Mar", t: "El chill out de Ibiza", tipo: "hito", n: "Los recopilatorios llevan el downtempo a todas partes." },
         { a: 2000, art: "Hooverphonic", t: "Mad About You", n: "Desde Bélgica, trip hop de cine." },
         { a: 2000, art: "Thievery Corporation", t: "Lebanese Blonde", n: "Sitar, bossa y dub desde Washington: sonó en la película «Algo en común»." },
         { a: 2001, art: "Zero 7", t: "Destiny", n: "Con Sia, años antes de su fama: chill out perfecto." }

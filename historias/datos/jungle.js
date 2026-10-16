@@ -14,6 +14,7 @@ HISTORIAS.push({
       intro: "Breaks acelerados y raves.",
       items: [
         { a: 1969, art: "The Winstons", t: "Amen, Brother", n: "Seis segundos de batería que acabaron en miles de canciones de jungle." },
+        { a: 1991, art: "Raves", t: "El hardcore se acelera", tipo: "hito", n: "Los breaks se aceleran en los raves británicos." },
         { a: 1991, art: "Lennie De Ice", t: "We Are I.E.", n: "Para muchos, la primera canción de jungle." },
         { a: 1992, art: "SL2", t: "On a Ragga Tip", n: "Ragga y breakbeat hardcore en el top 2 británico." },
         { a: 1993, art: "Origin Unknown", t: "Valley of the Shadows", n: "Un clásico oscuro y atmosférico." }

@@ -33,6 +33,7 @@ HISTORIAS.push({
       periodo: "2002 – 2018",
       intro: "Cada generación redescubre esos bajos y guitarras frías.",
       items: [
+        { a: 2002, art: "The Strokes", t: "El revival del post-punk", tipo: "hito", n: "Interpol, Franz Ferdinand y Bloc Party recuperan el sonido de 1979." },
         { a: 2002, art: "Interpol", t: "Obstacle 1", n: "Nueva York vestida de negro, como Joy Division." },
         { a: 2004, art: "Bloc Party", t: "Banquet", n: "Guitarras cortantes del revival británico." },
         { a: 2013, art: "Savages", t: "Husbands", n: "Post-punk feroz con voz femenina." },

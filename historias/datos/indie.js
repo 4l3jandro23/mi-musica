@@ -54,6 +54,7 @@ HISTORIAS.push({
       items: [
         { a: 2013, art: "Arctic Monkeys", t: "Do I Wanna Know?", n: "Los Arctic Monkeys se vuelven más lentos y oscuros: su tema más escuchado." },
         { a: 2014, art: "Mac DeMarco", t: "Chamber of Reflection", n: "El indie relajado de dormitorio." },
+        { a: 2015, art: "Streaming", t: "Las playlists sustituyen a los blogs", tipo: "hito", n: "Spotify se convierte en la radio del indie." },
         { a: 2018, art: "Carolina Durante", t: "Cayetano", n: "Una burla generacional desde Madrid." },
         { a: 2022, art: "Florence + The Machine", t: "June", n: "Dance Fever, escrito durante la pandemia." }
       ]

@@ -13,6 +13,7 @@ HISTORIAS.push({
       periodo: "1987 – 1991",
       intro: "Teddy Riley mezcla soul con cajas de ritmos de hip hop.",
       items: [
+        { a: 1987, art: "Teddy Riley", t: "Inventa el new jack swing", tipo: "hito", n: "R&B con ritmos de hip hop." },
         { a: 1987, art: "Keith Sweat", t: "I Want Her", n: "Producida por Teddy Riley: nace el new jack swing." },
         { a: 1988, art: "Bobby Brown", t: "My Prerogative", n: "El chico malo de New Edition, en solitario." },
         { a: 1990, art: "Bell Biv DeVoe", t: "Poison", n: "«Never trust a big butt and a smile»." },
@@ -43,6 +44,7 @@ HISTORIAS.push({
       items: [
         { a: 2000, art: "D'Angelo", t: "Untitled (How Does It Feel)", n: "El neo soul en su cumbre." },
         { a: 2002, art: "Justin Timberlake", t: "Cry Me a River", n: "Producida por Timbaland: un exmiembro de boy band se vuelve serio." },
+        { a: 2003, art: "The Neptunes", t: "Producen el 43 % de lo que suena en la radio", tipo: "hito", n: "Pharrell y Chad Hugo dominan las ondas." },
         { a: 2004, art: "Usher", t: "Yeah!", n: "Con Lil Jon y Ludacris: el «crunk&B»." },
         { a: 2004, art: "Alicia Keys", t: "If I Ain't Got You", n: "Piano y una voz enorme." },
         { a: 2006, art: "Ne-Yo", t: "So Sick", n: "Compositor de éxitos para otros, y para sí mismo." },

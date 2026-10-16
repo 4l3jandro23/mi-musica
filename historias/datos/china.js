@@ -39,6 +39,7 @@ HISTORIAS.push({
       items: [
         { a: 1984, art: "Leslie Cheung", alias: ["張國榮"], t: "Monica", n: "El gran ídolo de Hong Kong, también actor de Wong Kar-wai." },
         { a: 1985, art: "Anita Mui", alias: ["梅艷芳"], t: "Bad Girl", q: "梅艷芳 壞女孩", n: "La «Madonna de Asia»." },
+        { a: 1986, art: "Cui Jian", t: "Canta «Nada a mi nombre» en Pekín", tipo: "hito", n: "Nace el rock chino." },
         { a: 1986, art: "Cui Jian", alias: ["崔健"], t: "No tengo nada", q: "崔健 一无所有", n: "Nace el rock chino. En 1989 sería un himno de los estudiantes de Tiananmén." },
         { a: 1990, art: "Beyond", t: "Glorious Years", q: "Beyond 光輝歲月", n: "Rock de Hong Kong dedicado a Nelson Mandela." },
         { a: 1991, art: "Black Panther", alias: ["黑豹乐队", "黑豹樂隊"], t: "Wu Di Zi Rong", q: "黑豹 无地自容", n: "El heavy rock de Pekín." },

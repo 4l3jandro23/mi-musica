@@ -14,6 +14,7 @@ HISTORIAS.push({
       intro: "El koto se moderniza y la posguerra se consuela con boogie y enka.",
       items: [
         { a: 1929, art: "Michio Miyagi", alias: ["宮城道雄"], t: "El mar en primavera", q: "宮城道雄 春の海", n: "Koto y shakuhachi: tradición modernizada. Suena en todos los Años Nuevos de Japón." },
+        { a: 1945, art: "Posguerra", t: "El jazz de la ocupación", tipo: "hito", n: "Las bases americanas traen el jazz y el boogie a Japón." },
         { a: 1947, art: "Shizuko Kasagi", alias: ["笠置シヅ子"], t: "Tokyo Boogie-Woogie", q: "笠置シヅ子 東京ブギウギ", n: "La reina del boogie animando a un país en ruinas." },
         { a: 1949, art: "Hibari Misora", alias: ["美空ひばり"], t: "Silbido triste", q: "美空ひばり 悲しき口笛", n: "Una niña de 12 años que sería la mayor estrella de la historia de Japón." },
         { a: 1961, art: "Kyu Sakamoto", alias: ["坂本九"], t: "Ue o Muite Arukō (Sukiyaki)", q: "坂本九 上を向いて歩こう", n: "La única canción en japonés que ha sido número uno en Estados Unidos." }
@@ -51,6 +52,7 @@ HISTORIAS.push({
         { a: 1989, art: "X Japan", t: "Kurenai", n: "Metal melódico y estética visual kei." },
         { a: 1997, art: "Cornelius", t: "Star Fruits Surf Rider", n: "El Shibuya-kei: collage pop de un genio." },
         { a: 1998, art: "Hikaru Utada", alias: ["宇多田ヒカル"], t: "Automatic", n: "Con 15 años, el disco más vendido de la historia de Japón." },
+        { a: 1999, art: "Hikaru Utada", t: "«First Love», el disco más vendido de Japón", tipo: "hito", n: "Más de siete millones de copias." },
         { a: 1999, art: "Ayumi Hamasaki", alias: ["浜崎あゆみ"], t: "Boys & Girls", n: "La emperatriz del J-pop de los 2000." }
       ]
     },

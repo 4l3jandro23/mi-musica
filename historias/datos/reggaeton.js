@@ -13,6 +13,7 @@ HISTORIAS.push({
       periodo: "1990 – 1991",
       intro: "El reggae en español panameño y el riddim que le dio nombre al ritmo.",
       items: [
+        { a: 1990, art: "Shabba Ranks", t: "«Dem Bow»", tipo: "hito", n: "El ritmo jamaicano que se convierte en la base del reguetón." },
         { a: 1990, art: "Shabba Ranks", t: "Dem Bow", n: "La canción de dancehall que da nombre al «dembow», el ritmo base del reggaetón." },
         { a: 1990, art: "Vico C", t: "La recta final", n: "El padre del rap en español en Puerto Rico." },
         { a: 1991, art: "El General", t: "Tu pum pum", n: "Desde Panamá, reggae en español con ritmo de dancehall: el modelo de todo lo que vendría." },
@@ -43,6 +44,7 @@ HISTORIAS.push({
         { a: 2003, art: "Don Omar", t: "Dale Don Dale", n: "El rival de Daddy Yankee y su gran himno." },
         { a: 2003, art: "Ivy Queen", t: "Yo quiero bailar", n: "Una canción sobre el baile y el consentimiento, antes de que se hablara de ello." },
         { a: 2003, art: "Luny Tunes & Noriega", t: "Mas Flow", tipo: "disco", n: "La producción de Luny Tunes: teclados melódicos y bombos limpios. El sonido del boom." },
+        { a: 2004, art: "«Gasolina»", t: "El reguetón conquista el mundo", tipo: "hito", n: "Daddy Yankee lo lleva a las listas de todo el planeta." },
         { a: 2004, art: "N.O.R.E.", t: "Oye mi canto", n: "Un rapero neoyorquino lleva el reggaetón a las radios de EE. UU." },
         { a: 2004, art: "Zion & Lennox", t: "Yo voy", n: "Con Daddy Yankee. La melodía empieza a ganar a la dureza." },
         { a: 2004, art: "Daddy Yankee", t: "Gasolina", n: "La explosión mundial. Desde aquí, el reggaetón ya es pop global." },

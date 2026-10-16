@@ -101,6 +101,7 @@ HISTORIAS.push({
         { a: 2000, art: "Daft Punk", t: "One More Time", n: "El autotune entra en la pista de baile." },
         { a: 2010, art: "Skrillex", t: "Scary Monsters and Nice Sprites", n: "El dubstep americano y el principio de la era EDM." },
         { a: 2011, art: "Avicii", t: "Levels", n: "El himno de una generación de festivales." },
+        { a: 2013, art: "Daft Punk", t: "«Random Access Memories»", tipo: "hito", n: "Grammy al disco del año: la electrónica vuelve a los instrumentos." },
         { a: 2013, art: "Disclosure", t: "Latch", n: "El house británico vuelve a las listas." },
         { a: 2022, art: "Fred again..", t: "Delilah (pull me out of this)", n: "La electrónica emocional hecha con notas de voz y vídeos del móvil." }
       ]

@@ -83,6 +83,7 @@ HISTORIAS.push({
         { a: 1638, art: "Gregorio Allegri", t: "Miserere", n: "Prohibido copiarlo fuera del Vaticano; Mozart lo transcribió de memoria en 1770." },
         { a: 1680, art: "Johann Pachelbel", t: "Canon en re mayor", n: "Olvidado durante siglos, hoy suena en todas las bodas." },
         { a: 1689, art: "Henry Purcell", t: "Dido's Lament", n: "El lamento más famoso del Barroco." },
+        { a: 1709, art: "Bartolomeo Cristofori", t: "Inventa el piano", tipo: "hito", n: "Un clave que puede tocar fuerte y piano." },
         { a: 1717, art: "George Frideric Handel", t: "Water Music", n: "Música para un paseo del rey por el Támesis." },
         { a: 1721, art: "Johann Sebastian Bach", t: "Concierto de Brandeburgo n.º 3", n: "El contrapunto llevado a la danza." },
         { a: 1725, art: "Antonio Vivaldi", t: "Las cuatro estaciones: La primavera", n: "El pájaro, la tormenta y el pastor dormido." },
@@ -96,6 +97,7 @@ HISTORIAS.push({
       intro: "Haydn, Mozart y el joven Beethoven.",
       items: [
         { a: 1761, art: "Joseph Haydn", t: "Sinfonía n.º 6 «Le Matin»", n: "El padre de la sinfonía." },
+        { a: 1762, art: "Mozart niño", t: "Gira por las cortes de Europa", tipo: "hito", n: "Con seis años, toca ante emperadores." },
         { a: 1787, art: "Wolfgang Amadeus Mozart", t: "Eine kleine Nachtmusik", n: "La serenata más famosa." },
         { a: 1791, art: "Wolfgang Amadeus Mozart", t: "Requiem: Lacrimosa", n: "Lo dejó a medias al morir." },
         { a: 1801, art: "Ludwig van Beethoven", t: "Sonata «Claro de luna»", n: "El piano romántico empieza aquí." },

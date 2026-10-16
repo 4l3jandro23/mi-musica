@@ -14,6 +14,7 @@ HISTORIAS.push({
       intro: "Discos de disco cortados en bucles y filtros que abren y cierran el sonido.",
       items: [
         { a: 1995, art: "Daft Punk", t: "Da Funk", n: "Su primer éxito: un hombre con cabeza de perro paseando por Nueva York." },
+        { a: 1997, art: "Daft Punk", t: "«Homework»", tipo: "hito", n: "El french touch conquista el mundo." },
         { a: 1997, art: "Daft Punk", t: "Around the World", n: "La misma frase repetida 144 veces y un vídeo de Michel Gondry." },
         { a: 1998, art: "Stardust", t: "Music Sounds Better with You", n: "Thomas Bangalter, Alan Braxe y Benjamin Diamond: un sample de Chaka Khan y el himno definitivo." },
         { a: 1999, art: "Cassius", t: "1999", n: "Philippe Zdar y Boom Bass: el otro gran dúo francés." },

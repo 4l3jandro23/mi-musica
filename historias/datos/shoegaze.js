@@ -15,6 +15,7 @@ HISTORIAS.push({
       items: [
         { a: 1984, art: "Cocteau Twins", t: "Pearly-Dewdrops' Drops", n: "La voz de Elizabeth Fraser, que cantaba palabras inventadas entre guitarras etéreas." },
         { a: 1985, art: "The Jesus and Mary Chain", t: "Just Like Honey", n: "Melodías de los 60 bajo una capa de acoples." },
+        { a: 1986, art: "C86", t: "La casete del NME", tipo: "hito", n: "Una cinta de grupos indie británicos da nombre a una escena." },
         { a: 1988, art: "My Bloody Valentine", t: "You Made Me Realise", n: "En directo, el «holocausto» final duraba hasta veinte minutos de puro ruido." }
       ]
     },

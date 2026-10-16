@@ -27,6 +27,7 @@ HISTORIAS.push({
       periodo: "1981 – 1983",
       intro: "El ruido se encuentra con la pista de baile.",
       items: [
+        { a: 1981, art: "ZE Records", t: "El mutant disco", tipo: "hito", n: "Disco, punk y jazz mezclados en Nueva York." },
         { a: 1981, art: "ESG", t: "Moody", n: "Hermanas del Bronx con bajo, batería y casi nada más: muy sampleadas por el hip hop." },
         { a: 1982, art: "Dinosaur L", t: "Go Bang! #5", n: "Arthur Russell, entre la vanguardia y la disco." },
         { a: 1983, art: "Liquid Liquid", t: "Cavern", n: "Su línea de bajo acabó en «White Lines» de Grandmaster Flash." }

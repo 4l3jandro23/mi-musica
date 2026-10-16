@@ -29,6 +29,7 @@ HISTORIAS.push({
       intro: "Nashville se convierte en la capital del country.",
       items: [
         { a: 1955, art: "Johnny Cash", t: "Folsom Prison Blues", n: "«Le disparé a un hombre en Reno solo para verlo morir»." },
+        { a: 1958, art: "Chet Atkins", t: "El «Nashville sound»", tipo: "hito", n: "Cuerdas y coros suaves para llevar el country a la radio pop." },
         { a: 1961, art: "Patsy Cline", t: "Crazy", n: "Escrita por un joven Willie Nelson: el «sonido Nashville», con cuerdas." },
         { a: 1963, art: "Buck Owens", t: "Act Naturally", n: "El sonido Bakersfield, más crudo. Los Beatles la versionaron." },
         { a: 1968, art: "Johnny Cash", t: "At Folsom Prison", tipo: "disco", n: "Un concierto grabado dentro de una cárcel: resucitó su carrera." },

@@ -29,6 +29,7 @@ HISTORIAS.push({
         { a: 1816, art: "Gioachino Rossini", t: "Il barbiere di Siviglia: Largo al factotum", n: "«Fígaro, Fígaro, Fígaro»: el barbero de Sevilla." },
         { a: 1829, art: "Gioachino Rossini", t: "William Tell Overture", n: "El galope final: la música de mil dibujos animados." },
         { a: 1831, art: "Vincenzo Bellini", t: "Norma: Casta diva", n: "La cima del bel canto. Maria Callas la hizo inmortal." },
+        { a: 1842, art: "Nabucco", t: "Verdi se convierte en héroe nacional", tipo: "hito", n: "El coro de los esclavos, himno de la unificación italiana." },
         { a: 1842, art: "Giuseppe Verdi", t: "Nabucco: Va, pensiero", n: "El coro de los esclavos: se convirtió en himno de la unificación italiana." },
         { a: 1851, art: "Giuseppe Verdi", t: "Rigoletto: La donna è mobile", n: "Verdi sabía que sería un éxito y la mantuvo en secreto hasta el estreno." },
         { a: 1853, art: "Giuseppe Verdi", t: "La traviata: Libiamo ne' lieti calici", n: "El brindis más famoso de la ópera." }

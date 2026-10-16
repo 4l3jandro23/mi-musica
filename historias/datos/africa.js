@@ -46,6 +46,7 @@ HISTORIAS.push({
         { a: 1975, art: "Fela Kuti", t: "Water No Get Enemy", n: "El afrobeat: funk, jazz y yoruba en temas larguísimos." },
         { a: 1975, art: "Mahmoud Ahmed", t: "Ere Mela Mela", n: "La edad de oro de Adís Abeba, antes de que la dictadura cerrara los clubs." },
         { a: 1976, art: "Fela Kuti", t: "Zombie", n: "Contra los soldados nigerianos. El ejército respondió asaltando su casa." },
+        { a: 1977, art: "República de Kalakuta", t: "El ejército asalta la comuna de Fela", tipo: "hito", n: "La música de Fela Kuti se convierte en un problema político para el régimen nigeriano." },
         { a: 1978, art: "William Onyeabor", t: "Fantastic Man", n: "Sintetizadores caseros desde Nigeria. Redescubierto décadas después." },
         { a: 1978, art: "Les Ambassadeurs Internationaux", t: "Mandjou", n: "Con Salif Keita, «la voz de oro de África», desde Malí." }
       ]
@@ -89,6 +90,7 @@ HISTORIAS.push({
         { a: 2020, art: "Focalistic", t: "Ke Star", n: "Con Vigro Deep: el amapiano, el sonido de Pretoria y Johannesburgo." },
         { a: 2020, art: "Wizkid", t: "Essence", n: "Con Tems: afrobeats lento y elegante, éxito en Estados Unidos." },
         { a: 2022, art: "Rema", t: "Calm Down", n: "Con Selena Gomez: uno de los temas más escuchados del mundo." },
+        { a: 2023, art: "Grammy", t: "Nace el premio a la mejor interpretación africana", tipo: "hito", n: "La música africana tiene por fin categoría propia en los Grammy." },
         { a: 2023, art: "Tyla", t: "Water", n: "Amapiano pop: el primer Grammy de mejor interpretación de música africana." }
       ]
     }

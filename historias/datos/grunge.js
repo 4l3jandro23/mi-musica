@@ -28,6 +28,7 @@ HISTORIAS.push({
         { a: 1991, art: "Nirvana", t: "Smells Like Teen Spirit", n: "«Nevermind» desbanca a Michael Jackson del número uno." },
         { a: 1991, art: "Pearl Jam", t: "Even Flow", n: "Del disco «Ten», uno de los más vendidos de la década." },
         { a: 1991, art: "Temple of the Dog", t: "Hunger Strike", n: "Homenaje a Andrew Wood: Chris Cornell y Eddie Vedder a dúo." },
+        { a: 1992, art: "«Nevermind»", t: "Desbanca a Michael Jackson del número uno", tipo: "hito", n: "En enero de 1992, un disco de Seattle llega a lo más alto." },
         { a: 1992, art: "Alice in Chains", t: "Rooster", n: "Sobre el padre de Jerry Cantrell en Vietnam." },
         { a: 1992, art: "Stone Temple Pilots", t: "Plush", n: "De San Diego: la prensa los acusó de copiar, el público los adoró." },
         { a: 1993, art: "Nirvana", t: "Heart-Shaped Box", n: "De «In Utero»: más crudo, a propósito." }

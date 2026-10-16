@@ -14,6 +14,7 @@ HISTORIAS.push({
       intro: "Canciones antiguas que hoy suenan como recuerdos ajenos.",
       items: [
         { a: 1931, art: "Al Bowlly", t: "Heartaches", n: "La canción que The Caretaker deformaría en «It's Just a Burning Memory»." },
+        { a: 1940, art: "Big bands", t: "La radio de la posguerra", tipo: "hito", n: "Las canciones de baile de entonces, hoy sinónimo de pasillos vacíos." },
         { a: 1941, art: "The Ink Spots", t: "I Don't Want to Set the World on Fire", n: "Sonando en un mundo arrasado en el videojuego Fallout 3." },
         { a: 1944, art: "Billie Holiday", t: "I'll Be Seeing You", n: "Te veré en todos los lugares conocidos: nostalgia pura." },
         { a: 1958, art: "The Platters", t: "Smoke Gets in Your Eyes", n: "Un baile lento de otra década." }

@@ -29,6 +29,7 @@ HISTORIAS.push({
         { a: 1911, art: "Arthur Collins & Byron Harlan", t: "Alexander's Ragtime Band", n: "La canción de Irving Berlin que puso de moda el ragtime en todo el mundo." },
         { a: 1913, art: "Igor Stravinsky", t: "The Rite of Spring", n: "Su estreno en París acabó en tumulto." },
         { a: 1914, art: "John McCormack", t: "It's a Long Way to Tipperary", n: "La canción de los soldados británicos en la Primera Guerra Mundial." },
+        { a: 1917, art: "Original Dixieland Jass Band", t: "El primer disco de jazz", tipo: "hito", n: "Una banda de blancos de Nueva Orleans graba el primer jazz." },
         { a: 1917, art: "Original Dixieland Jass Band", t: "Livery Stable Blues", n: "El primer disco de jazz." },
         { a: 1917, art: "Carlos Gardel", t: "Mi noche triste", n: "Nace el tango cantado." },
         { a: 1918, art: "Raquel Meller", t: "El relicario", n: "El cuplé español triunfa en París." }

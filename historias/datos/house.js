@@ -50,6 +50,7 @@ HISTORIAS.push({
         { a: 1991, art: "Crystal Waters", t: "Gypsy Woman (She's Homeless)", n: "«La da dee la dee da»: una canción sobre una mujer sin hogar convertida en éxito." },
         { a: 1991, art: "CeCe Peniston", t: "Finally", n: "El vocal house en su forma más feliz." },
         { a: 1993, art: "Robin S", t: "Show Me Love", n: "El remix de StoneBridge y ese bajo de órgano que se ha sampleado mil veces." },
+        { a: 1995, art: "Ibiza", t: "Las superclubs", tipo: "hito", n: "Manumission, Pacha y Amnesia convierten la isla en la meca del house." },
         { a: 1997, art: "Ultra Naté", t: "Free", n: "Un himno de libertad en las pistas de medio mundo." },
         { a: 1999, art: "Armand Van Helden", t: "You Don't Know Me", n: "House con cuerdas de disco: número uno británico." },
         { a: 1999, art: "Basement Jaxx", t: "Red Alert", n: "House de Brixton, desordenado y genial." },
@@ -63,6 +64,7 @@ HISTORIAS.push({
       intro: "Ibiza, los DJs estrella y el house que llega a las listas.",
       items: [
         { a: 2002, art: "Benny Benassi", t: "Satisfaction", n: "Un sintetizador que zumba: nace el electro house." },
+        { a: 2004, art: "Beatport", t: "Las descargas para DJs", tipo: "hito", n: "Los vinilos dan paso a los archivos digitales." },
         { a: 2004, art: "Eric Prydz", t: "Call on Me", n: "Un sample de Steve Winwood y un vídeo de aeróbic: número uno." },
         { a: 2005, art: "Bob Sinclar", t: "Love Generation", n: "Un silbido feliz: el verano de 2005 en todas partes." },
         { a: 2007, art: "David Guetta", t: "Love Is Gone", n: "Guetta todavía era el DJ de las noches de Ibiza." },

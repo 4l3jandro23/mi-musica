@@ -46,6 +46,7 @@ HISTORIAS.push({
       periodo: "2003",
       intro: "Tras el grunge, el hard rock vuelve con humor.",
       items: [
+        { a: 2003, art: "The Darkness", t: "El hard rock vuelve como broma y en serio", tipo: "hito", n: "Mallas, falsete y número dos en el Reino Unido." },
         { a: 2003, art: "The Darkness", t: "I Believe in a Thing Called Love", n: "Falsetes, mallas y riffs: el hard rock vuelve medio en serio, medio en broma." }
       ]
     }

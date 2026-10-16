@@ -13,6 +13,7 @@ HISTORIAS.push({
       periodo: "1917 – 1947",
       intro: "Río de Janeiro y la radio crean la música nacional.",
       items: [
+        { a: 1917, art: "«Pelo Telefone»", t: "El primer samba grabado", tipo: "hito", n: "Nace el disco de samba en Río de Janeiro." },
         { a: 1917, art: "Donga", t: "Pelo Telefone", n: "El primer samba grabado. Nace en las casas de las «tías» bahianas de Río." },
         { a: 1930, art: "Noel Rosa", t: "Com Que Roupa?", n: "El poeta del samba: humor y crónica de la ciudad. Murió con 26 años." },
         { a: 1930, art: "Carmen Miranda", t: "Taí (Pra Você Gostar de Mim)", n: "Su primer gran éxito, antes de Hollywood y del sombrero de frutas." },
@@ -32,6 +33,7 @@ HISTORIAS.push({
         { a: 1959, art: "Luiz Bonfá", t: "Manhã de Carnaval", n: "De la película «Orfeo negro», que ganó la Palma de Oro y el Óscar." },
         { a: 1959, art: "João Gilberto", t: "Desafinado", n: "Una canción sobre cantar «desafinado», con armonías imposibles." },
         { a: 1963, art: "Jorge Ben", t: "Mas Que Nada", n: "Samba con swing de soul. Sergio Mendes la hizo mundial." },
+        { a: 1964, art: "Golpe militar", t: "Empieza la dictadura", tipo: "hito", n: "La música brasileña se vuelve resistencia." },
         { a: 1964, art: "Stan Getz", t: "The Girl from Ipanema", n: "Con João y Astrud Gilberto: una de las canciones más grabadas de la historia." },
         { a: 1966, art: "Baden Powell", t: "Canto de Ossanha", n: "Con Vinicius de Moraes: los afro-sambas, la raíz bahiana de vuelta." }
       ]
@@ -83,6 +85,7 @@ HISTORIAS.push({
         { a: 2000, art: "Marisa Monte", t: "Amor I Love You", n: "La gran voz de la MPB moderna." },
         { a: 2011, art: "Michel Teló", t: "Ai Se Eu Te Pego", n: "El sertanejo universitario: un fenómeno en España y en todo el mundo." },
         { a: 2011, art: "Gusttavo Lima", t: "Balada", n: "«Tchê tcherere tchê tchê»: el sertanejo que bailó medio mundo, también en España." },
+        { a: 2016, art: "Juegos Olímpicos de Río", t: "La música brasileña ante el mundo", tipo: "hito", n: "Funk, samba y bossa nova en la ceremonia de inauguración." },
         { a: 2017, art: "MC Fioti", t: "Bum Bum Tam Tam", n: "Funk carioca con una flauta de Bach: más de mil millones de visitas." },
         { a: 2021, art: "Anitta", t: "Envolver", n: "La primera artista brasileña en llegar a lo más alto del Spotify mundial." },
         { a: 2023, art: "Grupo Menos É Mais", t: "Coração Partido (Corazón Partío) - Ao Vivo", n: "El pagode de Brasília versiona en portugués «Corazón partío» de Alejandro Sanz: un éxito enorme en Brasil." }

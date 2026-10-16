@@ -38,6 +38,7 @@ HISTORIAS.push({
       periodo: "1970 – 1979",
       intro: "Una generación que no quiere ni el Schlager ni copiar a los americanos.",
       items: [
+        { a: 1970, art: "Krautrock", t: "La prensa británica le pone nombre", tipo: "hito", n: "Can, Neu! y Kraftwerk inventan una música alemana que no imita a la americana." },
         { a: 1970, art: "Amon Düül II", t: "Archangel Thunderbird", n: "Una comuna de Múnich haciendo rock psicodélico pesado." },
         { a: 1971, art: "Faust", t: "It's a Rainy Day, Sunshine Girl", n: "Repetición y collage: krautrock experimental." },
         { a: 1972, art: "Can", t: "Vitamin C", n: "Groove hipnótico de Colonia." },
@@ -57,6 +58,7 @@ HISTORIAS.push({
       items: [
         { a: 1981, art: "DAF", t: "Der Mussolini", n: "EBM: sintes duros y provocación. Raíz del techno industrial." },
         { a: 1982, art: "Trio", t: "Da Da Da", n: "Minimalismo absoluto: un Casio, una batería y tres palabras." },
+        { a: 1983, art: "Nena", t: "«99 Luftballons» llega al número uno en EE. UU.", tipo: "hito", n: "Una canción en alemán sobre la Guerra Fría triunfa en todo el mundo." },
         { a: 1983, art: "Nena", t: "99 Luftballons", n: "Globos que provocan una guerra nuclear. Número uno en medio mundo." },
         { a: 1983, art: "Peter Schilling", t: "Major Tom (völlig losgelöst)", n: "El astronauta de Bowie, en alemán." },
         { a: 1984, art: "Herbert Grönemeyer", t: "Männer", n: "El cantautor más querido de Alemania." },

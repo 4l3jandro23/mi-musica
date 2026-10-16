@@ -47,9 +47,10 @@ HISTORIAS.push({
     {
       titulo: "La disco nunca muere",
       corto: "Revivals",
-      periodo: "1980 – 2020",
+      periodo: "1979 – 2020",
       intro: "Después de «morir», la disco vuelve en cada década.",
       items: [
+        { a: 1979, art: "Disco Demolition Night", t: "Queman discos en un estadio de Chicago", tipo: "hito", n: "El rock reacciona contra la disco: parece su fin, pero no lo es." },
         { a: 1980, art: "Diana Ross", t: "I'm Coming Out", n: "Producida por Chic: himno del orgullo LGTB." },
         { a: 1980, art: "Olivia Newton-John & Electric Light Orchestra", t: "Xanadu", n: "Patines y una película fallida que acabó siendo de culto." },
         { a: 2000, art: "Kylie Minogue", t: "Spinning Around", n: "El regreso de Kylie con hot pants doradas." },

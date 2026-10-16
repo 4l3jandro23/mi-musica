@@ -14,6 +14,7 @@ HISTORIAS.push({
       intro: "Sexo, sugerencias y escándalo.",
       items: [
         { a: 1963, art: "The Kingsmen", t: "Louie Louie", n: "El FBI investigó durante dos años si su letra ininteligible era obscena. No lo era." },
+        { a: 1967, art: "The Doors en el Ed Sullivan Show", t: "Se niegan a cambiar la letra", tipo: "hito", n: "Les piden quitar «higher» de «Light My Fire»; la cantan igual y no vuelven a ser invitados." },
         { a: 1969, art: "Jane Birkin & Serge Gainsbourg", t: "Je t'aime… moi non plus", n: "Prohibida en varios países y condenada por el Vaticano." },
         { a: 1975, art: "Donna Summer", t: "Love to Love You Baby", n: "Diecisiete minutos de gemidos disco." },
         { a: 1984, art: "Frankie Goes to Hollywood", t: "Relax", n: "La BBC la prohibió; llegó al número uno igualmente." },
@@ -42,6 +43,7 @@ HISTORIAS.push({
       intro: "Lo explícito se vuelve normal.",
       items: [
         { a: 2003, art: "50 Cent", t: "In da Club", n: "El «explicit» llega al número uno sin escándalo." },
+        { a: 2004, art: "Super Bowl", t: "El incidente de Janet Jackson", tipo: "hito", n: "Un descuido en directo provoca multas y censura en la tele de EE. UU." },
         { a: 2013, art: "Robin Thicke", t: "Blurred Lines", n: "Polémica por su letra y demanda por plagio a Marvin Gaye." },
         { a: 2017, art: "Cardi B", t: "Bodak Yellow", n: "Del striptease al número uno." },
         { a: 2020, art: "Cardi B & Megan Thee Stallion", t: "WAP", n: "La más polémica de 2020: debates en la tele y en el Congreso." },

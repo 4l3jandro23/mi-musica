@@ -16,6 +16,7 @@ HISTORIAS.push({
         { a: 1940, art: "Trío Los Panchos", t: "Bésame mucho", n: "Escrita en 1940 por la mexicana Consuelo Velázquez, casi una adolescente: el bolero más grabado de la historia." },
         { a: 1958, art: "Peggy Lee", t: "Fever", n: "Solo chasquidos de dedos, contrabajo y una voz susurrada." },
         { a: 1960, art: "Etta James", t: "At Last", n: "La balada definitiva." },
+        { a: 1969, art: "Je t'aime… moi non plus", t: "Condenada por el Vaticano", tipo: "hito", n: "La canción más escandalosa de los 60." },
         { a: 1969, art: "Jane Birkin & Serge Gainsbourg", t: "Je t'aime… moi non plus", n: "La canción más escandalosa de su década." }
       ]
     },
@@ -39,6 +40,7 @@ HISTORIAS.push({
       intro: "Del soul elegante al R&B, pasando por vídeos prohibidos.",
       items: [
         { a: 1984, art: "Sade", t: "Smooth Operator", n: "Elegancia jazz-soul: la banda sonora de las cenas a la luz de las velas." },
+        { a: 1985, art: "Sade", t: "El quiet storm británico", tipo: "hito", n: "Soul elegante para la noche." },
         { a: 1986, art: "Prince", t: "Kiss", n: "Falsete, guitarra funky y casi nada más." },
         { a: 1987, art: "George Michael", t: "I Want Your Sex", n: "Prohibida en muchas radios, y aun así un éxito." },
         { a: 1989, art: "Chris Isaak", t: "Wicked Game", n: "Una guitarra con reverb y un vídeo en blanco y negro en la playa." },
@@ -57,6 +59,7 @@ HISTORIAS.push({
         { a: 2000, art: "D'Angelo", t: "Untitled (How Does It Feel)", n: "El neo soul en su forma más pura (y un vídeo legendario)." },
         { a: 2001, art: "Aaliyah", t: "Rock the Boat", n: "Su último single, R&B suave como el agua." },
         { a: 2006, art: "Justin Timberlake", t: "SexyBack", n: "Pop sensual con la producción de Timbaland." },
+        { a: 2011, art: "The Weeknd", t: "El R&B alternativo", tipo: "hito", n: "Mixtapes gratis, oscuras y sensuales." },
         { a: 2011, art: "The Weeknd", t: "Wicked Games", n: "El R&B oscuro: humo, noche y melancolía." },
         { a: 2013, art: "Romeo Santos", t: "Propuesta Indecente", n: "La bachata sensual que bailó todo el mundo hispano." },
         { a: 2014, art: "FKA twigs", t: "Two Weeks", n: "R&B experimental y magnético." },

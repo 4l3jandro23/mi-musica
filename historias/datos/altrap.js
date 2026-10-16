@@ -29,6 +29,7 @@ HISTORIAS.push({
         { a: 2000, art: "OutKast", t: "B.O.B.", n: "Drum and bass, góspel y rap a toda velocidad." },
         { a: 2001, art: "Missy Elliott", t: "Get Ur Freak On", n: "Timbaland y un riff de bhangra." },
         { a: 2003, art: "OutKast", t: "Hey Ya!", n: "Tan alegre que nadie oyó que habla de una ruptura." },
+        { a: 2004, art: "OutKast", t: "«Speakerboxxx/The Love Below» gana el Grammy al disco del año", tipo: "hito", n: "El primer disco de rap en lograrlo desde Lauryn Hill." },
         { a: 2006, art: "Gnarls Barkley", t: "Crazy", n: "CeeLo y Danger Mouse: número uno solo por descargas en el Reino Unido." }
       ]
     },

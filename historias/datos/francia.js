@@ -16,6 +16,7 @@ HISTORIAS.push({
         { a: 1920, art: "Mistinguett", t: "Mon homme", n: "La reina del music-hall parisino." },
         { a: 1930, art: "Lucienne Boyer", t: "Parlez-moi d'amour", n: "Uno de los primeros grandes éxitos internacionales de la chanson." },
         { a: 1930, art: "Joséphine Baker", t: "J'ai deux amours", n: "«Tengo dos amores, mi país y París»: una estadounidense que se convirtió en símbolo de Francia." },
+        { a: 1935, art: "Édith Piaf", t: "La descubren cantando en la calle", tipo: "hito", n: "Un cabaretero la ficha en Pigalle." },
         { a: 1946, art: "Charles Trenet", t: "La mer", n: "Escrita en un tren junto al mar. Versionada miles de veces." },
         { a: 1947, art: "Édith Piaf", t: "La vie en rose", n: "El gorrión de París y su himno." },
         { a: 1949, art: "Yves Montand", t: "Les feuilles mortes", n: "Letra de Prévert: en inglés, «Autumn Leaves», un estándar del jazz." }
@@ -63,6 +64,7 @@ HISTORIAS.push({
       items: [
         { a: 1977, art: "Plastic Bertrand", t: "Ça plane pour moi", n: "Desde Bélgica, punk de broma… y un éxito mundial." },
         { a: 1978, art: "Claude François", t: "Alexandrie Alexandra", n: "El rey de la disco francesa. Salió a la venta el día de su entierro." },
+        { a: 1982, art: "Fête de la Musique", t: "Nace la Fiesta de la Música", tipo: "hito", n: "Jack Lang crea el día de la música en la calle, cada 21 de junio." },
         { a: 1982, art: "Indochine", t: "L'aventurier", n: "New wave francesa. Siguen llenando estadios." },
         { a: 1984, art: "Téléphone", t: "Un autre monde", n: "El gran grupo de rock francés." },
         { a: 1984, art: "Étienne Daho", t: "Week-end à Rome", n: "Pop elegante." },

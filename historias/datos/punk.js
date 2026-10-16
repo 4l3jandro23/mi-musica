@@ -53,6 +53,7 @@ HISTORIAS.push({
         { a: 1979, art: "The Clash", t: "London Calling", n: "El punk se abre al reggae, el rockabilly y el ska." },
         { a: 1981, art: "Black Flag", t: "Rise Above", n: "El hardcore de California: más rápido y más furioso." },
         { a: 1981, art: "Minor Threat", t: "Straight Edge", n: "Hardcore de Washington y una filosofía sin drogas ni alcohol." },
+        { a: 1982, art: "Hardcore", t: "El punk se acelera", tipo: "hito", n: "Black Flag, Minor Threat y Bad Brains: más rápido y más duro." },
         { a: 1982, art: "Siniestro Total", t: "Ayatolah! No me toques la pirola", n: "Desde Vigo, humor gamberro: el punk en español." },
         { a: 1985, art: "Kortatu", t: "Sarri, Sarri", n: "El rock radical vasco, con Fermin Muguruza y ritmo de ska." },
         { a: 1999, art: "Fugazi", t: "I'm So Tired", n: "Ian MacKaye, de Minor Threat, fundó Fugazi: post-hardcore «hazlo tú mismo» con entradas a cinco dólares. Aquí, en su lado más tranquilo." }

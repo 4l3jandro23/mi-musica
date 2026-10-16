@@ -28,6 +28,7 @@ HISTORIAS.push({
       items: [
         { a: 1970, art: "Los Diablos", t: "Un rayo de sol", n: "La canción del verano." },
         { a: 1972, art: "Nino Bravo", t: "Libre", n: "Su gran himno, poco antes de su muerte." },
+        { a: 1973, art: "Nino Bravo", t: "Muere en un accidente de coche", tipo: "hito", n: "Con 28 años, en el apogeo de su carrera." },
         { a: 1973, art: "Mocedades", t: "Eres tú", n: "Segunda en Eurovisión y éxito en EE. UU." },
         { a: 1973, art: "Fórmula V", t: "Eva María", n: "Pop de verano y playa." },
         { a: 1974, art: "Jeanette", t: "Porque te vas", n: "Popularizada por Cría cuervos, de Carlos Saura." },
@@ -43,6 +44,7 @@ HISTORIAS.push({
       items: [
         { a: 1984, art: "La Unión", t: "Lobo hombre en París", n: "Pop elegante y misterioso." },
         { a: 1984, art: "Miguel Bosé", t: "Amante bandido", n: "Bosé se reinventa." },
+        { a: 1985, art: "La Movida", t: "El pop de la democracia", tipo: "hito", n: "Mecano y los grupos de la Movida llenan las listas." },
         { a: 1986, art: "Duncan Dhu", t: "En algún lugar", n: "Pop donostiarra." },
         { a: 1986, art: "Mecano", t: "Me cuesta tanto olvidarte", n: "Mecano en su apogeo." },
         { a: 1988, art: "Mecano", t: "Mujer contra mujer", n: "Una canción sobre el amor entre mujeres en plena España de los 80." }
@@ -55,6 +57,7 @@ HISTORIAS.push({
       intro: "Pop de autor y de radiofórmula.",
       items: [
         { a: 1991, art: "Presuntos Implicados", t: "Cómo hemos cambiado", n: "Pop adulto de Yecla." },
+        { a: 1996, art: "Los 40 Principales", t: "La radiofórmula", tipo: "hito", n: "La radio decide el pop de los 90." },
         { a: 1996, art: "Jarabe de Palo", t: "La flaca", n: "Un anuncio de Ron Bacardí la hizo eterna." },
         { a: 1996, art: "Ella Baila Sola", t: "Lo echamos a suertes", n: "Dos amigas con guitarras." },
         { a: 1997, art: "Alejandro Sanz", t: "Corazón partío", n: "El disco más vendido de la historia de España." },

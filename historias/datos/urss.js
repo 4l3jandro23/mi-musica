@@ -16,6 +16,7 @@ HISTORIAS.push({
         { a: 1934, art: "Leonid Utyosov", alias: ["Леонид Утёсов"], t: "Serdtse", q: "Леонид Утёсов Сердце", n: "El jazz soviético: tolerado mientras fuera alegre." },
         { a: 1936, art: "Sergei Prokofiev", t: "Peter and the Wolf", n: "Un cuento musical para niños que se escucha en todo el mundo." },
         { a: 1938, art: "Alexandrov Ensemble", alias: ["Ансамбль Александрова"], t: "Katyusha", q: "Alexandrov Ensemble Katyusha", n: "La canción soviética más famosa: dio nombre a un lanzacohetes." },
+        { a: 1941, art: "Invasión alemana", t: "La Gran Guerra Patria", tipo: "hito", n: "Canciones como «Katiusha» acompañan a los soldados." },
         { a: 1941, art: "Dmitri Shostakovich", t: "Symphony No. 7 \"Leningrad\"", q: "Shostakovich Symphony No. 7 Leningrad", n: "Estrenada en Leningrado durante el asedio, con músicos famélicos. Se emitió por altavoces hacia las líneas alemanas." },
         { a: 1942, art: "Klavdiya Shulzhenko", alias: ["Клавдия Шульженко"], t: "Siniy platochek", q: "Клавдия Шульженко Синий платочек", n: "«El pañuelo azul»: la canción que llevaban los soldados al frente." }
       ]
@@ -67,6 +68,7 @@ HISTORIAS.push({
       periodo: "2018",
       intro: "Nuevas generaciones convierten el frío soviético en estética.",
       items: [
+        { a: 2018, art: "Internet", t: "La nostalgia postsoviética", tipo: "hito", n: "El post-punk ruso se vuelve meme en todo el mundo." },
         { a: 2018, art: "Molchat Doma", alias: ["Молчат Дома"], t: "Sudno (Boris Ryzhy)", q: "Molchat Doma Судно", n: "Desde Bielorrusia, post-punk con el frío de los bloques soviéticos. Viral en TikTok." }
       ]
     }

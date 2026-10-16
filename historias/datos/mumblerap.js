@@ -13,6 +13,7 @@ HISTORIAS.push({
       periodo: "2014 – 2015",
       intro: "Young Thug, Future y la voz como instrumento.",
       items: [
+        { a: 2014, art: "Atlanta", t: "La ciudad que manda en el rap", tipo: "hito", n: "Young Thug, Future y Migos cambian la forma de rapear." },
         { a: 2014, art: "Young Thug", t: "Stoner", n: "La voz de Thug convertida en instrumento." },
         { a: 2014, art: "Rich Gang", t: "Lifestyle", n: "Young Thug y Rich Homie Quan." },
         { a: 2015, art: "Future", t: "March Madness", n: "El rapero más influyente de la década." },

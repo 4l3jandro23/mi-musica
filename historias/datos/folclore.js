@@ -29,6 +29,7 @@ HISTORIAS.push({
         { a: 1966, art: "Violeta Parra", t: "Gracias a la vida", n: "La recopiladora del folclore chileno y su canción eterna." },
         { a: 1969, art: "Víctor Jara", t: "Te recuerdo Amanda", n: "La Nueva Canción chilena, antes del golpe de 1973." },
         { a: 1969, art: "Mercedes Sosa", t: "Alfonsina y el mar", n: "La zamba argentina, con la voz de «La Negra»." },
+        { a: 1973, art: "Golpe en Chile", t: "Asesinan a Víctor Jara", tipo: "hito", n: "La Nueva Canción chilena se exilia." },
         { a: 1980, art: "Simón Díaz", t: "Caballo viejo", n: "La tonada llanera venezolana que versionó medio mundo." },
         { a: 1981, art: "Los Kjarkas", t: "Llorando se fue", n: "El folclore boliviano que acabó convertido en la «Lambada»." }
       ]
@@ -42,6 +43,7 @@ HISTORIAS.push({
         { a: 1972, art: "Alan Stivell", t: "Tri Martolod", n: "El arpa celta y el folk bretón." },
         { a: 1975, art: "Le Mystère des Voix Bulgares", t: "Le Mystère des Voix Bulgares", tipo: "disco", n: "Coros de mujeres búlgaras que fascinaron al pop británico de los 80." },
         { a: 1982, art: "Clannad", t: "Theme from Harry's Game", n: "Gaélico irlandés en el top 5 británico." },
+        { a: 1986, art: "4AD", t: "Reedita las voces búlgaras", tipo: "hito", n: "El folclore búlgaro fascina al pop británico." },
         { a: 1987, art: "The Dubliners & The Pogues", t: "The Irish Rover", n: "Una canción popular irlandesa a toda velocidad." },
         { a: 1989, art: "Mari Boine", t: "Gula Gula", n: "El joik sami del norte de Escandinavia." },
         { a: 1997, art: "Loreena McKennitt", t: "The Mummers' Dance", n: "Folk celta en la radio." },

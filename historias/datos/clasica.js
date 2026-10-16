@@ -10,7 +10,7 @@ HISTORIAS.push({
     {
       titulo: "Antigüedad y Edad Media",
       corto: "Edad Media",
-      periodo: "100 – 1400",
+      periodo: "100 – 1399",
       intro: "Una sola melodía cantada en las iglesias y, poco a poco, varias voces a la vez.",
       items: [
         { a: 100, art: "Epitafio de Seikilos", t: "La canción completa más antigua que se conserva", tipo: "hito", n: "Grabada en una lápida griega: «Mientras vivas, brilla; no te aflijas por nada»." },
@@ -41,7 +41,7 @@ HISTORIAS.push({
     {
       titulo: "Barroco",
       corto: "Barroco",
-      periodo: "1600 – 1750",
+      periodo: "1600 – 1742",
       intro: "Nace la ópera, triunfa el contraste y la música se llena de adornos y de drama.",
       items: [
         { a: 1600, art: "La ópera", t: "Nace en Florencia", tipo: "hito", n: "Un grupo de intelectuales quiere recuperar el teatro griego cantado: así nace la ópera." },
@@ -111,6 +111,7 @@ HISTORIAS.push({
         { a: 1870, art: "Richard Wagner", t: "Ride of the Valkyries", n: "La de los helicópteros de «Apocalypse Now»." },
         { a: 1874, art: "Bedřich Smetana", t: "Má vlast: Vltava (The Moldau)", n: "El río de Bohemia, de la fuente al mar: orgullo checo." },
         { a: 1874, art: "Modest Mussorgsky", t: "Pictures at an Exhibition: The Great Gate of Kiev", n: "Un paseo por una exposición de cuadros. Ravel la orquestó." },
+        { a: 1876, art: "Bayreuth", t: "Wagner estrena el Anillo completo", tipo: "hito", n: "Un teatro construido solo para sus óperas." },
         { a: 1876, art: "Edvard Grieg", t: "In the Hall of the Mountain King", n: "Noruega: un crescendo que acelera hasta el caos." },
         { a: 1877, art: "Pyotr Ilyich Tchaikovsky", t: "Swan Lake", n: "El ballet más famoso del mundo." },
         { a: 1878, art: "Pablo de Sarasate", t: "Zigeunerweisen", n: "El violinista pamplonés que conquistó Europa: aires gitanos endiablados." },
@@ -159,6 +160,7 @@ HISTORIAS.push({
       periodo: "1964 – 2013",
       intro: "Repetición, calma y la música clásica que hoy se escucha para estudiar o dormir.",
       items: [
+        { a: 1964, art: "Terry Riley", t: "Estrena «In C»", tipo: "hito", n: "Nace el minimalismo." },
         { a: 1964, art: "Terry Riley", t: "In C", n: "53 frases cortas que cada músico repite cuando quiere: nace el minimalismo." },
         { a: 1976, art: "Steve Reich", t: "Music for 18 Musicians", n: "Pulsos que cambian poco a poco: influyó en la electrónica." },
         { a: 1976, art: "Henryk Górecki", t: "Symphony No. 3 \"Symphony of Sorrowful Songs\"", n: "Un lamento lentísimo que en 1992 vendió más de un millón de discos." },

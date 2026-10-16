@@ -28,6 +28,7 @@ HISTORIAS.push({
       periodo: "1979 – 1982",
       intro: "El rap llega al vinilo y a la radio. Al principio con músicos de estudio y luego con máquinas.",
       items: [
+        { a: 1979, art: "Sugarhill Gang", t: "El primer éxito de rap", tipo: "hito", n: "«Rapper's Delight» lleva el rap del Bronx a las radios." },
         { a: 1979, art: "Fatback", t: "King Tim III (Personality Jock)", n: "Salió semanas antes que «Rapper's Delight»: muchos la consideran el primer disco de rap." },
         { a: 1979, art: "The Sugarhill Gang", t: "Rapper's Delight", n: "El primer éxito comercial del rap, sobre la base de «Good Times» de Chic." },
         { a: 1980, art: "Kurtis Blow", t: "The Breaks", n: "El primer rapero en una multinacional y el primer disco de oro del rap." },

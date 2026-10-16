@@ -42,9 +42,10 @@ HISTORIAS.push({
     {
       titulo: "Arte, pleitos y chipmunk soul",
       corto: "Arte y pleitos",
-      periodo: "1993 – 2006",
+      periodo: "1991 – 2006",
       intro: "Discos hechos solo de samples, juicios millonarios y el «chipmunk soul».",
       items: [
+        { a: 1991, art: "Biz Markie", t: "Pierde un juicio por un sample", tipo: "hito", n: "Desde entonces, cada sample hay que pagarlo." },
         { a: 1993, art: "Wu-Tang Clan", t: "C.R.E.A.M.", n: "RZA convierte un trozo de soul de The Charmels en un clásico." },
         { a: 1996, art: "DJ Shadow", t: "Midnight in a Perfect World", n: "De «Endtroducing…», un disco entero hecho solo con samples." },
         { a: 1997, art: "The Verve", t: "Bitter Sweet Symphony", n: "Samplearon una versión orquestal de los Rolling Stones y perdieron todos los derechos durante 22 años." },

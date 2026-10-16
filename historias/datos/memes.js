@@ -15,6 +15,7 @@ HISTORIAS.push({
       items: [
         { a: 1971, art: "Yes", t: "Roundabout", n: "El «To Be Continued» de JoJo's Bizarre Adventure: la flecha amarilla que congela cualquier vídeo antes del desastre." },
         { a: 1982, art: "George Thorogood & The Destroyers", t: "Bad to the Bone", n: "El riff que suena cuando alguien hace algo «muy malote»." },
+        { a: 1987, art: "Rickroll", t: "«Never Gonna Give You Up»", tipo: "hito", n: "En 2007 nace la broma de enlazarla con engaño." },
         { a: 1987, art: "Rick Astley", t: "Never Gonna Give You Up", n: "El rickroll (2007): un enlace que prometía otra cosa y acababa aquí. El meme más longevo de internet." },
         { a: 1993, art: "Los Del Río", t: "Macarena", n: "Antes de internet ya era un meme mundial: el baile que se aprendió todo el planeta." },
         { a: 1995, art: "Loituma", t: "Ievan Polkka", n: "Una polca finlandesa a capela. En 2006, con la chica del puerro girando (Leekspin), dio la vuelta al mundo." },
@@ -36,6 +37,7 @@ HISTORIAS.push({
         { a: 2003, art: "O-Zone", t: "Dragostea din tei", n: "«Numa Numa» (2004): un chaval moviendo los labios delante de la webcam, uno de los primeros virales de la historia." },
         { a: 2003, art: "El Koala", t: "Opá, yo viazé un corrá", n: "Rock rural andaluz: un clásico del humor español en internet." },
         { a: 2003, art: "Christell", t: "Dubidubidu", n: "Una canción infantil chilena que en 2024 se convirtió en el gato del «chipi chipi chapa chapa»." },
+        { a: 2005, art: "YouTube", t: "Nace YouTube", tipo: "hito", n: "La música viral tiene por fin su plataforma." },
         { a: 2005, art: "Crazy Frog", t: "Axel F", n: "Empezó como politono y acabó en el número uno. Hoy, puro shitpost." },
         { a: 2006, art: "Teriyaki Boyz", t: "Tokyo Drift (Fast & Furious)", n: "El sonido de cualquier cosa que gira o derrapa en un vídeo." },
         { a: 2007, art: "Tay Zonday", t: "Chocolate Rain", n: "Una voz grave y un «I move away from the mic to breathe in». Viral de los primeros YouTube." },
@@ -52,6 +54,7 @@ HISTORIAS.push({
         { a: 2011, art: "Rebecca Black", t: "Friday", n: "«Friday, Friday, gotta get down on Friday»: el vídeo más odiado de su año y un clásico de culto." },
         { a: 2011, art: "daniwell", t: "Nyanyanyanyanyanyanya!", n: "Nyan Cat: un gato con cuerpo de galleta volando por el espacio dejando un arcoíris." },
         { a: 2011, art: "AWOLNATION", t: "Sail", n: "Banda sonora oficial de los vídeos de gente cayéndose." },
+        { a: 2013, art: "Vine", t: "Seis segundos de vídeo", tipo: "hito", n: "Fragmentos de canciones se vuelven memes en bucle." },
         { a: 2013, art: "Bring Me the Horizon", t: "Can You Feel My Heart", n: "El tema del «Gigachad» y de las transformaciones épicas." },
         { a: 2013, art: "Ylvis", t: "The Fox (What Does the Fox Say?)", n: "Dos humoristas noruegos preguntando qué dice el zorro. Cientos de millones de visitas." },
         { a: 2014, art: "Mr.Kitty", t: "After Dark", n: "El sonido de los edits «sigma» y de los momentos melancólicos." },

@@ -29,6 +29,7 @@ HISTORIAS.push({
       periodo: "2008 – 2009",
       intro: "Grime pop.",
       items: [
+        { a: 2008, art: "Grime pop", t: "Los MCs llegan a las listas", tipo: "hito", n: "Wiley y Dizzee pasan del underground al top 10." },
         { a: 2008, art: "Wiley", t: "Wearing My Rolex", n: "El grime se cruza con el house y llega al top 2." },
         { a: 2009, art: "Dizzee Rascal", t: "Bonkers", n: "Número uno con Armand van Helden." }
       ]

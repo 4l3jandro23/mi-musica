@@ -14,6 +14,7 @@ HISTORIAS.push({
       intro: "Guitarras acústicas, protesta y el folk que se electrifica.",
       items: [
         { a: 1963, art: "Bob Dylan", t: "Blowin' in the Wind", n: "Preguntas sin respuesta sobre la guerra y la libertad: el himno de una generación." },
+        { a: 1965, art: "Bob Dylan en Newport", t: "Se pasa a la guitarra eléctrica", tipo: "hito", n: "Abucheos y el folk que se convierte en rock." },
         { a: 1965, art: "The Byrds", t: "Mr. Tambourine Man", n: "Dylan con guitarras eléctricas: nace el folk rock." },
         { a: 1965, art: "Barry McGuire", t: "Eve of Destruction", n: "Una lista de los miedos de la época: la bomba, el racismo y la guerra." },
         { a: 1965, art: "The Mamas & The Papas", t: "California Dreamin'", n: "Soñar con California en pleno invierno." },

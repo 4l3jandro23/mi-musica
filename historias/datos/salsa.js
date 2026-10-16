@@ -14,6 +14,7 @@ HISTORIAS.push({
       intro: "El son y el mambo cubanos, la base de todo.",
       items: [
         { a: 1930, art: "Don Azpiazu", t: "El manisero", n: "El primer gran éxito latino en Estados Unidos: la «rumba» se pone de moda." },
+        { a: 1940, art: "Arsenio Rodríguez", t: "El son montuno", tipo: "hito", n: "El tresero ciego crea la base rítmica de la salsa." },
         { a: 1943, art: "Machito", t: "Tanga", n: "Con sus Afro-Cubans y los arreglos de Mario Bauzá: nace el jazz afrocubano." },
         { a: 1947, art: "Arsenio Rodríguez", t: "La vida es un sueño", n: "El tresero ciego que modernizó el son con trompetas y congas. La base de la salsa." },
         { a: 1953, art: "Celia Cruz", t: "Burundanga", n: "Con la Sonora Matancera, en La Habana, antes del exilio." },
@@ -49,6 +50,7 @@ HISTORIAS.push({
       intro: "Cali, la salsa romántica y una nueva generación.",
       items: [
         { a: 1984, art: "Grupo Niche", t: "Cali pachanguero", n: "Cali se convierte en la capital mundial de la salsa." },
+        { a: 1985, art: "Salsa romántica", t: "La salsa se vuelve balada", tipo: "hito", n: "Eddie Santiago y Frankie Ruiz la llevan a la radio." },
         { a: 1985, art: "Frankie Ruiz", t: "Tú con él", n: "La salsa romántica: más suave y para bailar en pareja." },
         { a: 1986, art: "Joe Arroyo", t: "La rebelión", n: "Una canción sobre la esclavitud en Cartagena. Se baila en todas partes." },
         { a: 1993, art: "Marc Anthony", t: "Hasta que te conocí", n: "Una balada de Juan Gabriel en salsa: el comienzo de una nueva generación." }

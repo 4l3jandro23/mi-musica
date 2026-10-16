@@ -16,6 +16,7 @@ HISTORIAS.push({
         { a: 1966, art: "Mrs. Miller", t: "Downtown", n: "Una ama de casa de California que cantaba éxitos pop con vibrato de ópera… y vendió miles de discos." },
         { a: 1968, art: "Richard Harris", t: "MacArthur Park", n: "Siete minutos de lamento por una tarta olvidada bajo la lluvia. Fija en todas las listas de peores letras." },
         { a: 1968, art: "William Shatner", t: "Lucy in the Sky with Diamonds", n: "El capitán Kirk recitando a los Beatles. Una experiencia." },
+        { a: 1970, art: "Radio", t: "Los éxitos que nadie defiende", tipo: "hito", n: "Canciones que fueron número uno y hoy se citan como lo peor." },
         { a: 1974, art: "Paul Anka", t: "(You're) Having My Baby", n: "Elegida la peor canción de todos los tiempos en una encuesta de CNN." },
         { a: 1976, art: "Rick Dees and His Cast of Idiots", t: "Disco Duck", n: "Un pato hablando sobre música disco: número uno en EE. UU." },
         { a: 1978, art: "Jahn Teigen", t: "Mil etter mil", n: "Cero puntos en Eurovisión para Noruega. Él lo celebró con un salto y se convirtió en héroe nacional." }
@@ -29,6 +30,7 @@ HISTORIAS.push({
       items: [
         { a: 1982, art: "Paul McCartney", t: "Ebony and Ivory", n: "Con Stevie Wonder: buena intención y metáfora del piano. Votada el peor dueto en una encuesta de la BBC." },
         { a: 1985, art: "Starship", t: "We Built This City", n: "La número uno en la lista de las 50 peores canciones de la revista Blender." },
+        { a: 1990, art: "Vanilla Ice", t: "«Ice Ice Baby», primer single de rap número uno en EE. UU.", tipo: "hito", n: "Hoy se recuerda más como broma." },
         { a: 1990, art: "Vanilla Ice", t: "Ice Ice Baby", n: "Con el bajo de «Under Pressure» de Queen sin permiso." },
         { a: 1992, art: "Billy Ray Cyrus", t: "Achy Breaky Heart", n: "Un baile en línea que el mundo entero intentó olvidar (y el padre de Miley Cyrus)." },
         { a: 1999, art: "Lydia", t: "No quiero escuchar", n: "Último puesto de España en Eurovisión, recordado sobre todo por el vestido arcoíris." }

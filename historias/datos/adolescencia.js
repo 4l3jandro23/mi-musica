@@ -41,6 +41,7 @@ HISTORIAS.push({
       periodo: "2011 – 2012 · de 14 a 15 años",
       intro: "LMFAO, Pitbull y el EDM se apoderan de todo.",
       items: [
+        { a: 2011, art: "Tuenti y YouTube", t: "Las canciones se comparten en el muro", tipo: "hito", n: "Los vídeos de YouTube colgados en Tuenti deciden lo que suena en el instituto." },
         { a: 2011, art: "LMFAO", t: "Party Rock Anthem", n: "«Everyday I'm shufflin'»: medio mundo aprendiendo a bailar shuffle." },
         { a: 2011, art: "LMFAO", t: "Sexy and I Know It", n: "«Wiggle wiggle wiggle»." },
         { a: 2011, art: "Pitbull", t: "Give Me Everything", n: "Con Ne-Yo, Afrojack y Nayer: «Dale»." },

@@ -22,9 +22,10 @@ HISTORIAS.push({
     {
       titulo: "La edad de oro de los tríos y las voces",
       corto: "Edad de oro",
-      periodo: "1947 – 1967",
+      periodo: "1944 – 1967",
       intro: "Tres guitarras, armonías vocales y una voz para llorar.",
       items: [
+        { a: 1944, art: "Trío Los Panchos", t: "Se forma en Nueva York", tipo: "hito", n: "Dos mexicanos y un puertorriqueño crean el trío de boleros más famoso." },
         { a: 1947, art: "Antonio Machín", t: "Angelitos negros", n: "Un cubano afincado en España: el bolero que se escuchaba en la radio de la posguerra." },
         { a: 1948, art: "Trío Los Panchos", t: "Sin ti", n: "El trío más famoso del bolero, con el requinto de Alfredo Gil." },
         { a: 1953, art: "Lucho Gatica", t: "Contigo en la distancia", n: "El chileno «rey del bolero», con una canción del cubano César Portillo de la Luz." },
@@ -40,6 +41,7 @@ HISTORIAS.push({
       periodo: "1991",
       intro: "Un ídolo pop recupera los boleros clásicos para una nueva generación.",
       items: [
+        { a: 1991, art: "Luis Miguel", t: "«Romance» resucita el bolero", tipo: "hito", n: "Millones de discos de boleros clásicos en voz de un ídolo pop." },
         { a: 1991, art: "Luis Miguel", t: "No sé tú", n: "Del disco «Romance»: boleros clásicos para una nueva generación. Vendió millones." }
       ]
     }

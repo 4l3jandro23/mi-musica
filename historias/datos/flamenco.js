@@ -32,6 +32,7 @@ HISTORIAS.push({
         { a: 1975, art: "Triana", t: "Abre la puerta", n: "El rock andaluz: rock progresivo con alma flamenca." },
         { a: 1975, art: "Lole y Manuel", t: "Tu mirá", n: "Desde Sevilla, la voz de Lole y la guitarra de Manuel Molina. Flamenco hippie y libre." },
         { a: 1977, art: "Al Di Meola", t: "Mediterranean Sundance", n: "Con Paco de Lucía: flamenco y jazz cara a cara." },
+        { a: 1979, art: "Camarón", t: "«La leyenda del tiempo»", tipo: "hito", n: "Fusión con rock y jazz: un fracaso de ventas que cambió el flamenco." },
         { a: 1979, art: "Camarón", t: "La leyenda del tiempo", n: "Lorca, bajo eléctrico y sitar. Los puristas lo odiaron. Hoy es el disco de flamenco más influyente." },
         { a: 1979, art: "Camarón", t: "Volando voy", n: "Escrita por Kiko Veneno. Un himno que todo el mundo sabe cantar." }
       ]
@@ -46,6 +47,7 @@ HISTORIAS.push({
         { a: 1987, art: "Pata Negra", t: "Blues de la frontera", n: "Los hermanos Amador: blues y flamenco. Un disco clave del nuevo flamenco." },
         { a: 1992, art: "Kiko Veneno", t: "Echo de menos", n: "Rumba pop con una letra tierna. Imposible no cantarla." },
         { a: 1996, art: "Enrique Morente", t: "Omega", n: "Con Lagartija Nick, desde Granada: Lorca, Leonard Cohen y rock. Una obra maestra de la fusión." },
+        { a: 2010, art: "UNESCO", t: "El flamenco, patrimonio de la humanidad", tipo: "hito", n: "Reconocido como patrimonio cultural inmaterial." },
         { a: 2018, art: "Rosalía", t: "Malamente", n: "El flamenco con producción urbana. Polémica y fenómeno mundial." }
       ]
     }

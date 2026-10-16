@@ -14,6 +14,7 @@ HISTORIAS.push({
       intro: "Imitando a los ingleses, el rock empieza a cantarse en castellano.",
       items: [
         { a: 1965, art: "Los Saicos", t: "Demolición", n: "Desde Lima: protopunk en castellano antes que los punks." },
+        { a: 1966, art: "Los Bravos", t: "Top 2 en el Reino Unido", tipo: "hito", n: "El rock español sale fuera." },
         { a: 1969, art: "Almendra", t: "Muchacha (ojos de papel)", n: "Luis Alberto Spinetta y el nacimiento del rock argentino." },
         { a: 1969, art: "Miguel Ríos", t: "Himno a la alegría", n: "Beethoven en versión rock: un éxito mundial desde Granada." },
         { a: 1972, art: "Sui Generis", t: "Canción para mi muerte", n: "Charly García con 20 años." }
@@ -55,6 +56,7 @@ HISTORIAS.push({
       periodo: "2006",
       intro: "Una nueva generación hereda el rock en español.",
       items: [
+        { a: 2006, art: "Fiberfib y FIB", t: "La era de los festivales", tipo: "hito", n: "Los festivales cambian la escena." },
         { a: 2006, art: "Zoé", t: "Labios rotos", n: "Rock psicodélico mexicano para una nueva generación." }
       ]
     }

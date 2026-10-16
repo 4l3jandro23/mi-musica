@@ -14,6 +14,7 @@ HISTORIAS.push({
       intro: "Manchester baila y Londres se viste de glam: el terreno se prepara.",
       items: [
         { a: 1989, art: "The Stone Roses", t: "She Bangs the Drums", n: "El «Madchester»: la fiesta de Manchester abre el camino." },
+        { a: 1990, art: "Spike Island", t: "Concierto de The Stone Roses", tipo: "hito", n: "Unas 27.000 personas: la «Madchester» en su punto álgido." },
         { a: 1993, art: "Suede", t: "Animal Nitrate", n: "Glam y decadencia: la prensa los presenta como la respuesta al grunge." }
       ]
     },
@@ -38,6 +39,7 @@ HISTORIAS.push({
       periodo: "1997 – 1999",
       intro: "Después de la fiesta, la melancolía: el britpop se apaga.",
       items: [
+        { a: 1997, art: "Cool Britannia", t: "Tony Blair recibe a Noel Gallagher", tipo: "hito", n: "El britpop se mezcla con la política y empieza su final." },
         { a: 1997, art: "The Verve", t: "Bitter Sweet Symphony", n: "Un sample de los Stones que les costó todos los derechos." },
         { a: 1997, art: "Blur", t: "Song 2", n: "Blur abandona el britpop parodiando el grunge." },
         { a: 1999, art: "Travis", t: "Why Does It Always Rain on Me?", n: "El britpop se vuelve melancólico y deja paso a Coldplay." }

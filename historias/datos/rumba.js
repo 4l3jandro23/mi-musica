@@ -27,6 +27,7 @@ HISTORIAS.push({
       items: [
         { a: 1974, art: "Las Grecas", t: "Te estoy amando locamente", n: "Rock gitano: para muchos, la primera fusión flamenca." },
         { a: 1974, art: "Los Chichos", t: "Quiero ser libre", n: "La rumba de los barrios y la cárcel." },
+        { a: 1978, art: "Cine quinqui", t: "La rumba de los barrios", tipo: "hito", n: "Las películas de Eloy de la Iglesia y José Antonio de la Loma ponen banda sonora a los barrios." },
         { a: 1980, art: "Los Chunguitos", t: "Me quedo contigo", n: "Rumba romántica, versionada por Rosalía décadas después." },
         { a: 1992, art: "Kiko Veneno", t: "Échate un cantecito", n: "Rumba sevillana y alegría." }
       ]

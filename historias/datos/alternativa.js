@@ -14,6 +14,7 @@ HISTORIAS.push({
       intro: "Sellos pequeños, radios universitarias y guitarras raras.",
       items: [
         { a: 1980, art: "Joy Division", t: "Love Will Tear Us Apart", n: "Salió un mes antes del suicidio de Ian Curtis: el post-punk más triste." },
+        { a: 1981, art: "MTV y la radio universitaria", t: "Las college radios", tipo: "hito", n: "Las emisoras de universidad de EE. UU. dan a conocer a R.E.M., The Cure o los Pixies." },
         { a: 1987, art: "The Cure", t: "Just Like Heaven", n: "El pop más luminoso de un grupo conocido por su oscuridad." },
         { a: 1988, art: "Pixies", t: "Where Is My Mind?", n: "Estrofas suaves y estribillos explosivos: la fórmula que copiaría Nirvana. Suena al final de «El club de la lucha»." },
         { a: 1990, art: "Jane's Addiction", t: "Been Caught Stealing", n: "Perry Farrell crearía al año siguiente el festival Lollapalooza." },
@@ -46,6 +47,7 @@ HISTORIAS.push({
       periodo: "1997 – 2005",
       intro: "Del britpop a Radiohead: el rock alternativo se vuelve ambicioso.",
       items: [
+        { a: 1997, art: "Radiohead", t: "Publican «OK Computer»", tipo: "hito", n: "Para muchos, el mejor disco de los 90: el rock alternativo se pone serio." },
         { a: 1997, art: "Blur", t: "Song 2", n: "«Woo-hoo!»: una parodia del grunge que se convirtió en himno de estadio." },
         { a: 1997, art: "Radiohead", t: "Paranoid Android", n: "De «OK Computer»: el rock alternativo se vuelve ambicioso." },
         { a: 1997, art: "Foo Fighters", t: "Everlong", n: "Dave Grohl, el batería de Nirvana, convertido en líder." },

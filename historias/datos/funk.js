@@ -46,6 +46,7 @@ HISTORIAS.push({
         { a: 1980, art: "Zapp", t: "More Bounce to the Ounce", n: "El talk box de Roger Troutman: base de medio rap de la costa oeste." },
         { a: 1981, art: "Rick James", t: "Super Freak", n: "Funk punk. Luego MC Hammer lo convirtió en «U Can't Touch This»." },
         { a: 1982, art: "Prince", t: "1999", n: "El sonido de Minneapolis: funk con sintetizadores." },
+        { a: 1983, art: "Michael Jackson", t: "El funk se vuelve pop", tipo: "hito", n: "Thriller lleva el groove a todas las radios." },
         { a: 1986, art: "Cameo", t: "Word Up!", n: "Un bigote, una bragueta roja y un éxito mundial." },
         { a: 1991, art: "Red Hot Chili Peppers", t: "Give It Away", n: "El funk rock de Flea." },
         { a: 1996, art: "Jamiroquai", t: "Virtual Insanity", n: "El acid jazz y un vídeo con suelo que se mueve." },

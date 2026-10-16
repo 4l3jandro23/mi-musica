@@ -48,6 +48,7 @@ HISTORIAS.push({
         { a: 2003, art: "Dizzee Rascal", t: "I Luv U", n: "El garage se oscurece y nace el grime." },
         { a: 2007, art: "Burial", t: "Archangel", n: "El 2-step convertido en fantasma melancólico." },
         { a: 2013, art: "Disclosure", t: "White Noise", n: "Con AlunaGeorge: el garage vuelve a las listas." },
+        { a: 2014, art: "Revival", t: "El garage vuelve", tipo: "hito", n: "Disclosure y la nueva generación recuperan el 2-step." },
         { a: 2021, art: "PinkPantheress", t: "Pain", n: "Garage nostálgico de TikTok, en canciones de dos minutos." },
         { a: 2023, art: "Sammy Virji", t: "If U Need It", n: "El nuevo garage de los clubs británicos." },
         { a: 2023, art: "cassö, RAYE & D-Block Europe", t: "Prada", n: "Un garage revivido en TikTok." }

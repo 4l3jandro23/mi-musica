@@ -44,6 +44,7 @@ HISTORIAS.push({
       items: [
         { a: 2004, art: "The Killers", t: "Somebody Told Me", n: "Guitarras y sintes de los 80 en el indie de los 2000." },
         { a: 2010, art: "Kavinsky", t: "Nightcall", n: "De la película «Drive»: el himno del synthwave." },
+        { a: 2011, art: "«Drive»", t: "La película resucita el synthwave", tipo: "hito", n: "Una banda sonora de sintetizadores ochenteros." },
         { a: 2015, art: "CHVRCHES", t: "Leave a Trace", n: "Synth-pop escocés con alma de indie." },
         { a: 2016, art: "Kyle Dixon & Michael Stein", t: "Stranger Things", n: "La sintonía de la serie: sintetizadores analógicos y miedo." },
         { a: 2019, art: "The Weeknd", t: "Blinding Lights", n: "Synth-pop ochentero: la canción más escuchada de la historia de Spotify." }

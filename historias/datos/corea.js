@@ -47,6 +47,7 @@ HISTORIAS.push({
         { a: 2009, art: "Girls' Generation", alias: ["소녀시대"], t: "Gee", n: "Uno de los temas más famosos del K-pop: nueve semanas número uno." },
         { a: 2010, art: "IU", alias: ["아이유"], t: "Good Day", q: "IU 좋은 날", n: "La nota alta del final la convirtió en «la hermanita de la nación»." },
         { a: 2011, art: "2NE1", t: "I Am the Best", q: "2NE1 내가 제일 잘 나가", n: "Actitud y electro: el K-pop femenino más duro." },
+        { a: 2012, art: "PSY", t: "«Gangnam Style» supera los mil millones de visitas", tipo: "hito", n: "El primer vídeo de YouTube en lograrlo." },
         { a: 2012, art: "PSY", t: "Gangnam Style", q: "PSY 강남스타일", n: "El primer vídeo de YouTube en llegar a mil millones de visitas." },
         { a: 2013, art: "EXO", t: "Growl", q: "EXO 으르렁", n: "El grupo que dominó la segunda mitad de la década." },
         { a: 2013, art: "PSY", t: "Gentleman", n: "Intentar repetir «Gangnam Style» con otro baile: cientos de millones de visitas igualmente." }

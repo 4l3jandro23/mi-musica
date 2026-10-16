@@ -60,6 +60,7 @@ HISTORIAS.push({
       items: [
         { a: 1997, art: "Erykah Badu", t: "On & On", n: "Nace el «neo soul»: soul con hip hop y jazz." },
         { a: 1998, art: "Lauryn Hill", t: "Ex-Factor", n: "De «The Miseducation of Lauryn Hill», que ganó cinco Grammy." },
+        { a: 2000, art: "Soulquarians", t: "El neo soul en Electric Lady", tipo: "hito", n: "D'Angelo, Badu y Questlove reinventan el soul." },
         { a: 2006, art: "Amy Winehouse", t: "Rehab", n: "El soul de los 60 vuelve con una voz única y una historia trágica." },
         { a: 2015, art: "Leon Bridges", t: "Coming Home", n: "Como si fuera 1962." },
         { a: 2021, art: "Silk Sonic", t: "Leave the Door Open", n: "Bruno Mars y Anderson .Paak homenajeando el soul de Filadelfia." }

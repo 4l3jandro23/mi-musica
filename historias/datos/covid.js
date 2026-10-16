@@ -39,6 +39,7 @@ HISTORIAS.push({
         { a: 2020, art: "Miley Cyrus", t: "Heart of Glass", q: "Miley Cyrus Heart of Glass Live iHeart", n: "La versión de Blondie que Miley cantó en el iHeart Festival virtual de 2020." },
         { a: 2020, art: "Miley Cyrus", t: "Zombie", q: "Miley Cyrus Zombie Live Save Our Stages", n: "La versión de The Cranberries para salvar las salas de conciertos cerradas por la pandemia." },
         { a: 2020, art: "Miley Cyrus & Dua Lipa", t: "Prisoner", n: "La Miley rockera de Plastic Hearts." },
+        { a: 2021, art: "Vacunas", t: "Vuelven los conciertos", tipo: "hito", n: "Primeros festivales con test, mascarilla y distancia." },
         { a: 2021, art: "Nathan Evans", t: "Wellerman", n: "Canciones de marineros grabadas a coro por desconocidos en TikTok." },
         { a: 2021, art: "Olivia Rodrigo", t: "drivers license", n: "Un desamor adolescente que batió récords de escuchas." },
         { a: 2021, art: "Fred again..", t: "Marea (We've Lost Dancing)", n: "La nostalgia de bailar con gente cuando no se podía." },

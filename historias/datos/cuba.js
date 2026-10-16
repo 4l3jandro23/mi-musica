@@ -36,6 +36,7 @@ HISTORIAS.push({
       periodo: "1972 – 1982",
       intro: "La revolución trae canción de autor con mensaje y jazz cubano de altísimo nivel.",
       items: [
+        { a: 1972, art: "Nueva trova", t: "Silvio y Pablo, voces de la revolución", tipo: "hito", n: "Canción de autor en la Cuba de Fidel." },
         { a: 1972, art: "Irakere", t: "Bacalao con pan", n: "Chucho Valdés mezcla jazz, rock y tambores afrocubanos." },
         { a: 1978, art: "Silvio Rodríguez", t: "Ojalá", n: "La nueva trova: poesía y guitarra." },
         { a: 1982, art: "Pablo Milanés", t: "Yolanda", n: "Una de las canciones de amor más bonitas en español." }

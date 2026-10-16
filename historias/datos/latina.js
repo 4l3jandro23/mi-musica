@@ -40,6 +40,7 @@ HISTORIAS.push({
         { a: 1970, art: "José José", t: "El triste", n: "La actuación en un festival que lo convirtió en «el príncipe de la canción»." },
         { a: 1984, art: "Juan Gabriel", t: "Querida", n: "El divo de Juárez: compositor de cientos de éxitos." },
         { a: 1985, art: "Miami Sound Machine", t: "Conga", n: "Gloria Estefan lleva los ritmos cubanos a las listas de EE. UU." },
+        { a: 1986, art: "Rock en tu idioma", t: "El rock en español", tipo: "hito", n: "Una campaña discográfica lleva a Soda Stereo, Caifanes y Maná por todo el continente." },
         { a: 1988, art: "Luis Miguel", t: "La incondicional", n: "El «Sol de México», en plena juventud." },
         { a: 1989, art: "Juan Luis Guerra", t: "Ojalá que llueva café", n: "Merengue y poesía desde la República Dominicana." },
         { a: 1990, art: "Soda Stereo", t: "De música ligera", n: "Gustavo Cerati y el gran himno del rock latino: «gracias totales»." },
