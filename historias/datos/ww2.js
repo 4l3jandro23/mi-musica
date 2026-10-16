@@ -1,0 +1,53 @@
+HISTORIAS.push({
+  id: "ww2",
+  familia: "Historia",
+  titulo: "Música de la Segunda Guerra Mundial",
+  periodo: "1939 – 1946",
+  color: "#6a6a4a",
+  lema: "Las canciones que sonaron en las trincheras, los refugios y la propaganda entre 1939 y 1945.",
+  intro: "Durante la Segunda Guerra Mundial la música fue consuelo, propaganda y resistencia. Las radios de los dos bandos competían por la moral de soldados y civiles; las big bands de swing tocaban para las tropas; y en los campos de concentración y en la resistencia también se componía y se cantaba.",
+  capitulos: [
+    {
+      titulo: "1939: empieza la guerra",
+      corto: "1939",
+      periodo: "1939",
+      intro: "Entre el swing y la incertidumbre.",
+      items: [
+        { a: 1939, art: "Radio", t: "La guerra de las ondas", tipo: "hito", n: "La BBC, la radio alemana y la soviética usan la música como arma de propaganda." },
+        { a: 1939, art: "Lale Andersen", t: "Lili Marleen", n: "Una canción alemana que soldados de los dos bandos escuchaban cada noche por la radio." },
+        { a: 1939, art: "Vera Lynn", t: "We'll Meet Again", n: "«La novia de las fuerzas armadas» británicas." },
+        { a: 1939, art: "Glenn Miller", t: "In the Mood", n: "El swing que sonaba en todos los bailes." }
+      ]
+    },
+    {
+      titulo: "La guerra",
+      corto: "Guerra",
+      periodo: "1940 – 1944",
+      intro: "Canciones para resistir.",
+      items: [
+        { a: 1940, art: "Vera Lynn", t: "A Nightingale Sang in Berkeley Square", n: "Nostalgia de un Londres bombardeado." },
+        { a: 1941, art: "Glenn Miller", t: "Chattanooga Choo Choo", n: "El primer disco de oro de la historia." },
+        { a: 1941, art: "Dmitri Shostakovich", t: "Sinfonía n.º 7 «Leningrado»", n: "Compuesta durante el asedio; en 1942 se tocó en la ciudad sitiada." },
+        { a: 1941, art: "The Andrews Sisters", t: "Boogie Woogie Bugle Boy", n: "El soldado trompetista: swing patriótico." },
+        { a: 1941, art: "Olivier Messiaen", t: "Quatuor pour la fin du temps", n: "Compuesto y estrenado en un campo de prisioneros alemán, ante 400 presos." },
+        { a: 1942, art: "Leningrado", t: "Concierto en la ciudad sitiada", tipo: "hito", n: "Músicos famélicos tocan la Séptima de Shostakóvich; se emite por altavoces hacia las líneas alemanas." },
+        { a: 1942, art: "Bing Crosby", t: "White Christmas", n: "La añoranza de casa de millones de soldados." },
+        { a: 1942, art: "Vera Lynn", t: "(There'll Be Bluebirds Over) The White Cliffs of Dover", n: "Esperar el final de la guerra." },
+        { a: 1943, art: "Anna Marly", t: "Le Chant des partisans", n: "El himno de la Resistencia francesa, emitido desde Londres." },
+        { a: 1944, art: "Glenn Miller", t: "Desaparece sobre el Canal de la Mancha", tipo: "hito", n: "Su avión nunca aparece." }
+      ]
+    },
+    {
+      titulo: "El final",
+      corto: "Final",
+      periodo: "1943 – 1946",
+      intro: "Victoria, regreso y memoria.",
+      items: [
+        { a: 1943, art: "Mark Bernes", t: "Tiomnaya Noch (Noche oscura)", n: "La canción soviética de las trincheras." },
+        { a: 1945, art: "Fin de la guerra", t: "Las canciones de la victoria", tipo: "hito", n: "Las calles de Londres, París y Moscú se llenan de música." },
+        { a: 1945, art: "Bing Crosby & The Andrews Sisters", t: "Don't Fence Me In", n: "El número uno del final de la guerra." },
+        { a: 1946, art: "Partisanos italianos", t: "Bella ciao", q: "Bella Ciao partisan song", n: "La canción de los partisanos italianos, convertida en himno universal tras la guerra." }
+      ]
+    }
+  ]
+});
