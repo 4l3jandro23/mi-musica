@@ -10,7 +10,7 @@ HISTORIAS.push({
     {
       titulo: "La prehistoria",
       corto: "Prehistoria",
-      periodo: "40.000 a. C. – 2.500 a. C.",
+      periodo: "40.000 a. C. – 2500 a. C.",
       intro: "Flautas de hueso y los primeros instrumentos.",
       items: [
         { a: -40000, art: "Hohle Fels", t: "La flauta más antigua conocida", tipo: "hito", n: "Una flauta de hueso de buitre de unos 40.000 años, hallada en una cueva de Alemania." },
@@ -21,7 +21,7 @@ HISTORIAS.push({
     {
       titulo: "Las primeras civilizaciones",
       corto: "Antigüedad",
-      periodo: "1.400 a. C. – 100",
+      periodo: "1400 a. C. – 100",
       intro: "Mesopotamia, Grecia, China e India.",
       items: [
         { a: -1400, art: "Ugarit", t: "Himno hurrita n.º 6", q: "Hurrian Hymn No. 6", n: "La canción escrita más antigua conservada, en una tablilla de arcilla de Siria." },

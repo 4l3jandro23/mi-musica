@@ -8,7 +8,7 @@ HISTORIAS.push({
   intro: "Nace en Birmingham, una ciudad industrial: Black Sabbath bajan la afinación, ralentizan el blues y le ponen terror. Desde ahí el metal se divide en decenas de familias: más rápido (thrash), más extremo (death, black), más pegadizo (glam), mezclado con rap (nu metal) o más técnico y progresivo. Siempre con una comunidad fiel como pocas.",
   capitulos: [
     {
-      titulo: "Los orígenes",
+      titulo: "Protometal y orígenes",
       corto: "Protometal",
       periodo: "1964 – 1972",
       intro: "Antes de que existiera la palabra: guitarras saturadas, blues a todo volumen y psicodelia pesada.",

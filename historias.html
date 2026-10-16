@@ -271,6 +271,124 @@
     opacity: 0; transform: translateY(14px) scale(.9); pointer-events: none; transition: opacity .25s, transform .25s var(--ease-out); }
   .arriba.ver { opacity: 1; transform: none; pointer-events: auto; }
   .arriba svg { width: 20px; height: 20px; stroke-width: 2.4; }
+
+  /* ============================================================
+     DISEÑO 3 · portada por filas, familias de colores,
+     línea de capítulos y años antes de Cristo.
+     ============================================================ */
+  .pto { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--c); flex: none; }
+
+  /* cifras de la portada */
+  .cifras { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 16px; }
+  .cifras span { display: flex; flex-direction: column; padding: 10px 16px; border-radius: 14px; background: var(--surface); box-shadow: var(--shadow-sm);
+    font-size: 12px; font-weight: 700; color: var(--fg-mute); text-transform: uppercase; letter-spacing: .05em; }
+  .cifras b { font-family: var(--f-disp); font-size: 24px; font-weight: 800; color: var(--fg); letter-spacing: -0.03em; text-transform: none; line-height: 1.1; }
+
+  /* chips de familia con su color */
+  .filtros { position: sticky; top: calc(56px + env(safe-area-inset-top)); z-index: 30; background: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); padding-top: 8px; padding-bottom: 8px; }
+  .filtros .chip { display: inline-flex; align-items: center; gap: 7px; transition: background .2s, color .2s, transform .15s var(--ease-out); }
+  .filtros .chip:active { transform: scale(.95); }
+  .filtros .chip.on .pto { background: var(--bg); }
+
+  /* mosaico de familias */
+  .explora { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin: 20px 0 6px; }
+  .fam-tile { position: relative; overflow: hidden; text-align: left; border: 0; cursor: pointer; border-radius: 16px; padding: 14px 14px 16px; min-height: 96px;
+    display: flex; flex-direction: column; gap: 4px; color: var(--fg);
+    background: linear-gradient(150deg, color-mix(in srgb, var(--c) 55%, var(--surface)), color-mix(in srgb, var(--c) 14%, var(--surface)));
+    box-shadow: var(--shadow-sm); transition: transform .2s var(--ease-out), box-shadow .2s; -webkit-tap-highlight-color: transparent; }
+  .fam-tile:hover { transform: translateY(-3px); box-shadow: 0 12px 28px color-mix(in srgb, var(--c) 30%, transparent); }
+  .fam-tile:active { transform: scale(.97); }
+  .fam-tile b { font-family: var(--f-disp); font-size: 18px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+  .fam-tile span { font-size: 12.5px; color: var(--fg-soft); line-height: 1.3; padding-right: 26px; }
+  .fam-tile i { position: absolute; right: 10px; bottom: 6px; font-style: normal; font-family: var(--f-disp); font-weight: 800; font-size: 30px; letter-spacing: -0.04em;
+    color: color-mix(in srgb, var(--fg) 22%, transparent); }
+
+  /* ¿sabías que…? */
+  .sabias { display: flex; flex-direction: column; gap: 6px; margin: 22px 0 4px; padding: 18px 20px; border-radius: 18px; position: relative; overflow: hidden;
+    background: linear-gradient(120deg, color-mix(in srgb, var(--c) 30%, var(--surface)), var(--surface) 75%); box-shadow: var(--shadow-sm);
+    border-left: 4px solid var(--c); transition: transform .2s var(--ease-out); }
+  .sabias:hover { transform: translateY(-2px); }
+  .sabias .eti { display: flex; align-items: center; gap: 6px; color: color-mix(in srgb, var(--c) 70%, var(--fg)); }
+  .sabias b { font-family: var(--f-disp); font-size: 20px; letter-spacing: -0.02em; line-height: 1.2; }
+  .sabias .nota { margin: 0; font-size: 14px; color: var(--fg-soft); }
+  .sabias .de { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--fg-mute); }
+
+  /* cabecera de cada familia */
+  .fam-cab { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .fam-cab .pto { width: 12px; height: 12px; box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 22%, transparent); }
+  .fam-cab .fam-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .fam-cab b { font-family: var(--f-disp); font-size: 21px; font-weight: 800; letter-spacing: -0.025em; line-height: 1.15; }
+  .fam-cab span { font-size: 13px; color: var(--fg-mute); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fam-cab.grande b { font-size: clamp(26px, 5vw, 38px); }
+  .fam-cab .flecha { display: none; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line-firm); background: var(--surface); color: var(--fg);
+    place-items: center; cursor: pointer; transition: background .15s, transform .12s var(--ease-out); }
+  .fam-cab .flecha:hover { background: var(--surface-2); }
+  .fam-cab .flecha:active { transform: scale(.92); }
+  .fam-cab .flecha svg { width: 18px; height: 18px; }
+  @media (hover: hover) and (min-width: 700px) { .fam-cab .flecha { display: grid; } }
+  .vertodas { flex: none; }
+
+  /* filas horizontales de tarjetas */
+  .carrusel { margin-top: 28px; }
+  .pista { display: grid; grid-auto-flow: column; grid-auto-columns: clamp(230px, 74vw, 280px); gap: 14px; overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory; scroll-padding: 0 16px; margin: 0 -16px; padding: 6px 16px 18px; scrollbar-width: none; }
+  .pista::-webkit-scrollbar { display: none; }
+  .pista > .tarj { scroll-snap-align: start; }
+  .orden { display: flex; gap: 6px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .orden .chip { background: var(--surface-2); }
+  .orden .chip.on { background: var(--fg); color: var(--bg); }
+
+  /* tarjetas: etiqueta «Nueva» y línea de capítulos */
+  .tarj .nueva { position: absolute; top: 12px; right: 12px; font-size: 10.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 999px; background: var(--fg); color: var(--bg); }
+  .tarj .tl { display: flex; gap: 3px; height: 5px; margin-top: 2px; }
+  .tarj .tl i { display: block; border-radius: 999px; background: color-mix(in srgb, var(--fg) 30%, transparent); }
+  .tarj .tl i:nth-child(odd) { background: color-mix(in srgb, var(--fg) 48%, transparent); }
+  .tarj b { padding-right: 34px; }
+
+  /* lateral con familias plegables */
+  @media (min-width: 1000px) {
+    .lado .grupo-lado { margin: 2px 0; }
+    .lado summary { list-style: none; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 12px; cursor: pointer;
+      font-size: 12px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: var(--fg-soft); user-select: none; }
+    .lado summary::-webkit-details-marker { display: none; }
+    .lado summary:hover { background: var(--surface-2); color: var(--fg); }
+    .lado summary span { margin-left: auto; font-weight: 700; color: var(--fg-mute); letter-spacing: 0; }
+    .lado summary::after { content: ""; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-45deg);
+      transition: transform .2s var(--ease-out); opacity: .6; }
+    .lado details[open] > summary::after { transform: rotate(45deg); }
+    .lado details a { padding-left: 22px; font-size: 14px; }
+  }
+
+  /* historia: migas, línea de capítulos y navegación final */
+  .migas { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 14px -6px; }
+  .migas .atras { margin: 0; }
+  .linea { display: flex; gap: 4px; margin-top: 16px; max-width: 760px; }
+  .linea a { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+  .linea a i { display: block; height: 8px; border-radius: 999px; background: color-mix(in srgb, var(--tinte) 55%, transparent); transition: background .15s, transform .15s var(--ease-out); }
+  .linea a:nth-child(odd) i { background: color-mix(in srgb, var(--tinte) 80%, var(--fg) 5%); }
+  .linea a:hover i { background: var(--tinte); transform: scaleY(1.4); }
+  .linea a span { font-size: 11.5px; font-weight: 700; color: var(--fg-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  @media (max-width: 560px) { .linea a span { display: none; } }
+  .capitulo .eti { display: inline-flex; align-items: center; gap: 8px; }
+  .capitulo .num { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 8px; font-style: normal; font-family: var(--f-disp);
+    font-size: 13px; background: var(--tinte); color: #fff; letter-spacing: 0; }
+  .nav-fin { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 40px 0 10px; }
+  .nav-fin .siguiente { margin: 0; }
+  .siguiente.ant { background: linear-gradient(240deg, color-mix(in srgb, var(--c) 35%, var(--surface)), var(--surface)); }
+
+  /* momentos clave y años antes de Cristo */
+  .tipo svg { width: 11px; height: 11px; vertical-align: -1px; margin-right: 3px; stroke-width: 2.4; }
+  .row.hito { border-left: 3px solid color-mix(in srgb, var(--tinte) 60%, transparent); border-radius: 4px 12px 12px 4px; }
+  .anyo.ac { font-size: 11.5px; line-height: 1.05; display: flex; flex-direction: column; justify-content: center; text-align: center; }
+  .anyo.ac small { font-size: 9.5px; font-weight: 700; opacity: .75; }
+  .row.hito .tipo { font-style: normal; }
+  @media (max-width: 560px) {
+    .cifras { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .cifras span { padding: 9px 10px; font-size: 10.5px; letter-spacing: .03em; }
+    .cifras b { font-size: 20px; }
+  }
 </style>
 </head>
 <body>
@@ -430,6 +548,6 @@
 <script src="historias/datos/sony.js"></script>
 <script src="historias/datos/universal.js"></script>
 <script src="historias/datos/spinnin.js"></script>
-<script src="historias/motor.js?v=6"></script>
+<script src="historias/motor.js?v=7"></script>
 </body>
 </html>

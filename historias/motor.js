@@ -11,7 +11,7 @@
   const $ = (s) => document.querySelector(s);
   const H = window.HISTORIAS;
   const main = $('#main'), buscar = $('#buscar');
-  const K_OIDAS = 'historias_oidas_v1', K_ULTIMA = 'historias_ultima_v1', K_FILTRO = 'historias_filtro_v1';
+  const K_OIDAS = 'historias_oidas_v1', K_ULTIMA = 'historias_ultima_v1', K_FILTRO = 'historias_filtro_v1', K_ORDEN = 'historias_orden_v1';
   const MOV = !matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Mismo tema que la Fonoteca si allí se eligió uno a mano
@@ -29,7 +29,11 @@
     dado: '<rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.3"/><circle cx="15.5" cy="15.5" r="1.3"/><circle cx="12" cy="12" r="1.3"/>',
     sig: '<path d="M5 12h14M13 6l6 6-6 6"/>',
     arriba: '<path d="M12 19V5M6 11l6-6 6 6"/>',
-    lupa: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'
+    lupa: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+    izq: '<path d="M15 18l-6-6 6-6"/>',
+    der: '<path d="M9 18l6-6-6-6"/>',
+    hito: '<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
+    chispa: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>'
   };
   const ic = (n) => '<svg class="i" viewBox="0 0 24 24">' + ICO[n] + '</svg>';
   $('.marca').innerHTML = ic('nota');
@@ -41,7 +45,37 @@
   const piezas = (h) => h.capitulos.flatMap((c) => c.items);
   const escuchables = (h) => piezas(h).filter((i) => i.tipo !== 'hito');
   const urlSpotify = (i) => 'https://open.spotify.com/search/' + encodeURIComponent(i.q || i.art + ' ' + i.t);
-  const familias = () => [...new Set(H.map((h) => h.familia))];
+  /* Familias en un orden pensado (las desconocidas, al final), con su color y una línea de presentación */
+  const FAM = {
+    'Especiales': ['#e86aa8', 'Listas temáticas, tu vida y rarezas'],
+    'Historia': ['#9a7b4f', 'De la prehistoria a la Segunda Guerra Mundial'],
+    'Pop': ['#ff7a59', 'Del pop de los 50 al hyperpop'],
+    'Rock': ['#d0473a', 'Del rock and roll al metal'],
+    'Hip hop': ['#d9a21b', 'Del Bronx al rage, estilo a estilo'],
+    'Soul y funk': ['#b0623a', 'Soul, funk, disco y R&B'],
+    'Electrónica': ['#3aa0e8', 'House, techno, trance y compañía'],
+    'Bass music': ['#3e9e5e', 'Jungle, garage, dubstep y drum and bass'],
+    'Latino': ['#e04f8a', 'Salsa, reguetón, reggae y más'],
+    'España': ['#e0662a', 'De la copla a la Movida y el trap'],
+    'Mundo': ['#2bb3a3', 'Música de todos los rincones'],
+    'Jazz': ['#6b8cae', 'Del ragtime al jazz de hoy'],
+    'Raíces americanas': ['#b5883b', 'Blues, country y folk'],
+    'Clásica y cine': ['#7a5ad6', 'Clásica, ópera, cine y videojuegos'],
+    'Discográficas': ['#6d6d7a', 'Los sellos que hicieron la historia']
+  };
+  const ORDEN_FAM = Object.keys(FAM);
+  const familias = () => [...new Set(H.map((h) => h.familia))].sort((a, b) =>
+    (ORDEN_FAM.indexOf(a) + 1 || 99) - (ORDEN_FAM.indexOf(b) + 1 || 99));
+  const colorFam = (f) => (FAM[f] || ['#888'])[0];
+  const lineaFam = (f) => (FAM[f] || ['', ''])[1];
+  // Años: los de antes de Cristo llevan «a. C.»
+  const fa = (a) => a < 0 ? (a <= -10000 ? fmt(-a) : String(-a)) + ' a. C.' : String(a);
+  const inicio = (h) => Math.min(...piezas(h).map((i) => i.a));
+  // Historias añadidas hace poco (salen en «Novedades» y con la etiqueta «Nueva»)
+  const NUEVAS = ['origenes', 'ww2', 'videojuegos', 'kanye', 'triste', 'alegre', 'preliminares', 'explicita', 'psytrance', 'movida', 'popespanol',
+    'neosoul', 'folclore', 'rumba', 'afrobeat', 'bossanova', 'yachtrock', 'grime', 'gfunk', 'jazzrap', 'cloudrap', 'mumblerap', 'industrialrap',
+    'drill', 'emorap', 'altrap', 'rage', 'tropicalhouse', 'electrohouse', 'dutchhouse', 'berghain', 'dub', 'dembow', 'concreta', 'jungle',
+    'motown', 'defjam', 'atlantic', 'warner', 'sony', 'universal', 'spinnin'];
   const leer = (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } };
   const guardar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
   const fmt = (n) => n.toLocaleString('es-ES');
@@ -109,9 +143,12 @@
     $('#lado').innerHTML = '<div class="tit">Historias</div>' +
       '<a class="volver" href="mando.html">' + ic('atras') + 'Fonoteca</a>' +
       '<a href="#"' + (actual ? '' : ' class="on"') + '>' + ic('nota') + 'Todas</a>' +
-      familias().map((f) => '<div class="sec">' + esc(f) + '</div>' +
-        H.filter((h) => h.familia === f).map((h) =>
-          '<a href="#h/' + h.id + '" style="--c:' + h.color + '"' + (actual === h.id ? ' class="on"' : '') + '><i class="pto"></i>' + esc(h.titulo) + '</a>').join('')).join('');
+      familias().map((f) => {
+        const hs = H.filter((h) => h.familia === f);
+        const abierta = hs.some((h) => h.id === actual);
+        return '<details class="grupo-lado"' + (abierta ? ' open' : '') + ' style="--c:' + colorFam(f) + '"><summary><i class="pto"></i>' + esc(f) + '<span>' + hs.length + '</span></summary>' +
+          hs.map((h) => '<a href="#h/' + h.id + '" style="--c:' + h.color + '"' + (actual === h.id ? ' class="on"' : '') + '><i class="pto"></i>' + esc(h.titulo) + '</a>').join('') + '</details>';
+      }).join('');
     const on = $('#lado a.on'); if (on && actual) on.scrollIntoView({ block: 'nearest' });
   }
 
@@ -131,10 +168,10 @@
 
   function fila(i, h, terms) {
     const hito = i.tipo === 'hito';
-    const etiqueta = hito ? '<span class="tipo">hito</span>' : i.tipo === 'disco' ? '<span class="tipo">disco</span>' : '';
+    const etiqueta = hito ? '<span class="tipo">' + ic('hito') + 'momento clave</span>' : i.tipo === 'disco' ? '<span class="tipo">disco</span>' : '';
     const k = clave(h, i), oida = OIDAS.has(k);
     return '<li class="row' + (hito ? ' hito' : '') + (oida ? ' oida-on' : '') + '" style="--tinte:' + h.color + '">' +
-      '<span class="anyo">' + esc(i.a) + '</span>' +
+      (i.a < 0 ? '<span class="anyo ac">' + (i.a <= -10000 ? fmt(-i.a) : -i.a) + '<small>a. C.</small></span>' : '<span class="anyo">' + esc(i.a) + '</span>') +
       '<div class="txt"><div class="t1">' + marcar(i.t, terms) + etiqueta + '</div><div class="t2">' + marcar(i.art, terms) +
       (laTienes(i) ? ' <span class="tuya">la tienes</span>' : '') + '</div>' +
       (i.n ? '<p class="nota">' + marcar(i.n, terms) + '</p>' : '') + '</div>' +
@@ -151,14 +188,34 @@
 
   function tarjeta(h) {
     const n = escuchables(h).length, o = oidas(h), t = tuyas(h);
-    const desde = (String(h.periodo).match(/\d{4}/) || [''])[0];
+    const y = inicio(h), desde = y < 0 ? 'a. C.' : y;
     return '<a class="tarj" href="#h/' + h.id + '" style="--c:' + h.color + '">' +
       '<span class="deco" aria-hidden="true">' + esc(desde) + '</span>' +
+      (NUEVAS.indexOf(h.id) >= 0 ? '<span class="nueva">Nueva</span>' : '') +
       '<span class="eti">' + esc(h.periodo) + '</span><b>' + esc(h.titulo) + '</b>' +
       '<span class="lema">' + esc(h.lema) + '</span>' +
       '<span class="cuenta">' + n + ' piezas' + (h.capitulos.length > 1 ? ' · ' + h.capitulos.length + ' capítulos' : '') +
       (t ? ' · tienes ' + t : '') + '</span>' +
+      '<span class="tl" aria-hidden="true">' + h.capitulos.map((c) => '<i style="flex:' + Math.max(1, c.items.length) + '"></i>').join('') + '</span>' +
       (o ? '<span class="mini"><i style="width:' + Math.round(100 * o / n) + '%"></i></span>' : '') + '</a>';
+  }
+
+  // Una fila horizontal de tarjetas, con flechas en el ordenador
+  function carrusel(titulo, sub, color, lista, extra) {
+    return '<section class="familia carrusel" style="--c:' + color + '"><div class="fam-cab"><span class="pto"></span><div class="fam-txt"><b>' + esc(titulo) + '</b>' +
+      (sub ? '<span>' + esc(sub) + '</span>' : '') + '</div>' + (extra || '') +
+      '<button class="flecha" data-dir="-1" aria-label="Anteriores">' + ic('izq') + '</button><button class="flecha" data-dir="1" aria-label="Siguientes">' + ic('der') + '</button></div>' +
+      '<div class="pista">' + lista.map(tarjeta).join('') + '</div></section>';
+  }
+
+  // Un momento clave al azar, para descubrir historias
+  function sabiasQue() {
+    const todos = [];
+    H.forEach((h) => h.capitulos.forEach((c, k) => c.items.forEach((i) => { if (i.tipo === 'hito' && i.n) todos.push({ h, i, k }); })));
+    if (!todos.length) return '';
+    const { h, i, k } = todos[Math.floor(Math.random() * todos.length)];
+    return '<a class="sabias" href="#h/' + h.id + '/' + (k + 1) + '" style="--c:' + h.color + '"><span class="eti">' + ic('chispa') + '¿Sabías que…? · ' + esc(fa(i.a)) + '</span>' +
+      '<b>' + esc(i.art) + ': ' + esc(i.t) + '</b><span class="nota">' + esc(i.n) + '</span><span class="de">' + esc(h.titulo) + ic('sig') + '</span></a>';
   }
 
   function portada() {
@@ -166,53 +223,92 @@
     const fams = familias();
     let filtro = leer(K_FILTRO, '');
     if (fams.indexOf(filtro) < 0) filtro = '';
+    const orden = leer(K_ORDEN, 'defecto');
     const ultima = H.find((h) => h.id === leer(K_ULTIMA, ''));
     const total = H.reduce((s, h) => s + escuchables(h).length, 0);
+    const nHitos = H.reduce((s, h) => s + piezas(h).length - escuchables(h).length, 0);
     const oTot = H.reduce((s, h) => s + oidas(h), 0);
-    main.innerHTML = '<div class="cab portada-cab"><span class="eti">Para leer y escuchar</span><h2>Historias de la música</h2>' +
+    const empezadas = H.filter((h) => oidas(h) && oidas(h) < escuchables(h).length);
+    let html = '<div class="cab portada-cab"><span class="eti">Para leer y escuchar</span><h2>Historias de la música</h2>' +
       '<p>Cada historia es una lista elegida a mano y en orden cronológico, con el porqué de cada pieza. Sin algoritmos que te cuelen nada.</p>' +
-      '<p class="resumen">' + H.length + ' historias · ' + fmt(total) + ' piezas' + (oTot ? ' · llevas ' + fmt(oTot) + ' escuchadas' : '') + '</p>' +
+      '<div class="cifras"><span><b>' + H.length + '</b>historias</span><span><b>' + fmt(total) + '</b>piezas</span><span><b>' + fmt(nHitos) + '</b>momentos clave</span>' +
+      (oTot ? '<span><b>' + fmt(oTot) + '</b>escuchadas</span>' : '') + '</div>' +
       '<div class="btnrow">' + (ultima ? '<a class="btn pri" href="#h/' + ultima.id + '" style="--tinte:' + ultima.color + '">' + ic('sig') + 'Sigue con «' + esc(ultima.titulo) + '»</a>' : '') +
-      '<button class="btn" id="azar">' + ic('dado') + 'Una al azar</button></div></div>' +
-      '<div class="filtros" role="tablist"><button class="chip' + (filtro ? '' : ' on') + '" data-f="">Todas</button>' +
-      fams.map((f) => '<button class="chip' + (f === filtro ? ' on' : '') + '" data-f="' + esc(f) + '">' + esc(f) + '</button>').join('') + '</div>' +
-      fams.filter((f) => !filtro || f === filtro).map((f) => '<section class="familia"><span class="eti">' + esc(f) +
-        ' <i>' + H.filter((h) => h.familia === f).length + '</i></span><div class="rejilla">' +
-        H.filter((h) => h.familia === f).map(tarjeta).join('') + '</div></section>').join('');
+      '<button class="btn" id="azar">' + ic('dado') + 'Una al azar</button><button class="btn" id="aBuscar">' + ic('lupa') + 'Buscar</button></div></div>';
+    html += '<div class="filtros" role="tablist"><button class="chip' + (filtro ? '' : ' on') + '" data-f="">Todas</button>' +
+      fams.map((f) => '<button class="chip' + (f === filtro ? ' on' : '') + '" data-f="' + esc(f) + '" style="--c:' + colorFam(f) + '"><i class="pto"></i>' + esc(f) + '</button>').join('') + '</div>';
+    if (filtro) {
+      // Una familia: rejilla con orden a elegir
+      let lista = H.filter((h) => h.familia === filtro);
+      if (orden === 'crono') lista = lista.slice().sort((a, b) => inicio(a) - inicio(b));
+      else if (orden === 'az') lista = lista.slice().sort((a, b) => a.titulo.localeCompare(b.titulo, 'es'));
+      else if (orden === 'grande') lista = lista.slice().sort((a, b) => piezas(b).length - piezas(a).length);
+      html += '<section class="familia" style="--c:' + colorFam(filtro) + '"><div class="fam-cab grande"><span class="pto"></span><div class="fam-txt"><b>' + esc(filtro) + '</b><span>' +
+        esc(lineaFam(filtro)) + ' · ' + lista.length + ' historias</span></div></div>' +
+        '<div class="orden">' + [['defecto', 'Recomendado'], ['crono', 'Cronológico'], ['az', 'A-Z'], ['grande', 'Más largas']].map(([v, l]) =>
+          '<button class="chip' + (orden === v ? ' on' : '') + '" data-o="' + v + '">' + l + '</button>').join('') + '</div>' +
+        '<div class="rejilla">' + lista.map(tarjeta).join('') + '</div></section>';
+    } else {
+      html += '<div class="explora">' + fams.map((f) => {
+        const hs = H.filter((h) => h.familia === f);
+        return '<button class="fam-tile" data-f="' + esc(f) + '" style="--c:' + colorFam(f) + '"><b>' + esc(f) + '</b><span>' + esc(lineaFam(f)) + '</span><i>' + hs.length + '</i></button>';
+      }).join('') + '</div>';
+      html += sabiasQue();
+      if (empezadas.length) html += carrusel('Seguir escuchando', 'Las que tienes a medias', 'var(--amber)', empezadas);
+      const nuevas = H.filter((h) => NUEVAS.indexOf(h.id) >= 0);
+      if (nuevas.length) html += carrusel('Novedades', nuevas.length + ' historias recién añadidas', '#d4568a', nuevas);
+      html += fams.map((f) => {
+        const hs = H.filter((h) => h.familia === f);
+        return carrusel(f, lineaFam(f) + ' · ' + hs.length, colorFam(f), hs, '<button class="btn sm vertodas" data-f="' + esc(f) + '">Ver todas</button>');
+      }).join('');
+    }
+    main.innerHTML = html;
     $('#azar').onclick = () => {
       const pool = H.filter((h) => !filtro || h.familia === filtro);
       const sin = pool.filter((h) => !oidas(h));
       const l = sin.length ? sin : pool;
       location.hash = '#h/' + l[Math.floor(Math.random() * l.length)].id;
     };
-    main.querySelector('.filtros').onclick = (e) => {
-      const b = e.target.closest('[data-f]'); if (!b) return;
-      guardar(K_FILTRO, b.dataset.f); cambiar(portada);
+    $('#aBuscar').onclick = () => { buscar.focus(); };
+    main.onclick = (e) => {
+      const f = e.target.closest('[data-f]');
+      if (f) { guardar(K_FILTRO, f.dataset.f); cambiar(portada); scrollTo({ top: 0, behavior: 'auto' }); return; }
+      const o = e.target.closest('[data-o]');
+      if (o) { guardar(K_ORDEN, o.dataset.o); cambiar(portada); return; }
+      const fl = e.target.closest('.flecha');
+      if (fl) { const p = fl.closest('.carrusel').querySelector('.pista'); p.scrollBy({ left: +fl.dataset.dir * p.clientWidth * 0.85, behavior: MOV ? 'smooth' : 'auto' }); }
     };
   }
 
   let espia = null;
   function historia(h) {
+    main.onclick = null;
     lado(h.id);
     guardar(K_ULTIMA, h.id);
     const varios = h.capitulos.length > 1;
-    const sig = H[(H.indexOf(h) + 1) % H.length];
+    const fam = H.filter((x) => x.familia === h.familia);
+    const sig = fam.length > 1 ? fam[(fam.indexOf(h) + 1) % fam.length] : H[(H.indexOf(h) + 1) % H.length];
+    const ant = fam.length > 2 ? fam[(fam.indexOf(h) - 1 + fam.length) % fam.length] : null;
     const nHitos = piezas(h).length - escuchables(h).length;
     main.innerHTML = '<div class="hero" style="--tinte:' + h.color + '">' +
-      '<a class="btn sm atras" href="#">' + ic('atras') + 'Todas</a>' +
+      '<div class="migas"><a class="btn sm atras" href="#">' + ic('atras') + 'Todas</a><a class="btn sm atras" href="#" data-fam="' + esc(h.familia) + '">' + esc(h.familia) + '</a></div>' +
       '<span class="eti">' + esc(h.familia) + ' · ' + esc(h.periodo) + '</span>' +
       '<h2>' + esc(h.titulo) + '</h2><p class="lema-h">' + esc(h.lema) + '</p><p>' + esc(h.intro) + '</p>' +
       '<div id="prog">' + progreso(h) + '</div>' +
       '<div class="btnrow"><a class="btn pri" href="mando.html?historia=' + h.id + '" title="La Fonoteca busca cada canción y crea la playlist en tu Spotify">' + ic('play') + 'Crear en mi Spotify</a>' +
       '<button class="btn" id="copiar">' + ic('copia') + 'Copiar lista</button></div>' +
-      '<p class="datos">' + escuchables(h).length + ' piezas' + (nHitos ? ' · ' + nHitos + ' momentos clave' : '') + (varios ? ' · ' + h.capitulos.length + ' capítulos' : '') + '</p></div>' +
+      '<p class="datos">' + escuchables(h).length + ' piezas' + (nHitos ? ' · ' + nHitos + ' momentos clave' : '') + (varios ? ' · ' + h.capitulos.length + ' capítulos' : '') + '</p>' +
+      (varios ? '<div class="linea" aria-label="Capítulos">' + h.capitulos.map((c, k) => '<a href="#h/' + h.id + '/' + (k + 1) + '" style="flex:' + Math.max(2, c.items.length) + '" title="' + esc(c.titulo + ' · ' + c.periodo) + '"><i></i><span>' + esc(c.corto || c.titulo) + '</span></a>').join('') + '</div>' : '') +
+      '</div>' +
       (varios ? '<nav class="indice" style="--tinte:' + h.color + '">' + h.capitulos.map((c, k) => '<a class="chip" data-cap="' + (k + 1) + '" href="#h/' + h.id + '/' + (k + 1) + '">' + esc(c.corto || c.titulo) + '</a>').join('') + '</nav>' : '') +
       h.capitulos.map((c, k) => '<section class="capitulo" id="cap-' + (k + 1) + '" style="--tinte:' + h.color + '">' +
-        (varios ? '<span class="eti">Capítulo ' + (k + 1) + '</span>' : '') +
+        (varios ? '<span class="eti"><i class="num">' + (k + 1) + '</i>Capítulo ' + (k + 1) + ' de ' + h.capitulos.length + '</span>' : '') +
         '<h3>' + esc(c.titulo) + '<span>' + esc(c.periodo) + '</span></h3>' +
         (c.intro ? '<p>' + esc(c.intro) + '</p>' : '') +
         '<ol class="lista">' + c.items.map((i) => fila(i, h)).join('') + '</ol></section>').join('') +
-      '<a class="siguiente" href="#h/' + sig.id + '" style="--c:' + sig.color + '"><span class="eti">Siguiente historia</span><b>' + esc(sig.titulo) + '</b>' + ic('sig') + '</a>';
+      '<div class="nav-fin">' + (ant ? '<a class="siguiente ant" href="#h/' + ant.id + '" style="--c:' + ant.color + '"><span class="eti">Anterior en ' + esc(h.familia) + '</span><b>' + esc(ant.titulo) + '</b>' + ic('atras') + '</a>' : '') +
+      '<a class="siguiente" href="#h/' + sig.id + '" style="--c:' + sig.color + '"><span class="eti">Siguiente' + (fam.length > 1 ? ' en ' + esc(h.familia) : ' historia') + '</span><b>' + esc(sig.titulo) + '</b>' + ic('sig') + '</a></div>';
+    main.querySelector('[data-fam]').onclick = (e) => { e.preventDefault(); guardar(K_FILTRO, h.familia); if (location.hash.length > 1) location.hash = '#'; else cambiar(portada); };
     $('#copiar').onclick = () => {
       const txt = escuchables(h).map((i) => i.a + ' · ' + i.art + ' — ' + i.t).join('\n');
       navigator.clipboard.writeText(txt).then(() => toast('Lista copiada'), () => toast('No se pudo copiar'));
@@ -248,6 +344,7 @@
   }
   let filtroBusca = 'todo';
   function resultados(texto) {
+    main.onclick = null;
     lado(null);
     const { terms, desde, hasta } = analizar(texto);
     const historias = terms.length ? H.filter((h) => {
