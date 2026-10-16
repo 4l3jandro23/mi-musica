@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "indie",
   familia: "Rock",
   titulo: "Historia del indie",
-  periodo: "1978 – 2018",
+  periodo: "1978 – 2022",
   color: "#e0794c",
   lema: "De los sellos independientes de los 80 a The Strokes, Arctic Monkeys y el indie español.",
   intro: "«Indie» empezó significando música publicada en sellos independientes, lejos de las multinacionales. Con el tiempo pasó a ser un sonido y una estética: guitarras, letras ingeniosas y un aire de no querer ser mainstream. Hay tres épocas: los 80 y 90 de los fanzines, el revival de guitarras de los 2000 con MySpace, y el indie español de festival.",
@@ -41,6 +41,7 @@ HISTORIAS.push({
         { a: 2005, art: "Arctic Monkeys", t: "I Bet You Look Good on the Dancefloor", n: "Unos chavales de Sheffield que triunfaron gracias a los fans que compartían sus maquetas en internet." },
         { a: 2008, art: "Vampire Weekend", t: "A-Punk", n: "Indie con ritmos africanos y aire de universidad pija." },
         { a: 2008, art: "Vetusta Morla", t: "Copenhague", n: "El indie español empieza a llenar salas grandes." },
+        { a: 2008, art: "Florence + The Machine", t: "Dog Days Are Over", n: "Palmas y un coro de liberación." },
         { a: 2009, art: "Love of Lesbian", t: "Club de fans de John Boy", n: "El indie barcelonés y los festivales de verano." },
         { a: 2010, art: "Two Door Cinema Club", t: "What You Know", n: "Indie bailable de festival." }
       ]
@@ -48,12 +49,13 @@ HISTORIAS.push({
     {
       titulo: "El indie de streaming",
       corto: "2010s",
-      periodo: "2013 – 2018",
+      periodo: "2013 – 2022",
       intro: "El indie de los festivales y del streaming.",
       items: [
         { a: 2013, art: "Arctic Monkeys", t: "Do I Wanna Know?", n: "Los Arctic Monkeys se vuelven más lentos y oscuros: su tema más escuchado." },
         { a: 2014, art: "Mac DeMarco", t: "Chamber of Reflection", n: "El indie relajado de dormitorio." },
-        { a: 2018, art: "Carolina Durante", t: "Cayetano", n: "Una burla generacional desde Madrid." }
+        { a: 2018, art: "Carolina Durante", t: "Cayetano", n: "Una burla generacional desde Madrid." },
+        { a: 2022, art: "Florence + The Machine", t: "June", n: "Dance Fever, escrito durante la pandemia." }
       ]
     }
   ]

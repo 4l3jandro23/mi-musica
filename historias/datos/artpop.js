@@ -35,6 +35,7 @@ HISTORIAS.push({
         { a: 2014, art: "FKA twigs", t: "Two Weeks", n: "R&B experimental y baile contemporáneo." },
         { a: 2016, art: "«Lemonade»", t: "Beyoncé publica un «álbum visual»", tipo: "hito", n: "Una película entera acompaña al disco." },
         { a: 2016, art: "Frank Ocean", t: "Nikes", n: "De «Blonde»: R&B íntimo y desestructurado." },
+        { a: 2019, art: "Caroline Polachek", t: "So Hot You're Hurting My Feelings", n: "Viral en TikTok años después de salir." },
         { a: 2022, art: "Kate Bush", t: "Vuelve al número uno 37 años después", tipo: "hito", n: "«Running Up That Hill», gracias a «Stranger Things»." },
         { a: 2022, art: "Rosalía", t: "SAOKO", n: "De «Motomami»: reguetón deformado y jazz en dos minutos." }
       ]

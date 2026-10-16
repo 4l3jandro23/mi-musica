@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "eurodance",
   familia: "Electrónica",
   titulo: "Historia del eurodance",
-  periodo: "1989 – 1998",
+  periodo: "1989 – 2007",
   color: "#2fb5e8",
   lema: "Rap masculino, estribillo femenino y sintes a tope: los 90 en las discotecas de Europa.",
   intro: "La fórmula del eurodance: un productor alemán, italiano o belga, un rapero (a menudo estadounidense), una cantante para el estribillo y un riff de sintetizador imposible de olvidar. Dominó las radios y discotecas de toda Europa de 1990 a 1998. En España vino acompañado de la «ruta del bakalao» valenciana.",
@@ -44,12 +44,13 @@ HISTORIAS.push({
     {
       titulo: "El final pop",
       corto: "Final",
-      periodo: "1996 – 1998",
+      periodo: "1996 – 2007",
       intro: "El eurodance se vuelve pop casi infantil y se despide.",
       items: [
         { a: 1996, art: "Gala", t: "Freed from Desire", n: "Una italiana y un «na na na» que hoy cantan los estadios de fútbol." },
         { a: 1997, art: "Alexia", t: "Uh La La La", n: "Eurodance italiano en clave pop." },
-        { a: 1998, art: "Vengaboys", t: "Boom, Boom, Boom, Boom!!", n: "El eurodance se vuelve dibujos animados." }
+        { a: 1998, art: "Vengaboys", t: "Boom, Boom, Boom, Boom!!", n: "El eurodance se vuelve dibujos animados." },
+        { a: 2007, art: "September", t: "Cry for You", n: "Un eurodance tardío de Suecia que triunfó en toda Europa." }
       ]
     }
   ]

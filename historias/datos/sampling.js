@@ -52,6 +52,7 @@ HISTORIAS.push({
         { a: 2000, art: "The Avalanches", t: "Since I Left You", n: "Un disco hecho con unos 3.500 samples." },
         { a: 2001, art: "Daft Punk", t: "Harder, Better, Faster, Stronger", n: "Un sample de Edwin Birdsong troceado: luego Kanye la volvió a samplear en «Stronger»." },
         { a: 2003, art: "Kanye West", t: "Through the Wire", n: "El «chipmunk soul»: samples de soul acelerados. La grabó con la mandíbula rota." },
+        { a: 2004, art: "Gwen Stefani & Eve", t: "Rich Girl", n: "Toma «If I Were a Rich Man», de El violinista en el tejado." },
         { a: 2006, art: "J Dilla", t: "Workinonit", n: "De «Donuts», grabado con un MPC desde la cama del hospital poco antes de morir. Una obra maestra del beatmaking." }
       ]
     }

@@ -20,7 +20,11 @@ HISTORIAS.push({
         { a: 2020, art: "The Weeknd", t: "Blinding Lights", n: "Su baile se volvió reto en TikTok con familias enteras encerradas en casa." },
         { a: 2020, art: "Dua Lipa", t: "Don't Start Now", n: "«Future Nostalgia»: un disco para bailar en el salón." },
         { a: 2020, art: "Doja Cat", t: "Say So", n: "Una coreografía de TikTok la llevó al número uno." },
-        { a: 2020, art: "Lady Gaga & Ariana Grande", t: "Rain on Me", n: "Bailar bajo la lluvia mientras todo se desmorona." }
+        { a: 2020, art: "Lady Gaga & Ariana Grande", t: "Rain on Me", n: "Bailar bajo la lluvia mientras todo se desmorona." },
+        { a: 2020, art: "Dua Lipa", t: "Physical", n: "Un guiño a Olivia Newton-John, para hacer ejercicio en el salón." },
+        { a: 2020, art: "Lady Gaga", t: "Stupid Love", n: "Chromatica se retrasó por la pandemia; esta salió justo antes." },
+        { a: 2020, art: "Dua Lipa", t: "Break My Heart", n: "Future Nostalgia salió en marzo, en pleno confinamiento." },
+        { a: 2020, art: "Lady Gaga & BLACKPINK", t: "Sour Candy", n: "La colaboración K-pop de Chromatica." }
       ]
     },
     {
@@ -32,6 +36,9 @@ HISTORIAS.push({
         { a: 2020, art: "Fleetwood Mac", t: "Dreams", n: "Un chico en monopatín bebiendo zumo de arándanos la hizo viral 43 años después." },
         { a: 2020, art: "Taylor Swift", t: "cardigan", n: "Dos discos grabados a distancia en confinamiento: «folklore» y «evermore»." },
         { a: 2020, art: "Bad Bunny", t: "Dákiti", n: "Con Jhay Cortez: el reguetón más escuchado de la pandemia." },
+        { a: 2020, art: "Miley Cyrus", t: "Heart of Glass", q: "Miley Cyrus Heart of Glass Live iHeart", n: "La versión de Blondie que Miley cantó en el iHeart Festival virtual de 2020." },
+        { a: 2020, art: "Miley Cyrus", t: "Zombie", q: "Miley Cyrus Zombie Live Save Our Stages", n: "La versión de The Cranberries para salvar las salas de conciertos cerradas por la pandemia." },
+        { a: 2020, art: "Miley Cyrus & Dua Lipa", t: "Prisoner", n: "La Miley rockera de Plastic Hearts." },
         { a: 2021, art: "Nathan Evans", t: "Wellerman", n: "Canciones de marineros grabadas a coro por desconocidos en TikTok." },
         { a: 2021, art: "Olivia Rodrigo", t: "drivers license", n: "Un desamor adolescente que batió récords de escuchas." },
         { a: 2021, art: "Fred again..", t: "Marea (We've Lost Dancing)", n: "La nostalgia de bailar con gente cuando no se podía." },

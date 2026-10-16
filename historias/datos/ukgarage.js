@@ -49,7 +49,8 @@ HISTORIAS.push({
         { a: 2007, art: "Burial", t: "Archangel", n: "El 2-step convertido en fantasma melancólico." },
         { a: 2013, art: "Disclosure", t: "White Noise", n: "Con AlunaGeorge: el garage vuelve a las listas." },
         { a: 2021, art: "PinkPantheress", t: "Pain", n: "Garage nostálgico de TikTok, en canciones de dos minutos." },
-        { a: 2023, art: "Sammy Virji", t: "If U Need It", n: "El nuevo garage de los clubs británicos." }
+        { a: 2023, art: "Sammy Virji", t: "If U Need It", n: "El nuevo garage de los clubs británicos." },
+        { a: 2023, art: "cassö, RAYE & D-Block Europe", t: "Prada", n: "Un garage revivido en TikTok." }
       ]
     }
   ]

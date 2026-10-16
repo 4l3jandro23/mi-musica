@@ -66,6 +66,7 @@ HISTORIAS.push({
         { a: 2004, art: "Eric Prydz", t: "Call on Me", n: "Un sample de Steve Winwood y un vídeo de aeróbic: número uno." },
         { a: 2005, art: "Bob Sinclar", t: "Love Generation", n: "Un silbido feliz: el verano de 2005 en todas partes." },
         { a: 2007, art: "David Guetta", t: "Love Is Gone", n: "Guetta todavía era el DJ de las noches de Ibiza." },
+        { a: 2009, art: "Florence + The Machine", t: "You've Got the Love", n: "Una versión del clásico de Candi Staton." },
         { a: 2010, art: "Swedish House Mafia", t: "One", n: "Tres suecos que llevarían el house a los estadios." },
         { a: 2014, art: "Robin Schulz", t: "Waves (Remix)", n: "El «deep house» de radio que sonó en todas partes en 2014." },
         { a: 2020, art: "Purple Disco Machine", t: "Hypnotized", n: "El nu-disco y el house con cuerdas vuelven a las listas." }

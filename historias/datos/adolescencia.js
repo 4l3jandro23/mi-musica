@@ -21,6 +21,7 @@ HISTORIAS.push({
         { a: 2009, art: "Edward Maya", t: "Stereo Love", n: "Un acordeón y un verano entero." },
         { a: 2009, art: "Owl City", t: "Fireflies", n: "Electropop tierno y nostálgico." },
         { a: 2009, art: "Lady Gaga", t: "Bad Romance", n: "El vídeo más visto de YouTube en su momento." },
+        { a: 2009, art: "Britney Spears", t: "3", n: "Britney vuelve al número uno con un estribillo de contar hasta tres." },
         { a: 2010, art: "Shakira", t: "Waka Waka (This Time for Africa)", n: "El Mundial que ganó España." },
         { a: 2010, art: "Inna", t: "Sun Is Up", n: "El sonido rumano que dominó las discotecas." },
         { a: 2010, art: "Alexandra Stan", t: "Mr. Saxobeat", n: "Saxofón y eurodance rumano." },
@@ -30,7 +31,8 @@ HISTORIAS.push({
         { a: 2010, art: "Bruno Mars", t: "Just the Way You Are", n: "La primera canción de Bruno Mars en solitario." },
         { a: 2010, art: "Rihanna", t: "Only Girl (In the World)", n: "Rihanna en modo dance." },
         { a: 2010, art: "Eminem", t: "Love the Way You Lie", n: "Con Rihanna: uno de los temas más escuchados del año." },
-        { a: 2010, art: "Justin Bieber", t: "Baby", n: "«Baby, baby, baby, oh»: el vídeo con más «no me gusta» de su época." }
+        { a: 2010, art: "Justin Bieber", t: "Baby", n: "«Baby, baby, baby, oh»: el vídeo con más «no me gusta» de su época." },
+        { a: 2010, art: "Kesha", t: "Take It Off", n: "Purpurina y fiesta: Kesha en pleno 2010." }
       ]
     },
     {
@@ -54,11 +56,23 @@ HISTORIAS.push({
         { a: 2011, art: "Flo Rida", t: "Good Feeling", n: "Sampleando a Etta James a través de Avicii." },
         { a: 2011, art: "Nicki Minaj", t: "Super Bass", n: "«Boom, badoom, boom»." },
         { a: 2011, art: "Adele", t: "Rolling in the Deep", n: "Y en medio de tanta fiesta, Adele." },
+        { a: 2011, art: "Britney Spears", t: "Till the World Ends", n: "Bailar hasta que se acabe el mundo, coescrita por Kesha." },
+        { a: 2011, art: "Britney Spears", t: "I Wanna Go", n: "El silbido del estribillo, en todas las discotecas de 2011." },
+        { a: 2011, art: "Lady Gaga", t: "Marry the Night", n: "La que abre Born This Way: Gaga y su pasado en Nueva York." },
+        { a: 2011, art: "Lady Gaga", t: "You and I", n: "Gaga en plan rock de estadio, con Brian May a la guitarra." },
+        { a: 2011, art: "Lady Gaga", t: "Americano", n: "Mariachi, tango y techno: la más rara de Born This Way." },
+        { a: 2011, art: "Avril Lavigne", t: "Smile", n: "«You know that I'm a crazy bitch»: Avril de vuelta al pop-punk." },
+        { a: 2011, art: "Jessie J", t: "Domino", n: "El single más bailable de Jessie J." },
         { a: 2012, art: "PSY", t: "Gangnam Style", n: "El primer vídeo en llegar a mil millones de visitas." },
         { a: 2012, art: "Swedish House Mafia", t: "Don't You Worry Child", n: "La despedida del trío sueco." },
         { a: 2012, art: "Flo Rida", t: "Whistle", n: "Silbar nunca fue tan sospechoso." },
         { a: 2012, art: "Bruno Mars", t: "Locked Out of Heaven", n: "Bruno Mars a lo Police." },
-        { a: 2012, art: "Macklemore & Ryan Lewis", t: "Thrift Shop", n: "Comprar en tiendas de segunda mano." }
+        { a: 2012, art: "Macklemore & Ryan Lewis", t: "Thrift Shop", n: "Comprar en tiendas de segunda mano." },
+        { a: 2012, art: "Kesha", t: "Die Young", n: "Fiesta como si no hubiera mañana." },
+        { a: 2012, art: "Jessie J & David Guetta", t: "LaserLight", n: "Guetta en su apogeo, con la voz de Jessie J." },
+        { a: 2012, art: "Ellie Goulding", t: "Anything Could Happen", n: "Los «oh-oh-oh» de Halcyon." },
+        { a: 2012, art: "Rita Ora", t: "How We Do (Party)", n: "Un himno de fiesta con aire británico." },
+        { a: 2012, art: "Rita Ora & Tinie Tempah", t: "R.I.P.", n: "Coescrita por Drake, número uno en el Reino Unido." }
       ]
     },
     {
@@ -74,10 +88,18 @@ HISTORIAS.push({
         { a: 2013, art: "Robin Thicke", t: "Blurred Lines", n: "Con T.I. y Pharrell: polémica y juicio por plagio a Marvin Gaye." },
         { a: 2013, art: "Martin Garrix", t: "Animals", n: "El himno del big room." },
         { a: 2013, art: "Jason Derulo", t: "Talk Dirty", n: "Con 2 Chainz y un saxofón balcánico." },
+        { a: 2013, art: "Ellie Goulding", t: "Stay Awake", n: "Coproducida con Madeon para la reedición Halcyon Days." },
         { a: 2014, art: "Mark Ronson", t: "Uptown Funk", n: "Con Bruno Mars: funk para todas las bodas." },
         { a: 2014, art: "Meghan Trainor", t: "All About That Bass", n: "Doo-wop pegadizo." },
+        { a: 2014, art: "Ariana Grande & Zedd", t: "Break Free", n: "Ariana se pasa al EDM con Zedd." },
+        { a: 2014, art: "Sia", t: "Bring Night", n: "La más luminosa de 1000 Forms of Fear." },
         { a: 2015, art: "OMI", t: "Cheerleader (Felix Jaehn Remix)", q: "OMI Cheerleader Felix Jaehn", n: "El verano del tropical house." },
-        { a: 2015, art: "Major Lazer", t: "Lean On", n: "Con DJ Snake y MØ: uno de los temas más escuchados de Spotify de su época." }
+        { a: 2015, art: "Major Lazer", t: "Lean On", n: "Con DJ Snake y MØ: uno de los temas más escuchados de Spotify de su época." },
+        { a: 2015, art: "Ariana Grande", t: "One Last Time", n: "La que se convirtió en un himno tras el atentado de Mánchester en 2017." },
+        { a: 2015, art: "Taylor Swift & Kendrick Lamar", t: "Bad Blood", n: "Un vídeo lleno de famosas en plan película de acción." },
+        { a: 2015, art: "Carly Rae Jepsen", t: "I Really Like You", n: "Con Tom Hanks en el vídeo: el «really, really, really»." },
+        { a: 2015, art: "Jess Glynne", t: "Hold My Hand", n: "El pop soul británico de 2015." },
+        { a: 2015, art: "Florence + The Machine", t: "Ship to Wreck", n: "Florence en plan rock, en How Big, How Blue, How Beautiful." }
       ]
     }
   ]

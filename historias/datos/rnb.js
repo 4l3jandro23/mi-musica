@@ -46,7 +46,10 @@ HISTORIAS.push({
         { a: 2004, art: "Usher", t: "Yeah!", n: "Con Lil Jon y Ludacris: el «crunk&B»." },
         { a: 2004, art: "Alicia Keys", t: "If I Ain't Got You", n: "Piano y una voz enorme." },
         { a: 2006, art: "Ne-Yo", t: "So Sick", n: "Compositor de éxitos para otros, y para sí mismo." },
-        { a: 2008, art: "Beyoncé", t: "Single Ladies (Put a Ring on It)", n: "Una coreografía que todo el mundo intentó copiar." }
+        { a: 2006, art: "Nelly Furtado & Timbaland", t: "Promiscuous", n: "Timbaland lleva a Nelly al R&B." },
+        { a: 2006, art: "Nelly Furtado", t: "Say It Right", n: "La más hipnótica de Loose, producida por Timbaland." },
+        { a: 2008, art: "Beyoncé", t: "Single Ladies (Put a Ring on It)", n: "Una coreografía que todo el mundo intentó copiar." },
+        { a: 2008, art: "Madonna, Justin Timberlake & Timbaland", t: "4 Minutes", n: "Madonna se suma a la era Timbaland." }
       ]
     },
     {
@@ -61,7 +64,8 @@ HISTORIAS.push({
         { a: 2016, art: "Beyoncé", t: "Formation", n: "De «Lemonade»: R&B político y visual." },
         { a: 2017, art: "SZA", t: "Love Galore", n: "Con Travis Scott: «Ctrl», un disco de culto." },
         { a: 2020, art: "Giveon", t: "Heartbreak Anniversary", n: "Una voz grave que se volvió viral." },
-        { a: 2022, art: "SZA", t: "Kill Bill", n: "Una canción dulce sobre matar a tu ex: número uno en EE. UU." }
+        { a: 2022, art: "SZA", t: "Kill Bill", n: "Una canción dulce sobre matar a tu ex: número uno en EE. UU." },
+        { a: 2022, art: "RAYE & 070 Shake", t: "Escapism.", n: "Su primer número uno en el Reino Unido, ya como artista independiente." }
       ]
     }
   ]

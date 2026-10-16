@@ -50,6 +50,7 @@ HISTORIAS.push({
         { a: 1998, art: "Shania Twain", t: "You're Still the One", n: "El country pop más vendido." },
         { a: 2002, art: "Johnny Cash", t: "Hurt", n: "Una canción de Nine Inch Nails cantada por un Cash anciano: despedida desgarradora." },
         { a: 2006, art: "Taylor Swift", t: "Tim McGraw", n: "El debut de una chica de 16 años que acabaría siendo la mayor estrella del mundo." },
+        { a: 2017, art: "Bebe Rexha & Florida Georgia Line", t: "Meant to Be", n: "Récord de semanas en el número uno de country." },
         { a: 2018, art: "Kacey Musgraves", t: "Slow Burn", n: "Country psicodélico y suave: ganó el Grammy al disco del año." },
         { a: 2019, art: "Lil Nas X", t: "Old Town Road", n: "Country y trap: 19 semanas número uno, un récord." },
         { a: 2022, art: "Zach Bryan", t: "Something in the Orange", n: "Un exmilitar grabando en su casa: el country más honesto." },

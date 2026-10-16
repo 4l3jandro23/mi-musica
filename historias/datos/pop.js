@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "pop",
   familia: "Pop",
   titulo: "Historia del pop",
-  periodo: "1956 – 2022",
+  periodo: "1956 – 2023",
   color: "#ff6fae",
   lema: "Setenta años de canciones para todo el mundo: de Doris Day a The Weeknd.",
   intro: "«Pop» viene de «popular»: canciones hechas para gustar a mucha gente, con estribillos que se recuerdan. Cada década lo reinventa con su tecnología: la radio, la televisión, el vídeo musical, la MTV, el CD y hoy el streaming y TikTok. Un recorrido por los grandes momentos, década a década.",
@@ -47,6 +47,7 @@ HISTORIAS.push({
         { a: 1984, art: "Wham!", t: "Wake Me Up Before You Go-Go", n: "George Michael y la alegría de los 80." },
         { a: 1985, art: "Live Aid", t: "Dos conciertos para Etiopía", tipo: "hito", n: "Londres y Filadelfia a la vez, vistos por cientos de millones de personas." },
         { a: 1987, art: "Whitney Houston", t: "I Wanna Dance with Somebody (Who Loves Me)", n: "La gran voz del pop." },
+        { a: 1987, art: "Madonna", t: "La Isla Bonita", n: "Madonna se va a San Pedro con guitarra española." },
         { a: 1989, art: "Madonna", t: "Like a Prayer", n: "Gospel y polémica: el Vaticano y Pepsi contra Madonna." }
       ]
     },
@@ -57,6 +58,8 @@ HISTORIAS.push({
       intro: "Boy bands, divas y el boom latino.",
       items: [
         { a: 1995, art: "Mariah Carey", t: "Fantasy", n: "Pop y hip hop juntos, con un sample de Tom Tom Club." },
+        { a: 1998, art: "Cher", t: "Believe", n: "El primer gran éxito con Auto-Tune usado a propósito." },
+        { a: 1998, art: "Madonna", t: "Ray of Light", n: "Madonna se pasa a la electrónica con William Orbit." },
         { a: 1999, art: "Backstreet Boys", t: "I Want It That Way", n: "La letra no tiene sentido y da igual." },
         { a: 1999, art: "Christina Aguilera", t: "Genie in a Bottle", n: "La otra gran estrella pop del fin de siglo." },
         { a: 1999, art: "Ricky Martin", t: "Livin' la Vida Loca", n: "El boom latino en el pop en inglés." },
@@ -69,14 +72,15 @@ HISTORIAS.push({
     {
       titulo: "La era del streaming",
       corto: "Streaming",
-      periodo: "2008 – 2022",
+      periodo: "2008 – 2023",
       intro: "Spotify, TikTok y el pop global.",
       items: [
         { a: 2008, art: "Spotify", t: "Nace en Suecia", tipo: "hito", n: "En pocos años cambia cómo escucha música el mundo entero." },
         { a: 2013, art: "Lorde", t: "Royals", n: "Una chica de 16 años de Nueva Zelanda contra el lujo del pop." },
         { a: 2018, art: "TikTok", t: "Llega a Occidente", tipo: "hito", n: "Una canción viral puede triunfar en una semana." },
         { a: 2019, art: "The Weeknd", t: "Blinding Lights", n: "Sintetizadores ochenteros: la canción más escuchada de la historia de Spotify." },
-        { a: 2022, art: "Harry Styles", t: "As It Was", n: "De boy band a estrella mundial." }
+        { a: 2022, art: "Harry Styles", t: "As It Was", n: "De boy band a estrella mundial." },
+        { a: 2023, art: "Troye Sivan", t: "Rush", n: "Pop de discoteca y gay, el himno del verano de 2023." }
       ]
     }
   ]

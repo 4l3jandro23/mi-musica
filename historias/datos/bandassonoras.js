@@ -50,6 +50,7 @@ HISTORIAS.push({
         { a: 1985, art: "Alan Silvestri", t: "Back to the Future", n: "La aventura en estado puro." },
         { a: 1985, art: "Koji Kondo", t: "Super Mario Bros.: Ground Theme", q: "Koji Kondo Super Mario Bros Ground Theme", n: "Los videojuegos también tienen bandas sonoras inolvidables." },
         { a: 1986, art: "Kenny Loggins", t: "Danger Zone", n: "De «Top Gun»: los 80 en estado puro." },
+        { a: 1987, art: "Madonna", t: "Who's That Girl", n: "Tema de su película del mismo nombre." },
         { a: 1990, art: "Angelo Badalamenti", t: "Twin Peaks Theme", n: "La serie de Lynch y una música de ensueño inquietante." }
       ]
     },
@@ -63,19 +64,27 @@ HISTORIAS.push({
         { a: 1997, art: "«Titanic»", t: "La banda sonora orquestal más vendida de la historia", tipo: "hito", n: "James Horner y una flauta irlandesa." },
         { a: 1997, art: "Nobuo Uematsu", t: "One-Winged Angel", n: "De «Final Fantasy VII»: coro latino y orquesta en un videojuego." },
         { a: 1997, art: "Céline Dion", t: "My Heart Will Go On", n: "De «Titanic»: una de las canciones más vendidas de la historia." },
+        { a: 1997, art: "LeAnn Rimes", t: "How Do I Live", n: "Escrita para Con Air (en la película suena la de Trisha Yearwood); la de LeAnn batió récords de semanas en el Billboard." },
         { a: 2000, art: "Hans Zimmer", t: "Now We Are Free", n: "Con Lisa Gerrard, de «Gladiator»." },
+        { a: 2000, art: "LeAnn Rimes", t: "Can't Fight the Moonlight", n: "Bailando sobre la barra en El bar Coyote." },
         { a: 2001, art: "Yann Tiersen", t: "Comptine d'un autre été, l'après-midi", n: "De «Amélie»: el piano que aprendió a tocar media generación." },
         { a: 2001, art: "Joe Hisaishi", t: "One Summer's Day", n: "De «El viaje de Chihiro»: el compositor de Studio Ghibli." },
         { a: 2001, art: "Howard Shore", t: "Concerning Hobbits", n: "De «El señor de los anillos»: la Comarca." },
         { a: 2001, art: "John Williams", t: "Hedwig's Theme", n: "La celesta de Harry Potter." },
+        { a: 2001, art: "Christina Aguilera, Lil' Kim, Mýa & P!nk", t: "Lady Marmalade", n: "Para Moulin Rouge!, la versión de LaBelle." },
         { a: 2003, art: "Klaus Badelt", t: "He's a Pirate", n: "De «Piratas del Caribe»." },
         { a: 2010, art: "Hans Zimmer", t: "Time", n: "De «Origen»: cuatro acordes que crecen sin parar." },
         { a: 2010, art: "Trent Reznor & Atticus Ross", t: "Hand Covers Bruise", n: "De «La red social»: electrónica inquietante que ganó el Óscar." },
         { a: 2011, art: "Ramin Djawadi", t: "Main Title", q: "Ramin Djawadi Game of Thrones Main Title", n: "La sintonía de «Juego de tronos»." },
         { a: 2014, art: "Hans Zimmer", t: "Cornfield Chase", n: "De «Interstellar»: un órgano de iglesia en el espacio." },
+        { a: 2015, art: "Ellie Goulding", t: "Love Me Like You Do", n: "La canción de Cincuenta sombras de Grey." },
         { a: 2016, art: "Justin Hurwitz", t: "Mia & Sebastian's Theme", n: "De «La La Land»: el jazz vuelve al musical." },
+        { a: 2018, art: "Lady Gaga & Bradley Cooper", t: "Shallow", n: "Ha nacido una estrella: Óscar a la mejor canción." },
         { a: 2019, art: "Hildur Guðnadóttir", t: "Bathroom Dance", n: "De «Joker»: un violonchelo que ganó el Óscar." },
-        { a: 2023, art: "Ludwig Göransson", t: "Can You Hear the Music", n: "De «Oppenheimer»: violines frenéticos y otro Óscar." }
+        { a: 2020, art: "Billie Eilish", t: "No Time To Die", n: "La canción Bond más joven: Billie tenía 18 años." },
+        { a: 2023, art: "Ludwig Göransson", t: "Can You Hear the Music", n: "De «Oppenheimer»: violines frenéticos y otro Óscar." },
+        { a: 2023, art: "Dua Lipa", t: "Dance the Night", n: "La fiesta disco de Barbie." },
+        { a: 2023, art: "Billie Eilish", t: "What Was I Made For?", n: "La balada de Barbie: Óscar a la mejor canción." }
       ]
     }
   ]

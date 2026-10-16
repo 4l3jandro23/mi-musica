@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "edm",
   familia: "Electrónica",
   titulo: "La era EDM",
-  periodo: "2009 – 2016",
+  periodo: "2009 – 2017",
   color: "#ff8a00",
   lema: "Festivales gigantes, DJs estrella y drops para millones: moombahton, trap EDM y future bass.",
   intro: "Hacia 2010, la electrónica se convierte en el pop de Estados Unidos con el nombre de «EDM» (Electronic Dance Music). Los DJs cobran como estrellas de rock, festivales como Ultra, EDC o Tomorrowland venden millones de entradas y cada año surge un subgénero nuevo. (El big room, el brostep, el progressive y el future house tienen su propia historia.)",
@@ -10,7 +10,7 @@ HISTORIAS.push({
     {
       titulo: "El boom",
       corto: "El boom",
-      periodo: "2009 – 2016",
+      periodo: "2009 – 2017",
       intro: "DJs estrella, festivales gigantes y el pop electrónico.",
       items: [
         { a: 2009, art: "David Guetta", t: "Sexy Bitch", n: "Con Akon: el DJ francés convierte el house en el sonido de la radio americana." },
@@ -18,7 +18,10 @@ HISTORIAS.push({
         { a: 2012, art: "Zedd", t: "Clarity", n: "Con Foxes: el EDM melódico gana un Grammy." },
         { a: 2014, art: "Calvin Harris", t: "Summer", n: "El DJ mejor pagado del mundo durante años." },
         { a: 2016, art: "The Chainsmokers", t: "Closer", n: "Con Halsey: 12 semanas número uno. El EDM ya es pop puro." },
-        { a: 2016, art: "Marshmello", t: "Alone", n: "Un DJ con un casco de nube: el EDM para adolescentes." }
+        { a: 2016, art: "Marshmello", t: "Alone", n: "Un DJ con un casco de nube: el EDM para adolescentes." },
+        { a: 2017, art: "Sia, David Guetta & Afrojack", t: "Helium", n: "Una balada de Sia convertida en EDM de festival." },
+        { a: 2017, art: "Sia & Alan Walker", t: "Move Your Body (Alan Walker Remix)", n: "Alan Walker lleva a Sia a su sonido nórdico." },
+        { a: 2017, art: "Hailee Steinfeld & Alesso", t: "Let Me Go", n: "EDM con aire country, con Florida Georgia Line." }
       ]
     },
     {
