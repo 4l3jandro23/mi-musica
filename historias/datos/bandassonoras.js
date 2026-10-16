@@ -35,6 +35,7 @@ HISTORIAS.push({
       intro: "Canciones pop, western italiano y música clásica en el cine.",
       items: [
         { a: 1966, art: "Ennio Morricone", t: "The Good, the Bad and the Ugly", n: "El aullido de El bueno, el feo y el malo: el wéstern italiano en tres notas." },
+        { a: 1967, art: "«El graduado»", t: "El cine cambia la partitura por canciones pop", tipo: "hito", n: "Mike Nichols usa canciones de Simon & Garfunkel: nace la banda sonora como recopilatorio." },
         { a: 1968, art: "Simon & Garfunkel", t: "Mrs. Robinson", n: "De «El graduado»: el cine usa canciones pop para contar la historia." },
         { a: 1968, art: "Ennio Morricone", t: "Man with a Harmonica", n: "De «Hasta que llegó su hora»: una armónica que da escalofríos." },
         { a: 1968, art: "Richard Strauss", t: "Also sprach Zarathustra", n: "Kubrick usa música clásica en «2001: Una odisea del espacio» y la convierte en icono." },
@@ -54,6 +55,7 @@ HISTORIAS.push({
         { a: 1976, art: "Bill Conti", t: "Gonna Fly Now", n: "Rocky subiendo las escaleras de Filadelfia." },
         { a: 1977, art: "John Williams", t: "Star Wars: Main Title", n: "La fanfarria que devolvió la orquesta sinfónica al cine." },
         { a: 1977, art: "Bee Gees", t: "Stayin' Alive", n: "De «Fiebre del sábado noche»: el disco de una película se vende como nunca." },
+        { a: 1978, art: "«Fiebre del sábado noche» y «Grease»", t: "Las bandas sonoras arrasan en ventas", tipo: "hito", n: "La de Fiebre del sábado noche fue el disco más vendido de la historia hasta Thriller." },
         { a: 1978, art: "John Travolta & Olivia Newton-John", t: "Summer Nights", n: "Grease: el verano contado por los dos lados." },
         { a: 1978, art: "John Travolta & Olivia Newton-John", t: "You're the One That I Want", n: "El final de Grease, con Sandy vestida de cuero negro." },
         { a: 1980, art: "Vangelis", t: "Heaven and Hell, Part 1", q: "Vangelis Cosmos theme Heaven and Hell", n: "El tema de Cosmos, la serie de Carl Sagan." },
