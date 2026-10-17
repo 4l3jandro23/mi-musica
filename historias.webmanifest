@@ -5,8 +5,8 @@
   "start_url": "historias.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f6f2ec",
-  "theme_color": "#c47a0a",
+  "background_color": "#100e16",
+  "theme_color": "#5b3fe0",
   "icons": [
     { "src": "historias/icono-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "historias/icono-512.png", "sizes": "512x512", "type": "image/png" },
