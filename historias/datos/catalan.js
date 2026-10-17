@@ -45,12 +45,13 @@ HISTORIAS.push({
       ]
     },
     {
-      titulo: "Pop, indie y una nueva generación",
-      corto: "Siglo XXI",
-      periodo: "2000 – 2019",
+      titulo: "Pop, rock y festa",
+      corto: "Pop y festa",
+      periodo: "2000 – 2010",
       intro: "Pop, indie, dancehall y rumba: el catalán suena en todos los estilos.",
       items: [
         { a: 2000, art: "Lax'n'Busto", t: "Llença't", n: "Premio al mejor disco en catalán." },
+        { a: 2001, art: "Sopa de Cabra", t: "Se despiden", tipo: "hito", n: "Tras «Plou i fa sol», el grupo más popular del rock català lo deja: empieza la era del pop y la rumba festiva." },
         { a: 2001, art: "Sopa de Cabra", t: "Els teus somnis", n: "Del disco «Plou i fa sol», el último antes de su larga pausa." },
         { a: 2002, art: "Antònia Font", t: "Wa Yeah!", n: "Antònia Font, desde Mallorca, con un pop surrealista de astronautas y robots." },
         { a: 2005, art: "Gossos", t: "Alguna cosa", n: "Pop acústico de Manresa." },
@@ -59,10 +60,19 @@ HISTORIAS.push({
         { a: 2008, art: "Manel", t: "Al mar!", n: "Indie pop con letras ingeniosas: un fenómeno inesperado." },
         { a: 2008, art: "Teràpia de Shock", t: "Sense tu", n: "Mejor grupo revelación de los premios Enderrock." },
         { a: 2009, art: "La Pegatina", t: "Gat rumberu", n: "La rumba festiva de Montcada, del disco «Via Mandarina»." },
-        { a: 2010, art: "Mishima", t: "Qui n'ha begut", n: "El indie barcelonés." },
+        { a: 2010, art: "Mishima", t: "Qui n'ha begut", n: "El indie barcelonés." }
+      ]
+    },
+    {
+      titulo: "Una nueva generación",
+      corto: "Nueva generación",
+      periodo: "2011 – 2019",
+      intro: "2011 – 2019: Els Catarres, Txarango, Buhos y el pop en catalán que llena festivales.",
+      items: [
         { a: 2011, art: "Els Catarres", t: "Jenifer", n: "Un amor imposible entre un chico de pueblo y una chica de Castelldefels." },
         { a: 2011, art: "Manel", t: "Boomerang", n: "Manel, uno de los grupos más importantes de la música catalana de los 2010." },
         { a: 2011, art: "La Pegatina", t: "Mari Carmen", n: "Del disco «Xapomelön»." },
+        { a: 2011, art: "Sopa de Cabra", t: "Vuelven diez años después", n: "El grupo más popular del rock català, separado en 2001, vuelve a los escenarios y llena el Palau Sant Jordi.", tipo: "hito" },
         { a: 2012, art: "Sílvia Pérez Cruz", t: "Vestida de nit", n: "Una de las grandes voces catalanas." },
         { a: 2012, art: "Joan Dausà", t: "Jo mai mai", n: "Pop catalán." },
         { a: 2012, art: "Andreu Rifé", t: "Fil de llum", n: "La canción de la serie de TV3 «Polseres vermelles»." },

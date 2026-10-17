@@ -64,7 +64,7 @@ HISTORIAS.push({
     {
       titulo: "El final pop",
       corto: "Final",
-      periodo: "1996 – 2009",
+      periodo: "1996 – 2000",
       intro: "El eurodance se vuelve pop casi infantil y se despide.",
       items: [
         { a: 1996, art: "Gala", t: "Freed from Desire", n: "Una italiana y un «na na na» que hoy cantan los estadios de fútbol." },
@@ -87,7 +87,15 @@ HISTORIAS.push({
         { a: 2000, art: "French Affair", t: "Sexy", n: "Eurodance francés con estribillo a lo «Sexy, sexy»." },
         { a: 2000, art: "French Affair", t: "My Heart Goes Boom", n: "El «la di da di da» de las discotecas del cambio de siglo." },
         { a: 2000, art: "Prezioso feat. Marvin", t: "The Riddle", n: "La versión italiana de Nik Kershaw: la misma que luego rehízo Gigi D'Agostino." },
-        { a: 2000, art: "A Touch of Class", t: "Around the World (La La La La La)", n: "Versión de «Pesenka», del grupo ruso Ruki Vverh: el «la la la» de todas las fiestas." },
+        { a: 2000, art: "A Touch of Class", t: "Around the World (La La La La La)", n: "Versión de «Pesenka», del grupo ruso Ruki Vverh: el «la la la» de todas las fiestas." }
+      ]
+    },
+    {
+      titulo: "Hands up y Basshunter",
+      corto: "Hands up",
+      periodo: "2002 – 2009",
+      intro: "2002 – 2009: el eurodance vuelve con Kate Ryan, Cascada y el hands up alemán y sueco.",
+      items: [
         { a: 2002, art: "DJ BoBo", t: "Chihuahua", n: "El suizo DJ BoBo y el anuncio de Coca-Cola." },
         { a: 2002, art: "Kate Ryan", t: "Désenchantée", n: "La canción de Mylène Farmer pasada a dance." },
         { a: 2005, art: "Cascada", t: "Everytime We Touch", n: "Hands up alemán: número dos en Reino Unido." },
@@ -101,6 +109,7 @@ HISTORIAS.push({
         { a: 2008, art: "Basshunter", t: "Angel in the Night", n: "Eurodance de la década de 2000." },
         { a: 2008, art: "Basshunter", t: "I Can Walk on Water", n: "Del disco «Now You're Gone»." },
         { a: 2008, art: "Kate Ryan", t: "Ella elle l'a", n: "France Gall en clave dance." },
+        { a: 2008, art: "Basshunter", t: "Un sueco número uno en Reino Unido", n: "«Now You're Gone» pasa cinco semanas en el número uno británico: el eurodance resucita gracias a internet.", tipo: "hito" },
         { a: 2009, art: "ItaloBrothers", t: "Stamp on the Ground", n: "El hands up alemán: el eurodance resucita en internet." }
       ]
     }

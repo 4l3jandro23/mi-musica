@@ -115,9 +115,9 @@ HISTORIAS.push({
       ]
     },
     {
-      titulo: "Romanticismo tardío y nacionalismos",
-      corto: "Nacionalismos",
-      periodo: "1858 – 1902",
+      titulo: "Romanticismo tardío",
+      corto: "Romanticismo tardío",
+      periodo: "1858 – 1880",
       intro: "Cada país busca su propia voz en su folclore, y las orquestas se vuelven gigantes.",
       items: [
         { a: 1858, art: "Jacques Offenbach", t: "Orphée aux enfers: Galop infernal", q: "Offenbach Orphee aux enfers Galop infernal", n: "El cancán de las bailarinas de París." },
@@ -137,10 +137,19 @@ HISTORIAS.push({
         { a: 1877, art: "Pyotr Ilyich Tchaikovsky", t: "Swan Lake", n: "El ballet más famoso del mundo." },
         { a: 1878, art: "Pablo de Sarasate", t: "Zigeunerweisen", n: "El violinista pamplonés que conquistó Europa: aires gitanos endiablados." },
         { a: 1880, art: "Pyotr Ilyich Tchaikovsky", t: "1812 Overture", n: "Tchaikovsky celebra la derrota de Napoleón en Rusia: la partitura pide cañonazos de verdad y campanas." },
-        { a: 1880, art: "Gabriel Fauré", t: "Élégie", n: "Una elegía para violonchelo; aquí con Sheku Kanneh-Mason." },
+        { a: 1880, art: "Gabriel Fauré", t: "Élégie", n: "Una elegía para violonchelo; aquí con Sheku Kanneh-Mason." }
+      ]
+    },
+    {
+      titulo: "Nacionalismos y fin de siglo",
+      corto: "Fin de siglo",
+      periodo: "1886 – 1902",
+      intro: "1881 – 1902: Grieg, Dvořák, Albéniz y Satie miran a su país o a otros mundos.",
+      items: [
         { a: 1886, art: "Camille Saint-Saëns", t: "The Carnival of the Animals: The Swan", n: "Un violonchelo que se desliza como un cisne." },
         { a: 1888, art: "Erik Satie", t: "Gymnopédie No. 1", n: "Lenta y extraña: abre la puerta a la música del siglo XX." },
         { a: 1888, art: "Nikolai Rimsky-Korsakov", t: "Scheherazade: The Tale of the Kalendar Prince", n: "Las mil y una noches en la orquesta." },
+        { a: 1889, art: "Exposición Universal de París", t: "Debussy escucha el gamelán", n: "Una orquesta de gamelán de Java toca en la Exposición de París y Debussy queda fascinado: la música europea empieza a mirar fuera.", tipo: "hito" },
         { a: 1890, art: "Enrique Granados", t: "Danza española No. 5 \"Andaluza\"", n: "Un catalán que imagina Andalucía al piano." },
         { a: 1890, art: "Erik Satie", t: "Gnossienne No. 1", n: "Sin líneas divisorias de compás y con indicaciones extrañas para el pianista." },
         { a: 1892, art: "Isaac Albéniz", t: "Asturias (Leyenda)", n: "Escrita para piano, convertida en la gran pieza de la guitarra española." },

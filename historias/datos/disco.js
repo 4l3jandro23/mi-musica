@@ -31,7 +31,7 @@ HISTORIAS.push({
     {
       titulo: "La fiebre",
       corto: "La fiebre",
-      periodo: "1976 – 1979",
+      periodo: "1976 – 1977",
       intro: "Studio 54, «Fiebre del sábado noche» y la disco en todas partes.",
       items: [
         { a: 1976, art: "ABBA", t: "Dancing Queen", n: "El pop sueco se pone disco: su único número uno en EE. UU." },
@@ -54,7 +54,15 @@ HISTORIAS.push({
         { a: 1977, art: "Donna Summer", t: "I Feel Love", n: "Giorgio Moroder hace la base solo con sintetizadores: nace la música electrónica de baile." },
         { a: 1977, art: "Bee Gees", t: "Stayin' Alive", n: "John Travolta caminando por Brooklyn." },
         { a: 1977, art: "Bee Gees", t: "More Than a Woman", n: "Otra de «Fiebre del sábado noche»." },
-        { a: 1977, art: "John Paul Young", t: "Love Is in the Air", n: "Un éxito australiano que se oye en todas las bodas." },
+        { a: 1977, art: "John Paul Young", t: "Love Is in the Air", n: "Un éxito australiano que se oye en todas las bodas." }
+      ]
+    },
+    {
+      titulo: "El apogeo",
+      corto: "Apogeo",
+      periodo: "1978 – 1979",
+      intro: "1978 – 1979: la disco está en todas partes, hasta en los discos de rock.",
+      items: [
         { a: 1978, art: "Chic", t: "Le Freak", n: "La guitarra de Nile Rodgers y el bajo de Bernard Edwards: elegancia funk." },
         { a: 1978, art: "Village People", t: "Y.M.C.A.", n: "Un guiño a la cultura gay que el mundo entero baila sin saberlo." },
         { a: 1978, art: "Gloria Gaynor", t: "I Will Survive", n: "Era la cara B del single. Se convirtió en himno de supervivencia." },
@@ -66,7 +74,7 @@ HISTORIAS.push({
         { a: 1978, art: "Chaka Khan", t: "I'm Every Woman", n: "Su primer single en solitario, escrito por Ashford & Simpson." },
         { a: 1978, art: "Hot Chocolate", t: "Every 1's a Winner", n: "Funk de guitarra para la pista." },
         { a: 1978, art: "The Jacksons", t: "Blame It on the Boogie", n: "Michael Jackson y sus hermanos, ya fuera de Motown." },
-        { a: 1979, art: "Disco Demolition Night", t: "«La disco ha muerto»", tipo: "hito", n: "Queman discos de disco en un estadio de Chicago: una reacción racista y homófoba." },
+        { a: 1978, art: "El rock se pasa a la disco", t: "Todos quieren su éxito de pista", n: "Los Rolling Stones con «Miss You», Rod Stewart con «Da Ya Think I'm Sexy?» y luego Kiss con «I Was Made for Lovin' You»: hasta el rock graba canciones disco.", tipo: "hito" },
         { a: 1979, art: "Sister Sledge", t: "We Are Family", n: "Nile Rodgers y Bernard Edwards, de Chic, la escribieron y produjeron para Sister Sledge. Se convirtió en himno de unidad." },
         { a: 1979, art: "Michael Jackson", t: "Don't Stop 'Til You Get Enough", n: "De «Off the Wall», con Quincy Jones." },
         { a: 1979, art: "Patrick Hernandez", t: "Born to Be Alive", n: "Un francés con apellido español: éxito mundial (y una joven Madonna en su gira)." },
