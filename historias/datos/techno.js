@@ -37,6 +37,7 @@ HISTORIAS.push({
         { a: 1993, art: "Galaxy 2 Galaxy", t: "Hi-Tech Jazz", n: "Underground Resistance, el colectivo militante de Detroit, en su versión más bonita." },
         { a: 1993, art: "Plastikman", t: "Spastik", n: "Richie Hawtin: solo percusión. El minimal en estado puro." },
         { a: 1994, art: "Robert Hood", t: "Minimal Nation", tipo: "disco", n: "El disco que define el techno minimal." },
+        { a: 1994, art: "The Immortals", t: "Techno Syndrome (Mortal Kombat)", n: "El «¡Mortal Kombat!» de la película: el techno de los 90 llega a todos los críos." },
         { a: 1995, art: "Josh Wink", t: "Higher State of Consciousness", n: "El acid más famoso." },
         { a: 1995, art: "Green Velvet", t: "Flash", n: "Techno de Chicago con humor." },
         { a: 1996, art: "Jeff Mills", t: "Changes of Life", n: "Del EP «Purpose Maker»." },
@@ -52,6 +53,7 @@ HISTORIAS.push({
       intro: "Clubs que abren de sábado a lunes, el minimal, el techno melódico y la vuelta al techno duro.",
       items: [
         { a: 2000, art: "Laurent Garnier", t: "The Man with the Red Face", n: "Un saxofón sobre techno: el gran DJ francés." },
+        { a: 2001, art: "Richie Hawtin", t: "Minus/Orange 1", n: "El minimal de Hawtin y su sello Minus: menos es más." },
         { a: 2004, art: "Berghain", t: "Abre el club más famoso del mundo", tipo: "hito", n: "En una antigua central eléctrica de Berlín: sin móviles, sin fotos y con una puerta legendaria." },
         { a: 2006, art: "Ricardo Villalobos", t: "Fizheuer Zieheuer", n: "Treinta y siete minutos de minimal hipnótico con una melodía balcánica." },
         { a: 2007, art: "Dubfire", t: "RibCage", n: "El minimal de Deep Dish." },

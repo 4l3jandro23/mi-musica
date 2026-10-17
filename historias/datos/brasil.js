@@ -51,6 +51,7 @@ HISTORIAS.push({
         { a: 1968, art: "Os Mutantes", t: "Panis et Circenses", n: "El rock psicodélico más loco de los 60, en portugués." },
         { a: 1969, art: "Caetano y Gil", t: "Detenidos y exiliados", tipo: "hito", n: "La dictadura los encarcela y los manda a Londres. Volverían en 1972." },
         { a: 1970, art: "Tim Maia", t: "Azul da Cor do Mar", n: "El soul brasileño: Tim Maia volvió de EE. UU. con el groove." },
+        { a: 1970, art: "O Terço", t: "Adormeceu", n: "El rock progresivo brasileño de los 70." },
         { a: 1971, art: "Chico Buarque", t: "Construção", n: "Una obra maestra: cada verso acaba en una palabra esdrújula. Crítica social disfrazada." },
         { a: 1972, art: "Milton Nascimento", t: "Clube da Esquina", tipo: "disco", n: "Con Lô Borges, desde Minas Gerais: uno de los mejores discos de la historia." },
         { a: 1972, art: "Novos Baianos", t: "Preta Pretinha", n: "Hippies en una comuna mezclando samba, choro y rock." },

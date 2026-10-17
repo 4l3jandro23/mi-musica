@@ -33,6 +33,7 @@ HISTORIAS.push({
       items: [
         { a: 1976, art: "Shakti", t: "Shakti with John McLaughlin", tipo: "disco", n: "Jazz y música clásica india con Zakir Hussain a la tabla." },
         { a: 1980, art: "Nazia Hassan", t: "Aap Jaisa Koi", n: "Una adolescente pakistaní lleva el disco al cine indio." },
+        { a: 1981, art: "Lata Mangeshkar & S. P. Balasubrahmanyam", t: "Tere Mere Beech Mein", n: "El dúo de «Ek Duuje Ke Liye», una de las grandes canciones de amor de Bollywood." },
         { a: 1982, art: "Bollywood disco", t: "«Disco Dancer» triunfa en la URSS", tipo: "hito", n: "La música de Bappi Lahiri se hace global." },
         { a: 1982, art: "Parvati Khan", t: "Jimmy Jimmy Aaja", n: "De «Disco Dancer»: Bappi Lahiri y la fiebre disco. Arrasó en la URSS." },
         { a: 1982, art: "Charanjit Singh", t: "Synthesizing: Ten Ragas to a Disco Beat", tipo: "disco", n: "Ragas con una TB-303: hoy se dice que inventó el acid house cinco años antes de Chicago." },

@@ -42,7 +42,8 @@ HISTORIAS.push({
         { a: 1966, art: "Baden Powell & Vinicius de Moraes", t: "Canto de Ossanha", n: "Os Afro-Sambas: la bossa se acerca a las raíces africanas." },
         { a: 1966, art: "Chico Buarque", t: "A banda", n: "El festival de 1966." },
         { a: 1967, art: "Frank Sinatra & Antonio Carlos Jobim", t: "Quiet Nights of Quiet Stars (Corcovado)", n: "Sinatra graba un disco entero con Jobim en 1967: la Voz se rinde a la bossa nova con un susurro." },
-        { a: 1967, art: "Caetano Veloso", t: "Coração vagabundo", n: "El primer Caetano." }
+        { a: 1967, art: "Caetano Veloso", t: "Coração vagabundo", n: "El primer Caetano." },
+        { a: 1967, art: "Luiz Bonfá", t: "Seville", n: "La guitarra del autor de «Manhã de Carnaval»." }
       ]
     },
     {

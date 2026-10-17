@@ -63,7 +63,8 @@ HISTORIAS.push({
         { a: 1988, art: "N.W.A", t: "Straight Outta Compton", n: "La costa oeste irrumpe: el gangsta rap llega a todo el país." },
         { a: 1988, art: "Marley Marl", t: "The Symphony", n: "El posse cut definitivo." },
         { a: 1988, art: "Big Daddy Kane", t: "Ain't No Half-Steppin'", n: "Flow perfecto." },
-        { a: 1988, art: "MC Lyte", t: "Paper Thin", n: "Una mujer rapeando sin miedo." }
+        { a: 1988, art: "MC Lyte", t: "Paper Thin", n: "Una mujer rapeando sin miedo." },
+        { a: 1988, art: "Rob Base & DJ E-Z Rock", t: "It Takes Two", n: "Un sample de Lyn Collins y el grito «Woo! Yeah!»: fiesta de hip hop." }
       ]
     }
   ]

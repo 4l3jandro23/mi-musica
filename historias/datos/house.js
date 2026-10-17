@@ -18,10 +18,12 @@ HISTORIAS.push({
         { a: 1980, art: "Loleatta Holloway", t: "Love Sensation", n: "Disco de Salsoul con una voz gigante: el material que samplearía el house." },
         { a: 1984, art: "Jesse Saunders", t: "On and On", n: "Se considera el primer disco de house: una caja de ritmos y poco más." },
         { a: 1985, art: "J.M. Silk", t: "Music Is the Key", n: "Del sello DJ International. El house ya tiene voz y estribillo." },
+        { a: 1985, art: "Mr. Fingers", t: "Mystery of Love", n: "Larry Heard y su Roland: el primer house profundo, el deep house." },
         { a: 1986, art: "Farley \"Jackmaster\" Funk", t: "Love Can't Turn Around", n: "Con Darryl Pandy. El primer éxito del house en las listas británicas." },
         { a: 1986, art: "Marshall Jefferson", t: "Move Your Body", n: "El «himno del house», con piano incluido." },
         { a: 1986, art: "Mr. Fingers", t: "Can You Feel It", n: "Larry Heard inventa el deep house: cálido, lento y emocional." },
-        { a: 1986, art: "Steve \"Silk\" Hurley", t: "Jack Your Body", n: "Número uno en Reino Unido en 1987: el house cruza el Atlántico." }
+        { a: 1986, art: "Steve \"Silk\" Hurley", t: "Jack Your Body", n: "Número uno en Reino Unido en 1987: el house cruza el Atlántico." },
+        { a: 1986, art: "Adonis", t: "No Way Back", n: "Un bajo oscuro y obsesivo que anticipa el acid house." }
       ]
     },
     {
@@ -33,13 +35,19 @@ HISTORIAS.push({
         { a: 1987, art: "Ibiza", t: "Cuatro DJs británicos descubren Amnesia", tipo: "hito", n: "Paul Oakenfold y sus amigos oyen a DJ Alfredo pinchar de todo en Ibiza y se llevan esa idea a Londres." },
         { a: 1987, art: "Phuture", t: "Acid Tracks", n: "Una Roland TB-303, un aparato pensado para hacer bajos, «mal usada»: sus chirridos crean el acid house." },
         { a: 1987, art: "Frankie Knuckles", t: "Your Love", n: "Con Jamie Principle. Una de las canciones de house más bonitas de la historia." },
+        { a: 1987, art: "Joe Smooth", t: "Promised Land", n: "El himno utópico del house de Chicago." },
+        { a: 1987, art: "CeCe Rogers", t: "Someday", n: "Producida por Marshall Jefferson: house con alma de gospel." },
+        { a: 1987, art: "M/A/R/R/S", t: "Pump Up the Volume", n: "Un collage de samples que llega al número uno en Reino Unido." },
         { a: 1988, art: "Segundo verano del amor", t: "Raves en Reino Unido", tipo: "hito", n: "Acid house, caritas sonrientes y fiestas en almacenes y campos. El gobierno acabaría aprobando leyes contra las raves." },
         { a: 1988, art: "Inner City", t: "Good Life", n: "Desde Detroit, Kevin Saunderson une house y techno con pop." },
         { a: 1988, art: "D-Mob", t: "We Call It Acieeed", n: "El acid house llega al top 3 británico… y la BBC lo prohíbe por las drogas." },
+        { a: 1988, art: "Jungle Brothers", t: "I'll House You", n: "El primer cruce de hip hop y house, el «hip house»." },
         { a: 1989, art: "Black Box", t: "Ride on Time", n: "Desde Italia, y sampleando a Loleatta Holloway: el italo house." },
+        { a: 1989, art: "808 State", t: "Pacific State", n: "Acid house de Mánchester con saxo: la banda sonora de la Haçienda." },
         { a: 1990, art: "Deee-Lite", t: "Groove Is in the Heart", n: "House con colorines desde Nueva York." },
         { a: 1990, art: "Madonna", t: "Vogue", n: "El house y el voguing de la escena ballroom llegan al pop más grande." },
-        { a: 1990, art: "Alison Limerick", t: "Where Love Lives", n: "Un clásico del house británico." }
+        { a: 1990, art: "Alison Limerick", t: "Where Love Lives", n: "Un clásico del house británico." },
+        { a: 1990, art: "Awesome 3", t: "Don't Go", n: "Rave británica con piano y voz soul." }
       ]
     },
     {
@@ -50,8 +58,12 @@ HISTORIAS.push({
       items: [
         { a: 1991, art: "Crystal Waters", t: "Gypsy Woman (She's Homeless)", n: "«La da dee la dee da»: una canción sobre una mujer sin hogar convertida en éxito." },
         { a: 1991, art: "CeCe Peniston", t: "Finally", n: "El vocal house en su forma más feliz." },
+        { a: 1991, art: "Frankie Knuckles", t: "The Whistle Song", n: "El padrino del house, con flauta y un silbido." },
+        { a: 1992, art: "Felix", t: "Don't You Want Me", q: "Felix Don't You Want Me Hooj Mix", n: "El riff de rave que sonó en todas las discotecas de Europa." },
         { a: 1993, art: "Robin S", t: "Show Me Love", n: "El remix de StoneBridge y ese bajo de órgano que se ha sampleado mil veces." },
+        { a: 1993, art: "Hardrive", t: "Deep Inside", n: "Louie Vega y la voz de Barbara Tucker: un clásico del house de Nueva York." },
         { a: 1995, art: "Ibiza", t: "Las superclubs", tipo: "hito", n: "Manumission, Pacha y Amnesia convierten la isla en la meca del house." },
+        { a: 1996, art: "Toni Braxton", t: "Un-Break My Heart (Frankie Knuckles Remix)", q: "Toni Braxton Frankie Knuckles Un-Break My Heart", n: "Frankie Knuckles convierte la balada en un tema de house para la pista." },
         { a: 1997, art: "Ultra Naté", t: "Free", n: "Un himno de libertad en las pistas de medio mundo." },
         { a: 1999, art: "Armand Van Helden", t: "You Don't Know Me", n: "House con cuerdas de disco: número uno británico." },
         { a: 1999, art: "Basement Jaxx", t: "Red Alert", n: "House de Brixton, desordenado y genial." },
@@ -71,6 +83,7 @@ HISTORIAS.push({
         { a: 2007, art: "David Guetta", t: "Love Is Gone", n: "Guetta todavía era el DJ de las noches de Ibiza." },
         { a: 2009, art: "Florence + The Machine", t: "You've Got the Love", n: "Una versión del clásico de Candi Staton." },
         { a: 2010, art: "Swedish House Mafia", t: "One", n: "Tres suecos que llevarían el house a los estadios." },
+        { a: 2011, art: "Azealia Banks", t: "212", n: "Rap de Harlem sobre un tema de house de Lazy Jay: el house vuelve al rap." },
         { a: 2014, art: "Robin Schulz", t: "Waves (Remix)", n: "El «deep house» de radio que sonó en todas partes en 2014." },
         { a: 2020, art: "Purple Disco Machine", t: "Hypnotized", n: "El nu-disco y el house con cuerdas vuelven a las listas." }
       ]

@@ -29,6 +29,8 @@ HISTORIAS.push({
         { a: 1964, art: "The Supremes", t: "Where Did Our Love Go", n: "Diana Ross y el primero de sus doce números uno." },
         { a: 1964, art: "The Temptations", t: "My Girl", n: "Escrita por Smokey Robinson: el soul más dulce." },
         { a: 1965, art: "The Impressions", t: "People Get Ready", n: "El himno de Curtis Mayfield." },
+        { a: 1965, art: "Nina Simone", t: "Sinnerman", n: "Diez minutos de gospel, jazz y furia; sale en un montón de películas." },
+        { a: 1965, art: "Otis Redding", t: "It's Too Late", n: "Una balada lenta y desgarrada del disco «The Great Otis Redding Sings Soul Ballads»." },
         { a: 1966, art: "Percy Sledge", t: "When a Man Loves a Woman", n: "Una balada eterna." },
         { a: 1966, art: "Otis Redding", t: "Try a Little Tenderness", n: "Un poco de ternura." },
         { a: 1967, art: "Aretha Franklin", t: "Respect", n: "Una canción de Otis Redding convertida en himno feminista y de los derechos civiles." },
@@ -47,6 +49,7 @@ HISTORIAS.push({
       intro: "El soul habla de Vietnam, del racismo y de la vida en el gueto.",
       items: [
         { a: 1970, art: "Curtis Mayfield", t: "Move On Up", n: "Metales, percusión y optimismo." },
+        { a: 1970, art: "Minnie Riperton", t: "Les Fleurs", n: "Antes de «Lovin' You», un soul psicodélico y orquestal." },
         { a: 1971, art: "Marvin Gaye", t: "What's Going On", n: "Motown no quería publicarla: un disco sobre la guerra de Vietnam y la vida en el gueto." },
         { a: 1971, art: "Bill Withers", t: "Ain't No Sunshine", n: "«I know, I know, I know…» (26 veces)." },
         { a: 1971, art: "Isaac Hayes", t: "Theme from Shaft", n: "Wah-wah y orquesta: ganó el Óscar." },
