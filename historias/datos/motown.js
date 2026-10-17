@@ -41,6 +41,7 @@ HISTORIAS.push({
       intro: "Discos conceptuales y la mudanza a Los Ángeles.",
       items: [
         { a: 1971, art: "Marvin Gaye", t: "What's Going On", n: "Gordy no quería publicarla: hoy es una de las mejores canciones de la historia." },
+        { a: 1971, art: "Diana Ross", t: "I'm Still Waiting", n: "Número uno en Reino Unido." },
         { a: 1972, art: "Motown", t: "Se muda a Los Ángeles", tipo: "hito", n: "Gordy apuesta por el cine y deja Detroit." },
         { a: 1972, art: "Stevie Wonder", t: "Superstition", n: "Stevie consigue el control creativo total." },
         { a: 1972, art: "The Temptations", t: "Papa Was a Rollin' Stone", n: "Doce minutos de psicodelia soul en la versión larga." },

@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "rnb",
   familia: "Soul y funk",
   titulo: "Historia del R&B contemporáneo",
-  periodo: "1987 – 2022",
+  periodo: "1984 – 2022",
   color: "#8e44ad",
   lema: "Del new jack swing a Aaliyah, Destiny's Child, Frank Ocean y SZA.",
   intro: "El «rhythm and blues» fue el nombre de la música negra de los 40 y 50. Desde finales de los 80 se llama así a algo nuevo: soul con ritmos de hip hop. Primero el new jack swing, luego las grandes voces y grupos de los 90, las producciones futuristas de Timbaland y The Neptunes, y en los 2010 un R&B más íntimo y alternativo.",
@@ -10,9 +10,10 @@ HISTORIAS.push({
     {
       titulo: "New jack swing",
       corto: "New jack swing",
-      periodo: "1987 – 1991",
+      periodo: "1984 – 1991",
       intro: "Teddy Riley mezcla soul con cajas de ritmos de hip hop.",
       items: [
+        { a: 1984, art: "Chaka Khan", t: "Through the Fire", n: "Una balada escrita por David Foster; Kanye la acelera en «Through the Wire»." },
         { a: 1987, art: "Teddy Riley", t: "Inventa el new jack swing", tipo: "hito", n: "R&B con ritmos de hip hop." },
         { a: 1987, art: "Keith Sweat", t: "I Want Her", n: "Producida por Teddy Riley: nace el new jack swing." },
         { a: 1988, art: "Bobby Brown", t: "My Prerogative", n: "El chico malo de New Edition, en solitario." },

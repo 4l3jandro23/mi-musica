@@ -24,10 +24,12 @@ HISTORIAS.push({
         { a: 1970, art: "The Chi-Lites", t: "Are You My Woman? (Tell Me So)", n: "El sample de vientos de «Crazy in Love» de Beyoncé." },
         { a: 1972, art: "Labi Siffre", t: "My Song", n: "Kanye West la usa en «I Wonder»." },
         { a: 1972, art: "Ohio Players", t: "Funky Worm", n: "El sintetizador chillón que copió todo el G-funk de la costa oeste." },
+        { a: 1972, art: "Giorgio Moroder", t: "Tears", n: "Del disco «Son of My Father»; DJ Shadow la samplea en «Organ Donor»." },
         { a: 1975, art: "Labi Siffre", t: "I Got The...", n: "La base de «My Name Is», el primer éxito de Eminem." },
         { a: 1977, art: "The Isley Brothers", t: "Footsteps in the Dark, Pts. 1 & 2", n: "La base de «It Was a Good Day» de Ice Cube." },
         { a: 1979, art: "Fairlight CMI", t: "El primer sampler digital", tipo: "hito", n: "Cuesta lo que una casa. Lo usan Peter Gabriel, Kate Bush y Herbie Hancock." },
         { a: 1979, art: "Edwin Birdsong", t: "Cola Bottle Baby", n: "Daft Punk la convierten en «Harder, Better, Faster, Stronger»." },
+        { a: 1980, art: "Breakwater", t: "Release the Beast", n: "Daft Punk la samplean en «Robot Rock»." },
         { a: 1981, art: "Brian Eno & David Byrne", t: "Help Me Somebody", n: "De «My Life in the Bush of Ghosts»: voces de predicadores y radio sobre ritmos funk. Un disco hecho de «samples» antes de tiempo." }
       ]
     },
