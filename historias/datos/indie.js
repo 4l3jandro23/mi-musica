@@ -54,9 +54,10 @@ HISTORIAS.push({
     {
       titulo: "El indie de streaming",
       corto: "2010s",
-      periodo: "2013 – 2024",
+      periodo: "2011 – 2024",
       intro: "El indie de los festivales y del streaming.",
       items: [
+        { a: 2011, art: "M83", t: "Wait", n: "La balada lenta de «Hurry Up, We're Dreaming», que sale en películas y series." },
         { a: 2013, art: "Arctic Monkeys", t: "Do I Wanna Know?", n: "Los Arctic Monkeys se vuelven más lentos y oscuros: su tema más escuchado." },
         { a: 2014, art: "Mac DeMarco", t: "Chamber of Reflection", n: "El indie relajado de dormitorio." },
         { a: 2015, art: "Streaming", t: "Las playlists sustituyen a los blogs", tipo: "hito", n: "Spotify se convierte en la radio del indie." },

@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "italia",
   familia: "Mundo",
   titulo: "Historia de la música italiana",
-  periodo: "1907 – 2021",
+  periodo: "1907 – 2022",
   color: "#2f8f5b",
   lema: "De Caruso al italo disco y Måneskin: melodía ante todo.",
   intro: "El país de la ópera convierte la melodía en pop. Hay canción napolitana, el Festival de Sanremo, cantautores con mensaje, rock progresivo, el italo disco que bailó media Europa (España incluida) y el eurodance de los 90.",
@@ -21,9 +21,10 @@ HISTORIAS.push({
     {
       titulo: "Sanremo y la dolce vita",
       corto: "Sanremo",
-      periodo: "1951 – 1966",
+      periodo: "1950 – 1966",
       intro: "El festival de la canción y la Italia del milagro económico.",
       items: [
+        { a: 1950, art: "Achille Togliani", t: "Parlami d'amore Mariù", n: "La canción que cantó Vittorio De Sica en 1932, en la voz del galán de la radio de los 50." },
         { a: 1951, art: "Festival de Sanremo", t: "Primera edición", tipo: "hito", n: "Nace el festival que marcará la canción italiana y que inspiró Eurovisión." },
         { a: 1956, art: "Renato Carosone", t: "Tu vuò fà l'americano", n: "Swing napolitano riéndose de los italianos que imitan a los americanos." },
         { a: 1958, art: "Domenico Modugno", t: "Nel blu dipinto di blu", n: "«Volare»: gana Sanremo y es número uno en Estados Unidos." },
@@ -32,6 +33,7 @@ HISTORIAS.push({
         { a: 1960, art: "Mina", t: "Il cielo in una stanza", n: "De Gino Paoli: los cantautores genoveses empiezan." },
         { a: 1963, art: "Rita Pavone", t: "Il ballo del mattone", n: "Yeyé a la italiana, muy famosa también en España." },
         { a: 1964, art: "Fabrizio De André", t: "La canzone di Marinella", n: "El poeta de los marginados. Mina la convirtió en éxito." },
+        { a: 1965, art: "Jimmy Fontana", t: "Il mondo", n: "Una balada inmensa que se versionó en medio mundo." },
         { a: 1966, art: "Adriano Celentano", t: "Il ragazzo della via Gluck", n: "La ciudad se come el campo: canción ecologista antes de tiempo." },
         { a: 1966, art: "Ennio Morricone", t: "Il buono, il brutto, il cattivo", n: "El spaghetti western: una de las bandas sonoras más reconocibles del mundo." }
       ]
@@ -39,7 +41,7 @@ HISTORIAS.push({
     {
       titulo: "Cantautores, prog y terror",
       corto: "Cantautores",
-      periodo: "1970 – 1978",
+      periodo: "1970 – 1979",
       intro: "Canciones con mensaje, rock progresivo y bandas sonoras de terror.",
       items: [
         { a: 1970, art: "Lucio Battisti", t: "Emozioni", n: "El gran renovador del pop italiano, con letras de Mogol." },
@@ -48,17 +50,22 @@ HISTORIAS.push({
         { a: 1971, art: "Premiata Forneria Marconi", t: "Impressioni di settembre", n: "Rock progresivo italiano: uno de los mejores del mundo." },
         { a: 1972, art: "Adriano Celentano", t: "Prisencolinensinainciusol", n: "Una canción en inglés inventado: cómo suena el inglés a un italiano. Proto-rap." },
         { a: 1972, art: "Mina", t: "Grande grande grande", n: "Un clásico que versionaron en medio mundo." },
+        { a: 1972, art: "Lucio Battisti", t: "Il mio canto libero", n: "Battisti y el letrista Mogol en su punto más alto." },
         { a: 1974, art: "Años de plomo", t: "Cantautores en tiempos difíciles", tipo: "hito", n: "De André, Guccini y De Gregori cantan la Italia del terrorismo." },
+        { a: 1976, art: "Raffaella Carrà", t: "A far l'amore comincia tu", n: "En España, «En el amor todo es empezar»; décadas después triunfó en el remix de Bob Sinclar." },
         { a: 1977, art: "Goblin", t: "Suspiria", n: "Prog para el cine de terror de Dario Argento." },
-        { a: 1978, art: "Raffaella Carrà", t: "Tanti auguri", n: "«Para hacer bien el amor…»: Raffaella era una estrella en España." }
+        { a: 1977, art: "Umberto Tozzi", t: "Ti amo", n: "Un número uno en media Europa." },
+        { a: 1978, art: "Raffaella Carrà", t: "Tanti auguri", n: "«Para hacer bien el amor…»: Raffaella era una estrella en España." },
+        { a: 1979, art: "Umberto Tozzi", t: "Gloria", n: "La versión de Laura Branigan la hizo famosa en EE. UU." }
       ]
     },
     {
       titulo: "Italo disco y los 80",
       corto: "Italo disco",
-      periodo: "1981 – 1987",
+      periodo: "1980 – 1987",
       intro: "Sintetizadores, inglés macarrónico y pistas de toda Europa.",
       items: [
+        { a: 1980, art: "Raffaella Carrà", t: "Pedro", n: "La historia de un taxista de Santa Fe; en 2024 volvió con un remix de TikTok." },
         { a: 1981, art: "Franco Battiato", t: "Centro di gravità permanente", n: "Pop electrónico culto y bailable." },
         { a: 1983, art: "Italo disco", t: "Sintetizadores para Europa", tipo: "hito", n: "El italo disco triunfa en las discotecas europeas." },
         { a: 1983, art: "Gazebo", t: "I Like Chopin", n: "El italo disco en su forma más melancólica." },
@@ -67,13 +74,14 @@ HISTORIAS.push({
         { a: 1983, art: "Toto Cutugno", t: "L'italiano", n: "«Lasciatemi cantare»: el himno no oficial de Italia." },
         { a: 1983, art: "Vasco Rossi", t: "Vita spericolata", n: "El rockero más querido de Italia." },
         { a: 1986, art: "Lucio Dalla", t: "Caruso", n: "Un homenaje al tenor que cantaron Pavarotti y Bocelli." },
-        { a: 1987, art: "Sabrina", t: "Boys (Summertime Love)", n: "El verano del 87… y el vídeo de la piscina." }
+        { a: 1987, art: "Sabrina", t: "Boys (Summertime Love)", n: "El verano del 87… y el vídeo de la piscina." },
+        { a: 1987, art: "Zucchero", t: "Senza una donna", n: "El blues italiano de Zucchero; en 1991 la regrabó con Paul Young." }
       ]
     },
     {
       titulo: "Eurodance, baladas y Måneskin",
       corto: "Hasta hoy",
-      periodo: "1993 – 2021",
+      periodo: "1993 – 2022",
       intro: "Baladas, eurodance y el rock de Måneskin.",
       items: [
         { a: 1993, art: "Laura Pausini", t: "La solitudine", n: "Ganó Sanremo con 18 años. En España, «La soledad»." },
@@ -82,9 +90,31 @@ HISTORIAS.push({
         { a: 1998, art: "Eiffel 65", t: "Blue (Da Ba Dee)", n: "Eurodance de Turín: un éxito mundial y un meme eterno." },
         { a: 1999, art: "Gigi D'Agostino", t: "L'amour toujours", n: "La melodía de todas las discotecas, desde entonces." },
         { a: 2001, art: "Tiziano Ferro", t: "Perdono", n: "Pop italiano del nuevo siglo, también en español." },
+        { a: 2001, art: "Zucchero", t: "Baila (Sexy Thing)", n: "Un éxito de verano en toda Europa." },
+        { a: 2009, art: "Crookers", t: "Knobbers", n: "El dúo milanés de electro house que remezcló a Kid Cudi." },
+        { a: 2018, art: "Sfera Ebbasta", t: "Tran Tran", n: "El rey del trap italiano." },
         { a: 2019, art: "Mahmood", t: "Soldi", n: "Trap y melodía árabe: segundo en Eurovisión." },
         { a: 2021, art: "Måneskin", t: "Ganan Eurovisión", tipo: "hito", n: "El rock italiano conquista el mundo." },
-        { a: 2021, art: "Måneskin", t: "Zitti e buoni", n: "Ganan Eurovisión y el rock italiano conquista el mundo." }
+        { a: 2021, art: "Måneskin", t: "Zitti e buoni", n: "Ganan Eurovisión y el rock italiano conquista el mundo." },
+        { a: 2022, art: "Mahmood & BLANCO", t: "Brividi", n: "Ganan Sanremo y la canción bate récords de streaming en Italia." },
+        { a: 2022, art: "Måneskin", t: "THE LONELIEST", n: "Una balada de rock que se canta a gritos en sus conciertos." }
+      ]
+    },
+    {
+      titulo: "Italianos en español",
+      corto: "En español",
+      periodo: "1976 – 2021",
+      intro: "Los cantantes italianos que grababan sus éxitos también en español y triunfaban en España y América Latina.",
+      items: [
+        { a: 1976, art: "Sandro Giacobbe", t: "El jardín prohibido", n: "«Il giardino proibito» en español: un éxito enorme en España." },
+        { a: 1977, art: "Gianni Bella", t: "De amor ya no se muere", n: "Versión de «Non si può morire dentro»." },
+        { a: 1978, art: "Claudio Baglioni", t: "Sábado por la tarde", n: "El romántico italiano canta en español." },
+        { a: 1979, art: "Raffaella Carrà", t: "Hay que venir al sur", n: "La Carrà, más famosa en España que en muchos sitios de Italia." },
+        { a: 1993, art: "Eros Ramazzotti", t: "Todo historias", tipo: "hito", n: "Desde los años 80 Eros grababa sus discos también en español; «Tutte storie» sale a la vez en los dos idiomas y vende millones en España y Latinoamérica." },
+        { a: 1996, art: "Eros Ramazzotti", t: "La cosa más bella", n: "«Più bella cosa» en español." },
+        { a: 2000, art: "Eros Ramazzotti", t: "Fuego en el fuego", n: "«Fuoco nel fuoco», del disco «Estilolibre», en español." },
+        { a: 2008, art: "Tiziano Ferro & Amaia Montero", t: "El regalo más grande", n: "Con la cantante de La Oreja de Van Gogh." },
+        { a: 2021, art: "sangiovanni & Aitana", t: "mariposas", n: "Pop italiano y español a medias." }
       ]
     }
   ]
