@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "alemania",
   familia: "Mundo",
   titulo: "Historia de la música alemana",
-  periodo: "1928 – 2019",
+  periodo: "1928 – 2022",
   color: "#4d5866",
   lema: "Cabaret, Schlager, krautrock, Neue Deutsche Welle y techno.",
   intro: "Del cabaret de Weimar a la Love Parade. La música alemana en alemán (y alguna austriaca): la que censuraron los nazis, la que consolaba en la posguerra, la que inventó el futuro con el krautrock y la que celebró la caída del Muro bailando techno.",
@@ -79,11 +79,28 @@ HISTORIAS.push({
         { a: 1992, art: "Die Fantastischen Vier", t: "Die da!?!", n: "El primer gran éxito del rap en alemán." },
         { a: 1993, art: "Die Ärzte", t: "Schrei nach Liebe", n: "Punk contra los neonazis." },
         { a: 1994, art: "Paul van Dyk", t: "For an Angel", n: "El tema que puso a Paul van Dyk en el mapa y definió el trance melódico de Berlín tras la caída del muro." },
+        { a: 1995, art: "Fools Garden", t: "Lemon Tree", n: "Un grupo de Pforzheim con un éxito pop en toda Europa." },
         { a: 1997, art: "Rammstein", t: "Du hast", n: "El metal industrial alemán: lo que más se escucha en alemán fuera de Alemania." },
+        { a: 1997, art: "Sweetbox", t: "Everything's Gonna Be Alright", n: "Rap y R&B sobre el «Aria» de Bach." },
         { a: 1998, art: "Scooter", t: "How Much Is the Fish?", n: "Hard trance y gritos: kitsch glorioso." },
+        { a: 1998, art: "Liquido", t: "Narcotic", n: "El riff de teclado que se oyó en todas partes en el 98." },
         { a: 2008, art: "Paul Kalkbrenner", t: "Sky and Sand", n: "De la película «Berlin Calling»: el himno del Berlín de los clubs." },
         { a: 2008, art: "Peter Fox", t: "Haus am See", n: "Pop con orquesta y rap: un clásico moderno." },
         { a: 2019, art: "Apache 207", t: "Roller", n: "El rap alemán actual, número uno durante semanas." }
+      ]
+    },
+    {
+      titulo: "Indie y pop del siglo XXI",
+      corto: "Hoy",
+      periodo: "2002 – 2022",
+      intro: "De Sportfreunde Stiller a Milky Chance: el pop alemán que se escucha fuera.",
+      items: [
+        { a: 2002, art: "Sportfreunde Stiller", t: "Independent", n: "Indie rock de Múnich." },
+        { a: 2006, art: "El Mundial de Alemania", t: "«'54, '74, '90, 2006»", tipo: "hito", n: "La canción de Sportfreunde Stiller sobre los Mundiales ganados por Alemania se convierte en el himno del verano." },
+        { a: 2013, art: "Milky Chance", t: "Stolen Dance", n: "Dos amigos de Kassel lo graban en casa y llega a medio mundo." },
+        { a: 2013, art: "Milky Chance", t: "Down by the River", n: "Del mismo disco, «Sadnecessary»." },
+        { a: 2016, art: "Alice Merton", t: "No Roots", n: "Una canción sobre haberse mudado de país muchas veces." },
+        { a: 2022, art: "KITSCHKRIEG, Blumengarten & Shirin David", t: "Gut genug", n: "Rap y pop alemán de hoy (año aproximado)." }
       ]
     }
   ]

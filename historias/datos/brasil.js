@@ -41,7 +41,7 @@ HISTORIAS.push({
     {
       titulo: "MPB y Tropicália contra la dictadura",
       corto: "Tropicália",
-      periodo: "1965 – 1976",
+      periodo: "1965 – 1979",
       intro: "Festivales de la canción, guitarras eléctricas y censura.",
       items: [
         { a: 1965, art: "Elis Regina", t: "Arrastão", n: "La gran voz de Brasil gana el festival: nace la MPB." },
@@ -53,17 +53,20 @@ HISTORIAS.push({
         { a: 1970, art: "Tim Maia", t: "Azul da Cor do Mar", n: "El soul brasileño: Tim Maia volvió de EE. UU. con el groove." },
         { a: 1970, art: "O Terço", t: "Adormeceu", n: "El rock progresivo brasileño de los 70." },
         { a: 1971, art: "Chico Buarque", t: "Construção", n: "Una obra maestra: cada verso acaba en una palabra esdrújula. Crítica social disfrazada." },
+        { a: 1971, art: "Elis Regina", t: "Madalena", n: "La voz más grande de Brasil, con una canción de Ivan Lins." },
         { a: 1972, art: "Milton Nascimento", t: "Clube da Esquina", tipo: "disco", n: "Con Lô Borges, desde Minas Gerais: uno de los mejores discos de la historia." },
         { a: 1972, art: "Novos Baianos", t: "Preta Pretinha", n: "Hippies en una comuna mezclando samba, choro y rock." },
         { a: 1972, art: "Jorge Ben", t: "Taj Mahal", n: "Rod Stewart la «tomó prestada» para «Da Ya Think I'm Sexy?»." },
         { a: 1974, art: "Elis Regina", t: "Águas de Março", n: "Con Tom Jobim: considerada la mejor canción brasileña de la historia." },
-        { a: 1976, art: "Cartola", t: "O Mundo É um Moinho", n: "Un sambista de Mangueira que grabó su primer disco con 66 años." }
+        { a: 1975, art: "Candeia", t: "Zé tambozeiro (Tambor de Angola)", n: "Samba de raíz africana del gran sambista de Portela (año aproximado)." },
+        { a: 1976, art: "Cartola", t: "O Mundo É um Moinho", n: "Un sambista de Mangueira que grabó su primer disco con 66 años." },
+        { a: 1979, art: "Gilberto Gil", t: "Toda menina baiana", n: "Gil vuelve a la alegría bahiana tras el exilio." }
       ]
     },
     {
       titulo: "Rock, axé, lambada y rap",
       corto: "Los 80 y 90",
-      periodo: "1985 – 1997",
+      periodo: "1985 – 1998",
       intro: "Llega la democracia: rock, carnaval de Bahía, lambada y el rap de las periferias.",
       items: [
         { a: 1985, art: "Fin de la dictadura y Rock in Rio", t: "Brasil vuelve a la democracia y celebra el primer gran festival", tipo: "hito", n: "Más de un millón de personas en diez días." },
@@ -72,9 +75,11 @@ HISTORIAS.push({
         { a: 1989, art: "DJ Marlboro", t: "Funk Brasil", tipo: "hito", n: "El Miami bass llega a los bailes de las favelas de Río: nace el funk carioca." },
         { a: 1989, art: "Kaoma", t: "Lambada", n: "El verano del 89 en España y en medio mundo." },
         { a: 1992, art: "Daniela Mercury", t: "O Canto da Cidade", n: "El axé de Bahía: carnaval en una canción." },
+        { a: 1992, art: "Sérgio Mendes", t: "Magalenha", n: "Una canción de Carlinhos Brown que gana el Grammy con el disco «Brasileiro»." },
         { a: 1994, art: "Chico Science & Nação Zumbi", t: "A Praieira", n: "Desde Recife, el manguebeat: maracatu y rock." },
         { a: 1996, art: "Sepultura", t: "Roots Bloody Roots", n: "Metal brasileño con percusión indígena: famoso en todo el mundo." },
-        { a: 1997, art: "Racionais MC's", t: "Diário de um Detento", n: "El rap de São Paulo cuenta la masacre de la cárcel de Carandiru." }
+        { a: 1997, art: "Racionais MC's", t: "Diário de um Detento", n: "El rap de São Paulo cuenta la masacre de la cárcel de Carandiru." },
+        { a: 1998, art: "Carlinhos Brown", t: "Maria Caipirinha", q: "Carlinhos Brown Maria Caipirinha", n: "La percusión de Salvador de Bahía (año aproximado)." }
       ]
     },
     {
@@ -84,6 +89,8 @@ HISTORIAS.push({
       intro: "Del sertanejo al funk de las favelas: Brasil manda en el streaming.",
       items: [
         { a: 2000, art: "Marisa Monte", t: "Amor I Love You", n: "La gran voz de la MPB moderna." },
+        { a: 2006, art: "Chico Buarque & DJ Meme", t: "Bye Bye Brasil (Baile Funk Mix)", n: "La canción de la película de 1979, pasada a baile funk." },
+        { a: 2006, art: "Sérgio Mendes & Black Eyed Peas", t: "Mas que nada", n: "Jorge Ben con will.i.am: «Mas que nada» vuelve a las listas cuarenta años después." },
         { a: 2011, art: "Michel Teló", t: "Ai Se Eu Te Pego", n: "El sertanejo universitario: un fenómeno en España y en todo el mundo." },
         { a: 2011, art: "Gusttavo Lima", t: "Balada", n: "«Tchê tcherere tchê tchê»: el sertanejo que bailó medio mundo, también en España." },
         { a: 2016, art: "Juegos Olímpicos de Río", t: "La música brasileña ante el mundo", tipo: "hito", n: "Funk, samba y bossa nova en la ceremonia de inauguración." },

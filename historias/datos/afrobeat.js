@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "afrobeat",
   familia: "Mundo",
   titulo: "Afrobeat y afrobeats",
-  periodo: "1969 – 2023",
+  periodo: "1969 – 2024",
   color: "#e07a1f",
   lema: "De Fela Kuti y su República de Kalakuta a Burna Boy, Wizkid y Tems.",
   intro: "El afrobeat lo inventó Fela Kuti en Lagos a finales de los 60: funk de James Brown, highlife, jazz y canciones políticas de quince minutos. Medio siglo después, el «afrobeats» (con s), pop nigeriano y ghanés con ritmos de dancehall y hip hop, se ha convertido en uno de los sonidos más escuchados del planeta.",
@@ -34,7 +34,7 @@ HISTORIAS.push({
     {
       titulo: "Afrobeats",
       corto: "Afrobeats",
-      periodo: "2011 – 2023",
+      periodo: "2011 – 2024",
       intro: "El pop de Lagos y Accra conquista el mundo.",
       items: [
         { a: 2011, art: "D'banj", t: "Oliver Twist", n: "El afrobeats entra en el top 10 británico." },
@@ -50,11 +50,14 @@ HISTORIAS.push({
         { a: 2020, art: "Wizkid & Tems", t: "Essence", n: "Afrobeats lento y sensual." },
         { a: 2021, art: "Burna Boy", t: "Gana el Grammy", tipo: "hito", n: "Twice as Tall, mejor disco de música global." },
         { a: 2021, art: "CKay", t: "love nwantiti (ah ah ah)", n: "Viral en TikTok en medio mundo." },
+        { a: 2021, art: "Amaarae, Kali Uchis & MOLIY", t: "SAD GIRLZ LUV MONEY (Remix)", q: "Amaarae SAD GIRLZ LUV MONEY Remix Kali Uchis", n: "La ghanesa Amaarae, viral en TikTok, con Kali Uchis." },
         { a: 2022, art: "Rema & Selena Gomez", t: "Calm Down", n: "Una de las canciones más escuchadas de 2023." },
         { a: 2022, art: "Burna Boy", t: "Last Last", n: "Sobre un sample de Toni Braxton: su mayor éxito mundial." },
         { a: 2022, art: "Ayra Starr", t: "Rush", n: "La joven estrella del afrobeats." },
+        { a: 2022, art: "CKay", t: "emiliana", n: "Después de «love nwantiti», el afropop romántico de CKay." },
         { a: 2023, art: "Tyla", t: "Water", n: "El amapiano sudafricano: primer Grammy a la mejor interpretación africana." },
-        { a: 2023, art: "Asake", t: "Lonely at the Top", n: "El afrobeats con amapiano y coros." }
+        { a: 2023, art: "Asake", t: "Lonely at the Top", n: "El afrobeats con amapiano y coros." },
+        { a: 2024, art: "Beéle", t: "no tiene sentido", n: "El colombiano que mezcla afrobeats y Caribe: los afrobeats se hacen latinos." }
       ]
     }
   ]

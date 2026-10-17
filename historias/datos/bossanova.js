@@ -19,7 +19,8 @@ HISTORIAS.push({
         { a: 1959, art: "«Orfeu Negro»", t: "La película", tipo: "hito", n: "La película francesa ambientada en el carnaval de Río gana la Palma de Oro y el Óscar: el mundo descubre la bossa nova." },
         { a: 1959, art: "João Gilberto", t: "Desafinado", n: "Una canción sobre cantar «desafinado»." },
         { a: 1959, art: "Luiz Bonfá", t: "Manhã de Carnaval", n: "De la película Orfeo negro, Palma de Oro en Cannes." },
-        { a: 1959, art: "João Gilberto", t: "Samba de uma nota só", n: "Una melodía casi de una sola nota sobre acordes que cambian: el genio de Jobim y Newton Mendonça." }
+        { a: 1959, art: "João Gilberto", t: "Samba de uma nota só", n: "Una melodía casi de una sola nota sobre acordes que cambian: el genio de Jobim y Newton Mendonça." },
+        { a: 1959, art: "Elza Laranjeira", t: "Serenata do adeus", n: "Una canción de Vinicius de Moraes, de los primeros discos de la bossa (año aproximado)." }
       ]
     },
     {
@@ -57,6 +58,7 @@ HISTORIAS.push({
         { a: 1974, art: "Elis Regina & Tom Jobim", t: "Águas de Março", n: "Para muchos, la mejor canción brasileña de la historia." },
         { a: 1976, art: "Gal Costa", t: "Falsa Baiana", q: "Gal Costa Falsa Baiana", n: "Gal Costa, de la tropicália, con un samba que mira atrás hacia la bossa." },
         { a: 1977, art: "João Gilberto", t: "Estate", n: "Del disco «Amoroso»." },
+        { a: 1983, art: "Sérgio Mendes", t: "Never Gonna Let You Go", n: "Una balada de soft rock: su mayor éxito en EE. UU. en los 80." },
         { a: 2000, art: "Bebel Gilberto", t: "Tanto Tempo", n: "La hija de João y la bossa electrónica." },
         { a: 2004, art: "Nouvelle Vague", t: "Love Will Tear Us Apart", n: "Joy Division en bossa nova." },
         { a: 2004, art: "Seu Jorge", t: "Life on Mars?", n: "Seu Jorge versiona a Bowie en portugués para «Life Aquatic», a guitarra y voz." },
