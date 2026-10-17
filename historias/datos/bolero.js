@@ -64,6 +64,7 @@ HISTORIAS.push({
         { a: 1999, art: "Ibrahim Ferrer", t: "Dos gardenias", n: "El bolero de Isolina Carrillo." },
         { a: 2000, art: "Café Tacvba", t: "Esta noche", q: "Café Tacvba", n: "El bolero en el rock alternativo mexicano." },
         { a: 2003, art: "Bebo Valdés & Diego el Cigala", t: "Lágrimas negras", n: "Bolero y flamenco." },
+        { a: 2006, art: "Andrea Bocelli", t: "Bésame mucho", n: "El tenor italiano canta boleros en español en el disco «Amor»." },
         { a: 2019, art: "Los boleros", t: "De la radio a TikTok", tipo: "hito", n: "Muchas versiones nuevas de boleros clásicos se hacen virales entre gente joven." }
       ]
     }

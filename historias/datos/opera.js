@@ -57,6 +57,7 @@ HISTORIAS.push({
         { a: 1896, art: "Giacomo Puccini", t: "La bohème: Che gelida manina", n: "Artistas pobres en París: el realismo llega a la ópera." },
         { a: 1901, art: "Antonín Dvořák", t: "Rusalka: Canción a la luna", n: "La sirena checa." },
         { a: 1904, art: "Giacomo Puccini", t: "Madama Butterfly: Un bel dì vedremo", n: "Una espera trágica." },
+        { a: 1908, art: "Enrico Caruso", t: "Rigoletto: La donna è mobile", n: "El primer tenor que vendió millones de discos." },
         { a: 1918, art: "Giacomo Puccini", t: "Gianni Schicchi: O mio babbino caro", n: "Tres minutos de belleza en una ópera cómica." },
         { a: 1926, art: "Giacomo Puccini", t: "Turandot: Nessun dorma", n: "Puccini murió sin terminar la ópera." }
       ]

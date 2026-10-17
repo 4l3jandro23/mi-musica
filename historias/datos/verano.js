@@ -16,6 +16,7 @@ HISTORIAS.push({
         { a: 1935, art: "«Porgy and Bess»", t: "Nace «Summertime»", tipo: "hito", n: "Se estrena la ópera de Gershwin con la canción de verano más versionada de la historia." },
         { a: 1935, art: "George Gershwin", t: "Summertime", q: "Summertime Ella Fitzgerald Louis Armstrong", n: "De la ópera «Porgy and Bess»: una canción de cuna sobre el verano en el sur de Estados Unidos." },
         { a: 1958, art: "Eddie Cochran", t: "Summertime Blues", n: "El chaval que no puede irse de vacaciones porque tiene que trabajar." },
+        { a: 1960, art: "Percy Faith", t: "Theme from «A Summer Place»", q: "Percy Faith Theme from A Summer Place", n: "El instrumental más vendido de 1960 en EE. UU." },
         { a: 1963, art: "The Beach Boys", t: "Surfin' U.S.A.", n: "El verano californiano hecho rock and roll." },
         { a: 1963, art: "Martha and the Vandellas", t: "Heat Wave", n: "Ola de calor." },
         { a: 1964, art: "The Drifters", t: "Under the Boardwalk", n: "Bajo el paseo marítimo." },

@@ -61,6 +61,7 @@ HISTORIAS.push({
         { a: 1993, art: "Ricardo Arjona", t: "Historia de taxi", n: "Una balada que cuenta una historia entera." },
         { a: 1997, art: "Alejandro Sanz", t: "Y si fuera ella", n: "Del disco «Más», el más vendido de la historia en España." },
         { a: 2001, art: "Cristian Castro", t: "Azul", n: "El hijo de Verónica Castro y una de las baladas más tocadas en las radios." },
+        { a: 2003, art: "Josh Groban", t: "You Raise Me Up", n: "La balada de coro y orquesta para graduaciones y funerales." },
         { a: 2010, art: "YouTube", t: "Las baladas se descubren en internet", tipo: "hito", n: "Pablo Alborán sube vídeos caseros y se hace famoso antes de tener discográfica." },
         { a: 2010, art: "Pablo Alborán", t: "Solamente tú", n: "El malagueño que se dio a conocer en YouTube." }
       ]

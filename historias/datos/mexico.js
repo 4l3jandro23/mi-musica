@@ -14,6 +14,7 @@ HISTORIAS.push({
       intro: "Del son jarocho al huapango.",
       items: [
         { a: 1521, art: "La conquista", t: "Encuentro de dos mundos", tipo: "hito", n: "La música indígena se mezcla con la española y, después, con la africana: de ahí salen los sones de cada región." },
+        { a: 1915, art: "El Combo Dominicano", t: "La cucaracha", q: "El Combo Dominicano La Cucaracha", n: "La canción de la Revolución mexicana, aquí en versión merengue." },
         { a: 1938, art: "Lorenzo Barcelata", t: "El cascabel", n: "Un son jarocho de Veracruz que acabó en el disco de oro de las sondas Voyager." },
         { a: 1952, art: "Mariachi Vargas de Tecalitlán", t: "El son de la negra", n: "El mariachi más famoso." },
         { a: 1958, art: "Ritchie Valens", t: "La Bamba", n: "Un son jarocho tradicional pasado al rock and roll en California." },

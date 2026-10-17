@@ -31,9 +31,10 @@ HISTORIAS.push({
     {
       titulo: "Nuevos sonidos",
       corto: "Nuevos sonidos",
-      periodo: "1966 – 1972",
+      periodo: "1965 – 1972",
       intro: "Canciones pop, western italiano y música clásica en el cine.",
       items: [
+        { a: 1965, art: "Ennio Morricone", t: "For a Few Dollars More", n: "El tema de «La muerte tenía un precio»." },
         { a: 1966, art: "Ennio Morricone", t: "The Good, the Bad and the Ugly", n: "El aullido de El bueno, el feo y el malo: el wéstern italiano en tres notas." },
         { a: 1967, art: "«El graduado»", t: "El cine cambia la partitura por canciones pop", tipo: "hito", n: "Mike Nichols usa canciones de Simon & Garfunkel: nace la banda sonora como recopilatorio." },
         { a: 1968, art: "Simon & Garfunkel", t: "Mrs. Robinson", n: "De «El graduado»: el cine usa canciones pop para contar la historia." },
@@ -70,6 +71,7 @@ HISTORIAS.push({
         { a: 1984, art: "Ray Parker Jr.", t: "Ghostbusters", n: "«Who you gonna call?»: Los cazafantasmas." },
         { a: 1985, art: "Alan Silvestri", t: "Back to the Future", n: "La aventura en estado puro." },
         { a: 1985, art: "Koji Kondo", t: "Super Mario Bros.: Ground Theme", q: "Koji Kondo Super Mario Bros Ground Theme", n: "Los videojuegos también tienen bandas sonoras inolvidables." },
+        { a: 1985, art: "John Barry", t: "Out of Africa: Main Title", n: "Cuerdas inmensas para «Memorias de África»: gana el Óscar." },
         { a: 1986, art: "Kenny Loggins", t: "Danger Zone", n: "De «Top Gun»: los 80 en estado puro." },
         { a: 1986, art: "Koji Kondo", t: "The Legend of Zelda: Main Theme", n: "El tema de aventura más famoso de Nintendo." },
         { a: 1987, art: "Madonna", t: "Who's That Girl", n: "Tema de su película del mismo nombre." },

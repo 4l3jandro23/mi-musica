@@ -58,6 +58,7 @@ HISTORIAS.push({
         { a: 2004, art: "Nujabes", t: "Aruarian Dance", n: "De «Samurai Champloo»: el padre del lo-fi hip hop." },
         { a: 2004, art: "Ludovico Einaudi", t: "Nuvole Bianche", n: "El piano más escuchado del siglo XXI." },
         { a: 2006, art: "Rodrigo y Gabriela", t: "Tamacun", n: "Dos guitarras mexicanas." },
+        { a: 2006, art: "Carly Comando", t: "Everyday", n: "La música del vídeo de Noah Kalina, que se hizo una foto cada día durante años." },
         { a: 2010, art: "Bonobo", t: "Kiara", n: "Electrónica orgánica para viajar." },
         { a: 2014, art: "Snarky Puppy", t: "Lingus", n: "Jazz fusión que se hizo viral en YouTube." },
         { a: 2017, art: "Lofi Girl", t: "La chica que estudia", tipo: "hito", n: "Un directo de YouTube de lo-fi para estudiar, con una chica dibujada que nunca deja de escribir." },

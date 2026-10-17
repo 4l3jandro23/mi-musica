@@ -10,7 +10,7 @@ HISTORIAS.push({
     {
       titulo: "Canciones antiguas que acabaron siendo meme",
       corto: "Antes de ser meme",
-      periodo: "1971 – 1998",
+      periodo: "1971 – 2001",
       intro: "Llevaban años existiendo hasta que internet las encontró.",
       items: [
         { a: 1971, art: "Yes", t: "Roundabout", n: "El «To Be Continued» de JoJo's Bizarre Adventure: la flecha amarilla que congela cualquier vídeo antes del desastre." },
@@ -21,7 +21,8 @@ HISTORIAS.push({
         { a: 1995, art: "Loituma", t: "Ievan Polkka", n: "Una polca finlandesa a capela. En 2006, con la chica del puerro girando (Leekspin), dio la vuelta al mundo." },
         { a: 1996, art: "Andrew Gold", t: "Spooky Scary Skeletons", n: "Cada octubre vuelve: esqueletos bailando en todos los vídeos de Halloween." },
         { a: 1998, art: "Manuel", t: "Gas Gas Gas", n: "Eurobeat de Initial D: sonaba en cualquier vídeo de alguien derrapando (o un carrito de la compra)." },
-        { a: 1998, art: "Max Coveri", t: "Running in the 90s", n: "Otra de Initial D: perfecta para curvas imposibles." }
+        { a: 1998, art: "Max Coveri", t: "Running in the 90s", n: "Otra de Initial D: perfecta para curvas imposibles." },
+        { a: 2001, art: "Vitas", t: "7th Element", q: "Vitas 7 элемент", n: "El agudo imposible y el baile del cantante ruso: meme mundial años después." }
       ]
     },
     {

@@ -1,0 +1,82 @@
+HISTORIAS.push({
+  id: "himnos",
+  familia: "Especiales",
+  titulo: "Historia de los himnos",
+  periodo: "1745 – 2017",
+  color: "#c62828",
+  lema: "Himnos nacionales, canciones de lucha y cánticos de estadio: la música que se canta en grupo y de pie.",
+  intro: "Un himno es una canción que no se escucha solo: se canta con otros. Primero fueron los himnos religiosos; con la Revolución francesa llegaron los himnos nacionales, y cada país quiso el suyo. Los obreros, los partisanos y los movimientos por los derechos civiles tuvieron los suyos. En el siglo XX el fútbol y los Juegos Olímpicos se inventaron otra clase de himnos, los que se corean en un estadio.",
+  capitulos: [
+    {
+      titulo: "Himnos nacionales",
+      corto: "Nacionales",
+      periodo: "1745 – 2008",
+      intro: "De la Marcha Real a «The Star-Spangled Banner».",
+      items: [
+        { a: 1745, art: "Himno del Reino Unido", t: "God Save the King", q: "God Save the King national anthem", n: "Uno de los himnos más antiguos: se canta en Londres desde 1745." },
+        { a: 1761, art: "Himno de España", t: "Marcha Real", q: "Marcha Real himno de España", n: "Nace como «Marcha Granadera», una marcha militar para la corte." },
+        { a: 1792, art: "Rouget de Lisle", t: "La Marseillaise", q: "La Marseillaise hymne national", n: "Un canto de guerra que los voluntarios de Marsella llevan a París." },
+        { a: 1797, art: "Joseph Haydn", t: "String Quartet Op. 76 No. 3 «Emperor»: II. Poco adagio, cantabile", q: "Haydn Emperor Quartet Poco adagio cantabile Kodaly", n: "Haydn escribe un himno para el emperador austriaco; su melodía es hoy el himno de Alemania." },
+        { a: 1820, art: "Himno de Riego", t: "Himno de Riego", q: "Himno de Riego", n: "El himno de los liberales y, en los años 30, de la Segunda República." },
+        { a: 1847, art: "Goffredo Mameli", t: "Il Canto degli Italiani", q: "Il Canto degli Italiani inno nazionale", n: "«Fratelli d'Italia», escrito por un estudiante de 20 años." },
+        { a: 1854, art: "Himno Nacional Mexicano", t: "Mexicanos, al grito de guerra", q: "Himno Nacional Mexicano", n: "Letra de Francisco González Bocanegra, a quien encerraron hasta que la escribió, según la leyenda." },
+        { a: 1880, art: "Himno de Japón", t: "Kimigayo", q: "Kimigayo", n: "Uno de los himnos más cortos del mundo, con letra de un poema de hace mil años." },
+        { a: 1896, art: "John Philip Sousa", t: "The Stars and Stripes Forever", n: "La marcha nacional oficial de EE. UU." },
+        { a: 1899, art: "Himno de Cataluña", t: "Els Segadors", q: "Els Segadors himne", n: "Recuerda la revuelta de los segadores de 1640; es himno oficial desde 1993." },
+        { a: 1901, art: "Edward Elgar", t: "Pomp and Circumstance March No. 1", n: "Con la letra «Land of Hope and Glory», se canta cada año en la Last Night of the Proms." },
+        { a: 1906, art: "George M. Cohan", t: "You're a Grand Old Flag", q: "You're A Grand Old Flag Tabernacle Choir", n: "La primera canción de un musical que vendió un millón de partituras." },
+        { a: 1933, art: "Himno de Andalucía", t: "La bandera blanca y verde", q: "Himno de Andalucía", n: "Letra de Blas Infante sobre un canto religioso de los segadores." },
+        { a: 1944, art: "Aleksandr Aleksándrov", t: "Himno de la Unión Soviética", q: "State Anthem of the Soviet Union", n: "Stalin lo elige en plena guerra; Rusia recuperó la música en el año 2000." },
+        { a: 1967, art: "The Corries", t: "Flower of Scotland", n: "Una canción folk que acabó siendo el himno de Escocia en el rugby y el fútbol." },
+        { a: 1985, art: "La Unión Europea", t: "Un himno sin palabras", tipo: "hito", n: "La Comunidad Europea adopta como himno el «Himno a la alegría» de la Novena de Beethoven, sin letra." },
+        { a: 1991, art: "Whitney Houston", t: "The Star-Spangled Banner", n: "Su versión en la Super Bowl, en plena guerra del Golfo, entra en las listas." },
+        { a: 2008, art: "La Marcha Real", t: "Un himno sin letra", tipo: "hito", n: "El Comité Olímpico Español propone una letra para el himno de España y la retira a los pocos días por las críticas." }
+      ]
+    },
+    {
+      titulo: "Himnos de lucha, despedida y fe",
+      corto: "Lucha y fe",
+      periodo: "1779 – 2017",
+      intro: "Canciones que se cantan en manifestaciones, iglesias y despedidas.",
+      items: [
+        { a: 1779, art: "Aretha Franklin", t: "Amazing Grace", n: "Un himno escrito por un antiguo traficante de esclavos; Aretha lo canta en una iglesia de Los Ángeles en 1972." },
+        { a: 1788, art: "The Royal Scots Dragoon Guards", t: "Auld Lang Syne", n: "Un poema de Robert Burns que se canta en las despedidas y a medianoche en Nochevieja." },
+        { a: 1842, art: "Giuseppe Verdi", t: "Nabucco: Va, pensiero", n: "El coro de los esclavos hebreos, casi un segundo himno de Italia." },
+        { a: 1888, art: "Pierre Degeyter", t: "L'Internationale", q: "L'Internationale", n: "El himno del movimiento obrero en todo el mundo." },
+        { a: 1897, art: "Enoch Sontonga", t: "Nkosi Sikelel' iAfrika", q: "Nkosi Sikelel' iAfrika", n: "Un himno religioso que se convirtió en el canto contra el apartheid." },
+        { a: 1900, art: "J. Rosamond Johnson", t: "Lift Every Voice and Sing", q: "Lift Every Voice and Sing", n: "Llamado «el himno nacional negro» de EE. UU." },
+        { a: 1916, art: "Hubert Parry", t: "Jerusalem", q: "Parry Jerusalem", n: "Un poema de William Blake hecho himno inglés." },
+        { a: 1936, art: "A las barricadas", t: "A las barricadas", q: "A las barricadas CNT", n: "El himno de la CNT durante la Guerra Civil, sobre una melodía polaca." },
+        { a: 1945, art: "Canción partisana", t: "Bella ciao", q: "Bella ciao canzone partigiana", n: "La canción de los partisanos italianos contra el fascismo." },
+        { a: 1963, art: "Joan Baez", t: "We Shall Overcome", n: "La canta en la Marcha sobre Washington: el himno de los derechos civiles." },
+        { a: 1968, art: "Lluís Llach", t: "L'estaca", n: "Una canción contra la dictadura que acabó cantándose en Polonia como himno de Solidaridad." },
+        { a: 1970, art: "Miguel Ríos", t: "Himno a la alegría", n: "Beethoven en versión pop: millones de discos vendidos en todo el mundo." },
+        { a: 1973, art: "Quilapayún", t: "El pueblo unido jamás será vencido", n: "Escrita en Chile meses antes del golpe de Pinochet." },
+        { a: 2017, art: "«La casa de papel»", t: "«Bella ciao» vuelve a sonar", tipo: "hito", n: "La serie española convierte la canción partisana en un éxito mundial y en un remix de verano." }
+      ]
+    },
+    {
+      titulo: "Himnos del deporte",
+      corto: "Deporte",
+      periodo: "1896 – 2014",
+      intro: "Clubes, Mundiales y Juegos Olímpicos.",
+      items: [
+        { a: 1896, art: "Spyridon Samaras", t: "Himno olímpico", q: "Olympic Hymn Samaras", n: "Compuesto para los primeros Juegos modernos de Atenas." },
+        { a: 1963, art: "Gerry & The Pacemakers", t: "You'll Never Walk Alone", n: "Una canción de musical que la grada de Anfield hizo suya." },
+        { a: 1974, art: "Coral Sant Jordi", t: "Cant del Barça", n: "Se escribe para los 75 años del club y lo canta todo el Camp Nou." },
+        { a: 1977, art: "Queen", t: "We Are the Champions", n: "La canción de todos los campeones." },
+        { a: 1987, art: "Freddie Mercury & Montserrat Caballé", t: "Barcelona", n: "El himno de los Juegos de Barcelona 92, aunque Freddie murió antes de verlos." },
+        { a: 1990, art: "Luciano Pavarotti", t: "Nessun dorma", n: "La BBC la elige para el Mundial de Italia 90 y la ópera llega a los bares." },
+        { a: 1992, art: "La Liga de Campeones", t: "El himno de la Champions", tipo: "hito", n: "Tony Britten adapta el «Zadok the Priest» de Händel y nace el himno que suena antes de cada partido." },
+        { a: 1992, art: "Sarah Brightman & José Carreras", t: "Amigos para siempre", n: "De Andrew Lloyd Webber, para la clausura de Barcelona 92." },
+        { a: 1992, art: "Tony Britten", t: "UEFA Champions League Anthem", q: "UEFA Champions League Anthem", n: "En inglés, francés y alemán: «Die Meister! The champions!»." },
+        { a: 1998, art: "Ricky Martin", t: "La copa de la vida", n: "El himno del Mundial de Francia." },
+        { a: 2003, art: "The White Stripes", t: "Seven Nation Army", n: "El riff que corean todos los estadios del mundo." },
+        { a: 2005, art: "El Arrebato", t: "Himno del Centenario del Sevilla FC", q: "El Arrebato Himno del Centenario Sevilla", n: "Escrito para los cien años del club; el Sánchez-Pizjuán lo canta a capela." },
+        { a: 2006, art: "Italia campeona del mundo", t: "«Po po po po po po po»", tipo: "hito", n: "Los aficionados italianos convierten el riff de «Seven Nation Army» en cántico, y de ahí pasa a todos los estadios." },
+        { a: 2010, art: "Shakira", t: "Waka Waka (Esto es África)", n: "El himno del Mundial de Sudáfrica, el que ganó España." },
+        { a: 2014, art: "RedOne", t: "Hala Madrid... y nada más", q: "Hala Madrid y nada mas", n: "El himno de la Décima del Real Madrid." }
+      ]
+    }
+  ]
+});

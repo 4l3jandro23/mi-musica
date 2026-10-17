@@ -68,6 +68,7 @@ HISTORIAS.push({
       items: [
         { a: 1999, art: "Ráfaga", t: "Mentirosa", n: "La cumbia romántica argentina que se bailó en todo el continente." },
         { a: 2004, art: "A.B. Quintanilla III y Los Kumbia Kings", t: "Na Na Na (Dulce niña)", n: "El hermano de Selena y la cumbia con R&B." },
+        { a: 2010, art: "Orquesta Gran Parada", t: "Cumbias Mix", q: "Orquesta Gran Parada Cumbias Mix", n: "Las orquestas de verbena gallegas tocan cumbias en todas las fiestas de pueblo (año aproximado)." },
         { a: 2014, art: "Grupo 5", t: "Motor y motivo", n: "La cumbia peruana de Chiclayo en la era de YouTube." },
         { a: 2022, art: "Grupo Frontera", t: "No se va", n: "Una canción de Morat pasada a cumbia norteña: viral en TikTok." },
         { a: 2023, art: "La cumbia en el mundo", t: "Grupo Frontera y Bad Bunny", tipo: "hito", n: "La cumbia norteña de Texas llega al top mundial de Spotify." }
