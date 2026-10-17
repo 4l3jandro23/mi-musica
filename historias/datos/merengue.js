@@ -29,6 +29,7 @@ HISTORIAS.push({
         { a: 1970, art: "Johnny Ventura", t: "Patacón pisao", q: "Johnny Ventura Patacon pisao", n: "«El caballo mayor» acelera el merengue y le pone espectáculo." },
         { a: 1976, art: "Johnny Ventura", t: "Merenguero hasta la tambora", q: "Johnny Ventura merenguero hasta la tambora", n: "La fiesta del merengue de los 70." },
         { a: 1980, art: "Nueva York", t: "El merengue emigra", tipo: "hito", n: "Cientos de miles de dominicanos viven ya en Nueva York, y las orquestas de merengue llenan allí las salas." },
+        { a: 1980, art: "Wilfrido Vargas", t: "Abusadora", n: "El merengue de Wilfrido." },
         { a: 1984, art: "Wilfrido Vargas", t: "El jardinero", n: "Wilfrido Vargas moderniza el merengue con metales y humor." },
         { a: 1984, art: "Wilfrido Vargas", t: "El africano", n: "Un éxito que se bailó en toda América Latina y en España." },
         { a: 1986, art: "Las Chicas del Can", t: "El negro no puede", n: "La orquesta femenina creada por Wilfrido Vargas." },
@@ -38,7 +39,7 @@ HISTORIAS.push({
     {
       titulo: "El boom de los 90",
       corto: "Los 90",
-      periodo: "1985 – 1998",
+      periodo: "1985 – 1999",
       intro: "Juan Luis Guerra y el merengue en todo el mundo.",
       items: [
         { a: 1985, art: "Milly Quezada", t: "Volvió Juanita", q: "Millie y los Vecinos Volvio Juanita", n: "«La reina del merengue», con Millie y los Vecinos en Nueva York." },
@@ -46,12 +47,19 @@ HISTORIAS.push({
         { a: 1989, art: "Juan Luis Guerra", t: "Ojalá que llueva café", n: "Merengue y poesía campesina desde la República Dominicana." },
         { a: 1990, art: "«Bachata rosa»", t: "Juan Luis Guerra gana un Grammy", tipo: "hito", n: "El disco vende millones: el merengue y la bachata se respetan en todo el mundo." },
         { a: 1990, art: "Juan Luis Guerra", t: "A pedir su mano", n: "Del disco «Bachata rosa»: merengue alegre para las bodas." },
+        { a: 1990, art: "Juan Luis Guerra y 4.40", t: "La bilirrubina", n: "El amor como enfermedad." },
+        { a: 1990, art: "Juan Luis Guerra y 4.40", t: "Woman del Callao", n: "Spanglish y merengue." },
         { a: 1991, art: "Sergio Vargas", t: "La quiero a morir", n: "Un merengue romántico que versiona a Francis Cabrel." },
         { a: 1993, art: "Olga Tañón", t: "Es mentiroso", n: "La puertorriqueña, «la mujer de fuego» del merengue." },
+        { a: 1993, art: "Proyecto Uno", t: "El tiburón", n: "Merengue house." },
         { a: 1995, art: "Los Hermanos Rosario", t: "La dueña del swing", n: "El merengue de discoteca de los 90." },
+        { a: 1995, art: "Olga Tañón", t: "Muchacho malo", n: "La mujer de fuego." },
         { a: 1997, art: "Kinito Méndez", t: "Cachamba", q: "Kinito Mendez Cachamba", n: "Merengue con mucho humor de los 90." },
+        { a: 1997, art: "Fulanito", t: "Guayando", n: "Acordeón y house." },
         { a: 1998, art: "Juan Luis Guerra", t: "El Niágara en bicicleta", n: "Una crónica del hospital dominicano en forma de merengue." },
-        { a: 1998, art: "Elvis Crespo", t: "Tu sonrisa", n: "Del disco «Suavemente», el más vendido del merengue." }
+        { a: 1998, art: "Elvis Crespo", t: "Tu sonrisa", n: "Del disco «Suavemente», el más vendido del merengue." },
+        { a: 1998, art: "Elvis Crespo", t: "Suavemente", n: "El merengue más bailado." },
+        { a: 1999, art: "Elvis Crespo", t: "Píntame", n: "Del segundo disco del rey del «Suavemente»." }
       ]
     },
     {
@@ -62,7 +70,8 @@ HISTORIAS.push({
       items: [
         { a: 2001, art: "Eddy Herrera", t: "Pégame tu vicio", n: "El merengue romántico del cambio de siglo." },
         { a: 2016, art: "UNESCO", t: "Patrimonio de la humanidad", tipo: "hito", n: "La música y el baile del merengue entran en la lista del patrimonio cultural inmaterial." },
-        { a: 2019, art: "Juan Luis Guerra", t: "Kitipun", n: "Juan Luis Guerra sigue haciendo merengue treinta años después." }
+        { a: 2019, art: "Juan Luis Guerra", t: "Kitipun", n: "Juan Luis Guerra sigue haciendo merengue treinta años después." },
+        { a: 2019, art: "Toño Rosario", t: "Kulikitaka", n: "Un merengue viral." }
       ]
     }
   ]

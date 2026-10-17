@@ -55,6 +55,25 @@ HISTORIAS.push({
         { a: 2025, art: "Bad Bunny", t: "CAFé CON RON", n: "Con Los Pleneros de la Cresta: una plena en el disco más escuchado de Bad Bunny." },
         { a: 2025, art: "Bad Bunny", t: "DtMF", n: "La canción del disco, que acaba con un coro como de fiesta de barrio." }
       ]
+    },
+    {
+      titulo: "Las plenas de siempre",
+      corto: "Tradicionales",
+      periodo: "1900 – 1920",
+      intro: "Plenas anónimas que todavía se cantan; los años son aproximados.",
+      items: [
+        { a: 1900, art: "Joselino «Bumbum» Oppenheimer", t: "El primer plenero", tipo: "hito", n: "Un boyero de La Joya del Castillo, en Ponce, improvisa plenas al paso de sus bueyes: es uno de los primeros pleneros que se recuerdan." },
+        { a: 1920, art: "Tradicional", t: "Tintorera del mar", q: "Tintorera del mar plena", n: "Una tintorera, un tiburón, que se comió a un abogado: el periódico cantado." },
+        { a: 1920, art: "Tradicional", t: "El obispo de Ponce", q: "El obispo de Ponce plena", n: "Una de las plenas más populares." },
+        { a: 1920, art: "Tradicional", t: "Matan a Bumbum", q: "Matan a Bumbum plena", n: "La muerte de un plenero contada en plena." },
+        { a: 1920, art: "Tradicional", t: "Temporal", q: "Temporal plena", n: "«Temporal, temporal, allá viene el temporal»: una tormenta en plena." },
+        { a: 1920, art: "Tradicional", t: "Tanta vanidad", q: "Tanta vanidad plena", n: "Otra plena clásica." },
+        { a: 1920, art: "Tradicional", t: "Isidora", q: "Isidora plena", n: "Plena para cantar en grupo." },
+        { a: 1920, art: "Tradicional", t: "Los muchachos de Cataño", q: "Los muchachos de Cataño plena", n: "Una plena de la costa norte." },
+        { a: 1920, art: "Tradicional", t: "La guagua", q: "La guagua plena", n: "Una plena sobre el autobús." },
+        { a: 1920, art: "Tradicional", t: "Julia Lee", q: "Julia Lee plena", n: "Plena tradicional." },
+        { a: 1920, art: "Tradicional", t: "La máquina", q: "La maquina plena", n: "Plena tradicional." }
+      ]
     }
   ]
 });

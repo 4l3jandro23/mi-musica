@@ -21,7 +21,9 @@ HISTORIAS.push({
         { a: 1988, art: "Goran Bregović", t: "Ederlezi", n: "De «El tiempo de los gitanos», de Kusturica: la canción del día de San Jorge gitano." },
         { a: 1993, art: "Dulce Pontes", t: "Canção do mar", n: "El fado moderno de Dulce Pontes, que después sonó en medio mundo." },
         { a: 1995, art: "Goran Bregović", t: "Kalashnikov", n: "De «Underground»: la charanga balcánica a toda velocidad." },
+        { a: 2000, art: "Emir Kusturica & The No Smoking Orchestra", t: "Unza Unza Time", n: "El rock gitano de los Balcanes." },
         { a: 2001, art: "Mariza", t: "Ó gente da minha terra", n: "El fado del siglo XXI, con una letra de Amália." },
+        { a: 2005, art: "Gogol Bordello", t: "Start Wearing Purple", n: "Punk gitano de Nueva York." },
         { a: 2007, art: "Shantel", t: "Disko Partizani", n: "La música balcánica en las discotecas de Europa." },
         { a: 2011, art: "UNESCO", t: "El fado, patrimonio de la humanidad", tipo: "hito", n: "La canción de Lisboa entra en la lista del patrimonio cultural inmaterial." }
       ]
@@ -39,6 +41,7 @@ HISTORIAS.push({
         { a: 1996, art: "Amr Diab", t: "Nour El Ain", n: "El pop egipcio que sonó en todo el mundo árabe y más allá." },
         { a: 1997, art: "Tarkan", t: "Şımarık", n: "El «kiss kiss» turco que bailó toda Europa." },
         { a: 2004, art: "Nancy Ajram", t: "Ah W Noss", n: "La estrella libanesa del pop árabe del siglo XXI." },
+        { a: 2013, art: "Omar Souleyman", t: "Warni Warni", n: "El dabke sirio con sintetizadores." },
         { a: 2019, art: "Altın Gün", t: "Goca Dünya", n: "Un grupo de Ámsterdam recupera el rock psicodélico turco de los 70." }
       ]
     },
@@ -53,6 +56,7 @@ HISTORIAS.push({
         { a: 1978, art: "Freddie Aguilar", t: "Anak", n: "La canción filipina más versionada: se tradujo a decenas de idiomas." },
         { a: 1991, art: "Yothu Yindi", t: "Treaty", n: "Un grupo aborigen australiano canta sobre el tratado que el gobierno nunca firmó." },
         { a: 2008, art: "Gurrumul", t: "Wiyathul", n: "La voz ciega de la isla de Elcho, cantando en su lengua yolŋu." },
+        { a: 2021, art: "Mdou Moctar", t: "Afrique Victime", n: "La guitarra tuareg de Níger." },
         { a: 2022, art: "Ali Sethi & Shae Gill", t: "Pasoori", n: "De Coke Studio de Pakistán: la canción paquistaní más escuchada de la historia." }
       ]
     },

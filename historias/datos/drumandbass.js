@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "drumandbass",
   familia: "Bass music",
   titulo: "Orígenes del drum & bass",
-  periodo: "1969 – 2010",
+  periodo: "1969 – 2023",
   color: "#1f9d6b",
   lema: "Un break de batería de 1969, las raves británicas y el bajo del sound system jamaicano.",
   intro: "Las raves británicas aceleran los breaks de funk. Los hijos de la inmigración jamaicana les ponen debajo el bajo del sound system. El resultado se llama jungle, y cuando se vuelve más limpio y técnico, drum & bass. Una música 100 % británica.",
@@ -28,7 +28,7 @@ HISTORIAS.push({
     {
       titulo: "El drum & bass",
       corto: "Drum & bass",
-      periodo: "1994 – 2010",
+      periodo: "1994 – 2023",
       intro: "El sonido se refina: jazz, atmósferas y, al final, el techstep oscuro.",
       items: [
         { a: 1994, art: "Goldie", t: "Inner City Life", n: "Orquestal y con voz soul: el drum & bass como arte." },
@@ -42,8 +42,18 @@ HISTORIAS.push({
         { a: 1998, art: "Bad Company", t: "The Nine", n: "Uno de los temas de drum & bass más famosos de todos los tiempos." },
         { a: 1998, art: "Dillinja", t: "The Angels Fell", q: "Dillinja The Angels Fell", n: "Dillinja y sus bajos que hacían temblar los clubs." },
         { a: 2002, art: "Shy FX & T Power", t: "Bambaataa", q: "Shy FX T Power Bambaataa", n: "El drum and bass con un toque de hip hop." },
+        { a: 2002, art: "High Contrast", t: "Racing Green", n: "El drum and bass melódico de Gales." },
+        { a: 2002, art: "Shy FX & T Power feat. Di", t: "Shake Ur Body", n: "Drum and bass en las listas." },
+        { a: 2005, art: "Pendulum", t: "Tarantula", n: "El drum and bass australiano." },
         { a: 2008, art: "Pendulum", t: "Propane Nightmares", n: "Pendulum, australianos en Londres, mezclan drum and bass con rock de estadio." },
-        { a: 2010, art: "Netsky", t: "Iron Heart", n: "El drum and bass melódico y luminoso de Netsky." }
+        { a: 2008, art: "Chase & Status", t: "Eastern Jam", n: "Sitar y drop." },
+        { a: 2010, art: "Netsky", t: "Iron Heart", n: "El drum and bass melódico y luminoso de Netsky." },
+        { a: 2010, art: "DJ Fresh", t: "Gold Dust", n: "El drum and bass de la radio." },
+        { a: 2012, art: "Rudimental", t: "Feel the Love", n: "Número uno en el Reino Unido." },
+        { a: 2013, art: "Wilkinson", t: "Afterglow", n: "Drum and bass con voz." },
+        { a: 2014, art: "Sigma", t: "Nobody to Love", n: "Kanye West en drum and bass." },
+        { a: 2021, art: "PinkPantheress", t: "Pain", n: "El drum and bass de TikTok." },
+        { a: 2023, art: "Chase & Status & Stormzy", t: "Baddadan", n: "El regreso del jungle a las listas." }
       ]
     }
   ]

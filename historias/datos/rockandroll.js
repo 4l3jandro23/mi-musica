@@ -40,6 +40,7 @@ HISTORIAS.push({
         { a: 1957, art: "Jerry Lee Lewis", t: "Great Balls of Fire", n: "Aporreando el piano como nadie." },
         { a: 1957, art: "The Crickets", t: "That'll Be the Day", n: "Buddy Holly: grupo, guitarras y canciones propias. El modelo de los Beatles." },
         { a: 1957, art: "The Everly Brothers", t: "Wake Up Little Susie", n: "Armonías vocales que aprenderán los Beatles y Simon & Garfunkel." },
+        { a: 1957, art: "Buddy Holly", t: "Peggy Sue", n: "La batería de tom-tom." },
         { a: 1958, art: "Chuck Berry", t: "Johnny B. Goode", n: "El riff más famoso del rock and roll." },
         { a: 1958, art: "Link Wray", t: "Rumble", n: "Un instrumental tan amenazante que lo prohibieron en algunas radios. Distorsión antes de tiempo." },
         { a: 1958, art: "Eddie Cochran", t: "Summertime Blues", n: "La rebeldía adolescente hecha canción." },

@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "dubstep",
   familia: "Bass music",
   titulo: "Orígenes del dubstep",
-  periodo: "2001 – 2009",
+  periodo: "2001 – 2014",
   color: "#2f9e8f",
   lema: "Sur de Londres, sub-bajo y espacio: el dubstep antes del ruido.",
   intro: "Nace en Croydon y Brixton a partir del garage oscuro, el dub jamaicano y el drum & bass. Tenía 140 BPM y medio tempo, más silencio que notas y un sub-bajo pensado para sentirse en el pecho. Se movía en la tienda Big Apple Records, en la noche FWD>> y en la emisora Rinse FM.",
@@ -10,7 +10,7 @@ HISTORIAS.push({
     {
       titulo: "Del garage oscuro al dubstep",
       corto: "Croydon y Brixton",
-      periodo: "2001 – 2009",
+      periodo: "2001 – 2014",
       intro: "Del garage oscuro al sub-bajo: la escena del sur de Londres.",
       items: [
         { a: 2001, art: "FWD>>", t: "Club en el Plastic People", tipo: "hito", n: "La noche londinense donde el garage se vuelve oscuro y lento. Por allí pasaron todos los pioneros." },
@@ -34,11 +34,20 @@ HISTORIAS.push({
         { a: 2007, art: "Mala", t: "Changes", q: "Mala Changes", n: "Mala, de Digital Mystikz, en su tema más espacial." },
         { a: 2007, art: "Burial", t: "Untrue", tipo: "disco", n: "El segundo disco de Burial: ritmos de garage rotos, voces fantasmales y la tristeza de las raves que ya pasaron." },
         { a: 2007, art: "Burial", t: "Ghost Hardware", n: "De «Untrue»: el Londres nocturno y lluvioso convertido en música." },
+        { a: 2007, art: "Caspa & Rusko", t: "FabricLive.37", tipo: "disco", n: "Una sesión que llevó el dubstep a las masas." },
+        { a: 2007, art: "Distance", t: "Night Vision", n: "El dubstep más pesado." },
         { a: 2008, art: "El dubstep", t: "Hacia el brostep", tipo: "hito", n: "Algunos productores endurecen el sonido y llegan a EE. UU.: el dubstep original se separa del que vendrá después." },
         { a: 2008, art: "Benga", t: "Diary of an Afro Warrior", tipo: "disco", n: "Un álbum entero del joven prodigio de Croydon, que había empezado a los 15 años." },
         { a: 2008, art: "Joker", t: "Digidesign", n: "Desde Bristol, el «purple sound»: sintes violetas, melodía y ritmo lento." },
         { a: 2008, art: "Caspa", t: "Rubber Chicken", n: "Caspa endurece el bajo: el wobble que llevará al brostep." },
-        { a: 2009, art: "Joker & Ginz", t: "Purple City", n: "El «purple sound» de Bristol: sintes violetas, melodía y ritmo lento." }
+        { a: 2009, art: "Joker & Ginz", t: "Purple City", n: "El «purple sound» de Bristol: sintes violetas, melodía y ritmo lento." },
+        { a: 2009, art: "Burial & Four Tet", t: "Moth", n: "Dos genios de Londres." },
+        { a: 2009, art: "Joker", t: "Tron", n: "El «purple sound» de Bristol." },
+        { a: 2010, art: "Magnetic Man", t: "I Need Air", n: "Skream, Benga y Artwork en las listas." },
+        { a: 2010, art: "James Blake", t: "CMYK", n: "Dubstep y soul." },
+        { a: 2012, art: "Burial", t: "Kindred", n: "Doce minutos de lluvia y voces." },
+        { a: 2012, art: "Mala", t: "Mala in Cuba", tipo: "disco", n: "Dubstep con músicos cubanos." },
+        { a: 2014, art: "Kahn & Neek", t: "Percy", n: "El dubstep de Bristol." }
       ]
     }
   ]

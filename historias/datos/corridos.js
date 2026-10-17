@@ -10,7 +10,7 @@ HISTORIAS.push({
     {
       titulo: "El corrido clásico",
       corto: "Corrido clásico",
-      periodo: "1910 – 1995",
+      periodo: "1910 – 1997",
       intro: "Revolución, frontera y los primeros narcocorridos.",
       items: [
         { a: 1910, art: "Revolución mexicana", t: "El corrido como noticia", tipo: "hito", n: "El corrido, heredero del romance español, cuenta las batallas de Villa y Zapata de pueblo en pueblo." },
@@ -19,16 +19,20 @@ HISTORIAS.push({
         { a: 1972, art: "Los Tigres del Norte", t: "Contrabando y traición", n: "La historia de Camelia la Texana: el primer gran narcocorrido." },
         { a: 1975, art: "Los Tigres del Norte", t: "La banda del carro rojo", n: "Contrabando, policías y un final trágico." },
         { a: 1989, art: "Chalino Sánchez", t: "Nieves de enero", n: "El cantante de Sinaloa que renovó el corrido y murió asesinado en 1992." },
+        { a: 1990, art: "Chalino Sánchez", t: "Alma enamorada", n: "El corrido romántico de Chalino." },
         { a: 1992, art: "Chalino Sánchez", t: "El crimen de Chalino", tipo: "hito", n: "Es asesinado tras un concierto en Culiacán; se vuelve una leyenda." },
-        { a: 1995, art: "Los Tucanes de Tijuana", t: "La chona", n: "Más fiesta que corrido, pero de la misma escuela norteña." }
+        { a: 1994, art: "Los Tigres del Norte", t: "Pacas de a kilo", n: "Contrabando de marihuana contado en verso." },
+        { a: 1995, art: "Los Tucanes de Tijuana", t: "La chona", n: "Más fiesta que corrido, pero de la misma escuela norteña." },
+        { a: 1997, art: "Los Tigres del Norte", t: "Jefe de jefes", n: "El corrido del gran capo." }
       ]
     },
     {
       titulo: "Del movimiento alterado a la calle",
       corto: "Movimiento alterado",
-      periodo: "2009 – 2018",
+      periodo: "2006 – 2018",
       intro: "Los 2000 y los 2010.",
       items: [
+        { a: 2006, art: "Valentín Elizalde", t: "Vete ya", n: "El «Gallo de oro» de la banda, asesinado ese mismo año." },
         { a: 2009, art: "Los hermanos Valenzuela", t: "Nace el movimiento alterado", tipo: "hito", n: "Los gemelos Adolfo y Omar Valenzuela lanzan desde California su sello Twiins y un corrido más duro." },
         { a: 2009, art: "El Komander, BuKnas de Culiacán y otros", t: "Sanguinarios del M1", q: "Sanguinarios del M1", n: "El himno del «movimiento alterado» de Sinaloa." },
         { a: 2011, art: "Gerardo Ortiz", t: "Dámaso", n: "Corridos con banda y violencia en la letra." },
@@ -44,15 +48,20 @@ HISTORIAS.push({
       items: [
         { a: 2019, art: "Natanael Cano", t: "Nace el corrido tumbado", tipo: "hito", n: "El disco «Corridos tumbados» de un chaval de 18 años da nombre al género." },
         { a: 2019, art: "Natanael Cano", t: "Soy el diablo", n: "Con Bad Bunny en la remezcla: el corrido tumbado llega a las masas." },
+        { a: 2019, art: "El Fantasma", t: "Mi 45", n: "El corrido de Durango." },
         { a: 2020, art: "Natanael Cano", t: "Amor tumbado", n: "El corrido tumbado también sabe ser romántico." },
         { a: 2020, art: "Junior H", t: "Se amerita", n: "Junior H y el corrido «sad»: guitarras tristes y ritmo lento." },
         { a: 2021, art: "Eslabon Armado", t: "Jugaste y sufrí", n: "Un trío de California con corridos de desamor." },
+        { a: 2022, art: "Gabito Ballesteros, Peso Pluma & Natanael Cano", t: "AMG", n: "El trío que anunció la explosión del género." },
+        { a: 2022, art: "Junior H", t: "Y lloro", n: "El corrido triste." },
+        { a: 2022, art: "Fuerza Regida & Grupo Frontera", t: "Bebe dame", n: "Corrido y cumbia norteña juntos." },
         { a: 2023, art: "Peso Pluma & Natanael Cano", t: "PRC", n: "El dúo que lideró la explosión del género." },
         { a: 2023, art: "Eslabon Armado & Peso Pluma", t: "Ella baila sola", n: "Número uno mundial en Spotify: el corrido tumbado conquista el mundo." },
         { a: 2023, art: "Peso Pluma & Junior H", t: "El azul", n: "Los dos grandes del género en una sola canción." },
         { a: 2023, art: "Peso Pluma", t: "Lady Gaga", n: "Con Gabito Ballesteros y Junior H, un éxito de su disco «Génesis»." },
         { a: 2023, art: "Fuerza Regida", t: "Sabor fresa", n: "Los de San Bernardino también llegan al top mundial." },
         { a: 2023, art: "Peso Pluma & Grupo Frontera", t: "TULUM", n: "La cumbia norteña y el corrido tumbado se juntan en el disco «Génesis»." },
+        { a: 2023, art: "Peso Pluma", t: "Bye", n: "Del disco «Génesis»." },
         { a: 2024, art: "Xavi", t: "La diabla", n: "Un corrido romántico de un chaval de 19 años que llegó al número uno en México." }
       ]
     }

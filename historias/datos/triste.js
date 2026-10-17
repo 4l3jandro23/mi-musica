@@ -23,18 +23,24 @@ HISTORIAS.push({
     {
       titulo: "El pop se pone triste",
       corto: "Pop",
-      periodo: "1965 – 2002",
+      periodo: "1961 – 2002",
       intro: "Baladas, despedidas y voces rotas.",
       items: [
+        { a: 1961, art: "Roy Orbison", t: "Crying", n: "Una voz que llora." },
+        { a: 1961, art: "Patsy Cline", t: "I Fall to Pieces", n: "Hecha pedazos." },
         { a: 1965, art: "The Beatles", t: "Yesterday", n: "Una melodía soñada y una ruptura." },
         { a: 1970, art: "Simon & Garfunkel", t: "Bridge over Troubled Water", n: "Consuelo en forma de himno." },
         { a: 1971, art: "Harry Nilsson", t: "Without You", n: "Una canción de Badfinger convertida en lamento enorme." },
         { a: 1975, art: "Pink Floyd", t: "Wish You Were Here", n: "Para Syd Barrett, el amigo perdido." },
         { a: 1980, art: "Ian Curtis", t: "Muere el cantante de Joy Division", tipo: "hito", n: "Con 23 años, en vísperas de su primera gira americana." },
         { a: 1980, art: "Joy Division", t: "Love Will Tear Us Apart", n: "Publicada semanas después de la muerte de Ian Curtis." },
+        { a: 1985, art: "The Smiths", t: "Asleep", n: "Una nana triste." },
+        { a: 1987, art: "Nacha Pop", t: "Lucha de gigantes", n: "Antonio Vega y una canción sobre la lucha interior." },
         { a: 1990, art: "Sinéad O'Connor", t: "Nothing Compares 2 U", n: "La lágrima del vídeo es real." },
         { a: 1992, art: "Eric Clapton", t: "Tears in Heaven", n: "Escrita tras la muerte de su hijo de cuatro años." },
+        { a: 1992, art: "R.E.M.", t: "Everybody Hurts", n: "A todos nos duele." },
         { a: 1994, art: "Jeff Buckley", t: "Hallelujah", n: "La versión definitiva de la canción de Leonard Cohen." },
+        { a: 1997, art: "Radiohead", t: "Exit Music (For a Film)", n: "De «Romeo + Julieta»." },
         { a: 2002, art: "Johnny Cash", t: "Hurt", n: "Nine Inch Nails cantados por un hombre al final de su vida." }
       ]
     },
@@ -49,9 +55,12 @@ HISTORIAS.push({
         { a: 2007, art: "Bon Iver", t: "Skinny Love", n: "Grabado en una cabaña de Wisconsin tras una ruptura." },
         { a: 2011, art: "Psicología", t: "Por qué nos gusta la música triste", tipo: "hito", n: "Investigadores proponen que la música triste consuela porque activa la prolactina, la hormona del consuelo, sin una pérdida real." },
         { a: 2011, art: "Adele", t: "Someone Like You", n: "La balada de ruptura del siglo." },
+        { a: 2015, art: "Sufjan Stevens", t: "Fourth of July", n: "Sobre la muerte de su madre." },
         { a: 2017, art: "XXXTentacion", t: "Jocelyn Flores", n: "El emo rap y la depresión." },
         { a: 2018, art: "Billie Eilish", t: "when the party's over", n: "Un susurro que cuesta cantar sin quebrarse." },
         { a: 2019, art: "Lewis Capaldi", t: "Someone You Loved", n: "La canción más escuchada en el Reino Unido de su año." },
+        { a: 2021, art: "Olivia Rodrigo", t: "drivers license", n: "La ruptura de la Generación Z." },
+        { a: 2022, art: "Joji", t: "Glimpse of Us", n: "Comparar un amor con otro." },
         { a: 2023, art: "Billie Eilish", t: "What Was I Made For?", n: "La balada de Barbie sobre no saber quién eres." }
       ]
     }

@@ -18,14 +18,17 @@ HISTORIAS.push({
         { a: 1996, art: "Erykah Badu", t: "Next Lifetime", n: "Erykah Badu canta sobre un amor para la próxima vida." },
         { a: 1997, art: "Kedar Massenburg", t: "Bautiza el «neo soul»", tipo: "hito", n: "El ejecutivo de Erykah Badu y D'Angelo le pone nombre al estilo." },
         { a: 1997, art: "Erykah Badu", t: "On & On", n: "Turbante, jazz y Billie Holiday en clave de hip hop." },
+        { a: 1997, art: "Erykah Badu", t: "Tyrone", n: "Grabada en directo." },
         { a: 1998, art: "Lauryn Hill", t: "Doo Wop (That Thing)", n: "The Miseducation of Lauryn Hill: el disco del movimiento." },
-        { a: 1999, art: "Lauryn Hill", t: "Gana cinco Grammy", tipo: "hito", n: "Primera mujer en ganar cinco en una sola noche." }
+        { a: 1998, art: "Lauryn Hill", t: "Ex-Factor", n: "Una ruptura." },
+        { a: 1999, art: "Lauryn Hill", t: "Gana cinco Grammy", tipo: "hito", n: "Primera mujer en ganar cinco en una sola noche." },
+        { a: 1999, art: "Maxwell", t: "Fortunate", n: "Producida por R. Kelly." }
       ]
     },
     {
       titulo: "Soulquarians",
       corto: "Soulquarians",
-      periodo: "1999 – 2001",
+      periodo: "1999 – 2006",
       intro: "Electric Lady Studios y la edad de oro.",
       items: [
         { a: 1999, art: "Soulquarians", t: "El colectivo de Electric Lady", tipo: "hito", n: "D'Angelo, Questlove, J Dilla, Erykah Badu, Common y James Poyser graban juntos." },
@@ -35,19 +38,26 @@ HISTORIAS.push({
         { a: 2000, art: "Common", t: "The Light", n: "Una canción de amor sobre un sample de Bobby Caldwell." },
         { a: 2000, art: "Musiq Soulchild", t: "Love", n: "Musiq Soulchild, desde Filadelfia, con una de las baladas de neo soul más bonitas del año 2000." },
         { a: 2000, art: "D'Angelo", t: "Untitled (How Does It Feel)", n: "El vídeo de D'Angelo sin camiseta y una canción de soul lento y perfecto." },
+        { a: 2000, art: "Bilal", t: "Soul Sista", n: "Falsete y soul." },
         { a: 2001, art: "India.Arie", t: "Video", n: "Contra los estándares de belleza." },
-        { a: 2001, art: "Alicia Keys", t: "Fallin'", n: "Piano clásico y soul: el neo soul llega al número uno." }
+        { a: 2001, art: "Alicia Keys", t: "Fallin'", n: "Piano clásico y soul: el neo soul llega al número uno." },
+        { a: 2001, art: "Angie Stone", t: "Wish I Didn't Miss You", n: "Sobre un sample de los O'Jays." },
+        { a: 2004, art: "Jill Scott", t: "Golden", n: "Vivir la vida como si fuera de oro." },
+        { a: 2006, art: "Corinne Bailey Rae", t: "Put Your Records On", n: "Soul británico." }
       ]
     },
     {
       titulo: "El regreso",
       corto: "Regreso",
-      periodo: "2012 – 2023",
+      periodo: "2010 – 2023",
       intro: "D'Angelo vuelve y llega una nueva generación.",
       items: [
+        { a: 2010, art: "Erykah Badu", t: "Window Seat", n: "Un vídeo desnuda en Dallas." },
         { a: 2012, art: "Frank Ocean", t: "Thinkin Bout You", n: "El neo soul se cruza con el R&B alternativo." },
+        { a: 2013, art: "Hiatus Kaiyote", t: "Nakamarra", n: "Soul australiano." },
         { a: 2014, art: "D'Angelo", t: "Publica «Black Messiah» por sorpresa", tipo: "hito", n: "Catorce años después de Voodoo, en plena protesta por Ferguson." },
         { a: 2014, art: "D'Angelo", t: "Really Love", n: "Cuerdas, guitarra española y falsete." },
+        { a: 2015, art: "Leon Bridges", t: "River", n: "Soul de Texas." },
         { a: 2016, art: "Solange", t: "Cranes in the Sky", n: "A Seat at the Table: tristeza y dignidad." },
         { a: 2016, art: "Anderson .Paak", t: "Come Down", n: "Anderson .Paak toca la batería mientras canta: el funk de «Malibu» suena a banda en directo." },
         { a: 2017, art: "Daniel Caesar", t: "Get You", n: "Con Kali Uchis: el soul canadiense." },

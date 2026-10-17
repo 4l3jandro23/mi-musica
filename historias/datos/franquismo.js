@@ -18,6 +18,7 @@ HISTORIAS.push({
         { a: 1946, art: "Bonet de San Pedro", t: "Raska-yú", n: "Swing y canción ligera: el jazz se cuela disfrazado." },
         { a: 1947, art: "Antonio Machín", t: "Angelitos negros", n: "Un cubano negro cantando contra el racismo en la España de la posguerra." },
         { a: 1950, art: "Jorge Sepúlveda", t: "Mirando al mar", n: "El bolero más famoso de la posguerra española, cantado por el valenciano Jorge Sepúlveda." },
+        { a: 1956, art: "Joselito", t: "Campanera", n: "El niño de la voz de oro." },
         { a: 1957, art: "Sara Montiel", t: "Fumando espero", n: "Sensualidad en el cine, con la censura vigilando." }
       ]
     },
@@ -30,14 +31,20 @@ HISTORIAS.push({
         { a: 1959, art: "Festival de Benidorm", t: "Primera edición", tipo: "hito", n: "Creado para promocionar el turismo: un escaparate de la canción ligera que lanzó a Julio Iglesias y Raphael." },
         { a: 1962, art: "Dúo Dinámico", t: "Quisiera ser", n: "Los primeros ídolos juveniles del pop español." },
         { a: 1962, art: "Marisol", t: "Tómbola", n: "Marisol, la niña prodigio del cine español del desarrollismo." },
+        { a: 1963, art: "Raimon", t: "Al vent", n: "La Nova Cançó contra la dictadura." },
         { a: 1964, art: "Los Brincos", t: "Flamenco", n: "Los «Beatles españoles»: el pop beat llega a la España de Franco." },
         { a: 1965, art: "Concha Velasco", t: "La chica ye-yé", n: "La moda yeyé: guateques y minifaldas (con permiso)." },
+        { a: 1965, art: "Rocío Dúrcal", t: "Más bonita que ninguna", n: "La niña prodigio." },
         { a: 1966, art: "Los Bravos", t: "Black Is Black", n: "Un grupo español en las listas de medio mundo, cantando en inglés." },
         { a: 1966, art: "Raphael", t: "Yo soy aquel", n: "El gran showman de la canción melódica." },
+        { a: 1967, art: "Raphael", t: "Mi gran noche", n: "El Raphael de los 60." },
         { a: 1968, art: "Julio Iglesias", t: "La vida sigue igual", n: "Gana Benidorm: empieza la carrera del español más vendido de la historia." },
         { a: 1968, art: "Massiel", t: "La, la, la", n: "España gana Eurovisión por primera vez, tras la negativa de Serrat a cantarla en castellano." },
+        { a: 1968, art: "Mari Trini", t: "Yo no soy esa", n: "Una mujer que no quiere ser lo que esperan de ella." },
+        { a: 1968, art: "Lluís Llach", t: "L'estaca", n: "El himno contra la dictadura." },
         { a: 1969, art: "Salomé", t: "Vivo cantando", n: "Y en 1969, otra victoria en Eurovisión (empatada con tres países)." },
-        { a: 1969, art: "Paco Ibáñez", t: "A galopar", n: "Poemas de Rafael Alberti cantados desde el exilio: un concierto mítico en el Olympia de París." }
+        { a: 1969, art: "Paco Ibáñez", t: "A galopar", n: "Poemas de Rafael Alberti cantados desde el exilio: un concierto mítico en el Olympia de París." },
+        { a: 1969, art: "Manolo Escobar", t: "Mi carro", n: "La canción más popular de la época." }
       ]
     },
     {
@@ -47,9 +54,12 @@ HISTORIAS.push({
       intro: "Baladas, mensajes entre líneas y ganas de cambio.",
       items: [
         { a: 1970, art: "Los Diablos", t: "Un rayo de sol", n: "La canción del verano por excelencia." },
+        { a: 1970, art: "Víctor Manuel", t: "El abuelo Vítor", n: "Un minero asturiano." },
         { a: 1971, art: "Karina", t: "En un mundo nuevo", n: "Segundo puesto en Eurovisión: optimismo para un país que quería cambiar." },
+        { a: 1971, art: "Peret", t: "Borriquito", n: "La rumba catalana en televisión." },
         { a: 1972, art: "Nino Bravo", t: "Libre", n: "Inspirada en un joven que murió intentando cruzar el Muro de Berlín. Muchos la oían como un himno de libertad." },
         { a: 1973, art: "Mocedades", t: "Eres tú", n: "Segundo puesto en Eurovisión y un éxito en Estados Unidos." },
+        { a: 1974, art: "Jeanette", t: "Porque te vas", n: "De «Cría cuervos»." },
         { a: 1975, art: "Muere Franco", t: "20 de noviembre", tipo: "hito", n: "Empieza la Transición: llegan la libertad, el fin de la censura y la Movida." },
         { a: 1975, art: "Cecilia", t: "Dama, dama", n: "Una sátira de la señora de bien. Cecilia moriría un año después en un accidente." }
       ]

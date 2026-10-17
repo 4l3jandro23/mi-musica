@@ -10,7 +10,7 @@ HISTORIAS.push({
     {
       titulo: "De Benassi a Ed Banger",
       corto: "Orígenes",
-      periodo: "2002 – 2006",
+      periodo: "2002 – 2007",
       intro: "Sintetizadores sucios y el French touch más agresivo.",
       items: [
         { a: 2002, art: "Benny Benassi", t: "Satisfaction", n: "Un bajo que vibra y un vídeo con herramientas de bricolaje." },
@@ -21,7 +21,12 @@ HISTORIAS.push({
         { a: 2006, art: "Justice vs. Simian", t: "We Are Your Friends", tipo: "hito", n: "El himno de la generación de los blogs de música." },
         { a: 2006, art: "Fedde Le Grand", t: "Put Your Hands Up for Detroit", n: "Número uno en el Reino Unido." },
         { a: 2006, art: "Bob Sinclar", t: "Rock This Party (Everybody Dance Now)", n: "El electro house de las discotecas comerciales de 2006." },
-        { a: 2006, art: "MSTRKRFT", t: "Easy Love", n: "El dúo canadiense MSTRKRFT, con electro house sucio y lleno de filtros." }
+        { a: 2006, art: "MSTRKRFT", t: "Easy Love", n: "El dúo canadiense MSTRKRFT, con electro house sucio y lleno de filtros." },
+        { a: 2007, art: "Justice", t: "D.A.N.C.E.", n: "Coros infantiles y electro francés." },
+        { a: 2007, art: "Simian Mobile Disco", t: "Hustler", n: "El electro de Londres." },
+        { a: 2007, art: "Digitalism", t: "Pogo", n: "El electro de Hamburgo." },
+        { a: 2007, art: "Boys Noize", t: "& Down", n: "Electro duro alemán." },
+        { a: 2007, art: "Axwell", t: "I Found U", n: "El house sueco." }
       ]
     },
     {
@@ -32,10 +37,15 @@ HISTORIAS.push({
       items: [
         { a: 2008, art: "deadmau5", t: "Ghosts 'n' Stuff", n: "Con Rob Swire: el casco de ratón llega a la radio." },
         { a: 2008, art: "Deadmau5", t: "I Remember", n: "Con Kaskade. El lado más melódico y progresivo de Deadmau5." },
+        { a: 2008, art: "Eric Prydz", t: "Pjanoo", n: "Un piano que sonó en todas partes." },
+        { a: 2008, art: "Kid Cudi", t: "Day 'n' Nite (Crookers Remix)", n: "Un remix que llegó al número dos en el Reino Unido." },
+        { a: 2008, art: "Kaskade & deadmau5", t: "Move for Me", n: "Progressive house con voz." },
         { a: 2009, art: "The Bloody Beetroots", t: "Warp 1.9", n: "Con Steve Aoki: punk y electro." },
         { a: 2009, art: "Wolfgang Gartner", t: "Wolfgang's 5th Symphony", n: "Beethoven en versión electro house." },
+        { a: 2009, art: "Steve Aoki", t: "I'm in the House", n: "Con Zuper Blahq." },
         { a: 2010, art: "Swedish House Mafia", t: "One", n: "Axwell, Ingrosso y Angello unen fuerzas." },
         { a: 2010, art: "Deadmau5", t: "Raise Your Weapon", n: "Del electro al dubstep en un mismo tema: el puente entre dos mundos." },
+        { a: 2010, art: "Swedish House Mafia", t: "Miami 2 Ibiza", n: "Con Tinie Tempah." },
         { a: 2011, art: "Dada Life", t: "Happy Violence", n: "Electro house con plátanos hinchables." },
         { a: 2011, art: "Knife Party", t: "Internet Friends", n: "Los de Pendulum y un mensaje de Facebook." },
         { a: 2011, art: "Zedd", t: "Shave It", n: "El primer éxito del ruso-alemán." },

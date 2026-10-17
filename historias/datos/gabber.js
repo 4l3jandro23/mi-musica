@@ -20,6 +20,7 @@ HISTORIAS.push({
         { a: 1992, art: "Thunderdome", t: "Las fiestas gigantes", tipo: "hito", n: "La organizadora ID&T empieza las fiestas y los recopilatorios Thunderdome, con su mago como símbolo." },
         { a: 1992, art: "Euromasters", t: "Amsterdam waar lech dat dan?", n: "«¿Ámsterdam? ¿Dónde está eso?»: la burla de Rotterdam a la ciudad del house." },
         { a: 1992, art: "Rotterdam Termination Source", t: "Poing", n: "Un sonido de muelle que llegó a las listas holandesas." },
+        { a: 1992, art: "Diss Reaction", t: "Jiiieehaaa", q: "Diss Reaction Jiiieehaaa", n: "Un clásico del hardcore de los 90." },
         { a: 1993, art: "Euromasters", t: "Alles naar de kl*te", q: "Euromasters Alles naar de klote", n: "Otro himno de los de Rotterdam, con letra para gritar." }
       ]
     },
@@ -32,6 +33,8 @@ HISTORIAS.push({
         { a: 1994, art: "Charly Lownoise & Mental Theo", t: "Wonderful Days", n: "Hardcore con melodía de silbido: número uno en Holanda." },
         { a: 1994, art: "Marusha", t: "Somewhere Over the Rainbow", n: "La DJ alemana convierte «El mago de Oz» en un éxito rave." },
         { a: 1994, art: "Paul Elstak", t: "Life Is Like a Dance", n: "El primer gran éxito de Elstak en las listas." },
+        { a: 1994, art: "Scooter", t: "Hyper Hyper", n: "El hardcore alemán con megáfono." },
+        { a: 1994, art: "Interactive", t: "Forever Young", n: "Happy hardcore de Alphaville." },
         { a: 1995, art: "Dune", t: "Hardcore Vibes", n: "Happy hardcore alemán que bailó media Europa." },
         { a: 1995, art: "3 Steps Ahead", t: "Drop It (Are You Ready)", q: "3 Steps Ahead Drop It", n: "Hardcore holandés con gancho de radio." },
         { a: 1995, art: "Paul Elstak", t: "Luv U More", n: "El padre del gabber se pasa al happy hardcore." },
@@ -48,10 +51,17 @@ HISTORIAS.push({
       items: [
         { a: 1997, art: "Hakkûhbar", t: "Gabbertje", n: "Una canción de humor sobre un gabber enamorado que llegó al número uno en Holanda." },
         { a: 1997, art: "Neophyte", t: "Army of Hardcore", q: "Neophyte Army of Hardcore", n: "Uno de los nombres clásicos del hardcore de Rotterdam." },
+        { a: 1998, art: "Neophyte vs. The Stunned Guys", t: "Nation of Domination", n: "El hardcore de Rotterdam de finales de los 90." },
+        { a: 2000, art: "Neophyte & The Viper", t: "This Is Real Hardcore", n: "Un himno de la escena." },
+        { a: 2005, art: "Angerfist", t: "The World Will Shiver", n: "El himno de Masters of Hardcore 2005." },
+        { a: 2005, art: "Angerfist", t: "Raise Your Fist", n: "El «rey del hardcore» y su máscara." },
+        { a: 2006, art: "Angerfist", t: "Dance with the Wolves", n: "Un clásico de sus sesiones." },
         { a: 2008, art: "Angerfist", t: "Pennywise", n: "La máscara de Angerfist y el hardcore del siglo XXI." },
+        { a: 2008, art: "Angerfist", t: "Riotstarter", n: "Otro de los temas que lo hicieron famoso." },
         { a: 2012, art: "Thunderdome Never Dies", t: "El regreso", tipo: "hito", n: "Thunderdome vuelve en 2012 con una fiesta gigante en Utrecht: el gabber es ya nostalgia." },
         { a: 2015, art: "Dr. Peacock", t: "Trip to Ireland", n: "El frenchcore: violines irlandeses a 200 pulsaciones." },
         { a: 2016, art: "Sefa", t: "Le mystère", n: "Frenchcore melódico del holandés Sefa." },
+        { a: 2016, art: "Partyraiser", t: "Sound Becomes One", q: "Partyraiser Sound Becomes One", n: "El hardcore duro que se suaviza en el medio." },
         { a: 2018, art: "Gabber Modus Operandi", t: "Puja", n: "Un dúo de Bali mezcla gabber y música tradicional indonesia." },
         { a: 2020, art: "Uptempo", t: "Más rápido imposible", tipo: "hito", n: "El «uptempo» supera las 200 pulsaciones: el gabber sigue acelerando." }
       ]

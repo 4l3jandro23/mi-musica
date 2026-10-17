@@ -19,6 +19,7 @@ HISTORIAS.push({
         { a: 1932, art: "Fred Astaire", t: "Night and Day", n: "De Cole Porter: obsesión de día y de noche." },
         { a: 1935, art: "Fred Astaire", t: "Cheek to Cheek", n: "De Irving Berlin, para «Sombrero de copa»." },
         { a: 1936, art: "Fred Astaire", t: "The Way You Look Tonight", n: "De Jerome Kern, ganó el Óscar." },
+        { a: 1936, art: "Billie Holiday", t: "Summertime", n: "La primera gran versión de Gershwin." },
         { a: 1939, art: "Judy Garland", t: "Over the Rainbow", n: "De «El mago de Oz»: elegida a menudo la mejor canción del cine." },
         { a: 1939, art: "Coleman Hawkins", t: "Body and Soul", n: "Una improvisación de saxo que cambió el jazz." },
         { a: 1941, art: "Billie Holiday", t: "All of Me", n: "Una canción de 1931 en la voz de Lady Day." }
@@ -31,11 +32,17 @@ HISTORIAS.push({
       intro: "Sinatra, Ella y el disco de larga duración.",
       items: [
         { a: 1947, art: "Thelonious Monk", t: "'Round Midnight", n: "El estándar compuesto por un músico de jazz más grabado." },
+        { a: 1951, art: "Nat King Cole", t: "Unforgettable", n: "Inolvidable." },
+        { a: 1953, art: "Dean Martin", t: "That's Amore", n: "El crooner italoamericano." },
         { a: 1954, art: "Chet Baker", t: "My Funny Valentine", n: "La trompeta y la voz frágil del jazz de la Costa Oeste." },
+        { a: 1954, art: "Sarah Vaughan", t: "Lullaby of Birdland", n: "La voz divina." },
         { a: 1955, art: "Julie London", t: "Cry Me a River", n: "Voz grave y guitarra." },
         { a: 1956, art: "Ella Fitzgerald", t: "Los «Songbooks»", tipo: "hito", n: "Ella graba disco a disco las canciones de Cole Porter, Rodgers y Hart o Gershwin: el canon queda fijado." },
         { a: 1956, art: "Frank Sinatra", t: "I've Got You Under My Skin", n: "Con el arreglo de Nelson Riddle, una de sus grabaciones definitivas." },
+        { a: 1956, art: "Ella Fitzgerald", t: "Ev'ry Time We Say Goodbye", n: "De su disco de Cole Porter." },
         { a: 1959, art: "Johnny Mathis", t: "Misty", n: "Una melodía de Erroll Garner." },
+        { a: 1959, art: "Bobby Darin", t: "Mack the Knife", n: "De «La ópera de cuatro cuartos»." },
+        { a: 1959, art: "Dinah Washington", t: "What a Diff'rence a Day Makes", n: "La reina del blues." },
         { a: 1960, art: "Ray Charles", t: "Georgia on My Mind", n: "Hoy es la canción oficial del estado de Georgia." },
         { a: 1961, art: "Audrey Hepburn", t: "Moon River", q: "Moon River Audrey Hepburn", n: "De «Desayuno con diamantes», cantada en la ventana." },
         { a: 1964, art: "Frank Sinatra", t: "Fly Me to the Moon", n: "Con Count Basie: sonó en las misiones Apolo." },
@@ -51,6 +58,8 @@ HISTORIAS.push({
       intro: "Una tradición que no se acaba.",
       items: [
         { a: 1980, art: "Frank Sinatra", t: "Theme from New York, New York", n: "El himno de la ciudad que nunca duerme." },
+        { a: 1989, art: "Harry Connick Jr.", t: "It Had to Be You", n: "De «Cuando Harry encontró a Sally»." },
+        { a: 2011, art: "Tony Bennett & Amy Winehouse", t: "Body and Soul", n: "La última grabación de Amy." },
         { a: 2014, art: "Tony Bennett & Lady Gaga", t: "Cheek to Cheek", tipo: "hito", n: "Una estrella del pop y un cantante de 88 años graban un disco de estándares que llega al número uno." },
         { a: 2014, art: "Tony Bennett & Lady Gaga", t: "Anything Goes", n: "Del disco «Cheek to Cheek»: Cole Porter en el siglo XXI." }
       ]

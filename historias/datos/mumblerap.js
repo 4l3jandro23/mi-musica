@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "mumblerap",
   familia: "Hip hop",
   titulo: "Mumble rap",
-  periodo: "2014 – 2018",
+  periodo: "2013 – 2022",
   color: "#9a6fd6",
   lema: "Melodías por encima de las letras: la generación de SoundCloud que dividió el rap.",
   intro: "A mediados de los 2010 una generación de raperos de Atlanta, Florida y SoundCloud empezó a priorizar la melodía, el Auto-Tune y el ritmo de la voz por encima de la letra. Los veteranos lo llamaron «mumble rap» (rap balbuceado) como insulto. Ellos dominaron las listas.",
@@ -10,9 +10,11 @@ HISTORIAS.push({
     {
       titulo: "Atlanta",
       corto: "Atlanta",
-      periodo: "2014 – 2015",
+      periodo: "2013 – 2015",
       intro: "Young Thug, Future y la voz como instrumento.",
       items: [
+        { a: 2013, art: "Migos", t: "Versace", n: "El flow triple de Atlanta." },
+        { a: 2013, art: "Rich Homie Quan", t: "Type of Way", n: "El sonido de Atlanta." },
         { a: 2014, art: "Atlanta", t: "La ciudad que manda en el rap", tipo: "hito", n: "Young Thug, Future y Migos cambian la forma de rapear." },
         { a: 2014, art: "Young Thug", t: "Stoner", n: "La voz de Thug convertida en instrumento." },
         { a: 2014, art: "Rich Gang", t: "Lifestyle", n: "Young Thug y Rich Homie Quan." },
@@ -26,7 +28,7 @@ HISTORIAS.push({
     {
       titulo: "La generación de SoundCloud",
       corto: "SoundCloud",
-      periodo: "2016 – 2018",
+      periodo: "2016 – 2022",
       intro: "Melodía, pelo de colores y canciones de dos minutos.",
       items: [
         { a: 2016, art: "XXL Freshman", t: "La portada de 2016", tipo: "hito", n: "Lil Uzi Vert, Lil Yachty, 21 Savage, Kodak Black y Desiigner: el cambio de generación." },
@@ -36,14 +38,22 @@ HISTORIAS.push({
         { a: 2016, art: "Lil Yachty", t: "Minnesota", n: "Lil Yachty con Quavo, Skippa da Flippa y Young Thug: rap infantil y despreocupado." },
         { a: 2016, art: "Rae Sremmurd", t: "Black Beatles", n: "Con Gucci Mane. Se convirtió en la música del «mannequin challenge» y llegó al número uno." },
         { a: 2016, art: "Lil Pump", t: "D Rose", n: "El primer tema viral de Lil Pump." },
+        { a: 2016, art: "DRAM feat. Lil Yachty", t: "Broccoli", n: "Rap feliz." },
         { a: 2017, art: "Pete Rock y otros veteranos", t: "Critican el «mumble rap»", tipo: "hito", n: "Los raperos clásicos atacan a la nueva generación: el debate dura años." },
         { a: 2017, art: "Lil Uzi Vert", t: "XO Tour Llif3", n: "«Push me to the edge»: el himno de la generación." },
         { a: 2017, art: "Playboi Carti", t: "Magnolia", n: "Pierre Bourne y la voz de Carti: casi más ritmo que letra." },
         { a: 2017, art: "Lil Pump", t: "Gucci Gang", n: "«Gucci gang» repetido 53 veces." },
         { a: 2017, art: "Migos", t: "Bad and Boujee", n: "Con Lil Uzi Vert. Número uno en EE. UU.: el trap de Atlanta, en lo más alto." },
+        { a: 2017, art: "21 Savage", t: "Bank Account", n: "Un rap monótono y frío." },
+        { a: 2017, art: "Lil Uzi Vert", t: "The Way Life Goes", n: "Melancolía." },
+        { a: 2017, art: "Kodak Black", t: "Tunnel Vision", n: "El rap de Florida." },
         { a: 2018, art: "Lil Baby & Gunna", t: "Drip Too Hard", n: "Atlanta, Auto-Tune y melodía." },
         { a: 2018, art: "Lil Baby", t: "Yes Indeed", n: "Con Drake. Lil Baby, de Atlanta, pasa de la calle a ser una de las voces del momento." },
-        { a: 2018, art: "Gunna", t: "Sold Out Dates", n: "Con Lil Baby. Gunna, protegido de Young Thug." }
+        { a: 2018, art: "Gunna", t: "Sold Out Dates", n: "Con Lil Baby. Gunna, protegido de Young Thug." },
+        { a: 2018, art: "Playboi Carti", t: "Shoota", n: "Con Lil Uzi Vert." },
+        { a: 2019, art: "Lil Tecca", t: "Ransom", n: "Un chaval de 16 años." },
+        { a: 2019, art: "Roddy Ricch", t: "The Box", n: "Récord de semanas en el número uno." },
+        { a: 2022, art: "Gunna & Future", t: "pushin P", n: "Un meme y un número uno." }
       ]
     }
   ]

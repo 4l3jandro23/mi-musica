@@ -14,12 +14,18 @@ HISTORIAS.push({
       intro: "Orquestas de baile, guitarras eléctricas y órganos: éxitos sin cantante.",
       items: [
         { a: 1949, art: "Pérez Prado", t: "Mambo No. 5", n: "El rey del mambo y su famoso «¡Ugh!»." },
+        { a: 1956, art: "Bill Doggett", t: "Honky Tonk", n: "El órgano del rhythm and blues." },
         { a: 1958, art: "The Champs", t: "«Tequila», número uno con una sola palabra", tipo: "hito", n: "Un saxofón y un grito: el instrumental llega a lo más alto." },
+        { a: 1958, art: "Link Wray", t: "Rumble", n: "Un instrumental prohibido por sonar violento." },
+        { a: 1958, art: "Duane Eddy", t: "Rebel-'Rouser", n: "La guitarra «twang»." },
         { a: 1959, art: "Santo & Johnny", t: "Sleep Walk", n: "Una guitarra steel que suena como un sueño." },
         { a: 1960, art: "The Ventures", t: "Walk, Don't Run", n: "El grupo instrumental más vendido de la historia." },
+        { a: 1960, art: "The Shadows", t: "Apache", n: "La guitarra británica." },
+        { a: 1961, art: "The Mar-Keys", t: "Last Night", n: "El primer éxito de Stax." },
         { a: 1962, art: "Booker T. & the M.G.'s", t: "Green Onions", n: "La banda de Stax y un órgano Hammond irresistible." },
         { a: 1962, art: "The Tornados", t: "Telstar", n: "Un órgano futurista dedicado a un satélite: primer número uno en EE. UU. de un grupo británico." },
         { a: 1962, art: "Dick Dale & His Del-Tones", t: "Misirlou", n: "La guitarra surf que años después abrió «Pulp Fiction»." },
+        { a: 1963, art: "Henry Mancini", t: "The Pink Panther Theme", n: "El saxo de la Pantera Rosa." },
         { a: 1965, art: "Herb Alpert & The Tijuana Brass", t: "A Taste of Honey", n: "Trompetas alegres: el «easy listening»." },
         { a: 1968, art: "Paul Mauriat", t: "L'amour est bleu", n: "Una orquesta francesa en el número uno de EE. UU." }
       ]
@@ -35,6 +41,8 @@ HISTORIAS.push({
         { a: 1976, art: "Santana", t: "Europa (Earth's Cry Heaven's Smile)", n: "La guitarra de Carlos Santana suena casi como una voz llorando. Un clásico del rock instrumental." },
         { a: 1976, art: "Jean-Michel Jarre", t: "Oxygène, Pt. IV", n: "Jarre convierte los sintetizadores en un éxito de ventas." },
         { a: 1981, art: "Vangelis", t: "Chariots of Fire", n: "El tema de la película «Carros de fuego»: Óscar y número uno." },
+        { a: 1984, art: "Harold Faltermeyer", t: "Axel F", n: "De «Superdetective en Hollywood»." },
+        { a: 1985, art: "Jan Hammer", t: "Miami Vice Theme", n: "Número uno sin una palabra." },
         { a: 1986, art: "Kenny G", t: "Songbird", n: "El saxo suave más vendido (y más criticado) de la historia." },
         { a: 1987, art: "Joe Satriani", t: "Surfing with the Alien", n: "El guitarrista de los guitarristas." }
       ]
@@ -48,6 +56,8 @@ HISTORIAS.push({
         { a: 1997, art: "Mogwai", t: "Mogwai Fear Satan", n: "El post-rock: calma, tormenta y calma." },
         { a: 2003, art: "Explosions in the Sky", t: "Your Hand in Mine", n: "Guitarras que crecen hasta emocionar." },
         { a: 2004, art: "Nujabes", t: "Aruarian Dance", n: "De «Samurai Champloo»: el padre del lo-fi hip hop." },
+        { a: 2004, art: "Ludovico Einaudi", t: "Nuvole Bianche", n: "El piano más escuchado del siglo XXI." },
+        { a: 2006, art: "Rodrigo y Gabriela", t: "Tamacun", n: "Dos guitarras mexicanas." },
         { a: 2010, art: "Bonobo", t: "Kiara", n: "Electrónica orgánica para viajar." },
         { a: 2014, art: "Snarky Puppy", t: "Lingus", n: "Jazz fusión que se hizo viral en YouTube." },
         { a: 2017, art: "Lofi Girl", t: "La chica que estudia", tipo: "hito", n: "Un directo de YouTube de lo-fi para estudiar, con una chica dibujada que nunca deja de escribir." },

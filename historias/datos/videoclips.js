@@ -18,6 +18,7 @@ HISTORIAS.push({
         { a: 1964, art: "The Beatles", t: "A Hard Day's Night", n: "La película de Richard Lester inventó buena parte del lenguaje del videoclip." },
         { a: 1965, art: "Bob Dylan", t: "Subterranean Homesick Blues", n: "Dylan pasa carteles con la letra en un callejón de Londres." },
         { a: 1966, art: "The Beatles", t: "Paperback Writer", n: "Los Beatles graban películas promocionales para no tener que ir a todos los programas de televisión." },
+        { a: 1967, art: "The Beatles", t: "Strawberry Fields Forever", n: "Una película promocional psicodélica." },
         { a: 1975, art: "Queen", t: "Bohemian Rhapsody", n: "Muchos lo consideran el primer videoclip moderno: se hizo en una tarde y costó muy poco." }
       ]
     },
@@ -28,10 +29,13 @@ HISTORIAS.push({
       intro: "Los 80: el vídeo manda.",
       items: [
         { a: 1979, art: "The Buggles", t: "Video Killed the Radio Star", n: "El primer vídeo que emitió MTV el 1 de agosto de 1981." },
+        { a: 1980, art: "David Bowie", t: "Ashes to Ashes", n: "El vídeo más caro de su época." },
         { a: 1981, art: "MTV", t: "Se enciende el canal", tipo: "hito", n: "La televisión musical de 24 horas cambia la industria: la imagen pasa a ser tan importante como la canción." },
         { a: 1982, art: "Michael Jackson", t: "Billie Jean", n: "Uno de los primeros vídeos de un artista negro con mucha presencia en MTV." },
+        { a: 1982, art: "Duran Duran", t: "Rio", n: "Un yate y la estética de los 80." },
         { a: 1983, art: "Michael Jackson", t: "Thriller", n: "Catorce minutos, John Landis y zombis: el videoclip como película." },
         { a: 1985, art: "a-ha", t: "Take On Me", n: "Dibujos a lápiz y personas reales mezclados con rotoscopia." },
+        { a: 1985, art: "Dire Straits", t: "Money for Nothing", n: "Uno de los primeros vídeos con animación por ordenador." },
         { a: 1986, art: "Peter Gabriel", t: "Sledgehammer", n: "Animación fotograma a fotograma: el vídeo más emitido de la historia de MTV." },
         { a: 1989, art: "Madonna", t: "Like a Prayer", n: "Cruces ardiendo y un santo que cobra vida: Pepsi canceló su contrato con ella." }
       ]
@@ -39,15 +43,17 @@ HISTORIAS.push({
     {
       titulo: "Los 90: el vídeo de autor",
       corto: "Los 90",
-      periodo: "1990 – 1999",
+      periodo: "1990 – 2001",
       intro: "Directores que se hicieron famosos con vídeos.",
       items: [
         { a: 1990, art: "Sinéad O'Connor", t: "Nothing Compares 2 U", n: "Solo su cara y una lágrima real." },
         { a: 1991, art: "Michael Jackson", t: "Black or White", n: "El efecto de transformación de caras que todo el mundo recuerda." },
+        { a: 1991, art: "Nirvana", t: "Smells Like Teen Spirit", n: "Un gimnasio de instituto y animadoras anarquistas." },
         { a: 1992, art: "Los directores de vídeo", t: "Del videoclip al cine", tipo: "hito", n: "David Fincher, Spike Jonze o Michel Gondry se hacen famosos con vídeos antes de dirigir películas." },
         { a: 1995, art: "Michael Jackson & Janet Jackson", t: "Scream", n: "Considerado el videoclip más caro de la historia." },
         { a: 1997, art: "Daft Punk", t: "Around the World", n: "Michel Gondry pone a bailar cada instrumento con un tipo de personaje." },
-        { a: 1999, art: "Björk", t: "All Is Full of Love", n: "Dos robots que se besan, dirigidos por Chris Cunningham." }
+        { a: 1999, art: "Björk", t: "All Is Full of Love", n: "Dos robots que se besan, dirigidos por Chris Cunningham." },
+        { a: 2001, art: "Fatboy Slim", t: "Weapon of Choice", n: "Christopher Walken baila." }
       ]
     },
     {
@@ -58,6 +64,8 @@ HISTORIAS.push({
       items: [
         { a: 2005, art: "YouTube", t: "Cualquiera puede publicar", tipo: "hito", n: "Nace YouTube y el videoclip deja de depender de la televisión." },
         { a: 2006, art: "OK Go", t: "Here It Goes Again", n: "Un baile en cintas de correr en una sola toma: uno de los primeros vídeos virales." },
+        { a: 2008, art: "Beyoncé", t: "Single Ladies (Put a Ring on It)", n: "Tres bailarinas y un baile copiado en todo el mundo." },
+        { a: 2010, art: "Lady Gaga feat. Beyoncé", t: "Telephone", n: "Un cortometraje carcelario." },
         { a: 2016, art: "Beyoncé", t: "Lemonade", tipo: "disco", n: "Un «disco visual» con una película para cada canción." },
         { a: 2017, art: "Luis Fonsi & Daddy Yankee", t: "Despacito", n: "El vídeo más visto de YouTube durante años." },
         { a: 2018, art: "Rosalía", t: "Malamente", n: "El colectivo CANADA y una estética que copió media industria." },

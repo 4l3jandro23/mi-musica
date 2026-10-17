@@ -10,7 +10,7 @@ HISTORIAS.push({
     {
       titulo: "El glam británico",
       corto: "Glam británico",
-      periodo: "1971 – 1974",
+      periodo: "1971 – 1975",
       intro: "Purpurina, plataformas y personajes: el rock juega con la identidad y el género.",
       items: [
         { a: 1971, art: "T. Rex", t: "Get It On", n: "Marc Bolan con purpurina en la cara en la tele: empieza el glam." },
@@ -20,13 +20,22 @@ HISTORIAS.push({
         { a: 1972, art: "Mott the Hoople", t: "All the Young Dudes", n: "Escrita y regalada por Bowie." },
         { a: 1972, art: "Gary Glitter", t: "Rock and Roll Part 2", q: "Rock and Roll Part 2", n: "Ritmo de tambores y grito de «hey»: suena todavía en los estadios." },
         { a: 1972, art: "T. Rex", t: "Metal Guru", n: "Marc Bolan en su mejor momento: purpurina y boogie." },
+        { a: 1972, art: "Alice Cooper", t: "School's Out", n: "Se acabó el colegio." },
+        { a: 1972, art: "Slade", t: "Mama Weer All Crazee Now", n: "El glam de Wolverhampton." },
         { a: 1973, art: "Bowie «mata» a Ziggy", t: "Anuncia el final en pleno concierto en Londres", tipo: "hito", n: "Nadie en la banda lo sabía." },
         { a: 1973, art: "Slade", t: "Cum On Feel the Noize", n: "Glam para corear en el fútbol." },
         { a: 1973, art: "Lou Reed", t: "Walk on the Wild Side", n: "Producida por Bowie: historias de la Factory de Warhol." },
         { a: 1973, art: "Sweet", t: "Ballroom Blitz", n: "Glam pop de chicle con guitarras." },
         { a: 1973, art: "New York Dolls", t: "Personality Crisis", n: "Glam neoyorquino sucio y rápido: un puente hacia el punk." },
         { a: 1973, art: "David Bowie", t: "The Jean Genie", n: "El riff de Bowie que suena a los Rolling Stones con maquillaje." },
-        { a: 1974, art: "Queen", t: "Killer Queen", n: "Freddie Mercury con el glam más elegante." }
+        { a: 1973, art: "Suzi Quatro", t: "Can the Can", n: "La bajista de cuero." },
+        { a: 1973, art: "Wizzard", t: "See My Baby Jive", n: "Roy Wood y el muro de sonido." },
+        { a: 1974, art: "Queen", t: "Killer Queen", n: "Freddie Mercury con el glam más elegante." },
+        { a: 1974, art: "Mud", t: "Tiger Feet", n: "Un baile de los 70." },
+        { a: 1974, art: "David Bowie", t: "Rebel Rebel", n: "El riff glam de Bowie." },
+        { a: 1974, art: "Sweet", t: "Fox on the Run", n: "Glam con armonías." },
+        { a: 1974, art: "Sparks", t: "This Town Ain't Big Enough for Both of Us", n: "Falsete y teclados." },
+        { a: 1975, art: "Kiss", t: "Rock and Roll All Nite", n: "Maquillaje y fiesta." }
       ]
     },
     {
@@ -38,6 +47,7 @@ HISTORIAS.push({
         { a: 1981, art: "Sunset Strip", t: "Los Ángeles se maquilla", tipo: "hito", n: "En el Sunset Strip de Los Ángeles, grupos como Mötley Crüe recuperan el maquillaje y el pelo cardado del glam." },
         { a: 1983, art: "Quiet Riot", t: "Cum On Feel the Noize", n: "Una versión de Slade: el primer disco de metal en llegar al número uno en EE. UU." },
         { a: 1984, art: "Twisted Sister", t: "We're Not Gonna Take It", n: "Un vídeo con un padre autoritario y un juicio en el Senado contra la censura." },
+        { a: 1984, art: "Ratt", t: "Round and Round", n: "El glam metal de Los Ángeles." },
         { a: 1985, art: "El PMRC", t: "Audiencias en el Senado de EE. UU. contra las letras del rock", tipo: "hito", n: "Dee Snider, de Twisted Sister, defiende la libertad de expresión. De ahí sale la etiqueta «Parental Advisory»." },
         { a: 1985, art: "Poison", t: "Talk Dirty to Me", n: "Poison, con mucho maquillaje y guitarras pegadizas." },
         { a: 1986, art: "Bon Jovi", t: "Livin' on a Prayer", n: "El glam metal se vuelve el rock más vendido de los 80." },

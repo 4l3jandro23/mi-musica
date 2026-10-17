@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "jazz",
   familia: "Jazz",
   titulo: "Orígenes del jazz",
-  periodo: "1895 – 1959",
+  periodo: "1895 – 2015",
   color: "#2d6fb6",
   lema: "De Nueva Orleans al «Kind of Blue»: sesenta años inventando la libertad.",
   intro: "Nace en Nueva Orleans de la mezcla de blues, ragtime, bandas de metal y ritmos del Caribe. Se baila con el swing, se vuelve arte con el bebop y en 1959 vive un año milagroso.",
@@ -57,6 +57,25 @@ HISTORIAS.push({
         { a: 1959, art: "The Dave Brubeck Quartet", t: "Take Five", n: "En 5/4, y aun así un éxito." },
         { a: 1959, art: "Charles Mingus", t: "Better Git It in Your Soul", n: "Gospel, gritos y caos controlado." },
         { a: 1959, art: "Ornette Coleman", t: "Lonely Woman", n: "De «The Shape of Jazz to Come»: el free jazz llama a la puerta." }
+      ]
+    },
+    {
+      titulo: "Del free al jazz de hoy",
+      corto: "Desde 1960",
+      periodo: "1925 – 2015",
+      intro: "Modal, fusión, jazz espiritual y una nueva generación.",
+      items: [
+        { a: 1925, art: "Fletcher Henderson", t: "Sugar Foot Stomp", n: "La big band que enseñó el swing a todos." },
+        { a: 1961, art: "Bill Evans Trio", t: "Waltz for Debby", n: "El piano más delicado del jazz." },
+        { a: 1961, art: "John Coltrane", t: "My Favorite Things", n: "Una canción de «Sonrisas y lágrimas» convertida en trance." },
+        { a: 1964, art: "Herbie Hancock", t: "Cantaloupe Island", n: "Jazz con groove de Blue Note." },
+        { a: 1966, art: "Wayne Shorter", t: "Footprints", n: "Un estándar moderno." },
+        { a: 1967, art: "Muere John Coltrane", t: "El jazz pierde a su santo", tipo: "hito", n: "Muere con 40 años; en San Francisco una iglesia lo venera como santo." },
+        { a: 1977, art: "Weather Report", t: "Birdland", n: "La fusión en las listas." },
+        { a: 1987, art: "Pat Metheny Group", t: "Last Train Home", n: "Guitarra y un tren que no para." },
+        { a: 2008, art: "Esperanza Spalding", t: "I Know You Know", n: "La contrabajista que ganó el Grammy a artista revelación." },
+        { a: 2012, art: "Robert Glasper Experiment feat. Erykah Badu", t: "Afro Blue", n: "Jazz, soul y hip hop." },
+        { a: 2015, art: "Kamasi Washington", t: "The Rhythm Changes", n: "El jazz espiritual vuelve." }
       ]
     }
   ]

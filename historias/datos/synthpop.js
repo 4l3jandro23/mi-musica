@@ -19,25 +19,34 @@ HISTORIAS.push({
         { a: 1980, art: "Orchestral Manoeuvres in the Dark", t: "Enola Gay", n: "Una canción pop alegre sobre el avión que lanzó la bomba de Hiroshima." },
         { a: 1980, art: "Visage", t: "Fade to Grey", n: "La estética «new romantic»: maquillaje y sintetizadores." },
         { a: 1981, art: "Kraftwerk", t: "Computer Love", n: "La soledad en la era de los ordenadores, antes de internet." },
-        { a: 1981, art: "The Human League", t: "Don't You Want Me", n: "Número uno en el Reino Unido y en EE. UU.: el synth-pop llega al gran público." }
+        { a: 1981, art: "The Human League", t: "Don't You Want Me", n: "Número uno en el Reino Unido y en EE. UU.: el synth-pop llega al gran público." },
+        { a: 1981, art: "Ultravox", t: "Vienna", n: "Synth pop con piano." },
+        { a: 1981, art: "Soft Cell", t: "Tainted Love", n: "Un soul de los 60 en sintetizador." }
       ]
     },
     {
       titulo: "La edad de oro",
       corto: "Los 80",
-      periodo: "1982 – 1989",
+      periodo: "1982 – 1990",
       intro: "Dúos de chico con sintetizador y voz que lo dice todo.",
       items: [
         { a: 1982, art: "Yazoo", t: "Only You", n: "Vince Clarke, recién salido de Depeche Mode, con la voz soul de Alison Moyet." },
+        { a: 1982, art: "Tears for Fears", t: "Mad World", n: "El mundo loco." },
         { a: 1983, art: "Yamaha DX7", t: "El sintetizador digital más vendido", tipo: "hito", n: "Su sonido brillante define el pop de los 80." },
         { a: 1983, art: "Eurythmics", t: "Love Is a Stranger", n: "Annie Lennox y Dave Stewart." },
         { a: 1983, art: "Eurythmics", t: "Sweet Dreams (Are Made of This)", n: "Annie Lennox y Dave Stewart con un sinte, una caja de ritmos y una frase que todo el mundo conoce." },
+        { a: 1983, art: "Heaven 17", t: "Temptation", n: "Synth pop con coro." },
+        { a: 1983, art: "New Order", t: "Blue Monday", n: "El maxisingle más vendido." },
+        { a: 1983, art: "Mecano", t: "Barco a Venus", n: "El synth pop español." },
         { a: 1984, art: "Bronski Beat", t: "Smalltown Boy", n: "Un chico gay que huye de su pueblo: un himno LGTB." },
         { a: 1984, art: "Alphaville", t: "Forever Young", n: "La balada de Alphaville que se convirtió en himno de graduaciones." },
         { a: 1985, art: "Pet Shop Boys", t: "West End Girls", n: "Ironía y elegancia londinense: el dúo de synth-pop más exitoso." },
+        { a: 1985, art: "Yello", t: "Oh Yeah", n: "La de «Todo en un día»." },
         { a: 1987, art: "Depeche Mode", t: "Never Let Me Down Again", n: "Oscuros y enormes: llenaban estadios." },
+        { a: 1987, art: "Pet Shop Boys", t: "It's a Sin", n: "Culpa y sintetizadores." },
         { a: 1988, art: "Erasure", t: "A Little Respect", n: "Vince Clarke otra vez, con Andy Bell." },
-        { a: 1989, art: "Depeche Mode", t: "Personal Jesus", n: "Una guitarra de blues sobre sintetizadores." }
+        { a: 1989, art: "Depeche Mode", t: "Personal Jesus", n: "Una guitarra de blues sobre sintetizadores." },
+        { a: 1990, art: "Depeche Mode", t: "Enjoy the Silence", n: "Las palabras sobran." }
       ]
     },
     {
@@ -47,6 +56,7 @@ HISTORIAS.push({
       intro: "La nostalgia de los 80 vuelve con «Drive», «Stranger Things» y el pop del streaming.",
       items: [
         { a: 2004, art: "The Killers", t: "Somebody Told Me", n: "Guitarras y sintes de los 80 en el indie de los 2000." },
+        { a: 2009, art: "La Roux", t: "Bulletproof", n: "El synth pop vuelve." },
         { a: 2010, art: "Kavinsky", t: "Nightcall", n: "De la película «Drive»: el himno del synthwave." },
         { a: 2011, art: "«Drive»", t: "La película resucita el synthwave", tipo: "hito", n: "Una banda sonora de sintetizadores ochenteros." },
         { a: 2015, art: "CHVRCHES", t: "Leave a Trace", n: "Synth-pop escocés con alma de indie." },

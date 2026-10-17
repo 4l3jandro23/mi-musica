@@ -20,6 +20,9 @@ HISTORIAS.push({
         { a: 1842, art: "Felix Mendelssohn", t: "Canción de primavera", n: "De sus «Canciones sin palabras»: una de las piezas de piano más tocadas del siglo XIX." },
         { a: 1876, art: "Piotr Ilich Chaikovski", t: "Las estaciones: Abril", n: "La campanilla de invierno, la primera flor que sale con el deshielo ruso." },
         { a: 1883, art: "Johann Strauss II", t: "Voces de primavera", n: "Un vals vienés que empezó con soprano y hoy se toca sin voz." },
+        { a: 1886, art: "Edvard Grieg", t: "A la primavera", n: "De sus «Piezas líricas»." },
+        { a: 1887, art: "Claude Debussy", t: "Printemps", n: "Una suite sinfónica de juventud." },
+        { a: 1896, art: "Serguéi Rajmáninov", t: "Aguas de primavera", n: "Una canción rusa sobre el deshielo." },
         { a: 1912, art: "Frederick Delius", t: "On Hearing the First Cuckoo in Spring", n: "El cuco anuncia la primavera en el campo inglés." },
         { a: 1913, art: "Estreno de «La consagración de la primavera»", t: "Escándalo en París", tipo: "hito", n: "El 29 de mayo, en el Théâtre des Champs-Élysées, el público grita, se insulta y casi se pega durante el estreno." },
         { a: 1913, art: "Igor Stravinsky", t: "La consagración de la primavera", n: "Un sacrificio pagano con ritmos salvajes: la música del siglo XX empieza aquí." },
@@ -33,14 +36,17 @@ HISTORIAS.push({
       intro: "Sol, mañanas y abril.",
       items: [
         { a: 1939, art: "Billie Holiday", t: "Some Other Spring", n: "Una primavera triste: la que llegará cuando se pase el desamor." },
+        { a: 1959, art: "Blossom Dearie", t: "Spring Can Really Hang You Up the Most", n: "La primavera que no llega." },
         { a: 1965, art: "The Byrds", t: "Turn! Turn! Turn!", n: "Un texto del Eclesiastés sobre las estaciones: «hay un tiempo para todo»." },
         { a: 1966, art: "Simon & Garfunkel", t: "April Come She Will", n: "Un amor que dura de abril a septiembre, mes a mes." },
+        { a: 1966, art: "The Lovin' Spoonful", t: "Daydream", n: "Soñar despierto." },
         { a: 1968, art: "The Zombies", t: "Time of the Season", n: "Psicodelia de primavera y uno de los bajos más reconocibles de los 60." },
         { a: 1969, art: "George Harrison", t: "Novillos en el jardín", tipo: "hito", n: "Harrison se salta una reunión de negocios de los Beatles y escribe «Here Comes the Sun» en el jardín de Eric Clapton." },
         { a: 1969, art: "The Beatles", t: "Here Comes the Sun", n: "George Harrison la escribió en el jardín de Eric Clapton al acabar un invierno largo." },
         { a: 1971, art: "Cat Stevens", t: "Morning Has Broken", n: "Un himno religioso de 1931 convertido en canción pop." },
         { a: 1986, art: "Prince", t: "Sometimes It Snows in April", n: "A veces nieva en abril: la canción de despedida de Prince." },
         { a: 2001, art: "Manu Chao", t: "La primavera", n: "Del disco «Próxima estación: Esperanza»." },
+        { a: 2002, art: "Hikaru Utada", t: "Sakura Drops", n: "Otra canción de los cerezos." },
         { a: 2012, art: "Max Richter", t: "Spring 1", n: "Max Richter reescribe la primavera de Vivaldi con minimalismo." }
       ]
     },
@@ -54,7 +60,18 @@ HISTORIAS.push({
         { a: 2000, art: "Masaharu Fukuyama", t: "Sakurazaka", n: "Una de las canciones sakura más vendidas." },
         { a: 2005, art: "Kobukuro", t: "Sakura", n: "El dúo que convirtió los cerezos en balada." },
         { a: 2006, art: "Ikimonogakari", t: "Sakura", n: "Su primer sencillo, ligado para siempre a la estación." },
-        { a: 2019, art: "Aimyon", t: "Haru no hi", q: "Aimyon Haru no hi", n: "El pop japonés de primavera de la nueva generación." }
+        { a: 2019, art: "Aimyon", t: "Haru no hi", q: "Aimyon Haru no hi", n: "El pop japonés de primavera de la nueva generación." },
+        { a: 2019, art: "Vampire Weekend", t: "Spring Snow", n: "Nieve en primavera." }
+      ]
+    },
+    {
+      titulo: "Feria y primavera en Sevilla",
+      corto: "Feria de Abril",
+      periodo: "1847 – 1975",
+      intro: "Sevillanas para la primavera andaluza.",
+      items: [
+        { a: 1847, art: "La primera Feria de Abril", t: "Una feria de ganado", tipo: "hito", n: "Sevilla celebra su primera Feria de Abril, que con los años se convierte en la gran fiesta de la primavera." },
+        { a: 1975, art: "Amigos de Gines", t: "Algo se muere en el alma", q: "Amigos de Gines Algo se muere en el alma", n: "Las sevillanas de la despedida de la Feria." }
       ]
     }
   ]

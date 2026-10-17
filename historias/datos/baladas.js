@@ -15,14 +15,21 @@ HISTORIAS.push({
       items: [
         { a: 1965, art: "The Righteous Brothers", t: "Unchained Melody", n: "Volvió a ser número uno en 1990 gracias a la película «Ghost»." },
         { a: 1970, art: "Elton John", t: "Your Song", n: "La primera gran balada de Elton John y Bernie Taupin." },
+        { a: 1970, art: "Nino Bravo", t: "Te quiero, te quiero", n: "La voz valenciana." },
+        { a: 1980, art: "Camilo Sesto", t: "Perdóname", n: "El rey de la balada." },
         { a: 1983, art: "Bonnie Tyler", t: "Total Eclipse of the Heart", n: "La «power ballad» de Jim Steinman, enorme y dramática." },
         { a: 1984, art: "Lionel Richie", t: "Hello", n: "El videoclip del profesor y la alumna ciega que hace un busto de barro." },
         { a: 1989, art: "Michael Bolton", t: "How Am I Supposed to Live Without You", n: "La voz rasgada de las baladas de finales de los 80." },
+        { a: 1990, art: "Roxette", t: "It Must Have Been Love", n: "De «Pretty Woman»." },
         { a: 1991, art: "Bryan Adams", t: "(Everything I Do) I Do It for You", n: "Dieciséis semanas seguidas de número uno en el Reino Unido." },
         { a: 1992, art: "Whitney Houston", t: "I Will Always Love You", n: "Una canción de Dolly Parton para «El guardaespaldas»: el sencillo de una mujer más vendido de su época." },
+        { a: 1993, art: "Mariah Carey", t: "Hero", n: "La balada de la superación." },
+        { a: 1996, art: "Toni Braxton", t: "Un-Break My Heart", n: "Una balada de Diane Warren." },
         { a: 1997, art: "La banda sonora de «Titanic»", t: "Un récord", tipo: "hito", n: "Se convierte en la banda sonora orquestal más vendida de la historia." },
         { a: 1997, art: "Céline Dion", t: "My Heart Will Go On", n: "La canción de «Titanic»." },
         { a: 1998, art: "Aerosmith", t: "I Don't Want to Miss a Thing", n: "La balada de «Armageddon», escrita por Diane Warren." },
+        { a: 2011, art: "Adele", t: "Someone Like You", n: "Piano y ruptura." },
+        { a: 2014, art: "Sam Smith", t: "Stay with Me", n: "Una balada con coro de gospel." },
         { a: 2017, art: "Ed Sheeran", t: "Perfect", n: "La balada de boda del siglo XXI." }
       ]
     },

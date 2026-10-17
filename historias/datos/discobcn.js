@@ -40,6 +40,7 @@ HISTORIAS.push({
         { a: 2017, art: "Maluma", t: "Felices los 4", n: "La que coreaba toda la pista." },
         { a: 2017, art: "Becky G feat. Bad Bunny", t: "Mayores", n: "Bad Bunny empieza a aparecer en todas partes." },
         { a: 2017, art: "Natti Natasha & Ozuna", t: "Criminal", n: "Uno de los vídeos más vistos del año." },
+        { a: 2017, art: "J Balvin & Willy William", t: "Mi gente", n: "Reguetón con sample francés." },
         { a: 2018, art: "Daddy Yankee", t: "Dura", n: "El baile del vídeo se copiaba en la pista." },
         { a: 2018, art: "Casper Mágico, Nio García, Darell, Nicky Jam, Ozuna & Bad Bunny", t: "Te boté (Remix)", n: "Seis minutos que se cantaban enteros." },
         { a: 2018, art: "Pedro Capó & Farruko", t: "Calma (Remix)", n: "Ritmo de playa caribeña para el invierno de Barcelona." },
@@ -57,8 +58,11 @@ HISTORIAS.push({
         { a: 2019, art: "KAROL G & Nicki Minaj", t: "Tusa", n: "El himno del desamor en la pista." },
         { a: 2019, art: "Sech", t: "Otro trago", n: "Reguetón panameño que se cantó a gritos." },
         { a: 2020, art: "La pandemia", t: "Discotecas cerradas", tipo: "hito", n: "Las salas de baile cierran en marzo de 2020; en Cataluña el baile en interior no vuelve hasta octubre de 2021." },
+        { a: 2020, art: "Bad Bunny & Jhay Cortez", t: "Dákiti", n: "El perreo de la nueva normalidad." },
         { a: 2021, art: "Farruko", t: "Pepas", n: "La de los brazos arriba al volver las discotecas tras la pandemia." },
-        { a: 2022, art: "Manuel Turizo", t: "La Bachata", n: "La bachata vuelve a cerrar las noches." }
+        { a: 2021, art: "Rauw Alejandro", t: "Todo de ti", n: "El verano de 2021." },
+        { a: 2022, art: "Manuel Turizo", t: "La Bachata", n: "La bachata vuelve a cerrar las noches." },
+        { a: 2022, art: "Bizarrap & Quevedo", t: "Quevedo: Bzrp Music Sessions, Vol. 52", n: "El canario que lo cantaba todo el mundo." }
       ]
     }
   ]

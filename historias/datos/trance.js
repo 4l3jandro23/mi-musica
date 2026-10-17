@@ -39,10 +39,12 @@ HISTORIAS.push({
         { a: 1999, art: "Darude", t: "Sandstorm", n: "Finlandia, un riff y un meme eterno." },
         { a: 1999, art: "Gouryella", t: "Gouryella", n: "Ferry Corsten y Tiësto juntos: trance épico." },
         { a: 1999, art: "William Orbit", t: "Barber's Adagio for Strings", n: "Samuel Barber en versión electrónica (Ferry Corsten hizo el remix famoso)." },
+        { a: 1999, art: "Armin van Buuren", t: "Communication", n: "El primer gran éxito de Armin." },
         { a: 2000, art: "Delerium & Sarah McLachlan", t: "Silence", n: "Con el remix de Fade, el himno vocal definitivo." },
         { a: 2000, art: "Mauro Picotto", t: "Komodo", n: "El trance italiano de discoteca." },
         { a: 2001, art: "Armin van Buuren", t: "Empieza «A State of Trance»", tipo: "hito", n: "Un programa de radio semanal que lleva más de mil episodios." },
         { a: 2001, art: "Tiësto", t: "Lethal Industry", n: "Duro y oscuro: Tiësto antes de ser estrella mundial." },
+        { a: 2002, art: "Ferry Corsten", t: "Punk", n: "Trance con guitarras." },
         { a: 2004, art: "Tiësto", t: "Pincha en la inauguración de los Juegos de Atenas", tipo: "hito", n: "Primer DJ en tocar en una ceremonia olímpica." },
         { a: 2004, art: "Tiësto", t: "Adagio for Strings", n: "Ese año pinchó en la inauguración de los Juegos Olímpicos de Atenas." }
       ]

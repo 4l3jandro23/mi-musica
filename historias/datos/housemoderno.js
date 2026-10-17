@@ -16,8 +16,12 @@ HISTORIAS.push({
         { a: 1996, art: "Sasha & John Digweed", t: "Northern Exposure y los DJs de culto", tipo: "hito", n: "El progressive británico de los 90: sesiones como viajes." },
         { a: 2009, art: "deadmau5", t: "Strobe", n: "Diez minutos de subida: una catedral del progressive." },
         { a: 2011, art: "Swedish House Mafia", t: "Save the World", n: "El progressive con voz que llenó estadios." },
+        { a: 2012, art: "Swedish House Mafia", t: "Greyhound", n: "Progressive para un anuncio de coches." },
         { a: 2014, art: "Alesso", t: "Heroes (we could be)", n: "Con Tove Lo: el progressive se vuelve pop." },
+        { a: 2014, art: "Tchami", t: "After Life", n: "Future house francés." },
         { a: 2015, art: "Eric Prydz", t: "Opus", n: "Nueve minutos que crecen sin parar: un himno moderno." },
+        { a: 2015, art: "Axwell Λ Ingrosso", t: "Sun Is Shining", n: "Después de Swedish House Mafia." },
+        { a: 2016, art: "Joyryde", t: "Hot Drum", n: "Bass house." },
         { a: 2017, art: "Axwell Λ Ingrosso", t: "More Than You Know", n: "Dos de los Swedish House Mafia, ya en solitario." }
       ]
     },
@@ -42,9 +46,13 @@ HISTORIAS.push({
         { a: 2017, art: "CamelPhat & Elderbrook", t: "Cola", n: "Un bajo hipnótico y una voz susurrada: nominada al Grammy." },
         { a: 2018, art: "FISHER", t: "Losing It", n: "Un australiano y un drop que medio mundo coreó." },
         { a: 2018, art: "Chris Lake", t: "Turn Off the Lights", n: "Con Alexis Roberts: tech house con voz." },
+        { a: 2018, art: "Black Coffee feat. David Guetta", t: "Drive", n: "El afro house de Sudáfrica con Guetta." },
         { a: 2019, art: "Dom Dolla", t: "San Frandisco", n: "Los australianos dominan el tech house." },
         { a: 2019, art: "Fisher", t: "You Little Beauty", n: "Fisher, australiano, con tech house divertido y bailable." },
-        { a: 2020, art: "John Summit", t: "Deep End", n: "El tech house de la nueva generación de EE. UU." }
+        { a: 2019, art: "Meduza feat. Goodboys", t: "Piece of Your Heart", n: "House italiano en todo el mundo." },
+        { a: 2019, art: "Chris Lake & Fisher", t: "Losing My Mind", n: "Tech house." },
+        { a: 2020, art: "John Summit", t: "Deep End", n: "El tech house de la nueva generación de EE. UU." },
+        { a: 2020, art: "Keinemusik", t: "Muyè", n: "El afro house de Berlín." }
       ]
     },
     {
@@ -70,6 +78,7 @@ HISTORIAS.push({
         { a: 2009, art: "Black Coffee", t: "Superman", n: "Con Bucie: el DJ sudafricano que llevaría el afro house a Ibiza." },
         { a: 2019, art: "Black Coffee", t: "El afro house llega a Ibiza", tipo: "hito", n: "El sudafricano se convierte en estrella mundial." },
         { a: 2019, art: "Master KG", t: "Jerusalema", n: "Con Nomcebo Zikode: el baile que dio la vuelta al mundo." },
+        { a: 2023, art: "Dom Dolla & MK", t: "Rhyme Dust", n: "Tech house con voz." },
         { a: 2024, art: "Adam Port", t: "Move", n: "Con Stryv y Malachiii, del colectivo Keinemusik: el afro house llega a las listas de todo el mundo." }
       ]
     }

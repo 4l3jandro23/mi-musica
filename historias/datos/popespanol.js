@@ -61,6 +61,7 @@ HISTORIAS.push({
         { a: 1996, art: "Jarabe de Palo", t: "La flaca", n: "Un anuncio de Ron Bacardí la hizo eterna." },
         { a: 1996, art: "Ella Baila Sola", t: "Lo echamos a suertes", n: "Dos amigas con guitarras." },
         { a: 1997, art: "Alejandro Sanz", t: "Corazón partío", n: "El disco más vendido de la historia de España." },
+        { a: 1998, art: "Malú", t: "Aprendiz", n: "Una canción de Alejandro Sanz." },
         { a: 2000, art: "Mónica Naranjo", t: "Sobreviviré", n: "Mónica Naranjo, la diva del pop español, con su versión de un tema de Mina y una voz sin límites." }
       ]
     },
@@ -71,7 +72,11 @@ HISTORIAS.push({
       intro: "De OT a Rosalía.",
       items: [
         { a: 2001, art: "Operación Triunfo", t: "Paraliza España", tipo: "hito", n: "Un concurso de televisión fabrica estrellas del pop." },
+        { a: 2002, art: "Amaral", t: "Sin ti no soy nada", n: "El pop rock de Zaragoza." },
+        { a: 2002, art: "David Bisbal", t: "Ave María", n: "El triunfador de OT." },
+        { a: 2003, art: "La Oreja de Van Gogh", t: "Rosas", n: "El pop donostiarra." },
         { a: 2008, art: "Vetusta Morla", t: "Copenhague", n: "El indie llega a las masas." },
+        { a: 2010, art: "Pablo Alborán", t: "Solamente tú", n: "El malagueño de YouTube." },
         { a: 2018, art: "Aitana", t: "Teléfono", n: "La estrella pop de la generación post OT." },
         { a: 2018, art: "Rosalía", t: "Malamente", n: "El flamenco se convierte en pop global." },
         { a: 2020, art: "C. Tangana", t: "Tú me dejaste de querer", n: "Con La Húngara y Niño de Elche: el pop español mira a sus raíces." },

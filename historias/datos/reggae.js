@@ -35,7 +35,10 @@ HISTORIAS.push({
         { a: 1976, art: "Peter Tosh", t: "Legalize It", n: "La reivindicación más famosa del reggae." },
         { a: 1976, art: "Junior Murvin", t: "Police and Thieves", n: "The Clash la versionaron: punk y reggae unidos." },
         { a: 1976, art: "Augustus Pablo", t: "King Tubby Meets Rockers Uptown", n: "El dub de King Tubby: la canción desnuda, con ecos y reverb. El origen del remix." },
+        { a: 1977, art: "Bob Marley & The Wailers", t: "One Love/People Get Ready", n: "El himno de la unidad." },
         { a: 1978, art: "One Love Peace Concert", t: "Bob Marley junta las manos de dos políticos rivales", tipo: "hito", n: "En plena violencia política en Kingston." },
+        { a: 1978, art: "Bob Marley & The Wailers", t: "Is This Love", n: "La canción de amor de Marley." },
+        { a: 1978, art: "Dennis Brown", t: "Money in My Pocket", n: "El príncipe del reggae." },
         { a: 1980, art: "Bob Marley & The Wailers", t: "Redemption Song", n: "Solo su voz y una guitarra. Murió un año después, con 36 años." }
       ]
     },
@@ -47,6 +50,7 @@ HISTORIAS.push({
       items: [
         { a: 1979, art: "Janet Kay", t: "Silly Games", n: "El «lovers rock» británico: reggae romántico." },
         { a: 1981, art: "Muere Bob Marley", t: "El reggae pierde a su icono", tipo: "hito", n: "El dancehall toma el relevo en Jamaica." },
+        { a: 1982, art: "Gregory Isaacs", t: "Night Nurse", n: "Lovers rock." },
         { a: 1983, art: "UB40", t: "Red Red Wine", n: "Una canción de Neil Diamond convertida en reggae de Birmingham." },
         { a: 1983, art: "Yellowman", t: "Zungguzungguguzungguzeng", n: "Un DJ albino que se convirtió en la primera estrella del dancehall." },
         { a: 1985, art: "Wayne Smith", t: "Under Mi Sleng Teng", n: "Un ritmo de un teclado Casio: empieza el dancehall digital." },
@@ -54,6 +58,9 @@ HISTORIAS.push({
         { a: 1997, art: "Beenie Man", t: "Who Am I", n: "El rey del dancehall de los 90." },
         { a: 2002, art: "Sean Paul", t: "Get Busy", n: "El dancehall llega al número uno de EE. UU." },
         { a: 2005, art: "Sean Paul", t: "Temperature", n: "El segundo número uno de Sean Paul en EE. UU.: dancehall rápido y pegadizo para todas las fiestas de 2006." },
+        { a: 2005, art: "Damian Marley", t: "Welcome to Jamrock", n: "El hijo de Bob." },
+        { a: 2014, art: "Chronixx", t: "Here Comes Trouble", n: "El reggae revival." },
+        { a: 2015, art: "Protoje", t: "Who Knows", n: "Con Chronixx." },
         { a: 2016, art: "Vybz Kartel", t: "Fever", n: "Uno de los artistas más influyentes del dancehall moderno." },
         { a: 2019, art: "Koffee", t: "Toast", n: "La persona más joven y la primera mujer en ganar el Grammy al mejor disco de reggae." }
       ]

@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "tiktok",
   familia: "La música por dentro",
   titulo: "La música de TikTok",
-  periodo: "1977 – 2024",
+  periodo: "1977 – 2025",
   color: "#fe2c55",
   lema: "De Musical.ly a «Espresso»: cómo quince segundos deciden qué canción triunfa.",
   intro: "Desde 2019, TikTok es la mayor máquina de crear éxitos del mundo. Un baile, un meme o una escena de una serie bastan para que una canción nueva llegue al número uno o una de hace cuarenta años vuelva a las listas. Esta historia va de Musical.ly a las canciones que hoy se hacen pensando en el fragmento que se volverá viral.",
@@ -19,7 +19,8 @@ HISTORIAS.push({
         { a: 2019, art: "Lil Nas X", t: "Old Town Road", n: "El primer gran éxito nacido en TikTok: récord de semanas en el número uno de Estados Unidos." },
         { a: 2019, art: "Arizona Zervas", t: "Roxanne", n: "De SoundCloud al top 5 gracias a los vídeos." },
         { a: 2019, art: "K Camp", t: "Lottery (Renegade)", n: "Una chica de 14 años, Jalaiah Harmon, inventa el baile Renegade y la canción se hace enorme." },
-        { a: 2019, art: "BENEE", t: "Supalonely", n: "La neozelandesa y una canción de soledad que se bailó en todo el mundo." }
+        { a: 2019, art: "BENEE", t: "Supalonely", n: "La neozelandesa y una canción de soledad que se bailó en todo el mundo." },
+        { a: 2019, art: "Doja Cat", t: "Say So", n: "El baile de Haley Sharpe." }
       ]
     },
     {
@@ -34,13 +35,19 @@ HISTORIAS.push({
         { a: 2020, art: "Jawsh 685 & Jason Derulo", t: "Savage Love (Laxed – Siren Beat)", n: "Un ritmo de un chaval de Nueva Zelanda que se volvió número uno mundial." },
         { a: 2020, art: "24kGoldn feat. iann dior", t: "Mood", n: "Pop punk con trap, perfecto para los vídeos." },
         { a: 2020, art: "Capone", t: "Oh No", n: "Un fragmento de quince segundos que se usó en millones de vídeos de fallos." },
-        { a: 2021, art: "Nathan Evans", t: "Wellerman", n: "Una canción de marineros del siglo XIX cantada por un cartero escocés: la moda de los «sea shanties»." }
+        { a: 2020, art: "Megan Thee Stallion", t: "Savage", n: "El baile viral de la pandemia." },
+        { a: 2020, art: "Ritt Momney", t: "Put Your Records On", n: "Una versión de Corinne Bailey Rae." },
+        { a: 2020, art: "Chappell Roan", t: "Pink Pony Club", n: "Una canción de 2020 que se hizo enorme en 2024." },
+        { a: 2021, art: "Nathan Evans", t: "Wellerman", n: "Una canción de marineros del siglo XIX cantada por un cartero escocés: la moda de los «sea shanties»." },
+        { a: 2021, art: "Olivia Rodrigo", t: "drivers license", n: "Un debut récord." },
+        { a: 2021, art: "Måneskin", t: "Beggin'", n: "Una versión de los 60." },
+        { a: 2021, art: "GAYLE", t: "abcdefu", n: "Rabia alfabética." }
       ]
     },
     {
       titulo: "Canciones viejas, vida nueva",
       corto: "Vuelven",
-      periodo: "1985 – 2022",
+      periodo: "1985 – 2023",
       intro: "Series y bailes rescatan clásicos.",
       items: [
         { a: 1985, art: "Kate Bush", t: "Running Up That Hill", n: "«Stranger Things» la devolvió al número uno en 2022, 37 años después." },
@@ -48,20 +55,23 @@ HISTORIAS.push({
         { a: 2022, art: "«Stranger Things»", t: "Kate Bush, número uno", tipo: "hito", n: "La serie usa «Running Up That Hill» y la canción de 1985 llega al número uno en el Reino Unido." },
         { a: 2022, art: "Nicky Youre & dazy", t: "Sunroof", n: "La canción de verano nacida en la app." },
         { a: 2022, art: "Steve Lacy", t: "Bad Habit", n: "Un fragmento del estribillo y un número uno en Estados Unidos." },
-        { a: 2022, art: "Meghan Trainor", t: "Made You Look", n: "Pop con un baile que se copió millones de veces." }
+        { a: 2022, art: "Meghan Trainor", t: "Made You Look", n: "Pop con un baile que se copió millones de veces." },
+        { a: 2023, art: "Tate McRae", t: "greedy", n: "Pop de baile." }
       ]
     },
     {
       titulo: "Hechas para el fragmento",
       corto: "Hoy",
-      periodo: "2024",
+      periodo: "2024 – 2025",
       intro: "Canciones pensadas para viralizarse.",
       items: [
         { a: 2024, art: "El gancho de quince segundos", t: "Componer para el vídeo", tipo: "hito", n: "Las discográficas buscan el fragmento viral antes de sacar la canción: muchas se publican porque ya han triunfado en la app." },
         { a: 2024, art: "Sabrina Carpenter", t: "Espresso", n: "La canción más escuchada del mundo en Spotify en 2024." },
         { a: 2024, art: "Rosé & Bruno Mars", t: "APT.", n: "Un juego de beber coreano convertido en baile y en número uno." },
         { a: 2024, art: "Jaxomy, Agatino Romero & Raffaella Carrà", t: "Pedro", n: "Un tema antiguo de Raffaella Carrà hecho remix y meme en todo el mundo." },
-        { a: 2024, art: "Betsy & Maria Yanovskaya", t: "Sigma Boy", n: "Dos niñas rusas cantan un pop que se volvió meme mundial." }
+        { a: 2024, art: "Betsy & Maria Yanovskaya", t: "Sigma Boy", n: "Dos niñas rusas cantan un pop que se volvió meme mundial." },
+        { a: 2024, art: "Benson Boone", t: "Beautiful Things", n: "Una voz enorme." },
+        { a: 2025, art: "Doechii", t: "Anxiety", n: "Sobre el sample de «Somebody That I Used to Know»." }
       ]
     }
   ]

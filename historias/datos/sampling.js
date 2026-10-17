@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "sampling",
   familia: "Especiales",
   titulo: "Historia del sampling",
-  periodo: "1948 – 2006",
+  periodo: "1948 – 2023",
   color: "#3d8bb5",
   lema: "De las cintas de Schaeffer al MPC de J Dilla: hacer música con música.",
   intro: "Samplear es coger un trozo de una grabación y convertirlo en otra cosa. Empezó con cintas cortadas a tijera, siguió con DJs y tocadiscos, explotó con los samplers digitales de los 80 y se convirtió en la base del hip hop y la electrónica. También trajo pleitos millonarios que cambiaron las reglas.",
@@ -42,19 +42,27 @@ HISTORIAS.push({
     {
       titulo: "Arte, pleitos y chipmunk soul",
       corto: "Arte y pleitos",
-      periodo: "1991 – 2006",
+      periodo: "1991 – 2023",
       intro: "Discos hechos solo de samples, juicios millonarios y el «chipmunk soul».",
       items: [
         { a: 1991, art: "Biz Markie", t: "Pierde un juicio por un sample", tipo: "hito", n: "Desde entonces, cada sample hay que pagarlo." },
         { a: 1993, art: "Wu-Tang Clan", t: "C.R.E.A.M.", n: "RZA convierte un trozo de soul de The Charmels en un clásico." },
+        { a: 1995, art: "Coolio feat. L.V.", t: "Gangsta's Paradise", n: "Sobre «Pastime Paradise» de Stevie Wonder." },
         { a: 1996, art: "DJ Shadow", t: "Midnight in a Perfect World", n: "De «Endtroducing…», un disco entero hecho solo con samples." },
         { a: 1997, art: "The Verve", t: "Bitter Sweet Symphony", n: "Samplearon una versión orquestal de los Rolling Stones y perdieron todos los derechos durante 22 años." },
+        { a: 1997, art: "Puff Daddy & Faith Evans feat. 112", t: "I'll Be Missing You", n: "Sobre «Every Breath You Take»." },
+        { a: 1998, art: "JAY-Z", t: "Hard Knock Life (Ghetto Anthem)", n: "Un sample del musical «Annie»." },
+        { a: 1998, art: "Fatboy Slim", t: "Praise You", n: "Con la voz de Camille Yarbrough." },
         { a: 1999, art: "Moby", t: "Natural Blues", n: "La voz de Vera Hall, grabada en 1937, convertida en un éxito de la electrónica." },
         { a: 2000, art: "The Avalanches", t: "Since I Left You", n: "Un disco hecho con unos 3.500 samples." },
+        { a: 2000, art: "Daft Punk", t: "One More Time", n: "Un sample de Eddie Johns." },
         { a: 2001, art: "Daft Punk", t: "Harder, Better, Faster, Stronger", n: "Un sample de Edwin Birdsong troceado: luego Kanye la volvió a samplear en «Stronger»." },
         { a: 2003, art: "Kanye West", t: "Through the Wire", n: "El «chipmunk soul»: samples de soul acelerados. La grabó con la mandíbula rota." },
         { a: 2004, art: "Gwen Stefani & Eve", t: "Rich Girl", n: "Toma «If I Were a Rich Man», de El violinista en el tejado." },
-        { a: 2006, art: "J Dilla", t: "Workinonit", n: "De «Donuts», grabado con un MPC desde la cama del hospital poco antes de morir. Una obra maestra del beatmaking." }
+        { a: 2006, art: "J Dilla", t: "Workinonit", n: "De «Donuts», grabado con un MPC desde la cama del hospital poco antes de morir. Una obra maestra del beatmaking." },
+        { a: 2007, art: "Kanye West", t: "Stronger", n: "Sobre Daft Punk." },
+        { a: 2013, art: "Kanye West", t: "Blood on the Leaves", n: "Nina Simone." },
+        { a: 2023, art: "Doja Cat", t: "Paint the Town Red", n: "Un sample de Dionne Warwick." }
       ]
     }
   ]

@@ -17,6 +17,7 @@ HISTORIAS.push({
         { a: 1966, art: "The 13th Floor Elevators", t: "You're Gonna Miss Me", n: "Desde Texas, una jarra eléctrica que borbotea: los primeros en llamarse «psicodélicos»." },
         { a: 1966, art: "The Byrds", t: "Eight Miles High", n: "Guitarra de 12 cuerdas imitando a Coltrane: muchas radios la prohibieron." },
         { a: 1966, art: "The Electric Prunes", t: "I Had Too Much to Dream (Last Night)", n: "Garage rock con efectos raros." },
+        { a: 1966, art: "The Beatles", t: "Tomorrow Never Knows", n: "Cintas al revés y un mantra." },
         { a: 1967, art: "Festival de Monterey", t: "Hendrix prende fuego a su guitarra", tipo: "hito", n: "El primer gran festival de rock." },
         { a: 1967, art: "Jefferson Airplane", t: "White Rabbit", n: "«Alicia en el país de las maravillas» como metáfora de las drogas, con un crescendo de bolero." },
         { a: 1967, art: "The Doors", t: "Light My Fire", n: "El órgano de Ray Manzarek y siete minutos de improvisación." },
@@ -26,8 +27,13 @@ HISTORIAS.push({
         { a: 1967, art: "Procol Harum", t: "A Whiter Shade of Pale", n: "Un órgano de Bach en el verano del amor." },
         { a: 1967, art: "Love", t: "Alone Again Or", n: "Guitarras españolas y trompetas mariachi." },
         { a: 1967, art: "The Beatles", t: "Strawberry Fields Forever", n: "Los Beatles se pasan a la psicodelia con cintas al revés y mellotrón." },
+        { a: 1967, art: "Pink Floyd", t: "See Emily Play", n: "Syd Barrett." },
+        { a: 1967, art: "Small Faces", t: "Itchycoo Park", n: "Psicodelia británica." },
+        { a: 1967, art: "The Chambers Brothers", t: "Time Has Come Today", n: "Once minutos de psicodelia soul." },
         { a: 1968, art: "Iron Butterfly", t: "In-A-Gadda-Da-Vida", n: "17 minutos, con un solo de batería eterno." },
-        { a: 1968, art: "Grateful Dead", t: "Dark Star", n: "La base de sus improvisaciones infinitas en directo." }
+        { a: 1968, art: "Grateful Dead", t: "Dark Star", n: "La base de sus improvisaciones infinitas en directo." },
+        { a: 1968, art: "Os Mutantes", t: "Panis et Circenses", n: "Tropicalismo." },
+        { a: 1968, art: "The Jimi Hendrix Experience", t: "All Along the Watchtower", n: "Dylan según Hendrix." }
       ]
     },
     {
@@ -37,12 +43,15 @@ HISTORIAS.push({
       intro: "Cada generación redescubre el viaje.",
       items: [
         { a: 1971, art: "Pink Floyd", t: "Echoes", n: "23 minutos: de la psicodelia al rock progresivo." },
+        { a: 1997, art: "Spiritualized", t: "Ladies and Gentlemen We Are Floating in Space", n: "Gospel espacial." },
         { a: 1999, art: "The Flaming Lips", t: "Race for the Prize", n: "Psicodelia orquestal para un nuevo siglo." },
         { a: 2007, art: "MGMT", t: "Kids", n: "Pop psicodélico que sonó en todas las fiestas indies." },
+        { a: 2009, art: "Animal Collective", t: "My Girls", n: "Psicodelia electrónica." },
         { a: 2010, art: "Tame Impala", t: "Publican «Innerspeaker»", tipo: "hito", n: "Kevin Parker reinventa la psicodelia desde Perth." },
         { a: 2012, art: "Tame Impala", t: "Feels Like We Only Go Backwards", n: "Kevin Parker, desde Australia, resucita el sonido de los Beatles de 1966." },
         { a: 2012, art: "Pond", t: "Giant Tortoise", n: "Pond, banda hermana de Tame Impala, con psicodelia australiana." },
         { a: 2015, art: "Tame Impala", t: "The Less I Know the Better", n: "Psicodelia bailable: su canción más escuchada." },
+        { a: 2015, art: "Unknown Mortal Orchestra", t: "Multi-Love", n: "Psicodelia y soul." },
         { a: 2017, art: "King Gizzard & The Lizard Wizard", t: "Rattlesnake", n: "Cinco discos en un año: la banda más prolífica del rock actual." },
         { a: 2018, art: "Khruangbin", t: "Maria También", n: "Psicodelia con sonido tailandés, iraní y funk." }
       ]

@@ -29,6 +29,7 @@ HISTORIAS.push({
       intro: "Nashville se convierte en la capital del country.",
       items: [
         { a: 1955, art: "Johnny Cash", t: "Folsom Prison Blues", n: "«Le disparé a un hombre en Reno solo para verlo morir»." },
+        { a: 1957, art: "Patsy Cline", t: "Walkin' After Midnight", n: "Su primer gran éxito." },
         { a: 1958, art: "Chet Atkins", t: "El «Nashville sound»", tipo: "hito", n: "Cuerdas y coros suaves para llevar el country a la radio pop." },
         { a: 1961, art: "Patsy Cline", t: "Crazy", n: "Escrita por un joven Willie Nelson: el «sonido Nashville», con cuerdas." },
         { a: 1963, art: "Buck Owens", t: "Act Naturally", n: "El sonido Bakersfield, más crudo. Los Beatles la versionaron." },
@@ -46,15 +47,21 @@ HISTORIAS.push({
       intro: "Forajidos, estadios y un country cada vez más diverso.",
       items: [
         { a: 1977, art: "Waylon Jennings", t: "Luckenbach, Texas (Back to the Basics of Love)", n: "El «outlaw country»: los forajidos contra el Nashville comercial." },
+        { a: 1978, art: "Kenny Rogers", t: "The Gambler", n: "Saber cuándo plantarse." },
         { a: 1980, art: "Willie Nelson", t: "On the Road Again", n: "Willie Nelson la escribió en pleno vuelo, en unos minutos: la canción oficial de quien vive de gira." },
+        { a: 1980, art: "Dolly Parton", t: "9 to 5", n: "La canción de la película de oficina." },
+        { a: 1987, art: "Randy Travis", t: "Forever and Ever, Amen", n: "El country tradicional vuelve." },
         { a: 1990, art: "Garth Brooks", t: "Friends in Low Places", n: "El country llena estadios como el rock." },
         { a: 1998, art: "Shania Twain", t: "You're Still the One", n: "El country pop más vendido." },
         { a: 2002, art: "Johnny Cash", t: "Hurt", n: "Una canción de Nine Inch Nails cantada por un Cash anciano: despedida desgarradora." },
         { a: 2006, art: "Taylor Swift", t: "Tim McGraw", n: "El debut de una chica de 16 años que acabaría siendo la mayor estrella del mundo." },
+        { a: 2015, art: "Chris Stapleton", t: "Tennessee Whiskey", n: "Una versión que se convirtió en clásico." },
         { a: 2017, art: "Bebe Rexha & Florida Georgia Line", t: "Meant to Be", n: "Récord de semanas en el número uno de country." },
         { a: 2018, art: "Kacey Musgraves", t: "Slow Burn", n: "Country psicodélico y suave: ganó el Grammy al disco del año." },
         { a: 2019, art: "Lil Nas X", t: "Old Town Road", n: "Country y trap: 19 semanas número uno, un récord." },
         { a: 2022, art: "Zach Bryan", t: "Something in the Orange", n: "Un exmilitar grabando en su casa: el country más honesto." },
+        { a: 2023, art: "Morgan Wallen", t: "Last Night", n: "La canción del año en Estados Unidos." },
+        { a: 2023, art: "Luke Combs", t: "Fast Car", n: "Tracy Chapman en versión country." },
         { a: 2024, art: "Beyoncé", t: "TEXAS HOLD 'EM", n: "De «Cowboy Carter»: reivindica las raíces negras del country." },
         { a: 2025, art: "Beyoncé", t: "Gana el Grammy al disco del año con «Cowboy Carter»", tipo: "hito", n: "Y el de mejor disco de country: la primera mujer negra en conseguirlo." }
       ]

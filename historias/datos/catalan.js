@@ -22,7 +22,10 @@ HISTORIAS.push({
         { a: 1968, art: "Lluís Llach", t: "L'estaca", n: "Una estaca que hay que tirar entre todos: himno contra la dictadura, cantado hasta en Polonia." },
         { a: 1968, art: "Maria del Mar Bonet", t: "Què volen aquesta gent?", n: "Desde Mallorca, sobre la muerte de un estudiante tras una detención. Fue prohibida." },
         { a: 1971, art: "Pau Riba", t: "Noia de porcellana", n: "Pau Riba, el hippie de la Nova Cançó, se pasa al rock psicodélico." },
-        { a: 1975, art: "Lluís Llach", t: "Viatge a Ítaca", n: "Sobre el poema de Kavafis: Llach convierte el viaje a Ítaca en un canto a la libertad en plena agonía del franquismo." }
+        { a: 1973, art: "Lluís Llach", t: "Que tinguem sort", n: "Un deseo de libertad." },
+        { a: 1974, art: "Ovidi Montllor", t: "Perquè vull", n: "Un poema de Vicent Andrés Estellés." },
+        { a: 1975, art: "Lluís Llach", t: "Viatge a Ítaca", n: "Sobre el poema de Kavafis: Llach convierte el viaje a Ítaca en un canto a la libertad en plena agonía del franquismo." },
+        { a: 1975, art: "Jaume Sisa", t: "Qualsevol nit pot sortir el sol", n: "Personajes de cuento en una canción." }
       ]
     },
     {
@@ -35,6 +38,8 @@ HISTORIAS.push({
         { a: 1990, art: "Sau", t: "Boig per tu", n: "La balada más querida en catalán: Shakira la versionó en 2017." },
         { a: 1991, art: "Palau Sant Jordi", t: "El gran concierto del rock català", tipo: "hito", n: "Sau, Els Pets, Sopa de Cabra y Sangtraït llenan el pabellón olímpico: unas 20.000 personas." },
         { a: 1991, art: "Sopa de Cabra", t: "Camins", n: "Uno de los himnos del rock català, el que todos cantan en las fiestas." },
+        { a: 1992, art: "Sau", t: "Envia'm un àngel", n: "El rock catalán de los 90." },
+        { a: 1996, art: "Sopa de Cabra", t: "Si et quedes amb mi", n: "La balada de Sopa de Cabra." },
         { a: 1997, art: "Els Pets", t: "Bon dia", n: "Pop rock alegre desde Constantí." }
       ]
     },
@@ -47,10 +52,14 @@ HISTORIAS.push({
         { a: 2002, art: "Antònia Font", t: "Wa Yeah!", n: "Antònia Font, desde Mallorca, con un pop surrealista de astronautas y robots." },
         { a: 2006, art: "Antònia Font", t: "Batiscafo Katiuscas", n: "Su canción más conocida: un submarino y una historia de amor en el fondo del mar." },
         { a: 2008, art: "Manel", t: "Al mar!", n: "Indie pop con letras ingeniosas: un fenómeno inesperado." },
+        { a: 2010, art: "Mishima", t: "Qui n'ha begut", n: "El indie barcelonés." },
         { a: 2011, art: "Els Catarres", t: "Jenifer", n: "Un amor imposible entre un chico de pueblo y una chica de Castelldefels." },
         { a: 2011, art: "Manel", t: "Boomerang", n: "Manel, uno de los grupos más importantes de la música catalana de los 2010." },
+        { a: 2012, art: "Sílvia Pérez Cruz", t: "Vestida de nit", n: "Una de las grandes voces catalanas." },
+        { a: 2012, art: "Joan Dausà", t: "Jo mai mai", n: "Pop catalán." },
         { a: 2015, art: "Txarango", t: "Som riu", q: "Txarango", n: "Txarango, de Ripoll, con mestizaje y fiesta." },
         { a: 2016, art: "Bad Gyal", t: "Pai", n: "Dancehall con autotune en catalán desde Vilassar de Mar." },
+        { a: 2016, art: "Oques Grasses", t: "Sense pressa", n: "La alegría de Osona." },
         { a: 2017, art: "Referéndum", t: "Música y política", tipo: "hito", n: "La canción en catalán vive un auge de público joven, del pop al trap." },
         { a: 2017, art: "ZOO", t: "Estiu", n: "Desde Valencia: rap y mestizaje en valenciano." },
         { a: 2019, art: "ROSALÍA", t: "Milionària", n: "Rumba catalana en catalán por la artista española más global." }

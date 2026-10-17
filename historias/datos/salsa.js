@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "salsa",
   familia: "Latino",
   titulo: "Orígenes de la salsa",
-  periodo: "1930 – 1993",
+  periodo: "1930 – 2001",
   color: "#e2492d",
   lema: "Son cubano, Nueva York y Fania: la música del barrio latino.",
   intro: "La raíz está en el son y el mambo cubanos. En Nueva York, puertorriqueños y otros latinos le suman jazz, más metales y la vida del barrio, y con el sello Fania se llama salsa. Luego se extiende por Venezuela, Colombia y todo el Caribe.",
@@ -33,11 +33,16 @@ HISTORIAS.push({
         { a: 1966, art: "Joe Cuba Sextet", t: "Bang Bang", n: "El boogaloo: latino y soul mezclados por los jóvenes de Nueva York." },
         { a: 1967, art: "Willie Colón", t: "El malo", n: "Un chaval del Bronx de 17 años con un trombón y Héctor Lavoe cantando." },
         { a: 1971, art: "Fania All-Stars", t: "Live at the Cheetah", tipo: "hito", n: "Todas las estrellas del sello en un concierto mítico. La palabra «salsa» se generaliza." },
+        { a: 1971, art: "Richie Ray & Bobby Cruz", t: "Sonido bestial", n: "Piano y salsa." },
+        { a: 1971, art: "Fania All-Stars", t: "Quítate tú (pa' ponerme yo)", n: "La salsa de estrellas." },
         { a: 1972, art: "«Nuestra cosa latina»", t: "La película de la Fania All-Stars", tipo: "hito", n: "El concierto del Cheetah, convertido en documental: la salsa llega a los cines." },
         { a: 1973, art: "Willie Colón", t: "Calle Luna, Calle Sol", n: "Con Héctor Lavoe: la calle y el peligro del barrio." },
         { a: 1973, art: "Ray Barretto", t: "Indestructible", n: "Ray Barretto, el «manos duras» de la conga, con un himno de orgullo de la salsa neoyorquina." },
+        { a: 1973, art: "Ismael Miranda", t: "Así se compone un son", n: "El niño bonito de la salsa." },
         { a: 1974, art: "Celia Cruz", t: "Quimbara", n: "Con Johnny Pacheco: Celia, ya en Nueva York, se convierte en la reina de la salsa." },
+        { a: 1974, art: "Eddie Palmieri", t: "Muñeca", n: "El rebelde del piano." },
         { a: 1975, art: "Dimensión Latina", t: "Llorarás", n: "Con Oscar D'León: la salsa en Venezuela." },
+        { a: 1977, art: "Rubén Blades", t: "Pablo Pueblo", n: "La salsa consciente." },
         { a: 1978, art: "Héctor Lavoe", t: "El cantante", n: "Escrita por Rubén Blades. La tristeza detrás del ídolo." },
         { a: 1978, art: "Willie Colón", t: "Pedro Navaja", n: "Con Rubén Blades. De «Siembra», el disco de salsa más vendido: salsa que cuenta historias." },
         { a: 1978, art: "Willie Colón", t: "Plástico", n: "Con Rubén Blades. Una crítica social que se baila." }
@@ -46,14 +51,19 @@ HISTORIAS.push({
     {
       titulo: "Colombia y la salsa romántica",
       corto: "Colombia y romántica",
-      periodo: "1984 – 1993",
+      periodo: "1983 – 2001",
       intro: "Cali, la salsa romántica y una nueva generación.",
       items: [
+        { a: 1983, art: "El Gran Combo de Puerto Rico", t: "Me liberé", n: "La universidad de la salsa." },
         { a: 1984, art: "Grupo Niche", t: "Cali pachanguero", n: "Cali se convierte en la capital mundial de la salsa." },
         { a: 1985, art: "Salsa romántica", t: "La salsa se vuelve balada", tipo: "hito", n: "Eddie Santiago y Frankie Ruiz la llevan a la radio." },
         { a: 1985, art: "Frankie Ruiz", t: "Tú con él", n: "La salsa romántica: más suave y para bailar en pareja." },
         { a: 1986, art: "Joe Arroyo", t: "La rebelión", n: "Una canción sobre la esclavitud en Cartagena. Se baila en todas partes." },
-        { a: 1993, art: "Marc Anthony", t: "Hasta que te conocí", n: "Una balada de Juan Gabriel en salsa: el comienzo de una nueva generación." }
+        { a: 1986, art: "Eddie Santiago", t: "Tú me quemas", n: "Salsa romántica." },
+        { a: 1993, art: "Marc Anthony", t: "Hasta que te conocí", n: "Una balada de Juan Gabriel en salsa: el comienzo de una nueva generación." },
+        { a: 1993, art: "Jerry Rivera", t: "Amores como el nuestro", n: "Salsa juvenil." },
+        { a: 1999, art: "La India & Marc Anthony", t: "Vivir lo nuestro", n: "Dúo de salsa." },
+        { a: 2001, art: "Gilberto Santa Rosa", t: "Conciencia", n: "El caballero de la salsa." }
       ]
     }
   ]

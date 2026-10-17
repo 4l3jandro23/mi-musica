@@ -39,7 +39,10 @@ HISTORIAS.push({
         { a: 1977, art: "Television", t: "Marquee Moon", n: "Del CBGB también salían guitarras complejas: diez minutos de magia." },
         { a: 1977, art: "Richard Hell & The Voidoids", t: "Blank Generation", n: "El himno generacional. Su estilo de camisetas rotas inspiró a los Sex Pistols." },
         { a: 1977, art: "X-Ray Spex", t: "Oh Bondage Up Yours!", n: "Poly Styrene, con aparato en los dientes, gritando contra el consumismo." },
-        { a: 1978, art: "Buzzcocks", t: "Ever Fallen in Love (With Someone You Shouldn't've)", n: "El punk también sabe ser pop y romántico." }
+        { a: 1977, art: "The Jam", t: "In the City", n: "Paul Weller." },
+        { a: 1978, art: "Buzzcocks", t: "Ever Fallen in Love (With Someone You Shouldn't've)", n: "El punk también sabe ser pop y romántico." },
+        { a: 1978, art: "The Undertones", t: "Teenage Kicks", n: "La canción favorita de John Peel." },
+        { a: 1978, art: "Stiff Little Fingers", t: "Alternative Ulster", n: "Punk de Belfast." }
       ]
     },
     {
@@ -51,11 +54,15 @@ HISTORIAS.push({
         { a: 1979, art: "Joy Division", t: "Transmission", n: "El post-punk: más lento, oscuro y atmosférico." },
         { a: 1979, art: "Dead Kennedys", t: "California Über Alles", n: "Sátira política al ritmo del punk de San Francisco." },
         { a: 1979, art: "The Clash", t: "London Calling", n: "El punk se abre al reggae, el rockabilly y el ska." },
+        { a: 1980, art: "Bad Brains", t: "Pay to Cum", n: "Hardcore a toda velocidad." },
         { a: 1981, art: "Black Flag", t: "Rise Above", n: "El hardcore de California: más rápido y más furioso." },
         { a: 1981, art: "Minor Threat", t: "Straight Edge", n: "Hardcore de Washington y una filosofía sin drogas ni alcohol." },
         { a: 1982, art: "Hardcore", t: "El punk se acelera", tipo: "hito", n: "Black Flag, Minor Threat y Bad Brains: más rápido y más duro." },
         { a: 1982, art: "Siniestro Total", t: "Ayatolah! No me toques la pirola", n: "Desde Vigo, humor gamberro: el punk en español." },
+        { a: 1982, art: "Descendents", t: "Suburban Home", n: "Pop punk primitivo." },
         { a: 1985, art: "Kortatu", t: "Sarri, Sarri", n: "El rock radical vasco, con Fermin Muguruza y ritmo de ska." },
+        { a: 1985, art: "Eskorbuto", t: "Mucha policía, poca diversión", n: "El punk de Santurce." },
+        { a: 1993, art: "Bikini Kill", t: "Rebel Girl", n: "Riot grrrl." },
         { a: 1999, art: "Fugazi", t: "I'm So Tired", n: "Ian MacKaye, de Minor Threat, fundó Fugazi: post-hardcore «hazlo tú mismo» con entradas a cinco dólares. Aquí, en su lado más tranquilo." }
       ]
     }

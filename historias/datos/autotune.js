@@ -48,6 +48,7 @@ HISTORIAS.push({
         { a: 2008, art: "Lil Wayne feat. Static Major", t: "Lollipop", n: "El rapero más famoso del momento canta con autotune." },
         { a: 2008, art: "Kanye West", t: "Heartless", n: "De «808s & Heartbreak»: autotune para cantar la tristeza." },
         { a: 2008, art: "Kanye West", t: "808s & Heartbreak", tipo: "disco", n: "El disco que convirtió el autotune en una forma de expresar el dolor; sin él no existirían Drake ni Travis Scott." },
+        { a: 2008, art: "Kanye West", t: "Love Lockdown", n: "Bombos, piano y voz procesada." },
         { a: 2009, art: "T-Pain", t: "La aplicación «I Am T-Pain»", tipo: "hito", n: "Una app de móvil que pone autotune a tu voz se descarga millones de veces: el efecto llega a todo el mundo." },
         { a: 2009, art: "Jay-Z", t: "D.O.A. (Death of Auto-Tune)", n: "Jay-Z declara muerto el autotune. No le hicieron caso." },
         { a: 2009, art: "Bon Iver", t: "Woods", n: "Voces apiladas y autotune en una cabaña: el indie también lo adopta." },
@@ -65,8 +66,10 @@ HISTORIAS.push({
         { a: 2016, art: "Travis Scott", t: "goosebumps", n: "Con Kendrick Lamar: la voz convertida en textura." },
         { a: 2016, art: "Bon Iver", t: "715 - CRΣΣKS", n: "Solo voz y un armonizador: casi un experimento." },
         { a: 2016, art: "Bad Gyal", t: "Fiebre", n: "Dancehall en catalán con la voz llena de autotune: el sonido del urbano español." },
+        { a: 2016, art: "Frank Ocean", t: "Nikes", n: "La voz acelerada y aguda como recurso." },
         { a: 2017, art: "El autotune en directo", t: "La voz procesada ya es la voz normal", tipo: "hito", n: "Los raperos y reguetoneros lo usan también en los conciertos: para muchos oyentes jóvenes, así suena cantar." },
         { a: 2017, art: "Future", t: "Mask Off", n: "Future canta y rapea con el autotune siempre puesto." },
+        { a: 2017, art: "Lil Uzi Vert", t: "XO Tour Llif3", n: "El autotune del emo rap." },
         { a: 2018, art: "Bad Bunny", t: "Amorfoda", n: "El autotune melancólico del trap latino." }
       ]
     }

@@ -24,7 +24,7 @@ HISTORIAS.push({
     {
       titulo: "El sonido que conquista",
       corto: "La explosión",
-      periodo: "2010 – 2017",
+      periodo: "2010 – 2018",
       intro: "Lex Luger, Zaytoven y Metro Boomin convierten la 808 en un instrumento épico.",
       items: [
         { a: 2010, art: "Waka Flocka Flame", t: "Hard in da Paint", n: "Producción de Lex Luger: fanfarrias, 808 y furia. La plantilla del trap moderno." },
@@ -36,8 +36,16 @@ HISTORIAS.push({
         { a: 2014, art: "Fetty Wap", t: "Trap Queen", n: "El trap se vuelve melódico y romántico." },
         { a: 2014, art: "Rich Gang", t: "Lifestyle", n: "Young Thug y Rich Homie Quan cantando como nadie había rapeado antes." },
         { a: 2015, art: "Future", t: "March Madness", n: "Autotune, melancolía y codeína: el trap emocional." },
+        { a: 2015, art: "Yung Beef", t: "Ready pa morir", n: "El trap español." },
         { a: 2016, art: "Migos", t: "Bad and Boujee", n: "Con Lil Uzi Vert. El trap ya es el pop de Estados Unidos." },
-        { a: 2017, art: "El hip hop", t: "Supera al rock como el género más escuchado de EE. UU.", tipo: "hito", n: "Por primera vez, según los datos de Nielsen." }
+        { a: 2016, art: "Future", t: "Low Life", n: "Con The Weeknd." },
+        { a: 2016, art: "Travis Scott", t: "goosebumps", n: "Con Kendrick Lamar." },
+        { a: 2017, art: "El hip hop", t: "Supera al rock como el género más escuchado de EE. UU.", tipo: "hito", n: "Por primera vez, según los datos de Nielsen." },
+        { a: 2017, art: "Future", t: "Mask Off", n: "Una flauta." },
+        { a: 2017, art: "Cardi B", t: "Bodak Yellow", n: "De bailarina a número uno." },
+        { a: 2017, art: "Bad Bunny", t: "Chambea", n: "Trap latino." },
+        { a: 2018, art: "Migos feat. Drake", t: "Walk It Talk It", n: "El trap de Atlanta." },
+        { a: 2018, art: "21 Savage feat. J. Cole", t: "a lot", n: "Trap reflexivo." }
       ]
     },
     {
@@ -60,6 +68,7 @@ HISTORIAS.push({
       items: [
         { a: 2020, art: "«Whole Lotta Red»", t: "Nace el rage", tipo: "hito", n: "Playboi Carti cambia el sonido del trap." },
         { a: 2020, art: "Playboi Carti", t: "Sky", n: "De «Whole Lotta Red»: odiado al salir, hoy un disco de culto que creó una estética." },
+        { a: 2020, art: "Lil Baby", t: "The Bigger Picture", n: "Trap y protesta." },
         { a: 2021, art: "Trippie Redd", t: "Miss the Rage", n: "Con Playboi Carti: la canción que le dio nombre al «rage»." },
         { a: 2022, art: "Yeat", t: "Gët Busy", n: "Campanas, sintes y un vocabulario propio: el rage se vuelve masivo." },
         { a: 2022, art: "Lil Uzi Vert", t: "Just Wanna Rock", n: "Jersey club acelerado: un éxito viral en todo el mundo." }

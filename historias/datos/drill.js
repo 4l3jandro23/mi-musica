@@ -10,7 +10,7 @@ HISTORIAS.push({
     {
       titulo: "Chicago",
       corto: "Chicago",
-      periodo: "2011 – 2013",
+      periodo: "2011 – 2014",
       intro: "Chief Keef y el South Side.",
       items: [
         { a: 2011, art: "King Louie", t: "Da la palabra «drill»", tipo: "hito", n: "En el argot de Chicago, «drill» significa disparar o atacar." },
@@ -19,7 +19,9 @@ HISTORIAS.push({
         { a: 2012, art: "Lil Durk", t: "Dis Ain't What U Want", n: "Otro de los pioneros de Chicago." },
         { a: 2012, art: "Lil Reese", t: "Us", n: "Con Chief Keef. Uno de los temas que definen la frialdad del drill de Chicago." },
         { a: 2012, art: "Lil Durk", t: "L's Anthem", n: "Lil Durk, de Chicago, uno de los nombres del drill desde sus comienzos." },
-        { a: 2013, art: "King Louie", t: "Val Venis", n: "King Louie, el que dio nombre al estilo: rap de Chicago lento y amenazante." }
+        { a: 2013, art: "King Louie", t: "Val Venis", n: "King Louie, el que dio nombre al estilo: rap de Chicago lento y amenazante." },
+        { a: 2014, art: "Chief Keef", t: "Faneto", n: "El drill de Chicago en su forma más pura." },
+        { a: 2014, art: "G Herbo", t: "Who Run It", n: "Un freestyle convertido en himno." }
       ]
     },
     {
@@ -29,12 +31,21 @@ HISTORIAS.push({
       intro: "Londres hace el drill suyo, con ritmos deslizantes.",
       items: [
         { a: 2016, art: "Giggs & 67", t: "Lets Lurk", n: "El UK drill empieza a sonar fuera de los barrios." },
+        { a: 2016, art: "22Gz", t: "Suburban", n: "El principio del drill de Brooklyn." },
         { a: 2018, art: "Policía de Londres", t: "Retira vídeos de drill", tipo: "hito", n: "YouTube borra vídeos a petición de la policía: el drill, en el centro del debate." },
+        { a: 2018, art: "YouTube y la policía", t: "Vídeos borrados", tipo: "hito", n: "La Policía de Londres pide retirar vídeos de drill que acusa de incitar a la violencia." },
         { a: 2018, art: "Headie One", t: "Know Better", n: "Con RV. Una de las voces más importantes del drill de Londres." },
+        { a: 2018, art: "Skengdo x AM", t: "Attempted 1.0", n: "Fueron condenados a prisión condicional por interpretar esta canción en directo." },
+        { a: 2018, art: "King Von", t: "Crazy Story", n: "Una historia de calle de Chicago." },
+        { a: 2018, art: "Unknown T", t: "Homerton B", n: "UK drill en las listas." },
         { a: 2019, art: "Headie One", t: "Both", n: "Headie One, del norte de Londres, demuestra que el drill británico puede tener melodía sin perder crudeza." },
+        { a: 2019, art: "Polo G", t: "Pop Out", n: "Drill melódico." },
         { a: 2020, art: "Digga D", t: "Woi", n: "Digga D, que tenía órdenes judiciales sobre lo que podía rapear: el choque del drill con la policía británica." },
+        { a: 2020, art: "Headie One & Drake", t: "Only You Freestyle", n: "Drake se pasa al UK drill." },
+        { a: 2020, art: "Pop Smoke", t: "Mood Swings", n: "La cara romántica de Pop Smoke." },
         { a: 2021, art: "Tion Wayne & Russ Millions", t: "Body", n: "El primer número uno de drill en el Reino Unido." },
-        { a: 2021, art: "Russ Millions, Buni & YV", t: "Gun Lean", n: "El baile del «gun lean» se hizo viral: drill británico con humor." }
+        { a: 2021, art: "Russ Millions, Buni & YV", t: "Gun Lean", n: "El baile del «gun lean» se hizo viral: drill británico con humor." },
+        { a: 2021, art: "Central Cee", t: "Day in the Life", n: "El UK drill más escuchado." }
       ]
     },
     {

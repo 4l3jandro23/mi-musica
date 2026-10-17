@@ -21,7 +21,8 @@ HISTORIAS.push({
         { a: 1992, art: "Ace of Base", t: "All That She Wants", n: "Eurodance con reggae desde Suecia." },
         { a: 1992, art: "Dr. Alban", t: "It's My Life", n: "Un dentista nigeriano en Suecia." },
         { a: 1992, art: "Captain Hollywood Project", t: "More and More", n: "Un exbailarín estadounidense en Alemania." },
-        { a: 1992, art: "Double You", t: "Please Don't Go", n: "Double You, desde Italia, versiona a KC and the Sunshine Band y la convierte en un éxito de discoteca en toda Europa." }
+        { a: 1992, art: "Double You", t: "Please Don't Go", n: "Double You, desde Italia, versiona a KC and the Sunshine Band y la convierte en un éxito de discoteca en toda Europa." },
+        { a: 1992, art: "DJ BoBo", t: "Somebody Dance with Me", n: "El suizo del eurodance." }
       ]
     },
     {
@@ -35,11 +36,16 @@ HISTORIAS.push({
         { a: 1993, art: "Corona", t: "The Rhythm of the Night", n: "El himno italiano del verano." },
         { a: 1993, art: "Real McCoy", t: "Another Night", n: "Desde Berlín: triunfó también en EE. UU." },
         { a: 1993, art: "2 Unlimited", t: "No Limit", n: "La letra casi no existe: «no no, no no no no». 2 Unlimited, desde Bélgica, en lo más alto del eurodance." },
+        { a: 1993, art: "Cappella", t: "U Got 2 Know", n: "Eurodance italiano." },
         { a: 1994, art: "Los recopilatorios", t: "La era de los «Max Mix» y «Bit Mania»", tipo: "hito", n: "En España, los recopilatorios de eurodance venden millones." },
         { a: 1994, art: "Whigfield", t: "Saturday Night", n: "El baile del verano en España." },
         { a: 1994, art: "Masterboy", t: "Feel the Heat of the Night", n: "Pura discoteca de los 90." },
         { a: 1994, art: "Scatman John", t: "Scatman (Ski-Ba-Bop-Ba-Dop-Bop)", n: "Un jazzista tartamudo que convirtió su tartamudez en scat." },
-        { a: 1995, art: "La Bouche", t: "Be My Lover", n: "Voz femenina potente, rap masculino y sintes: La Bouche resume la fórmula del eurodance del 95." }
+        { a: 1994, art: "Ice MC", t: "Think About the Way", n: "De «Trainspotting»." },
+        { a: 1994, art: "E-Rotic", t: "Max Don't Have Sex with Your Ex", n: "Eurodance pícaro." },
+        { a: 1994, art: "Fun Factory", t: "Close to You", n: "El eurodance alemán." },
+        { a: 1995, art: "La Bouche", t: "Be My Lover", n: "Voz femenina potente, rap masculino y sintes: La Bouche resume la fórmula del eurodance del 95." },
+        { a: 1995, art: "Captain Jack", t: "Captain Jack", n: "Un himno militar de discoteca." }
       ]
     },
     {
@@ -50,8 +56,11 @@ HISTORIAS.push({
       items: [
         { a: 1996, art: "Gala", t: "Freed from Desire", n: "Una italiana y un «na na na» que hoy cantan los estadios de fútbol." },
         { a: 1997, art: "Alexia", t: "Uh La La La", n: "Eurodance italiano en clave pop." },
+        { a: 1997, art: "Sash!", t: "Ecuador", n: "Trompetas y sintetizadores." },
         { a: 1998, art: "Eurodance", t: "El estilo se apaga", tipo: "hito", n: "El trance y el pop adolescente toman el relevo en las radios." },
         { a: 1998, art: "Vengaboys", t: "Boom, Boom, Boom, Boom!!", n: "El eurodance se vuelve dibujos animados." },
+        { a: 1998, art: "Eiffel 65", t: "Blue (Da Ba Dee)", n: "La voz procesada más famosa." },
+        { a: 2000, art: "Daddy DJ", t: "Daddy DJ", n: "Eurodance francés." },
         { a: 2007, art: "September", t: "Cry for You", n: "Un eurodance tardío de Suecia que triunfó en toda Europa." }
       ]
     }

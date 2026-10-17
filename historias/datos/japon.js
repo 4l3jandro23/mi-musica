@@ -36,7 +36,6 @@ HISTORIAS.push({
         { a: 1982, art: "Anri", alias: ["杏里"], t: "Last Summer Whisper", n: "City pop de verano eterno." },
         { a: 1982, art: "Seiko Matsuda", alias: ["松田聖子"], t: "Akai Sweet Pea", q: "松田聖子 赤いスイートピー", n: "Seiko Matsuda, la gran ídolo de los 80 en Japón, en una balada que define su estilo dulce." },
         { a: 1982, art: "Hiroshi Yoshimura", alias: ["吉村弘"], t: "Music for Nine Postcards", tipo: "disco", n: "Ambient japonés, redescubierto gracias al algoritmo de YouTube." },
-        { a: 1983, art: "Ryuichi Sakamoto", alias: ["坂本龍一"], t: "Merry Christmas Mr. Lawrence", n: "Una de las melodías de piano más bonitas del siglo." },
         { a: 1983, art: "Tomoko Aran", alias: ["亜蘭知子"], t: "Midnight Pretenders", n: "Redescubierta en internet: The Weeknd la sampleó en «Out of Time» en 2022." },
         { a: 1984, art: "Mariya Takeuchi", alias: ["竹内まりや"], t: "Plastic Love", n: "El himno del city pop, que YouTube convirtió en leyenda en 2017." }
       ]
@@ -53,7 +52,8 @@ HISTORIAS.push({
         { a: 1997, art: "Cornelius", t: "Star Fruits Surf Rider", n: "El Shibuya-kei: collage pop de un genio." },
         { a: 1998, art: "Hikaru Utada", alias: ["宇多田ヒカル"], t: "Automatic", n: "Con 15 años, el disco más vendido de la historia de Japón." },
         { a: 1999, art: "Hikaru Utada", t: "«First Love», el disco más vendido de Japón", tipo: "hito", n: "Más de siete millones de copias." },
-        { a: 1999, art: "Ayumi Hamasaki", alias: ["浜崎あゆみ"], t: "Boys & Girls", n: "La emperatriz del J-pop de los 2000." }
+        { a: 1999, art: "Ayumi Hamasaki", alias: ["浜崎あゆみ"], t: "Boys & Girls", n: "La emperatriz del J-pop de los 2000." },
+        { a: 1999, art: "Ryuichi Sakamoto", t: "Energy Flow", n: "El sencillo instrumental más vendido de la historia de Japón." }
       ]
     },
     {

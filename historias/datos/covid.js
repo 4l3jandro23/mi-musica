@@ -24,7 +24,15 @@ HISTORIAS.push({
         { a: 2020, art: "Dua Lipa", t: "Physical", n: "Un guiño a Olivia Newton-John, para hacer ejercicio en el salón." },
         { a: 2020, art: "Lady Gaga", t: "Stupid Love", n: "Chromatica se retrasó por la pandemia; esta salió justo antes." },
         { a: 2020, art: "Dua Lipa", t: "Break My Heart", n: "Future Nostalgia salió en marzo, en pleno confinamiento." },
-        { a: 2020, art: "Lady Gaga & BLACKPINK", t: "Sour Candy", n: "La colaboración K-pop de Chromatica." }
+        { a: 2020, art: "Lady Gaga & BLACKPINK", t: "Sour Candy", n: "La colaboración K-pop de Chromatica." },
+        { a: 2020, art: "iMarkkeyz", t: "Coronavirus (Cardi B)", n: "Un vídeo de Cardi B gritando «coronavirus» convertido en canción." },
+        { a: 2020, art: "Drake", t: "Toosie Slide", n: "Un baile pensado para TikTok." },
+        { a: 2020, art: "Megan Thee Stallion feat. Beyoncé", t: "Savage (Remix)", n: "Número uno en plena pandemia." },
+        { a: 2020, art: "Jawsh 685 & Jason Derulo", t: "Savage Love (Laxed – Siren Beat)", n: "Un ritmo viral en el confinamiento." },
+        { a: 2020, art: "Harry Styles", t: "Watermelon Sugar", n: "El verano que no pudimos tener." },
+        { a: 2020, art: "BTS", t: "Dynamite", n: "La primera canción de BTS toda en inglés." },
+        { a: 2020, art: "Bad Bunny", t: "Yo perreo sola", n: "Bailar sola en casa." },
+        { a: 2020, art: "C. Tangana feat. Niño de Elche & La Húngara", t: "Tú me dejaste de querer", n: "Grabada en plena pandemia." }
       ]
     },
     {
@@ -43,7 +51,9 @@ HISTORIAS.push({
         { a: 2021, art: "Nathan Evans", t: "Wellerman", n: "Canciones de marineros grabadas a coro por desconocidos en TikTok." },
         { a: 2021, art: "Olivia Rodrigo", t: "drivers license", n: "Un desamor adolescente que batió récords de escuchas." },
         { a: 2021, art: "Fred again..", t: "Marea (We've Lost Dancing)", n: "La nostalgia de bailar con gente cuando no se podía." },
-        { a: 2021, art: "Måneskin", t: "Beggin'", n: "Una versión antigua que se volvió viral tras ganar Eurovisión." }
+        { a: 2021, art: "Måneskin", t: "Beggin'", n: "Una versión antigua que se volvió viral tras ganar Eurovisión." },
+        { a: 2021, art: "Silk Sonic", t: "Leave the Door Open", n: "Bruno Mars y Anderson .Paak." },
+        { a: 2021, art: "Adele", t: "Easy on Me", n: "El regreso de Adele." }
       ]
     }
   ]

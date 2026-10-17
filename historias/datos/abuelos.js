@@ -30,11 +30,13 @@ HISTORIAS.push({
       intro: "Los 40 y 50: copla, flamenco y boleros por la radio.",
       items: [
         { a: 1940, art: "La radio de galena", t: "La radio en casa y en el bar", tipo: "hito", n: "En las casas que pueden, la radio se escucha en familia; en el resto, en el bar o en casa de un vecino." },
+        { a: 1943, art: "Gracia de Triana", t: "Lerele", q: "Gracia de Triana Lerele", n: "La trianera de las coplas con gracia." },
         { a: 1947, art: "Juanita Reina", t: "Y sin embargo te quiero", n: "La sevillana Juanita Reina, gran estrella de la copla." },
         { a: 1947, art: "Antonio Machín", t: "Angelitos negros", n: "El cubano de Sevilla: sus boleros sonaron en todos los bailes." },
         { a: 1947, art: "Antonio Machín", t: "Dos gardenias", n: "El bolero de los novios de la época." },
         { a: 1948, art: "Jorge Sepúlveda", t: "Mirando al mar", n: "La canción melódica de la posguerra." },
         { a: 1949, art: "Juanito Valderrama", t: "El emigrante", n: "Una canción sobre irse de España que se cantó durante décadas." },
+        { a: 1950, art: "Antonio Machín", t: "Espérame en el cielo", n: "Otro bolero de Machín que se bailaba en todas las fiestas del pueblo." },
         { a: 1953, art: "Lola Flores", t: "Pena, penita, pena", n: "La Faraona en su máxima popularidad." },
         { a: 1954, art: "Manolo Caracol", t: "La niña de fuego", n: "El cantaor sevillano en una de sus zambras más famosas." },
         { a: 1956, art: "Joselito", t: "Campanera", n: "El niño de la voz de oro del cine." },
@@ -56,6 +58,7 @@ HISTORIAS.push({
         { a: 1969, art: "Manolo Escobar", t: "Mi carro", n: "Me robaron mi carro: la canción más famosa de Manolo Escobar." },
         { a: 1972, art: "Camilo Sesto", t: "Algo de mí", n: "El alcoyano empieza a enamorar a toda una generación." },
         { a: 1972, art: "Nino Bravo", t: "Un beso y una flor", n: "La voz valenciana que murió joven." },
+        { a: 1973, art: "Manolo Escobar", t: "Qué viva España", n: "El pasodoble pop que también cantaron los turistas." },
         { a: 1974, art: "Raphael", t: "Qué sabe nadie", n: "Una canción de Manuel Alejandro sobre lo que la gente comenta." },
         { a: 1975, art: "Amigos de Gines", t: "Algo se muere en el alma", q: "Amigos de Gines Algo se muere en el alma", n: "Las sevillanas de la despedida, que se cantan al acabar la Feria." },
         { a: 1978, art: "Julio Iglesias", t: "Soy un truhán, soy un señor", n: "El Julio más pícaro, en la televisión de la Transición." }

@@ -34,14 +34,19 @@ HISTORIAS.push({
         { a: 1977, art: "Studio 54", t: "Abre el club más famoso del mundo", tipo: "hito", n: "Famosos, excesos y una puerta casi imposible de cruzar." },
         { a: 1977, art: "Baccara", t: "Yes Sir, I Can Boogie", n: "Dos españolas en Alemania: uno de los singles más vendidos de la historia de Europa." },
         { a: 1977, art: "Bee Gees", t: "Night Fever", n: "De «Fiebre del sábado noche»: la disco en su cumbre." },
+        { a: 1977, art: "Chic", t: "Everybody Dance", n: "El primer éxito de Chic." },
         { a: 1978, art: "Chic", t: "Le Freak", n: "La guitarra de Nile Rodgers y el bajo de Bernard Edwards: elegancia funk." },
         { a: 1978, art: "Village People", t: "Y.M.C.A.", n: "Un guiño a la cultura gay que el mundo entero baila sin saberlo." },
         { a: 1978, art: "Gloria Gaynor", t: "I Will Survive", n: "Era la cara B del single. Se convirtió en himno de supervivencia." },
         { a: 1978, art: "Sylvester", t: "You Make Me Feel (Mighty Real)", n: "Falsete y sintetizadores: puente hacia el hi-NRG y el house." },
+        { a: 1978, art: "Donna Summer", t: "Last Dance", n: "Ganó el Óscar a la mejor canción." },
+        { a: 1978, art: "Cheryl Lynn", t: "Got to Be Real", n: "Funk disco en estado puro." },
         { a: 1979, art: "Disco Demolition Night", t: "«La disco ha muerto»", tipo: "hito", n: "Queman discos de disco en un estadio de Chicago: una reacción racista y homófoba." },
         { a: 1979, art: "Sister Sledge", t: "We Are Family", n: "Nile Rodgers y Bernard Edwards, de Chic, la escribieron y produjeron para Sister Sledge. Se convirtió en himno de unidad." },
         { a: 1979, art: "Michael Jackson", t: "Don't Stop 'Til You Get Enough", n: "De «Off the Wall», con Quincy Jones." },
-        { a: 1979, art: "Patrick Hernandez", t: "Born to Be Alive", n: "Un francés con apellido español: éxito mundial (y una joven Madonna en su gira)." }
+        { a: 1979, art: "Patrick Hernandez", t: "Born to Be Alive", n: "Un francés con apellido español: éxito mundial (y una joven Madonna en su gira)." },
+        { a: 1979, art: "Earth, Wind & Fire & The Emotions", t: "Boogie Wonderland", n: "Metales y alegría." },
+        { a: 1979, art: "Anita Ward", t: "Ring My Bell", n: "Un bombo electrónico que suena a campana." }
       ]
     },
     {

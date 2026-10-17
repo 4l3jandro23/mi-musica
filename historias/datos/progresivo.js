@@ -22,11 +22,16 @@ HISTORIAS.push({
         { a: 1972, art: "Jethro Tull", t: "Thick as a Brick", tipo: "disco", n: "Una sola canción de 43 minutos, en broma… y fue número uno." },
         { a: 1972, art: "Genesis", t: "Supper's Ready", n: "23 minutos con Peter Gabriel disfrazado de flor." },
         { a: 1972, art: "Genesis", t: "Watcher of the Skies", n: "El melotrón y Peter Gabriel con disfraces en el escenario." },
+        { a: 1972, art: "Yes", t: "Close to the Edge", n: "Una suite de diecinueve minutos." },
+        { a: 1972, art: "Premiata Forneria Marconi", t: "Impressioni di settembre", n: "El progresivo italiano." },
         { a: 1973, art: "Pink Floyd", t: "Time", n: "De «The Dark Side of the Moon»: más de 900 semanas en las listas de EE. UU." },
         { a: 1973, art: "Emerson, Lake & Palmer", t: "Karn Evil 9: 1st Impression, Part 2", n: "Teclados y sintetizador Moog a lo grande." },
         { a: 1973, art: "Mike Oldfield", t: "Tubular Bells, Pt. I", q: "Mike Oldfield Tubular Bells Part One", n: "El primer disco de Virgin Records y la música de «El exorcista»." },
         { a: 1973, art: "King Crimson", t: "Larks' Tongues in Aspic, Part One", n: "King Crimson se vuelve más duro e improvisado." },
+        { a: 1974, art: "Camel", t: "Lady Fantasy", n: "Progresivo de Canterbury." },
         { a: 1975, art: "Pink Floyd", t: "Shine On You Crazy Diamond (Parts I–V)", n: "Homenaje a Syd Barrett, fundador del grupo." },
+        { a: 1975, art: "Triana", t: "Abre la puerta", n: "Progresivo con alma flamenca." },
+        { a: 1976, art: "Kansas", t: "Carry On Wayward Son", n: "Progresivo para la radio." },
         { a: 1977, art: "El punk", t: "«Odio a Pink Floyd»", tipo: "hito", n: "Johnny Rotten llevaba una camiseta con esa frase escrita a mano: el prog se convierte en el enemigo." },
         { a: 1977, art: "Rush", t: "Xanadu", n: "Prog con pegada de hard rock desde Canadá." }
       ]
@@ -39,10 +44,16 @@ HISTORIAS.push({
       items: [
         { a: 1979, art: "«The Wall»", t: "Una ópera rock sobre el aislamiento", tipo: "hito", n: "En la gira, Pink Floyd construía un muro de verdad en el escenario." },
         { a: 1979, art: "Pink Floyd", t: "Comfortably Numb", n: "De «The Wall»: uno de los mejores solos de guitarra de la historia." },
+        { a: 1979, art: "Supertramp", t: "The Logical Song", n: "El rock de arte en las listas." },
+        { a: 1979, art: "Pink Floyd", t: "Another Brick in the Wall, Pt. 2", n: "Un coro de niños contra la escuela." },
+        { a: 1980, art: "Rush", t: "The Spirit of Radio", n: "El espíritu de la radio." },
         { a: 1981, art: "Rush", t: "Tom Sawyer", n: "Rush en su momento más popular, con sintes y riffs complejos." },
+        { a: 1983, art: "Yes", t: "Owner of a Lonely Heart", n: "Yes en los 80." },
+        { a: 1985, art: "Marillion", t: "Kayleigh", n: "El neo-progresivo." },
         { a: 1992, art: "Dream Theater", t: "Pull Me Under", n: "El metal progresivo, técnico y virtuoso." },
         { a: 1999, art: "Opeth", t: "Face of Melinda", q: "Opeth Face of Melinda", n: "Opeth, de Suecia, mezcla death metal y progresivo." },
         { a: 2001, art: "Tool", t: "Schism", n: "Compases imposibles: ganaron un Grammy." },
+        { a: 2003, art: "The Mars Volta", t: "Inertiatic ESP", n: "El progresivo del siglo XXI." },
         { a: 2007, art: "Porcupine Tree", t: "Fear of a Blank Planet", n: "Steven Wilson y el prog del siglo XXI." }
       ]
     }

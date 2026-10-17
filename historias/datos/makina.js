@@ -14,18 +14,27 @@ HISTORIAS.push({
       intro: "Discos importados, DJs locales y fiestas de 48 horas.",
       items: [
         { a: 1981, art: "La Ruta", t: "Barraca, Spook, Chocolate…", tipo: "hito", n: "Discotecas en la playa y la huerta de Valencia que crean una escena propia y muy adelantada." },
+        { a: 1981, art: "Liaisons Dangereuses", t: "Los niños del parque", n: "Un clásico de la ruta." },
         { a: 1983, art: "El nombre", t: "«Bakalao»", tipo: "hito", n: "Los DJs valencianos llamaban «bacalao» a los discos buenos que traían de fuera. El nombre se quedó para todo." },
+        { a: 1983, art: "The Sisters of Mercy", t: "Temple of Love", n: "El gótico en las discotecas de Valencia." },
+        { a: 1984, art: "Anne Clark", t: "Our Darkness", n: "Voz recitada y sintetizadores." },
         { a: 1987, art: "Spook Factory", t: "La discoteca que no cierra", tipo: "hito", n: "En Valencia, las discotecas de la Ruta abren de viernes a lunes y cada una tiene su DJ y su sonido." },
+        { a: 1987, art: "Nitzer Ebb", t: "Join in the Chant", n: "EBM para la ruta." },
+        { a: 1987, art: "Camouflage", t: "The Great Commandment", n: "Synth pop alemán." },
         { a: 1988, art: "Front 242", t: "Headhunter", n: "EBM belga: en la Ruta sonaban así de duros y oscuros." },
         { a: 1988, art: "Lords of Acid", t: "I Sit on Acid", n: "El «new beat» belga: lento, sucio y provocador." },
         { a: 1989, art: "Bigod 20", t: "The Bog", q: "Bigod 20 The Bog", n: "EBM alemán muy pinchado en la Ruta del Bakalao." },
         { a: 1990, art: "Megabeat", t: "Paranoia", n: "Uno de los himnos del sonido valenciano, con voces sampleadas y bombo duro." },
         { a: 1990, art: "The KLF", t: "What Time Is Love?", n: "El rave británico que también sonaba en las discotecas valencianas." },
         { a: 1991, art: "Chimo Bayo", t: "Así me gusta a mí", n: "El valenciano que llevó el bakalao a las listas." },
+        { a: 1991, art: "T99", t: "Anasthasia", n: "El new beat belga." },
         { a: 1992, art: "Interactive", t: "Who Is Elvis", n: "Los alemanes Interactive, muy pinchados en la Ruta: sintes agudos y ritmo de tecno." },
         { a: 1992, art: "Chimo Bayo", t: "Exta-sí-sí", q: "Chimo Bayo", n: "Chimo Bayo y su bakalao con frases repetitivas y pegadizas." },
+        { a: 1992, art: "The Prodigy", t: "Out of Space", n: "El rave británico." },
+        { a: 1992, art: "Praga Khan", t: "Injected with a Poison", n: "Más new beat." },
         { a: 1993, art: "El pánico de los medios", t: "«Ruta Destroy»", tipo: "hito", n: "Accidentes de tráfico, drogas y reportajes alarmistas en la tele. Llegan las restricciones y la escena decae." },
-        { a: 1993, art: "Ramirez", t: "Hablando", n: "Uno de los grandes éxitos «de la Ruta» de los 90." }
+        { a: 1993, art: "Ramirez", t: "Hablando", n: "Uno de los grandes éxitos «de la Ruta» de los 90." },
+        { a: 1993, art: "Ramirez", t: "El gallinero", n: "El bakalao con humor." }
       ]
     },
     {
@@ -46,7 +55,8 @@ HISTORIAS.push({
         { a: 1998, art: "DJ Sakin & Friends", t: "Protect Your Mind (Braveheart)", n: "La gaita de «Braveheart»: un himno de las discotecas de makina." },
         { a: 1998, art: "Xavi Metralla", t: "Pont Aeri 98", q: "Xavi Metralla Pont Aeri", n: "El remember por excelencia: el bombo y la melodía que hacía saltar a miles en Terrassa." },
         { a: 1999, art: "Gigi D'Agostino", t: "L'amour toujours", n: "El «italo dance» del turinés: lo bailó toda España, de la makina a la verbena." },
-        { a: 1999, art: "Gigi D'Agostino", t: "Bla Bla Bla", n: "El «lento violento» italiano, muy popular en las discotecas españolas." }
+        { a: 1999, art: "Gigi D'Agostino", t: "Bla Bla Bla", n: "El «lento violento» italiano, muy popular en las discotecas españolas." },
+        { a: 1999, art: "Gigi D'Agostino", t: "The Riddle", n: "El italiano de la makina." }
       ]
     }
   ]

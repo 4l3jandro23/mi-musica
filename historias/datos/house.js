@@ -38,7 +38,8 @@ HISTORIAS.push({
         { a: 1988, art: "D-Mob", t: "We Call It Acieeed", n: "El acid house llega al top 3 británico… y la BBC lo prohíbe por las drogas." },
         { a: 1989, art: "Black Box", t: "Ride on Time", n: "Desde Italia, y sampleando a Loleatta Holloway: el italo house." },
         { a: 1990, art: "Deee-Lite", t: "Groove Is in the Heart", n: "House con colorines desde Nueva York." },
-        { a: 1990, art: "Madonna", t: "Vogue", n: "El house y el voguing de la escena ballroom llegan al pop más grande." }
+        { a: 1990, art: "Madonna", t: "Vogue", n: "El house y el voguing de la escena ballroom llegan al pop más grande." },
+        { a: 1990, art: "Alison Limerick", t: "Where Love Lives", n: "Un clásico del house británico." }
       ]
     },
     {

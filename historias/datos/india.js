@@ -28,7 +28,7 @@ HISTORIAS.push({
     {
       titulo: "Fusión, disco y bhangra",
       corto: "Fusión y bhangra",
-      periodo: "1976 – 1998",
+      periodo: "1976 – 2003",
       intro: "Disco, fusión con el jazz y el bhangra de la diáspora británica.",
       items: [
         { a: 1976, art: "Shakti", t: "Shakti with John McLaughlin", tipo: "disco", n: "Jazz y música clásica india con Zakir Hussain a la tabla." },
@@ -42,7 +42,8 @@ HISTORIAS.push({
         { a: 1997, art: "Ravi Shankar", t: "Vandanaa Trayee", n: "De «Chants of India», producido por su amigo George Harrison: cantos sagrados con orquesta." },
         { a: 1998, art: "A.R. Rahman", t: "Chaiyya Chaiyya", n: "Bailando sobre un tren en marcha, de «Dil Se»." },
         { a: 1998, art: "Daler Mehndi", t: "Tunak Tunak Tun", n: "Bhangra punjabi y un vídeo que fue meme mundial." },
-        { a: 1998, art: "Panjabi MC", t: "Mundian To Bach Ke", n: "Bhangra británico con la sintonía de «El coche fantástico». Un éxito en toda Europa en 2002." }
+        { a: 1998, art: "Panjabi MC", t: "Mundian To Bach Ke", n: "Bhangra británico con la sintonía de «El coche fantástico». Un éxito en toda Europa en 2002." },
+        { a: 2003, art: "Sonu Nigam", t: "Kal Ho Naa Ho", n: "La canción de la película del mismo nombre." }
       ]
     },
     {
@@ -52,8 +53,10 @@ HISTORIAS.push({
       intro: "Óscar, streaming y una escena propia de rap e indie.",
       items: [
         { a: 2008, art: "A.R. Rahman", t: "Jai Ho", n: "De «Slumdog Millionaire»: dos premios Óscar." },
+        { a: 2008, art: "Shreya Ghoshal", t: "Teri Ore", n: "Una de las voces de Bollywood." },
         { a: 2013, art: "Arijit Singh", t: "Tum Hi Ho", n: "El cantante más escuchado de la India en Spotify." },
         { a: 2015, art: "DIVINE", t: "Mere Gully Mein", n: "Con Naezy: el «gully rap» de Mumbai, que inspiró la película «Gully Boy»." },
+        { a: 2015, art: "Badshah", t: "DJ Waley Babu", n: "El rap hindi en las fiestas." },
         { a: 2016, art: "Jio", t: "Internet móvil barato para todo el país", tipo: "hito", n: "Cientos de millones de personas empiezan a escuchar música en streaming." },
         { a: 2018, art: "Prateek Kuhad", t: "cold/mess", n: "Indie folk que Barack Obama puso en su lista de favoritas del año." },
         { a: 2020, art: "Diljit Dosanjh", t: "G.O.A.T.", n: "El pop punjabi: el sonido más exportado de la India actual." },

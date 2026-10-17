@@ -43,10 +43,12 @@ HISTORIAS.push({
       intro: "Productores futuristas: ritmos entrecortados, sonidos raros y estribillos enormes.",
       items: [
         { a: 2000, art: "D'Angelo", t: "Untitled (How Does It Feel)", n: "El neo soul en su cumbre." },
+        { a: 2000, art: "Craig David", t: "Fill Me In", n: "El R&B británico." },
         { a: 2002, art: "Justin Timberlake", t: "Cry Me a River", n: "Producida por Timbaland: un exmiembro de boy band se vuelve serio." },
         { a: 2003, art: "The Neptunes", t: "Producen el 43 % de lo que suena en la radio", tipo: "hito", n: "Pharrell y Chad Hugo dominan las ondas." },
         { a: 2004, art: "Usher", t: "Yeah!", n: "Con Lil Jon y Ludacris: el «crunk&B»." },
         { a: 2004, art: "Alicia Keys", t: "If I Ain't Got You", n: "Alicia Keys al piano con una voz enorme: la balada de R&B más querida de su carrera." },
+        { a: 2004, art: "Ciara feat. Missy Elliott", t: "1, 2 Step", n: "R&B de baile." },
         { a: 2006, art: "Ne-Yo", t: "So Sick", n: "Compositor de éxitos para otros, y para sí mismo." },
         { a: 2006, art: "Nelly Furtado & Timbaland", t: "Promiscuous", n: "Timbaland lleva a Nelly al R&B." },
         { a: 2006, art: "Nelly Furtado", t: "Say It Right", n: "La más hipnótica de Loose, producida por Timbaland." },
@@ -65,6 +67,7 @@ HISTORIAS.push({
         { a: 2012, art: "Frank Ocean", t: "Thinkin Bout You", n: "Poco antes de su disco publicó una carta hablando de su primer amor, un chico." },
         { a: 2016, art: "Beyoncé", t: "Formation", n: "De «Lemonade»: R&B político y visual." },
         { a: 2017, art: "SZA", t: "Love Galore", n: "Con Travis Scott: «Ctrl», un disco de culto." },
+        { a: 2017, art: "Daniel Caesar feat. H.E.R.", t: "Best Part", n: "La balada de una generación." },
         { a: 2020, art: "Giveon", t: "Heartbreak Anniversary", n: "Una voz grave que se volvió viral." },
         { a: 2022, art: "SZA", t: "Kill Bill", n: "Una canción dulce sobre matar a tu ex: número uno en EE. UU." },
         { a: 2022, art: "RAYE & 070 Shake", t: "Escapism.", n: "Su primer número uno en el Reino Unido, ya como artista independiente." }

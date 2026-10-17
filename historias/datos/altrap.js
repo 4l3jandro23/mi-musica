@@ -25,32 +25,42 @@ HISTORIAS.push({
     {
       titulo: "Los 2000",
       corto: "Los 2000",
-      periodo: "1999 – 2006",
+      periodo: "1999 – 2008",
       intro: "OutKast, Missy Elliott y Gnarls Barkley.",
       items: [
         { a: 1999, art: "MF DOOM", t: "Rhymes Like Dimes", n: "MF DOOM y su máscara: rap enrevesado y lleno de samples de dibujos animados." },
+        { a: 1999, art: "MF DOOM", t: "Doomsday", n: "El villano enmascarado y su debut." },
         { a: 2000, art: "OutKast", t: "B.O.B.", n: "Drum and bass, góspel y rap a toda velocidad." },
         { a: 2001, art: "Missy Elliott", t: "Get Ur Freak On", n: "Timbaland y un riff de bhangra." },
         { a: 2003, art: "OutKast", t: "Hey Ya!", n: "Tan alegre que nadie oyó que habla de una ruptura." },
         { a: 2003, art: "OutKast", t: "Roses", n: "De «Speakerboxxx/The Love Below»: humor, funk y un estribillo que se canta solo." },
         { a: 2004, art: "OutKast", t: "«Speakerboxxx/The Love Below» gana el Grammy al disco del año", tipo: "hito", n: "El primer disco de rap en lograrlo desde Lauryn Hill." },
-        { a: 2006, art: "Gnarls Barkley", t: "Crazy", n: "CeeLo y Danger Mouse: número uno solo por descargas en el Reino Unido." }
+        { a: 2006, art: "Gnarls Barkley", t: "Crazy", n: "CeeLo y Danger Mouse: número uno solo por descargas en el Reino Unido." },
+        { a: 2006, art: "Lupe Fiasco", t: "Kick, Push", n: "Una historia de amor en monopatín." },
+        { a: 2008, art: "Kid Cudi", t: "Day 'n' Nite", n: "Rap melancólico que se coló en las discotecas." }
       ]
     },
     {
       titulo: "Odd Future y la generación de internet",
       corto: "Odd Future",
-      periodo: "2011 – 2024",
+      periodo: "2010 – 2024",
       intro: "Skaters, Tumblr y rap sin reglas.",
       items: [
+        { a: 2010, art: "Earl Sweatshirt", t: "Earl", n: "El miembro más joven de Odd Future." },
         { a: 2011, art: "Odd Future", t: "Actúan en el programa de Jimmy Fallon", tipo: "hito", n: "Tyler salta sobre la espalda del presentador: nace un fenómeno." },
         { a: 2011, art: "Tyler, the Creator", t: "Yonkers", n: "Una cucaracha y un vídeo en blanco y negro." },
+        { a: 2011, art: "Death Grips", t: "Guillotine", n: "Rap y ruido." },
+        { a: 2012, art: "Danny Brown", t: "Grown Up", n: "El Danny Brown más entrañable." },
+        { a: 2015, art: "Vince Staples", t: "Norf Norf", n: "Electrónica fría y Long Beach." },
         { a: 2016, art: "Chance the Rapper", t: "No Problem", n: "Su mixtape gratuita gana el Grammy: el primer disco solo en streaming en lograrlo." },
         { a: 2016, art: "Kanye West", t: "Ultralight Beam", n: "Con Chance the Rapper. Gospel y rap: el comienzo de «The Life of Pablo»." },
+        { a: 2016, art: "Aminé", t: "Caroline", n: "Rap alegre de Portland." },
         { a: 2017, art: "Tyler, the Creator", t: "See You Again", n: "Flower Boy: Tyler se vuelve romántico." },
+        { a: 2017, art: "BROCKHAMPTON", t: "GOLD", n: "La «boy band» de internet." },
         { a: 2018, art: "Childish Gambino", t: "This Is America", n: "Un vídeo viral sobre violencia y racismo en EE. UU." },
         { a: 2018, art: "JPEGMAFIA", t: "Real Nega", n: "Rap experimental de Baltimore con samples de Ol' Dirty Bastard." },
         { a: 2019, art: "Tyler, the Creator", t: "EARFQUAKE", n: "El tema más escuchado de «IGOR», con Playboi Carti. Tyler la escribió para Justin Bieber y Rihanna, pero acabó cantándola él." },
+        { a: 2019, art: "Little Simz", t: "Venom", n: "Rabia y cuerdas desde Londres." },
         { a: 2024, art: "Doechii", t: "DENIAL IS A RIVER", n: "Teatro, humor y rap: Grammy al mejor disco de rap." }
       ]
     }

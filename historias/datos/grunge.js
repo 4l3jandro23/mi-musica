@@ -19,7 +19,11 @@ HISTORIAS.push({
         { a: 1989, art: "Soundgarden", t: "Hands All Over", n: "Soundgarden mezcla la pesadez de Black Sabbath con psicodelia en «Louder Than Love», antes de que el grunge explotara." },
         { a: 1989, art: "Nirvana", t: "About a Girl", n: "Del primer disco de Nirvana, «Bleach», con Sub Pop: Kurt ya tenía melodía." },
         { a: 1990, art: "Mother Love Bone", t: "Chloe Dancer / Crown of Thorns", n: "Su cantante, Andrew Wood, murió por sobredosis; de sus restos nació Pearl Jam." },
-        { a: 1991, art: "Screaming Trees", t: "Bed of Roses", q: "Screaming Trees", n: "Screaming Trees, de Ellensburg, con su grunge psicodélico." }
+        { a: 1990, art: "Alice in Chains", t: "Man in the Box", n: "Grunge con talk box." },
+        { a: 1991, art: "Screaming Trees", t: "Bed of Roses", q: "Screaming Trees", n: "Screaming Trees, de Ellensburg, con su grunge psicodélico." },
+        { a: 1991, art: "Nirvana", t: "Lithium", n: "Calma y grito." },
+        { a: 1991, art: "Nirvana", t: "Come as You Are", n: "El segundo sencillo de «Nevermind»." },
+        { a: 1991, art: "Soundgarden", t: "Outshined", n: "El riff de «Badmotorfinger»." }
       ]
     },
     {
@@ -37,7 +41,10 @@ HISTORIAS.push({
         { a: 1992, art: "Stone Temple Pilots", t: "Plush", n: "De San Diego: la prensa los acusó de copiar, el público los adoró." },
         { a: 1992, art: "Alice in Chains", t: "Them Bones", n: "El riff seco y la voz de Layne Staley: grunge con aire de metal." },
         { a: 1992, art: "Screaming Trees", t: "Nearly Lost You", n: "De la banda sonora de «Singles»: su gran éxito." },
-        { a: 1993, art: "Nirvana", t: "Heart-Shaped Box", n: "De «In Utero»: más crudo, a propósito." }
+        { a: 1992, art: "Pearl Jam", t: "Jeremy", n: "Un vídeo sobre un chico en el colegio." },
+        { a: 1992, art: "L7", t: "Pretend We're Dead", n: "El grunge femenino." },
+        { a: 1993, art: "Nirvana", t: "Heart-Shaped Box", n: "De «In Utero»: más crudo, a propósito." },
+        { a: 1993, art: "Melvins", t: "Honey Bucket", n: "Los padrinos del grunge." }
       ]
     },
     {
@@ -51,7 +58,10 @@ HISTORIAS.push({
         { a: 1994, art: "Soundgarden", t: "Black Hole Sun", n: "El grunge más psicodélico." },
         { a: 1994, art: "Silverchair", t: "Tomorrow", n: "Unos adolescentes australianos de 15 años: la herencia del grunge." },
         { a: 1994, art: "Hole", t: "Doll Parts", n: "Hole, el grupo de Courtney Love, en un disco publicado justo después de la muerte de Kurt." },
-        { a: 1995, art: "Foo Fighters", t: "I'll Stick Around", n: "Dave Grohl, el batería de Nirvana, empieza de nuevo grabándolo todo él solo." }
+        { a: 1994, art: "Stone Temple Pilots", t: "Interstate Love Song", n: "Grunge melódico." },
+        { a: 1994, art: "Bush", t: "Glycerine", n: "El grunge británico." },
+        { a: 1995, art: "Foo Fighters", t: "I'll Stick Around", n: "Dave Grohl, el batería de Nirvana, empieza de nuevo grabándolo todo él solo." },
+        { a: 1995, art: "Mad Season", t: "River of Deceit", n: "El supergrupo de Layne Staley." }
       ]
     }
   ]

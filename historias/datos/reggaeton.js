@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "reggaeton",
   familia: "Latino",
   titulo: "Orígenes del reggaetón",
-  periodo: "1990 – 2005",
+  periodo: "1990 – 2022",
   color: "#e0a21b",
   lema: "Del dancehall jamaicano al «Gasolina»: Panamá, el underground de San Juan y el boom.",
   intro: "Un ritmo jamaicano, el dembow, cruza a Panamá, donde se canta en español, y llega a Puerto Rico. Allí se mezcla con el rap en los caseríos y las cintas «underground». Lo persiguieron por obsceno y acabó conquistando el mundo.",
@@ -36,7 +36,7 @@ HISTORIAS.push({
     {
       titulo: "El boom",
       corto: "El boom",
-      periodo: "2002 – 2005",
+      periodo: "2002 – 2022",
       intro: "Luny Tunes modernizan la producción y el reggaetón sale de la isla.",
       items: [
         { a: 2002, art: "Tego Calderón", t: "Pa' que retozen", n: "De «El Abayarde»: salsa, bomba y reggaetón con orgullo afrocaribeño." },
@@ -46,6 +46,7 @@ HISTORIAS.push({
         { a: 2003, art: "Don Omar", t: "Dale Don Dale", n: "El rival de Daddy Yankee y su gran himno." },
         { a: 2003, art: "Ivy Queen", t: "Yo quiero bailar", n: "Una canción sobre el baile y el consentimiento, antes de que se hablara de ello." },
         { a: 2003, art: "Luny Tunes & Noriega", t: "Mas Flow", tipo: "disco", n: "La producción de Luny Tunes: teclados melódicos y bombos limpios. El sonido del boom." },
+        { a: 2003, art: "Don Omar", t: "Pobre diabla", n: "El rey." },
         { a: 2004, art: "«Gasolina»", t: "El reguetón conquista el mundo", tipo: "hito", n: "Daddy Yankee lo lleva a las listas de todo el planeta." },
         { a: 2004, art: "N.O.R.E.", t: "Oye mi canto", n: "Un rapero neoyorquino lleva el reggaetón a las radios de EE. UU." },
         { a: 2004, art: "Zion & Lennox", t: "Yo voy", n: "Con Daddy Yankee. La melodía empieza a ganar a la dureza." },
@@ -53,7 +54,16 @@ HISTORIAS.push({
         { a: 2004, art: "Daddy Yankee", t: "Lo que pasó, pasó", n: "Otra de «Barrio Fino», el disco que llevó el reguetón al mundo." },
         { a: 2005, art: "Wisin & Yandel", t: "Rakata", n: "Los «dúo de la historia» en su momento más fiestero." },
         { a: 2005, art: "Calle 13", t: "Atrévete-te-te", n: "Ingenio, humor y cumbia: el reggaetón también podía ser otra cosa." },
-        { a: 2005, art: "Daddy Yankee", t: "Rompe", n: "Otra de «Barrio Fino», el disco que llevó el reggaetón al mundo." }
+        { a: 2005, art: "Daddy Yankee", t: "Rompe", n: "Otra de «Barrio Fino», el disco que llevó el reggaetón al mundo." },
+        { a: 2005, art: "Wisin & Yandel", t: "Mayor que yo", n: "Con Luny Tunes." },
+        { a: 2007, art: "Daddy Yankee", t: "Ella me levantó", n: "Reguetón romántico." },
+        { a: 2009, art: "Wisin & Yandel", t: "Abusadora", n: "Electrónico." },
+        { a: 2014, art: "J Balvin", t: "6 AM", n: "Con Farruko." },
+        { a: 2015, art: "Nicky Jam & Enrique Iglesias", t: "El perdón", n: "Número uno en España." },
+        { a: 2016, art: "Ozuna", t: "Dile que tú me quieres", n: "El nuevo reguetón." },
+        { a: 2017, art: "J Balvin & Willy William", t: "Mi gente", n: "Reguetón global." },
+        { a: 2020, art: "Bad Bunny & Jhay Cortez", t: "Dákiti", n: "Perreo electrónico." },
+        { a: 2022, art: "KAROL G", t: "Provenza", n: "Reguetón suave." }
       ]
     }
   ]

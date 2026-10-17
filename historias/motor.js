@@ -105,9 +105,7 @@
     return s.charAt(0).toUpperCase() + s.slice(1);
   };
   // Historias añadidas hace poco (salen en «Novedades» y con la etiqueta «Nueva»)
-  const NUEVAS = ['top500albumes', 'top500canciones', 'top500espanol', 'abuelos', 'primavera', 'verano', 'otono', 'invierno', 'gimnasio', 'baladas', 'rockclasico', 'softrock', 'ska', 'standards',
-    'gospel', 'emo', 'trapedm', 'hybridtrap', 'gabber', 'bigbeat', 'nudisco', 'musicaia', 'tiktok', 'apple', 'spotify', 'videoclips', 'instrumentos', 'polemicas',
-    'innovadores', 'fracasos', 'yeye', 'eurovision', 'femmefatale', 'poprap', 'graciosas', 'discobcn', 'absurda', 'cantautores', 'cantautoresesp', 'popenespanol', 'bedroompop'];
+  const NUEVAS = ['spinnin', 'swing', 'bebop', 'cooljazz', 'hardbop', 'freejazz', 'fusion', 'jazzlatino', 'vocesjazz', 'musicales', 'disney', 'anime'];
   const leer = (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } };
   const guardar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
 

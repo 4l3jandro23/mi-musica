@@ -21,16 +21,26 @@ HISTORIAS.push({
         { a: 1977, art: "Steely Dan", t: "Deacon Blues", n: "De «Aja»: jazz, rock y músicos de estudio perfectos. El yacht rock más sofisticado." },
         { a: 1978, art: "Doobie Brothers", t: "What a Fool Believes", n: "Michael McDonald en su máxima expresión: Grammy a la canción del año." },
         { a: 1978, art: "Gerry Rafferty", t: "Baker Street", n: "El solo de saxo más famoso del rock suave." },
+        { a: 1978, art: "Doobie Brothers", t: "Minute by Minute", n: "Michael McDonald." },
+        { a: 1978, art: "Pablo Cruise", t: "Love Will Find a Way", n: "Yacht rock de California." },
+        { a: 1978, art: "Bobby Caldwell", t: "What You Won't Do for Love", n: "Soul suave." },
         { a: 1979, art: "Kenny Loggins", t: "This Is It", n: "Con McDonald a los coros." },
         { a: 1979, art: "Rupert Holmes", t: "Escape (The Piña Colada Song)", n: "Un anuncio de contactos y un cóctel." },
         { a: 1979, art: "Little River Band", t: "Lonesome Loser", q: "Little River Band Lonesome Loser", n: "Desde Australia, con armonías vocales impecables." },
+        { a: 1979, art: "Christopher Cross", t: "Ride Like the Wind", n: "Con Michael McDonald en los coros." },
         { a: 1980, art: "Christopher Cross", t: "Sailing", n: "Christopher Cross canta, literalmente, sobre navegar: ganó cinco Grammy, entre ellos los cuatro grandes." },
         { a: 1980, art: "Ambrosia", t: "Biggest Part of Me", n: "Ambrosia, con armonías vocales y saxo: el romanticismo tranquilo del yacht rock." },
         { a: 1980, art: "Robbie Dupree", t: "Steal Away", n: "Para muchos, la canción yacht por excelencia." },
         { a: 1980, art: "Kenny Loggins", t: "I'm Alright", n: "Del soundtrack de «El club de los chalados»." },
+        { a: 1980, art: "George Benson", t: "Give Me the Night", n: "Producida por Quincy Jones." },
         { a: 1981, art: "Christopher Cross", t: "Arrasa en los Grammy", tipo: "hito", n: "Gana los cinco grandes premios a los que optaba." },
+        { a: 1981, art: "Hall & Oates", t: "I Can't Go for That (No Can Do)", n: "El soul de ojos azules." },
+        { a: 1981, art: "Al Jarreau", t: "We're in This Love Together", n: "Jazz suave." },
         { a: 1982, art: "Michael McDonald", t: "I Keep Forgettin' (Every Time You're Near)", n: "La base de «Regulate» de Warren G." },
-        { a: 1982, art: "Toto", t: "Africa", n: "Los músicos de estudio más famosos de Los Ángeles." }
+        { a: 1982, art: "Toto", t: "Africa", n: "Los músicos de estudio más famosos de Los Ángeles." },
+        { a: 1982, art: "Toto", t: "Rosanna", n: "El shuffle de Jeff Porcaro." },
+        { a: 1982, art: "Michael Jackson", t: "Human Nature", n: "El yacht rock de «Thriller»." },
+        { a: 1982, art: "Donald Fagen", t: "I.G.Y.", n: "El optimismo de Steely Dan." }
       ]
     },
     {

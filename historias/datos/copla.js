@@ -10,14 +10,16 @@ HISTORIAS.push({
     {
       titulo: "Del cuplé a la copla",
       corto: "Cuplé",
-      periodo: "1918 – 1937",
+      periodo: "1918 – 1938",
       intro: "El cuplé picante de los cafés cantantes se convierte en canción española.",
       items: [
         { a: 1918, art: "Raquel Meller", t: "El relicario", n: "La gran estrella del cuplé, aplaudida en París y Nueva York." },
         { a: 1918, art: "Raquel Meller", t: "La violetera", n: "Chaplin la usó en «Luces de la ciudad»." },
         { a: 1930, art: "Quintero, León y Quiroga", t: "El trío que inventa la copla", tipo: "hito", n: "Un dramaturgo, un poeta sevillano (Rafael de León) y un pianista: escribieron casi todas las coplas famosas." },
         { a: 1932, art: "Estrellita Castro", t: "Mi jaca", n: "Estrellita Castro, de Sevilla, con una de las coplas más alegres de su época." },
-        { a: 1937, art: "Concha Piquer", t: "Ojos verdes", n: "Una historia de amor con una prostituta: la censura franquista le cambió la letra." }
+        { a: 1937, art: "Concha Piquer", t: "Ojos verdes", n: "Una historia de amor con una prostituta: la censura franquista le cambió la letra." },
+        { a: 1937, art: "Miguel de Molina", t: "La bien pagá", n: "La copla del cantante que tuvo que exiliarse por ser homosexual y republicano." },
+        { a: 1938, art: "Imperio Argentina", t: "Los piconeros", n: "De la película «Carmen la de Triana»." }
       ]
     },
     {
@@ -28,6 +30,8 @@ HISTORIAS.push({
       items: [
         { a: 1940, art: "La censura", t: "Letras cambiadas y coplas prohibidas", tipo: "hito", n: "Las historias de amores prohibidos se disimulan con metáforas para pasar el filtro." },
         { a: 1941, art: "Concha Piquer", t: "Tatuaje", n: "Una mujer busca por los puertos a un marinero que lleva su nombre tatuado. La copla por excelencia." },
+        { a: 1941, art: "Concha Piquer", t: "La Lirio", n: "Una mujer que canta en una taberna y se enamora." },
+        { a: 1943, art: "Concha Piquer", t: "En tierra extraña", n: "Una copla de emigrantes en Nueva York." },
         { a: 1944, art: "Juanita Reina", t: "Francisco Alegre", n: "Juanita Reina, sevillana, con una de las coplas más famosas de la posguerra." },
         { a: 1947, art: "Juanita Reina", t: "Y sin embargo te quiero", n: "De Quintero, León y Quiroga: la copla de amor imposible por excelencia." },
         { a: 1949, art: "Juanito Valderrama", t: "El emigrante", n: "La canción de los que se fueron de España: millones de copias." },
@@ -36,6 +40,7 @@ HISTORIAS.push({
         { a: 1952, art: "Lola Flores", t: "La zarzamora", n: "Lola Flores, «la Faraona», con una de las coplas más tristes." },
         { a: 1953, art: "Lola Flores", t: "Pena, penita, pena", n: "«La Faraona»: no cantaba ni bailaba perfecto, pero nadie tenía más arte." },
         { a: 1955, art: "Antonio Molina", t: "Soy minero", n: "Un falsete imposible y el cine de la época." },
+        { a: 1955, art: "Juanita Reina", t: "Capote de grana y oro", n: "La copla taurina de la sevillana." },
         { a: 1957, art: "Sara Montiel", t: "Fumando espero", n: "De «El último cuplé», la película más taquillera de su tiempo." }
       ]
     },
@@ -48,10 +53,14 @@ HISTORIAS.push({
         { a: 1980, art: "Rocío Jurado", t: "Se nos rompió el amor", n: "Rocío Jurado, «la más grande», con una canción de Manuel Alejandro." },
         { a: 1981, art: "La Transición", t: "La copla, de moda otra vez", tipo: "hito", n: "Rocío Jurado, Isabel Pantoja y la copla en la tele de la democracia." },
         { a: 1981, art: "Rocío Jurado", t: "Como una ola", n: "«La más grande», de Chipiona: copla y balada a la vez." },
+        { a: 1982, art: "Rocío Jurado", t: "Punto de partida", n: "La chipionera en su etapa más melódica." },
         { a: 1985, art: "Isabel Pantoja", t: "Marinero de luces", n: "Un homenaje a su marido torero: un éxito enorme." },
         { a: 1985, art: "Carlos Cano", t: "María la portuguesa", n: "El granadino que renovó la copla con mirada de cantautor." },
+        { a: 1988, art: "Isabel Pantoja", t: "Así fue", n: "Una canción de Juan Gabriel en la voz de la tonadillera." },
         { a: 1997, art: "Martirio", t: "Ojos verdes", n: "Martirio, con sus peinetas y gafas, reinventa la copla con jazz." },
         { a: 2003, art: "Pasión Vega", t: "María se bebe las calles", q: "Pasión Vega María se bebe las calles", n: "Pasión Vega con una copla moderna sobre la violencia machista." },
+        { a: 2005, art: "Diana Navarro", t: "Sola", n: "La copla de una malagueña del siglo XXI." },
+        { a: 2008, art: "Concha Buika", t: "Niña de fuego", n: "La copla con voz de jazz y soul." },
         { a: 2009, art: "Miguel Poveda", t: "Coplas del querer", tipo: "disco", n: "Un cantaor flamenco que devolvió la copla a una nueva generación." },
         { a: 2019, art: "Rosalía", t: "Canta «Me quedo contigo» en los Goya", tipo: "hito", n: "Rosalía canta en los Goya una rumba de Los Chunguitos y emociona a todo el país." }
       ]

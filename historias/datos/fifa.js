@@ -42,6 +42,7 @@ HISTORIAS.push({
         { a: 2006, art: "Muse", t: "Supermassive Black Hole", n: "En FIFA 07: los de Teignmouth en su versión más bailable." },
         { a: 2007, art: "MGMT", t: "Kids", n: "En FIFA 09: para muchos, la canción más icónica de la saga." },
         { a: 2010, art: "Gorillaz feat. Daley", t: "Doncamatic", n: "Una canción grabada a propósito para FIFA 11." },
+        { a: 2010, art: "Caribou", t: "Odessa", n: "En FIFA 11: electrónica canadiense." },
         { a: 2011, art: "Foster the People", t: "Call It What You Want", n: "En FIFA 12, del disco «Torches»." },
         { a: 2011, art: "Portugal. The Man", t: "Got It All (This Can't Be Living Now)", n: "También en FIFA 12: el grupo de Alaska antes de su gran éxito «Feel It Still»." }
       ]
@@ -53,6 +54,7 @@ HISTORIAS.push({
       intro: "Música de todo el mundo y éxitos antes de serlo.",
       items: [
         { a: 2012, art: "Imagine Dragons", t: "On Top of the World", n: "En FIFA 13, antes de que el grupo llenara estadios." },
+        { a: 2012, art: "Foals", t: "My Number", n: "En FIFA 14: indie bailable de Oxford." },
         { a: 2013, art: "John Newman", t: "Love Me Again", n: "En FIFA 14: soul británico que se convirtió en un éxito enorme." },
         { a: 2013, art: "Empire of the Sun", t: "Alive", n: "En FIFA 15: pop electrónico australiano." },
         { a: 2014, art: "Kwabs", t: "Walk", n: "En FIFA 15: soul electrónico de un cantante londinense." },

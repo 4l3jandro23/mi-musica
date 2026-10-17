@@ -21,8 +21,11 @@ HISTORIAS.push({
         { a: 1979, art: "Blondie", t: "Heart of Glass", n: "El punk de Nueva York se pasa a la disco." },
         { a: 1979, art: "Gary Numan", t: "Cars", n: "Un sintetizador y una voz fría: el futuro." },
         { a: 1979, art: "The Buggles", t: "Video Killed the Radio Star", n: "En 1981, el primer vídeo que emitió la MTV." },
+        { a: 1979, art: "The Pretenders", t: "Brass in Pocket", n: "Chrissie Hynde." },
         { a: 1980, art: "Concierto homenaje a Canito", t: "Empieza la Movida madrileña", tipo: "hito", n: "Un concierto en la Escuela de Caminos de Madrid, en febrero, se considera el inicio." },
-        { a: 1980, art: "Nacha Pop", t: "La chica de ayer", n: "El himno generacional de la Movida madrileña." }
+        { a: 1980, art: "Nacha Pop", t: "La chica de ayer", n: "El himno generacional de la Movida madrileña." },
+        { a: 1980, art: "Devo", t: "Whip It", n: "Gorros de plástico." },
+        { a: 1980, art: "Blondie", t: "Atomic", n: "New wave y disco." }
       ]
     },
     {
@@ -35,11 +38,17 @@ HISTORIAS.push({
         { a: 1981, art: "Soft Cell", t: "Tainted Love", n: "Un soul olvidado de los 60 convertido en synth-pop." },
         { a: 1981, art: "Depeche Mode", t: "Just Can't Get Enough", n: "Su primer éxito, antes de volverse oscuros." },
         { a: 1981, art: "The Human League", t: "Don't You Want Me", n: "Número uno a ambos lados del Atlántico." },
+        { a: 1981, art: "Adam and the Ants", t: "Stand and Deliver", n: "Piratas y pinturas." },
+        { a: 1981, art: "The Psychedelic Furs", t: "Pretty in Pink", n: "La película vino después." },
         { a: 1982, art: "Duran Duran", t: "Hungry Like the Wolf", n: "Vídeos rodados como películas: la MTV los adora." },
         { a: 1982, art: "A Flock of Seagulls", t: "I Ran (So Far Away)", n: "Más famosos por el peinado que por la canción." },
         { a: 1982, art: "Mecano", t: "Me colé en una fiesta", n: "El tecnopop español en las radios de todo el país." },
+        { a: 1982, art: "Thomas Dolby", t: "She Blinded Me with Science", n: "Ciencia y sintetizadores." },
+        { a: 1982, art: "Men Without Hats", t: "The Safety Dance", n: "Un baile medieval." },
+        { a: 1982, art: "Culture Club", t: "Do You Really Want to Hurt Me", n: "Boy George." },
         { a: 1983, art: "Eurythmics", t: "Sweet Dreams (Are Made of This)", n: "Annie Lennox con el pelo naranja y un riff de sintetizador eterno." },
         { a: 1983, art: "New Order", t: "Blue Monday", n: "Tras Joy Division: el maxi más vendido de la historia en Reino Unido." },
+        { a: 1983, art: "Spandau Ballet", t: "True", n: "New romantic." },
         { a: 1984, art: "Radio Futura", t: "Escuela de calor", n: "La Movida con ritmo y letras brillantes." },
         { a: 1985, art: "Tears for Fears", t: "Everybody Wants to Rule the World", n: "Pop perfecto sobre el poder." },
         { a: 1985, art: "a-ha", t: "Take On Me", n: "Un vídeo dibujado a lápiz y una nota altísima." },

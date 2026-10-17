@@ -25,7 +25,7 @@ HISTORIAS.push({
     {
       titulo: "El techno se hace global",
       corto: "Global",
-      periodo: "1990 – 1997",
+      periodo: "1990 – 1998",
       intro: "Reino Unido, Nueva York y Berlín adoptan el techno y lo llevan al extremo.",
       items: [
         { a: 1990, art: "LFO", t: "LFO", n: "Desde Sheffield, el «bleep techno»: unos graves que reventaban los altavoces." },
@@ -37,7 +37,12 @@ HISTORIAS.push({
         { a: 1993, art: "Galaxy 2 Galaxy", t: "Hi-Tech Jazz", n: "Underground Resistance, el colectivo militante de Detroit, en su versión más bonita." },
         { a: 1993, art: "Plastikman", t: "Spastik", n: "Richie Hawtin: solo percusión. El minimal en estado puro." },
         { a: 1994, art: "Robert Hood", t: "Minimal Nation", tipo: "disco", n: "El disco que define el techno minimal." },
-        { a: 1997, art: "Jeff Mills", t: "The Bells", n: "El DJ más técnico del techno y su himno." }
+        { a: 1995, art: "Josh Wink", t: "Higher State of Consciousness", n: "El acid más famoso." },
+        { a: 1995, art: "Green Velvet", t: "Flash", n: "Techno de Chicago con humor." },
+        { a: 1996, art: "Jeff Mills", t: "Changes of Life", n: "Del EP «Purpose Maker»." },
+        { a: 1997, art: "Jeff Mills", t: "The Bells", n: "El DJ más técnico del techno y su himno." },
+        { a: 1997, art: "Carl Craig", t: "At Les", n: "Techno de Detroit melódico." },
+        { a: 1998, art: "DJ Rolando", t: "Knights of the Jaguar", n: "De Underground Resistance." }
       ]
     },
     {
@@ -49,10 +54,14 @@ HISTORIAS.push({
         { a: 2000, art: "Laurent Garnier", t: "The Man with the Red Face", n: "Un saxofón sobre techno: el gran DJ francés." },
         { a: 2004, art: "Berghain", t: "Abre el club más famoso del mundo", tipo: "hito", n: "En una antigua central eléctrica de Berlín: sin móviles, sin fotos y con una puerta legendaria." },
         { a: 2006, art: "Ricardo Villalobos", t: "Fizheuer Zieheuer", n: "Treinta y siete minutos de minimal hipnótico con una melodía balcánica." },
+        { a: 2007, art: "Dubfire", t: "RibCage", n: "El minimal de Deep Dish." },
         { a: 2008, art: "Paul Kalkbrenner", t: "Sky and Sand", n: "El himno de «Berlin Calling»: techno melódico para el gran público." },
+        { a: 2014, art: "Paula Temple", t: "Colonized", n: "Techno duro." },
         { a: 2015, art: "Stephan Bodzin", t: "Powers of Ten", n: "El techno melódico: emoción y sintetizadores." },
+        { a: 2015, art: "Boris Brejcha", t: "Gravity", n: "El «high-tech minimal» alemán." },
         { a: 2018, art: "Adam Beyer & Bart Skils", t: "Your Mind", n: "El techno de Drumcode que llena los grandes escenarios." },
         { a: 2018, art: "Amelie Lens", t: "Hypnotized", n: "Amelie Lens, belga, la cara del techno duro de los festivales." },
+        { a: 2022, art: "Charlotte de Witte", t: "Doppler", n: "La reina del techno belga." },
         { a: 2024, art: "La cultura techno de Berlín", t: "Patrimonio cultural de Alemania", tipo: "hito", n: "Alemania la incluye en su inventario de patrimonio inmaterial." }
       ]
     }

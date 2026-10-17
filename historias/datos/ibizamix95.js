@@ -46,6 +46,23 @@ HISTORIAS.push({
         { a: 1995, art: "Toni Peret & José María Castells", t: "Ibiza Mix 95 (Radio Edit)", q: "Ibiza Mix 95 radio edit", n: "Pista 11: el megamix en versión corta para la radio." },
         { a: 1996, art: "Ibiza Mix 96", t: "La serie sigue", tipo: "hito", n: "Al verano siguiente Max Music saca «Ibiza Mix 96», con la misma fórmula de megamix y éxitos." }
       ]
+    },
+    {
+      titulo: "El verano de 1995",
+      corto: "Ese verano",
+      periodo: "1994 – 1995",
+      intro: "Lo que sonaba en España a la vez que el disco.",
+      items: [
+        { a: 1994, art: "Whigfield", t: "Saturday Night", n: "El baile del verano anterior, que seguía sonando." },
+        { a: 1994, art: "Rednex", t: "Cotton Eye Joe", n: "Country y eurodance sueco." },
+        { a: 1995, art: "Max Music", t: "Un megamix para cada ocasión", tipo: "hito", n: "Ese mismo año la discográfica saca también recopilatorios como «Bombazo Mix»: el megamix es un fenómeno de ventas en España." },
+        { a: 1995, art: "Corona", t: "Baby Baby", n: "La voz italiana del eurodance." },
+        { a: 1995, art: "Scatman John", t: "Scatman's World", n: "El segundo éxito del cantante tartamudo." },
+        { a: 1995, art: "Ace of Base", t: "Beautiful Life", n: "Los suecos de «All That She Wants»." },
+        { a: 1995, art: "Sin with Sebastian", t: "Shut Up (And Sleep with Me)", n: "Una canción de discoteca muy pícara." },
+        { a: 1995, art: "La Bouche", t: "Sweet Dreams", n: "Eurodance alemán." },
+        { a: 1995, art: "Alexia", t: "Me and You", n: "La italiana empieza a triunfar en España." }
+      ]
     }
   ]
 });

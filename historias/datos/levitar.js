@@ -29,6 +29,8 @@ HISTORIAS.push({
       items: [
         { a: 1984, art: "Cocteau Twins", t: "Pearly-Dewdrops' Drops", n: "La voz de Elizabeth Fraser canta palabras que no existen: el dream pop." },
         { a: 1984, art: "Cocteau Twins", t: "Lorelei", n: "Guitarras como agua y una voz que flota encima." },
+        { a: 1988, art: "Enya", t: "Watermark", n: "Capas de voz que flotan." },
+        { a: 1989, art: "Julee Cruise", t: "Falling", n: "La canción de «Twin Peaks»." },
         { a: 1990, art: "Cocteau Twins", t: "Heaven or Las Vegas", n: "La cara más luminosa del grupo escocés." },
         { a: 1991, art: "«Loveless»", t: "Dos años en el estudio", tipo: "hito", n: "My Bloody Valentine tarda tanto en grabarlo que casi arruina a su sello, Creation Records." },
         { a: 1991, art: "My Bloody Valentine", t: "To Here Knows When", n: "Del disco «Loveless»: el sonido de levitar con distorsión." },
@@ -50,8 +52,10 @@ HISTORIAS.push({
         { a: 1992, art: "The Orb", t: "Blue Room", n: "Ambient house en la versión corta de un tema de cuarenta minutos." },
         { a: 1998, art: "Boards of Canada", t: "Roygbiv", n: "Recuerdos borrosos de infancia en forma de sintetizador." },
         { a: 1999, art: "Moby", t: "Porcelain", n: "Voz y cuerdas en el disco «Play»." },
+        { a: 2005, art: "Sigur Rós", t: "Hoppípolla", n: "Saltar en charcos." },
         { a: 2009, art: "The xx", t: "Intro", n: "Tres notas y un eco: el minimalismo llega al pop." },
         { a: 2011, art: "M83", t: "Midnight City", n: "Sintetizadores enormes que te elevan del suelo." },
+        { a: 2012, art: "Grimes", t: "Genesis", n: "Pop etéreo." },
         { a: 2015, art: "Tame Impala", t: "Let It Happen", n: "Siete minutos de psicodelia que se repite hasta flotar." }
       ]
     },

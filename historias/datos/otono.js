@@ -15,12 +15,18 @@ HISTORIAS.push({
       items: [
         { a: 1725, art: "Antonio Vivaldi", t: "Las cuatro estaciones: El otoño", n: "Campesinos que celebran la cosecha, se emborrachan y se duermen: lo cuenta el soneto de la partitura." },
         { a: 1876, art: "Piotr Ilich Chaikovski", t: "Las estaciones: Octubre", n: "La «Canción de otoño», la más melancólica de sus doce piezas para piano." },
+        { a: 1900, art: "Alexandr Glazunov", t: "Las estaciones: Otoño", n: "La bacanal de la cosecha." },
         { a: 1938, art: "Walter Huston", t: "September Song", n: "De Kurt Weill: los días se acortan cuando llega septiembre." },
         { a: 1945, art: "Kosma y Prévert", t: "Nacen «Les feuilles mortes»", tipo: "hito", n: "El compositor Joseph Kosma y el poeta Jacques Prévert escriben la canción que dará la vuelta al mundo como «Autumn Leaves»." },
         { a: 1946, art: "Yves Montand", t: "Les feuilles mortes", n: "De la película «Las puertas de la noche»: la canción de Prévert y Kosma que será «Autumn Leaves»." },
+        { a: 1952, art: "Billie Holiday", t: "Autumn in New York", n: "El otoño de Nueva York." },
         { a: 1955, art: "Nat King Cole", t: "Autumn Leaves", n: "La versión en inglés que la convirtió en estándar del jazz." },
         { a: 1958, art: "Frank Sinatra", t: "Autumn in New York", n: "Del disco «Come Fly with Me»: el otoño de Manhattan." },
+        { a: 1966, art: "Joni Mitchell", t: "Urge for Going", n: "Ganas de irse cuando llega el frío." },
+        { a: 1969, art: "Astor Piazzolla", t: "Otoño porteño", n: "De «Las cuatro estaciones porteñas»." },
+        { a: 1970, art: "Van Morrison", t: "Into the Mystic", n: "Calma de otoño." },
         { a: 1980, art: "George Winston", t: "Autumn", tipo: "disco", n: "Piano solo para los días de lluvia: vendió más de un millón de copias." },
+        { a: 1992, art: "R.E.M.", t: "Nightswimming", n: "Un septiembre que se acaba." },
         { a: 1996, art: "Eva Cassidy", t: "Autumn Leaves", n: "Grabada en directo en un club de Washington; ella murió meses después y su voz se descubrió tarde." }
       ]
     },
@@ -47,10 +53,13 @@ HISTORIAS.push({
     {
       titulo: "Septiembre en internet",
       corto: "Memes de otoño",
-      periodo: "2005 – 2015",
+      periodo: "2002 – 2015",
       intro: "Canciones que vuelven cada año.",
       items: [
+        { a: 2002, art: "Norah Jones", t: "Don't Know Why", n: "Jazz para la lluvia." },
+        { a: 2004, art: "Kings of Convenience", t: "Misread", n: "Folk noruego tranquilo." },
         { a: 2005, art: "Green Day", t: "Wake Me Up When September Ends", n: "Billie Joe Armstrong la escribió sobre la muerte de su padre en septiembre." },
+        { a: 2007, art: "Bon Iver", t: "Re: Stacks", n: "La última canción de la cabaña." },
         { a: 2012, art: "Taylor Swift", t: "All Too Well", n: "La bufanda olvidada y el otoño: en 2021 sacó una versión de diez minutos." },
         { a: 2014, art: "El meme del 30 de septiembre", t: "Despierten a Billie Joe", tipo: "hito", n: "Cada 30 de septiembre internet se llena de bromas pidiendo que alguien despierte al cantante de Green Day." },
         { a: 2015, art: "El 21 de septiembre", t: "La noche de Earth, Wind & Fire", tipo: "hito", n: "Cada 21 de septiembre la canción de 1978 vuelve a dispararse en Spotify y en las redes." }

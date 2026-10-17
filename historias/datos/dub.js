@@ -14,6 +14,8 @@ HISTORIAS.push({
       intro: "King Tubby, Lee Perry y la mesa de mezclas.",
       items: [
         { a: 1968, art: "Las caras B «version»", t: "Nace el instrumental", tipo: "hito", n: "Los sound systems descubren que el público canta encima de canciones sin voz." },
+        { a: 1969, art: "The Upsetters", t: "Return of Django", n: "Lee Perry y un instrumental que llegó a las listas británicas." },
+        { a: 1972, art: "Augustus Pablo", t: "Java", n: "Melódica y eco." },
         { a: 1973, art: "Lee «Scratch» Perry", t: "Black Ark", tipo: "hito", n: "Perry construye su estudio en el jardín de su casa." },
         { a: 1973, art: "Lee «Scratch» Perry & The Upsetters", t: "Blackboard Jungle Dub", tipo: "disco", n: "Uno de los primeros discos de dub." },
         { a: 1974, art: "King Tubby", t: "El estudio de Waterhouse", tipo: "hito", n: "Tubby, técnico de radio, monta en su casa un pequeño estudio donde usa la mesa de mezclas como un instrumento." },
@@ -26,8 +28,13 @@ HISTORIAS.push({
         { a: 1976, art: "Burning Spear", t: "Garvey's Ghost", tipo: "disco", n: "La versión dub del disco «Marcus Garvey», de Burning Spear." },
         { a: 1977, art: "Junior Murvin", t: "Police and Thieves", n: "Producida por Perry, la versionaron The Clash." },
         { a: 1977, art: "Prince Far I", t: "Under Heavy Manners", q: "Prince Far I", n: "Prince Far I, con su voz grave como un trueno, recitando sobre ritmos dub." },
+        { a: 1977, art: "Augustus Pablo", t: "East of the River Nile", n: "El sonido del lejano Oriente." },
         { a: 1979, art: "Prince Jammy", t: "Kamikazi Dub", tipo: "disco", n: "El aprendiz de King Tubby, después rey del dancehall digital." },
+        { a: 1979, art: "Black Uhuru", t: "Guess Who's Coming to Dinner", n: "Sly & Robbie en la base." },
+        { a: 1980, art: "Scientist", t: "Heavyweight Dub Champion", tipo: "disco", n: "El alumno de King Tubby." },
         { a: 1981, art: "Scientist", t: "Scientist Rids the World of the Evil Curse of the Vampires", tipo: "disco", n: "El alumno de King Tubby y su dub de terror." },
+        { a: 1985, art: "Wayne Smith", t: "Under Mi Sleng Teng", n: "El primer riddim digital: la era del dancehall electrónico." },
+        { a: 1987, art: "Lee «Scratch» Perry", t: "Time Boom X De Devil Dead", tipo: "disco", n: "Lee Perry con Adrian Sherwood." },
         { a: 1989, art: "King Tubby", t: "Asesinado en Kingston", tipo: "hito", n: "El inventor del dub muere a las puertas de su casa." }
       ]
     },
@@ -44,7 +51,10 @@ HISTORIAS.push({
         { a: 1993, art: "Basic Channel", t: "Inventan el dub techno", tipo: "hito", n: "El dub jamaicano se encuentra con el techno de Detroit en Berlín." },
         { a: 1994, art: "Basic Channel", t: "Phylyps Trak", n: "Desde Berlín, el dub se convierte en techno: profundo, repetitivo y con eco infinito." },
         { a: 1995, art: "Massive Attack v Mad Professor", t: "No Protection", tipo: "disco", n: "Un disco de Massive Attack, entero en versión dub." },
+        { a: 1995, art: "Lee «Scratch» Perry & Mad Professor", t: "Black Ark Experryments", tipo: "disco", n: "El dub de los 90." },
+        { a: 1997, art: "Thievery Corporation", t: "Lebanese Blonde", n: "Dub y bossa nova en Washington." },
         { a: 1998, art: "Massive Attack", t: "Angel", n: "La línea de bajo de Massive Attack debe mucho al dub." },
+        { a: 1998, art: "Kruder & Dorfmeister", t: "The K&D Sessions", tipo: "disco", n: "Dos vieneses remezclan el mundo en clave dub." },
         { a: 2001, art: "Rhythm & Sound", t: "Rhythm & Sound", tipo: "disco", n: "Moritz von Oswald y Mark Ernestus de nuevo: el dub de Berlín, con bajo enorme y mucho espacio." }
       ]
     }
