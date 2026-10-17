@@ -29,6 +29,7 @@ HISTORIAS.push({
       intro: "Llegan los turistas, los discos extranjeros y los guateques.",
       items: [
         { a: 1959, art: "Festival de Benidorm", t: "Primera edición", tipo: "hito", n: "Creado para promocionar el turismo: un escaparate de la canción ligera que lanzó a Julio Iglesias y Raphael." },
+        { a: 1960, art: "Lolita Garrido", t: "La televisión", n: "La tele llega a los hogares españoles y Lolita Garrido le canta (año aproximado)." },
         { a: 1962, art: "Dúo Dinámico", t: "Quisiera ser", n: "Los primeros ídolos juveniles del pop español." },
         { a: 1962, art: "Marisol", t: "Tómbola", n: "Marisol, la niña prodigio del cine español del desarrollismo." },
         { a: 1963, art: "Raimon", t: "Al vent", n: "La Nova Cançó contra la dictadura." },

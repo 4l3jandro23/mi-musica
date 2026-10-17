@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "eurodance",
   familia: "Electrónica",
   titulo: "Historia del eurodance",
-  periodo: "1989 – 2007",
+  periodo: "1989 – 2009",
   color: "#2fb5e8",
   lema: "Rap masculino, estribillo femenino y sintes a tope: los 90 en las discotecas de Europa.",
   intro: "La fórmula del eurodance: un productor alemán, italiano o belga, un rapero (a menudo estadounidense), una cantante para el estribillo y un riff de sintetizador imposible de olvidar. Dominó las radios y discotecas de toda Europa de 1990 a 1998. En España vino acompañado de la «ruta del bakalao» valenciana.",
@@ -51,17 +51,23 @@ HISTORIAS.push({
     {
       titulo: "El final pop",
       corto: "Final",
-      periodo: "1996 – 2007",
+      periodo: "1996 – 2009",
       intro: "El eurodance se vuelve pop casi infantil y se despide.",
       items: [
         { a: 1996, art: "Gala", t: "Freed from Desire", n: "Una italiana y un «na na na» que hoy cantan los estadios de fútbol." },
+        { a: 1996, art: "Alexia", t: "Summer Is Crazy", n: "La voz de Corona y Ice MC, ya en solitario." },
         { a: 1997, art: "Alexia", t: "Uh La La La", n: "Eurodance italiano en clave pop." },
         { a: 1997, art: "Sash!", t: "Ecuador", n: "Trompetas y sintetizadores." },
         { a: 1998, art: "Eurodance", t: "El estilo se apaga", tipo: "hito", n: "El trance y el pop adolescente toman el relevo en las radios." },
         { a: 1998, art: "Vengaboys", t: "Boom, Boom, Boom, Boom!!", n: "El eurodance se vuelve dibujos animados." },
         { a: 1998, art: "Eiffel 65", t: "Blue (Da Ba Dee)", n: "La voz procesada más famosa." },
+        { a: 1998, art: "666", t: "Supadupafly", n: "Eurodance alemán con sirena y aire de terror." },
         { a: 2000, art: "Daddy DJ", t: "Daddy DJ", n: "Eurodance francés." },
-        { a: 2007, art: "September", t: "Cry for You", n: "Un eurodance tardío de Suecia que triunfó en toda Europa." }
+        { a: 2000, art: "French Affair", t: "Sexy", n: "Eurodance francés con estribillo a lo «Sexy, sexy»." },
+        { a: 2000, art: "French Affair", t: "My Heart Goes Boom", n: "El «la di da di da» de las discotecas del cambio de siglo." },
+        { a: 2000, art: "Prezioso feat. Marvin", t: "The Riddle", n: "La versión italiana de Nik Kershaw: la misma que luego rehízo Gigi D'Agostino." },
+        { a: 2007, art: "September", t: "Cry for You", n: "Un eurodance tardío de Suecia que triunfó en toda Europa." },
+        { a: 2009, art: "ItaloBrothers", t: "Stamp on the Ground", n: "El hands up alemán: el eurodance resucita en internet." }
       ]
     }
   ]

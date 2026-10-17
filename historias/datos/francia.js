@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "francia",
   familia: "Mundo",
   titulo: "Historia de la música francesa",
-  periodo: "1920 – 2019",
+  periodo: "1920 – 2023",
   color: "#3b62c4",
   lema: "Chanson, yeyé, Gainsbourg, French touch y rap: Francia canta distinto.",
   intro: "En Francia la letra importa tanto como la música. Del music-hall de París a la chanson de Piaf y Brel, el yeyé de los 60, la provocación de Gainsbourg, el pop de los 80, la «French touch» que enseñó al mundo a hacer house y el segundo mercado de rap más grande del planeta. Incluye la francofonía (Bélgica).",
@@ -32,7 +32,9 @@ HISTORIAS.push({
         { a: 1951, art: "Juliette Gréco", t: "Sous le ciel de Paris", n: "La musa de los existencialistas." },
         { a: 1952, art: "Georges Brassens", t: "Le gorille", n: "Humor anarquista contra la pena de muerte. La prohibieron en la radio." },
         { a: 1955, art: "Boris Vian", t: "Le déserteur", n: "Una carta al presidente negándose a ir a la guerra. Censurada durante años." },
+        { a: 1957, art: "Dalida", t: "Histoire d'un amour", n: "Versión francesa de «Historia de un amor», el bolero panameño." },
         { a: 1959, art: "Jacques Brel", t: "Ne me quitte pas", n: "El belga que cantaba como si se le fuera la vida." },
+        { a: 1959, art: "Gloria Lasso", t: "Luna de miel", n: "Una cantante catalana que triunfó en Francia y fue la gran rival de Dalida." },
         { a: 1960, art: "Édith Piaf", t: "Non, je ne regrette rien", n: "«No me arrepiento de nada»: el resumen de su vida." }
       ]
     },
@@ -85,11 +87,34 @@ HISTORIAS.push({
         { a: 1998, art: "Stardust", t: "Music Sounds Better with You", n: "Thomas Bangalter y compañía: el himno de la French touch." },
         { a: 1998, art: "Air", t: "Sexy Boy", n: "Electrónica suave de Versalles." },
         { a: 1998, art: "Manu Chao", t: "Clandestino", n: "Francés de padres españoles, cantando en castellano sobre la inmigración." },
+        { a: 1999, art: "Saian Supa Crew", t: "Angela", n: "Rap francés con beatbox y estribillo para cantar." },
+        { a: 2000, art: "Lara Fabian", t: "I Will Love Again", n: "La belga canta en inglés y llena las discotecas." },
+        { a: 2004, art: "Kyo", t: "Contact", n: "El pop rock francés de los 2000." },
         { a: 2007, art: "Justice", t: "D.A.N.C.E.", n: "Electro de los 2000, homenaje a Michael Jackson." },
         { a: 2009, art: "Stromae", t: "Alors on danse", n: "Desde Bélgica: bailar para olvidar la crisis." },
         { a: 2014, art: "Christine and the Queens", t: "Christine", n: "Pop francés con alma propia." },
         { a: 2018, art: "Aya Nakamura", t: "Djadja", n: "Afropop en francés: la artista francófona más escuchada del mundo." },
         { a: 2019, art: "PNL", t: "Au DD", n: "Dos hermanos de un barrio de las afueras de París, con vídeo en la Torre Eiffel." }
+      ]
+    },
+    {
+      titulo: "Stromae, afro trap y el pop de hoy",
+      corto: "Hoy",
+      periodo: "2013 – 2023",
+      intro: "Del pop belga de Stromae al afro trap y Aya Nakamura, la cantante francesa más escuchada del mundo.",
+      items: [
+        { a: 2013, art: "Stromae", t: "Papaoutai", n: "Una canción alegre sobre un padre ausente." },
+        { a: 2014, art: "Indila", t: "Ainsi bas la vida", n: "Una balada que se hizo viral en todo el mundo." },
+        { a: 2014, art: "Lilly Wood & The Prick y Robin Schulz", t: "Prayer in C", n: "El remix alemán convierte el folk francés en un éxito mundial." },
+        { a: 2015, art: "Willy William", t: "Ego", n: "El DJ que luego hizo «Mi gente» con J Balvin." },
+        { a: 2016, art: "MHD", t: "Afro Trap Part. 3 (Champions League)", n: "El inventor del afro trap, nacido en París." },
+        { a: 2017, art: "MHD", t: "Afro Trap Part. 7 (La puissance)", n: "El afro trap sigue." },
+        { a: 2018, art: "Francia campeona del mundo", t: "«Ramenez la coupe à la maison»", tipo: "hito", n: "Vegedream sube a lo más alto de las listas y la canción se convierte en el himno de la selección." },
+        { a: 2018, art: "Vegedream", t: "Ramenez la coupe à la maison", n: "El himno del Mundial de Rusia." },
+        { a: 2018, art: "Soolking", t: "Suavemente", n: "Rap argelino con estribillo en español." },
+        { a: 2018, art: "Videoclub", t: "Amour plastique", n: "Synthpop adolescente, viral en YouTube." },
+        { a: 2019, art: "Aya Nakamura", t: "Pookie", n: "Del disco «Nakamura», el de «Djadja»." },
+        { a: 2023, art: "Yamê", t: "Bécane", n: "Del COLORS Show al número uno en Francia." }
       ]
     }
   ]

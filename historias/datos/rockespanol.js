@@ -52,6 +52,7 @@ HISTORIAS.push({
         { a: 1993, art: "MTV Latino", t: "Empieza a emitir", tipo: "hito", n: "Los videoclips unen a todo el rock en español, de México a Argentina." },
         { a: 1993, art: "Los Fabulosos Cadillacs", t: "Matador", n: "Ska, rock y percusión: un himno de Latinoamérica." },
         { a: 1993, art: "Los Rodríguez", t: "Sin documentos", n: "Calamaro y Ariel Rot." },
+        { a: 1993, art: "Revolver", t: "Si es tan solo amor", n: "Carlos Goñi en acústico, del disco «Básico»." },
         { a: 1994, art: "Café Tacvba", t: "Las flores", n: "Rock con todo lo mexicano: son jarocho, norteño y punk." },
         { a: 1994, art: "Enanitos Verdes", t: "Lamento boliviano", n: "La canción para cantar a coro en cualquier país." },
         { a: 1994, art: "Caifanes", t: "Afuera", n: "Rock mexicano." },

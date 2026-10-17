@@ -15,6 +15,8 @@ HISTORIAS.push({
       items: [
         { a: 1981, art: "Lime", t: "Babe We're Gonna Love Tonite", n: "El Hi-NRG de Canadá." },
         { a: 1981, art: "Patrick Cowley", t: "Menergy", n: "El Hi-NRG de San Francisco." },
+        { a: 1982, art: "Boys Town Gang", t: "Can't Take My Eyes Off You", n: "El clásico de Frankie Valli pasado a Hi-NRG." },
+        { a: 1983, art: "Divine", t: "Shake It Up", n: "La musa de John Waters en las pistas gais." },
         { a: 1984, art: "Stock Aitken Waterman", t: "La fábrica de éxitos de Londres", tipo: "hito", n: "Producen hi-NRG en cadena para Dead or Alive, Kylie y Rick Astley." },
         { a: 1984, art: "Dead or Alive", t: "You Spin Me Round (Like a Record)", n: "Stock Aitken Waterman: el primer número uno de la «fábrica de éxitos»." },
         { a: 1984, art: "Hazell Dean", t: "Whatever I Do (Wherever I Go)", n: "Stock Aitken Waterman antes de Kylie." },
@@ -25,6 +27,7 @@ HISTORIAS.push({
         { a: 1985, art: "Dead or Alive", t: "Lover Come Back to Me", n: "Dead or Alive con Stock Aitken Waterman, el sonido hi-NRG de Londres." },
         { a: 1985, art: "Bad Boys Blue", t: "You're a Woman", n: "Eurodisco alemán." },
         { a: 1985, art: "Sandra", t: "Maria Magdalena", n: "La alemana del pop europeo." },
+        { a: 1985, art: "Piano Fantasia", t: "Song for Denise", n: "Italo disco instrumental con piano, de los neerlandeses Piano Fantasia." },
         { a: 1986, art: "Bananarama", t: "Venus", n: "Otra de SAW: pop rapidísimo." },
         { a: 1986, art: "Ken Laszlo", t: "Tonight", n: "Italo disco que en Japón se convertiría en clásico del eurobeat." },
         { a: 1986, art: "Michael Fortunati", t: "Give Me Up", n: "Italo hi-NRG que triunfó en Japón." },
@@ -51,9 +54,12 @@ HISTORIAS.push({
         { a: 1998, art: "Max Coveri", t: "Running in the 90s", n: "Otro clásico de las curvas de Initial D." },
         { a: 1998, art: "Ken Blast", t: "The Top", q: "Ken Blast The Top", n: "Uno de los himnos de las carreras de Initial D." },
         { a: 1998, art: "Mega NRG Man", t: "Back on the Rocks", q: "Mega NRG Man Back on the Rocks", n: "Eurobeat a toda velocidad para las curvas de Initial D." },
+        { a: 1998, art: "Dave Simon", t: "I Need Your Love", n: "Una de las carreras de «Initial D»." },
+        { a: 1998, art: "Edo Boys", t: "No One Sleep in Tokyo", n: "Eurobeat para las curvas de montaña de «Initial D»." },
         { a: 1999, art: "Dave Rodgers", t: "Deja Vu", n: "«Deja vu, I've just been in this place before»: la melodía de los derrapes imposibles." },
         { a: 1999, art: "Niko", t: "Night of Fire", n: "El himno del baile para-para, con coreografías de brazos." },
         { a: 1999, art: "m.o.v.e", t: "Rage Your Dream", n: "Eurobeat japonés: el opening de la segunda temporada de Initial D." },
+        { a: 1999, art: "Go2", t: "Spitfire", n: "El eurobeat más acelerado de Super Eurobeat." },
         { a: 2002, art: "Dave Rodgers", t: "Beat of the Rising Sun", q: "Dave Rodgers Beat of the Rising Sun", n: "Una de las más conocidas de Dave Rodgers, el rey del eurobeat." }
       ]
     }

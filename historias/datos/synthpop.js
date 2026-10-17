@@ -21,7 +21,8 @@ HISTORIAS.push({
         { a: 1981, art: "Kraftwerk", t: "Computer Love", n: "La soledad en la era de los ordenadores, antes de internet." },
         { a: 1981, art: "The Human League", t: "Don't You Want Me", n: "Número uno en el Reino Unido y en EE. UU.: el synth-pop llega al gran público." },
         { a: 1981, art: "Ultravox", t: "Vienna", n: "Synth pop con piano." },
-        { a: 1981, art: "Soft Cell", t: "Tainted Love", n: "Un soul de los 60 en sintetizador." }
+        { a: 1981, art: "Soft Cell", t: "Tainted Love", n: "Un soul de los 60 en sintetizador." },
+        { a: 1981, art: "Aneka", t: "Japanese Boy", n: "Una cantante escocesa de folk disfrazada de japonesa: número uno en Reino Unido." }
       ]
     },
     {
@@ -38,12 +39,15 @@ HISTORIAS.push({
         { a: 1983, art: "Heaven 17", t: "Temptation", n: "Synth pop con coro." },
         { a: 1983, art: "New Order", t: "Blue Monday", n: "El maxisingle más vendido." },
         { a: 1983, art: "Mecano", t: "Barco a Venus", n: "El synth pop español." },
+        { a: 1983, art: "Frankie Goes to Hollywood", t: "Relax", n: "La BBC la prohíbe y se convierte en uno de los singles más vendidos de Reino Unido." },
         { a: 1984, art: "Bronski Beat", t: "Smalltown Boy", n: "Un chico gay que huye de su pueblo: un himno LGTB." },
         { a: 1984, art: "Alphaville", t: "Forever Young", n: "La balada de Alphaville que se convirtió en himno de graduaciones." },
         { a: 1985, art: "Pet Shop Boys", t: "West End Girls", n: "Ironía y elegancia londinense: el dúo de synth-pop más exitoso." },
         { a: 1985, art: "Yello", t: "Oh Yeah", n: "La de «Todo en un día»." },
+        { a: 1986, art: "The Communards", t: "Don't Leave Me This Way", n: "Jimmy Somerville, tras Bronski Beat, con Sarah Jane Morris." },
         { a: 1987, art: "Depeche Mode", t: "Never Let Me Down Again", n: "Oscuros y enormes: llenaban estadios." },
         { a: 1987, art: "Pet Shop Boys", t: "It's a Sin", n: "Culpa y sintetizadores." },
+        { a: 1987, art: "The Communards", t: "Never Can Say Goodbye", n: "El clásico de los Jackson 5 en versión Hi-NRG." },
         { a: 1988, art: "Erasure", t: "A Little Respect", n: "Vince Clarke otra vez, con Andy Bell." },
         { a: 1989, art: "Depeche Mode", t: "Personal Jesus", n: "Una guitarra de blues sobre sintetizadores." },
         { a: 1990, art: "Depeche Mode", t: "Enjoy the Silence", n: "Las palabras sobran." }

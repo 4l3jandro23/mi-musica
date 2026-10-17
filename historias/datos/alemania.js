@@ -53,7 +53,7 @@ HISTORIAS.push({
     {
       titulo: "Neue Deutsche Welle y los 80",
       corto: "NDW",
-      periodo: "1981 – 1985",
+      periodo: "1981 – 1986",
       intro: "La «nueva ola alemana»: punk, synth y letras en alemán.",
       items: [
         { a: 1981, art: "DAF", t: "Der Mussolini", n: "EBM: sintes duros y provocación. Raíz del techno industrial." },
@@ -63,7 +63,10 @@ HISTORIAS.push({
         { a: 1983, art: "Peter Schilling", t: "Major Tom (völlig losgelöst)", n: "El astronauta de Bowie, en alemán." },
         { a: 1984, art: "Herbert Grönemeyer", t: "Männer", n: "El cantautor más querido de Alemania." },
         { a: 1984, art: "Modern Talking", t: "You're My Heart, You're My Soul", n: "Eurodisco y falsetes: un fenómeno, también en la URSS." },
-        { a: 1985, art: "Falco", t: "Rock Me Amadeus", n: "Desde Austria, rap en alemán: número uno en Estados Unidos." }
+        { a: 1985, art: "Falco", t: "Rock Me Amadeus", n: "Desde Austria, rap en alemán: número uno en Estados Unidos." },
+        { a: 1985, art: "Modern Talking", t: "Cheri Cheri Lady", n: "El dúo de Dieter Bohlen y Thomas Anders." },
+        { a: 1986, art: "Modern Talking", t: "Brother Louie", n: "Otro número uno en Alemania." },
+        { a: 1986, art: "Modern Talking", t: "Geronimo's Cadillac", n: "Eurodisco del Oeste." }
       ]
     },
     {
