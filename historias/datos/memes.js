@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "memes",
   familia: "Especiales",
   titulo: "Historia de la música meme",
-  periodo: "1971 – 2025",
+  periodo: "1971 – 2026",
   color: "#f2b705",
   lema: "Rickrolls, Numa Numa, Coffin Dance, shitposts e italian brainrot.",
   intro: "Canciones que internet convirtió en chiste, en baile o en plantilla: algunas nacieron para ser memes y otras llevaban décadas tranquilas hasta que alguien las puso debajo de un vídeo. En orden cronológico de la canción; en cada nota, cuándo y cómo se hizo meme.",
@@ -38,8 +38,11 @@ HISTORIAS.push({
         { a: 2003, art: "O-Zone", t: "Dragostea din tei", n: "«Numa Numa» (2004): un chaval moviendo los labios delante de la webcam, uno de los primeros virales de la historia." },
         { a: 2003, art: "El Koala", t: "Opá, yo viazé un corrá", n: "Rock rural andaluz: un clásico del humor español en internet." },
         { a: 2003, art: "Christell", t: "Dubidubidu", n: "Una canción infantil chilena que en 2024 se convirtió en el gato del «chipi chipi chapa chapa»." },
+        { a: 2004, art: "Günther", t: "Ding Dong Song", n: "Un sueco en tanga y con bigote: puro kitsch viral." },
         { a: 2005, art: "YouTube", t: "Nace YouTube", tipo: "hito", n: "La música viral tiene por fin su plataforma." },
         { a: 2005, art: "Crazy Frog", t: "Axel F", n: "Empezó como politono y acabó en el número uno. Hoy, puro shitpost." },
+        { a: 2005, art: "Crazy Frog", t: "Popcorn", n: "La rana del politono, otra vez." },
+        { a: 2005, art: "Crazy Frog", t: "Hey Baby", n: "Más Crazy Frog." },
         { a: 2006, art: "Teriyaki Boyz", t: "Tokyo Drift (Fast & Furious)", n: "El sonido de cualquier cosa que gira o derrapa en un vídeo." },
         { a: 2007, art: "Tay Zonday", t: "Chocolate Rain", n: "Una voz grave y un «I move away from the mic to breathe in». Viral de los primeros YouTube." },
         { a: 2008, art: "Bag Raiders", t: "Shooting Stars", n: "En 2017 empezó a sonar en vídeos de gente saliendo disparada al espacio." }
@@ -70,14 +73,15 @@ HISTORIAS.push({
     {
       titulo: "Shitpost y TikTok",
       corto: "TikTok",
-      periodo: "2018 – 2023",
+      periodo: "2018 – 2026",
       intro: "TikTok convierte cualquier canción en un baile o un sonido.",
       items: [
         { a: 2018, art: "El Chombo", t: "Dame Tu Cosita", n: "Un alien verde bailando: uno de los vídeos más vistos de YouTube." },
         { a: 2018, art: "iLOVEFRiDAY", t: "Mia Khalifa", n: "«Hit or miss, I guess they never miss, huh?»: el primer gran meme de TikTok." },
         { a: 2019, art: "Christina Perri", t: "you are my sunshine", n: "Su versión de cuna de la canción infantil acabó en montones de vídeos tristes y edits." },
         { a: 2021, art: "Nathan Evans", t: "Wellerman", n: "Un cartero escocés cantando canciones de marineros: la fiebre de las sea shanties." },
-        { a: 2023, art: "Skibidi Toilet", t: "Cabezas en inodoros", tipo: "hito", n: "Una serie de vídeos absurda con una canción pegadiza: el gran fenómeno de la generación Alfa." }
+        { a: 2023, art: "Skibidi Toilet", t: "Cabezas en inodoros", tipo: "hito", n: "Una serie de vídeos absurda con una canción pegadiza: el gran fenómeno de la generación Alfa." },
+        { a: 2026, art: "KITSCHKRIEG, Blumengarten & Shirin David", t: "Gut genug", q: "KITSCHKRIEG Gut Genug Blumengarten Shirin David", n: "Medio mundo canta «Doobie Scoot Canoe» sin saber que en alemán significa «eres suficiente»." }
       ]
     },
     {

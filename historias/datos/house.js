@@ -44,10 +44,12 @@ HISTORIAS.push({
         { a: 1988, art: "Jungle Brothers", t: "I'll House You", n: "El primer cruce de hip hop y house, el «hip house»." },
         { a: 1989, art: "Black Box", t: "Ride on Time", n: "Desde Italia, y sampleando a Loleatta Holloway: el italo house." },
         { a: 1989, art: "808 State", t: "Pacific State", n: "Acid house de Mánchester con saxo: la banda sonora de la Haçienda." },
+        { a: 1989, art: "Guru Josh", t: "Infinity", n: "«1990's, time for the Guru»: saxo y rave." },
         { a: 1990, art: "Deee-Lite", t: "Groove Is in the Heart", n: "House con colorines desde Nueva York." },
         { a: 1990, art: "Madonna", t: "Vogue", n: "El house y el voguing de la escena ballroom llegan al pop más grande." },
         { a: 1990, art: "Alison Limerick", t: "Where Love Lives", n: "Un clásico del house británico." },
-        { a: 1990, art: "Awesome 3", t: "Don't Go", n: "Rave británica con piano y voz soul." }
+        { a: 1990, art: "Awesome 3", t: "Don't Go", n: "Rave británica con piano y voz soul." },
+        { a: 1990, art: "C+C Music Factory", t: "Gonna Make You Sweat (Everybody Dance Now)", n: "El «Everybody dance now» de todas las fiestas." }
       ]
     },
     {
@@ -62,29 +64,57 @@ HISTORIAS.push({
         { a: 1992, art: "Felix", t: "Don't You Want Me", q: "Felix Don't You Want Me Hooj Mix", n: "El riff de rave que sonó en todas las discotecas de Europa." },
         { a: 1993, art: "Robin S", t: "Show Me Love", n: "El remix de StoneBridge y ese bajo de órgano que se ha sampleado mil veces." },
         { a: 1993, art: "Hardrive", t: "Deep Inside", n: "Louie Vega y la voz de Barbara Tucker: un clásico del house de Nueva York." },
+        { a: 1994, art: "The Bucketheads", t: "The Bomb! (These Sounds Fall into My Mind)", n: "Kenny «Dope» González y un sample de Chicago." },
         { a: 1995, art: "Ibiza", t: "Las superclubs", tipo: "hito", n: "Manumission, Pacha y Amnesia convierten la isla en la meca del house." },
         { a: 1996, art: "Toni Braxton", t: "Un-Break My Heart (Frankie Knuckles Remix)", q: "Toni Braxton Frankie Knuckles Un-Break My Heart", n: "Frankie Knuckles convierte la balada en un tema de house para la pista." },
+        { a: 1996, art: "The Bad Yard Club & Crystal Waters", t: "In de Ghetto", n: "La voz de «Gypsy Woman» con David Morales." },
         { a: 1997, art: "Ultra Naté", t: "Free", n: "Un himno de libertad en las pistas de medio mundo." },
+        { a: 1998, art: "Faithless", t: "God Is a DJ", n: "«Esta es mi iglesia»: la pista de baile como religión." },
         { a: 1999, art: "Armand Van Helden", t: "You Don't Know Me", n: "House con cuerdas de disco: número uno británico." },
         { a: 1999, art: "Basement Jaxx", t: "Red Alert", n: "House de Brixton, desordenado y genial." },
-        { a: 2000, art: "Spiller", t: "Groovejet (If This Ain't Love)", n: "Con Sophie Ellis-Bextor: la canción del verano del 2000." }
+        { a: 1999, art: "Paul Johnson", t: "Get Get Down", n: "House de Chicago con un sample de soul." },
+        { a: 2000, art: "Spiller", t: "Groovejet (If This Ain't Love)", n: "Con Sophie Ellis-Bextor: la canción del verano del 2000." },
+        { a: 2000, art: "Junior Jack", t: "My Feeling", n: "House italiano con mucho groove." }
       ]
     },
     {
       titulo: "Electro house, Ibiza y el house de hoy",
       corto: "2000s hasta hoy",
-      periodo: "2002 – 2020",
+      periodo: "2001 – 2020",
       intro: "Ibiza, los DJs estrella y el house que llega a las listas.",
       items: [
+        { a: 2001, art: "Roger Sanchez", t: "Another Chance", n: "Número uno en Reino Unido con un sample de Toto." },
         { a: 2002, art: "Benny Benassi", t: "Satisfaction", n: "Un sintetizador que zumba: nace el electro house." },
+        { a: 2002, art: "David Guetta & Chris Willis", t: "Just a Little More Love", n: "El primer éxito de Guetta." },
+        { a: 2002, art: "David Guetta", t: "Love Don't Let Me Go", n: "Luego la mezcla con «Walking Away» de The Egg." },
+        { a: 2002, art: "Milky", t: "Just the Way You Are", n: "House italiano del verano de 2002." },
+        { a: 2003, art: "Room 5 & Oliver Cheatham", t: "Make Luv", n: "El sample de «Get Down Saturday Night»: número uno en Reino Unido." },
         { a: 2004, art: "Beatport", t: "Las descargas para DJs", tipo: "hito", n: "Los vinilos dan paso a los archivos digitales." },
         { a: 2004, art: "Eric Prydz", t: "Call on Me", n: "Un sample de Steve Winwood y un vídeo de aeróbic: número uno." },
+        { a: 2004, art: "Armand Van Helden", t: "My My My", n: "El anuncio del verano y un sample de Gary Wright." },
+        { a: 2004, art: "Armand Van Helden & Butter Rush", t: "I Need a Painkiller", n: "House con un riff de rock." },
+        { a: 2004, art: "David Guetta & Chris Willis", t: "Stay", n: "Del disco «Guetta Blaster»." },
+        { a: 2004, art: "David Guetta, Chris Willis & Moné", t: "Money", n: "Otra del «Guetta Blaster»." },
+        { a: 2004, art: "Joachim Garraud, JD Davis & David Guetta", t: "The World Is Mine", n: "Con un sample de «Someone Somewhere in Summertime» de Simple Minds." },
+        { a: 2004, art: "Junior Jack", t: "Stupidisco", n: "House con un aire de disco." },
+        { a: 2004, art: "Michael Gray", t: "The Weekend", n: "Un éxito de house británico." },
+        { a: 2004, art: "The Shapeshifters", t: "Lola's Theme", n: "Número uno en Reino Unido." },
         { a: 2005, art: "Bob Sinclar", t: "Love Generation", n: "Un silbido feliz: el verano de 2005 en todas partes." },
+        { a: 2006, art: "Bob Sinclar & Steve Edwards", t: "World Hold On (Children of the Sky)", n: "Uno de los himnos del verano de 2006." },
         { a: 2007, art: "David Guetta", t: "Love Is Gone", n: "Guetta todavía era el DJ de las noches de Ibiza." },
+        { a: 2007, art: "Alex Gaudino & Crystal Waters", t: "Destination Calabria", n: "El saxo de «Calabria» con la voz de Crystal Waters." },
+        { a: 2007, art: "Enur & Natasja", t: "Calabria 2007", n: "La versión danesa de «Calabria» de Rune RK, con la rapera Natasja." },
+        { a: 2007, art: "Axwell & Steve Edwards", t: "Watch the Sunrise", n: "Progressive house sueco." },
+        { a: 2007, art: "David Guetta, Steve Angello & Cozi", t: "Baby When the Light", n: "Del disco «Pop Life»." },
+        { a: 2007, art: "David Guetta & Tara McDonald", t: "Delirious", n: "Otro éxito de «Pop Life»." },
+        { a: 2007, art: "David Guetta, Steve Angello, Sebastian Ingrosso & Chris Willis", t: "Everytime We Touch", n: "Guetta con los futuros miembros de Swedish House Mafia." },
         { a: 2009, art: "Florence + The Machine", t: "You've Got the Love", n: "Una versión del clásico de Candi Staton." },
+        { a: 2009, art: "Bob Sinclar", t: "Lala Song", n: "Con los raperos de la Sugarhill Gang." },
         { a: 2010, art: "Swedish House Mafia", t: "One", n: "Tres suecos que llevarían el house a los estadios." },
         { a: 2011, art: "Azealia Banks", t: "212", n: "Rap de Harlem sobre un tema de house de Lazy Jay: el house vuelve al rap." },
         { a: 2014, art: "Robin Schulz", t: "Waves (Remix)", n: "El «deep house» de radio que sonó en todas partes en 2014." },
+        { a: 2016, art: "Bob Sinclar", t: "Someone Who Needs Me", n: "Bob Sinclar en Spinnin' Records." },
+        { a: 2017, art: "Bob Sinclar & Akon", t: "Til the Sun Rise Up", n: "Con Akon." },
         { a: 2020, art: "Purple Disco Machine", t: "Hypnotized", n: "El nu-disco y el house con cuerdas vuelven a las listas." }
       ]
     }

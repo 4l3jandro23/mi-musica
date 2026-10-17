@@ -31,6 +31,7 @@ HISTORIAS.push({
       items: [
         { a: 1997, art: "«Ministry of Sound»", t: "Las superclubs británicas", tipo: "hito", n: "Gatecrasher, Godskitchen y Cream llenan naves con miles de personas con los brazos en alto." },
         { a: 1997, art: "Sash!", t: "Ecuador", n: "El eurotrance que sonó en todas las radios." },
+        { a: 1997, art: "Da Hool", t: "Meet Her at the Loveparade", n: "El himno de la Love Parade de Berlín." },
         { a: 1998, art: "ATB", t: "9 PM (Till I Come)", n: "Una guitarra procesada y un número uno británico." },
         { a: 1998, art: "Binary Finary", t: "1998", n: "Un arpegio que sigue siendo himno." },
         { a: 1999, art: "Chicane", t: "Saltwater", n: "Trance balear con la voz de Clannad." },
@@ -40,13 +41,17 @@ HISTORIAS.push({
         { a: 1999, art: "Gouryella", t: "Gouryella", n: "Ferry Corsten y Tiësto juntos: trance épico." },
         { a: 1999, art: "William Orbit", t: "Barber's Adagio for Strings", n: "Samuel Barber en versión electrónica (Ferry Corsten hizo el remix famoso)." },
         { a: 1999, art: "Armin van Buuren", t: "Communication", n: "El primer gran éxito de Armin." },
+        { a: 1999, art: "DJ Jean", t: "The Launch", n: "Trance holandés para las discotecas." },
         { a: 2000, art: "Delerium & Sarah McLachlan", t: "Silence", n: "Con el remix de Fade, el himno vocal definitivo." },
         { a: 2000, art: "Mauro Picotto", t: "Komodo", n: "El trance italiano de discoteca." },
         { a: 2001, art: "Armin van Buuren", t: "Empieza «A State of Trance»", tipo: "hito", n: "Un programa de radio semanal que lleva más de mil episodios." },
         { a: 2001, art: "Tiësto", t: "Lethal Industry", n: "Duro y oscuro: Tiësto antes de ser estrella mundial." },
+        { a: 2001, art: "Lasgo", t: "Something", n: "Trance pop belga." },
         { a: 2002, art: "Ferry Corsten", t: "Punk", n: "Trance con guitarras." },
+        { a: 2002, art: "DJ Sammy, Yanou & Do", t: "Heaven", n: "Versión trance de Bryan Adams hecha por un DJ mallorquín." },
         { a: 2004, art: "Tiësto", t: "Pincha en la inauguración de los Juegos de Atenas", tipo: "hito", n: "Primer DJ en tocar en una ceremonia olímpica." },
-        { a: 2004, art: "Tiësto", t: "Adagio for Strings", n: "Ese año pinchó en la inauguración de los Juegos Olímpicos de Atenas." }
+        { a: 2004, art: "Tiësto", t: "Adagio for Strings", n: "Ese año pinchó en la inauguración de los Juegos Olímpicos de Atenas." },
+        { a: 2004, art: "ATB", t: "Ecstasy", n: "Trance melódico del creador de «9 PM»." }
       ]
     },
     {
@@ -70,6 +75,7 @@ HISTORIAS.push({
       items: [
         { a: 2008, art: "Armin van Buuren & Sharon den Adel", t: "In and Out of Love", n: "Uno de los vídeos de trance más vistos de YouTube." },
         { a: 2010, art: "ASOT 450", t: "A State of Trance se hace gira mundial", tipo: "hito", n: "El programa de radio de Armin se convierte en festival en varios continentes." },
+        { a: 2010, art: "ATB", t: "Could You Believe", n: "Un éxito en las listas de dance de EE. UU." },
         { a: 2011, art: "Above & Beyond", t: "Sun & Moon", n: "Con Richard Bedford: el trance emocional que se canta a gritos." },
         { a: 2012, art: "Gareth Emery & Jerome Isma-Ae", t: "Concrete Angel", n: "El trance vocal de la era de los festivales." },
         { a: 2013, art: "Armin van Buuren", t: "This Is What It Feels Like", n: "Con Trevor Guthrie: el trance se acerca al pop." },

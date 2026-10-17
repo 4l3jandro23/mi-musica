@@ -86,6 +86,7 @@ HISTORIAS.push({
       items: [
         { a: 1984, art: "Chicago y Detroit", t: "Nacen el house y el techno", tipo: "hito", n: "Dos ciudades industriales de EE. UU. inventan la música de baile electrónica moderna." },
         { a: 1988, art: "El verano del amor", t: "Raves en Reino Unido", tipo: "hito", n: "Acid house en almacenes y campos: la electrónica se convierte en cultura juvenil." },
+        { a: 1990, art: "Enigma", t: "Sadeness (Part I)", n: "Canto gregoriano sobre ritmo de hip hop: número uno en media Europa." },
         { a: 1996, art: "The Prodigy", t: "Firestarter", n: "La electrónica con actitud punk: número uno en Reino Unido." },
         { a: 1997, art: "The Chemical Brothers", t: "Block Rockin' Beats", n: "El «big beat»: breaks y guitarras." },
         { a: 1997, art: "Daft Punk", t: "Around the World", n: "La French touch conquista el mundo." },

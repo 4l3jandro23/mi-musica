@@ -25,7 +25,7 @@ HISTORIAS.push({
     {
       titulo: "El techno se hace global",
       corto: "Global",
-      periodo: "1990 – 1998",
+      periodo: "1990 – 1999",
       intro: "Reino Unido, Nueva York y Berlín adoptan el techno y lo llevan al extremo.",
       items: [
         { a: 1990, art: "LFO", t: "LFO", n: "Desde Sheffield, el «bleep techno»: unos graves que reventaban los altavoces." },
@@ -43,7 +43,8 @@ HISTORIAS.push({
         { a: 1996, art: "Jeff Mills", t: "Changes of Life", n: "Del EP «Purpose Maker»." },
         { a: 1997, art: "Jeff Mills", t: "The Bells", n: "El DJ más técnico del techno y su himno." },
         { a: 1997, art: "Carl Craig", t: "At Les", n: "Techno de Detroit melódico." },
-        { a: 1998, art: "DJ Rolando", t: "Knights of the Jaguar", n: "De Underground Resistance." }
+        { a: 1998, art: "DJ Rolando", t: "Knights of the Jaguar", n: "De Underground Resistance." },
+        { a: 1999, art: "Zombie Nation", t: "Kernkraft 400", n: "Un sonido de videojuego de los 80 convertido en cántico de estadio." }
       ]
     },
     {

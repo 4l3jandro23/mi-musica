@@ -14,14 +14,22 @@ HISTORIAS.push({
       intro: "Construcciones largas, melodías épicas y subidas que no terminan.",
       items: [
         { a: 1996, art: "Sasha & John Digweed", t: "Northern Exposure y los DJs de culto", tipo: "hito", n: "El progressive británico de los 90: sesiones como viajes." },
+        { a: 2004, art: "Eric Prydz & Steve Angello", t: "Woz Not Woz", n: "Una de las primeras producciones conjuntas de dos estrellas suecas." },
+        { a: 2006, art: "deadmau5", t: "Faxing Berlin", n: "El primer éxito del canadiense de la cabeza de ratón." },
+        { a: 2007, art: "Axwell & Sebastian Ingrosso", t: "Together", n: "El anticipo de lo que sería Swedish House Mafia." },
         { a: 2009, art: "deadmau5", t: "Strobe", n: "Diez minutos de subida: una catedral del progressive." },
         { a: 2011, art: "Swedish House Mafia", t: "Save the World", n: "El progressive con voz que llenó estadios." },
         { a: 2012, art: "Swedish House Mafia", t: "Greyhound", n: "Progressive para un anuncio de coches." },
         { a: 2014, art: "Alesso", t: "Heroes (we could be)", n: "Con Tove Lo: el progressive se vuelve pop." },
         { a: 2014, art: "Tchami", t: "After Life", n: "Future house francés." },
+        { a: 2014, art: "Eric Prydz", t: "Liberate", n: "Progressive house melódico." },
         { a: 2015, art: "Eric Prydz", t: "Opus", n: "Nueve minutos que crecen sin parar: un himno moderno." },
         { a: 2015, art: "Axwell Λ Ingrosso", t: "Sun Is Shining", n: "Después de Swedish House Mafia." },
+        { a: 2015, art: "Eric Prydz", t: "Generate", n: "Uno de sus temas de festival." },
         { a: 2016, art: "Joyryde", t: "Hot Drum", n: "Bass house." },
+        { a: 2016, art: "Eric Prydz & Rob Swire", t: "Breathe", n: "Del disco «Opus»." },
+        { a: 2016, art: "Eric Prydz", t: "Every Day", n: "De «Opus»." },
+        { a: 2016, art: "Eric Prydz & CHVRCHES", t: "Tether", n: "Con la voz de Lauren Mayberry." },
         { a: 2017, art: "Axwell Λ Ingrosso", t: "More Than You Know", n: "Dos de los Swedish House Mafia, ya en solitario." }
       ]
     },

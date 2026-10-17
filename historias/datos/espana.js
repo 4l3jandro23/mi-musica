@@ -145,6 +145,7 @@ HISTORIAS.push({
       items: [
         { a: 1988, art: "Georgie Dann", t: "El chiringuito", n: "El rey de la canción del verano, un francés afincado en España." },
         { a: 1991, art: "Chimo Bayo", t: "Así me gusta a mí", n: "El «ex-ta-sis» de la ruta del bakalao." },
+        { a: 1991, art: "Los del Río", t: "Sevilla tiene un color especial", n: "Las sevillanas con las que se hicieron famosos, antes de la «Macarena» (año aproximado)." },
         { a: 1992, art: "Barcelona y Sevilla", t: "El año de España", tipo: "hito", n: "Juegos Olímpicos y Expo: la música española sale al mundo." },
         { a: 1993, art: "Los Rodríguez", t: "Sin documentos", n: "Andrés Calamaro y Ariel Rot: un argentino que se hizo madrileño." },
         { a: 1993, art: "Los del Río", t: "Macarena", n: "Una rumba sevillana que fue número uno en Estados Unidos en su versión remezclada." },

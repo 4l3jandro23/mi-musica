@@ -14,15 +14,21 @@ HISTORIAS.push({
       intro: "Productores europeos, raperos y divas: nace una fórmula.",
       items: [
         { a: 1989, art: "Technotronic", t: "Pump Up the Jam", n: "Desde Bélgica, la plantilla del género (la modelo del vídeo ni siquiera cantaba)." },
+        { a: 1989, art: "The Adventures of Stevie V", t: "Dirty Cash (Money Talks)", n: "Hip house británico sobre el dinero fácil." },
         { a: 1990, art: "Snap!", t: "The Power", n: "«I've got the power!»: rap y house alemanes." },
+        { a: 1990, art: "Technotronic", t: "Get Up! (Before the Night Is Over)", n: "El segundo éxito de los belgas de «Pump Up the Jam»." },
+        { a: 1990, art: "Londonbeat", t: "I've Been Thinking About You", n: "Número uno en EE. UU.: soul y house a medio camino." },
         { a: 1991, art: "La Ruta del Bakalao", t: "Valencia baila de viernes a lunes", tipo: "hito", n: "El eurodance y la música de importación suenan en las discotecas valencianas." },
         { a: 1991, art: "2 Unlimited", t: "Get Ready for This", n: "Desde Holanda: la canción de todos los estadios." },
         { a: 1991, art: "Chimo Bayo", t: "Así me gusta a mí", n: "«Uh ah, uh ah»: la ruta del bakalao valenciana llega a las listas." },
+        { a: 1991, art: "Rozalla", t: "Everybody's Free (To Feel Good)", n: "La voz de Zimbabue en las raves británicas." },
+        { a: 1991, art: "U96", t: "Das Boot", n: "La música de la película alemana del submarino, en techno." },
         { a: 1992, art: "Ace of Base", t: "All That She Wants", n: "Eurodance con reggae desde Suecia." },
         { a: 1992, art: "Dr. Alban", t: "It's My Life", n: "Un dentista nigeriano en Suecia." },
         { a: 1992, art: "Captain Hollywood Project", t: "More and More", n: "Un exbailarín estadounidense en Alemania." },
         { a: 1992, art: "Double You", t: "Please Don't Go", n: "Double You, desde Italia, versiona a KC and the Sunshine Band y la convierte en un éxito de discoteca en toda Europa." },
-        { a: 1992, art: "DJ BoBo", t: "Somebody Dance with Me", n: "El suizo del eurodance." }
+        { a: 1992, art: "DJ BoBo", t: "Somebody Dance with Me", n: "El suizo del eurodance." },
+        { a: 1992, art: "SNAP!", t: "Rhythm Is a Dancer", n: "Número uno en media Europa: el eurodance despega." }
       ]
     },
     {
@@ -37,6 +43,8 @@ HISTORIAS.push({
         { a: 1993, art: "Real McCoy", t: "Another Night", n: "Desde Berlín: triunfó también en EE. UU." },
         { a: 1993, art: "2 Unlimited", t: "No Limit", n: "La letra casi no existe: «no no, no no no no». 2 Unlimited, desde Bélgica, en lo más alto del eurodance." },
         { a: 1993, art: "Cappella", t: "U Got 2 Know", n: "Eurodance italiano." },
+        { a: 1993, art: "Cappella", t: "U Got 2 Let the Music", n: "El piano italiano que abrió todas las discotecas del 93." },
+        { a: 1993, art: "Reel 2 Real", t: "I Like to Move It", n: "Luego la canta un lémur en «Madagascar»." },
         { a: 1994, art: "Los recopilatorios", t: "La era de los «Max Mix» y «Bit Mania»", tipo: "hito", n: "En España, los recopilatorios de eurodance venden millones." },
         { a: 1994, art: "Whigfield", t: "Saturday Night", n: "El baile del verano en España." },
         { a: 1994, art: "Masterboy", t: "Feel the Heat of the Night", n: "Pura discoteca de los 90." },
@@ -44,8 +52,13 @@ HISTORIAS.push({
         { a: 1994, art: "Ice MC", t: "Think About the Way", n: "De «Trainspotting»." },
         { a: 1994, art: "E-Rotic", t: "Max Don't Have Sex with Your Ex", n: "Eurodance pícaro." },
         { a: 1994, art: "Fun Factory", t: "Close to You", n: "El eurodance alemán." },
+        { a: 1994, art: "2 Unlimited", t: "Let the Beat Control Your Body", n: "Los holandeses en su mejor momento." },
+        { a: 1994, art: "Maxx", t: "Get-A-Way", n: "Eurodance alemán con rap y voz femenina." },
+        { a: 1994, art: "Mo-Do", t: "Eins, Zwei, Polizei", n: "El italiano que contaba en alemán: un éxito absurdo." },
         { a: 1995, art: "La Bouche", t: "Be My Lover", n: "Voz femenina potente, rap masculino y sintes: La Bouche resume la fórmula del eurodance del 95." },
-        { a: 1995, art: "Captain Jack", t: "Captain Jack", n: "Un himno militar de discoteca." }
+        { a: 1995, art: "Captain Jack", t: "Captain Jack", n: "Un himno militar de discoteca." },
+        { a: 1995, art: "U96", t: "Club Bizarre", n: "Otro éxito de los alemanes de «Das Boot»." },
+        { a: 1995, art: "Tokyo Ghetto Pussy", t: "I Kiss Your Lips", n: "Un proyecto alemán de los productores de Jam & Spoon." }
       ]
     },
     {
@@ -56,17 +69,38 @@ HISTORIAS.push({
       items: [
         { a: 1996, art: "Gala", t: "Freed from Desire", n: "Una italiana y un «na na na» que hoy cantan los estadios de fútbol." },
         { a: 1996, art: "Alexia", t: "Summer Is Crazy", n: "La voz de Corona y Ice MC, ya en solitario." },
+        { a: 1996, art: "Mr. President", t: "Coco Jamboo", n: "El verano de 1996 en todas las playas." },
+        { a: 1996, art: "Rebeca", t: "Duro de pelar", n: "La cantante española del dance de los 90." },
         { a: 1997, art: "Alexia", t: "Uh La La La", n: "Eurodance italiano en clave pop." },
         { a: 1997, art: "Sash!", t: "Ecuador", n: "Trompetas y sintetizadores." },
+        { a: 1997, art: "Bellini", t: "Samba de Janeiro", n: "Batucada y samba para las discotecas alemanas." },
+        { a: 1997, art: "Antiloop", t: "In My Mind", n: "Dance sueco de los 90 (año aproximado)." },
         { a: 1998, art: "Eurodance", t: "El estilo se apaga", tipo: "hito", n: "El trance y el pop adolescente toman el relevo en las radios." },
         { a: 1998, art: "Vengaboys", t: "Boom, Boom, Boom, Boom!!", n: "El eurodance se vuelve dibujos animados." },
         { a: 1998, art: "Eiffel 65", t: "Blue (Da Ba Dee)", n: "La voz procesada más famosa." },
         { a: 1998, art: "666", t: "Supadupafly", n: "Eurodance alemán con sirena y aire de terror." },
+        { a: 1998, art: "Ann Lee", t: "2 Times", n: "Eurodance italiano con la voz de una cantante inglesa." },
+        { a: 1998, art: "Vengaboys", t: "We Like to Party! (The Vengabus)", n: "El autobús de los Vengaboys." },
+        { a: 1998, art: "Sonique", t: "It Feels So Good", n: "DJ y cantante: número uno en Reino Unido en el año 2000." },
+        { a: 1999, art: "Lou Bega", t: "Mambo No. 5 (A Little Bit of...)", n: "Un mambo de Pérez Prado con nombres de chicas: éxito mundial." },
         { a: 2000, art: "Daddy DJ", t: "Daddy DJ", n: "Eurodance francés." },
         { a: 2000, art: "French Affair", t: "Sexy", n: "Eurodance francés con estribillo a lo «Sexy, sexy»." },
         { a: 2000, art: "French Affair", t: "My Heart Goes Boom", n: "El «la di da di da» de las discotecas del cambio de siglo." },
         { a: 2000, art: "Prezioso feat. Marvin", t: "The Riddle", n: "La versión italiana de Nik Kershaw: la misma que luego rehízo Gigi D'Agostino." },
+        { a: 2000, art: "A Touch of Class", t: "Around the World (La La La La La)", n: "Versión de «Pesenka», del grupo ruso Ruki Vverh: el «la la la» de todas las fiestas." },
+        { a: 2002, art: "DJ BoBo", t: "Chihuahua", n: "El suizo DJ BoBo y el anuncio de Coca-Cola." },
+        { a: 2002, art: "Kate Ryan", t: "Désenchantée", n: "La canción de Mylène Farmer pasada a dance." },
+        { a: 2005, art: "Cascada", t: "Everytime We Touch", n: "Hands up alemán: número dos en Reino Unido." },
+        { a: 2006, art: "Basshunter", t: "Boten Anna", n: "Un sueco cuenta en una canción que una amiga no es un bot de IRC." },
+        { a: 2006, art: "Basshunter", t: "DotA", n: "Una canción sobre el videojuego «Defense of the Ancients»." },
+        { a: 2006, art: "Basshunter", t: "Russia Privjet", n: "El hands up de la LAN party." },
         { a: 2007, art: "September", t: "Cry for You", n: "Un eurodance tardío de Suecia que triunfó en toda Europa." },
+        { a: 2007, art: "Basshunter", t: "Now You're Gone", n: "Número uno en Reino Unido con el vídeo de Aylar Lie." },
+        { a: 2007, art: "Kate Ryan", t: "Voyage voyage", n: "La versión de Desireless en dance." },
+        { a: 2008, art: "Basshunter", t: "All I Ever Wanted", n: "Otro número dos en Reino Unido." },
+        { a: 2008, art: "Basshunter", t: "Angel in the Night", n: "Eurodance de la década de 2000." },
+        { a: 2008, art: "Basshunter", t: "I Can Walk on Water", n: "Del disco «Now You're Gone»." },
+        { a: 2008, art: "Kate Ryan", t: "Ella elle l'a", n: "France Gall en clave dance." },
         { a: 2009, art: "ItaloBrothers", t: "Stamp on the Ground", n: "El hands up alemán: el eurodance resucita en internet." }
       ]
     }

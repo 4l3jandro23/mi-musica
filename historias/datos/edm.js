@@ -78,6 +78,7 @@ HISTORIAS.push({
         { a: 2018, art: "Calvin Harris & Dua Lipa", t: "One Kiss", n: "El house con voz que dominó el verano." },
         { a: 2018, art: "Marshmello & Bastille", t: "Happier", n: "El DJ del casco y una canción triste de pop." },
         { a: 2018, art: "FISHER", t: "Losing It", n: "El tech house del australiano en todos los festivales." },
+        { a: 2021, art: "ATB, Topic & A7S", t: "Your Love (9PM)", n: "«9 PM (Till I Come)» rehecha veinte años después." },
         { a: 2022, art: "Fred again..", t: "El Boiler Room viral", tipo: "hito", n: "Su sesión de Boiler Room en Londres se ve millones de veces y agota entradas por todo el mundo." },
         { a: 2022, art: "David Guetta & Bebe Rexha", t: "I'm Good (Blue)", n: "Eiffel 65 reconvertido en éxito mundial." },
         { a: 2022, art: "Fred again..", t: "Delilah (pull me out of this)", n: "Voces recortadas y emociones: la electrónica de la generación de TikTok." },

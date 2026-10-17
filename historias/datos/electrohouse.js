@@ -18,15 +18,21 @@ HISTORIAS.push({
         { a: 2004, art: "Beatport", t: "Las descargas para DJs", tipo: "hito", n: "La tienda online convierte el «electro house» en una categoría de éxito." },
         { a: 2004, art: "Mylo", t: "Drop the Pressure", n: "Electro escocés hecho en un dormitorio." },
         { a: 2005, art: "Justice", t: "Waters of Nazareth", n: "Distorsión y órgano: el sonido de Ed Banger." },
+        { a: 2005, art: "The Egg", t: "Walking Away (Tocadisco Remix)", n: "El remix que mezcló Guetta y que sonó en todas partes." },
         { a: 2006, art: "Justice vs. Simian", t: "We Are Your Friends", tipo: "hito", n: "El himno de la generación de los blogs de música." },
         { a: 2006, art: "Fedde Le Grand", t: "Put Your Hands Up for Detroit", n: "Número uno en el Reino Unido." },
         { a: 2006, art: "Bob Sinclar", t: "Rock This Party (Everybody Dance Now)", n: "El electro house de las discotecas comerciales de 2006." },
         { a: 2006, art: "MSTRKRFT", t: "Easy Love", n: "El dúo canadiense MSTRKRFT, con electro house sucio y lleno de filtros." },
+        { a: 2006, art: "Mason & Princess Superstar", t: "Perfect (Exceeder)", n: "Electro holandés con rap." },
         { a: 2007, art: "Justice", t: "D.A.N.C.E.", n: "Coros infantiles y electro francés." },
         { a: 2007, art: "Simian Mobile Disco", t: "Hustler", n: "El electro de Londres." },
         { a: 2007, art: "Digitalism", t: "Pogo", n: "El electro de Hamburgo." },
         { a: 2007, art: "Boys Noize", t: "& Down", n: "Electro duro alemán." },
-        { a: 2007, art: "Axwell", t: "I Found U", n: "El house sueco." }
+        { a: 2007, art: "Axwell", t: "I Found U", n: "El house sueco." },
+        { a: 2007, art: "Calvin Harris", t: "Acceptable in the 80's", n: "El primer éxito de Calvin Harris, hecho en su habitación." },
+        { a: 2007, art: "Calvin Harris", t: "The Girls", n: "Del disco «I Created Disco»." },
+        { a: 2007, art: "Calvin Harris", t: "Merrymaking at My Place", n: "Otro tema de «I Created Disco»." },
+        { a: 2007, art: "Mondotek", t: "Alive!", n: "Electro francés de la época tecktonik." }
       ]
     },
     {
@@ -52,6 +58,11 @@ HISTORIAS.push({
         { a: 2011, art: "Porter Robinson", t: "Language", n: "Porter Robinson, con 18 años, mezcla electro house con trance emotivo." },
         { a: 2011, art: "Steve Aoki & Laidback Luke", t: "Turbulence", n: "Con Lil Jon. Electro house de fiesta y gritos." },
         { a: 2011, art: "Avicii", t: "Levels", n: "El himno que cerró la era del electro y abrió la del EDM." },
+        { a: 2011, art: "Benny Benassi & Chris Brown", t: "Paradise", n: "Electro pop con Chris Brown." },
+        { a: 2011, art: "Benny Benassi & T-Pain", t: "Electroman", n: "Con el rey del autotune." },
+        { a: 2011, art: "Benny Benassi, Kelis, apl.de.ap & Jean Baptiste", t: "Spaceship", n: "Electro de discoteca." },
+        { a: 2011, art: "Benny Benassi & Gary Go", t: "Cinema", n: "La versión original." },
+        { a: 2011, art: "Benny Benassi & Gary Go", t: "Cinema (Skrillex Remix)", n: "El remix gana el Grammy y lleva a Skrillex a todas partes." },
         { a: 2012, art: "El big room", t: "El electro se simplifica para los festivales", tipo: "hito", n: "Los grandes escenarios adoptan un sonido más sencillo y explosivo." },
         { a: 2012, art: "Zedd", t: "Clarity", n: "Con Foxes. El electro house se vuelve pop y gana un Grammy." }
       ]

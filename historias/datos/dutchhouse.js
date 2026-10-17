@@ -30,6 +30,7 @@ HISTORIAS.push({
         { a: 2010, art: "Chuckie", t: "Who Is Ready to Jump", n: "Chuckie, el surinamés-holandés que bautizó el estilo «Dirty Dutch», en su tema más saltarín." },
         { a: 2010, art: "Afrojack", t: "Bangduck", n: "Sintes chillones y percusión: Afrojack en su momento más dutch." },
         { a: 2010, art: "Afrojack", t: "Rock the House", n: "El electro de Afrojack." },
+        { a: 2010, art: "Chuckie & Gregor Salto", t: "Toys Are Nuts (Hardwell & Rehab Remix)", n: "Dirty Dutch con un remix de Hardwell." },
         { a: 2011, art: "Afrojack & Steve Aoki", t: "No Beef", n: "Afrojack y Steve Aoki con la voz de Miss Palmer: dutch house de 2011 lleno de chirridos y bombos." },
         { a: 2011, art: "R3hab & Afrojack", t: "Prutataaa", n: "Sintetizadores que parecen trompetas de feria." },
         { a: 2011, art: "Bingo Players", t: "Cry (Just a Little)", n: "Un sample de Brenda Russell para las pistas." },

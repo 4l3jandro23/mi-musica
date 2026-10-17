@@ -29,6 +29,7 @@ HISTORIAS.push({
       items: [
         { a: 1999, art: "Shanks & Bigfoot", t: "Sweet Like Chocolate", n: "Número uno en Reino Unido." },
         { a: 1999, art: "Artful Dodger", t: "Re-Rewind (The Crowd Say Bo Selecta)", n: "Con un Craig David de 18 años." },
+        { a: 1999, art: "DJ Luck & MC Neat", t: "A Little Bit of Luck", n: "UK garage de Londres con MC." },
         { a: 2000, art: "Craig David", t: "Fill Me In", n: "R&B sobre 2-step: el solista británico más joven en llegar al número uno." },
         { a: 2000, art: "Craig David", t: "7 Days", n: "Lunes, martes, miércoles…" },
         { a: 2000, art: "Sweet Female Attitude", t: "Flowers", n: "Un clásico absoluto (PinkPantheress lo samplearía veinte años después)." },
@@ -43,7 +44,8 @@ HISTORIAS.push({
         { a: 2001, art: "Daniel Bedingfield", t: "Gotta Get Thru This", n: "Número uno hecho en casa." },
         { a: 2001, art: "Sticky feat. Ms. Dynamite", t: "Booo!", n: "El debut de Ms. Dynamite." },
         { a: 2002, art: "So Solid Crew", t: "Brit Award al mejor vídeo", tipo: "hito", n: "Un colectivo de MCs del sur de Londres, en la gala más importante de la música británica." },
-        { a: 2002, art: "Ms. Dynamite", t: "It Takes More", n: "Ms. Dynamite, con mensaje y garage, gana el Mercury Prize de 2002 con su primer disco." }
+        { a: 2002, art: "Ms. Dynamite", t: "It Takes More", n: "Ms. Dynamite, con mensaje y garage, gana el Mercury Prize de 2002 con su primer disco." },
+        { a: 2002, art: "Ms. Dynamite", t: "Dy-Na-Mi-Tee", n: "La ganadora del Mercury Prize." }
       ]
     },
     {
