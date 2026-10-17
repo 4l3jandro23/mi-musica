@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "coche",
-  familia: "Especiales",
+  familia: "Para cada momento",
   titulo: "Música para el coche",
   periodo: "1930 – 2021",
   color: "#e0902a",

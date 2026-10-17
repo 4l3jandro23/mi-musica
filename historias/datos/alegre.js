@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "alegre",
-  familia: "Especiales",
+  familia: "Para cada momento",
   titulo: "Música alegre",
   periodo: "1928 – 2024",
   color: "#f5b822",

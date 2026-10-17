@@ -10,25 +10,30 @@ HISTORIAS.push({
     {
       titulo: "La edad de oro: radio y cine",
       corto: "Edad de oro",
-      periodo: "1930 – 1949",
+      periodo: "1930 – 1953",
       intro: "La radio y el cine mexicano convierten a sus cantantes en ídolos de todo el continente.",
       items: [
         { a: 1930, art: "La XEW", t: "«La voz de la América Latina desde México»", tipo: "hito", n: "Una emisora de radio de Ciudad de México que lanza a casi todas las estrellas de la época." },
+        { a: 1935, art: "Carlos Gardel", t: "Por una cabeza", n: "El tango de Gardel y Le Pera, grabado el año de su muerte." },
         { a: 1941, art: "Agustín Lara", t: "Solamente una vez", n: "El «flaco de oro», el gran compositor de boleros." },
         { a: 1948, art: "Pedro Infante", t: "Amorcito corazón", n: "El ídolo del cine mexicano: cuando murió en 1957, el país se paralizó." },
-        { a: 1949, art: "Dámaso Pérez Prado", t: "Qué rico el mambo", n: "Un cubano en México pone a bailar el mambo al mundo." }
+        { a: 1949, art: "Dámaso Pérez Prado", t: "Qué rico el mambo", n: "Un cubano en México pone a bailar el mambo al mundo." },
+        { a: 1953, art: "Benny Moré", t: "Bonito y sabroso", n: "El «bárbaro del ritmo» cubano." }
       ]
     },
     {
       titulo: "Canción protesta y dictaduras",
       corto: "Canción protesta",
-      periodo: "1966 – 1973",
+      periodo: "1966 – 1986",
       intro: "La «nueva canción» latinoamericana: guitarras, instrumentos andinos y letras comprometidas.",
       items: [
         { a: 1966, art: "Violeta Parra", t: "Gracias a la vida", n: "Escrita poco antes de quitarse la vida. Mercedes Sosa la hizo eterna." },
         { a: 1969, art: "Mercedes Sosa", t: "Alfonsina y el mar", n: "«La Negra», la voz de Latinoamérica, cantando a la poeta Alfonsina Storni." },
         { a: 1969, art: "Víctor Jara", t: "Te recuerdo Amanda", n: "Una canción de amor obrera." },
-        { a: 1973, art: "Golpe de Estado en Chile", t: "Víctor Jara, asesinado", tipo: "hito", n: "Tras el golpe de Pinochet, Jara es torturado y asesinado en el Estadio Chile. Muchos músicos se exilian." }
+        { a: 1973, art: "Golpe de Estado en Chile", t: "Víctor Jara, asesinado", tipo: "hito", n: "Tras el golpe de Pinochet, Jara es torturado y asesinado en el Estadio Chile. Muchos músicos se exilian." },
+        { a: 1974, art: "Celia Cruz & Johnny Pacheco", t: "Quimbara", n: "La reina de la salsa en Nueva York." },
+        { a: 1978, art: "Willie Colón & Rubén Blades", t: "Pedro Navaja", n: "Una historia de barrio inspirada en «Mack the Knife»." },
+        { a: 1986, art: "Los Prisioneros", t: "El baile de los que sobran", n: "El himno de los jóvenes chilenos en la dictadura de Pinochet." }
       ]
     },
     {
@@ -45,6 +50,8 @@ HISTORIAS.push({
         { a: 1989, art: "Juan Luis Guerra", t: "Ojalá que llueva café", n: "Merengue y poesía desde la República Dominicana." },
         { a: 1990, art: "Soda Stereo", t: "De música ligera", n: "Gustavo Cerati y el gran himno del rock latino: «gracias totales»." },
         { a: 1992, art: "Selena", t: "Como la flor", n: "La reina del tex-mex: asesinada con 23 años en 1995." },
+        { a: 1993, art: "Gloria Estefan", t: "Mi tierra", n: "La cubana de Miami canta a la isla en un disco premiado con un Grammy." },
+        { a: 1993, art: "Carlos Vives", t: "La gota fría", n: "Vallenato con guitarras eléctricas: la música de la costa colombiana en todo el mundo." },
         { a: 1997, art: "Maná", t: "Clavado en un bar", n: "El rock mexicano que llenaba estadios en España." },
         { a: 1998, art: "Shakira", t: "Ciega, sordomuda", n: "La Shakira morena de Barranquilla, antes del salto al inglés." }
       ]
@@ -56,10 +63,13 @@ HISTORIAS.push({
       intro: "Del boom latino de 1999 a la música más escuchada del mundo.",
       items: [
         { a: 1998, art: "Ricky Martin", t: "La copa de la vida", n: "El Mundial de Francia y el principio del «boom latino» de 1999." },
+        { a: 1999, art: "Ricky Martin en los Grammy", t: "La actuación que lo cambió todo", tipo: "hito", n: "Ricky Martin canta «La copa de la vida» en la gala de los Grammy y empieza el «boom latino» en Estados Unidos." },
         { a: 1999, art: "Enrique Iglesias", t: "Bailamos", n: "El hijo de Julio Iglesias conquista EE. UU." },
         { a: 2000, art: "Grammy Latino", t: "Primera edición", tipo: "hito", n: "La industria reconoce el peso de la música en español." },
+        { a: 2005, art: "Shakira feat. Alejandro Sanz", t: "La tortura", n: "Un número uno en medio mundo con un español." },
         { a: 2017, art: "Luis Fonsi", t: "Despacito", n: "Con Daddy Yankee: el vídeo más visto de YouTube durante años." },
         { a: 2017, art: "J Balvin", t: "Mi Gente", n: "Con Willy William: el reggaetón colombiano global." },
+        { a: 2020, art: "Bad Bunny & Jhay Cortez", t: "Dákiti", n: "Reguetón electrónico y uno de los mayores éxitos de 2020." },
         { a: 2022, art: "Bad Bunny", t: "Tití Me Preguntó", n: "Del disco más escuchado del mundo ese año, todo en español." },
         { a: 2023, art: "Eslabon Armado", t: "Ella Baila Sola", n: "Con Peso Pluma: los corridos tumbados en lo más alto del mundo." },
         { a: 2023, art: "KAROL G", t: "TQG", n: "Con Shakira: la «Bichota» de Medellín, la artista latina del momento." }

@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "levitar",
-  familia: "Especiales",
+  familia: "Para cada momento",
   titulo: "Música que te hace levitar",
   periodo: "1888 – 2018",
   color: "#6ec3d6",

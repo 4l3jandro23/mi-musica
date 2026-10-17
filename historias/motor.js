@@ -65,6 +65,9 @@
 
   /* Familias en un orden pensado (las desconocidas, al final), con su color y una línea de presentación */
   const FAM = {
+    'Las 500': ['#c9a227', 'Los 500 mejores discos y canciones de la historia'],
+    'Para cada momento': ['#f2994a', 'Estaciones, gimnasio, coche y estados de ánimo'],
+    'La música por dentro': ['#5c6bc0', 'Instrumentos, vídeos, polémicas, inventos y plataformas'],
     'Especiales': ['#e86aa8', 'Listas temáticas, tu vida y rarezas'],
     'Historia': ['#9a7b4f', 'De la prehistoria a la Segunda Guerra Mundial'],
     'Pop': ['#ff7a59', 'Del pop de los 50 al hyperpop'],
@@ -87,7 +90,7 @@
   const colorFam = (f) => (FAM[f] || ['#888'])[0];
   const lineaFam = (f) => (FAM[f] || ['', ''])[1];
   // El dibujo de la funda depende de la familia: así se reconoce de un vistazo
-  const dibujo = (f) => Math.max(0, ORDEN_FAM.indexOf(f)) % 6;
+  const dibujo = (f) => Math.max(0, ORDEN_FAM.indexOf(f) - 3) % 6;
   const fmt = (n) => n.toLocaleString('es-ES');
   // Años: los de antes de Cristo llevan «a. C.»
   const fa = (a) => a < 0 ? (a <= -10000 ? fmt(-a) : String(-a)) + ' a. C.' : String(a);
@@ -102,8 +105,9 @@
     return s.charAt(0).toUpperCase() + s.slice(1);
   };
   // Historias añadidas hace poco (salen en «Novedades» y con la etiqueta «Nueva»)
-  const NUEVAS = ['gta', 'fifa', 'autotune', 'ibizamix95', 'luismiguel', 'coche', 'levitar', 'perreo', 'espana', 'worldmusic',
-    'mexico', 'puertorico', 'eeuu', 'plena', 'merengue', 'corridos', 'rancheras'];
+  const NUEVAS = ['top500albumes', 'top500canciones', 'top500espanol', 'abuelos', 'primavera', 'verano', 'otono', 'invierno', 'gimnasio', 'baladas', 'rockclasico', 'softrock', 'ska', 'standards',
+    'gospel', 'emo', 'trapedm', 'hybridtrap', 'gabber', 'bigbeat', 'nudisco', 'musicaia', 'tiktok', 'apple', 'spotify', 'videoclips', 'instrumentos', 'polemicas',
+    'innovadores', 'fracasos', 'yeye', 'eurovision', 'femmefatale', 'poprap', 'graciosas', 'discobcn', 'absurda', 'cantautores', 'cantautoresesp', 'popenespanol', 'bedroompop'];
   const leer = (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } };
   const guardar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
 
@@ -206,7 +210,8 @@
     const hito = i.tipo === 'hito';
     const etiqueta = (i.tipo === 'disco' ? '<span class="tipo">disco entero</span>' : '') +
       (VER[i.v] ? '<span class="veredicto ' + i.v + '">' + VER[i.v] + '</span>' : '');
-    const anyo = i.a < 0 ? (i.a <= -10000 ? fmt(-i.a) : -i.a) + '<small>a. C.</small>' : esc(i.a);
+    const pos = cod && /^#/.test(cod) ? '<em class="pos">' + cod.slice(1) + '</em>' : '';
+    const anyo = pos + (i.a < 0 ? (i.a <= -10000 ? fmt(-i.a) : -i.a) + '<small>a. C.</small>' : esc(i.a));
     if (hito) {
       return '<li class="row hito" style="--tinte:' + h.color + '"><span class="anyo">' + anyo + '</span>' +
         '<div class="txt"><span class="h-eti">' + ic('hito') + 'Momento clave</span><div class="t1">' + marcar(i.t, terms) + etiqueta + '</div>' +
@@ -215,7 +220,7 @@
     }
     const k = clave(h, i), oida = OIDAS.has(k);
     return '<li class="row' + (oida ? ' oida-on' : '') + '" style="--tinte:' + h.color + '">' +
-      '<span class="anyo">' + anyo + (cod ? '<b>' + cod + '</b>' : '') + '</span>' +
+      '<span class="anyo">' + anyo + (cod && !pos ? '<b>' + cod + '</b>' : '') + '</span>' +
       '<div class="txt"><div class="t1">' + marcar(i.t, terms) + etiqueta + '</div><div class="t2">' + marcar(i.art, terms) +
       (laTienes(i) ? ' <span class="tuya">la tienes</span>' : '') + '</div>' + (extra || '') +
       (i.n ? '<p class="nota">' + marcar(i.n, terms) + '</p>' : '') + '</div>' +
@@ -350,21 +355,27 @@
     const sig = fam.length > 1 ? fam[(fam.indexOf(h) + 1) % fam.length] : H[(H.indexOf(h) + 1) % H.length];
     const ant = fam.length > 2 ? fam[(fam.indexOf(h) - 1 + fam.length) % fam.length] : null;
     const nHitos = piezas(h).length - escuchables(h).length;
+    let rk = 0;
     main.innerHTML = '<div class="hero" style="--tinte:' + h.color + ';--c:' + h.color + '">' +
       '<div class="migas"><a class="btn sm vidrio" href="#">' + ic('atras') + 'Inicio</a><a class="btn sm vidrio" href="' + hashFam(h.familia) + '"><i class="pto" style="--c:' + colorFam(h.familia) + '"></i>' + esc(h.familia) + '</a></div>' +
       '<div class="hero-in">' + funda(h, true) +
       '<div class="hero-txt"><span class="eti">' + esc(h.periodo) + '</span>' +
       '<h1>' + esc(h.titulo) + '</h1><p class="lema-h">' + esc(h.lema) + '</p>' +
-      '<p class="datos">' + escuchables(h).length + ' piezas' + (nHitos ? ' · ' + nHitos + ' momentos clave' : '') + (varios ? ' · ' + h.capitulos.length + ' caras' : '') + '</p>' +
+      '<p class="datos">' + escuchables(h).length + ' piezas' + (nHitos ? ' · ' + nHitos + ' momentos clave' : '') + (varios && !h.ranking ? ' · ' + h.capitulos.length + ' caras' : '') + '</p>' +
       '<div id="prog">' + progreso(h) + '</div>' +
       '<div class="btnrow"><a class="btn pri" href="mando.html?historia=' + h.id + '" title="La Fonoteca busca cada canción y crea la playlist en tu Spotify">' + ic('spotify') + 'Crear en mi Spotify</a>' +
       '<button class="btn" id="copiar">' + ic('copia') + 'Copiar lista</button>' +
       '<a class="btn" href="#juego/' + h.id + '" title="Adivina el año de las piezas de esta historia">' + ic('mando') + 'Ponte a prueba</a></div></div></div>' +
       '<p class="intro">' + esc(h.intro) + '</p></div>' +
-      (varios ? '<nav class="indice" style="--tinte:' + h.color + '" aria-label="Caras">' + h.capitulos.map((c, k) => '<a class="chip" data-cap="' + (k + 1) + '" href="#h/' + h.id + '/' + (k + 1) + '"><b>' + cara(k) + '</b>' + esc(c.corto || c.titulo) + '</a>').join('') + '</nav>' : '') +
+      (varios ? '<nav class="indice" style="--tinte:' + h.color + '" aria-label="Caras">' + h.capitulos.map((c, k) => '<a class="chip" data-cap="' + (k + 1) + '" href="#h/' + h.id + '/' + (k + 1) + '">' + (h.ranking ? '' : '<b>' + cara(k) + '</b>') + esc(c.corto || c.titulo) + '</a>').join('') + '</nav>' : '') +
       h.capitulos.map((c, k) => {
         let n = 0;
         const L = cara(k);
+        if (h.ranking) {
+          return '<section class="capitulo" id="cap-' + (k + 1) + '" style="--tinte:' + h.color + '">' +
+            '<header class="cap-cab"><div><span class="eti">Puestos ' + esc(c.corto || c.titulo) + '</span><h2>' + esc(c.titulo) + '</h2>' + (c.intro ? '<p>' + esc(c.intro) + '</p>' : '') + '</div></header>' +
+            '<ol class="lista">' + c.items.map((i) => fila(i, h, null, '', i.tipo === 'hito' ? '' : '#' + (++rk))).join('') + '</ol></section>';
+        }
         return '<section class="capitulo" id="cap-' + (k + 1) + '" style="--tinte:' + h.color + '">' +
           '<header class="cap-cab">' + (varios ? '<span class="letra">' + L + '</span>' : '') + '<div><span class="eti">' + (varios ? 'Cara ' + L + ' · ' : '') + esc(c.periodo) + '</span>' +
           '<h2>' + esc(c.titulo) + '</h2>' + (c.intro ? '<p>' + esc(c.intro) + '</p>' : '') + '</div></header>' +

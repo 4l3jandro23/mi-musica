@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "triste",
-  familia: "Especiales",
+  familia: "Para cada momento",
   titulo: "Música triste",
   periodo: "1689 – 2023",
   color: "#4a6a9a",

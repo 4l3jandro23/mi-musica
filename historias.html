@@ -313,6 +313,7 @@
   .anyo { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding-top: 1px; font-family: var(--f-mono); font-size: 16px; font-weight: 500; letter-spacing: -.03em;
     color: color-mix(in srgb, var(--tinte) 65%, var(--fg)); font-variant-numeric: tabular-nums; line-height: 1.2; }
   .anyo small { font-size: 10.5px; opacity: .75; letter-spacing: 0; }
+  .anyo em.pos { font-style: normal; font-family: var(--f-disp); font-weight: 800; font-size: 21px; letter-spacing: -.04em; color: color-mix(in srgb, var(--tinte) 80%, var(--fg)); line-height: 1; margin-bottom: 2px; }
   .anyo b { font-weight: 400; font-size: 11.5px; color: var(--fg-mute); letter-spacing: .02em; }
   .txt { min-width: 0; }
   .t1 { font-size: 16.5px; font-weight: 650; line-height: 1.3; letter-spacing: -.01em; }
@@ -466,6 +467,11 @@
 <script src="historias/datos/dutchhouse.js"></script>
 <script src="historias/datos/berghain.js"></script>
 <script src="historias/datos/concreta.js"></script>
+<script src="historias/datos/trapedm.js"></script>
+<script src="historias/datos/hybridtrap.js"></script>
+<script src="historias/datos/gabber.js"></script>
+<script src="historias/datos/bigbeat.js"></script>
+<script src="historias/datos/nudisco.js"></script>
 <script src="historias/datos/drumandbass.js"></script>
 <script src="historias/datos/dubstep.js"></script>
 <script src="historias/datos/ukgarage.js"></script>
@@ -487,6 +493,7 @@
 <script src="historias/datos/altrap.js"></script>
 <script src="historias/datos/rage.js"></script>
 <script src="historias/datos/grime.js"></script>
+<script src="historias/datos/poprap.js"></script>
 <script src="historias/datos/rockandroll.js"></script>
 <script src="historias/datos/hardrock.js"></script>
 <script src="historias/datos/glamrock.js"></script>
@@ -507,6 +514,9 @@
 <script src="historias/datos/indie.js"></script>
 <script src="historias/datos/shoegaze.js"></script>
 <script src="historias/datos/yachtrock.js"></script>
+<script src="historias/datos/rockclasico.js"></script>
+<script src="historias/datos/softrock.js"></script>
+<script src="historias/datos/emo.js"></script>
 <script src="historias/datos/reggaeton.js"></script>
 <script src="historias/datos/rapespanol.js"></script>
 <script src="historias/datos/latina.js"></script>
@@ -528,20 +538,28 @@
 <script src="historias/datos/puertorico.js"></script>
 <script src="historias/datos/plena.js"></script>
 <script src="historias/datos/merengue.js"></script>
+<script src="historias/datos/ska.js"></script>
+<script src="historias/datos/popenespanol.js"></script>
 <script src="historias/datos/soul.js"></script>
 <script src="historias/datos/rnb.js"></script>
 <script src="historias/datos/funk.js"></script>
 <script src="historias/datos/disco.js"></script>
 <script src="historias/datos/neosoul.js"></script>
+<script src="historias/datos/gospel.js"></script>
 <script src="historias/datos/pop.js"></script>
 <script src="historias/datos/hyperpop.js"></script>
 <script src="historias/datos/synthpop.js"></script>
 <script src="historias/datos/artpop.js"></script>
+<script src="historias/datos/baladas.js"></script>
+<script src="historias/datos/eurovision.js"></script>
+<script src="historias/datos/cantautores.js"></script>
+<script src="historias/datos/bedroompop.js"></script>
 <script src="historias/datos/blues.js"></script>
 <script src="historias/datos/country.js"></script>
 <script src="historias/datos/folk.js"></script>
 <script src="historias/datos/eeuu.js"></script>
 <script src="historias/datos/jazz.js"></script>
+<script src="historias/datos/standards.js"></script>
 <script src="historias/datos/clasica.js"></script>
 <script src="historias/datos/opera.js"></script>
 <script src="historias/datos/bandassonoras.js"></script>
@@ -575,6 +593,10 @@
 <script src="historias/datos/movida.js"></script>
 <script src="historias/datos/popespanol.js"></script>
 <script src="historias/datos/ibizamix95.js"></script>
+<script src="historias/datos/yeye.js"></script>
+<script src="historias/datos/discobcn.js"></script>
+<script src="historias/datos/cantautoresesp.js"></script>
+<script src="historias/datos/abuelos.js"></script>
 <script src="historias/datos/decadas.js"></script>
 <script src="historias/datos/memes.js"></script>
 <script src="historias/datos/whitegirlpop.js"></script>
@@ -595,6 +617,9 @@
 <script src="historias/datos/autotune.js"></script>
 <script src="historias/datos/coche.js"></script>
 <script src="historias/datos/levitar.js"></script>
+<script src="historias/datos/femmefatale.js"></script>
+<script src="historias/datos/graciosas.js"></script>
+<script src="historias/datos/absurda.js"></script>
 <script src="historias/datos/ww2.js"></script>
 <script src="historias/datos/origenes.js"></script>
 <script src="historias/datos/motown.js"></script>
@@ -604,6 +629,23 @@
 <script src="historias/datos/sony.js"></script>
 <script src="historias/datos/universal.js"></script>
 <script src="historias/datos/spinnin.js"></script>
-<script src="historias/motor.js?v=9"></script>
+<script src="historias/datos/primavera.js"></script>
+<script src="historias/datos/verano.js"></script>
+<script src="historias/datos/otono.js"></script>
+<script src="historias/datos/invierno.js"></script>
+<script src="historias/datos/gimnasio.js"></script>
+<script src="historias/datos/musicaia.js"></script>
+<script src="historias/datos/tiktok.js"></script>
+<script src="historias/datos/apple.js"></script>
+<script src="historias/datos/spotify.js"></script>
+<script src="historias/datos/videoclips.js"></script>
+<script src="historias/datos/instrumentos.js"></script>
+<script src="historias/datos/polemicas.js"></script>
+<script src="historias/datos/innovadores.js"></script>
+<script src="historias/datos/fracasos.js"></script>
+<script src="historias/datos/top500albumes.js"></script>
+<script src="historias/datos/top500canciones.js"></script>
+<script src="historias/datos/top500espanol.js"></script>
+<script src="historias/motor.js?v=10"></script>
 </body>
 </html>

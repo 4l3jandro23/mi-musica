@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "autotune",
-  familia: "Especiales",
+  familia: "La música por dentro",
   titulo: "La historia del autotune",
   periodo: "1939 – 2018",
   color: "#8e44ec",

@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "alternativa",
   familia: "Rock",
   titulo: "Historia del rock alternativo",
-  periodo: "1980 – 2005",
+  periodo: "1980 – 2015",
   color: "#4c6b3c",
   lema: "Del post-punk al grunge, el britpop y Radiohead: cuando lo alternativo se volvió masivo.",
   intro: "En los 80, el rock alternativo vivía en sellos pequeños y radios universitarias. En 1991, «Smells Like Teen Spirit» lo cambió todo: lo alternativo pasó a ser lo que más se vendía. Grunge en Seattle, britpop en Inglaterra, Héroes del Silencio y Extremoduro en España, y luego Radiohead, Muse o Gorillaz.",
@@ -14,9 +14,16 @@ HISTORIAS.push({
       intro: "Sellos pequeños, radios universitarias y guitarras raras.",
       items: [
         { a: 1980, art: "Joy Division", t: "Love Will Tear Us Apart", n: "Salió un mes antes del suicidio de Ian Curtis: el post-punk más triste." },
+        { a: 1980, art: "Talking Heads", t: "Once in a Lifetime", n: "David Byrne y la vida que no sabes cómo has acabado teniendo." },
         { a: 1981, art: "MTV y la radio universitaria", t: "Las college radios", tipo: "hito", n: "Las emisoras de universidad de EE. UU. dan a conocer a R.E.M., The Cure o los Pixies." },
+        { a: 1981, art: "R.E.M.", t: "Radio Free Europe", n: "El primer sencillo de los de Athens, la base del rock universitario." },
+        { a: 1983, art: "The Smiths", t: "This Charming Man", n: "La guitarra de Johnny Marr y Morrissey con gladiolos." },
+        { a: 1983, art: "Violent Femmes", t: "Blister in the Sun", n: "Folk punk acústico que se sigue cantando en todas las fiestas." },
+        { a: 1985, art: "The Replacements", t: "Bastards of Young", n: "El rock de Minneapolis para los perdedores." },
+        { a: 1985, art: "Hüsker Dü", t: "Makes No Sense at All", n: "Hardcore con melodías: la semilla del rock alternativo." },
         { a: 1987, art: "The Cure", t: "Just Like Heaven", n: "El pop más luminoso de un grupo conocido por su oscuridad." },
         { a: 1988, art: "Pixies", t: "Where Is My Mind?", n: "Estrofas suaves y estribillos explosivos: la fórmula que copiaría Nirvana. Suena al final de «El club de la lucha»." },
+        { a: 1988, art: "Sonic Youth", t: "Teen Age Riot", n: "Del disco «Daydream Nation»." },
         { a: 1990, art: "Jane's Addiction", t: "Been Caught Stealing", n: "Perry Farrell crearía al año siguiente el festival Lollapalooza." },
         { a: 1990, art: "Héroes del Silencio", t: "Entre dos tierras", n: "Desde Zaragoza: el rock español que triunfó en Europa y Latinoamérica." }
       ]
@@ -24,7 +31,7 @@ HISTORIAS.push({
     {
       titulo: "El grunge y la explosión alternativa",
       corto: "Grunge",
-      periodo: "1991 – 1996",
+      periodo: "1991 – 1998",
       intro: "Camisas de franela, Seattle y la MTV.",
       items: [
         { a: 1991, art: "Lollapalooza", t: "Primera edición", tipo: "hito", n: "Un festival itinerante creado por Perry Farrell: el rock alternativo tiene su casa." },
@@ -36,9 +43,15 @@ HISTORIAS.push({
         { a: 1994, art: "Kurt Cobain", t: "Muere con 27 años", tipo: "hito", n: "Kurt Cobain muere en Seattle en abril de 1994. El grunge pierde a su voz y el rock alternativo cambia de rumbo." },
         { a: 1994, art: "Soundgarden", t: "Black Hole Sun", n: "Un vídeo de pesadilla suburbana." },
         { a: 1994, art: "Weezer", t: "Buddy Holly", n: "Un vídeo dentro de la serie «Happy Days»." },
+        { a: 1994, art: "Nine Inch Nails", t: "Closer", n: "Industrial en la radio y un vídeo prohibido en muchas teles." },
+        { a: 1994, art: "The Cranberries", t: "Zombie", n: "Una canción contra la violencia en Irlanda del Norte." },
         { a: 1995, art: "The Smashing Pumpkins", t: "1979", n: "La nostalgia adolescente perfecta." },
         { a: 1995, art: "Oasis", t: "Wonderwall", n: "El britpop: la respuesta británica al grunge." },
-        { a: 1996, art: "Extremoduro", t: "So payaso", n: "Robe Iniesta y el rock transgresivo de Extremadura." }
+        { a: 1995, art: "Alanis Morissette", t: "You Oughta Know", n: "La rabia de «Jagged Little Pill», uno de los discos más vendidos de los 90." },
+        { a: 1995, art: "Garbage", t: "Only Happy When It Rains", n: "Shirley Manson y Butch Vig, el productor de «Nevermind»." },
+        { a: 1996, art: "Extremoduro", t: "So payaso", n: "Robe Iniesta y el rock transgresivo de Extremadura." },
+        { a: 1998, art: "Hole", t: "Celebrity Skin", n: "Courtney Love y su disco más pop." },
+        { a: 1998, art: "Placebo", t: "Pure Morning", n: "Brian Molko y el rock andrógino." }
       ]
     },
     {
@@ -55,6 +68,20 @@ HISTORIAS.push({
         { a: 2001, art: "Muse", t: "Plug In Baby", n: "El riff de Matt Bellamy, a medio camino entre Bach y el metal, que hizo de Muse una banda de estadio." },
         { a: 2002, art: "Queens of the Stone Age", t: "No One Knows", n: "Con Dave Grohl a la batería: rock del desierto." },
         { a: 2005, art: "Gorillaz", t: "Feel Good Inc.", n: "Un grupo de dibujos animados creado por Damon Albarn." }
+      ]
+    },
+    {
+      titulo: "El rock alternativo hoy",
+      corto: "Desde 2001",
+      periodo: "2001 – 2015",
+      intro: "Nu metal, revival y rock de streaming.",
+      items: [
+        { a: 2001, art: "Linkin Park", t: "In the End", n: "El nu metal más melódico: uno de los grandes éxitos del siglo." },
+        { a: 2001, art: "System of a Down", t: "Chop Suey!", n: "Un número de metal armenio-estadounidense que se coló en la MTV." },
+        { a: 2003, art: "Yeah Yeah Yeahs", t: "Maps", n: "Karen O llorando en el vídeo de verdad." },
+        { a: 2013, art: "Arctic Monkeys", t: "Do I Wanna Know?", n: "El riff lento y la canción más escuchada del grupo." },
+        { a: 2015, art: "El rock en streaming", t: "Las guitarras pierden terreno", tipo: "hito", n: "El rap y el pop dominan las listas: el rock alternativo vive de festivales y de la nostalgia." },
+        { a: 2015, art: "Twenty One Pilots", t: "Stressed Out", n: "El rock alternativo de la generación del streaming." }
       ]
     }
   ]
