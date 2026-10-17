@@ -19,8 +19,7 @@ HISTORIAS.push({
         { a: 1959, art: "«Orfeu Negro»", t: "La película", tipo: "hito", n: "La película francesa ambientada en el carnaval de Río gana la Palma de Oro y el Óscar: el mundo descubre la bossa nova." },
         { a: 1959, art: "João Gilberto", t: "Desafinado", n: "Una canción sobre cantar «desafinado»." },
         { a: 1959, art: "Luiz Bonfá", t: "Manhã de Carnaval", n: "De la película Orfeo negro, Palma de Oro en Cannes." },
-        { a: 1959, art: "João Gilberto", t: "Samba de uma nota só", n: "Una melodía casi de una sola nota sobre acordes que cambian: el genio de Jobim y Newton Mendonça." },
-        { a: 1959, art: "Elza Laranjeira", t: "Serenata do adeus", n: "Una canción de Vinicius de Moraes, de los primeros discos de la bossa (año aproximado)." }
+        { a: 1959, art: "João Gilberto", t: "Samba de uma nota só", n: "Una melodía casi de una sola nota sobre acordes que cambian: el genio de Jobim y Newton Mendonça." }
       ]
     },
     {
@@ -34,6 +33,7 @@ HISTORIAS.push({
         { a: 1963, art: "Antônio Carlos Jobim", t: "Wave", n: "Jobim instrumental, con la orquesta de Claus Ogerman." },
         { a: 1963, art: "Vinicius de Moraes & Antônio Carlos Jobim", t: "Garota de Ipanema", q: "Garota de Ipanema", n: "La versión original en portugués de «The Girl from Ipanema»." },
         { a: 1963, art: "João Gilberto", t: "Corcovado", q: "João Gilberto Corcovado", n: "La versión de João, con su voz suave y su guitarra que marca el ritmo." },
+        { a: 1963, art: "Elza Laranjeira", t: "Serenata do adeus", n: "Una canción de Vinicius de Moraes que estrenó Elizeth Cardoso; Elza la graba en el LP «A música de Jobim e Vinicius»." },
         { a: 1964, art: "Stan Getz, João Gilberto & Astrud Gilberto", t: "The Girl from Ipanema", n: "Grammy a la grabación del año." },
         { a: 1964, art: "Nara Leão", t: "O barquinho", n: "La musa de la bossa nova." },
         { a: 1964, art: "Wanda Sá", t: "Vagamente", n: "La bossa nova de Roberto Menescal." },

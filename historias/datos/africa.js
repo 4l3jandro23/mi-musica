@@ -36,13 +36,13 @@ HISTORIAS.push({
     {
       titulo: "Afrobeat, afrofunk y la edad de oro",
       corto: "Afrobeat",
-      periodo: "1972 – 1978",
+      periodo: "1970 – 1978",
       intro: "James Brown llega a África y África le contesta.",
       items: [
+        { a: 1970, art: "Getatchew Mekurya", t: "Ambassèl", q: "Getatchew Mekurya Ambassel", n: "El saxo salvaje del ethio-jazz, publicado por Philips Ethiopia y recuperado en los discos «Éthiopiques»." },
         { a: 1972, art: "Manu Dibango", t: "Soul Makossa", n: "Desde Camerún. Su «mama-ko, mama-sa» acabó en «Wanna Be Startin' Somethin'» de Michael Jackson." },
         { a: 1972, art: "Bonga", t: "Mona Ki Ngi Xica", n: "Semba de Angola, grabada en el exilio durante la guerra colonial. Melancolía pura." },
         { a: 1972, art: "Mulatu Astatke", t: "Yèkèrmo Sèw", n: "El padre del ethio-jazz: escalas etíopes y jazz. Sonaría en «Flores rotas» de Jarmusch." },
-        { a: 1972, art: "Getatchew Mekurya", t: "Ambassèl", q: "Getatchew Mekurya Ambassel", n: "El saxo salvaje del ethio-jazz, recuperado en los discos «Éthiopiques» (año aproximado)." },
         { a: 1974, art: "Abdullah Ibrahim", t: "Mannenberg", n: "Jazz de Ciudad del Cabo que se convirtió en himno contra el apartheid." },
         { a: 1974, art: "The Funkees", t: "Break Through", n: "Rock psicodélico y funk nigeriano de después de la guerra de Biafra." },
         { a: 1975, art: "Fela Kuti", t: "Water No Get Enemy", n: "El afrobeat: funk, jazz y yoruba en temas larguísimos." },

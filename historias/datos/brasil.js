@@ -58,8 +58,8 @@ HISTORIAS.push({
         { a: 1972, art: "Novos Baianos", t: "Preta Pretinha", n: "Hippies en una comuna mezclando samba, choro y rock." },
         { a: 1972, art: "Jorge Ben", t: "Taj Mahal", n: "Rod Stewart la «tomó prestada» para «Da Ya Think I'm Sexy?»." },
         { a: 1974, art: "Elis Regina", t: "Águas de Março", n: "Con Tom Jobim: considerada la mejor canción brasileña de la historia." },
-        { a: 1975, art: "Candeia", t: "Zé tambozeiro (Tambor de Angola)", n: "Samba de raíz africana del gran sambista de Portela (año aproximado)." },
         { a: 1976, art: "Cartola", t: "O Mundo É um Moinho", n: "Un sambista de Mangueira que grabó su primer disco con 66 años." },
+        { a: 1977, art: "Candeia", t: "Zé tambozeiro (Tambor de Angola)", n: "Samba de raíz africana del gran sambista de Portela, del disco «Enciclopédia Musical Brasileira»." },
         { a: 1979, art: "Gilberto Gil", t: "Toda menina baiana", n: "Gil vuelve a la alegría bahiana tras el exilio." }
       ]
     },
@@ -78,8 +78,7 @@ HISTORIAS.push({
         { a: 1992, art: "Sérgio Mendes", t: "Magalenha", n: "Una canción de Carlinhos Brown que gana el Grammy con el disco «Brasileiro»." },
         { a: 1994, art: "Chico Science & Nação Zumbi", t: "A Praieira", n: "Desde Recife, el manguebeat: maracatu y rock." },
         { a: 1996, art: "Sepultura", t: "Roots Bloody Roots", n: "Metal brasileño con percusión indígena: famoso en todo el mundo." },
-        { a: 1997, art: "Racionais MC's", t: "Diário de um Detento", n: "El rap de São Paulo cuenta la masacre de la cárcel de Carandiru." },
-        { a: 1998, art: "Carlinhos Brown", t: "Maria Caipirinha", q: "Carlinhos Brown Maria Caipirinha", n: "La percusión de Salvador de Bahía (año aproximado)." }
+        { a: 1997, art: "Racionais MC's", t: "Diário de um Detento", n: "El rap de São Paulo cuenta la masacre de la cárcel de Carandiru." }
       ]
     },
     {
@@ -89,6 +88,7 @@ HISTORIAS.push({
       intro: "Del sertanejo al funk de las favelas: Brasil manda en el streaming.",
       items: [
         { a: 2000, art: "Marisa Monte", t: "Amor I Love You", n: "La gran voz de la MPB moderna." },
+        { a: 2004, art: "Carlinhos Brown & DJ Dero", t: "Maria Caipirinha", q: "Carlinhos Brown Maria Caipirinha DJ Dero", n: "Nace en el carnaval de Barcelona y es la canción del verano de 2004 en España." },
         { a: 2006, art: "Chico Buarque & DJ Meme", t: "Bye Bye Brasil (Baile Funk Mix)", n: "La canción de la película de 1979, pasada a baile funk." },
         { a: 2006, art: "Sérgio Mendes & Black Eyed Peas", t: "Mas que nada", n: "Jorge Ben con will.i.am: «Mas que nada» vuelve a las listas cuarenta años después." },
         { a: 2011, art: "Michel Teló", t: "Ai Se Eu Te Pego", n: "El sertanejo universitario: un fenómeno en España y en todo el mundo." },

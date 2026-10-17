@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "alemania",
   familia: "Mundo",
   titulo: "Historia de la música alemana",
-  periodo: "1928 – 2022",
+  periodo: "1928 – 2026",
   color: "#4d5866",
   lema: "Cabaret, Schlager, krautrock, Neue Deutsche Welle y techno.",
   intro: "Del cabaret de Weimar a la Love Parade. La música alemana en alemán (y alguna austriaca): la que censuraron los nazis, la que consolaba en la posguerra, la que inventó el futuro con el krautrock y la que celebró la caída del Muro bailando techno.",
@@ -92,7 +92,7 @@ HISTORIAS.push({
     {
       titulo: "Indie y pop del siglo XXI",
       corto: "Hoy",
-      periodo: "2002 – 2022",
+      periodo: "2002 – 2026",
       intro: "De Sportfreunde Stiller a Milky Chance: el pop alemán que se escucha fuera.",
       items: [
         { a: 2002, art: "Sportfreunde Stiller", t: "Independent", n: "Indie rock de Múnich." },
@@ -100,7 +100,7 @@ HISTORIAS.push({
         { a: 2013, art: "Milky Chance", t: "Stolen Dance", n: "Dos amigos de Kassel lo graban en casa y llega a medio mundo." },
         { a: 2013, art: "Milky Chance", t: "Down by the River", n: "Del mismo disco, «Sadnecessary»." },
         { a: 2016, art: "Alice Merton", t: "No Roots", n: "Una canción sobre haberse mudado de país muchas veces." },
-        { a: 2022, art: "KITSCHKRIEG, Blumengarten & Shirin David", t: "Gut genug", n: "Rap y pop alemán de hoy (año aproximado)." }
+        { a: 2026, art: "KITSCHKRIEG, Blumengarten & Shirin David", t: "Gut genug", q: "KITSCHKRIEG Gut Genug Blumengarten Shirin David", n: "Número uno en Alemania y viral en EE. UU., donde el «du bist gut genug» se oye como «Doobie Scoot Canoe»." }
       ]
     }
   ]
