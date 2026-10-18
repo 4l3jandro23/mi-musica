@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "electronica",
   familia: "Electrónica",
   titulo: "Historia de la música electrónica",
-  periodo: "1897 – 2022",
+  periodo: "1897 – 2024",
   color: "#7c5cd6",
   lema: "Del ruido futurista a «I Feel Love» y de las raves a Fred again..: un siglo inventando sonidos.",
   intro: "Antes de los sintetizadores hubo máquinas imposibles, cintas cortadas a tijera y laboratorios de radio. Tres capítulos, en orden, desde los primeros instrumentos eléctricos hasta la pista de baile.",
@@ -97,7 +97,7 @@ HISTORIAS.push({
     {
       titulo: "Del superclub al streaming",
       corto: "Hasta hoy",
-      periodo: "2000 – 2022",
+      periodo: "2000 – 2024",
       intro: "Ibiza, los DJs estrella, la era EDM y la electrónica íntima de dormitorio.",
       items: [
         { a: 2000, art: "Daft Punk", t: "One More Time", n: "El autotune entra en la pista de baile." },
@@ -110,7 +110,8 @@ HISTORIAS.push({
         { a: 2020, art: "sapientdream", t: "Stargazing", n: "Electrónica lo-fi de internet (año aproximado)." },
         { a: 2021, art: "sapientdream & Slushii", t: "Past Lives", n: "Un éxito de TikTok, también en versión «slowed + reverb» (año aproximado)." },
         { a: 2021, art: "recovery girl & galen tipton", t: "IM UPSET", n: "Hyperpop y breakcore de internet (año aproximado)." },
-        { a: 2022, art: "Fred again..", t: "Delilah (pull me out of this)", n: "La electrónica emocional hecha con notas de voz y vídeos del móvil." }
+        { a: 2022, art: "Fred again..", t: "Delilah (pull me out of this)", n: "La electrónica emocional hecha con notas de voz y vídeos del móvil." },
+        { a: 2024, art: "sho", t: "noir", n: "Trap electrónico de internet del sello broke: también tiene su versión «sl0wed down»." }
       ]
     }
   ]
