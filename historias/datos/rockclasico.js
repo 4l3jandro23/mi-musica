@@ -16,10 +16,12 @@ HISTORIAS.push({
         { a: 1964, art: "The Kinks", t: "You Really Got Me", n: "Un amplificador rajado con una cuchilla y el primer gran riff distorsionado." },
         { a: 1965, art: "The Rolling Stones", t: "(I Can't Get No) Satisfaction", n: "El riff de Keith Richards le vino en sueños: lo grabó en una cinta antes de volver a dormirse." },
         { a: 1965, art: "The Who", t: "My Generation", n: "«Espero morir antes de hacerme viejo»: rabia adolescente." },
+        { a: 1966, art: "The Spencer Davis Group", t: "Gimme Some Lovin'", n: "Steve Winwood con 18 años y un órgano Hammond." },
         { a: 1967, art: "La radio FM", t: "El rock de álbum", tipo: "hito", n: "Las emisoras de FM empiezan a pinchar discos enteros y canciones largas: nace el rock «de álbum»." },
         { a: 1967, art: "Cream", t: "Sunshine of Your Love", n: "Eric Clapton y el primer supergrupo del rock." },
         { a: 1967, art: "The Jimi Hendrix Experience", t: "Purple Haze", n: "Hendrix reinventa la guitarra eléctrica." },
         { a: 1967, art: "The Doors", t: "Light My Fire", n: "Siete minutos con solo de órgano: un número uno impensable." },
+        { a: 1967, art: "The Spencer Davis Group", t: "I'm a Man", n: "Otra con Steve Winwood." },
         { a: 1968, art: "The Jimi Hendrix Experience", t: "All Along the Watchtower", n: "Dylan según Hendrix." },
         { a: 1969, art: "The Rolling Stones", t: "Gimme Shelter", n: "La guerra, la violencia y la voz de Merry Clayton." },
         { a: 1969, art: "Creedence Clearwater Revival", t: "Fortunate Son", n: "Contra los hijos de ricos que se libraban de Vietnam." },
@@ -30,10 +32,12 @@ HISTORIAS.push({
     {
       titulo: "La década del rock",
       corto: "Los 70",
-      periodo: "1970 – 1978",
+      periodo: "1970 – 1979",
       intro: "Estadios, riffs y discos conceptuales.",
       items: [
         { a: 1970, art: "Free", t: "All Right Now", n: "Un riff sencillo y perfecto." },
+        { a: 1970, art: "Derek and the Dominos", t: "Layla", n: "Eric Clapton enamorado de la mujer de George Harrison." },
+        { a: 1970, art: "The Kinks", t: "Lola", n: "Una noche con una mujer trans en el Soho." },
         { a: 1971, art: "The Who", t: "Baba O'Riley", n: "Sintetizador y adolescencia." },
         { a: 1971, art: "The Doors", t: "L.A. Woman", n: "El último disco con Jim Morrison." },
         { a: 1971, art: "The Doors", t: "Riders on the Storm", n: "Lluvia y piano eléctrico: la última canción que grabó Morrison." },
@@ -52,8 +56,10 @@ HISTORIAS.push({
         { a: 1976, art: "Thin Lizzy", t: "The Boys Are Back in Town", n: "El rock irlandés de Phil Lynott." },
         { a: 1976, art: "Tom Petty and the Heartbreakers", t: "American Girl", n: "Rock sencillo que no pasa de moda." },
         { a: 1977, art: "Fleetwood Mac", t: "Dreams", n: "Su único número uno en Estados Unidos; en 2020 volvió por un vídeo de TikTok." },
+        { a: 1977, art: "Electric Light Orchestra", t: "Mr. Blue Sky", n: "Orquesta y pop para un día de sol." },
         { a: 1978, art: "Dire Straits", t: "Sultans of Swing", n: "Mark Knopfler toca sin púa y el pub rock llega al mundo." },
-        { a: 1978, art: "Bob Seger", t: "Old Time Rock and Roll", n: "Un homenaje al rock de siempre." }
+        { a: 1978, art: "Bob Seger", t: "Old Time Rock and Roll", n: "Un homenaje al rock de siempre." },
+        { a: 1979, art: "Electric Light Orchestra", t: "Last Train to London", n: "ELO en clave disco." }
       ]
     },
     {

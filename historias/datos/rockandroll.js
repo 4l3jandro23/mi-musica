@@ -105,6 +105,7 @@ HISTORIAS.push({
         { a: 1962, art: "The Tornados", t: "Telstar", n: "Producida por Joe Meek: el primer número uno británico en EE. UU." },
         { a: 1963, art: "The Beach Boys", t: "Surfin' U.S.A.", n: "Chuck Berry con armonías californianas." },
         { a: 1963, art: "The Beatles", t: "She Loves You", n: "«Yeah, yeah, yeah». La beatlemanía en el Reino Unido." },
+        { a: 1963, art: "The Trashmen", t: "Surfin' Bird", n: "«A-well-a everybody's heard about the bird»." },
         { a: 1964, art: "The Beatles", t: "Actúan en el show de Ed Sullivan", tipo: "hito", n: "73 millones de estadounidenses los ven por la tele. Empieza la invasión británica." },
         { a: 1964, art: "The Kinks", t: "You Really Got Me", n: "Un amplificador rajado con una cuchilla: el riff distorsionado que anuncia el hard rock." },
         { a: 1964, art: "Los Brincos", t: "Flamenco", n: "Los «Beatles españoles» con un guiño andaluz." },

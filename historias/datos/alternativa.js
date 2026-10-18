@@ -49,6 +49,7 @@ HISTORIAS.push({
         { a: 1995, art: "Oasis", t: "Wonderwall", n: "El britpop: la respuesta británica al grunge." },
         { a: 1995, art: "Alanis Morissette", t: "You Oughta Know", n: "La rabia de «Jagged Little Pill», uno de los discos más vendidos de los 90." },
         { a: 1995, art: "Garbage", t: "Only Happy When It Rains", n: "Shirley Manson y Butch Vig, el productor de «Nevermind»." },
+        { a: 1995, art: "The Presidents of the United States of America", t: "Lump", n: "Rock alternativo con guitarras de dos cuerdas." },
         { a: 1996, art: "Extremoduro", t: "So payaso", n: "Robe Iniesta y el rock transgresivo de Extremadura." },
         { a: 1998, art: "Hole", t: "Celebrity Skin", n: "Courtney Love y su disco más pop." },
         { a: 1998, art: "Placebo", t: "Pure Morning", n: "Brian Molko y el rock andrógino." }
@@ -79,6 +80,8 @@ HISTORIAS.push({
         { a: 2001, art: "Linkin Park", t: "In the End", n: "El nu metal más melódico: uno de los grandes éxitos del siglo." },
         { a: 2001, art: "System of a Down", t: "Chop Suey!", n: "Un número de metal armenio-estadounidense que se coló en la MTV." },
         { a: 2003, art: "Yeah Yeah Yeahs", t: "Maps", n: "Karen O llorando en el vídeo de verdad." },
+        { a: 2007, art: "Foo Fighters", t: "The Pretender", n: "El himno de Dave Grohl para estadios." },
+        { a: 2011, art: "Foo Fighters", t: "Walk", n: "Del disco «Wasting Light», grabado en su garaje." },
         { a: 2013, art: "Arctic Monkeys", t: "Do I Wanna Know?", n: "El riff lento y la canción más escuchada del grupo." },
         { a: 2015, art: "El rock en streaming", t: "Las guitarras pierden terreno", tipo: "hito", n: "El rap y el pop dominan las listas: el rock alternativo vive de festivales y de la nostalgia." },
         { a: 2015, art: "Twenty One Pilots", t: "Stressed Out", n: "El rock alternativo de la generación del streaming." }

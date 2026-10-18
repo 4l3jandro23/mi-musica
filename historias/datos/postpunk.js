@@ -34,6 +34,7 @@ HISTORIAS.push({
         { a: 1980, art: "Joy Division", t: "Love Will Tear Us Apart", n: "Salió un mes después del suicidio de Ian Curtis: la canción más conocida del post-punk." },
         { a: 1981, art: "The Sound", t: "Winning", n: "Uno de los grandes olvidados del post-punk." },
         { a: 1981, art: "New Order", t: "Ceremony", n: "El primer single de New Order, escrito cuando todavía eran Joy Division." },
+        { a: 1982, art: "The Stranglers", t: "Golden Brown", n: "Un vals con clave sobre la heroína que fue número dos en Reino Unido." },
         { a: 1984, art: "Echo & the Bunnymen", t: "The Killing Moon", n: "Destino y luna." },
         { a: 1986, art: "The Chameleons", t: "Swamp Thing", n: "Guitarras atmosféricas." }
       ]

@@ -29,6 +29,7 @@ HISTORIAS.push({
         { a: 1970, art: "Black Sabbath", t: "Paranoid", n: "Escrita en unos minutos para rellenar el disco." },
         { a: 1970, art: "Led Zeppelin", t: "Immigrant Song", n: "El grito vikingo de Robert Plant." },
         { a: 1970, art: "Black Sabbath", t: "Iron Man", n: "El riff más reconocible de Tony Iommi." },
+        { a: 1970, art: "Sir Lord Baltimore", t: "Hard Rain Fallin'", n: "La revista Creem usa por primera vez «heavy metal» para describir a un grupo: ellos." },
         { a: 1971, art: "Deep Purple", t: "Highway Star", n: "Velocidad y solos neoclásicos: la semilla del power metal." },
         { a: 1972, art: "Deep Purple", t: "Smoke on the Water", n: "Sobre el incendio de un casino de Montreux durante un concierto de Frank Zappa." }
       ]

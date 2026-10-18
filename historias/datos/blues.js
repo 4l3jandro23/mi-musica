@@ -63,6 +63,7 @@ HISTORIAS.push({
         { a: 2000, art: "The White Stripes", t: "Death Letter", n: "Un blues de Son House a todo volumen." },
         { a: 2010, art: "The Black Keys", t: "Tighten Up", n: "Garage blues de Ohio para el siglo XXI." },
         { a: 2011, art: "Gary Clark Jr.", t: "Bright Lights", n: "El blues del siglo XXI." },
+        { a: 2015, art: "KALEO", t: "Way Down We Go", n: "Blues rock islandés: sonó en series y anuncios." },
         { a: 2019, art: "Christone «Kingfish» Ingram", t: "Fresh Out", q: "Kingfish Fresh Out", n: "Un chaval de Clarksdale con la guitarra en la mano." }
       ]
     }

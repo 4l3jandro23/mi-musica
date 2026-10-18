@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "grunge",
   familia: "Rock",
   titulo: "Historia del grunge",
-  periodo: "1986 – 1995",
+  periodo: "1986 – 2015",
   color: "#5e6b3a",
   lema: "Seattle, franela y desencanto: de Sub Pop a Nirvana, Pearl Jam y Soundgarden.",
   intro: "En la lluviosa Seattle de los 80, lejos de la industria, unos grupos mezclan la crudeza del punk con la pesadez de Black Sabbath. El sello Sub Pop los reúne y los bautiza «grunge». En 1991 «Nevermind» lo cambia todo: el grunge desbanca al glam metal y se convierte en la voz de la generación X. La muerte de Kurt Cobain en 1994 marca el principio del final.",
@@ -36,6 +36,7 @@ HISTORIAS.push({
         { a: 1991, art: "Pearl Jam", t: "Even Flow", n: "Del disco «Ten», uno de los más vendidos de la década." },
         { a: 1991, art: "Temple of the Dog", t: "Hunger Strike", n: "Homenaje a Andrew Wood: Chris Cornell y Eddie Vedder a dúo." },
         { a: 1991, art: "Pearl Jam", t: "Alive", n: "El primer single de Pearl Jam, una historia de familia contada con guitarras." },
+        { a: 1991, art: "Nirvana", t: "In Bloom", n: "Una canción sobre los que cantan sin entender la letra." },
         { a: 1992, art: "«Nevermind»", t: "Desbanca a Michael Jackson del número uno", tipo: "hito", n: "En enero de 1992, un disco de Seattle llega a lo más alto." },
         { a: 1992, art: "Alice in Chains", t: "Rooster", n: "Sobre el padre de Jerry Cantrell en Vietnam." },
         { a: 1992, art: "Stone Temple Pilots", t: "Plush", n: "De San Diego: la prensa los acusó de copiar, el público los adoró." },
@@ -43,14 +44,20 @@ HISTORIAS.push({
         { a: 1992, art: "Screaming Trees", t: "Nearly Lost You", n: "De la banda sonora de «Singles»: su gran éxito." },
         { a: 1992, art: "Pearl Jam", t: "Jeremy", n: "Un vídeo sobre un chico en el colegio." },
         { a: 1992, art: "L7", t: "Pretend We're Dead", n: "El grunge femenino." },
+        { a: 1992, art: "Babes in Toyland", t: "Bruise Violet", n: "El grunge de Minneapolis, con mujeres." },
         { a: 1993, art: "Nirvana", t: "Heart-Shaped Box", n: "De «In Utero»: más crudo, a propósito." },
-        { a: 1993, art: "Melvins", t: "Honey Bucket", n: "Los padrinos del grunge." }
+        { a: 1993, art: "Melvins", t: "Honey Bucket", n: "Los padrinos del grunge." },
+        { a: 1993, art: "Nirvana", t: "Serve the Servants", n: "Abre «In Utero»: «Teenage angst has paid off well»." },
+        { a: 1993, art: "Nirvana", t: "Scentless Apprentice", n: "Inspirada en «El perfume» de Patrick Süskind." },
+        { a: 1993, art: "Nirvana", t: "Rape Me", n: "Una canción contra la violación, censurada en las tiendas." },
+        { a: 1993, art: "Nirvana", t: "tourette's", n: "Gritos y velocidad." },
+        { a: 1993, art: "Nirvana", t: "All Apologies", n: "El cierre de «In Utero», y de su carrera." }
       ]
     },
     {
       titulo: "El final",
       corto: "El final",
-      periodo: "1994 – 1995",
+      periodo: "1994 – 2015",
       intro: "La muerte de Kurt Cobain marca el final del sueño.",
       items: [
         { a: 1994, art: "Kurt Cobain", t: "Muere con 27 años", tipo: "hito", n: "5 de abril de 1994: el grunge pierde a su líder y su inocencia." },
@@ -60,8 +67,11 @@ HISTORIAS.push({
         { a: 1994, art: "Hole", t: "Doll Parts", n: "Hole, el grupo de Courtney Love, en un disco publicado justo después de la muerte de Kurt." },
         { a: 1994, art: "Stone Temple Pilots", t: "Interstate Love Song", n: "Grunge melódico." },
         { a: 1994, art: "Bush", t: "Glycerine", n: "El grunge británico." },
+        { a: 1994, art: "Nirvana", t: "The Man Who Sold the World (MTV Unplugged)", n: "La de David Bowie, en su «Unplugged»: se publica después de la muerte de Kurt." },
         { a: 1995, art: "Foo Fighters", t: "I'll Stick Around", n: "Dave Grohl, el batería de Nirvana, empieza de nuevo grabándolo todo él solo." },
-        { a: 1995, art: "Mad Season", t: "River of Deceit", n: "El supergrupo de Layne Staley." }
+        { a: 1995, art: "Mad Season", t: "River of Deceit", n: "El supergrupo de Layne Staley." },
+        { a: 2015, art: "Kurt Cobain", t: "And I Love Her", n: "Una cinta casera de Kurt cantando a los Beatles, del documental «Montage of Heck»." },
+        { a: 2015, art: "Kurt Cobain", t: "Burn the Rain", n: "Otra grabación casera de «Montage of Heck»." }
       ]
     }
   ]

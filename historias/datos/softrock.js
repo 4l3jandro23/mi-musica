@@ -61,6 +61,7 @@ HISTORIAS.push({
         { a: 1984, art: "Foreigner", t: "I Want to Know What Love Is", n: "Con un coro de gospel de Nueva Jersey." },
         { a: 1985, art: "Live Aid", t: "Phil Collins en dos continentes", tipo: "hito", n: "Toca en Londres, cruza el Atlántico en Concorde y vuelve a tocar en Filadelfia el mismo día." },
         { a: 1991, art: "Bonnie Raitt", t: "I Can't Make You Love Me", n: "Una balada de piano." },
+        { a: 1992, art: "Eric Clapton", t: "Layla (Acoustic Live)", n: "La versión del «Unplugged» de MTV." },
         { a: 1993, art: "Sheryl Crow", t: "All I Wanna Do", n: "El soft rock de los 90, con humor." }
       ]
     }

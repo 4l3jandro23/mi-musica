@@ -10,7 +10,7 @@ HISTORIAS.push({
     {
       titulo: "El glam británico",
       corto: "Glam británico",
-      periodo: "1971 – 1975",
+      periodo: "1971 – 1978",
       intro: "Purpurina, plataformas y personajes: el rock juega con la identidad y el género.",
       items: [
         { a: 1971, art: "T. Rex", t: "Get It On", n: "Marc Bolan con purpurina en la cara en la tele: empieza el glam." },
@@ -35,7 +35,9 @@ HISTORIAS.push({
         { a: 1974, art: "David Bowie", t: "Rebel Rebel", n: "El riff glam de Bowie." },
         { a: 1974, art: "Sweet", t: "Fox on the Run", n: "Glam con armonías." },
         { a: 1974, art: "Sparks", t: "This Town Ain't Big Enough for Both of Us", n: "Falsete y teclados." },
-        { a: 1975, art: "Kiss", t: "Rock and Roll All Nite", n: "Maquillaje y fiesta." }
+        { a: 1974, art: "Pilot", t: "Magic", n: "Glam pop de Edimburgo." },
+        { a: 1975, art: "Kiss", t: "Rock and Roll All Nite", n: "Maquillaje y fiesta." },
+        { a: 1978, art: "Suzi Quatro", t: "If You Can't Give Me Love", n: "La reina del bajo del glam." }
       ]
     },
     {
