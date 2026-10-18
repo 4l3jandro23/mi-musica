@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "pop",
   familia: "Pop",
   titulo: "Historia del pop",
-  periodo: "1956 – 2023",
+  periodo: "1954 – 2026",
   color: "#ff6fae",
   lema: "Setenta años de canciones para todo el mundo: de Doris Day a The Weeknd.",
   intro: "«Pop» viene de «popular»: canciones hechas para gustar a mucha gente, con estribillos que se recuerdan. Cada década lo reinventa con su tecnología: la radio, la televisión, el vídeo musical, la MTV, el CD y hoy el streaming y TikTok. Un recorrido por los grandes momentos, década a década.",
@@ -10,25 +10,34 @@ HISTORIAS.push({
     {
       titulo: "Los 50 y 60",
       corto: "50 y 60",
-      periodo: "1956 – 1969",
+      periodo: "1954 – 1969",
       intro: "La radio y la televisión crean las primeras estrellas pop.",
       items: [
+        { a: 1954, art: "The Chordettes", t: "Mr. Sandman", n: "El cuarteto vocal de Wisconsin y su canción de cuna pop: número uno en EE. UU." },
         { a: 1956, art: "Doris Day", t: "Que Sera, Sera (Whatever Will Be, Will Be)", n: "De una película de Hitchcock: el pop de antes del rock." },
         { a: 1957, art: "Paul Anka", t: "Diana", n: "Un chaval de 15 años y uno de los singles más vendidos de su época." },
+        { a: 1958, art: "The Chordettes", t: "Lollipop", n: "El chasquido de lengua que imitaba un caramelo." },
+        { a: 1961, art: "The Tokens", t: "The Lion Sleeps Tonight", n: "Viene de «Mbube», del sudafricano Solomon Linda, que murió casi sin cobrar." },
         { a: 1963, art: "The Ronettes", t: "Be My Baby", n: "El «muro de sonido» de Phil Spector: un redoble de batería legendario." },
         { a: 1964, art: "Ed Sullivan Show", t: "Llegan los Beatles", tipo: "hito", n: "La invasión británica cambia el pop." },
         { a: 1964, art: "Frank Sinatra", t: "Fly Me to the Moon", n: "Con arreglos de Quincy Jones: sonó en el Apolo 10 y el 11." },
+        { a: 1964, art: "Elvis Presley", t: "Viva Las Vegas", n: "De la película con Ann-Margret; la ciudad la usa como himno oficioso." },
+        { a: 1964, art: "Bobby Vinton", t: "Mr. Lonely", n: "La escribió en el ejército; Akon la sampleó en «Lonely»." },
         { a: 1965, art: "Tom Jones", t: "It's Not Unusual", n: "Iba a ser para Sandie Shaw; Tom Jones la cantó y se la quedó." },
         { a: 1965, art: "Sonny & Cher", t: "I Got You Babe", n: "Número uno en EE. UU. y Reino Unido: la pareja más famosa del pop hippie." },
         { a: 1966, art: "The Beach Boys", t: "God Only Knows", n: "Paul McCartney la consideraba la mejor canción jamás escrita." },
         { a: 1966, art: "The Monkees", t: "I'm a Believer", n: "Un grupo creado para una serie de televisión, con canción de Neil Diamond." },
         { a: 1967, art: "The Four Seasons", t: "Beggin'", n: "Un éxito menor que Måneskin convirtió en viral en 2021." },
         { a: 1967, art: "Neil Diamond", t: "Girl, You'll Be a Woman Soon", n: "La original de la canción que Tarantino haría famosa en «Pulp Fiction»." },
+        { a: 1967, art: "Frankie Valli", t: "Can't Take My Eyes Off You", n: "La voz de The Four Seasons en solitario: una de las canciones más versionadas del pop." },
         { a: 1968, art: "Dusty Springfield", t: "Son of a Preacher Man", n: "Pop británico con alma de soul." },
         { a: 1968, art: "Tom Jones", t: "Delilah", n: "Un hombre mata a su amante infiel; la cantan los aficionados del Stoke City." },
         { a: 1968, art: "Barry Ryan", t: "Eloise", n: "Melodrama orquestal de cinco minutos, número 2 en Reino Unido." },
         { a: 1968, art: "Marmalade", t: "Ob-La-Di, Ob-La-Da", n: "Los Beatles no la sacaron como single en Reino Unido y esta versión escocesa llegó al número uno." },
-        { a: 1969, art: "The Archies", t: "Sugar, Sugar", n: "Un grupo de dibujos animados con el single más vendido de 1969." }
+        { a: 1968, art: "Mary Hopkin", t: "Those Were the Days", n: "La galesa fichada por Apple, el sello de los Beatles; McCartney la produjo (aquí, la regrabación de 1977)." },
+        { a: 1968, art: "The Foundations", t: "Build Me Up Buttercup", n: "Un grupo multirracial de Londres con un éxito de soul pop." },
+        { a: 1969, art: "The Archies", t: "Sugar, Sugar", n: "Un grupo de dibujos animados con el single más vendido de 1969." },
+        { a: 1969, art: "Elvis Presley", t: "In the Ghetto", n: "Elvis canta sobre la pobreza en Chicago, en su regreso a las listas grabando en Memphis." }
       ]
     },
     {
@@ -40,10 +49,14 @@ HISTORIAS.push({
         { a: 1970, art: "Carpenters", t: "(They Long to Be) Close to You", n: "Escrita por Bacharach y David; los Carpenters la convierten en número uno con la voz suave de Karen." },
         { a: 1970, art: "Elton John", t: "Your Song", n: "Una canción de amor sencilla y perfecta." },
         { a: 1970, art: "Edison Lighthouse", t: "Love Grows (Where My Rosemary Goes)", n: "Un grupo inventado en estudio con la voz de Tony Burrows, que salía en todos." },
+        { a: 1972, art: "Elvis Presley", t: "Burning Love", n: "Su último gran éxito en EE. UU., cinco años antes de morir." },
+        { a: 1972, art: "Elvis Presley", t: "Always on My Mind", n: "Una balada que luego versionarían Willie Nelson y los Pet Shop Boys." },
         { a: 1974, art: "ABBA", t: "Ganan Eurovisión con «Waterloo»", tipo: "hito", n: "ABBA gana en Brighton en 1974 y Suecia se convierte en una potencia del pop mundial." },
         { a: 1974, art: "ABBA", t: "Waterloo", n: "Ganan Eurovisión: empieza el pop sueco." },
+        { a: 1974, art: "Blue Swede", t: "Hooked on a Feeling", n: "El «ooga chaka» de los suecos: número uno en EE. UU. y, en 2014, en «Guardianes de la galaxia»." },
         { a: 1975, art: "Queen", t: "Bohemian Rhapsody", n: "Seis minutos y ópera en mitad de una canción pop. Nadie creía que fuera a funcionar." },
         { a: 1975, art: "The Four Seasons", t: "December, 1963 (Oh, What a Night)", n: "Iba a ser sobre el fin de la ley seca; acabó siendo sobre la primera noche de amor." },
+        { a: 1976, art: "Olivia Newton-John", t: "Greensleeves", n: "La melodía inglesa del siglo XVI, en la cara B de «Don't Stop Believin'»." },
         { a: 1977, art: "Fleetwood Mac", t: "Dreams", n: "De «Rumours», grabado mientras la banda se separaba en parejas." }
       ]
     },
@@ -106,14 +119,17 @@ HISTORIAS.push({
       items: [
         { a: 2008, art: "Spotify", t: "Nace en Suecia", tipo: "hito", n: "En pocos años cambia cómo escucha música el mundo entero." },
         { a: 2008, art: "Agnes", t: "Release Me", n: "La ganadora sueca de «Idol» con disco-pop: éxito en toda Europa." },
+        { a: 2008, art: "Alesha Dixon", t: "The Boy Does Nothing", n: "La ex de Mis-Teeq, con mambo y percusión latina." },
         { a: 2010, art: "Shontelle", t: "Impossible", n: "La cantante de Barbados con una balada." },
         { a: 2011, art: "One Direction", t: "What Makes You Beautiful", n: "Su primer single tras quedar terceros en «The X Factor»." },
         { a: 2012, art: "The Script & will.i.am", t: "Hall of Fame", n: "Los irlandeses con el de Black Eyed Peas: canción de graduaciones y vídeos de deporte." },
         { a: 2013, art: "Lorde", t: "Royals", n: "Una chica de 16 años de Nueva Zelanda contra el lujo del pop." },
+        { a: 2013, art: "Emilia de Poret", t: "Pick Me Up", n: "La sueca con su primer single en España, con remix de Juan Magán (año aproximado)." },
         { a: 2014, art: "Rixton", t: "Me and My Broken Heart", n: "El grupo británico usó la melodía de «Lonely No More», de Rob Thomas, que firma como coautor." },
         { a: 2016, art: "Jennifer Lopez", t: "Ain't Your Mama", n: "J.Lo contra el machismo en casa, coescrita por Meghan Trainor." },
         { a: 2018, art: "TikTok", t: "Llega a Occidente", tipo: "hito", n: "Una canción viral puede triunfar en una semana." },
         { a: 2018, art: "LSD", t: "Genius", n: "Sia, Diplo y Labrinth juntos en un supergrupo." },
+        { a: 2018, art: "Hanne Mjøen", t: "Sounds Good to Me", n: "Synth-pop de la noruega con aire de los 80, su primer gran éxito en streaming." },
         { a: 2019, art: "The Weeknd", t: "Blinding Lights", n: "Sintetizadores ochenteros: la canción más escuchada de la historia de Spotify." },
         { a: 2019, art: "Shawn Mendes", t: "If I Can't Have You", n: "Del canadiense antes de su parón." },
         { a: 2019, art: "benny blanco, Selena Gomez, J Balvin & Tainy", t: "I Can't Get Enough", n: "El productor estadounidense junta pop y reguetón con Selena y J Balvin." },
@@ -143,6 +159,33 @@ HISTORIAS.push({
         { a: 2019, art: "Ed Sheeran & Skrillex", t: "Way to Break My Heart", n: "El dubstep de Skrillex rebajado para un disco de Ed Sheeran." },
         { a: 2021, art: "Ed Sheeran", t: "«Shape of You» llega a 3.000 millones", tipo: "hito", n: "En diciembre de 2021 es la primera canción que supera los 3.000 millones de escuchas en Spotify." },
         { a: 2021, art: "Ed Sheeran", t: "Bad Habits", n: "Su vuelta tras ser padre: synth-pop nocturno con traje de vampiro." }
+      ]
+    },
+    {
+      titulo: "Bruno Mars y Justin Bieber",
+      corto: "Bruno y Bieber",
+      periodo: "2010 – 2026",
+      intro: "Un hawaiano que hacía de Elvis de niño y un canadiense descubierto en YouTube: los dos reyes del pop de los 2010.",
+      items: [
+        { a: 2010, art: "YouTube", t: "«Baby» rompe YouTube", tipo: "hito", n: "El vídeo de Justin Bieber se convierte en el más visto de la plataforma y también en el que más «no me gusta» recibe." },
+        { a: 2010, art: "Bruno Mars", t: "Count on Me", n: "Una canción de amistad con ukelele, de su primer disco." },
+        { a: 2010, art: "Bruno Mars", t: "Talking to the Moon", n: "Balada de «Doo-Wops & Hooligans», que se hizo viral años después." },
+        { a: 2010, art: "Bruno Mars", t: "Marry You", n: "La canción de las peticiones de mano en vídeos de internet." },
+        { a: 2010, art: "Bruno Mars", t: "Grenade", n: "Su segundo número uno: el que lo daría todo por quien no lo quiere." },
+        { a: 2011, art: "Bruno Mars", t: "The Lazy Song", n: "El himno de no hacer nada, con un vídeo de monos bailando." },
+        { a: 2012, art: "Justin Bieber & Nicki Minaj", t: "Beauty and a Beat", n: "Pop electrónico con Max Martin, de «Believe»." },
+        { a: 2015, art: "Justin Bieber", t: "Love Yourself", n: "Escrita con Ed Sheeran: un desprecio con guitarra acústica, número uno en medio mundo." },
+        { a: 2015, art: "Justin Bieber", t: "I'll Show You", n: "Producida por Skrillex, de «Purpose»." },
+        { a: 2015, art: "Justin Bieber", t: "Children", n: "Otra de «Purpose», con producción de Skrillex." },
+        { a: 2016, art: "Bruno Mars", t: "That's What I Like", n: "Grammy a la canción del año: R&B de los 90 de «24K Magic»." },
+        { a: 2017, art: "Justin Bieber & BloodPop", t: "Friends", n: "Pop de amistad tras una ruptura, con el productor de Lady Gaga." },
+        { a: 2020, art: "Justin Bieber & Big Sean", t: "Memphis", n: "Una de «Changes», el disco tras casarse con Hailey." },
+        { a: 2021, art: "Justin Bieber, Daniel Caesar & GIVĒON", t: "Peaches", n: "Número uno en EE. UU. con dos voces del R&B canadiense y estadounidense." },
+        { a: 2021, art: "Justin Bieber", t: "Ghost", n: "De «Justice»: una canción sobre echar de menos a quien ya no está." },
+        { a: 2025, art: "Bruno Mars", t: "Bonde do Brunão", n: "Un minuto de funk carioca para promocionar su gira por Brasil, que se hizo viral." },
+        { a: 2025, art: "Justin Bieber", t: "DAISIES", n: "El primer single de «SWAG», un disco publicado por sorpresa." },
+        { a: 2025, art: "Justin Bieber", t: "YUKON", n: "Otra de «SWAG», con aire de R&B lento." },
+        { a: 2026, art: "Bruno Mars", t: "I Just Might", n: "El primer single de «The Romantic», número uno en EE. UU.: su décimo." }
       ]
     }
   ]

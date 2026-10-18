@@ -17,8 +17,10 @@ HISTORIAS.push({
         { a: 1980, art: "Zapp & Roger", t: "More Bounce to the Ounce", n: "El talk box que samplearon todos los productores de la Costa Oeste." },
         { a: 1985, art: "Zapp", t: "Computer Love", n: "El talkbox de Roger Troutman, muy sampleado por el G-funk." },
         { a: 1988, art: "N.W.A", t: "Straight Outta Compton", tipo: "hito", n: "El gangsta rap de Compton planta la Costa Oeste en el mapa." },
+        { a: 1988, art: "N.W.A.", t: "Dopeman (remix)", n: "Una de sus primeras canciones, sobre el camello del barrio en Compton." },
         { a: 1991, art: "DJ Quik", t: "Tonite", n: "El G-funk de Compton: DJ Quik producía y tocaba sus propios temas." },
-        { a: 1992, art: "Ice Cube", t: "It Was a Good Day", n: "Un día tranquilo en South Central, sobre un sample de los Isley Brothers." }
+        { a: 1992, art: "Ice Cube", t: "It Was a Good Day", n: "Un día tranquilo en South Central, sobre un sample de los Isley Brothers." },
+        { a: 1992, art: "Dr. Dre, Snoop Dogg, RBX & Jewell", t: "Fuck wit Dre Day (And Everybody's Celebratin')", n: "De «The Chronic»: Dre ataca a Eazy-E, su antiguo socio en N.W.A." }
       ]
     },
     {
@@ -40,6 +42,7 @@ HISTORIAS.push({
         { a: 1994, art: "Warren G & Nate Dogg", t: "Regulate", n: "Michael McDonald sampleado y la voz de Nate Dogg." },
         { a: 1994, art: "Warren G", t: "This D.J.", n: "El hermanastro de Dre en solitario." },
         { a: 1994, art: "Snoop Doggy Dogg", t: "Murder Was the Case", n: "Un cortometraje y una canción." },
+        { a: 1994, art: "Ice Cube", t: "You Know How We Do It", n: "Ice Cube en clave de G-funk, sobre «Summer Madness» de Kool & The Gang." },
         { a: 1995, art: "DJ Quik", t: "Dollaz + Sense", n: "El otro gran productor de la Costa Oeste." },
         { a: 1995, art: "2Pac & Dr. Dre", t: "California Love", n: "Talk box de Roger Troutman y un vídeo a lo Mad Max." },
         { a: 1995, art: "Coolio", t: "Gangsta's Paradise", n: "Coolio y el coro de Stevie Wonder: G-funk llevado al pop y número uno mundial." },

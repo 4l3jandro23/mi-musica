@@ -24,6 +24,7 @@ HISTORIAS.push({
         { a: 1951, art: "The Soul Stirrers", t: "Jesus Gave Me Water", n: "Sam Cooke con veinte años." },
         { a: 1956, art: "The Soul Stirrers", t: "Touch the Hem of His Garment", n: "Sam Cooke al frente, poco antes de pasarse al soul." },
         { a: 1956, art: "The Staple Singers", t: "Uncloudy Day", n: "El trémolo de Pops Staples." },
+        { a: 1956, art: "Mahalia Jackson", t: "Take My Hand, Precious Lord", n: "El himno de Thomas Dorsey que cantó en el funeral de Martin Luther King (año aproximado)." },
         { a: 1959, art: "The Swan Silvertones", t: "Mary Don't You Weep", n: "Paul Simon la citó en «Bridge over Troubled Water»." }
       ]
     },
@@ -58,6 +59,7 @@ HISTORIAS.push({
         { a: 1999, art: "Yolanda Adams", t: "Open My Heart", n: "Gospel y R&B de la cantante de Houston, producido por Jimmy Jam y Terry Lewis." },
         { a: 2000, art: "Mary Mary", t: "Shackles (Praise You)", n: "El gospel con R&B que sonó en las radios." },
         { a: 2001, art: "The Blind Boys of Alabama", t: "Amazing Grace", n: "Con la música de «The House of the Rising Sun»." },
+        { a: 2003, art: "Richard Smallwood & Vision", t: "Procession of the Levites", n: "Preludio orquestal del pianista de Washington, uno de los grandes del gospel moderno (año aproximado)." },
         { a: 2004, art: "Kanye West", t: "Jesus Walks", n: "Un coro militar y la fe en el rap." },
         { a: 2013, art: "Tasha Cobbs", t: "Break Every Chain", n: "Gospel contemporáneo que se canta en iglesias de todo el mundo." },
         { a: 2013, art: "Hezekiah Walker", t: "Every Praise", n: "Un coro que se canta en todas las iglesias." },

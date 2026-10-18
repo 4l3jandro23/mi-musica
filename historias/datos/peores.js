@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "peores",
   familia: "Humor e internet",
   titulo: "Las peores canciones de la historia",
-  periodo: "1966 – 2017",
+  periodo: "1966 – 2025",
   color: "#8b8b3a",
   lema: "Votadas como las peores por revistas, críticos y el público. Algunas, secretamente geniales.",
   intro: "Una historia de las canciones que más se han odiado: las que encabezan las listas de «peores canciones» de revistas como Blender o Rolling Stone, encuestas de la BBC o de CNN, y desastres de Eurovisión. Muchas fueron números uno. Escúchalas con cariño: hay algo admirable en equivocarse tanto.",
@@ -49,7 +49,7 @@ HISTORIAS.push({
     {
       titulo: "La era de internet",
       corto: "Internet",
-      periodo: "2004 – 2017",
+      periodo: "2004 – 2025",
       intro: "Internet convierte el odio en viralidad.",
       items: [
         { a: 2004, art: "Revista Blender", t: "Publica «las 50 peores canciones de la historia»", tipo: "hito", n: "«We Built This City» encabeza la lista." },
@@ -61,7 +61,8 @@ HISTORIAS.push({
         { a: 2011, art: "Rebecca Black", t: "Friday", n: "El vídeo con más «no me gusta» de su época. Hoy ella misma se ríe y la canta en directo." },
         { a: 2011, art: "Jedward", t: "Lipstick", n: "Eurovisión con tupés: dos gemelos irlandeses gritando." },
         { a: 2012, art: "PSY", t: "Gangnam Style", n: "El primer vídeo en llegar a mil millones de visitas en YouTube. Muchos acabaron hartos." },
-        { a: 2017, art: "Jake Paul feat. Team 10", t: "It's Everyday Bro", n: "Uno de los vídeos más odiados de YouTube." }
+        { a: 2017, art: "Jake Paul feat. Team 10", t: "It's Everyday Bro", n: "Uno de los vídeos más odiados de YouTube." },
+        { a: 2025, art: "Spalexma", t: "We Are Charlie Kirk", n: "Una canción hecha con IA tras el asesinato del activista, que en TikTok se viralizó como una de las peores de la historia." }
       ]
     }
   ]

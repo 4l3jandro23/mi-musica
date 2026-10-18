@@ -51,6 +51,7 @@ HISTORIAS.push({
       intro: "La cumbia se vuelve electrónica, de barrio y de festival.",
       items: [
         { a: 1995, art: "Gilda", t: "No me arrepiento de este amor", q: "Gilda No me arrepiento de este amor", n: "Gilda, la cantante argentina que se convirtió en una figura casi religiosa tras su muerte en 1996." },
+        { a: 1999, art: "Carlos Vives", t: "Fruta fresca", n: "El vallenato pop de Carlos Vives: su canción más alegre." },
         { a: 2000, art: "Los Palmeras", t: "Bombón asesino", n: "La cumbia santafesina argentina." },
         { a: 2000, art: "Damas Gratis", t: "Se te ve la tanga", n: "La «cumbia villera»: los barrios pobres de Buenos Aires tras la crisis." },
         { a: 2000, art: "Chocolate", t: "Mayonesa", n: "Cumbia uruguaya: el «bate que bate» de todas las fiestas." },

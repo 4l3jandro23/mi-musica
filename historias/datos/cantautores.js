@@ -36,6 +36,7 @@ HISTORIAS.push({
         { a: 1971, art: "Chico Buarque", t: "Construção", n: "Un albañil que cae del andamio, contado con palabras que terminan en esdrújula." },
         { a: 1971, art: "John Prine", t: "Angel from Montgomery", n: "Una mujer atrapada en su vida." },
         { a: 1971, art: "Leonard Cohen", t: "Famous Blue Raincoat", n: "Una carta a un hombre que tuvo una aventura con su mujer." },
+        { a: 1971, art: "Labi Siffre", t: "Bless the Telephone", n: "La balada del británico, rescatada décadas después por un anuncio de Bumble y la serie «Hacks»." },
         { a: 1972, art: "Townes Van Zandt", t: "Pancho and Lefty", n: "La balada de dos forajidos, muy versionada." },
         { a: 1972, art: "Randy Newman", t: "Sail Away", n: "Un traficante de esclavos vende América: ironía brutal." },
         { a: 1972, art: "Jim Croce", t: "Operator (That's Not the Way It Feels)", n: "Un hombre llama a la operadora para hablar con su ex, que se ha ido con su mejor amigo." },

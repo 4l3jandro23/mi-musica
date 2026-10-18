@@ -37,6 +37,7 @@ HISTORIAS.push({
         { a: 1969, art: "Víctor Jara", t: "Te recuerdo Amanda", n: "La Nueva Canción chilena, antes del golpe de 1973." },
         { a: 1969, art: "Mercedes Sosa", t: "Alfonsina y el mar", n: "La zamba argentina, con la voz de «La Negra»." },
         { a: 1973, art: "Golpe en Chile", t: "Asesinan a Víctor Jara", tipo: "hito", n: "La Nueva Canción chilena se exilia." },
+        { a: 1975, art: "Sergio Cuevas, Los Caracas, Los Quirpa & Mario Guacarán", t: "Camino de San Juan", n: "Música llanera venezolana con arpa, cuatro y maracas (año aproximado)." },
         { a: 1980, art: "Simón Díaz", t: "Caballo viejo", n: "La tonada llanera venezolana que versionó medio mundo." },
         { a: 1981, art: "Los Kjarkas", t: "Llorando se fue", n: "El folclore boliviano que acabó convertido en la «Lambada»." }
       ]

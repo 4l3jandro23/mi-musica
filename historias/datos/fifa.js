@@ -60,6 +60,7 @@ HISTORIAS.push({
         { a: 2013, art: "John Newman", t: "Love Me Again", n: "En FIFA 14: soul británico que se convirtió en un éxito enorme." },
         { a: 2013, art: "Empire of the Sun", t: "Alive", n: "En FIFA 15: pop electrónico australiano." },
         { a: 2014, art: "Kwabs", t: "Walk", n: "En FIFA 15: soul electrónico de un cantante londinense." },
+        { a: 2014, art: "Slaptop", t: "Sunrise", n: "Disco-pop electrónico de San Francisco que sonó en «FIFA 15»." },
         { a: 2015, art: "Bomba Estéreo", t: "Soy Yo", n: "En FIFA 16: la banda colombiana mezcla cumbia y electrónica." },
         { a: 2015, art: "Kygo", t: "ID", n: "FIFA 16: el tropical house del noruego, hecho para el juego." },
         { a: 2018, art: "Jungle", t: "Beat 54 (All Good Now)", n: "En FIFA 19: el funk retro de los londinenses." },

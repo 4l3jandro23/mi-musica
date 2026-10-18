@@ -47,9 +47,12 @@ HISTORIAS.push({
     {
       titulo: "La pandemia disco",
       corto: "2020",
-      periodo: "2019 – 2023",
+      periodo: "2018 – 2023",
       intro: "Bailar en casa durante el confinamiento.",
       items: [
+        { a: 2018, art: "Silk City & Dua Lipa", t: "Electricity", n: "El dúo de Diplo y Mark Ronson: Grammy a la mejor grabación dance." },
+        { a: 2018, art: "Silk City, GoldLink & Desiigner", t: "Loud", n: "Otra del dúo de Diplo y Ronson (año aproximado)." },
+        { a: 2018, art: "Silk City & Daniel Merriweather", t: "Only Can Get Better", n: "El primer single de Silk City (año aproximado)." },
         { a: 2019, art: "Dua Lipa", t: "Don't Start Now", n: "El bajo de disco que abrió la puerta a «Future Nostalgia»." },
         { a: 2019, art: "Doja Cat", t: "Say So", n: "Disco suave que explotó en TikTok." },
         { a: 2020, art: "Pandemia", t: "Discotecas cerradas, disco en las listas", tipo: "hito", n: "Con las discotecas cerradas, el pop se llena de música disco para bailar en casa." },
@@ -58,9 +61,11 @@ HISTORIAS.push({
         { a: 2020, art: "Kylie Minogue", t: "Magic", n: "Del disco «Disco», grabado en casa durante el confinamiento." },
         { a: 2020, art: "Róisín Murphy", t: "Murphy's Law", n: "La exvocalista de Moloko en su mejor momento." },
         { a: 2020, art: "Purple Disco Machine", t: "Hypnotized", n: "El alemán y el nu disco de discoteca." },
+        { a: 2020, art: "Silk City & Ellie Goulding", t: "New Love", n: "House de los 90 con la voz de Ellie Goulding." },
         { a: 2021, art: "Doja Cat feat. SZA", t: "Kiss Me More", n: "Disco suave: Grammy y un éxito mundial." },
         { a: 2022, art: "Beyoncé", t: "CUFF IT", n: "Con la guitarra de Nile Rodgers, del disco «Renaissance»." },
         { a: 2022, art: "Lizzo", t: "About Damn Time", n: "Disco funk con flauta: número uno en EE. UU." },
+        { a: 2022, art: "Moss Kena, Purple Disco Machine & The Knocks", t: "Fireworks", n: "Disco elegante del alemán Purple Disco Machine (año aproximado)." },
         { a: 2023, art: "Kylie Minogue", t: "Padam Padam", n: "El regreso de Kylie, viral en TikTok y en las discotecas." }
       ]
     }

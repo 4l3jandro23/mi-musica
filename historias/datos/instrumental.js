@@ -10,7 +10,7 @@ HISTORIAS.push({
     {
       titulo: "Orquestas, guitarras y órganos",
       corto: "1949 – 1968",
-      periodo: "1949 – 1968",
+      periodo: "1949 – 1969",
       intro: "Orquestas de baile, guitarras eléctricas y órganos: éxitos sin cantante.",
       items: [
         { a: 1949, art: "Pérez Prado", t: "Mambo No. 5", n: "El rey del mambo y su famoso «¡Ugh!»." },
@@ -28,7 +28,8 @@ HISTORIAS.push({
         { a: 1963, art: "Henry Mancini", t: "The Pink Panther Theme", n: "El saxo de la Pantera Rosa." },
         { a: 1965, art: "Herb Alpert & The Tijuana Brass", t: "A Taste of Honey", n: "Trompetas alegres: el «easy listening»." },
         { a: 1965, art: "Herb Alpert & The Tijuana Brass", t: "Spanish Flea", n: "La sintonía de mil concursos de la tele, de un trompetista que fundó el sello A&M." },
-        { a: 1968, art: "Paul Mauriat", t: "L'amour est bleu", n: "Una orquesta francesa en el número uno de EE. UU." }
+        { a: 1968, art: "Paul Mauriat", t: "L'amour est bleu", n: "Una orquesta francesa en el número uno de EE. UU." },
+        { a: 1969, art: "The Ventures", t: "Hawaii Five-O", n: "La sintonía de la serie de policías de Hawái, en la versión del grupo de guitarras." }
       ]
     },
     {
@@ -64,6 +65,7 @@ HISTORIAS.push({
         { a: 2006, art: "Carly Comando", t: "Everyday", n: "La música del vídeo de Noah Kalina, que se hizo una foto cada día durante años." },
         { a: 2010, art: "Bonobo", t: "Kiara", n: "Electrónica orgánica para viajar." },
         { a: 2014, art: "Snarky Puppy", t: "Lingus", n: "Jazz fusión que se hizo viral en YouTube." },
+        { a: 2016, art: "Duval Timothy", t: "Through the Night", n: "Abre «Brown Loop», el primer disco del pianista londinense de origen sierraleonés." },
         { a: 2017, art: "Lofi Girl", t: "La chica que estudia", tipo: "hito", n: "Un directo de YouTube de lo-fi para estudiar, con una chica dibujada que nunca deja de escribir." },
         { a: 2022, art: "Polyphia", t: "Playing God", n: "Guitarras virtuosas con influencia del trap y del flamenco." }
       ]

@@ -70,6 +70,7 @@ HISTORIAS.push({
         { a: 1997, art: "Elliott Smith", t: "Between the Bars", n: "Elliott Smith susurra sobre la bebida y la dependencia. Salió en «El indomable Will Hunting»." },
         { a: 2004, art: "Iron & Wine", t: "Naked as We Came", n: "Susurros y guitarra de Sam Beam: una canción sobre envejecer juntos." },
         { a: 2005, art: "Sufjan Stevens", t: "Chicago", n: "Folk orquestal con trompetas y coros." },
+        { a: 2005, art: "Jack Johnson", t: "Better Together", n: "El surfista de Hawái y su folk de playa." },
         { a: 2007, art: "Bon Iver", t: "Skinny Love", n: "Grabado solo en una cabaña de Wisconsin tras una ruptura." },
         { a: 2008, art: "Bon Iver", t: "«For Emma, Forever Ago»", tipo: "hito", n: "Grabado en una cabaña: nace el indie folk de la década." },
         { a: 2008, art: "Fleet Foxes", t: "White Winter Hymnal", n: "Armonías vocales que parecen de otro siglo." },

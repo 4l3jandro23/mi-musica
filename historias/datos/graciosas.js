@@ -43,6 +43,7 @@ HISTORIAS.push({
         { a: 2006, art: "El Koala", t: "El verano del corral", tipo: "hito", n: "Una canción de humor rural llega a lo más alto de las listas españolas." },
         { a: 2006, art: "El Koala", t: "Opá, yo viazé un corrá", n: "La canción del verano de 2006, desde un pueblo de Badajoz." },
         { a: 2007, art: "Flight of the Conchords", t: "Bowie's in Space", n: "Los neozelandeses parodian a Bowie en su serie de la HBO." },
+        { a: 2010, art: "Tu Madre Es Puta", t: "Susanna Griso", n: "El grupo hispano-portugués de metal en broma, con títulos de provocación (año aproximado)." },
         { a: 2011, art: "The Lonely Island feat. Michael Bolton", t: "Jack Sparrow", n: "Michael Bolton obsesionado con «Piratas del Caribe»." },
         { a: 2015, art: "Ojete Calor", t: "Opino de que", n: "Carlos Areces y Aníbal Gómez: el «subnopop»." },
         { a: 2015, art: "Los Ganglios", t: "El Subiduki", n: "El punk de Barcelona que mezcla cumbia, Eskorbuto y bakalao: «música porc» (año aproximado)." }

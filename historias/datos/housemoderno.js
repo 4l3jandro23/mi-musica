@@ -69,7 +69,7 @@ HISTORIAS.push({
     {
       titulo: "Dutch, future y bass house",
       corto: "Future y bass house",
-      periodo: "2010 – 2016",
+      periodo: "2010 – 2020",
       intro: "De los chirridos holandeses de 2010 a los bajos metálicos del future house.",
       items: [
         { a: 2010, art: "Dirty Dutch", t: "Los holandeses toman las pistas", tipo: "hito", n: "Afrojack y Chuckie exportan su sonido." },
@@ -80,7 +80,10 @@ HISTORIAS.push({
         { a: 2014, art: "Oliver Heldens", t: "Gecko (Overdrive)", n: "Un chaval holandés de 19 años: número uno en Reino Unido con la voz de Becky Hill." },
         { a: 2015, art: "Jauz", t: "Feel the Volume", n: "Bass house: house con la potencia del dubstep." },
         { a: 2016, art: "Don Diablo", t: "Cutting Shapes", n: "El future house de Spinnin' Records." },
-        { a: 2016, art: "Malaa", t: "Notorious", n: "Un DJ enmascarado y bass house sucio." }
+        { a: 2016, art: "Malaa", t: "Notorious", n: "Un DJ enmascarado y bass house sucio." },
+        { a: 2019, art: "DOLF, Yellow Claw & Caroline Pennell", t: "Vertigo", n: "El holandés del bass house con Yellow Claw (año aproximado)." },
+        { a: 2020, art: "DOLF, Weird Genius & Rochelle", t: "Dreams", n: "Con los indonesios de Weird Genius (año aproximado)." },
+        { a: 2020, art: "DOLF & JVZEL", t: "Fuck It All Up", n: "Bass house de festival (año aproximado)." }
       ]
     }
   ]

@@ -20,6 +20,7 @@ HISTORIAS.push({
         { a: 1968, art: "Massiel", t: "La, la, la", n: "La primera victoria de España, con polémica incluida." },
         { a: 1969, art: "Eurovisión en Madrid", t: "Cuatro ganadores", tipo: "hito", n: "España, Reino Unido, Francia y Países Bajos empatan: después se cambian las reglas." },
         { a: 1969, art: "Salomé", t: "Vivo cantando", n: "Gana en Madrid, empatada con otros tres países." },
+        { a: 1970, art: "Julio Iglesias", t: "Gwendolyne", n: "Su canción en Eurovisión 1970, cuarta en Ámsterdam: la que le hizo famoso en Europa." },
         { a: 1973, art: "Mocedades", t: "Eres tú", n: "Segundo puesto y un éxito en todo el mundo." },
         { a: 1974, art: "ABBA", t: "Waterloo", n: "Los suecos ganan en Brighton y se convierten en el grupo más famoso del festival." },
         { a: 1976, art: "Brotherhood of Man", t: "Save Your Kisses for Me", n: "Uno de los ganadores más vendidos." }

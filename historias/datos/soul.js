@@ -14,16 +14,24 @@ HISTORIAS.push({
       intro: "El gospel sale de la iglesia y se convierte en canción de amor.",
       items: [
         { a: 1954, art: "Ray Charles", t: "I Got a Woman", n: "Un himno gospel convertido en canción de amor: escándalo en las iglesias y nacimiento del soul." },
+        { a: 1954, art: "Ray Charles", t: "I've Got a Woman", n: "Mezcla gospel y rhythm & blues: muchos la consideran la primera canción de soul." },
+        { a: 1956, art: "Ray Charles", t: "Hallelujah, I Love Her So", n: "Un amor cantado como un himno religioso." },
         { a: 1957, art: "Sam Cooke", t: "You Send Me", n: "La voz más elegante del soul deja el gospel por el pop." },
         { a: 1959, art: "Motown", t: "Berry Gordy funda el sello en Detroit", tipo: "hito", n: "La «fábrica de éxitos»: compositores, músicos y estrellas bajo un mismo techo." },
+        { a: 1960, art: "Sam Cooke", t: "Wonderful World", n: "La de «no sé mucho de historia», que escribió con Herb Alpert." },
+        { a: 1960, art: "Etta James", t: "Stormy Weather", n: "Del disco «At Last!», con orquesta de cuerda (año aproximado)." },
         { a: 1961, art: "Ben E. King", t: "Stand by Me", n: "Una línea de bajo inmortal." },
-        { a: 1964, art: "Sam Cooke", t: "A Change Is Gonna Come", n: "Inspirada por Bob Dylan y el racismo que sufría: un himno de los derechos civiles." }
+        { a: 1961, art: "Ray Charles", t: "Hit the Road Jack", n: "Escrita por Percy Mayfield, con Margie Hendrix de las Raelettes echándolo de casa." },
+        { a: 1962, art: "James Ray", t: "I've Got My Mind Set on You", n: "La original de la que George Harrison hizo un número uno en 1987." },
+        { a: 1963, art: "Bob & Earl", t: "Harlem Shuffle", n: "Soul de Los Ángeles que luego versionaron los Rolling Stones." },
+        { a: 1964, art: "Sam Cooke", t: "A Change Is Gonna Come", n: "Inspirada por Bob Dylan y el racismo que sufría: un himno de los derechos civiles." },
+        { a: 1964, art: "Betty Everett", t: "The Shoop Shoop Song (It's in His Kiss)", n: "Cher la llevó al número uno en 1990 en la película «Sirenas»." }
       ]
     },
     {
       titulo: "Motown contra Stax",
       corto: "Motown y Stax",
-      periodo: "1964 – 1968",
+      periodo: "1964 – 1969",
       intro: "El sonido pulido de Detroit frente al sonido sureño y crudo de Memphis.",
       items: [
         { a: 1964, art: "The Supremes", t: "Where Did Our Love Go", n: "Diana Ross y el primero de sus doce números uno." },
@@ -31,34 +39,51 @@ HISTORIAS.push({
         { a: 1965, art: "The Impressions", t: "People Get Ready", n: "El himno de Curtis Mayfield." },
         { a: 1965, art: "Nina Simone", t: "Sinnerman", n: "Diez minutos de gospel, jazz y furia; sale en un montón de películas." },
         { a: 1965, art: "Otis Redding", t: "It's Too Late", n: "Una balada lenta y desgarrada del disco «The Great Otis Redding Sings Soul Ballads»." },
+        { a: 1965, art: "Aretha Franklin", t: "One Step Ahead", n: "De su etapa en Columbia, antes de convertirse en la reina del soul." },
         { a: 1966, art: "Percy Sledge", t: "When a Man Loves a Woman", n: "Una balada eterna: el primer número uno del sonido de Muscle Shoals." },
         { a: 1966, art: "Otis Redding", t: "Try a Little Tenderness", n: "Un poco de ternura que empieza despacio y acaba en un grito de alegría." },
+        { a: 1966, art: "Wilson Pickett", t: "Land of 1000 Dances", n: "El «na na na na na» más famoso del soul." },
+        { a: 1966, art: "Bobby Hebb", t: "Sunny", n: "La escribió tras el asesinato de su hermano: una de las canciones más versionadas del mundo." },
         { a: 1967, art: "Aretha Franklin", t: "Respect", n: "Una canción de Otis Redding convertida en himno feminista y de los derechos civiles." },
         { a: 1967, art: "Sam & Dave", t: "Soul Man", n: "Sam & Dave con Isaac Hayes y David Porter a la composición: el sonido de Stax en estado puro." },
         { a: 1967, art: "Marvin Gaye & Tammi Terrell", t: "Ain't No Mountain High Enough", n: "Marvin Gaye y Tammi Terrell, el gran dúo de Motown, con un tema de Ashford & Simpson." },
+        { a: 1967, art: "Jackie Wilson", t: "(Your Love Keeps Lifting Me) Higher and Higher", n: "El gran éxito final de Mr. Excitement." },
+        { a: 1967, art: "Erma Franklin", t: "Piece of My Heart", n: "La hermana de Aretha la grabó antes que Janis Joplin." },
         { a: 1968, art: "Asesinato de Martin Luther King", t: "James Brown calma Boston con un concierto televisado", tipo: "hito", n: "Mientras ardían otras ciudades." },
         { a: 1968, art: "Otis Redding", t: "(Sittin' On) The Dock of the Bay", n: "La grabó tres días antes de morir en un accidente de avión. Fue su primer número uno." },
         { a: 1968, art: "James Brown", t: "Say It Loud – I'm Black and I'm Proud", n: "Orgullo negro en plena lucha por los derechos civiles." },
-        { a: 1968, art: "Etta James", t: "I'd Rather Go Blind", n: "Preferiría quedarme ciega." }
+        { a: 1968, art: "Etta James", t: "I'd Rather Go Blind", n: "Preferiría quedarme ciega." },
+        { a: 1968, art: "Aretha Franklin", t: "I Say a Little Prayer", n: "La de Burt Bacharach que Aretha convirtió en gospel." },
+        { a: 1968, art: "Aretha Franklin", t: "Think", n: "La que canta en «The Blues Brothers» con delantal." },
+        { a: 1969, art: "Wilson Pickett", t: "Mini-Skirt Minnie", n: "Soul de Muscle Shoals sobre la minifalda." }
       ]
     },
     {
       titulo: "Soul político y sinfónico",
       corto: "Los 70",
-      periodo: "1970 – 1973",
+      periodo: "1970 – 1978",
       intro: "El soul habla de Vietnam, del racismo y de la vida en el gueto.",
       items: [
         { a: 1970, art: "Curtis Mayfield", t: "Move On Up", n: "Metales, percusión y optimismo." },
         { a: 1970, art: "Minnie Riperton", t: "Les Fleurs", n: "Antes de «Lovin' You», un soul psicodélico y orquestal." },
+        { a: 1970, art: "Ike & Tina Turner", t: "Come Together", n: "Su versión de los Beatles, con la voz rota de Tina." },
         { a: 1971, art: "Marvin Gaye", t: "What's Going On", n: "Motown no quería publicarla: un disco sobre la guerra de Vietnam y la vida en el gueto." },
         { a: 1971, art: "Bill Withers", t: "Ain't No Sunshine", n: "«I know, I know, I know…» (26 veces)." },
         { a: 1971, art: "Isaac Hayes", t: "Theme from Shaft", n: "Wah-wah y orquesta: ganó el Óscar." },
         { a: 1971, art: "Al Green", t: "Let's Stay Together", n: "Al Green y la producción de Willie Mitchell en Memphis: soul suave, sedoso y número uno." },
         { a: 1971, art: "Al Green", t: "Tired of Being Alone", n: "El primer gran Al Green, con el productor Willie Mitchell en Memphis." },
+        { a: 1971, art: "Ike & Tina Turner", t: "Proud Mary", n: "Empieza «nice and easy» y termina «rough»: Grammy para la pareja." },
+        { a: 1971, art: "Donny Hathaway", t: "A Song for You", n: "La canción de Leon Russell en la versión de soul definitiva." },
+        { a: 1971, art: "Gil Scott-Heron", t: "Lady Day and John Coltrane", n: "Poesía y jazz-soul: escuchar a Billie Holiday y Coltrane como medicina." },
         { a: 1972, art: "Wattstax", t: "El «Woodstock negro»", tipo: "hito", n: "Stax reúne a más de 100.000 personas en Los Ángeles." },
         { a: 1972, art: "Stevie Wonder", t: "Superstition", n: "Un clavinet funky: Stevie se convierte en genio absoluto." },
         { a: 1972, art: "The O'Jays", t: "Love Train", n: "El «sonido Filadelfia», con cuerdas: el puente hacia la música disco." },
-        { a: 1973, art: "Gladys Knight & the Pips", t: "Midnight Train to Georgia", n: "De vuelta a casa en el tren de medianoche: número uno en EE. UU." }
+        { a: 1972, art: "Timmy Thomas", t: "Why Can't We Live Together", n: "Solo un órgano y una caja de ritmos: un alegato contra la guerra y el racismo." },
+        { a: 1972, art: "Billy Paul", t: "Me and Mrs. Jones", n: "El sonido de Filadelfia: la historia de una aventura en un bar." },
+        { a: 1973, art: "Gladys Knight & the Pips", t: "Midnight Train to Georgia", n: "De vuelta a casa en el tren de medianoche: número uno en EE. UU." },
+        { a: 1974, art: "Gil Scott-Heron & Brian Jackson", t: "The Bottle", n: "Una canción sobre el alcoholismo en Washington que acabó en las pistas de baile." },
+        { a: 1977, art: "Bill Withers", t: "Lovely Day", n: "Mantiene una nota durante 18 segundos: una de las más largas del pop." },
+        { a: 1978, art: "Gil Scott-Heron", t: "Gun", n: "Contra la cultura de las armas en EE. UU. (año aproximado)." }
       ]
     },
     {
@@ -71,8 +96,12 @@ HISTORIAS.push({
         { a: 1998, art: "Lauryn Hill", t: "Ex-Factor", n: "De «The Miseducation of Lauryn Hill», que ganó cinco Grammy." },
         { a: 2000, art: "Soulquarians", t: "El neo soul en Electric Lady", tipo: "hito", n: "D'Angelo, Badu y Questlove reinventan el soul." },
         { a: 2006, art: "Amy Winehouse", t: "Rehab", n: "El soul de los 60 vuelve con una voz única y una historia trágica." },
+        { a: 2010, art: "CeeLo Green", t: "Fuck You", n: "El exmiembro de Gnarls Barkley con soul de Motown y un estribillo que no se podía radiar." },
         { a: 2011, art: "Charles Bradley", t: "The World (Is Going Up in Flames)", n: "El soul de Daptone: Charles Bradley grabó su primer disco con 62 años." },
+        { a: 2012, art: "Emeli Sandé", t: "Next to Me", n: "La escocesa y su soul con piano, del disco más vendido en Reino Unido en 2012." },
         { a: 2015, art: "Leon Bridges", t: "Coming Home", n: "Leon Bridges suena como si fuera 1962: el soul retro de Texas en pleno 2015." },
+        { a: 2016, art: "Rag'n'Bone Man", t: "Human", n: "La voz grave del británico, número uno en media Europa." },
+        { a: 2016, art: "Charles Bradley & The Budos Band", t: "Changes", n: "El «Águila Gritona del soul» versiona a Black Sabbath poco antes de morir." },
         { a: 2021, art: "Silk Sonic", t: "Leave the Door Open", n: "Bruno Mars y Anderson .Paak homenajeando el soul de Filadelfia." }
       ]
     }

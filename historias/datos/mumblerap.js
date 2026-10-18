@@ -53,6 +53,7 @@ HISTORIAS.push({
         { a: 2018, art: "Playboi Carti", t: "Shoota", n: "Con Lil Uzi Vert, de «Die Lit»: voces de bebé y bajos enormes." },
         { a: 2019, art: "Lil Tecca", t: "Ransom", n: "Un chaval de 16 años de Nueva York que llegó al top 5 de EE. UU." },
         { a: 2019, art: "Roddy Ricch", t: "The Box", n: "Récord de semanas en el número uno." },
+        { a: 2020, art: "Kenndog", t: "Beethoven", n: "Rap de SoundCloud de Los Ángeles que superó los siete millones de escuchas (año aproximado)." },
         { a: 2022, art: "Gunna & Future", t: "pushin P", n: "Un meme y un éxito: la «P» de Gunna invadió internet." }
       ]
     }

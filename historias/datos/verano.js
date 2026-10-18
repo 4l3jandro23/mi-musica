@@ -22,9 +22,12 @@ HISTORIAS.push({
         { a: 1964, art: "The Drifters", t: "Under the Boardwalk", n: "Bajo el paseo marítimo, a la sombra: el verano de Nueva York." },
         { a: 1966, art: "The Lovin' Spoonful", t: "Summer in the City", n: "El calor pegajoso de la ciudad en agosto." },
         { a: 1969, art: "Sly & the Family Stone", t: "Hot Fun in the Summertime", n: "Soul de verano para el final de los 60." },
+        { a: 1969, art: "Los Payos", t: "María Isabel", n: "«La playa estaba desierta»: la canción del verano de 1969 que todavía se canta en las fiestas." },
         { a: 1970, art: "Mungo Jerry", t: "In the Summertime", n: "Uno de los sencillos más vendidos de la historia del Reino Unido." },
         { a: 1974, art: "Kool & the Gang", t: "Summer Madness", n: "Un instrumental de funk lento para las tardes de calor." },
         { a: 1983, art: "Bananarama", t: "Cruel Summer", n: "El verano cruel de quien se queda solo en la ciudad." },
+        { a: 1984, art: "Georgie Dann", t: "Carnaval, carnaval", n: "El francés que se convirtió en el rey de la canción del verano en España (año aproximado)." },
+        { a: 1988, art: "Georgie Dann", t: "El negro no puede", n: "Uno de sus éxitos de verano, con letra hoy muy discutida (año aproximado)." },
         { a: 1991, art: "DJ Jazzy Jeff & The Fresh Prince", t: "Summertime", n: "Will Smith antes de ser actor: rap tranquilo de barbacoa." }
       ]
     },
@@ -41,6 +44,7 @@ HISTORIAS.push({
         { a: 1989, art: "La lambada", t: "Una canción con juicio", tipo: "hito", n: "La lambada copiaba «Llorando se fue» del grupo boliviano Los Kjarkas, que ganaron el juicio por plagio." },
         { a: 1989, art: "Kaoma", t: "Lambada", n: "El baile del verano de 1989 en toda Europa." },
         { a: 1993, art: "Los del Río", t: "Macarena", n: "El baile de los veranos de los 90." },
+        { a: 1994, art: "Georgie Dann", t: "La barbacoa", n: "Su gran éxito de los 90, con coreografía incluida." },
         { a: 2000, art: "King África", t: "La bomba", n: "El verano de 2000: un argentino y un baile que se hacía en todas las bodas." },
         { a: 2002, art: "Las Ketchup", t: "Aserejé", n: "Un baile mundial de tres hermanas de Córdoba: la letra imita a la Sugarhill Gang." },
         { a: 2010, art: "Don Omar & Lucenzo", t: "Danza Kuduro", n: "El kuduro angoleño pasado por Francia y Puerto Rico." },

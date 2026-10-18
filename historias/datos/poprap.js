@@ -19,7 +19,8 @@ HISTORIAS.push({
         { a: 1988, art: "DJ Jazzy Jeff & The Fresh Prince", t: "Parents Just Don't Understand", n: "Ganó el primer Grammy de rap de la historia." },
         { a: 1988, art: "Tone Lōc", t: "Wild Thing", n: "Rap de fiesta con un sample de Van Halen y la voz ronca de Tone Lōc." },
         { a: 1989, art: "Los Grammy", t: "El primer premio de rap y un boicot", tipo: "hito", n: "Se entrega por primera vez el Grammy de rap, pero fuera de la emisión en directo: varios raperos boicotean la gala." },
-        { a: 1989, art: "Young MC", t: "Bust a Move", n: "Ganó un Grammy de rap, con Flea, de los Red Hot Chili Peppers, al bajo." }
+        { a: 1989, art: "Young MC", t: "Bust a Move", n: "Ganó un Grammy de rap, con Flea, de los Red Hot Chili Peppers, al bajo." },
+        { a: 1989, art: "Tone-Loc", t: "Funky Cold Medina", n: "La segunda de Tone-Loc, sobre una pócima de amor, con el riff de «Hot Blooded» de Foreigner." }
       ]
     },
     {
@@ -31,6 +32,7 @@ HISTORIAS.push({
         { a: 1990, art: "Please Hammer, Don't Hurt 'Em", t: "El rap más vendido", tipo: "hito", n: "El disco de MC Hammer pasa 21 semanas en el número uno de Estados Unidos." },
         { a: 1990, art: "MC Hammer", t: "U Can't Touch This", n: "Sobre «Super Freak» de Rick James: pantalones de harén y un disco de diamante." },
         { a: 1990, art: "Vanilla Ice", t: "Ice Ice Baby", n: "El primer número uno de rap en Estados Unidos." },
+        { a: 1990, art: "DJ Jazzy Jeff & The Fresh Prince", t: "The Fresh Prince of Bel-Air", n: "La sintonía de la serie: la canción que todos se saben de memoria." },
         { a: 1992, art: "Kris Kross", t: "Jump", n: "Dos niños con la ropa al revés." },
         { a: 1992, art: "Sir Mix-a-Lot", t: "Baby Got Back", n: "Un número uno durante cinco semanas." },
         { a: 1992, art: "House of Pain", t: "Jump Around", n: "El himno de los estadios." },
@@ -52,11 +54,34 @@ HISTORIAS.push({
         { a: 2002, art: "Eminem", t: "Without Me", n: "«Guess who's back»: Eminem vuelve con humor y burlas a todo el mundo." },
         { a: 2003, art: "OutKast", t: "Hey Ya!", n: "Funk, pop y una sacudida de polaroid." },
         { a: 2003, art: "The Black Eyed Peas", t: "Where Is the Love?", n: "Con Justin Timberlake en el estribillo." },
+        { a: 2003, art: "Baby Bash & Frankie J", t: "Suga Suga", n: "El rapero chicano de Texas y su éxito de radio con guitarra suave." },
+        { a: 2004, art: "Akon", t: "Locked Up", n: "El primer éxito del senegalés-estadounidense, sobre sus días en la cárcel." },
+        { a: 2004, art: "Akon", t: "Lonely", n: "Con su voz acelerada sobre un sample de Bobby Vinton: número uno en Reino Unido." },
         { a: 2005, art: "Kanye West feat. Jamie Foxx", t: "Gold Digger", n: "Jamie Foxx imita a Ray Charles, al que acababa de interpretar en el cine." },
+        { a: 2005, art: "Ray J", t: "One Wish", n: "El hermano de Brandy y su balada de R&B de 2005." },
+        { a: 2005, art: "Akon", t: "Bananza (Belly Dancer)", n: "Del primer disco, «Trouble»." },
+        { a: 2006, art: "Akon & Eminem", t: "Smack That", n: "Akon con Eminem, en su segundo disco: número 2 en EE. UU." },
+        { a: 2006, art: "Akon & Snoop Dogg", t: "I Wanna Love You", n: "Número uno en EE. UU., en una versión «limpia» para la radio." },
         { a: 2007, art: "El rap del tono de llamada", t: "Canciones para el móvil", tipo: "hito", n: "Los tonos de llamada se venden por millones y muchas canciones se hacen pensando en el estribillo de diez segundos." },
         { a: 2007, art: "Flo Rida feat. T-Pain", t: "Low", n: "Una de las canciones más descargadas de su época." },
+        { a: 2007, art: "Madcon", t: "Beggin'", n: "Los noruegos versionan a The Four Seasons y arrasan en Europa." },
+        { a: 2007, art: "Sean Kingston", t: "Beautiful Girls", n: "Sobre «Stand by Me»: número uno en EE. UU. con 17 años." },
+        { a: 2007, art: "will.i.am", t: "I Got It from My Mama", n: "Del disco en solitario del líder de los Black Eyed Peas." },
+        { a: 2008, art: "will.i.am", t: "Heartbreaker", n: "will.i.am con Cheryl Cole, que acababa de saltar a la fama en Girls Aloud." },
+        { a: 2008, art: "Flo Rida & Lil Wayne", t: "American Superstar", n: "Del primer disco de Flo Rida, «Mail on Sunday»." },
+        { a: 2008, art: "Flo Rida & will.i.am", t: "In the Ayer", n: "Otra de su primer disco, con el de los Black Eyed Peas." },
+        { a: 2008, art: "T.I. & Rihanna", t: "Live Your Life", n: "Sobre «Dragostea din tei» de O-Zone: número uno en EE. UU." },
+        { a: 2008, art: "Soulja Boy & Sammie", t: "Kiss Me thru the Phone", n: "Soulja Boy deja el baile para una canción romántica de la era de los móviles." },
+        { a: 2008, art: "Akon", t: "Right Now (Na Na Na)", n: "Akon se pasa al dance de discoteca con «Freedom»." },
+        { a: 2008, art: "Akon, Colby O'Donis & Kardinal Offishall", t: "Beautiful", n: "Otra de «Freedom», con aire de balada de pista." },
         { a: 2009, art: "Pitbull", t: "I Know You Want Me (Calle Ocho)", n: "«Mr. Worldwide» empieza en Miami." },
-        { a: 2009, art: "Flo Rida feat. Kesha", t: "Right Round", n: "Sobre «You Spin Me Round»." }
+        { a: 2009, art: "Flo Rida feat. Kesha", t: "Right Round", n: "Sobre «You Spin Me Round»." },
+        { a: 2009, art: "Sean Kingston", t: "Fire Burning", n: "El «somebody call 911» de los veranos de 2009." },
+        { a: 2009, art: "Iyaz", t: "Replay", n: "El cantante de las Islas Vírgenes Británicas, descubierto por Sean Kingston en MySpace." },
+        { a: 2009, art: "Flo Rida & Nelly Furtado", t: "Jump", n: "Del disco «R.O.O.T.S.», con Nelly Furtado en el estribillo." },
+        { a: 2009, art: "T.I. & Justin Timberlake", t: "Dead and Gone", n: "T.I. sale de la cárcel arrepentido y canta con Timberlake." },
+        { a: 2009, art: "Akon & Sweet Rush", t: "Troublemaker", n: "Akon en su etapa de pop electrónico (año aproximado)." },
+        { a: 2009, art: "Keri Hilson, Kanye West & Ne-Yo", t: "Knock You Down", n: "La cantante de Atlanta con Kanye y Ne-Yo, número 3 en EE. UU." }
       ]
     },
     {

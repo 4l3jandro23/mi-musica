@@ -18,6 +18,7 @@ HISTORIAS.push({
         { a: 1983, art: "Bonnie Tyler", t: "Total Eclipse of the Heart", n: "La «power ballad» de Jim Steinman, enorme y dramática." },
         { a: 1984, art: "Lionel Richie", t: "Hello", n: "El videoclip del profesor y la alumna ciega que hace un busto de barro." },
         { a: 1984, art: "George Benson", t: "Nothing's Gonna Change My Love for You", n: "El guitarrista de jazz convertido en voz romántica; la versión de Glenn Medeiros fue número uno en Reino Unido." },
+        { a: 1987, art: "Glenn Medeiros", t: "Nothing's Gonna Change My Love for You", n: "Un chico de Hawái de 16 años lleva la canción de George Benson al número uno británico." },
         { a: 1989, art: "Michael Bolton", t: "How Am I Supposed to Live Without You", n: "La voz rasgada de las baladas de finales de los 80." },
         { a: 1989, art: "Richard Marx", t: "Right Here Waiting", n: "La escribió en una habitación de hotel, lejos de su mujer, que estaba rodando en Sudáfrica." },
         { a: 1990, art: "Roxette", t: "It Must Have Been Love", n: "La canción de los suecos para «Pretty Woman»: número uno en EE. UU." },
@@ -38,11 +39,13 @@ HISTORIAS.push({
     {
       titulo: "La balada romántica en español",
       corto: "En español",
-      periodo: "1959 – 1985",
+      periodo: "1959 – 1987",
       intro: "De los festivales a los estadios.",
       items: [
         { a: 1959, art: "Festival de Benidorm", t: "Nace el festival", tipo: "hito", n: "El festival de la canción de Benidorm lanza a una generación de cantantes melódicos." },
         { a: 1970, art: "Nino Bravo", t: "Te quiero, te quiero", n: "La voz potente del valenciano, muerto en un accidente de coche con 28 años." },
+        { a: 1970, art: "Los Ángeles Negros", t: "El rey y yo", n: "Los chilenos inventan la balada sentimental latinoamericana con órgano y voz llorosa." },
+        { a: 1972, art: "Nino Bravo", t: "Noelia", n: "Una de sus últimas grandes canciones antes de morir en un accidente en 1973." },
         { a: 1978, art: "Julio Iglesias", t: "Me olvidé de vivir", n: "Una canción francesa que convirtió en uno de sus mayores éxitos." },
         { a: 1979, art: "José José", t: "Almohada", n: "Una de las grandes baladas del «príncipe de la canción»." },
         { a: 1980, art: "Raphael", t: "Como yo te amo", n: "De Manuel Alejandro: «Como yo te amo, nadie te amará»." },
@@ -50,7 +53,8 @@ HISTORIAS.push({
         { a: 1980, art: "Camilo Sesto", t: "Perdóname", n: "El alcoyano de los agudos imposibles, uno de los grandes de la balada en español." },
         { a: 1981, art: "Rocío Jurado", t: "Como una ola", n: "La chipionera en una de sus baladas más famosas." },
         { a: 1982, art: "José Luis Perales", t: "¿Y cómo es él?", n: "La balada de los celos del cantautor conquense." },
-        { a: 1985, art: "Isabel Pantoja", t: "Marinero de luces", n: "La sevillana en su etapa más melódica, con canciones de José Luis Perales." }
+        { a: 1985, art: "Isabel Pantoja", t: "Marinero de luces", n: "La sevillana en su etapa más melódica, con canciones de José Luis Perales." },
+        { a: 1987, art: "Glenn Medeiros", t: "Nada cambiará mi amor por ti", n: "La versión en español de su gran éxito, para el público latino." }
       ]
     },
     {

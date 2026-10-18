@@ -81,8 +81,10 @@ HISTORIAS.push({
       intro: "El indie de los festivales y del streaming.",
       items: [
         { a: 2011, art: "M83", t: "Wait", n: "La balada lenta de «Hurry Up, We're Dreaming», que sale en películas y series." },
+        { a: 2011, art: "The Black Keys", t: "Lonely Boy", n: "El vídeo del hombre bailando solo en la calle." },
         { a: 2012, art: "Bloc Party", t: "We Are Not Good People", n: "Del disco «Four», el más ruidoso." },
         { a: 2012, art: "The Chevin", t: "Champion", n: "Rock de estadio de Leeds (año aproximado)." },
+        { a: 2012, art: "Band of Horses", t: "Feud", n: "De «Mirage Rock», una de las canciones más rabiosas del grupo de Ben Bridwell." },
         { a: 2013, art: "Arctic Monkeys", t: "Do I Wanna Know?", n: "Los Arctic Monkeys se vuelven más lentos y oscuros: su tema más escuchado." },
         { a: 2014, art: "Mac DeMarco", t: "Chamber of Reflection", n: "El indie relajado de dormitorio." },
         { a: 2014, art: "The Kooks", t: "Around Town", n: "Con coro de gospel, del disco «Listen»." },

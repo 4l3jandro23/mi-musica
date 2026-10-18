@@ -84,9 +84,10 @@ HISTORIAS.push({
     {
       titulo: "El siglo XXI",
       corto: "Siglo XXI",
-      periodo: "2000 – 2023",
+      periodo: "1999 – 2023",
       intro: "Del sertanejo al funk de las favelas: Brasil manda en el streaming.",
       items: [
+        { a: 1999, art: "Só Pra Contrariar", t: "Santo santo", n: "El grupo de pagode de Uberlândia, en la versión en español con Gloria Estefan (año aproximado)." },
         { a: 2000, art: "Marisa Monte", t: "Amor I Love You", n: "La gran voz de la MPB moderna." },
         { a: 2004, art: "Carlinhos Brown & DJ Dero", t: "Maria Caipirinha", q: "Carlinhos Brown Maria Caipirinha DJ Dero", n: "Nace en el carnaval de Barcelona y es la canción del verano de 2004 en España." },
         { a: 2006, art: "Chico Buarque & DJ Meme", t: "Bye Bye Brasil (Baile Funk Mix)", n: "La canción de la película de 1979, pasada a baile funk." },

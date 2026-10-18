@@ -27,7 +27,8 @@ HISTORIAS.push({
         { a: 1953, art: "Big Mama Thornton", t: "Hound Dog", n: "La original, mucho más salvaje que la de Elvis." },
         { a: 1954, art: "Big Joe Turner", t: "Shake, Rattle and Roll", n: "Rhythm & blues de Kansas City listo para explotar." },
         { a: 1954, art: "The Chords", t: "Sh-Boom", n: "Doo-wop que entra en las listas de pop: uno de los primeros rock and roll." },
-        { a: 1954, art: "Bill Haley & His Comets", t: "Shake, Rattle and Roll", n: "La versión blanca del éxito de Big Joe Turner." }
+        { a: 1954, art: "Bill Haley & His Comets", t: "Shake, Rattle and Roll", n: "La versión blanca del éxito de Big Joe Turner." },
+        { a: 1954, art: "Elvis Presley", t: "Blue Moon", n: "Una toma de las sesiones de Sun Records, con eco y un falsete extraño." }
       ]
     },
     {
@@ -88,7 +89,8 @@ HISTORIAS.push({
         { a: 1958, art: "Wanda Jackson", t: "Let's Have a Party", n: "La reina del rockabilly, que salió con Elvis." },
         { a: 1959, art: "El día que murió la música", t: "Mueren Buddy Holly, Ritchie Valens y The Big Bopper", tipo: "hito", n: "Un accidente de avioneta el 3 de febrero. Se acaba la primera era del rock and roll." },
         { a: 1959, art: "Bo Diddley", t: "Say Man", n: "Bo Diddley y su maraquero se insultan en broma: casi un rap." },
-        { a: 1959, art: "The Isley Brothers", t: "Shout", n: "El grito que se oye en todas las bodas americanas." }
+        { a: 1959, art: "The Isley Brothers", t: "Shout", n: "El grito que se oye en todas las bodas americanas." },
+        { a: 1959, art: "Phil Phillips", t: "Sea of Love", n: "Su único éxito, sobre el amor del mar de Luisiana." }
       ]
     },
     {
@@ -99,9 +101,13 @@ HISTORIAS.push({
       items: [
         { a: 1960, art: "The Shadows", t: "Apache", n: "La guitarra instrumental británica que inspiró a medio mundo, también a los grupos españoles." },
         { a: 1960, art: "Los Teen Tops", t: "La plaga", n: "Rock and roll traducido al español desde México. Llegó a toda Latinoamérica." },
+        { a: 1960, art: "Brenda Lee", t: "I'm Sorry", n: "La chica de quince años con voz de mujer: número uno en EE. UU." },
+        { a: 1960, art: "The Little Dippers", t: "Forever", n: "Un grupo vocal de sesión de Nashville." },
         { a: 1961, art: "Chuck Berry", t: "Route 66", n: "El clásico de Bobby Troup en la voz de Chuck Berry." },
         { a: 1961, art: "Del Shannon", t: "Runaway", n: "El solo de musitron, un antepasado del sintetizador." },
         { a: 1961, art: "Dion", t: "Runaround Sue", n: "La chica que se iba con todos." },
+        { a: 1961, art: "Bobby Lewis", t: "Tossin' and Turnin'", n: "Siete semanas número uno: el single más vendido de 1961 en EE. UU." },
+        { a: 1961, art: "Elvis Presley", t: "Can't Help Falling in Love", n: "De «Blue Hawaii», con la melodía de «Plaisir d'amour»." },
         { a: 1962, art: "Dick Dale", t: "Misirlou", n: "Surf rock con escala oriental. Pulp Fiction la resucitó en 1994." },
         { a: 1962, art: "The Tornados", t: "Telstar", n: "Producida por Joe Meek: el primer número uno británico en EE. UU." },
         { a: 1962, art: "The Chantays", t: "Pipeline", n: "Surf instrumental de unos chicos de instituto de California." },
@@ -109,6 +115,8 @@ HISTORIAS.push({
         { a: 1963, art: "The Beatles", t: "She Loves You", n: "«Yeah, yeah, yeah». La beatlemanía en el Reino Unido." },
         { a: 1963, art: "The Trashmen", t: "Surfin' Bird", n: "«A-well-a everybody's heard about the bird»." },
         { a: 1963, art: "The Dave Clark Five", t: "Glad All Over", n: "Desbancó a los Beatles del número uno en Reino Unido en enero de 1964." },
+        { a: 1963, art: "The Lively Ones", t: "Surf Rider", n: "Surf instrumental de California que cierra «Pulp Fiction»." },
+        { a: 1963, art: "The Surfaris", t: "Wipe Out", n: "Una risa y un redoble de batería: el surf instrumental más famoso." },
         { a: 1964, art: "The Beatles", t: "Actúan en el show de Ed Sullivan", tipo: "hito", n: "73 millones de estadounidenses los ven por la tele. Empieza la invasión británica." },
         { a: 1964, art: "The Kinks", t: "You Really Got Me", n: "Un amplificador rajado con una cuchilla: el riff distorsionado que anuncia el hard rock." },
         { a: 1964, art: "Los Brincos", t: "Flamenco", n: "Los «Beatles españoles» con un guiño andaluz." },
@@ -116,7 +124,10 @@ HISTORIAS.push({
         { a: 1964, art: "The Searchers", t: "Needles and Pins", n: "El sonido de guitarras de doce cuerdas de Liverpool, antes que los Byrds." },
         { a: 1964, art: "Gerry & The Pacemakers", t: "Ferry Cross the Mersey", n: "El ferri de Liverpool, del grupo de Brian Epstein que rivalizaba con los Beatles." },
         { a: 1964, art: "Herman's Hermits", t: "I'm into Something Good", n: "Su primer número uno en Reino Unido, escrita por Carole King." },
-        { a: 1964, art: "The Zombies", t: "She's Not There", n: "El piano eléctrico y la voz susurrante de Colin Blunstone." }
+        { a: 1964, art: "The Zombies", t: "She's Not There", n: "El piano eléctrico y la voz susurrante de Colin Blunstone." },
+        { a: 1964, art: "Chuck Berry", t: "You Never Can Tell", n: "La de la escena del baile de Travolta y Uma Thurman en «Pulp Fiction»." },
+        { a: 1964, art: "Manfred Mann", t: "Do Wah Diddy Diddy", n: "Número uno a ambos lados del Atlántico en plena invasión británica." },
+        { a: 1964, art: "The Beach Boys", t: "I Get Around", n: "Su primer número uno en EE. UU., coches y chicas de California." }
       ]
     }
   ]

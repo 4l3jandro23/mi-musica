@@ -104,6 +104,7 @@ HISTORIAS.push({
         { a: 2010, art: "Skrillex", t: "Scary Monsters and Nice Sprites", n: "El dubstep americano y el principio de la era EDM." },
         { a: 2011, art: "Avicii", t: "Levels", n: "El himno de una generación de festivales." },
         { a: 2011, art: "The Glitch Mob", t: "We Can Make the World Stop", n: "Glitch hop de Los Ángeles." },
+        { a: 2011, art: "Gil Scott-Heron & Jamie xx", t: "I'll Take Care of U", n: "Del disco en que Jamie xx remezcla el último de Gil Scott-Heron; Drake y Rihanna la versionaron." },
         { a: 2013, art: "Daft Punk", t: "«Random Access Memories»", tipo: "hito", n: "Grammy al disco del año: la electrónica vuelve a los instrumentos." },
         { a: 2013, art: "Disclosure", t: "Latch", n: "El house británico vuelve a las listas." },
         { a: 2019, art: "Scizzie", t: "aquatic ambience", n: "La música del «Donkey Kong Country» pasada a drum & bass lo-fi: viral en internet (año aproximado)." },

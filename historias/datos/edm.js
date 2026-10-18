@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "edm",
   familia: "House, techno y EDM",
   titulo: "La era EDM",
-  periodo: "2009 – 2023",
+  periodo: "2009 – 2026",
   color: "#ff8a00",
   lema: "Festivales gigantes, DJs estrella y drops para millones: moombahton, trap EDM y future bass.",
   intro: "Hacia 2010, la electrónica se convierte en el pop de Estados Unidos con el nombre de «EDM» (Electronic Dance Music). Los DJs cobran como estrellas de rock, festivales como Ultra, EDC o Tomorrowland venden millones de entradas y cada año surge un subgénero nuevo. (El big room, el brostep, el progressive y el future house tienen su propia historia.)",
@@ -14,6 +14,8 @@ HISTORIAS.push({
       intro: "DJs estrella, festivales gigantes y el pop electrónico.",
       items: [
         { a: 2009, art: "David Guetta", t: "Sexy Bitch", n: "Con Akon: el DJ francés convierte el house en el sonido de la radio americana." },
+        { a: 2009, art: "Carlos Jean", t: "Lead the Way", n: "El productor gallego, uno de los nombres de la electrónica española (año aproximado)." },
+        { a: 2010, art: "Kelis", t: "Acapella", n: "Kelis se pasa al electro con David Guetta en la producción." },
         { a: 2011, art: "Los grandes festivales", t: "Ultra, EDC y Tomorrowland explotan", tipo: "hito", n: "Cientos de miles de personas, escenarios como castillos y entradas agotadas en minutos." },
         { a: 2011, art: "Calvin Harris & Rihanna", t: "We Found Love", n: "Pop y EDM en el número uno durante diez semanas." },
         { a: 2011, art: "David Guetta feat. Sia", t: "Titanium", n: "Sia empezó escribiéndola para otra cantante." },
@@ -80,7 +82,7 @@ HISTORIAS.push({
     {
       titulo: "El dance de hoy",
       corto: "Hoy",
-      periodo: "2016 – 2023",
+      periodo: "2016 – 2026",
       intro: "Tech house, Fred again.. y el baile en las listas.",
       items: [
         { a: 2016, art: "Teddybears, Natalie Storm & Malte Holmberg", t: "Sunshine", n: "Pop dance de los suecos (año aproximado)." },
@@ -98,7 +100,8 @@ HISTORIAS.push({
         { a: 2022, art: "Fred again..", t: "Delilah (pull me out of this)", n: "Voces recortadas y emociones: la electrónica de la generación de TikTok." },
         { a: 2023, art: "Peggy Gou", t: "(It Goes Like) Nanana", n: "La DJ surcoreana y el house noventero." },
         { a: 2023, art: "John Summit feat. Hayla", t: "Where You Are", n: "El tech house llega al gran público." },
-        { a: 2023, art: "Fred again..", t: "Rumble", n: "Con Skrillex y Flowdan: bajo de UK garage y grime." }
+        { a: 2023, art: "Fred again..", t: "Rumble", n: "Con Skrillex y Flowdan: bajo de UK garage y grime." },
+        { a: 2026, art: "Bebe Rexha & David Guetta", t: "Sad Girls", n: "Progressive house de su disco «Dirty Blonde»; Guetta la tuvo dos años guardada en el disco duro." }
       ]
     }
   ]

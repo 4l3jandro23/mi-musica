@@ -10,7 +10,7 @@ HISTORIAS.push({
     {
       titulo: "Raíces y son",
       corto: "Raíces",
-      periodo: "1521 – 1961",
+      periodo: "1521 – 1965",
       intro: "Del son jarocho al huapango.",
       items: [
         { a: 1521, art: "La conquista", t: "Encuentro de dos mundos", tipo: "hito", n: "La música indígena se mezcla con la española y, después, con la africana: de ahí salen los sones de cada región." },
@@ -18,7 +18,8 @@ HISTORIAS.push({
         { a: 1938, art: "Lorenzo Barcelata", t: "El cascabel", n: "Un son jarocho de Veracruz que acabó en el disco de oro de las sondas Voyager." },
         { a: 1952, art: "Mariachi Vargas de Tecalitlán", t: "El son de la negra", n: "El mariachi más famoso de México y el son que todo el país reconoce." },
         { a: 1958, art: "Ritchie Valens", t: "La Bamba", n: "Un son jarocho tradicional pasado al rock and roll en California." },
-        { a: 1961, art: "Chavela Vargas", t: "La llorona", n: "La voz desnuda de Chavela, que cantaba como si se le fuera la vida." }
+        { a: 1961, art: "Chavela Vargas", t: "La llorona", n: "La voz desnuda de Chavela, que cantaba como si se le fuera la vida." },
+        { a: 1965, art: "Los Apson Boys", t: "Fue en un café", n: "El rock and roll de Agua Prieta, Sonora: refritos de éxitos ingleses en español (año aproximado)." }
       ]
     },
     {
@@ -65,6 +66,7 @@ HISTORIAS.push({
         { a: 1994, art: "Café Tacvba", t: "Las flores", n: "El rock mexicano que mezcla tradición y vanguardia." },
         { a: 1994, art: "Selena", t: "Bidi Bidi Bom Bom", n: "La reina de la cumbia tejana, de raíces mexicanas." },
         { a: 1996, art: "Café Tacvba", t: "Chilanga banda", n: "Ciudad de México hecha jerga." },
+        { a: 1996, art: "Joan Sebastian", t: "Tatuajes", n: "El «Rey del jaripeo» en una de sus canciones más famosas (año aproximado)." },
         { a: 1997, art: "Coyote Dax", t: "No Rompas Mi Corazón", n: "Uno de los grandes éxitos gruperos de los 90 en México." },
         { a: 2003, art: "Molotov", t: "Frijolero", n: "Rap rock bilingüe contra los tópicos de la frontera." },
         { a: 2006, art: "Julieta Venegas", t: "Me voy", n: "Pop con acordeón desde Tijuana." }
@@ -79,6 +81,7 @@ HISTORIAS.push({
         { a: 1997, art: "Los Tigres del Norte", t: "Jefe de jefes", n: "Los reyes del norteño y del corrido." },
         { a: 2013, art: "Banda MS", t: "Hermosa experiencia", n: "La banda sinaloense, de metales y tambora." },
         { a: 2015, art: "Natalia Lafourcade", t: "Hasta la raíz", n: "Raíces y pop: Grammy Latino a la canción del año." },
+        { a: 2018, art: "Marcos Menchaca", t: "Viernes 13", n: "El cantante de Monclova cuyo tema romántico se hizo viral en TikTok (año aproximado)." },
         { a: 2020, art: "Natanael Cano", t: "Amor tumbado", n: "El corrido tumbado: guitarras de corrido con actitud de trap." },
         { a: 2023, art: "Peso Pluma", t: "El regional mexicano en el mundo", tipo: "hito", n: "Peso Pluma se convierte en el artista mexicano más escuchado del planeta." },
         { a: 2023, art: "Eslabon Armado & Peso Pluma", t: "Ella baila sola", n: "La primera canción de regional mexicano en el top 10 mundial de Spotify." },

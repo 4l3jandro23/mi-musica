@@ -38,16 +38,20 @@ HISTORIAS.push({
     {
       titulo: "Miami bass",
       corto: "Miami bass",
-      periodo: "1986 – 1994",
+      periodo: "1986 – 1996",
       intro: "Graves profundos, letras picantes y mucha polémica.",
       items: [
         { a: 1986, art: "2 Live Crew", t: "Throw the D", n: "El Miami bass en su versión más directa: bajos enormes y ritmo de 808." },
+        { a: 1986, art: "2 Live Crew", t: "We Want Some Pussy", n: "El grupo de Luther Campbell, el que acabó en los tribunales por obscenidad." },
         { a: 1987, art: "Maggotron", t: "Bass Is Maggotron", q: "Maggotron", n: "Miami bass para hacer vibrar los coches." },
         { a: 1988, art: "L'Trimm", t: "Cars with the Boom", n: "Dos chicas de Miami y un himno a los altavoces del coche." },
+        { a: 1988, art: "Rodney O & Joe Cooley", t: "Everlasting Bass", n: "Bajos de 808 de Los Ángeles para los coches con equipo de música." },
         { a: 1989, art: "Río de Janeiro", t: "El Miami bass llega a los bailes de las favelas", tipo: "hito", n: "DJ Marlboro lo mezcla con portugués: nace el funk carioca." },
         { a: 1989, art: "2 Live Crew", t: "Me So Horny", n: "En 1990 un juez declaró obsceno su disco: el primero en EE. UU. Lo ganaron en apelación." },
         { a: 1993, art: "Tag Team", t: "Whoomp! (There It Is)", n: "El «bass» de Atlanta en los estadios." },
-        { a: 1994, art: "69 Boyz", t: "Tootsee Roll", n: "Un baile en línea de Florida." }
+        { a: 1994, art: "69 Boyz", t: "Tootsee Roll", n: "Un baile en línea de Florida." },
+        { a: 1995, art: "2 Live Crew", t: "Hoochie Mama", n: "Para la película «Friday», cuando el grupo ya era leyenda del Miami bass." },
+        { a: 1996, art: "Ghost Town DJs", t: "My Boo", n: "Bass de Atlanta del sello So So Def; en 2016 volvió por el reto viral del «Running Man»." }
       ]
     },
     {

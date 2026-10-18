@@ -59,6 +59,7 @@ HISTORIAS.push({
         { a: 1966, art: "Los Mustang", t: "Submarino amarillo", n: "Los Beatles en castellano: los Mustang versionaban todo." },
         { a: 1966, art: "Los Salvajes", t: "Todo negro", n: "La versión de «Paint It Black» de los barceloneses." },
         { a: 1966, art: "Los Bravos", t: "Black Is Black", n: "El primer gran éxito internacional de un grupo español." },
+        { a: 1966, art: "Los Brincos", t: "Mejor", n: "Los «Beatles españoles» en su canción más coreada, con Juan Pardo y Junior." },
         { a: 1967, art: "Massiel", t: "Rosas en el mar", n: "Un año antes de Eurovisión, Massiel cantaba a Luis Eduardo Aute." },
         { a: 1967, art: "Lone Star", t: "Mi calle", n: "Rock de Barcelona y un himno de barrio." },
         { a: 1968, art: "Juan y Junior", t: "La caza", n: "El dúo de dos exmiembros de Los Brincos." },

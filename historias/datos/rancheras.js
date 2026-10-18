@@ -38,6 +38,7 @@ HISTORIAS.push({
         { a: 1963, art: "José Alfredo Jiménez", t: "La media vuelta", n: "Una despedida con orgullo." },
         { a: 1965, art: "Javier Solís", t: "Sombras", n: "El rey del bolero ranchero." },
         { a: 1966, art: "Flor Silvestre", t: "Cielo rojo", n: "La voz de la ranchera, una de las cantantes más queridas del cine mexicano." },
+        { a: 1966, art: "José Alfredo Jiménez", t: "Te solté la rienda", n: "Una de sus últimas grandes canciones: dejar ir a quien no quiere quedarse (año aproximado)." },
         { a: 1970, art: "Lucha Villa", t: "La media vuelta", n: "La de José Alfredo Jiménez cantada por otra gran voz femenina." },
         { a: 1971, art: "José Alfredo Jiménez", t: "El rey", n: "«No tengo trono ni reina»: el himno de la ranchera." },
         { a: 1973, art: "Muere José Alfredo Jiménez", t: "Más de mil canciones", tipo: "hito", n: "Muere con 47 años, después de escribir buena parte de las rancheras más famosas." }

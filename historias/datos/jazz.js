@@ -72,6 +72,7 @@ HISTORIAS.push({
         { a: 1964, art: "Herbie Hancock", t: "Cantaloupe Island", n: "Jazz con groove de Blue Note." },
         { a: 1966, art: "Wayne Shorter", t: "Footprints", n: "Un estándar moderno del saxofonista de Miles Davis y Weather Report." },
         { a: 1967, art: "Muere John Coltrane", t: "El jazz pierde a su santo", tipo: "hito", n: "Muere con 40 años; en San Francisco una iglesia lo venera como santo." },
+        { a: 1973, art: "Randy Weston", t: "In Memory Of", n: "El pianista que unió el jazz con Marruecos y África, de su etapa en Polydor (año aproximado)." },
         { a: 1977, art: "Weather Report", t: "Birdland", n: "La fusión en las listas: un homenaje al club de Nueva York de Charlie Parker." },
         { a: 1987, art: "Pat Metheny Group", t: "Last Train Home", n: "Guitarra y un tren que no para." },
         { a: 2004, art: "Steve Lehman Quartet", t: "Interface D", n: "Del disco «Interface» del saxofonista neoyorquino, jazz de vanguardia (año aproximado)." },

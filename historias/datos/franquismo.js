@@ -15,10 +15,12 @@ HISTORIAS.push({
       items: [
         { a: 1939, art: "Fin de la Guerra Civil", t: "Llega la censura", tipo: "hito", n: "Las letras deben pasar por los censores: se cambian versos, se prohíben canciones y muchos músicos se exilian." },
         { a: 1941, art: "Concha Piquer", t: "Tatuaje", n: "La copla, música oficial del régimen… con historias que a veces se le escapaban." },
+        { a: 1941, art: "Celia Gámez", t: "Mírame (de «Yola»)", n: "La reina de la revista madrileña en una de sus obras de posguerra." },
         { a: 1944, art: "Juan M. Torregrosa", t: "Mi vaca lechera", n: "El fox infantil de posguerra que cantó toda España (año aproximado)." },
         { a: 1946, art: "Bonet de San Pedro", t: "Raska-yú", n: "Swing y canción ligera: el jazz se cuela disfrazado." },
         { a: 1947, art: "Antonio Machín", t: "Angelitos negros", n: "Un cubano negro cantando contra el racismo en la España de la posguerra." },
         { a: 1950, art: "Jorge Sepúlveda", t: "Mirando al mar", n: "El bolero más famoso de la posguerra española, cantado por el valenciano Jorge Sepúlveda." },
+        { a: 1950, art: "Jorge Sepúlveda", t: "Tres veces guapa", n: "El valenciano de los boleros y pasodobles de la radio de los 50." },
         { a: 1956, art: "Joselito", t: "Campanera", n: "El niño de la voz de oro." },
         { a: 1957, art: "Sara Montiel", t: "Fumando espero", n: "Sensualidad en el cine, con la censura vigilando." }
       ]

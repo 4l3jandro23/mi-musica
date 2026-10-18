@@ -32,7 +32,8 @@ HISTORIAS.push({
         { a: 1973, art: "Jim Croce", t: "Time in a Bottle", n: "Una nana para su hijo; Croce murió ese mismo año en un accidente de avioneta." },
         { a: 1973, art: "Hall & Oates", t: "She's Gone", n: "Soul de ojos azules de Filadelfia: su primer gran tema." },
         { a: 1973, art: "The Doobie Brothers", t: "Long Train Runnin'", n: "Una jam que tocaban en directo sin letra y que acabó siendo su gran éxito." },
-        { a: 1974, art: "Barry Manilow", t: "Mandy", n: "La balada de Manilow: su primer número uno en EE. UU." }
+        { a: 1974, art: "Barry Manilow", t: "Mandy", n: "La balada de Manilow: su primer número uno en EE. UU." },
+        { a: 1974, art: "The Hollies", t: "The Air That I Breathe", n: "Escrita por Albert Hammond, el padre del guitarrista de The Strokes; Radiohead tuvo que compartir créditos de «Creep»." }
       ]
     },
     {

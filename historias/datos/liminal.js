@@ -35,6 +35,7 @@ HISTORIAS.push({
         { a: 1934, art: "Muzak", t: "Nace el hilo musical", tipo: "hito", n: "Música para ascensores, oficinas y tiendas: diseñada para no escucharse." },
         { a: 1980, art: "Vangelis", t: "Memories of Green", n: "Melancolía de sintetizador que luego sonaría en «Blade Runner»." },
         { a: 1984, art: "Mariya Takeuchi", t: "Plastic Love", n: "Un tema de city pop que YouTube convirtió en recuerdo colectivo de una época que nadie de esa generación vivió." },
+        { a: 1984, art: "Diana Ross", t: "It's Your Move", n: "Su versión de 1984, que Macintosh Plus ralentizó en «Lisa Frank 420», el himno del vaporwave." },
         { a: 1986, art: "Hiroshi Yoshimura", t: "Blink", n: "Del disco «Music for Nine Post Cards», ambient japonés que YouTube volvió a sacar a la luz." },
         { a: 1995, art: "Brian Eno", t: "The Microsoft Sound", n: "El sonido de arranque de Windows 95." },
         { a: 2004, art: "Frutiger Aero", t: "La estética del Windows Vista", tipo: "hito", n: "Burbujas, agua, cielos azules y tecnología optimista: hoy, objeto de nostalgia." },

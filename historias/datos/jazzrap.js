@@ -15,12 +15,15 @@ HISTORIAS.push({
       items: [
         { a: 1988, art: "Native Tongues", t: "Un colectivo de rap distinto", tipo: "hito", n: "De La Soul, A Tribe Called Quest y Jungle Brothers: humor, jazz y paz frente al gangsta rap." },
         { a: 1989, art: "Gang Starr", t: "Words I Manifest", n: "DJ Premier y Guru samplean a Dizzy Gillespie." },
+        { a: 1989, art: "De La Soul", t: "Eye Know", n: "Sobre «(Sittin' On) The Dock of the Bay»: el rap hippie y alegre de «3 Feet High and Rising»." },
+        { a: 1989, art: "De La Soul", t: "The Magic Number", n: "El número tres como mantra, sobre un sample de Bob Dorough." },
         { a: 1990, art: "A Tribe Called Quest", t: "Can I Kick It?", n: "El bajo de Lou Reed y el estribillo para gritar." },
         { a: 1990, art: "A Tribe Called Quest", t: "Bonita Applebum", n: "Rap romántico sobre samples de jazz." },
         { a: 1990, art: "Gang Starr", t: "Jazz Thing", n: "Escrita para la película «Mo' Better Blues», de Spike Lee: el rap homenajea la historia del jazz." },
         { a: 1991, art: "A Tribe Called Quest", t: "Publican «The Low End Theory»", tipo: "hito", n: "Con Ron Carter, el contrabajista de Miles Davis: el disco clave del jazz rap." },
         { a: 1991, art: "A Tribe Called Quest", t: "Scenario", n: "Con Leaders of the New School y un Busta Rhymes desatado." },
         { a: 1991, art: "A Tribe Called Quest", t: "Check the Rhime", n: "Q-Tip y Phife Dawg se pasan las rimas como en un partido." },
+        { a: 1991, art: "A Tribe Called Quest", t: "Jazz (We've Got)", n: "De «The Low End Theory», el disco que casó el rap con el contrabajo de jazz." },
         { a: 1992, art: "Pete Rock & CL Smooth", t: "They Reminisce Over You (T.R.O.Y.)", n: "Un saxo sampleado para homenajear a un amigo muerto." },
         { a: 1992, art: "The Pharcyde", t: "Passin' Me By", n: "Un sample de Quincy Jones y cuatro chicos contando sus amores imposibles." },
         { a: 1993, art: "Guru", t: "Jazzmatazz", tipo: "hito", n: "Guru graba con Donald Byrd y Roy Ayers, músicos de jazz de verdad." },
@@ -29,7 +32,8 @@ HISTORIAS.push({
         { a: 1993, art: "A Tribe Called Quest", t: "Electric Relaxation", n: "De «Midnight Marauders»: el jazz rap más tranquilo y sexy." },
         { a: 1994, art: "Nas", t: "The World Is Yours", n: "Pete Rock y un piano de Ahmad Jamal." },
         { a: 1994, art: "Gang Starr", t: "Mass Appeal", n: "DJ Premier se burla del rap comercial con una base hipnótica." },
-        { a: 1995, art: "Guru", t: "Loungin'", q: "Guru Jazzmatazz Loungin", n: "Guru, de Gang Starr, junta en su disco «Jazzmatazz» a rap y músicos de jazz reales." }
+        { a: 1995, art: "Guru", t: "Loungin'", q: "Guru Jazzmatazz Loungin", n: "Guru, de Gang Starr, junta en su disco «Jazzmatazz» a rap y músicos de jazz reales." },
+        { a: 1995, art: "The Pharcyde", t: "Runnin'", n: "Producida por J Dilla con un sample de Stan Getz y Luiz Bonfá." }
       ]
     },
     {
@@ -46,10 +50,14 @@ HISTORIAS.push({
         { a: 2003, art: "Nujabes", t: "Feather", n: "Lo-fi japonés: Nujabes hizo la música de «Samurai Champloo»." },
         { a: 2004, art: "Madvillain", t: "Accordion", n: "MF DOOM y Madlib: el disco de culto del underground." },
         { a: 2004, art: "Nujabes", t: "Aruarian Dance", n: "Nujabes, japonés, con un instrumental de hip hop y jazz suave." },
+        { a: 2004, art: "Madvillain", t: "All Caps", n: "Del disco «Madvillainy» de Madlib y MF DOOM, el villano enmascarado del rap." },
+        { a: 2004, art: "MF DOOM & Mr. Fantastik", t: "Rapp Snitch Knishes", n: "De «Mm.. Food»: DOOM se burla de los raperos que delatan en sus letras." },
+        { a: 2004, art: "De La Soul & MF DOOM", t: "Rock Co.Kane Flow", n: "De La Soul y DOOM juntos, del disco «The Grind Date»." },
         { a: 2005, art: "Nujabes & Shing02", t: "Luv(sic) Part 3", n: "El japonés que inventó, sin saberlo, el lo-fi hip hop." },
         { a: 2005, art: "Common", t: "Be", n: "Producida por Kanye West." },
         { a: 2006, art: "J Dilla", t: "Muere a los 32 años", tipo: "hito", n: "Publica Donuts tres días antes: el disco de beats más influyente." },
         { a: 2006, art: "J Dilla", t: "Don't Cry", n: "Un sample de The Escorts, grabado desde la cama del hospital." },
+        { a: 2009, art: "MF DOOM", t: "That's That", n: "Del disco «Born Like This»: DOOM en su forma más críptica." },
         { a: 2012, art: "Joey Bada$$", t: "Waves", n: "El boom bap de una nueva generación." },
         { a: 2015, art: "Kendrick Lamar", t: "For Free? (Interlude)", n: "Jazz libre y rap a toda velocidad: Kendrick discute con el sistema." },
         { a: 2017, art: "Lo-fi hip hop radio", t: "«Beats to relax/study to»", tipo: "hito", n: "Un canal de YouTube emite jazz rap tranquilo las 24 horas; millones lo usan para estudiar." },

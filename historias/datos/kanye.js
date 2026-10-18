@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "kanye",
   familia: "Artistas",
   titulo: "Kanye West",
-  periodo: "2001 – 2024",
+  periodo: "2001 – 2026",
   color: "#b5523b",
   lema: "De productor de JAY-Z a dios del rap y su caída: la carrera más influyente y polémica del siglo XXI.",
   intro: "Kanye West empezó haciendo ritmos con samples de soul acelerados para Roc-A-Fella. Después se convirtió en rapero, y cada disco cambió el sonido del hip hop: la mochila universitaria, el sintetizador de estadio, el Auto-Tune triste, la grandilocuencia, el industrial, el góspel. También es una de las figuras más polémicas de la música, por sus declaraciones y por sus comentarios antisemitas de 2022.",
@@ -48,7 +48,8 @@ HISTORIAS.push({
         { a: 2007, art: "Kanye West", t: "Good Life", n: "Con T-Pain: Grammy a la mejor canción de rap." },
         { a: 2007, art: "Kanye West", t: "Can't Tell Me Nothing", n: "Ego y dudas en la misma canción." },
         { a: 2007, art: "Kanye West", t: "Flashing Lights", n: "Cuerdas, sintetizador y una de sus favoritas de siempre." },
-        { a: 2007, art: "Kanye West", t: "Homecoming", n: "Con Chris Martin: una carta de amor a Chicago." }
+        { a: 2007, art: "Kanye West", t: "Homecoming", n: "Con Chris Martin: una carta de amor a Chicago." },
+        { a: 2007, art: "Kanye West", t: "I Wonder", n: "De «Graduation», sobre un sample de «My Song» de Labi Siffre." }
       ]
     },
     {
@@ -84,7 +85,7 @@ HISTORIAS.push({
     {
       titulo: "Góspel, Donda y la caída",
       corto: "Donda",
-      periodo: "2016 – 2024",
+      periodo: "2016 – 2026",
       intro: "Discos que se reescriben, góspel y polémica.",
       items: [
         { a: 2016, art: "«The Life of Pablo»", t: "El disco que cambia después de publicado", tipo: "hito", n: "Lo sigue retocando en streaming semanas después de su salida." },
@@ -97,7 +98,8 @@ HISTORIAS.push({
         { a: 2021, art: "Donda", t: "Lo presenta en estadios llenos", tipo: "hito", n: "Vive dentro del estadio de Atlanta mientras termina el disco." },
         { a: 2021, art: "Kanye West", t: "Off the Grid", n: "Con Playboi Carti y Fivio Foreign: drill en Donda." },
         { a: 2022, art: "Kanye West", t: "Comentarios antisemitas", tipo: "hito", n: "Adidas y otras empresas rompen con él; su carrera se hunde." },
-        { a: 2024, art: "Kanye West & Ty Dolla $ign", t: "CARNIVAL", n: "Vultures 1: un número uno independiente pese a todo." }
+        { a: 2024, art: "Kanye West & Ty Dolla $ign", t: "CARNIVAL", n: "Vultures 1: un número uno independiente pese a todo." },
+        { a: 2026, art: "Ye & Peso Pluma", t: "LAST BREATH", n: "Del disco «Bully»: Ye canta en español por primera vez, con referencias a la lucha libre mexicana." }
       ]
     }
   ]

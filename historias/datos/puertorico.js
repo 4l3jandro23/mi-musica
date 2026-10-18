@@ -63,6 +63,7 @@ HISTORIAS.push({
       items: [
         { a: 2004, art: "Daddy Yankee", t: "Gasolina", n: "Del underground de San Juan a todas las discotecas del planeta." },
         { a: 2011, art: "Calle 13", t: "Latinoamérica", n: "Residente y Visitante cantan al continente entero." },
+        { a: 2016, art: "Los Rivera Destino & Benito Martínez", t: "Flor", n: "Música cristiana con un Bad Bunny que todavía firmaba con su nombre real (año aproximado)." },
         { a: 2017, art: "Luis Fonsi & Daddy Yankee", t: "Despacito", n: "El vídeo más visto de YouTube durante años." },
         { a: 2018, art: "Pedro Capó", t: "Calma", n: "Ritmo de playa: el remix con Farruko fue un éxito mundial." },
         { a: 2019, art: "Verano del 19", t: "Los músicos en la calle", tipo: "hito", n: "Bad Bunny, Residente y Ricky Martin se suman a las protestas que acaban con la dimisión del gobernador Ricardo Rosselló." },

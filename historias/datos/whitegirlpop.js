@@ -197,6 +197,7 @@ HISTORIAS.push({
         { a: 2024, art: "Billie Eilish", t: "WILDFLOWER", n: "Una balada sobre salir con el ex de una amiga." },
         { a: 2024, art: "Lady Gaga & Bruno Mars", t: "Die With A Smile", n: "Un dúo que se pasó meses en el número uno de Spotify." },
         { a: 2024, art: "Addison Rae", t: "Diet Pepsi", n: "La tiktoker que se reinventa como estrella del pop." },
+        { a: 2024, art: "Lola Young", t: "Messy", n: "La londinense del caos emocional: número uno en Reino Unido." },
         { a: 2025, art: "Taylor Swift", t: "The Fate of Ophelia", n: "Del disco The Life of a Showgirl: Taylor y Shakespeare." }
       ]
     },

@@ -39,7 +39,8 @@ HISTORIAS.push({
         { a: 1981, art: "Gato Pérez", t: "Gitanitos y morenos", n: "El argentino Gato Pérez se enamora de la rumba catalana y la defiende como la música de Barcelona." },
         { a: 1983, art: "Los Chunguitos", t: "Ay qué dolor", n: "Los Chunguitos, de Badajoz y luego Madrid: más rumba quinqui." },
         { a: 1990, art: "Azúcar Moreno", t: "Bandido", n: "Rumba pop de las hermanas de Badajoz, en Eurovisión 1990." },
-        { a: 1992, art: "Kiko Veneno", t: "Échate un cantecito", n: "Rumba sevillana y alegría." }
+        { a: 1992, art: "Kiko Veneno", t: "Échate un cantecito", n: "Rumba sevillana y alegría." },
+        { a: 1992, art: "El Chaval de la Peca", t: "A-Ba-Ni-Bi", n: "Rumba de la versión del tema israelí que ganó Eurovisión en 1978 (año aproximado)." }
       ]
     },
     {
@@ -52,6 +53,7 @@ HISTORIAS.push({
         { a: 1987, art: "Gipsy Kings", t: "Djobi Djoba", n: "La rumba francesa de los Gipsy Kings, que vendió millones en todo el mundo." },
         { a: 1991, art: "Los Manolos", t: "All My Loving", n: "Los Manolos llevan a los Beatles a la rumba catalana y la cantan en la clausura de los Juegos de Barcelona 92." },
         { a: 1992, art: "Juegos de Barcelona", t: "Peret y Los Manolos en la clausura", tipo: "hito", n: "La rumba catalana ante todo el mundo." },
+        { a: 1993, art: "El Chaval de la Peca", t: "Libre", n: "La rumba de Badalona del Chaval, uno de los reyes de las fiestas de los 90 (año aproximado)." },
         { a: 1995, art: "Ketama", t: "No estamos lokos", n: "Flamenco pop de la familia Carmona: una de las canciones de los 90." },
         { a: 1996, art: "Rosario", t: "Qué bonito", n: "La hija de Lola Flores, en una rumba alegre para cantar en el coche." },
         { a: 1999, art: "Estopa", t: "La raja de tu falda", n: "Dos hermanos de Cornellà y un Seat Panda." },

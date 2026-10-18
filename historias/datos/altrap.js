@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "altrap",
   familia: "Hip hop",
   titulo: "Rap alternativo",
-  periodo: "1989 – 2024",
+  periodo: "1989 – 2026",
   color: "#4fae8a",
   lema: "De De La Soul a Tyler, the Creator: el rap que no cabe en ninguna etiqueta.",
   intro: "El rap alternativo agrupa a quienes se salieron del molde: humor y flores con De La Soul, rock con los Beastie Boys, Atlanta futurista con OutKast, colectivos de skaters con Odd Future. Suele ser el rap que más gusta a quien dice que no le gusta el rap.",
@@ -43,7 +43,7 @@ HISTORIAS.push({
     {
       titulo: "Odd Future y la generación de internet",
       corto: "Odd Future",
-      periodo: "2010 – 2024",
+      periodo: "2010 – 2026",
       intro: "Skaters, Tumblr y rap sin reglas.",
       items: [
         { a: 2010, art: "Earl Sweatshirt", t: "Earl", n: "El miembro más joven de Odd Future." },
@@ -61,7 +61,8 @@ HISTORIAS.push({
         { a: 2018, art: "JPEGMAFIA", t: "Real Nega", n: "Rap experimental de Baltimore con samples de Ol' Dirty Bastard." },
         { a: 2019, art: "Tyler, the Creator", t: "EARFQUAKE", n: "El tema más escuchado de «IGOR», con Playboi Carti. Tyler la escribió para Justin Bieber y Rihanna, pero acabó cantándola él." },
         { a: 2019, art: "Little Simz", t: "Venom", n: "Rabia y cuerdas desde Londres." },
-        { a: 2024, art: "Doechii", t: "DENIAL IS A RIVER", n: "Teatro, humor y rap: Grammy al mejor disco de rap." }
+        { a: 2024, art: "Doechii", t: "DENIAL IS A RIVER", n: "Teatro, humor y rap: Grammy al mejor disco de rap." },
+        { a: 2026, art: "Quavo, Pharrell Williams, Tyler, The Creator & A$AP Rocky", t: "Baby Breath", n: "De «QRÖMELIFE»: Tyler presumió de que era uno de sus mejores versos." }
       ]
     }
   ]

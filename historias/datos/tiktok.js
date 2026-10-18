@@ -16,6 +16,7 @@ HISTORIAS.push({
         { a: 2014, art: "Musical.ly", t: "Playback en quince segundos", tipo: "hito", n: "Una app china para hacer playbacks se hace famosa entre adolescentes de Estados Unidos." },
         { a: 2014, art: "Kevin MacLeod", t: "Monkeys Spinning Monkeys", n: "Música libre de derechos que acabó de fondo en millones de vídeos." },
         { a: 2018, art: "TikTok", t: "Musical.ly se convierte en TikTok", tipo: "hito", n: "ByteDance compra Musical.ly y la fusiona con TikTok: empieza la era de los vídeos cortos." },
+        { a: 2018, art: "Trinidad Cardona", t: "Dinero", n: "Un viral de TikTok de un chico de Arizona." },
         { a: 2019, art: "Lil Nas X", t: "Old Town Road", n: "El primer gran éxito nacido en TikTok: récord de semanas en el número uno de Estados Unidos." },
         { a: 2019, art: "Arizona Zervas", t: "Roxanne", n: "De SoundCloud al top 5 gracias a los vídeos." },
         { a: 2019, art: "K Camp", t: "Lottery (Renegade)", n: "Una chica de 14 años, Jalaiah Harmon, inventa el baile Renegade y la canción se hace enorme." },
@@ -53,6 +54,7 @@ HISTORIAS.push({
       items: [
         { a: 1985, art: "Kate Bush", t: "Running Up That Hill", n: "«Stranger Things» la devolvió al número uno en 2022, 37 años después." },
         { a: 1999, art: "Pavement", t: "Harness Your Hopes", n: "Una cara B que se hizo viral veinte años después." },
+        { a: 2005, art: "The King Khan & BBQ Show", t: "Love You So", n: "Doo-wop garajero de dos canadienses que se hizo viral en TikTok en 2022." },
         { a: 2011, art: "Lady Gaga", t: "Bloody Mary", n: "El baile de Miércoles Addams en la serie de Netflix la hizo viral en 2022, once años después." },
         { a: 2022, art: "«Stranger Things»", t: "Kate Bush, número uno", tipo: "hito", n: "La serie usa «Running Up That Hill» y la canción de 1985 llega al número uno en el Reino Unido." },
         { a: 2022, art: "Nicky Youre & dazy", t: "Sunroof", n: "La canción de verano nacida en la app." },

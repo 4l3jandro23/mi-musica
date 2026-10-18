@@ -45,7 +45,8 @@ HISTORIAS.push({
         { a: 1967, art: "Albert King", t: "Born Under a Bad Sign", n: "El blues de Stax, con los músicos del soul de Memphis." },
         { a: 1968, art: "Fleetwood Mac", t: "Albatross", n: "Un instrumental de Peter Green, de la época blues del grupo: número uno en Reino Unido." },
         { a: 1969, art: "B.B. King", t: "The Thrill Is Gone", n: "Con cuerdas: su mayor éxito." },
-        { a: 1969, art: "John Mayall", t: "Room to Move", n: "Blues acústico con armónica de quien formó a Clapton, Peter Green y Mick Taylor." }
+        { a: 1969, art: "John Mayall", t: "Room to Move", n: "Blues acústico con armónica de quien formó a Clapton, Peter Green y Mick Taylor." },
+        { a: 1969, art: "Big Mama Thornton", t: "Hard Times", n: "La autora de la primera «Hound Dog» en su etapa de blues duro (año aproximado)." }
       ]
     },
     {

@@ -56,9 +56,11 @@ HISTORIAS.push({
         { a: 2019, art: "Cecilio G, Limabeatz & Lucifero 666", t: "Vampira", n: "Trap oscuro con Lucifero 666 (año aproximado)." },
         { a: 2019, art: "Don Patricio", t: "Enchochado de Ti", n: "El canario se hace famoso con su humor y un dembow desenfadado." },
         { a: 2019, art: "Don Patricio & Cruzzi", t: "Contando Lunares", n: "Una de las canciones más escuchadas de 2019 en España, con el sello canario de Don Patricio." },
+        { a: 2019, art: "Ms Nina & Ikki", t: "Chic", n: "El tema más escuchado de la argentina afincada en Madrid, producido por Ikki (año aproximado)." },
         { a: 2020, art: "Morad", t: "La calle de L'Hospitalet", tipo: "hito", n: "Morad, desde el barrio de La Florida: el drill y la vida de los barrios de Barcelona llegan a todo el país." },
         { a: 2020, art: "Kidd Keo & Ele A El Dominio", t: "Serpiente Veneno", n: "Con el puertorriqueño Ele A: trap duro entre Alicante y San Juan (año aproximado)." },
         { a: 2020, art: "Cecilio G", t: "From Darkness With Love", n: "Cecilio G en plan melancólico (año aproximado)." },
+        { a: 2020, art: "Ikki & Denom", t: "Veneno", n: "El productor de Ms Nina con Denom (año aproximado)." },
         { a: 2021, art: "Morad", t: "Pelele", n: "Morad, de La Florida (L'Hospitalet), cuenta su barrio con un estilo que mezcla drill y raíces marroquíes." },
         { a: 2021, art: "Morad", t: "Motorola", n: "Morad, de L'Hospitalet, uno de los nombres más importantes del drill español." },
         { a: 2021, art: "Cecilio G & Suave44", t: "Bakanito", n: "Colaboración festiva de su etapa más prolífica (año aproximado)." },
@@ -135,7 +137,8 @@ HISTORIAS.push({
         { a: 2024, art: "SAIKO & Tito «El Bambino»", t: "Dios los Bendiga", n: "SAIKO junto a una leyenda del reguetón clásico de Puerto Rico (año aproximado)." },
         { a: 2024, art: "SAIKO", t: "COSAS QUE NO TE DIJE", n: "SAIKO en clave de balada urbana, de su etapa tras «Polaris» (año aproximado)." },
         { a: 2024, art: "Gonzy, SAIKO & Arcángel", t: "X'CLUSIVO (Remix)", n: "Remix con Arcángel, uno de los nombres que inventaron el reguetón romántico (año aproximado)." },
-        { a: 2024, art: "Aissa, SAIKO, JC Reyes, Nickzzy, El Bobe, Juseph & GIO", t: "Las Bratz (Remix)", n: "La canción viral de Aissa de 2024, convertida en remix de siete artistas." }
+        { a: 2024, art: "Aissa, SAIKO, JC Reyes, Nickzzy, El Bobe, Juseph & GIO", t: "Las Bratz (Remix)", n: "La canción viral de Aissa de 2024, convertida en remix de siete artistas." },
+        { a: 2024, art: "Vreno Yg", t: "Con el guapo subido", n: "Rapero zaragozano afincado en Madrid, de la generación de las batallas (año aproximado)." }
       ]
     }
   ]

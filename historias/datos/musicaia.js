@@ -61,7 +61,8 @@ HISTORIAS.push({
         { a: 2024, art: "Las discográficas contra Suno y Udio", t: "Juicio por copiar", tipo: "hito", n: "Las grandes discográficas demandan a las dos webs que generan canciones por entrenar con su música." },
         { a: 2024, art: "Metro Boomin", t: "BBL Drizzy", n: "La base usa un sample de una canción hecha con IA por King Willonius, en plena pelea entre Drake y Kendrick." },
         { a: 2024, art: "Randy Travis", t: "Where That Came From", n: "Sin poder cantar tras un ictus, su voz se recrea con IA a partir de grabaciones antiguas." },
-        { a: 2024, art: "Drake", t: "Taylor Made Freestyle", n: "Usó voces falsas de 2Pac y Snoop Dogg; la familia de Tupac le obligó a retirarla." }
+        { a: 2024, art: "Drake", t: "Taylor Made Freestyle", n: "Usó voces falsas de 2Pac y Snoop Dogg; la familia de Tupac le obligó a retirarla." },
+        { a: 2024, art: "King Willonius", t: "BBL Drizzy", n: "Una canción hecha con IA para burlarse de Drake; Metro Boomin la convirtió en un beat que usó medio internet." }
       ]
     },
     {

@@ -34,6 +34,7 @@ HISTORIAS.push({
         { a: 1947, art: "Antonio Machín", t: "Angelitos negros", n: "Un cubano afincado en España: el bolero que se escuchaba en la radio de la posguerra." },
         { a: 1948, art: "Trío Los Panchos", t: "Sin ti", n: "El trío más famoso del bolero, con el requinto de Alfredo Gil." },
         { a: 1949, art: "Bienvenido Granda", t: "Angustia", q: "Bienvenido Granda Angustia", n: "La voz de la Sonora Matancera, el «bigote que canta»." },
+        { a: 1951, art: "Los Panchos", t: "Si tú me dices ven", n: "El trío de los requintos, el que llevó el bolero a todo el mundo." },
         { a: 1953, art: "Lucho Gatica", t: "Contigo en la distancia", n: "El chileno «rey del bolero», con una canción del cubano César Portillo de la Luz." },
         { a: 1955, art: "Pedro Infante", t: "Cien años", n: "Pedro Infante, ídolo del cine mexicano, canta un bolero de despedida." },
         { a: 1955, art: "Benny Moré", t: "Cómo fue", n: "«El bárbaro del ritmo» canta un bolero que todavía se oye en Cuba." },
@@ -44,6 +45,8 @@ HISTORIAS.push({
         { a: 1960, art: "Lucho Gatica", t: "Bésame mucho", n: "Lucho Gatica, el «rey del bolero», en una de sus interpretaciones más conocidas." },
         { a: 1963, art: "Javier Solís", t: "Sombras", n: "El bolero ranchero mexicano." },
         { a: 1964, art: "Eydie Gormé & Trío Los Panchos", t: "Piel canela", n: "Una estadounidense cantando boleros: un disco de culto." },
+        { a: 1964, art: "Eydie Gormé & Trío Los Panchos", t: "Sabor a mí", n: "El bolero de Álvaro Carrillo en el disco «Amor»." },
+        { a: 1965, art: "Los Panchos & Gigliola Cinquetti", t: "Quizás, quizás, quizás", n: "El trío con la italiana que ganó Eurovisión en 1964 (año aproximado)." },
         { a: 1967, art: "Armando Manzanero", t: "Esta tarde vi llover", n: "El compositor yucateco del bolero moderno." }
       ]
     },

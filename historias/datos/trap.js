@@ -16,8 +16,12 @@ HISTORIAS.push({
         { a: 1992, art: "UGK", t: "Pocket Full of Stones", n: "Desde Texas, el rap que ya hablaba de la vida en la trap una década antes del nombre." },
         { a: 2003, art: "T.I.", t: "Le da nombre al trap", tipo: "hito", n: "Su disco «Trap Muzik» bautiza el género." },
         { a: 2003, art: "T.I.", t: "Trap Muzik", tipo: "disco", n: "El disco que le pone nombre al género." },
+        { a: 2004, art: "Crime Mob & Lil Scrappy", t: "Knuck If You Buck", n: "El crunk de Atlanta hecho por adolescentes: himno de las peleas en las discotecas." },
         { a: 2005, art: "Young Jeezy", t: "Soul Survivor", n: "Con Akon. El trap llega a lo más alto de las listas." },
         { a: 2005, art: "Gucci Mane", t: "Icy", n: "Con Young Jeezy. Gucci, el padrino del trap, en sus inicios." },
+        { a: 2005, art: "Chamillionaire & Krayzie Bone", t: "Ridin'", n: "Número uno y Grammy: el rap de Houston con una letra contra los controles de la policía." },
+        { a: 2005, art: "D4L", t: "Laffy Taffy", n: "El «snap» de Atlanta, una de las primeras canciones vendidas como tono de móvil por millones." },
+        { a: 2007, art: "Soulja Boy", t: "Crank That (Soulja Boy)", n: "Hecha en su cuarto con 17 años y lanzada por internet: el baile que lo convirtió en número uno." },
         { a: 2009, art: "Gucci Mane", t: "Lemonade", n: "Ritmo raro, humor y una producción que ya suena a lo que vendría." }
       ]
     },

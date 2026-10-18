@@ -110,14 +110,17 @@ HISTORIAS.push({
         { a: 2007, art: "David Guetta, Steve Angello & Cozi", t: "Baby When the Light", n: "Del disco «Pop Life»: Guetta todavía hacía house de discoteca." },
         { a: 2007, art: "David Guetta & Tara McDonald", t: "Delirious", n: "Otro éxito de «Pop Life»." },
         { a: 2007, art: "David Guetta, Steve Angello, Sebastian Ingrosso & Chris Willis", t: "Everytime We Touch", n: "Guetta con los futuros miembros de Swedish House Mafia." },
+        { a: 2007, art: "Yves Larock & Jaba", t: "Rise Up", n: "El house suizo que sonó en todas las discotecas de 2007." },
         { a: 2009, art: "Florence + The Machine", t: "You've Got the Love", n: "Una versión del clásico de Candi Staton." },
         { a: 2009, art: "Bob Sinclar", t: "Lala Song", n: "Con los raperos de la Sugarhill Gang." },
         { a: 2010, art: "Swedish House Mafia", t: "One", n: "Tres suecos que llevarían el house a los estadios." },
         { a: 2011, art: "Azealia Banks", t: "212", n: "Rap de Harlem sobre un tema de house de Lazy Jay: el house vuelve al rap." },
         { a: 2014, art: "Robin Schulz", t: "Waves (Remix)", n: "El «deep house» de radio que sonó en todas partes en 2014." },
         { a: 2016, art: "Bob Sinclar", t: "Someone Who Needs Me", n: "Bob Sinclar en Spinnin' Records." },
+        { a: 2016, art: "Armand Van Helden", t: "Know Thyself", n: "El de «You Don't Know Me» vuelve al house clásico." },
         { a: 2017, art: "Bob Sinclar & Akon", t: "Til the Sun Rise Up", n: "El francés de «Love Generation» con Akon: house para el verano." },
-        { a: 2020, art: "Purple Disco Machine", t: "Hypnotized", n: "El nu-disco y el house con cuerdas vuelven a las listas." }
+        { a: 2020, art: "Purple Disco Machine", t: "Hypnotized", n: "El nu-disco y el house con cuerdas vuelven a las listas." },
+        { a: 2020, art: "Channel Tres & Tyler, The Creator", t: "fuego", n: "De «i can't go outside», el disco del confinamiento del house rapeado de Compton." }
       ]
     }
   ]

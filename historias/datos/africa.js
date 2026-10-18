@@ -86,6 +86,7 @@ HISTORIAS.push({
         { a: 2001, art: "Tinariwen", t: "Cler Achel", n: "Rebeldes tuaregs con guitarras eléctricas: el «desert blues»." },
         { a: 2004, art: "2Face Idibia", t: "African Queen", n: "El primer gran éxito del pop nigeriano moderno." },
         { a: 2004, art: "Amadou & Mariam", t: "Dimanche à Bamako", tipo: "disco", n: "Una pareja ciega de Malí, producida por Manu Chao." },
+        { a: 2005, art: "K'NAAN", t: "Soobax", n: "El rapero somalí-canadiense canta en somalí contra los señores de la guerra de Mogadiscio." },
         { a: 2009, art: "Black Coffee", t: "Superman", n: "Con Bucie. El afro house sudafricano; años después ganó un Grammy." },
         { a: 2011, art: "D'banj", t: "Oliver Twist", n: "El afrobeats nigeriano entra en las listas británicas." },
         { a: 2013, art: "Nico & Vinz", t: "Am I Wrong", n: "Dúo noruego con raíces en Ghana y el Congo: un éxito mundial." },

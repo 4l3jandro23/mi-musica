@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "ukgarage",
   familia: "Jamaica y bass music",
   titulo: "Historia del UK garage",
-  periodo: "1996 – 2023",
+  periodo: "1996 – 2024",
   color: "#c9a227",
   lema: "Speed garage, 2-step y champán: de los domingos de Londres a PinkPantheress.",
   intro: "A mediados de los 90, los DJs londinenses aceleran el garage house de Nueva York, le meten bajos de jungla y voces de R&B. Nace el UK garage: ritmo «2-step» saltarín, MCs y fiestas elegantes de domingo. De él salen el grime y el dubstep, y hoy vive un gran revival.",
@@ -51,7 +51,7 @@ HISTORIAS.push({
     {
       titulo: "Herencia y revival",
       corto: "Revival",
-      periodo: "2003 – 2023",
+      periodo: "2003 – 2024",
       intro: "Del garage salen el grime y el dubstep, y el garage vuelve una y otra vez.",
       items: [
         { a: 2003, art: "Dizzee Rascal", t: "I Luv U", n: "El garage se oscurece y nace el grime." },
@@ -61,9 +61,13 @@ HISTORIAS.push({
         { a: 2013, art: "Disclosure", t: "White Noise", n: "Con AlunaGeorge: el garage vuelve a las listas." },
         { a: 2014, art: "Revival", t: "El garage vuelve", tipo: "hito", n: "Disclosure y la nueva generación recuperan el 2-step." },
         { a: 2016, art: "Preditah & Jorja Smith", t: "On My Mind", n: "El garage vuelve con la voz de Jorja Smith." },
+        { a: 2016, art: "Craig David & Sigala", t: "Ain't Giving Up", n: "El regreso de Craig David con el garage de su juventud." },
+        { a: 2018, art: "Craig David & Hardwell", t: "No Holding Back", n: "Con el holandés del big room (año aproximado)." },
         { a: 2021, art: "PinkPantheress", t: "Pain", n: "Garage nostálgico de TikTok, en canciones de dos minutos." },
         { a: 2023, art: "Sammy Virji", t: "If U Need It", n: "El nuevo garage de los clubs británicos." },
-        { a: 2023, art: "cassö, RAYE & D-Block Europe", t: "Prada", n: "Un garage revivido en TikTok." }
+        { a: 2023, art: "cassö, RAYE & D-Block Europe", t: "Prada", n: "Un garage revivido en TikTok." },
+        { a: 2024, art: "Duke & Jones & Flowdan", t: "Trenches", n: "El dúo de Mánchester con la voz grave del grime (año aproximado)." },
+        { a: 2024, art: "Duke & Jones & Sophie Strauss", t: "Burner", n: "Bass y pop británico (año aproximado)." }
       ]
     }
   ]

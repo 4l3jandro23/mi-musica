@@ -14,6 +14,7 @@ HISTORIAS.push({
       intro: "Clams Casino, Lil B y A$AP Rocky.",
       items: [
         { a: 2009, art: "Lil B", t: "I'm God", n: "Clams Casino samplea a Imogen Heap: el primer clásico del cloud rap." },
+        { a: 2009, art: "Kid Cudi, MGMT & Ratatat", t: "Pursuit of Happiness (Nightmare)", n: "El himno de la melancolía de Kid Cudi, que abrió el camino al rap emocional." },
         { a: 2010, art: "Lil B", t: "La generación de internet", tipo: "hito", n: "Lil B sube cientos de canciones a MySpace y YouTube. Sus beats nubosos y su humor inventan una forma de ser rapero online." },
         { a: 2010, art: "Lil B", t: "Wonton Soup", n: "El humor absurdo de Lil B, «The BasedGod», que inventó una forma de ser rapero en internet." },
         { a: 2010, art: "Lil B", t: "Like a Martian", n: "Los primeros ecos del cloud rap." },

@@ -69,6 +69,7 @@ HISTORIAS.push({
         { a: 1999, art: "Marc Anthony", t: "I Need to Know", n: "El boom latino en inglés." },
         { a: 1999, art: "Santana & Rob Thomas", t: "Smooth", n: "Doce semanas número uno en EE. UU.: el regreso de Santana con 52 años." },
         { a: 1999, art: "Santana & The Product G&B", t: "Maria Maria", n: "Otra de «Supernatural», el disco con el que Santana ganó ocho Grammy en una noche." },
+        { a: 1999, art: "Jennifer Lopez", t: "Let's Get Loud", n: "Escrita por Gloria Estefan para el primer disco de J.Lo." },
         { a: 2000, art: "Grammy Latino", t: "Primera edición", tipo: "hito", n: "La industria reconoce el peso de la música en español." },
         { a: 2000, art: "Santana & Maná", t: "Corazón Espinado", n: "Santana con los mexicanos, en español: uno de los éxitos del boom latino." },
         { a: 2002, art: "Santana & Juanes", t: "La Flaca", n: "Del disco «Shaman», una versión de Jarabe de Palo con el colombiano." },

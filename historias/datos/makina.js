@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "makina",
   familia: "España",
   titulo: "La ruta del bakalao y la makina",
-  periodo: "1981 – 1999",
+  periodo: "1981 – 2002",
   color: "#8e24aa",
   lema: "Valencia de fiesta de viernes a lunes y la makina de Cataluña: la electrónica española de los 80 y 90.",
   intro: "En los 80, las discotecas de la carretera de Valencia (Barraca, Spook Factory, Chocolate, ACTV…) pinchan lo más raro: EBM belga, new beat, synth-pop y electrónica europea. Los jóvenes van de una a otra durante todo el fin de semana: es la «Ruta del Bakalao». En los 90 llegan el éxito masivo, el pánico de los medios y la makina, que triunfa en Cataluña y todo el norte de España.",
@@ -40,7 +40,7 @@ HISTORIAS.push({
     {
       titulo: "La makina",
       corto: "Makina",
-      periodo: "1994 – 1999",
+      periodo: "1994 – 2002",
       intro: "Bombos rápidos, sintes «hoover» y melodías épicas: el sonido de Cataluña y el norte.",
       items: [
         { a: 1994, art: "Atlantic Ocean", t: "Waterfall", n: "Un clásico importado de Holanda: lo que se bailaba en todas partes." },
@@ -57,7 +57,8 @@ HISTORIAS.push({
         { a: 1998, art: "Xavi Metralla", t: "Pont Aeri 98", q: "Xavi Metralla Pont Aeri", n: "El remember por excelencia: el bombo y la melodía que hacía saltar a miles en Terrassa." },
         { a: 1999, art: "Gigi D'Agostino", t: "L'amour toujours", n: "El «italo dance» del turinés: lo bailó toda España, de la makina a la verbena." },
         { a: 1999, art: "Gigi D'Agostino", t: "Bla Bla Bla", n: "El «lento violento» italiano, muy popular en las discotecas españolas." },
-        { a: 1999, art: "Gigi D'Agostino", t: "The Riddle", n: "El italiano de la makina." }
+        { a: 1999, art: "Gigi D'Agostino", t: "The Riddle", n: "El italiano de la makina." },
+        { a: 2002, art: "Pont Aeri & Marian Dacal", t: "Flying Free", n: "El himno de la discoteca de Terrassa, con la voz de Marian Dacal (año aproximado)." }
       ]
     }
   ]

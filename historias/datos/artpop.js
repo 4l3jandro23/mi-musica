@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "artpop",
   familia: "Pop",
   titulo: "Historia del art pop",
-  periodo: "1966 – 2023",
+  periodo: "1966 – 2026",
   color: "#ad1457",
   lema: "Pop con ambición de arte: de los Beach Boys y Kate Bush a Björk, Radiohead, FKA twigs y Rosalía.",
   intro: "El art pop es pop que no se conforma: canciones accesibles, pero con ideas de la vanguardia, el arte o el cine. Producciones extrañas, personajes, discos conceptuales y vídeos que son pequeñas obras. Una línea que va de «Pet Sounds» a Kate Bush, Björk, Radiohead, Lady Gaga, FKA twigs o Rosalía.",
@@ -33,7 +33,7 @@ HISTORIAS.push({
     {
       titulo: "Del 90 a hoy",
       corto: "De los 90 a hoy",
-      periodo: "1993 – 2023",
+      periodo: "1993 – 2026",
       intro: "Vídeos que son cortometrajes y discos que son mundos propios.",
       items: [
         { a: 1993, art: "Björk", t: "Human Behaviour", n: "Desde Islandia: el pop más imaginativo de su década." },
@@ -56,7 +56,8 @@ HISTORIAS.push({
         { a: 2020, art: "Arca", t: "Nonbinary", n: "Electrónica venezolana y vanguardia." },
         { a: 2022, art: "Kate Bush", t: "Vuelve al número uno 37 años después", tipo: "hito", n: "«Running Up That Hill», gracias a «Stranger Things»." },
         { a: 2022, art: "Rosalía", t: "SAOKO", n: "De «Motomami»: reguetón deformado y jazz en dos minutos." },
-        { a: 2023, art: "Caroline Polachek", t: "Sunset", n: "Del disco «Desire, I Want to Turn Into You», con guitarra española." }
+        { a: 2023, art: "Caroline Polachek", t: "Sunset", n: "Del disco «Desire, I Want to Turn Into You», con guitarra española." },
+        { a: 2026, art: "David Byrne & Natalia Lafourcade", t: "¿Cuál es la razón?", n: "Byrne rehace en español un tema de «Who Is the Sky?», con letra nueva de Lafourcade." }
       ]
     }
   ]

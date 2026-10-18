@@ -23,7 +23,8 @@ HISTORIAS.push({
         { a: 1992, art: "Chalino Sánchez", t: "El crimen de Chalino", tipo: "hito", n: "Es asesinado tras un concierto en Culiacán; se vuelve una leyenda." },
         { a: 1994, art: "Los Tigres del Norte", t: "Pacas de a kilo", n: "Contrabando de marihuana contado en verso." },
         { a: 1995, art: "Los Tucanes de Tijuana", t: "La chona", n: "Más fiesta que corrido, pero de la misma escuela norteña." },
-        { a: 1997, art: "Los Tigres del Norte", t: "Jefe de jefes", n: "El corrido del gran capo." }
+        { a: 1997, art: "Los Tigres del Norte", t: "Jefe de jefes", n: "El corrido del gran capo." },
+        { a: 1997, art: "Los Tucanes de Tijuana", t: "Espejeando", n: "Los Tucanes en su época dorada de narcocorridos y canciones de fiesta (año aproximado)." }
       ]
     },
     {

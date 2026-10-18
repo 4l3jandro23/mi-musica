@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "neosoul",
   familia: "Soul y funk",
   titulo: "Neo soul",
-  periodo: "1995 – 2023",
+  periodo: "1995 – 2026",
   color: "#9a6a3c",
   lema: "D'Angelo, Erykah Badu y Lauryn Hill: el soul de los 70 tocado con alma de hip hop.",
   intro: "A mediados de los 90 una generación de artistas negros se cansó del R&B pulido y volvió al soul de Marvin Gaye, Stevie Wonder y Curtis Mayfield, pero con ritmos de hip hop y letras personales. La industria lo llamó «neo soul». Su centro fue el colectivo Soulquarians, en el estudio Electric Lady de Nueva York.",
@@ -49,20 +49,25 @@ HISTORIAS.push({
     {
       titulo: "El regreso",
       corto: "Regreso",
-      periodo: "2010 – 2023",
+      periodo: "2010 – 2026",
       intro: "D'Angelo vuelve y llega una nueva generación.",
       items: [
         { a: 2010, art: "Erykah Badu", t: "Window Seat", n: "Un vídeo desnuda en Dallas." },
         { a: 2012, art: "Frank Ocean", t: "Thinkin Bout You", n: "El neo soul se cruza con el R&B alternativo." },
         { a: 2013, art: "Hiatus Kaiyote", t: "Nakamarra", n: "Soul de Melbourne con la voz de Nai Palm: años después Drake sampleó al grupo." },
+        { a: 2013, art: "Fitz and the Tantrums", t: "Spark", n: "El soul pop de Los Ángeles con saxo (año aproximado)." },
         { a: 2014, art: "D'Angelo", t: "Publica «Black Messiah» por sorpresa", tipo: "hito", n: "Catorce años después de Voodoo, en plena protesta por Ferguson." },
         { a: 2014, art: "D'Angelo", t: "Really Love", n: "Cuerdas, guitarra española y falsete." },
         { a: 2015, art: "Leon Bridges", t: "River", n: "Soul de Texas, casi un espiritual de guitarra y voz." },
         { a: 2016, art: "Solange", t: "Cranes in the Sky", n: "A Seat at the Table: tristeza y dignidad." },
         { a: 2016, art: "Anderson .Paak", t: "Come Down", n: "Anderson .Paak toca la batería mientras canta: el funk de «Malibu» suena a banda en directo." },
+        { a: 2016, art: "Masego", t: "Navajo", n: "El saxofonista de Virginia mezcla jazz, house y R&B." },
         { a: 2017, art: "Daniel Caesar", t: "Get You", n: "Con Kali Uchis: el soul canadiense." },
         { a: 2018, art: "H.E.R.", t: "Hard Place", n: "H.E.R., heredera del neo soul en los 2010." },
-        { a: 2023, art: "Victoria Monét", t: "On My Mama", n: "Soul de los 90 y Grammy a la artista revelación." }
+        { a: 2020, art: "Thundercat", t: "Funny Thing", n: "El bajista de Los Ángeles en «It Is What It Is», Grammy al mejor disco de R&B progresivo." },
+        { a: 2023, art: "Victoria Monét", t: "On My Mama", n: "Soul de los 90 y Grammy a la artista revelación." },
+        { a: 2025, art: "Olivia Dean", t: "So Easy (To Fall in Love)", n: "La londinense del soul elegante, de su disco «The Art of Loving»." },
+        { a: 2026, art: "Erykah Badu & The Alchemist", t: "I Just Play a Part", n: "De su disco conjunto con el productor de rap (año aproximado)." }
       ]
     }
   ]

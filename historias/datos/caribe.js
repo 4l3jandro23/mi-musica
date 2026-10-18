@@ -22,6 +22,7 @@ HISTORIAS.push({
         { a: 1956, art: "Harry Belafonte", t: "Jamaica Farewell", n: "Del disco «Calypso», el primer LP en vender más de un millón de copias en EE. UU." },
         { a: 1959, art: "Cortijo y su Combo", t: "El bombón de Elena", n: "Con Ismael Rivera: la bomba y la plena puertorriqueñas en la radio." },
         { a: 1959, art: "Ismael Rivera & Cortijo y su Combo", t: "Maquinolandera", q: "Cortijo Maquinolandera", n: "La bomba y la plena de Puerto Rico, con la voz de Maelo." },
+        { a: 1961, art: "Harry Belafonte", t: "Jump in the Line", n: "Calipso de Trinidad; la bailan en el final de «Bitelchús»." },
         { a: 1963, art: "Mighty Sparrow", t: "Dan Is the Man in the Van", q: "Mighty Sparrow", n: "Mighty Sparrow, el «rey del calipso», con humor y crítica al sistema escolar colonial." }
       ]
     },
