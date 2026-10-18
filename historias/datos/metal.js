@@ -108,6 +108,7 @@ HISTORIAS.push({
         { a: 2015, art: "Bring Me the Horizon", t: "Throne", n: "BMTH se pasa al rock de estadio con That's the Spirit." },
         { a: 2016, art: "BABYMETAL", t: "Llenan el Wembley Arena", tipo: "hito", n: "Primer grupo japonés en encabezar ese recinto: el «kawaii metal» deja de ser una broma." },
         { a: 2016, art: "Ghost", t: "Square Hammer", n: "Un papa satánico con melodías de los 80." },
+        { a: 2017, art: "Narco", t: "Suicídate", n: "Metal de La Macarena, en Sevilla, del disco «Espichufrenia» (año aproximado)." },
         { a: 2020, art: "Spiritbox", t: "Holy Roller", n: "La nueva generación del metal." },
         { a: 2020, art: "Electric Callboy", t: "Hypa Hypa", n: "Metalcore con eurodance y estética ochentera: el vídeo que los hizo virales." },
         { a: 2020, art: "Bring Me the Horizon & YUNGBLUD", t: "Obey", n: "Robots gigantes y pop-punk: de POST HUMAN: SURVIVAL HORROR." },

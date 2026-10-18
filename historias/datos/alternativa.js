@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "alternativa",
   familia: "Rock",
   titulo: "Historia del rock alternativo",
-  periodo: "1980 – 2015",
+  periodo: "1980 – 2016",
   color: "#4c6b3c",
   lema: "Del post-punk al grunge, el britpop y Radiohead: cuando lo alternativo se volvió masivo.",
   intro: "En los 80, el rock alternativo vivía en sellos pequeños y radios universitarias. En 1991, «Smells Like Teen Spirit» lo cambió todo: lo alternativo pasó a ser lo que más se vendía. Grunge en Seattle, britpop en Inglaterra, Héroes del Silencio y Extremoduro en España, y luego Radiohead, Muse o Gorillaz.",
@@ -19,13 +19,16 @@ HISTORIAS.push({
         { a: 1981, art: "R.E.M.", t: "Radio Free Europe", n: "El primer sencillo de los de Athens, la base del rock universitario." },
         { a: 1983, art: "The Smiths", t: "This Charming Man", n: "La guitarra de Johnny Marr y Morrissey con gladiolos." },
         { a: 1983, art: "Violent Femmes", t: "Blister in the Sun", n: "Folk punk acústico que se sigue cantando en todas las fiestas." },
+        { a: 1984, art: "The Smiths", t: "Heaven Knows I'm Miserable Now", n: "La desgracia de Morrissey convertida en pop." },
         { a: 1985, art: "The Replacements", t: "Bastards of Young", n: "El rock de Minneapolis para los perdedores." },
         { a: 1985, art: "Hüsker Dü", t: "Makes No Sense at All", n: "Hardcore con melodías: la semilla del rock alternativo." },
         { a: 1987, art: "The Cure", t: "Just Like Heaven", n: "El pop más luminoso de un grupo conocido por su oscuridad." },
         { a: 1988, art: "Pixies", t: "Where Is My Mind?", n: "Estrofas suaves y estribillos explosivos: la fórmula que copiaría Nirvana. Suena al final de «El club de la lucha»." },
         { a: 1988, art: "Sonic Youth", t: "Teen Age Riot", n: "Del disco «Daydream Nation»." },
+        { a: 1988, art: "The Proclaimers", t: "I'm Gonna Be (500 Miles)", n: "Dos gemelos escoceses que caminarían quinientas millas." },
         { a: 1990, art: "Jane's Addiction", t: "Been Caught Stealing", n: "Perry Farrell crearía al año siguiente el festival Lollapalooza." },
-        { a: 1990, art: "Héroes del Silencio", t: "Entre dos tierras", n: "Desde Zaragoza: el rock español que triunfó en Europa y Latinoamérica." }
+        { a: 1990, art: "Héroes del Silencio", t: "Entre dos tierras", n: "Desde Zaragoza: el rock español que triunfó en Europa y Latinoamérica." },
+        { a: 1990, art: "They Might Be Giants", t: "Istanbul (Not Constantinople)", n: "Una canción de los años 50 en versión rara y divertida." }
       ]
     },
     {
@@ -37,20 +40,26 @@ HISTORIAS.push({
         { a: 1991, art: "Lollapalooza", t: "Primera edición", tipo: "hito", n: "Un festival itinerante creado por Perry Farrell: el rock alternativo tiene su casa." },
         { a: 1991, art: "Nirvana", t: "Smells Like Teen Spirit", n: "«Nevermind» desbancó a Michael Jackson del número uno: el rock alternativo se vuelve mainstream." },
         { a: 1991, art: "Pearl Jam", t: "Alive", n: "La otra gran banda de Seattle." },
+        { a: 1991, art: "R.E.M.", t: "Losing My Religion", n: "La mandolina más famosa del rock." },
         { a: 1992, art: "Alice in Chains", t: "Would?", n: "Jerry Cantrell la escribió para Andrew Wood, el cantante de Mother Love Bone, que murió de sobredosis. Salió en la banda sonora de «Singles»." },
         { a: 1992, art: "Radiohead", t: "Creep", n: "Una canción que el propio grupo acabó odiando." },
+        { a: 1992, art: "R.E.M.", t: "Everybody Hurts", n: "Una canción para los que piensan en dejarlo todo." },
         { a: 1993, art: "Beck", t: "Loser", n: "Rap, slide y folk grabado en una cocina: «I'm a loser, baby»." },
+        { a: 1993, art: "The Cranberries", t: "Linger", n: "La voz de Dolores O'Riordan." },
         { a: 1994, art: "Kurt Cobain", t: "Muere con 27 años", tipo: "hito", n: "Kurt Cobain muere en Seattle en abril de 1994. El grunge pierde a su voz y el rock alternativo cambia de rumbo." },
         { a: 1994, art: "Soundgarden", t: "Black Hole Sun", n: "Un vídeo de pesadilla suburbana." },
         { a: 1994, art: "Weezer", t: "Buddy Holly", n: "Un vídeo dentro de la serie «Happy Days»." },
         { a: 1994, art: "Nine Inch Nails", t: "Closer", n: "Industrial en la radio y un vídeo prohibido en muchas teles." },
         { a: 1994, art: "The Cranberries", t: "Zombie", n: "Una canción contra la violencia en Irlanda del Norte." },
+        { a: 1994, art: "Weezer", t: "Say It Ain't So", n: "Rivers Cuomo y la cerveza en la nevera de su padrastro." },
         { a: 1995, art: "The Smashing Pumpkins", t: "1979", n: "La nostalgia adolescente perfecta." },
         { a: 1995, art: "Oasis", t: "Wonderwall", n: "El britpop: la respuesta británica al grunge." },
         { a: 1995, art: "Alanis Morissette", t: "You Oughta Know", n: "La rabia de «Jagged Little Pill», uno de los discos más vendidos de los 90." },
         { a: 1995, art: "Garbage", t: "Only Happy When It Rains", n: "Shirley Manson y Butch Vig, el productor de «Nevermind»." },
         { a: 1995, art: "The Presidents of the United States of America", t: "Lump", n: "Rock alternativo con guitarras de dos cuerdas." },
+        { a: 1995, art: "No Doubt", t: "Don't Speak", n: "Gwen Stefani canta su ruptura con el bajista del grupo." },
         { a: 1996, art: "Extremoduro", t: "So payaso", n: "Robe Iniesta y el rock transgresivo de Extremadura." },
+        { a: 1997, art: "Third Eye Blind", t: "Semi-Charmed Life", n: "Una canción alegre sobre algo bastante oscuro." },
         { a: 1998, art: "Hole", t: "Celebrity Skin", n: "Courtney Love y su disco más pop." },
         { a: 1998, art: "Placebo", t: "Pure Morning", n: "Brian Molko y el rock andrógino." }
       ]
@@ -58,23 +67,26 @@ HISTORIAS.push({
     {
       titulo: "Del britpop a los 2000",
       corto: "Hasta los 2000",
-      periodo: "1997 – 2005",
+      periodo: "1997 – 2006",
       intro: "Del britpop a Radiohead: el rock alternativo se vuelve ambicioso.",
       items: [
         { a: 1997, art: "Radiohead", t: "Publican «OK Computer»", tipo: "hito", n: "Para muchos, el mejor disco de los 90: el rock alternativo se pone serio." },
         { a: 1997, art: "Blur", t: "Song 2", n: "«Woo-hoo!»: una parodia del grunge que se convirtió en himno de estadio." },
         { a: 1997, art: "Radiohead", t: "Paranoid Android", n: "De «OK Computer»: el rock alternativo se vuelve ambicioso." },
         { a: 1997, art: "Foo Fighters", t: "Everlong", n: "Dave Grohl, el batería de Nirvana, convertido en líder." },
+        { a: 1998, art: "The Cardigans", t: "My Favourite Game", n: "El vídeo de Nina Persson conduciendo sin control." },
         { a: 1999, art: "Red Hot Chili Peppers", t: "Californication", n: "El lado oscuro del sueño californiano." },
         { a: 2001, art: "Muse", t: "Plug In Baby", n: "El riff de Matt Bellamy, a medio camino entre Bach y el metal, que hizo de Muse una banda de estadio." },
         { a: 2002, art: "Queens of the Stone Age", t: "No One Knows", n: "Con Dave Grohl a la batería: rock del desierto." },
-        { a: 2005, art: "Gorillaz", t: "Feel Good Inc.", n: "Un grupo de dibujos animados creado por Damon Albarn." }
+        { a: 2002, art: "Red Hot Chili Peppers", t: "Can't Stop", n: "Del disco «By the Way»." },
+        { a: 2005, art: "Gorillaz", t: "Feel Good Inc.", n: "Un grupo de dibujos animados creado por Damon Albarn." },
+        { a: 2006, art: "Red Hot Chili Peppers", t: "Snow (Hey Oh)", n: "Un riff de guitarra que no para." }
       ]
     },
     {
       titulo: "El rock alternativo hoy",
       corto: "Desde 2001",
-      periodo: "2001 – 2015",
+      periodo: "2001 – 2016",
       intro: "Nu metal, revival y rock de streaming.",
       items: [
         { a: 2001, art: "Linkin Park", t: "In the End", n: "El nu metal más melódico: uno de los grandes éxitos del siglo." },
@@ -84,7 +96,8 @@ HISTORIAS.push({
         { a: 2011, art: "Foo Fighters", t: "Walk", n: "Del disco «Wasting Light», grabado en su garaje." },
         { a: 2013, art: "Arctic Monkeys", t: "Do I Wanna Know?", n: "El riff lento y la canción más escuchada del grupo." },
         { a: 2015, art: "El rock en streaming", t: "Las guitarras pierden terreno", tipo: "hito", n: "El rap y el pop dominan las listas: el rock alternativo vive de festivales y de la nostalgia." },
-        { a: 2015, art: "Twenty One Pilots", t: "Stressed Out", n: "El rock alternativo de la generación del streaming." }
+        { a: 2015, art: "Twenty One Pilots", t: "Stressed Out", n: "El rock alternativo de la generación del streaming." },
+        { a: 2016, art: "Red Hot Chili Peppers", t: "Dark Necessities", n: "Producida por Danger Mouse." }
       ]
     }
   ]

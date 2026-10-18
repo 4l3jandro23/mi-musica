@@ -69,6 +69,7 @@ HISTORIAS.push({
         { a: 1989, art: "Skid Row", t: "18 and Life", n: "El hard rock de pelo cardado con historia triste." },
         { a: 1990, art: "AC/DC", t: "Thunderstruck", n: "«Thunder!»: el arranque de guitarra más famoso de los 90." },
         { a: 1990, art: "Scorpions", t: "Wind of Change", n: "Una balada silbada sobre la caída del Muro de Berlín." },
+        { a: 1990, art: "Extreme", t: "More Than Words", n: "Una balada acústica de un grupo de hard rock." },
         { a: 1991, art: "Guns N' Roses", t: "November Rain", n: "Nueve minutos de piano y orquesta, con un vídeo de boda trágica." },
         { a: 1992, art: "Bon Jovi", t: "Keep the Faith", n: "Bon Jovi sobrevive al grunge." }
       ]

@@ -22,6 +22,7 @@ HISTORIAS.push({
         { a: 1974, art: "King Tubby", t: "Dub from the Roots", tipo: "disco", n: "Uno de los primeros discos de King Tubby: ecos, cortes y el bajo en primer plano." },
         { a: 1974, art: "King Tubby", t: "King Tubby's Meets the Upsetter at the Grass Roots of Dub", q: "King Tubby Upsetter Grass Roots of Dub", tipo: "disco", n: "King Tubby y Lee Perry juntos en un mismo disco." },
         { a: 1974, art: "Keith Hudson", t: "Pick a Dub", tipo: "disco", n: "Uno de los discos de dub más queridos de los años 70." },
+        { a: 1975, art: "King Tubby & Augustus Pablo", t: "Keep on Dubbing", n: "Del disco «King Tubby Meets Rockers Uptown» (año aproximado)." },
         { a: 1976, art: "Augustus Pablo", t: "King Tubby Meets Rockers Uptown", n: "La melódica de Pablo y la mesa de Tubby." },
         { a: 1976, art: "Lee «Scratch» Perry & The Upsetters", t: "Super Ape", tipo: "disco", n: "La obra maestra del Black Ark." },
         { a: 1976, art: "The Congos", t: "Fisherman", n: "Del disco «Heart of the Congos», producido por Lee Perry en el Black Ark: el sonido más místico del estudio." },

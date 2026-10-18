@@ -18,6 +18,8 @@ HISTORIAS.push({
         { a: 1990, art: "Vico C", t: "La recta final", n: "El padre del rap en español en Puerto Rico." },
         { a: 1991, art: "El General", t: "Tu pum pum", n: "Desde Panamá, reggae en español con ritmo de dancehall: el modelo de todo lo que vendría." },
         { a: 1991, art: "El General", t: "Te ves buena", n: "Un éxito en toda Latinoamérica antes de que existiera la palabra «reggaetón»." },
+        { a: 1991, art: "El General & Anayka", t: "Rica y apretadita", n: "El reggae en español de Panamá (año aproximado)." },
+        { a: 1991, art: "El General", t: "Muévelo", n: "Otro de sus primeros éxitos (año aproximado)." },
         { a: 1997, art: "El Chombo & Cutty Ranks", t: "Dame tu cosita", n: "Reggae en español de Panamá; veinte años después la baila un alien en internet." },
         { a: 1998, art: "El Chombo", t: "El cubo de leche", n: "De la serie de casetes «Cuentos de la cripta» (año aproximado)." }
       ]
@@ -139,13 +141,13 @@ HISTORIAS.push({
       periodo: "2014 – 2022",
       intro: "2014 – 2022: J Balvin, Maluma, Ozuna, Bad Bunny y Karol G llevan el reguetón a lo más alto de las listas mundiales.",
       items: [
+        { a: 2014, art: "Medellín", t: "La nueva capital del reguetón", n: "J Balvin, Maluma y los productores de Medellín suavizan el reguetón y lo llevan al pop: Colombia toma el relevo de Puerto Rico.", tipo: "hito" },
         { a: 2014, art: "J Balvin", t: "6 AM", n: "Con Farruko." },
         { a: 2014, art: "J Balvin", t: "Ay vamos", n: "Su primer gran éxito internacional." },
         { a: 2014, art: "Plan B", t: "Fanática sensual", n: "De «Love & Sex»: vuelven los de «Mi vecinita»." },
         { a: 2014, art: "Plan B", t: "Si no le contesto", n: "Otra de «Love & Sex»." },
         { a: 2014, art: "Plan B", t: "Candy", n: "Otra de «Love & Sex»." },
         { a: 2014, art: "Fuego", t: "Una vaina loca", n: "Reguetón dominicano y estadounidense (año aproximado)." },
-        { a: 2014, art: "Medellín", t: "La nueva capital del reguetón", n: "J Balvin, Maluma y los productores de Medellín suavizan el reguetón y lo llevan al pop: Colombia toma el relevo de Puerto Rico.", tipo: "hito" },
         { a: 2015, art: "Nicky Jam & Enrique Iglesias", t: "El perdón", n: "Número uno en España." },
         { a: 2015, art: "J Balvin", t: "Bobo", n: "Del disco «Energía» (año aproximado)." },
         { a: 2015, art: "Maluma", t: "Borró cassette", n: "El Maluma más romántico." },
@@ -163,7 +165,9 @@ HISTORIAS.push({
         { a: 2017, art: "J Balvin & Willy William", t: "Mi gente", n: "Reguetón global." },
         { a: 2017, art: "Bryant Myers", t: "En qué país", n: "El trap y el reguetón de Bryant Myers (año aproximado)." },
         { a: 2020, art: "Bad Bunny & Jhay Cortez", t: "Dákiti", n: "Perreo electrónico." },
-        { a: 2022, art: "KAROL G", t: "Provenza", n: "Reguetón suave." }
+        { a: 2022, art: "KAROL G", t: "Provenza", n: "Reguetón suave." },
+        { a: 2022, art: "iZaak, Luar La L & Omar Courtz", t: "Bonnie and Clyde (Remix)", n: "El reguetón de la nueva generación de Puerto Rico (año aproximado)." },
+        { a: 2022, art: "Kafu Banton & Bad Gyal", t: "Tú eres un bom bom (Remix)", n: "Un clásico del reggae en español de Panamá, con Bad Gyal (año aproximado)." }
       ]
     }
   ]

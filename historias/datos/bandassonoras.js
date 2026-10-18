@@ -133,6 +133,7 @@ HISTORIAS.push({
         { a: 2004, art: "Michael Giacchino", t: "The Glory Days", n: "Los increíbles y su jazz de espías de los 60." },
         { a: 2004, art: "Alan Silvestri", t: "Suite from the Polar Express", n: "Polar Express, la película de Robert Zemeckis." },
         { a: 2004, art: "Michael Hunter", t: "Grand Theft Auto: San Andreas Theme", n: "La intro de GTA San Andreas." },
+        { a: 2004, art: "Counting Crows", t: "Accidentally in Love", n: "Para «Shrek 2»: candidata al Óscar." },
         { a: 2006, art: "Randy Newman", t: "Opening Race", n: "La carrera que abre Cars." },
         { a: 2006, art: "Michael Giacchino", t: "Mission: Impossible Theme", n: "El clásico de Lalo Schifrin, reorquestado para Misión imposible III." },
         { a: 2006, art: "Troy & Gabriella", t: "Breaking Free", q: "High School Musical Breaking Free", n: "High School Musical y el Disney Channel de los 2000." },

@@ -142,6 +142,7 @@ HISTORIAS.push({
         { a: 1980, art: "John Lennon", t: "Watching the Wheels", n: "Semanas antes de su asesinato." },
         { a: 1995, art: "«Anthology»", t: "Los tres vuelven a grabar sobre una maqueta de John", tipo: "hito", n: "Paul, George y Ringo terminan con Jeff Lynne una maqueta casera de Lennon: nace «Free as a Bird», 25 años después de la separación." },
         { a: 1995, art: "The Beatles", t: "Free as a Bird", n: "Una maqueta de John de 1977 completada por los otros tres." },
+        { a: 1996, art: "The Beatles", t: "Real Love", n: "Otra cinta de Lennon terminada por los otros tres para la «Anthology»." },
         { a: 2001, art: "George Harrison", t: "Muere de cáncer", tipo: "hito", n: "«El Beatle callado» tenía 58 años." },
         { a: 2021, art: "«Get Back»", t: "Peter Jackson restaura las sesiones de 1969", tipo: "hito", n: "Un documental de casi ocho horas que cambia la historia de la ruptura." },
         { a: 2023, art: "The Beatles", t: "Now and Then", n: "Una maqueta de Lennon recuperada con inteligencia artificial: «la última canción de los Beatles»." }

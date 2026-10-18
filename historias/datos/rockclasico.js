@@ -22,6 +22,7 @@ HISTORIAS.push({
         { a: 1967, art: "The Jimi Hendrix Experience", t: "Purple Haze", n: "Hendrix reinventa la guitarra eléctrica." },
         { a: 1967, art: "The Doors", t: "Light My Fire", n: "Siete minutos con solo de órgano: un número uno impensable." },
         { a: 1967, art: "The Spencer Davis Group", t: "I'm a Man", n: "Otra con Steve Winwood." },
+        { a: 1967, art: "The Who", t: "I Can See for Miles", n: "El single más ruidoso de The Who en 1967." },
         { a: 1968, art: "The Jimi Hendrix Experience", t: "All Along the Watchtower", n: "Dylan según Hendrix." },
         { a: 1969, art: "The Rolling Stones", t: "Gimme Shelter", n: "La guerra, la violencia y la voz de Merry Clayton." },
         { a: 1969, art: "Creedence Clearwater Revival", t: "Fortunate Son", n: "Contra los hijos de ricos que se libraban de Vietnam." },

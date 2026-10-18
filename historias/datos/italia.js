@@ -68,6 +68,7 @@ HISTORIAS.push({
         { a: 1980, art: "Raffaella Carrà", t: "Pedro", n: "La historia de un taxista de Santa Fe; en 2024 volvió con un remix de TikTok." },
         { a: 1981, art: "Franco Battiato", t: "Centro di gravità permanente", n: "Pop electrónico culto y bailable." },
         { a: 1981, art: "Ricchi e Poveri", t: "Sarà perché ti amo", n: "El trío que se hizo enorme en España y en la URSS." },
+        { a: 1981, art: "Rondò Veneziano", t: "La serenissima", n: "Música barroca con batería y peluca: un éxito de venta en Europa." },
         { a: 1982, art: "Al Bano & Romina Power", t: "Felicità", n: "Segunda en Sanremo y número uno en media Europa." },
         { a: 1982, art: "Ricchi e Poveri", t: "Mamma Maria", n: "Pop italiano para bailar en todas las verbenas." },
         { a: 1983, art: "Italo disco", t: "Sintetizadores para Europa", tipo: "hito", n: "El italo disco triunfa en las discotecas europeas." },

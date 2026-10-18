@@ -25,6 +25,7 @@ HISTORIAS.push({
         { a: 1972, art: "Eagles", t: "Peaceful Easy Feeling", n: "El country rock más tranquilo." },
         { a: 1972, art: "Seals & Crofts", t: "Summer Breeze", n: "Brisa de verano." },
         { a: 1972, art: "Gilbert O'Sullivan", t: "Alone Again (Naturally)", n: "Una canción triste muy alegre." },
+        { a: 1972, art: "Todd Rundgren", t: "I Saw the Light", n: "El pop perfecto de un genio del estudio." },
         { a: 1973, art: "Jim Croce", t: "Time in a Bottle", n: "Una nana para su hijo; Croce murió ese mismo año en un accidente de avioneta." },
         { a: 1973, art: "Hall & Oates", t: "She's Gone", n: "Soul de ojos azules." },
         { a: 1974, art: "Barry Manilow", t: "Mandy", n: "La balada de Manilow." }
@@ -60,6 +61,7 @@ HISTORIAS.push({
         { a: 1984, art: "REO Speedwagon", t: "Can't Fight This Feeling", n: "La «power ballad» suave de los 80." },
         { a: 1984, art: "Foreigner", t: "I Want to Know What Love Is", n: "Con un coro de gospel de Nueva Jersey." },
         { a: 1985, art: "Live Aid", t: "Phil Collins en dos continentes", tipo: "hito", n: "Toca en Londres, cruza el Atlántico en Concorde y vuelve a tocar en Filadelfia el mismo día." },
+        { a: 1989, art: "Roy Orbison", t: "You Got It", n: "Su último éxito, publicado después de su muerte." },
         { a: 1991, art: "Bonnie Raitt", t: "I Can't Make You Love Me", n: "Una balada de piano." },
         { a: 1992, art: "Eric Clapton", t: "Layla (Acoustic Live)", n: "La versión del «Unplugged» de MTV." },
         { a: 1993, art: "Sheryl Crow", t: "All I Wanna Do", n: "El soft rock de los 90, con humor." }

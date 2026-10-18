@@ -61,6 +61,11 @@ HISTORIAS.push({
         { a: 2001, art: "Estopa", t: "Vino tinto", n: "Rumba de Cornellà." },
         { a: 2002, art: "Ojos de Brujo", t: "Tiempo de soleá", n: "Desde Barcelona, mezclan rumba, flamenco, hip hop y reggae." },
         { a: 2003, art: "Melendi", t: "Caminando por la vida", n: "Rumba de bar." },
+        { a: 2006, art: "Macaco", t: "Mama Tierra", n: "Del disco «Ingravitto»: rumba y mestizaje del Raval." },
+        { a: 2009, art: "Macaco", t: "Moving", n: "El vídeo con Juanes, Juan Luis Guerra y Javier Bardem para el Día de la Tierra." },
+        { a: 2009, art: "Macaco", t: "Puerto presente", n: "Del disco con el que fue número uno en España." },
+        { a: 2009, art: "Macaco", t: "Tengo", n: "Otra de «Puerto presente»." },
+        { a: 2010, art: "Macaco & Estopa", t: "Con la mano levantá", n: "Barcelona y Cornellà juntos." },
         { a: 2019, art: "Rosalía", t: "Milionària", n: "Rumba catalana en catalán, en el siglo XXI." },
         { a: 2020, art: "C. Tangana feat. Niño de Elche & La Húngara", t: "Tú me dejaste de querer", n: "Rumba moderna." }
       ]

@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "artpop",
   familia: "Pop",
   titulo: "Historia del art pop",
-  periodo: "1966 – 2022",
+  periodo: "1966 – 2023",
   color: "#ad1457",
   lema: "Pop con ambición de arte: de los Beach Boys y Kate Bush a Björk, Radiohead, FKA twigs y Rosalía.",
   intro: "El art pop es pop que no se conforma: canciones accesibles, pero con ideas de la vanguardia, el arte o el cine. Producciones extrañas, personajes, discos conceptuales y vídeos que son pequeñas obras. Una línea que va de «Pet Sounds» a Kate Bush, Björk, Radiohead, Lady Gaga, FKA twigs o Rosalía.",
@@ -31,7 +31,7 @@ HISTORIAS.push({
     {
       titulo: "Del 90 a hoy",
       corto: "De los 90 a hoy",
-      periodo: "1993 – 2022",
+      periodo: "1993 – 2023",
       intro: "Vídeos que son cortometrajes y discos que son mundos propios.",
       items: [
         { a: 1993, art: "Björk", t: "Human Behaviour", n: "Desde Islandia: el pop más imaginativo de su década." },
@@ -53,7 +53,8 @@ HISTORIAS.push({
         { a: 2019, art: "Weyes Blood", t: "Andromeda", n: "Pop de los 70 con melancolía de hoy." },
         { a: 2020, art: "Arca", t: "Nonbinary", n: "Electrónica venezolana y vanguardia." },
         { a: 2022, art: "Kate Bush", t: "Vuelve al número uno 37 años después", tipo: "hito", n: "«Running Up That Hill», gracias a «Stranger Things»." },
-        { a: 2022, art: "Rosalía", t: "SAOKO", n: "De «Motomami»: reguetón deformado y jazz en dos minutos." }
+        { a: 2022, art: "Rosalía", t: "SAOKO", n: "De «Motomami»: reguetón deformado y jazz en dos minutos." },
+        { a: 2023, art: "Caroline Polachek", t: "Sunset", n: "Del disco «Desire, I Want to Turn Into You», con guitarra española." }
       ]
     }
   ]

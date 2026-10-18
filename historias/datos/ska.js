@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "ska",
   familia: "Latino",
   titulo: "Historia del ska",
-  periodo: "1962 – 1998",
+  periodo: "1962 – 2010",
   color: "#2e7d32",
   lema: "De Kingston a Coventry y a Ska-P: el ritmo a contratiempo en tres oleadas.",
   intro: "El ska nació en Jamaica hacia 1960: rhythm and blues estadounidense con la guitarra a contratiempo y metales. Cuando llegó la independencia, en 1962, fue la música de la fiesta. Después vinieron el rocksteady y el reggae, y la segunda ola del 2 Tone británico, que mezcló a chavales negros y blancos en plena época de racismo. En los 90 llegó la tercera ola, con el ska punk, y en España grupos como Ska-P.",
@@ -42,13 +42,14 @@ HISTORIAS.push({
         { a: 1980, art: "Madness", t: "Baggy Trousers", n: "El colegio de Madness." },
         { a: 1980, art: "Bad Manners", t: "Lip Up Fatty", n: "Ska gamberro." },
         { a: 1981, art: "The Specials", t: "Ghost Town", n: "Las ciudades vacías y los disturbios de la Inglaterra de Thatcher; número uno." },
+        { a: 1981, art: "Madness", t: "It Must Be Love", n: "La de Labi Siffre, con Madness bajo el agua en el vídeo." },
         { a: 1982, art: "Madness", t: "Our House", n: "El pop más querido de los de Camden." }
       ]
     },
     {
       titulo: "La tercera ola",
       corto: "Ska punk",
-      periodo: "1989 – 1998",
+      periodo: "1989 – 2010",
       intro: "Los 90: ska con guitarras de punk.",
       items: [
         { a: 1989, art: "Operation Ivy", t: "Knowledge", n: "Ska punk de California." },
@@ -62,7 +63,8 @@ HISTORIAS.push({
         { a: 1996, art: "Goldfinger", t: "Here in Your Bedroom", n: "Ska punk de los 90." },
         { a: 1997, art: "Save Ferris", t: "Come On Eileen", n: "La canción de Dexys Midnight Runners pasada a ska." },
         { a: 1997, art: "The Mighty Mighty Bosstones", t: "The Impression That I Get", n: "El ska punk de Boston en la radio." },
-        { a: 1998, art: "Ska-P", t: "Vals del obrero", n: "Ska de protesta para cantar a gritos en los conciertos." }
+        { a: 1998, art: "Ska-P", t: "Vals del obrero", n: "Ska de protesta para cantar a gritos en los conciertos." },
+        { a: 2010, art: "Bongo Botrako", t: "Todos los días sale el sol", n: "Ska y rumba de Barcelona: la canción alegre de las fiestas." }
       ]
     }
   ]

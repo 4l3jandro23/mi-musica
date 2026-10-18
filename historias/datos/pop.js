@@ -48,9 +48,12 @@ HISTORIAS.push({
         { a: 1984, art: "Prince", t: "When Doves Cry", n: "Sin línea de bajo y número uno." },
         { a: 1984, art: "Wham!", t: "Wake Me Up Before You Go-Go", n: "George Michael y la alegría de los 80." },
         { a: 1985, art: "Live Aid", t: "Dos conciertos para Etiopía", tipo: "hito", n: "Londres y Filadelfia a la vez, vistos por cientos de millones de personas." },
+        { a: 1986, art: "The Bangles", t: "Manic Monday", n: "Escrita por Prince con seudónimo." },
+        { a: 1986, art: "The Bangles", t: "Walk Like an Egyptian", n: "Número uno en EE. UU. con un baile de jeroglífico." },
         { a: 1987, art: "Whitney Houston", t: "I Wanna Dance with Somebody (Who Loves Me)", n: "La gran voz de Whitney Houston en su tema más alegre: número uno en todo el mundo y Grammy." },
         { a: 1987, art: "Madonna", t: "La Isla Bonita", n: "Madonna se va a San Pedro con guitarra española." },
-        { a: 1989, art: "Madonna", t: "Like a Prayer", n: "Gospel y polémica: el Vaticano y Pepsi contra Madonna." }
+        { a: 1989, art: "Madonna", t: "Like a Prayer", n: "Gospel y polémica: el Vaticano y Pepsi contra Madonna." },
+        { a: 1989, art: "The Bangles", t: "Eternal Flame", n: "La balada de Susanna Hoffs: número uno en medio mundo." }
       ]
     },
     {
@@ -60,8 +63,10 @@ HISTORIAS.push({
       intro: "Boy bands, divas y el boom latino.",
       items: [
         { a: 1995, art: "Mariah Carey", t: "Fantasy", n: "Pop y hip hop juntos, con un sample de Tom Tom Club." },
+        { a: 1995, art: "The Corrs", t: "Runaway", n: "Pop celta de cuatro hermanos irlandeses." },
         { a: 1998, art: "Cher", t: "Believe", n: "El primer gran éxito con Auto-Tune usado a propósito." },
         { a: 1998, art: "Madonna", t: "Ray of Light", n: "Madonna se pasa a la electrónica con William Orbit." },
+        { a: 1998, art: "New Radicals", t: "You Get What You Give", n: "Un solo disco y una canción que se siguen poniendo." },
         { a: 1999, art: "Max Martin", t: "La fábrica sueca de éxitos", tipo: "hito", n: "Britney, Backstreet Boys y NSYNC salen del mismo estudio de Estocolmo." },
         { a: 1999, art: "Backstreet Boys", t: "I Want It That Way", n: "La letra no tiene sentido y da igual." },
         { a: 1999, art: "Christina Aguilera", t: "Genie in a Bottle", n: "La otra gran estrella pop del fin de siglo." },
@@ -69,6 +74,7 @@ HISTORIAS.push({
         { a: 2000, art: "*NSYNC", t: "Bye Bye Bye", n: "Marionetas y coreografías: la boy band de Justin Timberlake." },
         { a: 2001, art: "Kylie Minogue", t: "Can't Get You Out of My Head", n: "La-la-la: imposible sacársela de la cabeza." },
         { a: 2003, art: "Beyoncé", t: "Crazy in Love", n: "Con Jay-Z: el debut en solitario más potente del siglo." },
+        { a: 2003, art: "No Doubt", t: "It's My Life", n: "La versión de Talk Talk, con un vídeo a lo cine negro." },
         { a: 2007, art: "Rihanna", t: "Umbrella", n: "Iba a ser para Britney Spears. Rihanna la grabó, estuvo diez semanas de número uno en el Reino Unido y se volvió estrella mundial." }
       ]
     },
@@ -79,6 +85,7 @@ HISTORIAS.push({
       intro: "Spotify, TikTok y el pop global.",
       items: [
         { a: 2008, art: "Spotify", t: "Nace en Suecia", tipo: "hito", n: "En pocos años cambia cómo escucha música el mundo entero." },
+        { a: 2010, art: "Shontelle", t: "Impossible", n: "La cantante de Barbados con una balada." },
         { a: 2013, art: "Lorde", t: "Royals", n: "Una chica de 16 años de Nueva Zelanda contra el lujo del pop." },
         { a: 2018, art: "TikTok", t: "Llega a Occidente", tipo: "hito", n: "Una canción viral puede triunfar en una semana." },
         { a: 2019, art: "The Weeknd", t: "Blinding Lights", n: "Sintetizadores ochenteros: la canción más escuchada de la historia de Spotify." },

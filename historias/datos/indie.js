@@ -63,6 +63,7 @@ HISTORIAS.push({
         { a: 2014, art: "Mac DeMarco", t: "Chamber of Reflection", n: "El indie relajado de dormitorio." },
         { a: 2015, art: "Streaming", t: "Las playlists sustituyen a los blogs", tipo: "hito", n: "Spotify se convierte en la radio del indie." },
         { a: 2018, art: "Carolina Durante", t: "Cayetano", n: "Una burla generacional desde Madrid." },
+        { a: 2020, art: "Fievel Is Glauque", t: "Decoy", n: "Jazz pop de cámara del grupo de Zach Phillips y Ma Clément." },
         { a: 2021, art: "Wet Leg", t: "Chaise Longue", n: "Humor y guitarras." },
         { a: 2022, art: "Florence + The Machine", t: "June", n: "Dance Fever, escrito durante la pandemia." },
         { a: 2023, art: "boygenius", t: "Not Strong Enough", n: "Phoebe Bridgers, Julien Baker y Lucy Dacus." },

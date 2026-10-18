@@ -96,7 +96,8 @@ HISTORIAS.push({
         { a: 2016, art: "Juegos Olímpicos de Río", t: "La música brasileña ante el mundo", tipo: "hito", n: "Funk, samba y bossa nova en la ceremonia de inauguración." },
         { a: 2017, art: "MC Fioti", t: "Bum Bum Tam Tam", n: "Funk carioca con una flauta de Bach: más de mil millones de visitas." },
         { a: 2021, art: "Anitta", t: "Envolver", n: "La primera artista brasileña en llegar a lo más alto del Spotify mundial." },
-        { a: 2023, art: "Grupo Menos É Mais", t: "Coração Partido (Corazón Partío) - Ao Vivo", n: "El pagode de Brasília versiona en portugués «Corazón partío» de Alejandro Sanz: un éxito enorme en Brasil." }
+        { a: 2023, art: "Grupo Menos É Mais", t: "Coração Partido (Corazón Partío) - Ao Vivo", n: "El pagode de Brasília versiona en portugués «Corazón partío» de Alejandro Sanz: un éxito enorme en Brasil." },
+        { a: 2023, art: "Mari Froes", t: "Mais uma canção pra você", n: "MPB de la nueva generación (año aproximado)." }
       ]
     }
   ]

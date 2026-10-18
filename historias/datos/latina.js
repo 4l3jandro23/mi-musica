@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "latina",
   familia: "Latino",
   titulo: "Historia de la música latina",
-  periodo: "1930 – 2023",
+  periodo: "1930 – 2024",
   color: "#e8573a",
   lema: "Un siglo en el idioma de medio continente: del bolero y la canción protesta a Despacito y Bad Bunny.",
   intro: "Un panorama general de la música latinoamericana en español: los ídolos del cine mexicano, la canción protesta frente a las dictaduras, el rock en español, las baladas de los 80, el boom latino del 99 y el dominio mundial del streaming. Cada género tiene además su propia historia: salsa, cumbia, bachata, bolero, tango, Cuba, reggaetón o trap latino.",
@@ -60,7 +60,7 @@ HISTORIAS.push({
     {
       titulo: "El boom latino y la era del streaming",
       corto: "Boom y streaming",
-      periodo: "1998 – 2023",
+      periodo: "1998 – 2024",
       intro: "Del boom latino de 1999 a la música más escuchada del mundo.",
       items: [
         { a: 1998, art: "Ricky Martin", t: "La copa de la vida", n: "El Mundial de Francia y el principio del «boom latino» de 1999." },
@@ -78,7 +78,9 @@ HISTORIAS.push({
         { a: 2020, art: "Bad Bunny & Jhay Cortez", t: "Dákiti", n: "Reguetón electrónico y uno de los mayores éxitos de 2020." },
         { a: 2022, art: "Bad Bunny", t: "Tití Me Preguntó", n: "Del disco más escuchado del mundo ese año, todo en español." },
         { a: 2023, art: "Eslabon Armado", t: "Ella Baila Sola", n: "Con Peso Pluma: los corridos tumbados en lo más alto del mundo." },
-        { a: 2023, art: "KAROL G", t: "TQG", n: "Con Shakira: la «Bichota» de Medellín, la artista latina del momento." }
+        { a: 2023, art: "KAROL G", t: "TQG", n: "Con Shakira: la «Bichota» de Medellín, la artista latina del momento." },
+        { a: 2024, art: "Rawayana", t: "Se presta", n: "Del disco «¿Dónde es el after?», de los venezolanos." },
+        { a: 2024, art: "Rawayana & Manuel Turizo", t: "Inglés en Miami", n: "Otra de «¿Dónde es el after?»." }
       ]
     }
   ]
