@@ -351,6 +351,15 @@
   .quitar svg { width: 15px; height: 15px; stroke-width: 2.4; }
   .quitar:hover, .quitar:focus-visible { opacity: 1; color: #e0484d; background: color-mix(in srgb, #e0484d 12%, transparent); }
   .quitar:active { transform: scale(.9); }
+  .editar-cap { margin-top: 6px; }
+  .editar-cap:hover, .editar-cap:focus-visible { color: var(--fg); background: var(--surface-2); }
+  .editor-cap { margin: -4px 0 16px; padding: 14px 16px; border-radius: 18px; border: 1px solid var(--line); background: color-mix(in srgb, var(--tinte) 8%, transparent); display: grid; gap: 12px; }
+  .editor-cap label { display: grid; gap: 6px; font-size: 13.5px; font-weight: 600; color: var(--fg-soft); }
+  .editor-cap input { font: inherit; font-size: 16px; font-weight: 500; color: var(--fg); background: var(--surface); border: 1px solid var(--line-firm); border-radius: 12px; padding: 9px 12px; min-width: 0; }
+  .editor-cap input:focus { outline: 2px solid var(--tinte); outline-offset: 1px; }
+  .editor-cap p { margin: 0; font-size: 13.5px; color: var(--fg-soft); }
+  .btn.peligro { color: #d23c41; border-color: color-mix(in srgb, #e0484d 40%, transparent); }
+  .btn.peligro:hover { background: color-mix(in srgb, #e0484d 12%, transparent); }
   .row.saliendo { opacity: 0; transform: translateX(16px); transition: .22s var(--ease); }
   .quitadas { margin: 28px 0 8px; padding: 14px 18px; border-radius: 18px; background: color-mix(in srgb, var(--tinte) 8%, transparent); border: 1px solid var(--line); }
   .quitadas summary { cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; list-style: none; }
@@ -544,7 +553,7 @@
 <script src="historias/datos/altrap.js?v=9"></script>
 <script src="historias/datos/phonk.js?v=9"></script>
 <script src="historias/datos/grime.js?v=9"></script>
-<script src="historias/datos/trap.js?v=9"></script>
+<script src="historias/datos/trap.js?v=10"></script>
 <script src="historias/datos/cloudrap.js?v=9"></script>
 <script src="historias/datos/drill.js?v=9"></script>
 <script src="historias/datos/mumblerap.js?v=9"></script>
@@ -706,6 +715,6 @@
 <script src="historias/datos/universal.js?v=9"></script>
 <script src="historias/datos/defjam.js?v=9"></script>
 <script src="historias/datos/spinnin.js?v=9"></script>
-<script src="historias/motor.js?v=26"></script>
+<script src="historias/motor.js?v=27"></script>
 </body>
 </html>

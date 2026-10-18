@@ -107,23 +107,6 @@ HISTORIAS.push({
         { a: 2023, art: "Travis Scott, Bad Bunny & The Weeknd", t: "K-POP", n: "Los tres juntos en un tema que salió en julio de 2023, antes de «Utopia»." },
         { a: 2023, art: "Drake & Bad Bunny", t: "Gently", n: "De «For All the Dogs»: Drake se atreve a cantar en español junto a Bad Bunny." }
       ]
-    },
-    {
-      titulo: "Tekashi 6ix9ine, el rap como reality",
-      corto: "6ix9ine",
-      periodo: "2018 – 2020",
-      intro: "El chico del pelo arcoíris de Brooklyn convirtió el trap en un espectáculo de peleas, detenciones y récords. Acabó declarando contra su propia banda.",
-      items: [
-        { a: 2018, art: "6ix9ine & Bobby Shmurda", t: "STOOPID", n: "Con Bobby Shmurda grabando la voz por teléfono desde la cárcel." },
-        { a: 2018, art: "6ix9ine, Nicki Minaj & Murda Beatz", t: "FEFE", n: "Número 3 en EE. UU.: su mayor éxito antes de entrar en prisión." },
-        { a: 2018, art: "6ix9ine & Anuel AA", t: "BEBE", n: "Trap en español con Anuel: 6ix9ine reivindica su lado mexicano y puertorriqueño." },
-        { a: 2018, art: "6ix9ine, Fetty Wap & A Boogie Wit da Hoodie", t: "KEKE", n: "Uno de los temas de su mixtape «Dummy Boy»." },
-        { a: 2019, art: "6ix9ine", t: "Declara contra los Nine Trey", tipo: "hito", n: "Detenido en 2018, testifica en un juicio contra la banda con la que se había hecho famoso; sale de la cárcel en 2020." },
-        { a: 2019, art: "6ix9ine & Anuel AA", t: "MALA", n: "Segunda colaboración con Anuel, de «Dummy Boy»." },
-        { a: 2020, art: "6ix9ine", t: "GOOBA", n: "Su regreso tras la cárcel: récord de visitas en 24 horas para un vídeo de rap en YouTube." },
-        { a: 2020, art: "6ix9ine & Nicki Minaj", t: "TROLLZ", n: "Debutó en el número uno del Billboard Hot 100 y cayó a la semana siguiente al puesto 34." },
-        { a: 2020, art: "6ix9ine", t: "YAYA", n: "Del disco «TattleTales», el que casi nadie esperaba que sacara tras declarar." }
-      ]
     }
   ]
 });

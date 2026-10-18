@@ -37,6 +37,7 @@
     der: '<path d="M9 18l6-6-6-6"/>',
     hito: '<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
     quitar: '<path d="M17 7 7 17M7 7l10 10"/>',
+    lapiz: '<path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>',
     deshacer: '<path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/>',
     chispa: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>',
     reloj: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
@@ -135,16 +136,37 @@
      así que no salen en ningún sitio: listas, búsqueda, cronología, juego ni recuentos. */
   const K_QUITADAS = 'historias_quitadas_v1';
   const QUITADAS = new Set(leer(K_QUITADAS, []));
-  const ORIG = new Map(H.map((h) => [h.id, h.capitulos.map((c) => c.items.slice())]));
+  /* Apartados (capítulos) editados: se pueden quitar o renombrar, también solo en este aparato.
+     La clave es «id|título original», así que sobrevive a que cambie el orden de los capítulos. */
+  const K_CAPS = 'historias_apartados_v1';
+  const CAPS = leer(K_CAPS, {}); // clave → { fuera: true } | { nombre: '…' }
+  const ORIG = new Map(H.map((h) => [h.id, h.capitulos.map((c) => Object.assign({}, c, { items: c.items.slice() }))]));
+  const claveCap = (h, c) => h.id + '|' + c.titulo;
+  const cambioCap = (h, c) => CAPS[claveCap(h, c)] || {};
   function aplicarQuitadas() {
-    H.forEach((h) => ORIG.get(h.id).forEach((items, k) => {
-      h.capitulos[k].items = items.filter((i) => i.tipo === 'hito' || !QUITADAS.has(clave(h, i)));
-    }));
+    H.forEach((h) => {
+      const caps = ORIG.get(h.id).filter((c) => !cambioCap(h, c).fuera);
+      h.capitulos = (caps.length ? caps : ORIG.get(h.id)).map((c) => {
+        const nombre = cambioCap(h, c).nombre;
+        return Object.assign({}, c, { orig: c.titulo, titulo: nombre || c.titulo, corto: nombre || c.corto,
+          items: c.items.filter((i) => i.tipo === 'hito' || !QUITADAS.has(clave(h, i))) });
+      });
+    });
   }
-  const quitadasDe = (h) => ORIG.get(h.id).flat().filter((i) => i.tipo !== 'hito' && QUITADAS.has(clave(h, i)));
+  const quitadasDe = (h) => ORIG.get(h.id).filter((c) => !cambioCap(h, c).fuera)
+    .flatMap((c) => c.items).filter((i) => i.tipo !== 'hito' && QUITADAS.has(clave(h, i)));
+  const capsFuera = (h) => ORIG.get(h.id).filter((c) => cambioCap(h, c).fuera);
+  const capsRenombrados = (h) => ORIG.get(h.id).filter((c) => cambioCap(h, c).nombre);
   function quitar(k, fuera) {
     fuera ? QUITADAS.add(k) : QUITADAS.delete(k);
     guardar(K_QUITADAS, [...QUITADAS]);
+    aplicarQuitadas();
+    ruta(true);
+  }
+  // v: { fuera: true }, { nombre }, o null para dejarlo como venía
+  function editarCap(k, v) {
+    if (v) CAPS[k] = v; else delete CAPS[k];
+    guardar(K_CAPS, CAPS);
     aplicarQuitadas();
     ruta(true);
   }
@@ -375,6 +397,18 @@
 
   let espia = null;
   // Lo que has quitado de esta historia, para recuperarlo o pasarme la lista
+  function apartadosHtml(h) {
+    const f = capsFuera(h), r = capsRenombrados(h);
+    if (!f.length && !r.length) return '';
+    const n = f.length + r.length;
+    return '<details class="quitadas" style="--tinte:' + h.color + '"><summary>' + ic('lapiz') + 'Has cambiado ' + n + ' apartado' + (n === 1 ? '' : 's') + ' de esta historia</summary>' +
+      '<p>Solo se ve así en este aparato. Si quieres que el cambio sea para siempre en la web, copia la lista y pásamela.</p>' +
+      '<ul>' + f.map((c) => '<li><span><b>' + esc(c.titulo) + '</b> · quitado · ' + c.items.filter((i) => i.tipo !== 'hito').length + ' canciones</span>' +
+        '<button class="btn sm" data-cap-volver="' + esc(claveCap(h, c)) + '">' + ic('deshacer') + 'Recuperar</button></li>').join('') +
+      r.map((c) => '<li><span><b>' + esc(cambioCap(h, c).nombre) + '</b> · antes «' + esc(c.titulo) + '»</span>' +
+        '<button class="btn sm" data-cap-volver="' + esc(claveCap(h, c)) + '">' + ic('deshacer') + 'Nombre original</button></li>').join('') + '</ul>' +
+      '<button class="btn sm" id="copiarApartados">' + ic('copia') + 'Copiar la lista</button></details>';
+  }
   function quitadasHtml(h) {
     const q = quitadasDe(h);
     if (!q.length) return '';
@@ -417,12 +451,19 @@
         }
         return '<section class="capitulo" id="cap-' + (k + 1) + '" style="--tinte:' + h.color + '">' +
           '<header class="cap-cab">' + (varios ? '<span class="letra">' + L + '</span>' : '') + '<div><span class="eti">' + (varios ? 'Cara ' + L + ' · ' : '') + esc(c.periodo) + '</span>' +
-          '<h2>' + esc(c.titulo) + '</h2>' + (c.intro ? '<p>' + esc(c.intro) + '</p>' : '') + '</div></header>' +
+          '<h2>' + esc(c.titulo) + '</h2>' + (c.intro ? '<p>' + esc(c.intro) + '</p>' : '') + '</div>' +
+          '<button class="quitar editar-cap" data-cap="' + esc(h.id + '|' + c.orig) + '" title="Editar este apartado" aria-label="Editar este apartado">' + ic('lapiz') + '</button></header>' +
           '<ol class="lista">' + c.items.map((i) => fila(i, h, null, '', i.tipo === 'hito' ? '' : (varios ? L : '') + (++n))).join('') + '</ol></section>';
       }).join('') +
-      quitadasHtml(h) +
+      apartadosHtml(h) + quitadasHtml(h) +
       '<div class="nav-fin">' + (ant ? '<a class="siguiente ant" href="#h/' + ant.id + '" style="--c:' + ant.color + '">' + ic('atras') + '<span><span class="eti">Anterior en ' + esc(h.familia) + '</span><b>' + esc(ant.titulo) + '</b></span></a>' : '') +
       '<a class="siguiente" href="#h/' + sig.id + '" style="--c:' + sig.color + '"><span><span class="eti">Siguiente' + (fam.length > 1 ? ' en ' + esc(h.familia) : ' historia') + '</span><b>' + esc(sig.titulo) + '</b></span>' + ic('sig') + '</a></div>';
+    const ca = $('#copiarApartados');
+    if (ca) ca.onclick = () => {
+      const txt = 'Apartados de «' + h.titulo + '» (' + h.id + '):\n' +
+        capsFuera(h).map((c) => 'Quitar: ' + c.titulo).concat(capsRenombrados(h).map((c) => 'Renombrar: ' + c.titulo + ' → ' + cambioCap(h, c).nombre)).join('\n');
+      navigator.clipboard.writeText(txt).then(() => toast('Lista copiada'), () => toast('No se pudo copiar'));
+    };
     const cq = $('#copiarQuitadas');
     if (cq) cq.onclick = () => {
       const txt = 'Quitar de «' + h.titulo + '» (' + h.id + '):\n' + quitadasDe(h).map((i) => i.art + ' — ' + i.t).join('\n');
@@ -621,13 +662,17 @@
 
   // Marcar o desmarcar una pieza como escuchada
   main.addEventListener('click', (e) => {
-    const qb = e.target.closest('.quitar');
+    const eb = e.target.closest('.editar-cap');
+    if (eb) { abrirEditor(eb); return; }
+    const qb = e.target.closest('.quitar:not(.editar-cap)');
     if (qb) {
       const k = qb.dataset.q, row = qb.closest('.row');
       const hecho = () => { quitar(k, true); toast('Canción quitada', { txt: 'Deshacer', fn: () => quitar(k, false) }); };
       if (MOV && row) { row.classList.add('saliendo'); setTimeout(hecho, 220); } else hecho();
       return;
     }
+    const cv = e.target.closest('[data-cap-volver]');
+    if (cv) { editarCap(cv.dataset.capVolver, null); toast('Apartado como estaba'); return; }
     const vb = e.target.closest('[data-volver]');
     if (vb) { quitar(vb.dataset.volver, false); toast('Canción recuperada'); return; }
     const b = e.target.closest('.oida'); if (!b) return;
@@ -640,6 +685,39 @@
     if (h && p) p.innerHTML = progreso(h);
     if (on && h && oidas(h) === escuchables(h).length) toast('¡Historia completa!');
   });
+
+  // Editor de un apartado, debajo de su cabecera: cambiar el nombre o quitarlo entero
+  function abrirEditor(b) {
+    const cab = b.closest('.cap-cab'), k = b.dataset.cap;
+    const prev = cab.parentNode.querySelector('.editor-cap');
+    if (prev) { prev.remove(); return; }
+    const h = H.find((x) => x.id === k.split('|')[0]);
+    const c = h && h.capitulos.find((x) => x.orig === k.slice(h.id.length + 1));
+    if (!c) return;
+    const unico = h.capitulos.length < 2;
+    const n = c.items.filter((i) => i.tipo !== 'hito').length;
+    const f = document.createElement('form');
+    f.className = 'editor-cap';
+    f.innerHTML = '<label>Nombre del apartado<input name="nombre" maxlength="80" value="' + esc(c.titulo) + '"></label>' +
+      '<div class="btnrow"><button class="btn sm pri" type="submit">' + ic('check') + 'Guardar nombre</button>' +
+      (unico ? '' : '<button class="btn sm peligro" type="button" data-accion="quitar">' + ic('quitar') + 'Quitar apartado (' + n + ' canciones)</button>') +
+      '<button class="btn sm" type="button" data-accion="cerrar">Cancelar</button></div>' +
+      (unico ? '<p>Es el único apartado de esta historia, así que no se puede quitar.</p>' : '');
+    cab.after(f);
+    const inp = f.querySelector('input'); inp.focus(); inp.select();
+    f.onsubmit = (e) => {
+      e.preventDefault();
+      const v = inp.value.trim();
+      editarCap(k, !v || v === c.orig ? null : { nombre: v });
+      toast('Nombre guardado');
+    };
+    f.onclick = (e) => {
+      const a = e.target.closest('[data-accion]'); if (!a) return;
+      if (a.dataset.accion === 'cerrar') { f.remove(); return; }
+      editarCap(k, { fuera: true });
+      toast('Apartado quitado', { txt: 'Deshacer', fn: () => editarCap(k, null) });
+    };
+  }
 
   // Cambio de pantalla con una entrada suave. (Las View Transitions del navegador
   // podían dejar la ruta esperando a un fotograma que no llegaba: se pinta ya.)
