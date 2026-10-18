@@ -80,7 +80,8 @@ HISTORIAS.push({
       intro: "Nuevas generaciones convierten el frío soviético en estética.",
       items: [
         { a: 2018, art: "Internet", t: "La nostalgia postsoviética", tipo: "hito", n: "El post-punk ruso se vuelve meme en todo el mundo." },
-        { a: 2018, art: "Molchat Doma", alias: ["Молчат Дома"], t: "Sudno (Boris Ryzhy)", q: "Molchat Doma Судно", n: "Desde Bielorrusia, post-punk con el frío de los bloques soviéticos. Viral en TikTok." }
+        { a: 2018, art: "Molchat Doma", alias: ["Молчат Дома"], t: "Sudno (Boris Ryzhy)", q: "Molchat Doma Судно", n: "Desde Bielorrusia, post-punk con el frío de los bloques soviéticos. Viral en TikTok." },
+        { a: 2018, art: "Molchat Doma", t: "Судно (Борис Рыжий)", n: "Post-punk de Minsk sobre un poema de Borís Ryzhi: viral en TikTok años después." }
       ]
     }
   ]

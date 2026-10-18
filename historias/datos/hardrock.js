@@ -81,9 +81,11 @@ HISTORIAS.push({
       intro: "Tras el grunge, el hard rock vuelve con humor.",
       items: [
         { a: 2000, art: "Bon Jovi", t: "It's My Life", n: "Su gran regreso." },
+        { a: 2001, art: "Nickelback", t: "How You Remind Me", n: "La canción más radiada de la década en EE. UU." },
         { a: 2003, art: "The Darkness", t: "El hard rock vuelve como broma y en serio", tipo: "hito", n: "Mallas, falsete y número dos en el Reino Unido." },
         { a: 2003, art: "The Darkness", t: "I Believe in a Thing Called Love", n: "Falsetes, mallas y riffs: el hard rock vuelve medio en serio, medio en broma." },
         { a: 2003, art: "Audioslave", t: "Like a Stone", n: "Chris Cornell, de Soundgarden, con los músicos de Rage Against the Machine." },
+        { a: 2003, art: "Hoobastank", t: "The Reason", n: "La balada del perdón del post-grunge." },
         { a: 2004, art: "Velvet Revolver", t: "Slither", n: "Slash y Scott Weiland en un supergrupo." },
         { a: 2005, art: "Wolfmother", t: "Woman", n: "El hard rock de los 70 vuelve desde Australia." },
         { a: 2005, art: "Nickelback", t: "Rockstar", n: "El grupo más odiado de internet, con su éxito más pegadizo." },

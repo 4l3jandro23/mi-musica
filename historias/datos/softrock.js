@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "softrock",
   familia: "Rock",
   titulo: "Soft rock",
-  periodo: "1970 – 1993",
+  periodo: "1970 – 2018",
   color: "#d9a066",
   lema: "Cantautores, guitarras acústicas y baladas: el rock suave de los 70 y 80.",
   intro: "El soft rock es el rock que se baja el volumen: guitarras acústicas, pianos, armonías vocales y letras íntimas. Salió de los cantautores de Laurel Canyon, en Los Ángeles, y dominó las radios de los 70 con Carole King, James Taylor, Carpenters o Fleetwood Mac. En los 80 se convirtió en baladas de radio para adultos.",
@@ -45,6 +45,7 @@ HISTORIAS.push({
         { a: 1977, art: "Bee Gees", t: "How Deep Is Your Love", n: "La balada de «Fiebre del sábado noche»." },
         { a: 1977, art: "Eric Clapton", t: "Wonderful Tonight", n: "Esperando a que Pattie Boyd terminara de arreglarse." },
         { a: 1977, art: "Billy Joel", t: "Just the Way You Are", n: "Un regalo de cumpleaños para su mujer." },
+        { a: 1977, art: "Linda Ronstadt", t: "Blue Bayou", n: "La de Roy Orbison, su mayor éxito." },
         { a: 1978, art: "Gerry Rafferty", t: "Baker Street", n: "El saxo más famoso del soft rock." },
         { a: 1979, art: "Billboard", t: "Llega el «adult contemporary»", tipo: "hito", n: "La lista de canciones tranquilas para adultos cambia de nombre: el soft rock tiene su propia radio." },
         { a: 1979, art: "Dan Fogelberg", t: "Longer", n: "Una canción de amor." }
@@ -53,7 +54,7 @@ HISTORIAS.push({
     {
       titulo: "Los 80 y después",
       corto: "Los 80",
-      periodo: "1980 – 1993",
+      periodo: "1980 – 2018",
       intro: "Baladas de rock para adultos.",
       items: [
         { a: 1980, art: "Air Supply", t: "All Out of Love", n: "El dúo australiano de las baladas." },
@@ -64,7 +65,8 @@ HISTORIAS.push({
         { a: 1989, art: "Roy Orbison", t: "You Got It", n: "Su último éxito, publicado después de su muerte." },
         { a: 1991, art: "Bonnie Raitt", t: "I Can't Make You Love Me", n: "Una balada de piano." },
         { a: 1992, art: "Eric Clapton", t: "Layla (Acoustic Live)", n: "La versión del «Unplugged» de MTV." },
-        { a: 1993, art: "Sheryl Crow", t: "All I Wanna Do", n: "El soft rock de los 90, con humor." }
+        { a: 1993, art: "Sheryl Crow", t: "All I Wanna Do", n: "El soft rock de los 90, con humor." },
+        { a: 2018, art: "John Mayer", t: "New Light", n: "Producida por No I.D., con un vídeo hecho con cromas cutres." }
       ]
     }
   ]

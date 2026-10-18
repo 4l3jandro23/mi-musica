@@ -63,6 +63,7 @@ HISTORIAS.push({
       items: [
         { a: 2014, art: "Modern Baseball", t: "Your Graduation", n: "El emo revival de Filadelfia." },
         { a: 2014, art: "Fall Out Boy", t: "Centuries", n: "El regreso de Fall Out Boy con «American Beauty/American Psycho»." },
+        { a: 2020, art: "YUNGBLUD & Machine Gun Kelly", t: "acting like that", n: "Pop punk de los que lo recuperaron." },
         { a: 2022, art: "When We Were Young", t: "El festival de la nostalgia", tipo: "hito", n: "En Las Vegas se reúnen My Chemical Romance, Paramore y Fall Out Boy: el emo ya es música clásica de una generación." },
         { a: 2022, art: "My Chemical Romance", t: "The Foundations of Decay", n: "Su primera canción nueva en ocho años." }
       ]

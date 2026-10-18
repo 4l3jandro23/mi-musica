@@ -34,6 +34,8 @@ HISTORIAS.push({
         { a: 2011, art: "Zeds Dead", t: "Eyes on Fire (Remix)", n: "El remix de Blue Foundation." },
         { a: 2011, art: "Kill the Noise", t: "Kill It 4 the Kids", n: "Electro y dubstep." },
         { a: 2011, art: "Skrillex", t: "Ruffneck (Full Flex)", n: "Del EP «Bangarang»." },
+        { a: 2011, art: "Korn & Skrillex", t: "Get Up!", n: "Korn se pasa al dubstep con «The Path of Totality»." },
+        { a: 2011, art: "Korn, Skrillex & Kill the Noise", t: "Narcissistic Cannibal", n: "Otra del disco de dubstep de Korn." },
         { a: 2012, art: "Skrillex", t: "Grammy al mejor álbum dance", tipo: "hito", n: "El brostep llega a lo más alto de la industria. Desde ahí, todo festival quería su drop." },
         { a: 2012, art: "Knife Party", t: "Centipede", n: "El documental de naturaleza más amenazante de la historia." },
         { a: 2012, art: "Borgore", t: "Decisions", n: "Con Miley Cyrus. El brostep ya es puro pop." },

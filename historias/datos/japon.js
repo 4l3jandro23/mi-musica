@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "japon",
   familia: "Mundo",
   titulo: "Historia de la música japonesa",
-  periodo: "1929 – 2023",
+  periodo: "1929 – 2024",
   color: "#d23c55",
   lema: "Koto, enka, city pop, anime y vocaloid: Japón a su manera.",
   intro: "Japón escucha todo lo de fuera y lo convierte en algo propio. El koto se moderniza, la posguerra canta boogie y enka, los 70 inventan el rock en japonés, los 80 el city pop y la electrónica de YMO, y desde entonces el anime, los ídolos y los vocaloid llevan su música a todo el mundo.",
@@ -59,7 +59,7 @@ HISTORIAS.push({
     {
       titulo: "Vocaloid, metal idol y la era del streaming",
       corto: "Siglo XXI",
-      periodo: "2007 – 2023",
+      periodo: "2007 – 2024",
       intro: "Cantantes virtuales, ídolos con metal y éxitos virales.",
       items: [
         { a: 2007, art: "Hatsune Miku", t: "Nace la cantante virtual", tipo: "hito", n: "Un programa que canta: miles de productores crean canciones para ella." },
@@ -71,7 +71,8 @@ HISTORIAS.push({
         { a: 2019, art: "YOASOBI", t: "Yoru ni Kakeru", q: "YOASOBI 夜に駆ける", n: "Canciones basadas en relatos de internet: el pop japonés de la era del streaming." },
         { a: 2020, art: "Ado", t: "Usseewa", q: "Ado うっせぇわ", n: "Una voz anónima de 17 años gritando contra los adultos." },
         { a: 2020, art: "Fujii Kaze", alias: ["藤井風"], t: "Shinunoga E-Wa", q: "Fujii Kaze 死ぬのがいいわ", n: "Viral en TikTok en todo el mundo." },
-        { a: 2023, art: "YOASOBI", t: "Idol", q: "YOASOBI アイドル", n: "De «Oshi no Ko»: número uno en la lista global de Billboard (sin EE. UU.)." }
+        { a: 2023, art: "YOASOBI", t: "Idol", q: "YOASOBI アイドル", n: "De «Oshi no Ko»: número uno en la lista global de Billboard (sin EE. UU.)." },
+        { a: 2024, art: "BABYMETAL & Electric Callboy", t: "RATATATA", n: "El metal idol japonés con el metalcore alemán más payaso." }
       ]
     }
   ]

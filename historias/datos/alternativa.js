@@ -44,6 +44,7 @@ HISTORIAS.push({
         { a: 1992, art: "Alice in Chains", t: "Would?", n: "Jerry Cantrell la escribió para Andrew Wood, el cantante de Mother Love Bone, que murió de sobredosis. Salió en la banda sonora de «Singles»." },
         { a: 1992, art: "Radiohead", t: "Creep", n: "Una canción que el propio grupo acabó odiando." },
         { a: 1992, art: "R.E.M.", t: "Everybody Hurts", n: "Una canción para los que piensan en dejarlo todo." },
+        { a: 1992, art: "The Cure", t: "Friday I'm in Love", n: "Robert Smith en su versión más feliz." },
         { a: 1993, art: "Beck", t: "Loser", n: "Rap, slide y folk grabado en una cocina: «I'm a loser, baby»." },
         { a: 1993, art: "The Cranberries", t: "Linger", n: "La voz de Dolores O'Riordan." },
         { a: 1994, art: "Kurt Cobain", t: "Muere con 27 años", tipo: "hito", n: "Kurt Cobain muere en Seattle en abril de 1994. El grunge pierde a su voz y el rock alternativo cambia de rumbo." },
@@ -61,7 +62,8 @@ HISTORIAS.push({
         { a: 1996, art: "Extremoduro", t: "So payaso", n: "Robe Iniesta y el rock transgresivo de Extremadura." },
         { a: 1997, art: "Third Eye Blind", t: "Semi-Charmed Life", n: "Una canción alegre sobre algo bastante oscuro." },
         { a: 1998, art: "Hole", t: "Celebrity Skin", n: "Courtney Love y su disco más pop." },
-        { a: 1998, art: "Placebo", t: "Pure Morning", n: "Brian Molko y el rock andrógino." }
+        { a: 1998, art: "Placebo", t: "Pure Morning", n: "Brian Molko y el rock andrógino." },
+        { a: 1998, art: "Semisonic", t: "Closing Time", n: "La canción de cuando encienden las luces del bar, que en realidad trata de ser padre." }
       ]
     },
     {
@@ -76,10 +78,14 @@ HISTORIAS.push({
         { a: 1997, art: "Foo Fighters", t: "Everlong", n: "Dave Grohl, el batería de Nirvana, convertido en líder." },
         { a: 1998, art: "The Cardigans", t: "My Favourite Game", n: "El vídeo de Nina Persson conduciendo sin control." },
         { a: 1999, art: "Red Hot Chili Peppers", t: "Californication", n: "El lado oscuro del sueño californiano." },
+        { a: 2000, art: "Nine Days", t: "Absolutely (Story of a Girl)", n: "Una sola canción famosa y un estribillo que se queda." },
         { a: 2001, art: "Muse", t: "Plug In Baby", n: "El riff de Matt Bellamy, a medio camino entre Bach y el metal, que hizo de Muse una banda de estadio." },
+        { a: 2001, art: "Weezer", t: "Island in the Sun", n: "Del «Green Album»: un tema de verano que no querían como single." },
         { a: 2002, art: "Queens of the Stone Age", t: "No One Knows", n: "Con Dave Grohl a la batería: rock del desierto." },
         { a: 2002, art: "Red Hot Chili Peppers", t: "Can't Stop", n: "Del disco «By the Way»." },
+        { a: 2003, art: "The Rasmus", t: "In the Shadows", n: "Los finlandeses de las plumas en el pelo." },
         { a: 2005, art: "Gorillaz", t: "Feel Good Inc.", n: "Un grupo de dibujos animados creado por Damon Albarn." },
+        { a: 2005, art: "The Fray", t: "How to Save a Life", n: "Sobre un chico al que el cantante intentó ayudar: la canción de «Anatomía de Grey»." },
         { a: 2006, art: "Red Hot Chili Peppers", t: "Snow (Hey Oh)", n: "Un riff de guitarra que no para." }
       ]
     },
@@ -92,7 +98,9 @@ HISTORIAS.push({
         { a: 2001, art: "Linkin Park", t: "In the End", n: "El nu metal más melódico: uno de los grandes éxitos del siglo." },
         { a: 2001, art: "System of a Down", t: "Chop Suey!", n: "Un número de metal armenio-estadounidense que se coló en la MTV." },
         { a: 2003, art: "Yeah Yeah Yeahs", t: "Maps", n: "Karen O llorando en el vídeo de verdad." },
+        { a: 2003, art: "Muse", t: "Hysteria", n: "Uno de los riffs de bajo más famosos del rock del siglo XXI." },
         { a: 2007, art: "Foo Fighters", t: "The Pretender", n: "El himno de Dave Grohl para estadios." },
+        { a: 2009, art: "Muse", t: "Uprising", n: "Glam rock con aire de «Doctor Who» y teorías de la conspiración." },
         { a: 2011, art: "Foo Fighters", t: "Walk", n: "Del disco «Wasting Light», grabado en su garaje." },
         { a: 2013, art: "Arctic Monkeys", t: "Do I Wanna Know?", n: "El riff lento y la canción más escuchada del grupo." },
         { a: 2015, art: "El rock en streaming", t: "Las guitarras pierden terreno", tipo: "hito", n: "El rap y el pop dominan las listas: el rock alternativo vive de festivales y de la nostalgia." },

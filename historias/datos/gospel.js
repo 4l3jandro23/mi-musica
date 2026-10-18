@@ -17,6 +17,7 @@ HISTORIAS.push({
         { a: 1932, art: "Thomas A. Dorsey", t: "Take My Hand, Precious Lord", q: "Take My Hand Precious Lord Mahalia Jackson", n: "Escrita tras la muerte de su mujer y su hijo en el parto: el himno del gospel." },
         { a: 1937, art: "Golden Gate Quartet", t: "Golden Gate Gospel Train", n: "Los cuartetos vocales y su ritmo de tren." },
         { a: 1944, art: "Sister Rosetta Tharpe", t: "Strange Things Happening Every Day", n: "Guitarra eléctrica en la iglesia: muchos la llaman la madrina del rock and roll." },
+        { a: 1946, art: "The Jubalaires", t: "Noah", n: "El arca de Noé recitada con ritmo: para muchos, el primer rap (año aproximado)." },
         { a: 1948, art: "Mahalia Jackson", t: "Move On Up a Little Higher", n: "Más de un millón de copias: el gospel se vende como el pop." },
         { a: 1948, art: "Sister Rosetta Tharpe", t: "Up Above My Head", n: "Guitarra eléctrica y fe." },
         { a: 1950, art: "The Five Blind Boys of Mississippi", t: "Our Father", n: "La voz de Archie Brownlee." },

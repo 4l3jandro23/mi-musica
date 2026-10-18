@@ -48,7 +48,7 @@ HISTORIAS.push({
     {
       titulo: "Dancehall",
       corto: "Dancehall",
-      periodo: "1979 – 1997",
+      periodo: "1979 – 2006",
       intro: "Ritmos digitales, MCs y la fiesta de los sound systems.",
       items: [
         { a: 1979, art: "Janet Kay", t: "Silly Games", n: "El «lovers rock» británico: reggae romántico." },
@@ -76,7 +76,8 @@ HISTORIAS.push({
         { a: 1994, art: "Big Mountain", t: "Baby, I Love Your Way", n: "La de Peter Frampton en reggae." },
         { a: 1995, art: "Shaggy", t: "Boombastic", n: "La voz grave de Shaggy, en un anuncio de vaqueros." },
         { a: 1996, art: "Anthony B", t: "Police", n: "Reggae consciente contra la violencia policial." },
-        { a: 1997, art: "Beenie Man", t: "Who Am I", n: "El rey del dancehall de los 90." }
+        { a: 1997, art: "Beenie Man", t: "Who Am I", n: "El rey del dancehall de los 90." },
+        { a: 2006, art: "Teddybears & Mad Cobra", t: "Cobrastyle", n: "Electro rock sueco con un toaster jamaicano: sonó en anuncios y videojuegos." }
       ]
     },
     {

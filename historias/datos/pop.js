@@ -71,6 +71,7 @@ HISTORIAS.push({
         { a: 1999, art: "Backstreet Boys", t: "I Want It That Way", n: "La letra no tiene sentido y da igual." },
         { a: 1999, art: "Christina Aguilera", t: "Genie in a Bottle", n: "La otra gran estrella pop del fin de siglo." },
         { a: 1999, art: "Ricky Martin", t: "Livin' la Vida Loca", n: "El boom latino en el pop en inglés." },
+        { a: 1999, art: "Blondie", t: "Maria", n: "Su regreso veinte años después: número uno en Reino Unido." },
         { a: 2000, art: "*NSYNC", t: "Bye Bye Bye", n: "Marionetas y coreografías: la boy band de Justin Timberlake." },
         { a: 2001, art: "Kylie Minogue", t: "Can't Get You Out of My Head", n: "La-la-la: imposible sacársela de la cabeza." },
         { a: 2003, art: "Beyoncé", t: "Crazy in Love", n: "Con Jay-Z: el debut en solitario más potente del siglo." },
@@ -88,7 +89,9 @@ HISTORIAS.push({
         { a: 2010, art: "Shontelle", t: "Impossible", n: "La cantante de Barbados con una balada." },
         { a: 2013, art: "Lorde", t: "Royals", n: "Una chica de 16 años de Nueva Zelanda contra el lujo del pop." },
         { a: 2018, art: "TikTok", t: "Llega a Occidente", tipo: "hito", n: "Una canción viral puede triunfar en una semana." },
+        { a: 2018, art: "LSD", t: "Genius", n: "Sia, Diplo y Labrinth juntos en un supergrupo." },
         { a: 2019, art: "The Weeknd", t: "Blinding Lights", n: "Sintetizadores ochenteros: la canción más escuchada de la historia de Spotify." },
+        { a: 2019, art: "Shawn Mendes", t: "If I Can't Have You", n: "Del canadiense antes de su parón." },
         { a: 2022, art: "Harry Styles", t: "As It Was", n: "De boy band a estrella mundial." },
         { a: 2023, art: "Troye Sivan", t: "Rush", n: "Pop de discoteca y gay, el himno del verano de 2023." }
       ]

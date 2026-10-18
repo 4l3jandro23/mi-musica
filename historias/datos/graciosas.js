@@ -44,7 +44,8 @@ HISTORIAS.push({
         { a: 2006, art: "El Koala", t: "Opá, yo viazé un corrá", n: "La canción del verano de 2006, desde un pueblo de Badajoz." },
         { a: 2007, art: "Flight of the Conchords", t: "Bowie's in Space", n: "Una parodia de Bowie." },
         { a: 2011, art: "The Lonely Island feat. Michael Bolton", t: "Jack Sparrow", n: "Michael Bolton obsesionado con «Piratas del Caribe»." },
-        { a: 2015, art: "Ojete Calor", t: "Opino de que", n: "Carlos Areces y Aníbal Gómez: el «subnopop»." }
+        { a: 2015, art: "Ojete Calor", t: "Opino de que", n: "Carlos Areces y Aníbal Gómez: el «subnopop»." },
+        { a: 2015, art: "Los Ganglios", t: "El Subiduki", n: "El punk de Barcelona que mezcla cumbia, Eskorbuto y bakalao: «música porc» (año aproximado)." }
       ]
     },
     {

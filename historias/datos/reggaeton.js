@@ -60,6 +60,7 @@ HISTORIAS.push({
         { a: 2002, art: "Plan B", t: "Guatauba", n: "El dúo de Chencho y Maldy, de los primeros tiempos (año aproximado)." },
         { a: 2002, art: "The Noise & Zion & Lennox", t: "Me pones en tensión", n: "Del sello que dio nombre al primer reguetón (año aproximado)." },
         { a: 2002, art: "Sir Speedy", t: "Amor con la ropa", n: "Reguetón romántico (año aproximado)." },
+        { a: 2002, art: "Héctor & Tito", t: "Perreo Baby", n: "Del dúo de Héctor el Father y Tito el Bambino (año aproximado)." },
         { a: 2003, art: "Don Omar", t: "Dale Don Dale", n: "El rival de Daddy Yankee y su gran himno." },
         { a: 2003, art: "Ivy Queen", t: "Yo quiero bailar", n: "Una canción sobre el baile y el consentimiento, antes de que se hablara de ello." },
         { a: 2003, art: "Luny Tunes & Noriega", t: "Mas Flow", tipo: "disco", n: "La producción de Luny Tunes: teclados melódicos y bombos limpios. El sonido del boom." },

@@ -24,6 +24,7 @@ HISTORIAS.push({
         { a: 1967, art: "The Spencer Davis Group", t: "I'm a Man", n: "Otra con Steve Winwood." },
         { a: 1967, art: "The Who", t: "I Can See for Miles", n: "El single más ruidoso de The Who en 1967." },
         { a: 1968, art: "The Jimi Hendrix Experience", t: "All Along the Watchtower", n: "Dylan según Hendrix." },
+        { a: 1968, art: "The Dirty Mac", t: "Yer Blues", n: "Lennon, Clapton, Keith Richards y Mitch Mitchell en el «Rock and Roll Circus» de los Stones." },
         { a: 1969, art: "The Rolling Stones", t: "Gimme Shelter", n: "La guerra, la violencia y la voz de Merry Clayton." },
         { a: 1969, art: "Creedence Clearwater Revival", t: "Fortunate Son", n: "Contra los hijos de ricos que se libraban de Vietnam." },
         { a: 1969, art: "Led Zeppelin", t: "Whole Lotta Love", n: "El riff que definió el hard rock." },

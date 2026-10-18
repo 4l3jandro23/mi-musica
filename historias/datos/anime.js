@@ -37,6 +37,7 @@ HISTORIAS.push({
         { a: 1995, art: "Yoko Takahashi", t: "A Cruel Angel's Thesis", n: "De «Neon Genesis Evangelion»." },
         { a: 1997, art: "Rica Matsumoto", t: "Mezase Pokémon Master", n: "La primera apertura de Pokémon." },
         { a: 1998, art: "Seatbelts", t: "Tank!", n: "La apertura de «Cowboy Bebop», de Yoko Kanno." },
+        { a: 1998, art: "bôa", t: "Duvet", n: "El opening de «Serial Experiments Lain», viral en internet años después." },
         { a: 1999, art: "Hiroshi Kitadani", t: "We Are!", n: "La primera apertura de «One Piece»." }
       ]
     },

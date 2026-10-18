@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "ska",
   familia: "Latino",
   titulo: "Historia del ska",
-  periodo: "1962 – 2010",
+  periodo: "1962 – 2018",
   color: "#2e7d32",
   lema: "De Kingston a Coventry y a Ska-P: el ritmo a contratiempo en tres oleadas.",
   intro: "El ska nació en Jamaica hacia 1960: rhythm and blues estadounidense con la guitarra a contratiempo y metales. Cuando llegó la independencia, en 1962, fue la música de la fiesta. Después vinieron el rocksteady y el reggae, y la segunda ola del 2 Tone británico, que mezcló a chavales negros y blancos en plena época de racismo. En los 90 llegó la tercera ola, con el ska punk, y en España grupos como Ska-P.",
@@ -49,7 +49,7 @@ HISTORIAS.push({
     {
       titulo: "La tercera ola",
       corto: "Ska punk",
-      periodo: "1989 – 2010",
+      periodo: "1989 – 2018",
       intro: "Los 90: ska con guitarras de punk.",
       items: [
         { a: 1989, art: "Operation Ivy", t: "Knowledge", n: "Ska punk de California." },
@@ -64,7 +64,8 @@ HISTORIAS.push({
         { a: 1997, art: "Save Ferris", t: "Come On Eileen", n: "La canción de Dexys Midnight Runners pasada a ska." },
         { a: 1997, art: "The Mighty Mighty Bosstones", t: "The Impression That I Get", n: "El ska punk de Boston en la radio." },
         { a: 1998, art: "Ska-P", t: "Vals del obrero", n: "Ska de protesta para cantar a gritos en los conciertos." },
-        { a: 2010, art: "Bongo Botrako", t: "Todos los días sale el sol", n: "Ska y rumba de Barcelona: la canción alegre de las fiestas." }
+        { a: 2010, art: "Bongo Botrako", t: "Todos los días sale el sol", n: "Ska y rumba de Barcelona: la canción alegre de las fiestas." },
+        { a: 2018, art: "The Interrupters", t: "She's Kerosene", n: "Ska punk de Los Ángeles producido por Tim Armstrong." }
       ]
     }
   ]

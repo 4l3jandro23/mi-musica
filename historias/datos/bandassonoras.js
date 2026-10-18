@@ -43,7 +43,8 @@ HISTORIAS.push({
         { a: 1970, art: "Francis Lai", t: "Theme From Love Story", n: "Óscar a la mejor banda sonora y piano para llorar." },
         { a: 1971, art: "Isaac Hayes", t: "Theme from Shaft", n: "Wah-wah y orquesta: primer Óscar a la mejor canción para un artista negro." },
         { a: 1972, art: "Nino Rota", t: "The Godfather Waltz", n: "El vals triste de «El padrino»." },
-        { a: 1972, art: "Nino Rota", t: "Love Theme from The Godfather", n: "El tema de amor de El padrino, la melodía de la parte siciliana." }
+        { a: 1972, art: "Nino Rota", t: "Love Theme from The Godfather", n: "El tema de amor de El padrino, la melodía de la parte siciliana." },
+        { a: 1972, art: "Eric Weissberg & Steve Mandell", t: "Dueling Banjos", n: "El duelo de banjo y guitarra de «Defensa»: número dos en EE. UU." }
       ]
     },
     {
@@ -102,10 +103,12 @@ HISTORIAS.push({
         { a: 1997, art: "Céline Dion", t: "My Heart Will Go On", n: "De «Titanic»: una de las canciones más vendidas de la historia." },
         { a: 1997, art: "LeAnn Rimes", t: "How Do I Live", n: "Escrita para Con Air (en la película suena la de Trisha Yearwood); la de LeAnn batió récords de semanas en el Billboard." },
         { a: 1998, art: "Pokémon", t: "Pokémon Theme", n: "«Hazte con todos»: la sintonía de las tardes." },
+        { a: 1998, art: "New Order", t: "Confusion (Pump Panel Reconstruction Mix)", n: "La escena de la discoteca vampira con lluvia de sangre en «Blade»." },
         { a: 1999, art: "Animelmack", t: "Brave Heart (Digimon)", n: "La canción de las digievoluciones, original de Ayumi Miyazaki." },
         { a: 1999, art: "Phil Collins & Glenn Close", t: "You'll Be In My Heart", n: "Tarzán: Óscar a la mejor canción." },
         { a: 1999, art: "Don Davis", t: "Logos / The Matrix Main Title", n: "La orquesta de Matrix, entre cine de acción y música contemporánea." },
-        { a: 1999, art: "John Williams", t: "Duel of the Fates", n: "Coro y orquesta para el duelo contra Darth Maul." }
+        { a: 1999, art: "John Williams", t: "Duel of the Fates", n: "Coro y orquesta para el duelo contra Darth Maul." },
+        { a: 1999, art: "Elvis Costello", t: "She", n: "La de Charles Aznavour, para «Notting Hill»." }
       ]
     },
     {
@@ -137,6 +140,7 @@ HISTORIAS.push({
         { a: 2006, art: "Randy Newman", t: "Opening Race", n: "La carrera que abre Cars." },
         { a: 2006, art: "Michael Giacchino", t: "Mission: Impossible Theme", n: "El clásico de Lalo Schifrin, reorquestado para Misión imposible III." },
         { a: 2006, art: "Troy & Gabriella", t: "Breaking Free", q: "High School Musical Breaking Free", n: "High School Musical y el Disney Channel de los 2000." },
+        { a: 2006, art: "Rascal Flatts", t: "Life Is a Highway", n: "La de Tom Cochrane en versión country para «Cars»." },
         { a: 2007, art: "Michael Giacchino", t: "Ratatouille Main Theme", n: "Acordeón, vals y París: Michael Giacchino, nominado al Óscar por una rata que cocina." },
         { a: 2008, art: "Michael Hunter", t: "Soviet Connection", n: "El tema de GTA IV, con aire de Europa del Este." },
         { a: 2009, art: "Michael Giacchino", t: "Married Life", n: "La vida de Carl y Ellie en cuatro minutos y sin diálogo: Óscar a la banda sonora." }

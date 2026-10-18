@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "folk",
   familia: "Raíces americanas",
   titulo: "Historia del folk",
-  periodo: "1944 – 2022",
+  periodo: "1940 – 2024",
   color: "#7d8f4e",
   lema: "Una voz y una guitarra: de Woody Guthrie a Bob Dylan, Nick Drake y Bon Iver.",
   intro: "El folk es la canción de la gente: baladas tradicionales y canciones de protesta con instrumentos acústicos. En EE. UU. y Reino Unido revive a finales de los 50, se vuelve el altavoz de los 60 y, desde entonces, cada generación tiene sus cantautores íntimos y sus bandas de banjo.",
@@ -10,10 +10,12 @@ HISTORIAS.push({
     {
       titulo: "Raíces y renacimiento",
       corto: "Renacimiento",
-      periodo: "1944 – 1964",
+      periodo: "1940 – 1964",
       intro: "Canciones de trabajo, de protesta y baladas tradicionales.",
       items: [
+        { a: 1940, art: "Woody Guthrie", t: "The Great Dust Storm (Dust Storm Disaster)", n: "De «Dust Bowl Ballads»: la tormenta de polvo de abril de 1935." },
         { a: 1944, art: "Woody Guthrie", t: "This Land Is Your Land", n: "En su guitarra ponía: «Esta máquina mata fascistas»." },
+        { a: 1944, art: "Woody Guthrie", t: "Tear the Fascists Down", n: "Contra el fascismo, del hombre que escribía «Esta máquina mata fascistas» en la guitarra." },
         { a: 1950, art: "The Weavers", t: "Goodnight, Irene", n: "Con Pete Seeger: el folk llega al número uno… hasta que la caza de brujas los vetó." },
         { a: 1955, art: "Pete Seeger", t: "Where Have All the Flowers Gone?", n: "Una canción contra la guerra a partir de una canción cosaca." },
         { a: 1958, art: "The Kingston Trio", t: "Tom Dooley", n: "Empieza el gran renacimiento del folk." },
@@ -35,22 +37,30 @@ HISTORIAS.push({
         { a: 1967, art: "Leonard Cohen", t: "Suzanne", n: "Un poeta canadiense que empezó a cantar con 33 años." },
         { a: 1967, art: "Judy Collins", t: "Both Sides Now", n: "Una canción de Joni Mitchell." },
         { a: 1969, art: "Fairport Convention", t: "Who Knows Where the Time Goes?", n: "La voz de Sandy Denny y el folk británico." },
+        { a: 1969, art: "Bob Dylan", t: "Lay, Lady, Lay", n: "Dylan canta con voz de crooner country en «Nashville Skyline»." },
         { a: 1970, art: "Cat Stevens", t: "Father and Son", n: "Un diálogo entre un padre y un hijo." },
         { a: 1970, art: "Vashti Bunyan", t: "Diamond Day", n: "Un disco olvidado que se descubrió treinta años después." },
+        { a: 1970, art: "Bob Dylan", t: "The Man in Me", n: "La de «El gran Lebowski»." },
+        { a: 1970, art: "Simon & Garfunkel", t: "Cecilia", n: "Grabada con palmas en una fiesta." },
+        { a: 1970, art: "Crosby, Stills, Nash & Young", t: "Our House", n: "Graham Nash y la casa que compartía con Joni Mitchell." },
         { a: 1971, art: "Joni Mitchell", t: "A Case of You", n: "De «Blue»: uno de los discos más íntimos jamás grabados." },
+        { a: 1971, art: "Don McLean", t: "American Pie", n: "Ocho minutos sobre «el día que murió la música»." },
         { a: 1972, art: "Nick Drake", t: "Pink Moon", n: "Casi nadie lo escuchó en vida; hoy es un culto." },
         { a: 1972, art: "Neil Young", t: "Heart of Gold", n: "Armónica y búsqueda: su único número uno." },
         { a: 1973, art: "John Martyn", t: "Solid Air", n: "Para su amigo Nick Drake." },
-        { a: 1975, art: "Joan Baez", t: "Diamonds & Rust", n: "Sobre Bob Dylan." }
+        { a: 1973, art: "Bob Dylan", t: "Knockin' on Heaven's Door", n: "Para la película de Peckinpah «Pat Garrett y Billy el Niño»." },
+        { a: 1975, art: "Joan Baez", t: "Diamonds & Rust", n: "Sobre Bob Dylan." },
+        { a: 1975, art: "Bob Dylan", t: "Hurricane", n: "Sobre el boxeador Rubin Carter, encarcelado injustamente." }
       ]
     },
     {
       titulo: "Del folk íntimo al indie folk",
       corto: "Indie folk",
-      periodo: "1988 – 2022",
+      periodo: "1988 – 2024",
       intro: "Del folk íntimo al indie folk de banjos.",
       items: [
         { a: 1988, art: "Tracy Chapman", t: "Fast Car", n: "Una guitarra y el sueño de escapar de la pobreza." },
+        { a: 1993, art: "Israel Kamakawiwo'ole", t: "Over the Rainbow", n: "El hawaiano con el ukelele, grabada de madrugada en una sola toma." },
         { a: 1997, art: "Elliott Smith", t: "Between the Bars", n: "Elliott Smith susurra sobre la bebida y la dependencia. Salió en «El indomable Will Hunting»." },
         { a: 2004, art: "Iron & Wine", t: "Naked as We Came", n: "Susurros y guitarra." },
         { a: 2005, art: "Sufjan Stevens", t: "Chicago", n: "Folk orquestal con trompetas y coros." },
@@ -59,10 +69,17 @@ HISTORIAS.push({
         { a: 2008, art: "Fleet Foxes", t: "White Winter Hymnal", n: "Armonías vocales que parecen de otro siglo." },
         { a: 2008, art: "Fleet Foxes", t: "Mykonos", n: "Las armonías vocales de Fleet Foxes, desde Seattle." },
         { a: 2009, art: "Mumford & Sons", t: "Little Lion Man", n: "Banjos a toda velocidad: el folk llena estadios." },
+        { a: 2009, art: "Edward Sharpe & The Magnetic Zeros", t: "Home", n: "Un dúo silbado de dos novios que se cantan." },
         { a: 2011, art: "Bon Iver", t: "Holocene", n: "Bon Iver, más allá de la cabaña: una canción que ganó el Grammy." },
         { a: 2012, art: "The Lumineers", t: "Ho Hey", n: "El folk con palmas que llenó las radios." },
+        { a: 2012, art: "Passenger", t: "Let Her Go", n: "Un músico callejero inglés con un éxito mundial." },
+        { a: 2013, art: "Vance Joy", t: "Riptide", n: "El australiano del ukelele." },
+        { a: 2013, art: "Hozier", t: "Take Me to Church", n: "Contra la Iglesia católica y su homofobia." },
+        { a: 2014, art: "Vance Joy", t: "Mess Is Mine", n: "Otra de su primer disco." },
         { a: 2017, art: "Phoebe Bridgers", t: "Motion Sickness", n: "El folk triste de la nueva generación." },
-        { a: 2022, art: "Noah Kahan", t: "Stick Season", n: "El folk de TikTok." }
+        { a: 2021, art: "Richy Mitch & The Coal Miners", t: "Evergreen", n: "Folk de TikTok de un chico de Ohio (año aproximado)." },
+        { a: 2022, art: "Noah Kahan", t: "Stick Season", n: "El folk de TikTok." },
+        { a: 2024, art: "Hozier", t: "Too Sweet", n: "Una canción con humor sobre ser demasiado dulce: número uno en EE. UU." }
       ]
     }
   ]

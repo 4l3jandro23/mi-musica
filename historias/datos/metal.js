@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "metal",
   familia: "Rock",
   titulo: "Historia del metal",
-  periodo: "1964 – 2024",
+  periodo: "1964 – 2025",
   color: "#3a3a3a",
   lema: "De Black Sabbath al thrash, el black metal noruego, el nu metal y Gojira.",
   intro: "Nace en Birmingham, una ciudad industrial: Black Sabbath bajan la afinación, ralentizan el blues y le ponen terror. Desde ahí el metal se divide en decenas de familias: más rápido (thrash), más extremo (death, black), más pegadizo (glam), mezclado con rap (nu metal) o más técnico y progresivo. Siempre con una comunidad fiel como pocas.",
@@ -30,14 +30,17 @@ HISTORIAS.push({
         { a: 1970, art: "Led Zeppelin", t: "Immigrant Song", n: "El grito vikingo de Robert Plant." },
         { a: 1970, art: "Black Sabbath", t: "Iron Man", n: "El riff más reconocible de Tony Iommi." },
         { a: 1970, art: "Sir Lord Baltimore", t: "Hard Rain Fallin'", n: "La revista Creem usa por primera vez «heavy metal» para describir a un grupo: ellos." },
+        { a: 1970, art: "Black Sabbath", t: "N.I.B.", n: "El bajo de Geezer Butler y Lucifer enamorado." },
+        { a: 1970, art: "Black Sabbath", t: "War Pigs", n: "Contra la guerra de Vietnam: generales como brujas en una misa negra." },
         { a: 1971, art: "Deep Purple", t: "Highway Star", n: "Velocidad y solos neoclásicos: la semilla del power metal." },
-        { a: 1972, art: "Deep Purple", t: "Smoke on the Water", n: "Sobre el incendio de un casino de Montreux durante un concierto de Frank Zappa." }
+        { a: 1972, art: "Deep Purple", t: "Smoke on the Water", n: "Sobre el incendio de un casino de Montreux durante un concierto de Frank Zappa." },
+        { a: 1972, art: "Black Sabbath", t: "Changes", n: "La balada al piano de Ozzy, triste por la ruptura del batería." }
       ]
     },
     {
       titulo: "La nueva ola británica y el thrash",
       corto: "NWOBHM y thrash",
-      periodo: "1976 – 1990",
+      periodo: "1976 – 1991",
       intro: "Más velocidad, más técnica y chupas de cuero.",
       items: [
         { a: 1976, art: "Rainbow", t: "Stargazer", n: "Ronnie James Dio y la épica fantástica." },
@@ -46,6 +49,8 @@ HISTORIAS.push({
         { a: 1980, art: "Judas Priest", t: "Breaking the Law", n: "Inventaron la estética de cuero y tachuelas." },
         { a: 1980, art: "Motörhead", t: "Ace of Spades", n: "Lemmy: velocidad punk con volumen metal." },
         { a: 1980, art: "Iron Maiden", t: "Iron Maiden", n: "El himno con el que se presentaron." },
+        { a: 1980, art: "Black Sabbath", t: "Heaven and Hell", n: "El primer disco con Ronnie James Dio de cantante." },
+        { a: 1980, art: "Ozzy Osbourne", t: "Mr. Crowley", n: "Sobre el ocultista Aleister Crowley, con el solo de Randy Rhoads." },
         { a: 1981, art: "MTV", t: "Llega la MTV y el glam metal", tipo: "hito", n: "Laca, mallas y baladas: el metal se vuelve fenómeno de masas en Estados Unidos." },
         { a: 1982, art: "Barón Rojo", t: "Los rockeros van al infierno", n: "El heavy metal en castellano, desde Madrid." },
         { a: 1982, art: "Iron Maiden", t: "Run to the Hills", n: "Galopes de bajo y la voz de Bruce Dickinson." },
@@ -57,63 +62,90 @@ HISTORIAS.push({
         { a: 1985, art: "PMRC", t: "La etiqueta «Parental Advisory»", tipo: "hito", n: "Un comité de esposas de senadores lleva al metal ante el Senado de EE. UU.; Dee Snider lo defiende en persona." },
         { a: 1986, art: "Metallica", t: "Master of Puppets", n: "Para muchos, el mejor disco de metal de la historia." },
         { a: 1986, art: "Slayer", t: "Angel of Death", n: "El thrash más rápido y extremo." },
+        { a: 1986, art: "Metallica", t: "Battery", n: "Abre «Master of Puppets» a toda velocidad." },
         { a: 1987, art: "Guns N' Roses", t: "Sweet Child o' Mine", n: "El hard rock de Los Ángeles y su riff eterno." },
         { a: 1987, art: "Def Leppard", t: "Pour Some Sugar on Me", n: "El metal de estadio con producción de pop." },
-        { a: 1990, art: "Megadeth", t: "Holy Wars... The Punishment Due", n: "Técnica imposible y letras políticas." }
+        { a: 1990, art: "Megadeth", t: "Holy Wars... The Punishment Due", n: "Técnica imposible y letras políticas." },
+        { a: 1991, art: "Anthrax & Public Enemy", t: "Bring the Noise", n: "Thrash y rap juntos, años antes del nu metal." }
       ]
     },
     {
       titulo: "Metal extremo y metal de masas",
       corto: "Extremo y masas",
-      periodo: "1988 – 1998",
+      periodo: "1988 – 2001",
       intro: "Por un lado, el metal más extremo; por otro, estadios y MTV.",
       items: [
         { a: 1988, art: "Death", t: "Pull the Plug", n: "Desde Florida: nace el death metal." },
         { a: 1991, art: "Metallica", t: "Enter Sandman", n: "El «álbum negro»: el metal llega a todo el mundo." },
+        { a: 1991, art: "Ozzy Osbourne", t: "No More Tears", n: "Su balada oscura de casi siete minutos." },
+        { a: 1991, art: "Ozzy Osbourne", t: "Mama, I'm Coming Home", n: "Coescrita con Lemmy, para su mujer Sharon." },
         { a: 1992, art: "Noruega", t: "Quemas de iglesias", tipo: "hito", n: "La escena del black metal noruego mezcla música con crímenes reales." },
         { a: 1992, art: "Pantera", t: "Walk", n: "El groove metal: pesadez y ritmo." },
         { a: 1992, art: "Rage Against the Machine", t: "Killing in the Name", n: "Rap, riff y una sola frase repetida hasta el grito: el himno contra la autoridad." },
         { a: 1992, art: "Cannibal Corpse", t: "I Cum Blood", n: "Death metal de Florida llevado al extremo: en Alemania tuvieron prohibido tocar sus primeros discos en directo durante años." },
         { a: 1994, art: "Mayhem", t: "Freezing Moon", n: "El black metal noruego, una escena con iglesias quemadas y crímenes reales." },
+        { a: 1995, art: "Marilyn Manson", t: "Sweet Dreams (Are Made of This)", n: "La de Eurythmics convertida en una pesadilla." },
         { a: 1996, art: "Burzum", t: "Dunkelheit", n: "Black metal lo-fi grabado antes de que Varg Vikernes entrara en prisión por el asesinato de Euronymous y la quema de iglesias. Muy influyente y muy polémico por su ideología." },
         { a: 1997, art: "Rammstein", t: "Du hast", n: "Neue Deutsche Härte: el metal en alemán que conquistó el mundo." },
-        { a: 1998, art: "Korn", t: "Freak on a Leash", n: "El nu metal: guitarras de siete cuerdas y rap." }
+        { a: 1998, art: "Korn", t: "Freak on a Leash", n: "El nu metal: guitarras de siete cuerdas y rap." },
+        { a: 1998, art: "System of a Down", t: "Sugar", n: "Su primer single: rabia y humor armenio-americano." },
+        { a: 2001, art: "Lost Horizon", t: "Highlander (The One)", n: "Power metal sueco de los más épicos." }
       ]
     },
     {
       titulo: "Nu metal y metalcore",
       corto: "Nu metal",
-      periodo: "1996 – 2009",
+      periodo: "1996 – 2012",
       intro: "Rap, máscaras y breakdowns: el metal vuelve a llenar estadios y MySpace.",
       items: [
         { a: 1996, art: "Ozzfest", t: "Primera edición del festival de Ozzy", tipo: "hito", n: "El escaparate del nu metal durante una década." },
         { a: 2000, art: "Linkin Park", t: "In the End", n: "Nu metal melódico: uno de los grupos más escuchados de su generación." },
+        { a: 2000, art: "System of a Down & Wu-Tang Clan", t: "Shame", n: "Su versión de «Shame on a Nigga», con los raperos." },
         { a: 2001, art: "System of a Down", t: "Chop Suey!", n: "Armenios de Los Ángeles: caos, ironía y melodías de Oriente." },
         { a: 2001, art: "Slipknot", t: "People = Shit", n: "Iowa, el disco más brutal de los nueve enmascarados." },
+        { a: 2001, art: "System of a Down", t: "Aerials", n: "Cierra «Toxicity» con una canción casi mística." },
+        { a: 2001, art: "Drowning Pool", t: "Bodies", n: "«Let the bodies hit the floor»: el himno de los pogos." },
+        { a: 2001, art: "Dope", t: "Die MF Die", n: "Nu metal industrial de los más rabiosos." },
+        { a: 2001, art: "Marilyn Manson", t: "Tainted Love", n: "La de Soft Cell, para la película «No es otra estúpida película americana»." },
+        { a: 2003, art: "Evanescence", t: "Bring Me to Life", n: "Amy Lee y un rapeo metido por la discográfica." },
+        { a: 2003, art: "Linkin Park", t: "Numb", n: "Chester Bennington y la presión de sus padres." },
         { a: 2004, art: "Slipknot", t: "Duality", n: "Máscaras y nueve miembros." },
         { a: 2004, art: "Mastodon", t: "Blood and Thunder", n: "Un disco conceptual sobre «Moby Dick»." },
         { a: 2005, art: "Gojira", t: "Flying Whales", n: "Desde Francia, metal ecologista. Tocaron en la inauguración de los Juegos de París 2024." },
         { a: 2005, art: "Bullet For My Valentine", t: "Tears Don't Fall", n: "Metalcore galés: gritos y estribillo melódico, la fórmula de toda una generación emo." },
+        { a: 2005, art: "System of a Down", t: "B.Y.O.B.", n: "«Trae tu propia bomba»: contra la guerra de Irak." },
+        { a: 2005, art: "System of a Down", t: "Hypnotize", n: "Del segundo disco doble de 2005." },
+        { a: 2005, art: "System of a Down", t: "Lonely Day", n: "La balada que escribió Daron Malakian." },
+        { a: 2005, art: "System of a Down", t: "Violent Pornography", n: "Contra la tele que lo enseña todo." },
+        { a: 2007, art: "Linkin Park", t: "What I've Done", n: "Producida por Rick Rubin: la de «Transformers»." },
         { a: 2008, art: "Slipknot", t: "Psychosocial", n: "Su single más famoso, nominado al Grammy." },
-        { a: 2009, art: "Rage Against the Machine", t: "Número uno de Navidad", tipo: "hito", n: "Una campaña en Facebook lleva «Killing in the Name» al número uno de Navidad en el Reino Unido, por delante del ganador de The X Factor." }
+        { a: 2009, art: "Rage Against the Machine", t: "Número uno de Navidad", tipo: "hito", n: "Una campaña en Facebook lleva «Killing in the Name» al número uno de Navidad en el Reino Unido, por delante del ganador de The X Factor." },
+        { a: 2010, art: "Linkin Park", t: "The Catalyst", n: "Del disco «A Thousand Suns», más electrónico." },
+        { a: 2010, art: "Linkin Park", t: "Blackout", n: "Chester gritando sobre ritmos electrónicos." },
+        { a: 2012, art: "Linkin Park", t: "Burn It Down", n: "Del disco «Living Things»." }
       ]
     },
     {
       titulo: "El metal de internet",
       corto: "Internet",
-      periodo: "2013 – 2024",
+      periodo: "2013 – 2025",
       intro: "Colaboraciones con el pop, memes y mezclas imposibles: el metal se vuelve viral.",
       items: [
         { a: 2013, art: "Bring Me the Horizon", t: "Can You Feel My Heart", n: "Del deathcore al metal con electrónica; su intro acabó siendo meme." },
         { a: 2015, art: "Bring Me the Horizon", t: "Throne", n: "BMTH se pasa al rock de estadio con That's the Spirit." },
+        { a: 2015, art: "Disturbed", t: "The Sound of Silence", n: "La de Simon & Garfunkel cantada por David Draiman: viral en todo el mundo." },
         { a: 2016, art: "BABYMETAL", t: "Llenan el Wembley Arena", tipo: "hito", n: "Primer grupo japonés en encabezar ese recinto: el «kawaii metal» deja de ser una broma." },
         { a: 2016, art: "Ghost", t: "Square Hammer", n: "Un papa satánico con melodías de los 80." },
         { a: 2017, art: "Narco", t: "Suicídate", n: "Metal de La Macarena, en Sevilla, del disco «Espichufrenia» (año aproximado)." },
+        { a: 2017, art: "Linkin Park & Kiiara", t: "Heavy", n: "Pop electrónico de su último disco con Chester." },
         { a: 2020, art: "Spiritbox", t: "Holy Roller", n: "La nueva generación del metal." },
         { a: 2020, art: "Electric Callboy", t: "Hypa Hypa", n: "Metalcore con eurodance y estética ochentera: el vídeo que los hizo virales." },
         { a: 2020, art: "Bring Me the Horizon & YUNGBLUD", t: "Obey", n: "Robots gigantes y pop-punk: de POST HUMAN: SURVIVAL HORROR." },
         { a: 2020, art: "Bring Me the Horizon & BABYMETAL", t: "Kingslayer", n: "Metal británico y japonés en la misma canción." },
-        { a: 2024, art: "Knocked Loose & Poppy", t: "Suffocate", n: "Hardcore con una cantante de pop: nominada al Grammy." }
+        { a: 2020, art: "Ozzy Osbourne & Post Malone", t: "It's a Raid", n: "Ozzy y Post Malone juntos en «Ordinary Man»." },
+        { a: 2024, art: "Knocked Loose & Poppy", t: "Suffocate", n: "Hardcore con una cantante de pop: nominada al Grammy." },
+        { a: 2024, art: "Linkin Park", t: "IGYEIH", n: "Del disco «From Zero», con Emily Armstrong de nueva cantante." },
+        { a: 2025, art: "Deftones", t: "my mind is a mountain", n: "El adelanto de «Private Music»." }
       ]
     },
     {

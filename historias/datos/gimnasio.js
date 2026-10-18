@@ -27,7 +27,7 @@ HISTORIAS.push({
     {
       titulo: "Aeróbic y pop",
       corto: "Aeróbic",
-      periodo: "1981 – 2013",
+      periodo: "1981 – 2016",
       intro: "Mallas, cintas en el pelo y VHS.",
       items: [
         { a: 1981, art: "Olivia Newton-John", t: "Physical", n: "El vídeo en un gimnasio convirtió la canción en himno del aeróbic." },
@@ -40,7 +40,8 @@ HISTORIAS.push({
         { a: 2010, art: "Kanye West", t: "Power", n: "Un coro enorme." },
         { a: 2010, art: "Eminem", t: "Not Afraid", n: "Superación." },
         { a: 2011, art: "Avicii", t: "Levels", n: "El EDM de las clases de spinning." },
-        { a: 2013, art: "Britney Spears", t: "Work Bitch", n: "Si quieres un cuerpo de verano, a trabajar." }
+        { a: 2013, art: "Britney Spears", t: "Work Bitch", n: "Si quieres un cuerpo de verano, a trabajar." },
+        { a: 2016, art: "All Good Things", t: "For the Glory", n: "Rock épico hecho para tráilers y vídeos de deporte." }
       ]
     },
     {

@@ -38,6 +38,7 @@ HISTORIAS.push({
         { a: 2020, art: "Megan Thee Stallion", t: "Savage", n: "El baile viral de la pandemia." },
         { a: 2020, art: "Ritt Momney", t: "Put Your Records On", n: "Una versión de Corinne Bailey Rae." },
         { a: 2020, art: "Chappell Roan", t: "Pink Pony Club", n: "Una canción de 2020 que se hizo enorme en 2024." },
+        { a: 2020, art: "THE ANXIETY, WILLOW & Tyler Cole", t: "Meet Me at Our Spot", n: "Una canción de amor que se hizo viral en 2021." },
         { a: 2021, art: "Nathan Evans", t: "Wellerman", n: "Una canción de marineros del siglo XIX cantada por un cartero escocés: la moda de los «sea shanties»." },
         { a: 2021, art: "Olivia Rodrigo", t: "drivers license", n: "Un debut récord." },
         { a: 2021, art: "Måneskin", t: "Beggin'", n: "Una versión de los 60." },
@@ -51,6 +52,7 @@ HISTORIAS.push({
       intro: "Series y bailes rescatan clásicos.",
       items: [
         { a: 1985, art: "Kate Bush", t: "Running Up That Hill", n: "«Stranger Things» la devolvió al número uno en 2022, 37 años después." },
+        { a: 1999, art: "Pavement", t: "Harness Your Hopes", n: "Una cara B que se hizo viral veinte años después." },
         { a: 2011, art: "Lady Gaga", t: "Bloody Mary", n: "El baile de Miércoles Addams en la serie de Netflix la hizo viral en 2022, once años después." },
         { a: 2022, art: "«Stranger Things»", t: "Kate Bush, número uno", tipo: "hito", n: "La serie usa «Running Up That Hill» y la canción de 1985 llega al número uno en el Reino Unido." },
         { a: 2022, art: "Nicky Youre & dazy", t: "Sunroof", n: "La canción de verano nacida en la app." },

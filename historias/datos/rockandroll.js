@@ -64,6 +64,7 @@ HISTORIAS.push({
       periodo: "1957 – 1959",
       intro: "1957 – 1959: Buddy Holly, el doo-wop y los Everly Brothers, hasta el accidente de avión de 1959.",
       items: [
+        { a: 1957, art: "Elvis en la tele", t: "Solo de cintura para arriba", n: "En su tercera actuación en el show de Ed Sullivan lo filman solo de cintura para arriba para que no se vea cómo mueve las caderas.", tipo: "hito" },
         { a: 1957, art: "Jerry Lee Lewis", t: "Great Balls of Fire", n: "Aporreando el piano como nadie." },
         { a: 1957, art: "The Crickets", t: "That'll Be the Day", n: "Buddy Holly: grupo, guitarras y canciones propias. El modelo de los Beatles." },
         { a: 1957, art: "The Everly Brothers", t: "Wake Up Little Susie", n: "Armonías vocales que aprenderán los Beatles y Simon & Garfunkel." },
@@ -74,7 +75,6 @@ HISTORIAS.push({
         { a: 1957, art: "The Del-Vikings", t: "Come Go with Me", n: "Doo-wop de un grupo con miembros blancos y negros." },
         { a: 1957, art: "The Diamonds", t: "Little Darlin'", n: "Doo-wop con castañuelas." },
         { a: 1957, art: "Thurston Harris", t: "Little Bitty Pretty One", n: "Rhythm and blues de Los Ángeles." },
-        { a: 1957, art: "Elvis en la tele", t: "Solo de cintura para arriba", n: "En su tercera actuación en el show de Ed Sullivan lo filman solo de cintura para arriba para que no se vea cómo mueve las caderas.", tipo: "hito" },
         { a: 1958, art: "Chuck Berry", t: "Johnny B. Goode", n: "El riff más famoso del rock and roll." },
         { a: 1958, art: "Link Wray", t: "Rumble", n: "Un instrumental tan amenazante que lo prohibieron en algunas radios. Distorsión antes de tiempo." },
         { a: 1958, art: "Eddie Cochran", t: "Summertime Blues", n: "La rebeldía adolescente hecha canción." },
@@ -85,6 +85,7 @@ HISTORIAS.push({
         { a: 1958, art: "The Champs", t: "Tequila", n: "Número uno con una sola palabra." },
         { a: 1958, art: "The Everly Brothers", t: "All I Have to Do Is Dream", n: "Las armonías que copiaron los Beatles." },
         { a: 1958, art: "Ritchie Valens", t: "We Belong Together", n: "Una balada del chicano que murió con 17 años." },
+        { a: 1958, art: "Wanda Jackson", t: "Let's Have a Party", n: "La reina del rockabilly, que salió con Elvis." },
         { a: 1959, art: "El día que murió la música", t: "Mueren Buddy Holly, Ritchie Valens y The Big Bopper", tipo: "hito", n: "Un accidente de avioneta el 3 de febrero. Se acaba la primera era del rock and roll." },
         { a: 1959, art: "Bo Diddley", t: "Say Man", n: "Bo Diddley y su maraquero se insultan en broma: casi un rap." },
         { a: 1959, art: "The Isley Brothers", t: "Shout", n: "El grito que se oye en todas las bodas americanas." }

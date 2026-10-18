@@ -51,6 +51,7 @@ HISTORIAS.push({
         { a: 2004, art: "Ruslana", t: "Wild Dances", n: "La primera victoria de Ucrania." },
         { a: 2006, art: "Lordi", t: "Hard Rock Hallelujah", n: "Finlandia gana con monstruos de látex y heavy metal." },
         { a: 2009, art: "Alexander Rybak", t: "Fairytale", n: "Violín, sonrisa y la puntuación más alta de su época." },
+        { a: 2009, art: "Soraya", t: "La noche es para mí", n: "La representante de España en Moscú: penúltima." },
         { a: 2010, art: "Lena", t: "Satellite", n: "Alemania vuelve a ganar." },
         { a: 2012, art: "Loreen", t: "Euphoria", n: "Uno de los mayores éxitos que ha dado el festival." },
         { a: 2012, art: "Buranovskiye Babushki", t: "Party for Everybody", n: "Seis abuelas rusas y un horno en el escenario." },

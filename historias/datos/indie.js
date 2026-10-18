@@ -36,20 +36,31 @@ HISTORIAS.push({
         { a: 2002, art: "Interpol", t: "Obstacle 1", n: "Post-punk neoyorquino." },
         { a: 2003, art: "The White Stripes", t: "Seven Nation Army", n: "Un riff que hoy cantan todos los estadios de fútbol." },
         { a: 2003, art: "Yeah Yeah Yeahs", t: "Maps", n: "La balada indie de Karen O." },
+        { a: 2003, art: "The Libertines", t: "Don't Look Back into the Sun", n: "Single suelto de Pete Doherty y Carl Barât en pleno caos." },
         { a: 2004, art: "Franz Ferdinand", t: "Take Me Out", n: "El cambio de tempo a mitad de canción es famoso: guitarras de post-punk hechas para bailar." },
         { a: 2004, art: "The Killers", t: "Mr. Brightside", n: "La canción que sigue en las listas británicas veinte años después." },
         { a: 2004, art: "Arcade Fire", t: "Wake Up", n: "Indie épico desde Montreal." },
         { a: 2004, art: "Modest Mouse", t: "Float On", n: "Optimismo raro." },
         { a: 2004, art: "Eagles of Death Metal", t: "Miss Alissa", n: "El grupo de Jesse Hughes y Josh Homme, de Queens of the Stone Age." },
+        { a: 2004, art: "Bloc Party", t: "Skeleton", n: "Cara B de «Helicopter», del EP «Little Thoughts»." },
+        { a: 2004, art: "The Departure", t: "Be My Enemy", n: "Post-punk de Northampton." },
         { a: 2005, art: "MySpace", t: "Los grupos se descubren en internet", tipo: "hito", n: "Arctic Monkeys, Lily Allen y una generación entera." },
         { a: 2005, art: "Arctic Monkeys", t: "I Bet You Look Good on the Dancefloor", n: "Unos chavales de Sheffield que triunfaron gracias a los fans que compartían sus maquetas en internet." },
         { a: 2005, art: "Bloc Party", t: "Banquet", n: "Guitarras nerviosas." },
+        { a: 2006, art: "The Fratellis", t: "Chelsea Dagger", n: "El «la la la» que se cantan en los estadios." },
+        { a: 2006, art: "The Killers", t: "When You Were Young", n: "De «Sam's Town»: Brandon Flowers se pone a lo Springsteen." },
+        { a: 2007, art: "The Pigeon Detectives", t: "I'm Not Sorry", n: "Indie de Leeds para saltar." },
         { a: 2008, art: "Vampire Weekend", t: "A-Punk", n: "Indie con ritmos africanos y aire de universidad pija." },
         { a: 2008, art: "Vetusta Morla", t: "Copenhague", n: "El indie español empieza a llenar salas grandes." },
         { a: 2008, art: "Florence + The Machine", t: "Dog Days Are Over", n: "Palmas y un coro de liberación." },
         { a: 2008, art: "MGMT", t: "Electric Feel", n: "Psicodelia y baile." },
+        { a: 2008, art: "The Killers", t: "Human", n: "«Are we human or are we dancer?»: la frase más discutida del pop." },
+        { a: 2008, art: "Carolina Liar", t: "I'm Not Over", n: "Pop rock de un estadounidense en Suecia." },
         { a: 2009, art: "Love of Lesbian", t: "Club de fans de John Boy", n: "El indie barcelonés y los festivales de verano." },
-        { a: 2010, art: "Two Door Cinema Club", t: "What You Know", n: "Indie bailable de festival." }
+        { a: 2009, art: "Yeah Yeah Yeahs", t: "Heads Will Roll", n: "Karen O en clave de discoteca: luego la remezcló A-Trak." },
+        { a: 2009, art: "The Temper Trap", t: "Sweet Disposition", n: "La de la película «(500) días juntos»." },
+        { a: 2010, art: "Two Door Cinema Club", t: "What You Know", n: "Indie bailable de festival." },
+        { a: 2010, art: "Two Door Cinema Club", t: "I Can Talk", n: "Indie bailable de Irlanda del Norte." }
       ]
     },
     {
@@ -59,15 +70,28 @@ HISTORIAS.push({
       intro: "El indie de los festivales y del streaming.",
       items: [
         { a: 2011, art: "M83", t: "Wait", n: "La balada lenta de «Hurry Up, We're Dreaming», que sale en películas y series." },
+        { a: 2012, art: "Bloc Party", t: "We Are Not Good People", n: "Del disco «Four», el más ruidoso." },
+        { a: 2012, art: "The Chevin", t: "Champion", n: "Rock de estadio de Leeds (año aproximado)." },
         { a: 2013, art: "Arctic Monkeys", t: "Do I Wanna Know?", n: "Los Arctic Monkeys se vuelven más lentos y oscuros: su tema más escuchado." },
         { a: 2014, art: "Mac DeMarco", t: "Chamber of Reflection", n: "El indie relajado de dormitorio." },
+        { a: 2014, art: "The Kooks", t: "Around Town", n: "Con coro de gospel, del disco «Listen»." },
+        { a: 2014, art: "The Kooks", t: "Bad Habit", n: "Otra de «Listen»." },
+        { a: 2014, art: "Catfish and the Bottlemen", t: "Cocoon", n: "El indie de guitarras de Gales." },
         { a: 2015, art: "Streaming", t: "Las playlists sustituyen a los blogs", tipo: "hito", n: "Spotify se convierte en la radio del indie." },
+        { a: 2017, art: "Portugal. The Man", t: "Feel It Still", n: "Un grupo de Alaska con un éxito de anuncio y Grammy." },
+        { a: 2017, art: "Nothing But Thieves", t: "Sorry", n: "La voz aguda de Conor Mason." },
         { a: 2018, art: "Carolina Durante", t: "Cayetano", n: "Una burla generacional desde Madrid." },
+        { a: 2018, art: "Lykke Li", t: "sex money feelings die", n: "La sueca se pasa al trap lento." },
+        { a: 2019, art: "Big Thief", t: "Not", n: "Ruido y una lista de cosas que no son." },
         { a: 2020, art: "Fievel Is Glauque", t: "Decoy", n: "Jazz pop de cámara del grupo de Zach Phillips y Ma Clément." },
+        { a: 2020, art: "Nothing But Thieves", t: "Phobia", n: "Del disco «Moral Panic»." },
         { a: 2021, art: "Wet Leg", t: "Chaise Longue", n: "Humor y guitarras." },
         { a: 2022, art: "Florence + The Machine", t: "June", n: "Dance Fever, escrito durante la pandemia." },
+        { a: 2022, art: "Farmer's Wife", t: "Greg Abbott's Maxi Pad", n: "Surf rock de Austin contra el fin del derecho al aborto en Texas." },
         { a: 2023, art: "boygenius", t: "Not Strong Enough", n: "Phoebe Bridgers, Julien Baker y Lucy Dacus." },
-        { a: 2024, art: "Fontaines D.C.", t: "Starburster", n: "El post-punk irlandés." }
+        { a: 2023, art: "Big Thief", t: "Vampire Empire", n: "La tocaban en directo años antes de grabarla." },
+        { a: 2024, art: "Fontaines D.C.", t: "Starburster", n: "El post-punk irlandés." },
+        { a: 2024, art: "Cheekface", t: "Plastic", n: "Cierra el disco «It's Sorted» de los de Los Ángeles." }
       ]
     }
   ]

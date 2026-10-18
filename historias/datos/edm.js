@@ -76,9 +76,10 @@ HISTORIAS.push({
     {
       titulo: "El dance de hoy",
       corto: "Hoy",
-      periodo: "2018 – 2023",
+      periodo: "2016 – 2023",
       intro: "Tech house, Fred again.. y el baile en las listas.",
       items: [
+        { a: 2016, art: "Teddybears, Natalie Storm & Malte Holmberg", t: "Sunshine", n: "Pop dance de los suecos (año aproximado)." },
         { a: 2018, art: "Calvin Harris & Dua Lipa", t: "One Kiss", n: "El house con voz que dominó el verano." },
         { a: 2018, art: "Marshmello & Bastille", t: "Happier", n: "El DJ del casco y una canción triste de pop." },
         { a: 2018, art: "FISHER", t: "Losing It", n: "El tech house del australiano en todos los festivales." },

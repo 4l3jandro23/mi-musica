@@ -22,6 +22,7 @@ HISTORIAS.push({
         { a: 1968, art: "Tiny Tim", t: "Tiptoe Through the Tulips", n: "Falsete y ukelele: un fenómeno televisivo imposible de clasificar." },
         { a: 1968, art: "The Legendary Stardust Cowboy", t: "Paralyzed", n: "Gritos, una corneta y un ritmo que no sigue nadie. Bowie tomó de él el nombre de Ziggy Stardust." },
         { a: 1968, art: "Harry Partch", t: "Barstow", n: "Harry Partch inventa sus propios instrumentos y escalas, y pone música a pintadas que leyó haciendo autostop." },
+        { a: 1968, art: "Tiny Tim", t: "Tip-Toe Thru' the Tulips with Me", n: "Una canción de 1929 con falsete y ukelele: la hacía en la tele." },
         { a: 1969, art: "The Shaggs", t: "Philosophy of the World", n: "Tres hermanas obligadas por su padre a formar un grupo. Kurt Cobain lo puso entre sus discos favoritos." },
         { a: 1969, art: "Wild Man Fischer", t: "Merry-Go-Round", n: "Un músico callejero de Los Ángeles al que Frank Zappa le produjo un disco." },
         { a: 1969, art: "Moondog", t: "Bird's Lament", n: "Un compositor ciego que vivía en las calles de Nueva York vestido de vikingo. Hoy está considerado un genio." },
@@ -37,9 +38,10 @@ HISTORIAS.push({
     {
       titulo: "Grabaciones caseras",
       corto: "Caseras",
-      periodo: "1977 – 2005",
+      periodo: "1976 – 2005",
       intro: "Cintas de casete, discos autoeditados y una sinceridad brutal.",
       items: [
+        { a: 1976, art: "Chuck Senrick", t: "Don't Be So Nice", n: "Del disco «Dreamin'», del que solo se hicieron 200 copias; Numero lo reeditó en 2023." },
         { a: 1977, art: "The Langley Schools Music Project", t: "Space Oddity", n: "Un profesor canadiense grabó a sus alumnos de primaria cantando a Bowie. Precioso e inquietante." },
         { a: 1978, art: "Jandek", t: "Ready for the House", tipo: "disco", n: "Un misterio de Houston: decenas de discos con guitarras desafinadas y casi ninguna entrevista." },
         { a: 1978, art: "R. Stevie Moore", t: "I Like to Stay Home", n: "El padre del lo-fi casero." },
