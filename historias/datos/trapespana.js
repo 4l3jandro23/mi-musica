@@ -20,6 +20,7 @@ HISTORIAS.push({
         { a: 2016, art: "C. Tangana", t: "Antes de morirme", n: "Con Rosalía, antes de que fuera famosa: trap melancólico de Madrid." },
         { a: 2016, art: "Bad Gyal", t: "Fiebre", n: "Desde Vilassar de Mar: dancehall y reggaetón con autotune. Nace una estrella." },
         { a: 2016, art: "Bad Gyal", t: "Indapanden", q: "Bad Gyal Indapanden", n: "Bad Gyal canta en catalán sobre autotune: el trap de Vilassar de Mar." },
+        { a: 2016, art: "Yung Beef & Steve Lean", t: "Beef Boy", n: "El productor de PXXR GVNG con Yung Beef (año aproximado)." },
         { a: 2017, art: "C. Tangana", t: "Mala mujer", n: "Del trap al reggaetón: C. Tangana se convierte en estrella." },
         { a: 2017, art: "Kidd Keo", t: "Foreign", n: "Kidd Keo, de Alicante, en inglés y castellano: el trap español mira a Atlanta." }
       ]

@@ -33,6 +33,7 @@ HISTORIAS.push({
         { a: 2011, art: "Wilo D' New", t: "Menea tu chapa", n: "El dembow de las calles de Santo Domingo." },
         { a: 2012, art: "El Alfa", t: "Tu ta bien", n: "El Alfa, «el jefe», en sus inicios: dembow rápido, repetitivo y de los barrios de Santo Domingo." },
         { a: 2013, art: "JACOOL", t: "Enamorao de otra", n: "El dembow melódico." },
+        { a: 2013, art: "Atomic Otro Way", t: "Té de campana", n: "Dembow dominicano (año aproximado)." },
         { a: 2018, art: "Shadow Blow", t: "Jumbo", n: "El dembow dominicano a toda velocidad, en la época en que empieza a viajar fuera de la isla." },
         { a: 2018, art: "Bad Bunny & El Alfa", t: "La romana", n: "El dembow dominicano en el disco de Bad Bunny." },
         { a: 2019, art: "Tokischa & Haraca Kiko", t: "Pícala", n: "La primera vez que muchos oyen a Tokischa: dembow crudo y sin tabúes." },
