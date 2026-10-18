@@ -49,6 +49,7 @@ HISTORIAS.push({
       items: [
         { a: 1983, art: "Remedios Amaya", t: "¿Quién maneja mi barca?", n: "Eurovisión 1983, cero puntos… y hoy es una canción de culto." },
         { a: 1987, art: "Pata Negra", t: "Blues de la frontera", n: "Los hermanos Amador: blues y flamenco. Un disco clave del nuevo flamenco." },
+        { a: 1988, art: "Ray Heredia", t: "Alegría de Vivir", n: "El genio de Ketama y Camarón, de su único disco en solitario (año aproximado)." },
         { a: 1989, art: "Camarón de la Isla", t: "Soy gitano", n: "Con la Royal Philharmonic Orchestra." },
         { a: 1990, art: "Paco de Lucía", t: "Zyryab", n: "Con Chick Corea al piano: un homenaje al músico de Al-Ándalus." },
         { a: 1992, art: "Kiko Veneno", t: "Echo de menos", n: "Rumba pop con una letra tierna. Imposible no cantarla." },

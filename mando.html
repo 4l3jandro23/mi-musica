@@ -1139,7 +1139,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-15c';
+const VERSION = '2026-10-18a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -9413,7 +9413,9 @@ async function crearDesdeHistoria(id) {
   if (!c || !c.refreshToken) { toast('Conecta primero la Fonoteca con Spotify y vuelve a darle al botón en Historias', null, 7000); return; }
   let h;
   try { h = await cargarHistoria(id); } catch (e) { toast(e.message); return; }
-  const piezas = h.capitulos.flatMap(cp => cp.items).filter(i => i.tipo !== 'hito');
+  // Las canciones quitadas en Historias (misma clave que allí: id|artista|título) no se buscan
+  let quitadas; try { quitadas = new Set(JSON.parse(localStorage.getItem('historias_quitadas_v1') || '[]')); } catch (e) { quitadas = new Set(); }
+  const piezas = h.capitulos.flatMap(cp => cp.items).filter(i => i.tipo !== 'hito' && !quitadas.has(h.id + '|' + i.art + '|' + i.t));
   const cache = leer(K_HISTORIAS, {});
   const faltan = piezas.filter(i => cache[(i.tipo === 'disco' ? 'd|' : 't|') + normH(i.art) + '|' + normH(i.t)] === undefined).length;
   hoja('<h2>' + esc(h.titulo) + '</h2><p class="soft">' + piezas.length + ' piezas en orden cronológico. ' +

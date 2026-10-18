@@ -45,6 +45,7 @@ HISTORIAS.push({
         { a: 1984, art: "Alphaville", t: "Forever Young", n: "La balada de Alphaville que se convirtió en himno de graduaciones." },
         { a: 1985, art: "Pet Shop Boys", t: "West End Girls", n: "Ironía y elegancia londinense: el dúo de synth-pop más exitoso." },
         { a: 1985, art: "Yello", t: "Oh Yeah", n: "Sale en «Todo en un día» cada vez que Ferris ve el Ferrari." },
+        { a: 1985, art: "Tears for Fears", t: "Head Over Heels", n: "De «Songs from the Big Chair»; el vídeo transcurre en una biblioteca." },
         { a: 1986, art: "The Communards", t: "Don't Leave Me This Way", n: "Jimmy Somerville, tras Bronski Beat, con Sarah Jane Morris." },
         { a: 1986, art: "New Order", t: "Bizarre Love Triangle", n: "El sintetizador más emocionante de New Order." },
         { a: 1987, art: "Depeche Mode", t: "Never Let Me Down Again", n: "Oscuros y enormes: llenaban estadios." },

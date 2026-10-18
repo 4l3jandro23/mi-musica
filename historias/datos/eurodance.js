@@ -75,6 +75,7 @@ HISTORIAS.push({
         { a: 1997, art: "Sash!", t: "Ecuador", n: "Trompetas y sintetizadores." },
         { a: 1997, art: "Bellini", t: "Samba de Janeiro", n: "Batucada y samba para las discotecas alemanas." },
         { a: 1997, art: "Antiloop", t: "In My Mind", n: "Dance sueco de los 90 (año aproximado)." },
+        { a: 1997, art: "Antiloop", t: "Believe", n: "Eurodance sueco de finales de los 90 (año aproximado)." },
         { a: 1998, art: "Eurodance", t: "El estilo se apaga", tipo: "hito", n: "El trance y el pop adolescente toman el relevo en las radios." },
         { a: 1998, art: "Vengaboys", t: "Boom, Boom, Boom, Boom!!", n: "El eurodance se vuelve dibujos animados." },
         { a: 1998, art: "Eiffel 65", t: "Blue (Da Ba Dee)", n: "La voz procesada más famosa." },
@@ -112,6 +113,7 @@ HISTORIAS.push({
         { a: 2008, art: "Basshunter", t: "Angel in the Night", n: "Eurodance de la década de 2000." },
         { a: 2008, art: "Basshunter", t: "I Can Walk on Water", n: "Del disco «Now You're Gone»." },
         { a: 2008, art: "Kate Ryan", t: "Ella elle l'a", n: "France Gall en clave dance." },
+        { a: 2008, art: "Basshunter & Dani Mata", t: "Al Final", n: "Basshunter en español con Dani Mata, en plena fiebre del hands up (año aproximado)." },
         { a: 2009, art: "ItaloBrothers", t: "Stamp on the Ground", n: "El hands up alemán: el eurodance resucita en internet." }
       ]
     }

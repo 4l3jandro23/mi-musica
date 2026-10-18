@@ -30,13 +30,17 @@ HISTORIAS.push({
         { a: 1973, art: "David Bowie", t: "The Jean Genie", n: "El riff de Bowie que suena a los Rolling Stones con maquillaje." },
         { a: 1973, art: "Suzi Quatro", t: "Can the Can", n: "La bajista con mono de cuero: número uno en Reino Unido." },
         { a: 1973, art: "Wizzard", t: "See My Baby Jive", n: "Roy Wood y el muro de sonido." },
+        { a: 1973, art: "Sweet", t: "The Ballroom Blitz", n: "Inspirada en un concierto en Escocia en el que les tiraron botellas; sale en «Wayne's World»." },
         { a: 1974, art: "Queen", t: "Killer Queen", n: "Freddie Mercury con el glam más elegante." },
         { a: 1974, art: "Mud", t: "Tiger Feet", n: "Un baile de los 70: número uno en Reino Unido en 1974." },
         { a: 1974, art: "David Bowie", t: "Rebel Rebel", n: "El riff glam de Bowie, para despedirse de Ziggy Stardust." },
         { a: 1974, art: "Sweet", t: "Fox on the Run", n: "Glam con armonías: una de las pocas que escribió el propio grupo." },
         { a: 1974, art: "Sparks", t: "This Town Ain't Big Enough for Both of Us", n: "El falsete de Russell Mael y los teclados de su hermano Ron." },
         { a: 1974, art: "Pilot", t: "Magic", n: "Glam pop de Edimburgo: «Oh, oh, oh, it's magic»." },
+        { a: 1974, art: "Brian Eno", t: "Baby's on Fire", n: "Del primer disco de Eno tras dejar Roxy Music, con un solo salvaje de Robert Fripp." },
         { a: 1975, art: "Kiss", t: "Rock and Roll All Nite", n: "Maquillaje y fiesta: la versión en directo los hizo famosos." },
+        { a: 1975, art: "Roxy Music", t: "Love Is the Drug", n: "Bryan Ferry compara salir de noche y ligar con una droga; su mayor éxito en EE. UU." },
+        { a: 1975, art: "Steve Harley & Cockney Rebel", t: "Make Me Smile (Come Up and See Me)", n: "Número uno en Reino Unido: una canción de despecho contra sus antiguos compañeros de grupo." },
         { a: 1978, art: "Suzi Quatro", t: "If You Can't Give Me Love", n: "La reina del bajo del glam." }
       ]
     },

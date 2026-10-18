@@ -46,7 +46,8 @@ HISTORIAS.push({
         { a: 1995, art: "Randy Newman", t: "You've Got a Friend in Me", n: "De «Toy Story», de Pixar." },
         { a: 1997, art: "Roger Bart", t: "Go the Distance", n: "Hércules sueña con encontrar su sitio: la escribió Alan Menken." },
         { a: 1998, art: "Lea Salonga", t: "Reflection", n: "De «Mulán»; Christina Aguilera grabó la versión pop." },
-        { a: 1999, art: "Phil Collins", t: "You'll Be in My Heart", n: "De «Tarzán»: Phil Collins la grabó también en español, italiano, francés y alemán, y ganó el Óscar." }
+        { a: 1999, art: "Phil Collins", t: "You'll Be in My Heart", n: "De «Tarzán»: Phil Collins la grabó también en español, italiano, francés y alemán, y ganó el Óscar." },
+        { a: 1999, art: "Phil Collins", t: "En mi corazón estarás", n: "La versión en español de «Tarzán», que Phil Collins grabó en varios idiomas." }
       ]
     },
     {

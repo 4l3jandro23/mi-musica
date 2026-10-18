@@ -60,7 +60,11 @@ HISTORIAS.push({
         { a: 2007, art: "Flight of the Conchords", t: "Business Time", n: "El folk neozelandés más torpe y romántico." },
         { a: 2009, art: "The Lonely Island feat. T-Pain", t: "I'm on a Boat", n: "Andy Samberg en un barco y un autotune muy serio." },
         { a: 2013, art: "Ylvis", t: "The Fox (What Does the Fox Say?)", n: "Dos humoristas noruegos se preguntan qué dice el zorro." },
+        { a: 2016, art: "Santiuve", t: "Soy un pringao", n: "Una autoburla convertida en canción viral (año aproximado)." },
+        { a: 2016, art: "Los Estanques", t: "Soy español, pero tengo un Kebab", n: "La banda de rock psicodélico se pone en plan humor (año aproximado)." },
         { a: 2017, art: "Big Shaq", t: "Man's Not Hot", n: "Un personaje de humor británico que llegó a las listas." },
+        { a: 2020, art: "Gambas kon fimosis", t: "Pajas", n: "El grupo de humor punk más bruto, con nombre a juego (año aproximado)." },
+        { a: 2020, art: "Gambas kon fimosis & Cecilio G", t: "Pollo flotante", n: "Cecilio G se suma al absurdo de los Gambas (año aproximado)." },
         { a: 2021, art: "Bo Burnham", t: "Welcome to the Internet", n: "De su especial grabado solo en una habitación." },
         { a: 2021, art: "Bo Burnham", t: "Bezos I", n: "Una oda irónica al dueño de Amazon." }
       ]

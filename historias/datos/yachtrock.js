@@ -36,6 +36,7 @@ HISTORIAS.push({
         { a: 1981, art: "Christopher Cross", t: "Arrasa en los Grammy", tipo: "hito", n: "Gana los cinco grandes premios a los que optaba." },
         { a: 1981, art: "Hall & Oates", t: "I Can't Go for That (No Can Do)", n: "El soul de ojos azules con caja de ritmos: Michael Jackson copió el bajo en «Billie Jean»." },
         { a: 1981, art: "Al Jarreau", t: "We're in This Love Together", n: "Jazz suave con la voz elástica de Al Jarreau." },
+        { a: 1981, art: "Christopher Cross", t: "Arthur's Theme (Best That You Can Do)", n: "Óscar a la mejor canción por la película «Arthur»; la escribió con Burt Bacharach y Carole Bayer Sager." },
         { a: 1982, art: "Michael McDonald", t: "I Keep Forgettin' (Every Time You're Near)", n: "La base de «Regulate» de Warren G." },
         { a: 1982, art: "Toto", t: "Africa", n: "Los músicos de estudio más famosos de Los Ángeles." },
         { a: 1982, art: "Toto", t: "Rosanna", n: "El shuffle de Jeff Porcaro." },

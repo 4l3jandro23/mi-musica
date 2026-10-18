@@ -62,6 +62,7 @@ HISTORIAS.push({
         { a: 2020, art: "Cardi B & Megan Thee Stallion", t: "WAP", n: "La más polémica de 2020: debates en la tele y en el Congreso." },
         { a: 2020, art: "Bad Bunny", t: "Safaera", n: "Seis minutos de perreo sin filtro." },
         { a: 2020, art: "Megan Thee Stallion", t: "Body", n: "Rap sin filtro y viral en TikTok." },
+        { a: 2020, art: "The Kunts", t: "Boris Johnson Is a Fucking Cunt", n: "Una canción punk contra el primer ministro que los fans llevaron al top 10 británico por Navidad." },
         { a: 2024, art: "Sabrina Carpenter", t: "Juno", n: "Las «posturas» de sus conciertos, el pop explícito y con humor." }
       ]
     }

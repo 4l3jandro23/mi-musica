@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "trap",
   familia: "Hip hop",
   titulo: "Historia del trap",
-  periodo: "1992 – 2022",
+  periodo: "1992 – 2023",
   color: "#7b6cf0",
   lema: "De las «trap houses» de Atlanta al sonido dominante del planeta.",
   intro: "La «trap» es la casa donde se vende droga en el sur de EE. UU. Primero fue un tema de las letras y luego un sonido: 808 profundos, charles a toda velocidad y sintes oscuros. De Atlanta pasó al EDM, al latino y a todo lo demás.",
@@ -63,7 +63,7 @@ HISTORIAS.push({
     {
       titulo: "Rage y hard trap",
       corto: "Rage",
-      periodo: "2020 – 2022",
+      periodo: "2020 – 2023",
       intro: "Sintetizadores distorsionados como de videojuego, 808 saturados y pogos en los conciertos.",
       items: [
         { a: 2020, art: "«Whole Lotta Red»", t: "Nace el rage", tipo: "hito", n: "Playboi Carti cambia el sonido del trap." },
@@ -71,7 +71,26 @@ HISTORIAS.push({
         { a: 2020, art: "Lil Baby", t: "The Bigger Picture", n: "Trap y protesta tras la muerte de George Floyd." },
         { a: 2021, art: "Trippie Redd", t: "Miss the Rage", n: "Con Playboi Carti: la canción que le dio nombre al «rage»." },
         { a: 2022, art: "Yeat", t: "Gët Busy", n: "Campanas, sintes y un vocabulario propio: el rage se vuelve masivo." },
-        { a: 2022, art: "Lil Uzi Vert", t: "Just Wanna Rock", n: "Jersey club acelerado: un éxito viral en todo el mundo." }
+        { a: 2022, art: "Lil Uzi Vert", t: "Just Wanna Rock", n: "Jersey club acelerado: un éxito viral en todo el mundo." },
+        { a: 2023, art: "Travis Scott, Bad Bunny & The Weeknd", t: "K-POP", n: "Los tres juntos en un tema que salió en julio de 2023, antes de «Utopia»." },
+        { a: 2023, art: "Drake & Bad Bunny", t: "Gently", n: "De «For All the Dogs»: Drake se atreve a cantar en español junto a Bad Bunny." }
+      ]
+    },
+    {
+      titulo: "Tekashi 6ix9ine, el rap como reality",
+      corto: "6ix9ine",
+      periodo: "2018 – 2020",
+      intro: "El chico del pelo arcoíris de Brooklyn convirtió el trap en un espectáculo de peleas, detenciones y récords. Acabó declarando contra su propia banda.",
+      items: [
+        { a: 2018, art: "6ix9ine & Bobby Shmurda", t: "STOOPID", n: "Con Bobby Shmurda grabando la voz por teléfono desde la cárcel." },
+        { a: 2018, art: "6ix9ine, Nicki Minaj & Murda Beatz", t: "FEFE", n: "Número 3 en EE. UU.: su mayor éxito antes de entrar en prisión." },
+        { a: 2018, art: "6ix9ine & Anuel AA", t: "BEBE", n: "Trap en español con Anuel: 6ix9ine reivindica su lado mexicano y puertorriqueño." },
+        { a: 2018, art: "6ix9ine, Fetty Wap & A Boogie Wit da Hoodie", t: "KEKE", n: "Uno de los temas de su mixtape «Dummy Boy»." },
+        { a: 2019, art: "6ix9ine", t: "Declara contra los Nine Trey", tipo: "hito", n: "Detenido en 2018, testifica en un juicio contra la banda con la que se había hecho famoso; sale de la cárcel en 2020." },
+        { a: 2019, art: "6ix9ine & Anuel AA", t: "MALA", n: "Segunda colaboración con Anuel, de «Dummy Boy»." },
+        { a: 2020, art: "6ix9ine", t: "GOOBA", n: "Su regreso tras la cárcel: récord de visitas en 24 horas para un vídeo de rap en YouTube." },
+        { a: 2020, art: "6ix9ine & Nicki Minaj", t: "TROLLZ", n: "Debutó en el número uno del Billboard Hot 100 y cayó a la semana siguiente al puesto 34." },
+        { a: 2020, art: "6ix9ine", t: "YAYA", n: "Del disco «TattleTales», el que casi nadie esperaba que sacara tras declarar." }
       ]
     }
   ]

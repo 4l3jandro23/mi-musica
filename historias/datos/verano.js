@@ -59,8 +59,10 @@ HISTORIAS.push({
         { a: 2014, art: "Calvin Harris", t: "Summer", n: "El verano de los festivales de EDM." },
         { a: 2014, art: "Enrique Iglesias feat. Descemer Bueno & Gente de Zona", t: "Bailando", n: "Número uno en media Europa y en toda América Latina." },
         { a: 2016, art: "Carlos Vives & Shakira", t: "La bicicleta", n: "Vallenato, pop y Barranquilla." },
+        { a: 2016, art: "Alvaro Soler", t: "Sofia", n: "El barcelonés afincado en Alemania y su canción del verano de 2016 en Italia y medio mundo." },
         { a: 2017, art: "«Despacito»", t: "Dieciséis semanas en lo más alto", tipo: "hito", n: "La canción de Luis Fonsi y Daddy Yankee iguala el récord de semanas en el número uno de Estados Unidos." },
         { a: 2017, art: "Luis Fonsi & Daddy Yankee", t: "Despacito", n: "Todo el verano de 2017: el vídeo más visto de YouTube durante años." },
+        { a: 2018, art: "Alvaro Soler", t: "La Cintura", n: "Otra canción del verano de Soler, con remix con Flo Rida y TINI." },
         { a: 2019, art: "Taylor Swift", t: "Cruel Summer", n: "Una canción de 2019 que se hizo número uno en 2023, cuatro años después." },
         { a: 2022, art: "Bad Bunny", t: "Un verano sin ti", tipo: "disco", n: "El disco más escuchado del mundo en 2022, hecho para la playa." },
         { a: 2022, art: "Bizarrap & Quevedo", t: "Quevedo: Bzrp Music Sessions, Vol. 52", n: "El verano de 2022: número uno en Spotify en todo el mundo." }

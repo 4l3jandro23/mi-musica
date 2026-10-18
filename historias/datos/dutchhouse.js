@@ -42,6 +42,7 @@ HISTORIAS.push({
         { a: 2011, art: "Hardwell", t: "Cobra", n: "El primer gran tema de Hardwell, antes de ser número uno del mundo." },
         { a: 2011, art: "Sander van Doorn", t: "Koko", n: "El techno holandés de festival." },
         { a: 2011, art: "Bingo Players", t: "Rattle", n: "El dúo de «Hysteria»: un ritmo saltarín del dutch house." },
+        { a: 2011, art: "T-Pain, Chuckie & Pitbull", t: "It's Not You (It's Me)", n: "El dirty dutch de Chuckie con T-Pain y Pitbull (año aproximado)." },
         { a: 2012, art: "Nicky Romero", t: "Toulouse", n: "Entre el dutch house y el big room." },
         { a: 2012, art: "Chuckie & Hardwell", t: "Move It 2 the Drum", n: "Percusión tribal y sintes dutch: dos de sus nombres más grandes juntos." },
         { a: 2012, art: "Hardwell & Showtek", t: "How We Do", n: "Hardwell justo antes de ser el número uno de DJ Mag: dutch y big room a la vez." },

@@ -23,6 +23,7 @@ HISTORIAS.push({
         { a: 2011, art: "Juan Magán", t: "Verano azul", n: "La canción del verano de 2011." },
         { a: 2011, art: "José de Rico & Henry Méndez", t: "Rayos de sol", n: "Otro éxito del electrolatino español." },
         { a: 2011, art: "Don Omar & Juan Magán", t: "Ella no sigue modas", n: "El electrolatino de Juan Magán con Don Omar: sonó en todas las discotecas de Barcelona." },
+        { a: 2011, art: "Jennifer Lopez & Pitbull", t: "On The Floor", n: "Usa la melodía de «Lambada» (y antes «Llorando se fue»): número uno en medio mundo en 2011." },
         { a: 2012, art: "Daddy Yankee", t: "Limbo", n: "La canción del verano de 2012: el baile del limbo en versión reguetón." },
         { a: 2012, art: "Wisin & Yandel feat. Chris Brown & T-Pain", t: "Algo me gusta de ti", n: "Reguetón con estrellas del R&B." },
         { a: 2012, art: "Juan Magán & Luciana", t: "Baila conmigo", n: "Electrolatino con la voz de Luciana (año aproximado)." },
@@ -34,7 +35,8 @@ HISTORIAS.push({
         { a: 2014, art: "Las mismas canciones en todas partes", t: "Una lista común", tipo: "hito", n: "Las salas tiran de las listas de éxitos latinos de la radio y de YouTube: lo que suena en una suena en todas." },
         { a: 2014, art: "J Balvin", t: "6 AM", n: "J Balvin y Farruko: el reguetón colombiano entra fuerte." },
         { a: 2014, art: "Nicky Jam", t: "Travesuras", n: "El regreso de Nicky Jam tras años olvidado: el principio del reguetón romántico de Medellín." },
-        { a: 2014, art: "Xriz", t: "Me enamoré", n: "El reguetón de Barcelona (año aproximado)." }
+        { a: 2014, art: "Xriz", t: "Me enamoré", n: "El reguetón de Barcelona (año aproximado)." },
+        { a: 2014, art: "Dasoul", t: "Él No Te Da", n: "Finales de 2014: el dominicano afincado en Valencia llega al número uno de Los 40." }
       ]
     },
     {
@@ -48,9 +50,12 @@ HISTORIAS.push({
         { a: 2015, art: "Osmani García feat. Pitbull & Sensato", t: "El taxi", n: "El cubano Osmani García y una canción que en España sonaba en todas partes." },
         { a: 2015, art: "J Balvin", t: "Ginza", n: "El reguetón suave de Medellín." },
         { a: 2015, art: "Juan Magán & Gente de Zona", t: "He llorado (como un niño)", n: "Electrolatino y reparto cubano (año aproximado)." },
+        { a: 2015, art: "Dasoul", t: "Si Me Porto Mal", n: "Tema que da nombre a su disco de 2015, pop latino de discoteca." },
         { a: 2016, art: "Nicky Jam", t: "Hasta el amanecer", n: "Sonaba a las seis de la mañana, como dice el título." },
         { a: 2016, art: "CNCO", t: "Reggaetón lento (Bailemos)", n: "La boy band latina salida de un concurso de la tele, con un reguetón para bailar despacio." },
         { a: 2016, art: "Juan Magán, Belinda & Lápiz Conciente", t: "Si no te quisiera", n: "Otra con Belinda (año aproximado)." },
+        { a: 2016, art: "Dasoul", t: "Vuela Corazón", n: "Single de 2016 de Dasoul, ya con su sonido romántico de pista." },
+        { a: 2016, art: "Dasoul & Nacho", t: "Kung Fu", n: "Con el venezolano Nacho (ex Chino & Nacho): reguetón de fiesta (año aproximado)." },
         { a: 2017, art: "Promusicae", t: "El reguetón manda", tipo: "hito", n: "Las listas de ventas españolas se llenan de reguetón: muchas semanas, casi todo el top 10 es latino." },
         { a: 2017, art: "Luis Fonsi & Daddy Yankee", t: "Despacito", n: "Todo el verano de 2017: 16 semanas número uno en EE. UU." },
         { a: 2017, art: "Maluma", t: "Felices los 4", n: "La que coreaba toda la pista." },

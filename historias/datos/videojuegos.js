@@ -63,6 +63,7 @@ HISTORIAS.push({
         { a: 2018, art: "Lena Raine", t: "Resurrections", q: "Lena Raine Resurrections", n: "La banda sonora de «Celeste», un juego sobre la ansiedad y la superación." },
         { a: 2018, art: "Bear McCreary", t: "God of War", q: "Bear McCreary God of War", n: "Coro nórdico y orquesta para el regreso de Kratos." },
         { a: 2020, art: "Darren Korb", t: "Good Riddance", n: "Hades, el roguelike con banda sonora de rock." },
+        { a: 2021, art: "Imagine Dragons & JID", t: "Enemy", n: "La canción de «Arcane», la serie de «League of Legends»: uno de los mayores éxitos de un videojuego." },
         { a: 2023, art: "Grammy", t: "Primer Grammy a una banda sonora de videojuego", tipo: "hito", n: "Lo gana Stephanie Economou por Assassin's Creed Valhalla: Dawn of Ragnarök." }
       ]
     }

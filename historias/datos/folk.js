@@ -19,7 +19,9 @@ HISTORIAS.push({
         { a: 1950, art: "The Weavers", t: "Goodnight, Irene", n: "Con Pete Seeger: el folk llega al número uno… hasta que la caza de brujas los vetó." },
         { a: 1955, art: "Pete Seeger", t: "Where Have All the Flowers Gone?", n: "Una canción contra la guerra a partir de una canción cosaca." },
         { a: 1958, art: "The Kingston Trio", t: "Tom Dooley", n: "Empieza el gran renacimiento del folk." },
+        { a: 1958, art: "Elizabeth Cotten", t: "Freight Train", n: "La escribió de niña en Carolina del Norte; la grabó con sesenta años, cuando trabajaba de asistenta para la familia Seeger." },
         { a: 1959, art: "Festival de Newport", t: "Nace el gran festival folk", tipo: "hito", n: "Allí se presentó Joan Baez y, años después, Dylan con guitarra eléctrica." },
+        { a: 1962, art: "Marlene Dietrich", t: "Where Have All the Flowers Gone", n: "La canción antibelicista de Pete Seeger cantada por Marlene en inglés y alemán." },
         { a: 1963, art: "Peter, Paul and Mary", t: "Puff, the Magic Dragon", n: "Un dragón y un niño que crece." },
         { a: 1964, art: "Bob Dylan", t: "The Times They Are a-Changin'", n: "La canción de protesta convertida en profecía." }
       ]
@@ -43,14 +45,17 @@ HISTORIAS.push({
         { a: 1970, art: "Bob Dylan", t: "The Man in Me", n: "La de «El gran Lebowski»." },
         { a: 1970, art: "Simon & Garfunkel", t: "Cecilia", n: "Grabada con palmas en una fiesta." },
         { a: 1970, art: "Crosby, Stills, Nash & Young", t: "Our House", n: "Graham Nash y la casa que compartía con Joni Mitchell." },
+        { a: 1970, art: "Crosby, Stills, Nash & Young", t: "Teach Your Children", n: "Graham Nash la escribió viendo una foto de un niño con una granada de juguete." },
         { a: 1971, art: "Joni Mitchell", t: "A Case of You", n: "De «Blue»: uno de los discos más íntimos jamás grabados." },
         { a: 1971, art: "Don McLean", t: "American Pie", n: "Ocho minutos sobre «el día que murió la música»." },
         { a: 1972, art: "Nick Drake", t: "Pink Moon", n: "Casi nadie lo escuchó en vida; hoy es un culto." },
         { a: 1972, art: "Neil Young", t: "Heart of Gold", n: "Armónica y búsqueda: su único número uno." },
+        { a: 1972, art: "Neil Young", t: "Old Man", n: "De «Harvest»: Neil Young le canta al capataz de su rancho." },
         { a: 1973, art: "John Martyn", t: "Solid Air", n: "Para su amigo Nick Drake." },
         { a: 1973, art: "Bob Dylan", t: "Knockin' on Heaven's Door", n: "Para la película de Peckinpah «Pat Garrett y Billy el Niño»." },
         { a: 1975, art: "Joan Baez", t: "Diamonds & Rust", n: "Joan Baez recuerda su historia de amor con Bob Dylan diez años después." },
-        { a: 1975, art: "Bob Dylan", t: "Hurricane", n: "Sobre el boxeador Rubin Carter, encarcelado injustamente." }
+        { a: 1975, art: "Bob Dylan", t: "Hurricane", n: "Sobre el boxeador Rubin Carter, encarcelado injustamente." },
+        { a: 1975, art: "Joan Baez", t: "Diamonds and Rust", n: "Joan Baez recuerda su historia con Bob Dylan, diez años después." }
       ]
     },
     {
@@ -60,6 +65,7 @@ HISTORIAS.push({
       intro: "Del folk íntimo al indie folk de banjos.",
       items: [
         { a: 1988, art: "Tracy Chapman", t: "Fast Car", n: "Una guitarra y el sueño de escapar de la pobreza." },
+        { a: 1988, art: "All About Eve", t: "Martha's Harbour", n: "Folk gótico británico; en «Top of the Pops» la canción no sonaba y la cantante se quedó sentada en silencio." },
         { a: 1993, art: "Israel Kamakawiwo'ole", t: "Over the Rainbow", n: "El hawaiano con el ukelele, grabada de madrugada en una sola toma." },
         { a: 1997, art: "Elliott Smith", t: "Between the Bars", n: "Elliott Smith susurra sobre la bebida y la dependencia. Salió en «El indomable Will Hunting»." },
         { a: 2004, art: "Iron & Wine", t: "Naked as We Came", n: "Susurros y guitarra de Sam Beam: una canción sobre envejecer juntos." },

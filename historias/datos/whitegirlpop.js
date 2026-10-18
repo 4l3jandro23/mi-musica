@@ -155,6 +155,7 @@ HISTORIAS.push({
         { a: 2017, art: "Zara Larsson", t: "I Can't Fall in Love Without You", n: "El lado más suave del disco So Good." },
         { a: 2017, art: "Bebe Rexha & Nicki Minaj", t: "No Broken Hearts", n: "Bebe antes de su gran éxito country." },
         { a: 2017, art: "Katy Perry", t: "Swish Swish", n: "Todo el mundo la leyó como la respuesta de Katy a «Bad Blood»." },
+        { a: 2017, art: "Dua Lipa", t: "New Rules", n: "Tres reglas para no volver con tu ex: su primer número uno en Reino Unido." },
         { a: 2018, art: "musical.ly", t: "musical.ly se convierte en TikTok", tipo: "hito", n: "En agosto de 2018 TikTok absorbe musical.ly: los estribillos de 15 segundos empiezan a decidir los éxitos." },
         { a: 2018, art: "Ariana Grande", t: "thank u, next", n: "Dar las gracias a los ex: reina." },
         { a: 2018, art: "Ava Max", t: "Sweet but Psycho", n: "«She's sweet but a psycho»: número uno en el Reino Unido." },
@@ -182,6 +183,7 @@ HISTORIAS.push({
         { a: 2021, art: "Olivia Rodrigo", t: "drivers license", n: "Del carné de conducir al corazón roto de todo TikTok." },
         { a: 2021, art: "Olivia Rodrigo", t: "good 4 u", n: "Pop-punk vengativo, como Paramore." },
         { a: 2021, art: "Zara Larsson", t: "Don't Worry Bout Me", n: "Del disco Poster Girl, en plena pandemia." },
+        { a: 2022, art: "Leah Kate", t: "Twinkle Twinkle", n: "Pop de despecho viral en TikTok (año aproximado)." },
         { a: 2023, art: "The Eras Tour", t: "Taylor Swift hace la gira más taquillera de la historia", tipo: "hito", n: "Más de 2.000 millones de dólares." },
         { a: 2023, art: "Tate McRae", t: "greedy", n: "Pop de baile con actitud." },
         { a: 2023, art: "Miley Cyrus", t: "Flowers", n: "Comprarse flores a una misma: la canción más escuchada de 2023 en Spotify." },
@@ -194,6 +196,7 @@ HISTORIAS.push({
         { a: 2024, art: "Billie Eilish", t: "BIRDS OF A FEATHER", n: "La canción de amor de la generación TikTok." },
         { a: 2024, art: "Billie Eilish", t: "WILDFLOWER", n: "Una balada sobre salir con el ex de una amiga." },
         { a: 2024, art: "Lady Gaga & Bruno Mars", t: "Die With A Smile", n: "Un dúo que se pasó meses en el número uno de Spotify." },
+        { a: 2024, art: "Addison Rae", t: "Diet Pepsi", n: "La tiktoker que se reinventa como estrella del pop." },
         { a: 2025, art: "Taylor Swift", t: "The Fate of Ophelia", n: "Del disco The Life of a Showgirl: Taylor y Shakespeare." }
       ]
     },

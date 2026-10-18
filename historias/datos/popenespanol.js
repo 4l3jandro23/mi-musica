@@ -41,7 +41,7 @@ HISTORIAS.push({
     {
       titulo: "Los 2000",
       corto: "Los 2000",
-      periodo: "1998 – 2006",
+      periodo: "1998 – 2009",
       intro: "Rock pop, RBD y baladas a dúo.",
       items: [
         { a: 1998, art: "Ricky Martin", t: "Vuelve", n: "Antes del boom en inglés." },
@@ -51,10 +51,12 @@ HISTORIAS.push({
         { a: 2002, art: "Sin Bandera", t: "Entra en mi vida", n: "Un dúo mexicano-argentino y una balada de boda." },
         { a: 2004, art: "RBD", t: "Rebelde", n: "La telenovela que se convirtió en grupo y llenó estadios." },
         { a: 2004, art: "Kudai", t: "Sin despertar", n: "El pop rock chileno que triunfó en toda Latinoamérica a mediados de los 2000." },
+        { a: 2004, art: "Alejandra Guzmán", t: "Día de Suerte", n: "La reina del rock mexicano y su canción más optimista." },
         { a: 2005, art: "Reik", t: "Yo quisiera", n: "El pop romántico mexicano de los 2000." },
         { a: 2006, art: "Camila", t: "Todo cambió", n: "Otra balada mexicana que sonó en todas las radios." },
         { a: 2006, art: "Jesse & Joy", t: "Espacio sideral", n: "Dos hermanos mexicanos con guitarra." },
-        { a: 2006, art: "Belinda", t: "Bella traición", n: "Pop mexicano de la que fue niña de telenovela." }
+        { a: 2006, art: "Belinda", t: "Bella traición", n: "Pop mexicano de la que fue niña de telenovela." },
+        { a: 2009, art: "Nelly Furtado", t: "Manos al Aire", n: "La canadiense de origen portugués canta en español en «Mi plan», disco que ganó el Grammy Latino." }
       ]
     },
     {
@@ -66,7 +68,11 @@ HISTORIAS.push({
         { a: 2015, art: "Natalia Lafourcade", t: "Hasta la raíz", n: "Pop con raíces folclóricas y varios Grammy Latinos." },
         { a: 2015, art: "Morat", t: "Cómo te atreves", n: "Banjo y pop desde Bogotá." },
         { a: 2016, art: "Sebastián Yatra", t: "Traicionera", n: "Pop colombiano con reguetón, la canción que lo lanzó." },
+        { a: 2016, art: "Cristian Castro", t: "Si Me Dejas Ahora", n: "El clásico que Camilo Sesto escribió para José José, en la voz del mexicano (año aproximado)." },
         { a: 2017, art: "«Despacito»", t: "El español en lo más alto", tipo: "hito", n: "Una canción en español es número uno en medio mundo: el pop latino ya no necesita cantar en inglés." },
+        { a: 2018, art: "Morat", t: "Cuando Nadie Ve", n: "Los colombianos de banjo y voces, uno de los grupos más escuchados en España." },
+        { a: 2018, art: "Morat & Juanes", t: "Besos en Guerra", n: "Morat con Juanes, el gran referente del pop-rock colombiano." },
+        { a: 2018, art: "Luis Fonsi & Stefflon Don", t: "Calypso", n: "Tras «Despacito», Fonsi con la rapera británica." },
         { a: 2020, art: "Camilo", t: "Vida de rico", n: "Pop colombiano con bigote." },
         { a: 2020, art: "Danna Paola", t: "Mala fama", n: "Pop urbano mexicano de la actriz de «Élite», que se pasa al reguetón." },
         { a: 2021, art: "Sebastián Yatra", t: "Tacones rojos", n: "Pop alegre que fue número uno en España." },

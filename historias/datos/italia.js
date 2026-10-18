@@ -122,6 +122,9 @@ HISTORIAS.push({
         { a: 1982, art: "Ricchi e Poveri", t: "Mamma María (en español)", q: "Ricchi e Poveri Mamma Maria Spanische Version", n: "Tan conocida aquí como la original." },
         { a: 1993, art: "Eros Ramazzotti", t: "Todo historias", tipo: "hito", n: "Desde los años 80 Eros grababa sus discos también en español; «Tutte storie» sale a la vez en los dos idiomas y vende millones en España y Latinoamérica." },
         { a: 1996, art: "Eros Ramazzotti", t: "La cosa más bella", n: "«Più bella cosa» en español." },
+        { a: 1997, art: "Nek", t: "Laura no está", n: "El italiano Filippo Neviani triunfa en España y Latinoamérica con su versión en español de «Laura non c'è»." },
+        { a: 1997, art: "Nek", t: "Para ti sería", n: "Otro de sus éxitos en español de finales de los 90 (año aproximado)." },
+        { a: 1998, art: "Nek", t: "Tu nombre", n: "Nek en su etapa de mayor fama en España (año aproximado)." },
         { a: 2000, art: "Eros Ramazzotti", t: "Fuego en el fuego", n: "«Fuoco nel fuoco», del disco «Estilolibre», en español." },
         { a: 2008, art: "Tiziano Ferro & Amaia Montero", t: "El regalo más grande", n: "Con la cantante de La Oreja de Van Gogh." },
         { a: 2021, art: "sangiovanni & Aitana", t: "mariposas", n: "Pop italiano y español a medias." }

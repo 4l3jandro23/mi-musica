@@ -71,6 +71,7 @@ HISTORIAS.push({
         { a: 1997, art: "Buena Vista Social Club", t: "El cuarto de Tula", n: "La de la vela encendida que quema el cuarto de Tula: el disco que redescubrió a los viejos soneros." },
         { a: 1997, art: "Buena Vista Social Club", t: "Pueblo nuevo", n: "Un danzón del disco que grabaron Ry Cooder y los músicos veteranos de La Habana." },
         { a: 1997, art: "Buena Vista Social Club", t: "Dos gardenias", n: "El bolero de Isolina Carrillo con Ibrahim Ferrer." },
+        { a: 1997, art: "Rubén González", t: "Cumbanchero", n: "El pianista de Buena Vista Social Club graba su disco con casi ochenta años, tras años sin piano en casa." },
         { a: 1998, art: "Celia Cruz", t: "La vida es un carnaval", n: "Desde el exilio: «¡Azúcar!»." },
         { a: 2000, art: "Orishas", t: "537 C.U.B.A.", n: "El rap cubano desde París: «Chan Chan» convertido en canción de nostalgia por la isla." },
         { a: 2015, art: "Gente de Zona", t: "La Gozadera", n: "Con Marc Anthony: el reguetón cubano." },

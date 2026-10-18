@@ -16,6 +16,7 @@ HISTORIAS.push({
         { a: 1957, art: "John y Paul", t: "Se conocen en una verbena de Woolton", tipo: "hito", n: "6 de julio: Paul, con 15 años, impresiona a John tocando «Twenty Flight Rock». Al poco entra George." },
         { a: 1958, art: "George Harrison", t: "Se une al grupo", tipo: "hito", n: "Con 15 años, tras tocar «Raunchy» en el piso de arriba de un autobús." },
         { a: 1958, art: "The Quarrymen", t: "That'll Be the Day", q: "Quarrymen That'll Be the Day", n: "Su primera grabación, pagada de su bolsillo en un pequeño estudio de Liverpool." },
+        { a: 1958, art: "The Quarrymen", t: "In Spite of All the Danger", n: "La primera grabación de McCartney, Lennon y Harrison, hecha en 1958 en un pequeño estudio de Liverpool." },
         { a: 1960, art: "Hamburgo", t: "Primera temporada en los clubes del puerto", tipo: "hito", n: "Tocan hasta ocho horas por noche: ahí se convierten en un grupo de verdad." },
         { a: 1961, art: "The Cavern Club", t: "Primer concierto en el Cavern", tipo: "hito", n: "Tocarán allí casi 300 veces." },
         { a: 1961, art: "Brian Epstein", t: "Los descubre en el Cavern", tipo: "hito", n: "El dueño de una tienda de discos se convierte en su mánager." },
@@ -372,6 +373,7 @@ HISTORIAS.push({
         { a: 1995, art: "The Beatles", t: "Free as a Bird", n: "Una maqueta de John de 1977 completada por los otros tres." },
         { a: 1996, art: "The Beatles", t: "Real Love", n: "Otra cinta de Lennon terminada por los otros tres para la «Anthology»." },
         { a: 2001, art: "George Harrison", t: "Muere de cáncer", tipo: "hito", n: "«El Beatle callado» tenía 58 años." },
+        { a: 2018, art: "Paul McCartney", t: "Fuh You", n: "De «Egypt Station», producida por Ryan Tedder: McCartney a los 76." },
         { a: 2021, art: "«Get Back»", t: "Peter Jackson restaura las sesiones de 1969", tipo: "hito", n: "Un documental de casi ocho horas que cambia la historia de la ruptura." },
         { a: 2023, art: "The Beatles", t: "Now and Then", n: "Una maqueta de Lennon recuperada con inteligencia artificial: «la última canción de los Beatles»." }
       ]

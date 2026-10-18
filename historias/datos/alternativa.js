@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "alternativa",
   familia: "Rock",
   titulo: "Historia del rock alternativo",
-  periodo: "1980 – 2016",
+  periodo: "1980 – 2022",
   color: "#4c6b3c",
   lema: "Del post-punk al grunge, el britpop y Radiohead: cuando lo alternativo se volvió masivo.",
   intro: "En los 80, el rock alternativo vivía en sellos pequeños y radios universitarias. En 1991, «Smells Like Teen Spirit» lo cambió todo: lo alternativo pasó a ser lo que más se vendía. Grunge en Seattle, britpop en Inglaterra, Héroes del Silencio y Extremoduro en España, y luego Radiohead, Muse o Gorillaz.",
@@ -26,6 +26,7 @@ HISTORIAS.push({
         { a: 1988, art: "Pixies", t: "Where Is My Mind?", n: "Estrofas suaves y estribillos explosivos: la fórmula que copiaría Nirvana. Suena al final de «El club de la lucha»." },
         { a: 1988, art: "Sonic Youth", t: "Teen Age Riot", n: "Del disco «Daydream Nation»." },
         { a: 1988, art: "The Proclaimers", t: "I'm Gonna Be (500 Miles)", n: "Dos gemelos escoceses que caminarían quinientas millas." },
+        { a: 1989, art: "Faith No More", t: "Epic", n: "Rap, metal y un pez agonizando en el vídeo: su gran éxito." },
         { a: 1990, art: "Jane's Addiction", t: "Been Caught Stealing", n: "Perry Farrell crearía al año siguiente el festival Lollapalooza." },
         { a: 1990, art: "Héroes del Silencio", t: "Entre dos tierras", n: "Desde Zaragoza: el rock español que triunfó en Europa y Latinoamérica." },
         { a: 1990, art: "They Might Be Giants", t: "Istanbul (Not Constantinople)", n: "Una canción de los años 50 en versión rara y divertida." }
@@ -41,12 +42,16 @@ HISTORIAS.push({
         { a: 1991, art: "Nirvana", t: "Smells Like Teen Spirit", n: "«Nevermind» desbancó a Michael Jackson del número uno: el rock alternativo se vuelve mainstream." },
         { a: 1991, art: "Pearl Jam", t: "Alive", n: "La otra gran banda de Seattle." },
         { a: 1991, art: "R.E.M.", t: "Losing My Religion", n: "La mandolina más famosa del rock." },
+        { a: 1991, art: "Spin Doctors", t: "Two Princes", n: "Rock de bar de Nueva York convertido en éxito mundial." },
         { a: 1992, art: "Alice in Chains", t: "Would?", n: "Jerry Cantrell la escribió para Andrew Wood, el cantante de Mother Love Bone, que murió de sobredosis. Salió en la banda sonora de «Singles»." },
         { a: 1992, art: "Radiohead", t: "Creep", n: "Una canción que el propio grupo acabó odiando." },
         { a: 1992, art: "R.E.M.", t: "Everybody Hurts", n: "Una canción para los que piensan en dejarlo todo." },
         { a: 1992, art: "The Cure", t: "Friday I'm in Love", n: "Robert Smith en su versión más feliz." },
         { a: 1993, art: "Beck", t: "Loser", n: "Rap, slide y folk grabado en una cocina: «I'm a loser, baby»." },
         { a: 1993, art: "The Cranberries", t: "Linger", n: "La voz de Dolores O'Riordan." },
+        { a: 1993, art: "The Breeders", t: "Cannonball", n: "Kim Deal, de los Pixies, y su hermana Kelley, con una línea de bajo inolvidable." },
+        { a: 1993, art: "The Smashing Pumpkins", t: "Cherub Rock", n: "Billy Corgan contra la escena indie, en el disco «Siamese Dream»." },
+        { a: 1993, art: "Counting Crows", t: "Mr. Jones", n: "Adam Duritz sueña con ser estrella del rock; cuando lo consiguió, le pareció peor de lo que esperaba." },
         { a: 1994, art: "Kurt Cobain", t: "Muere con 27 años", tipo: "hito", n: "Kurt Cobain muere en Seattle en abril de 1994. El grunge pierde a su voz y el rock alternativo cambia de rumbo." },
         { a: 1994, art: "Soundgarden", t: "Black Hole Sun", n: "Un vídeo de pesadilla suburbana." },
         { a: 1994, art: "Weezer", t: "Buddy Holly", n: "Un vídeo dentro de la serie «Happy Days»." },
@@ -59,11 +64,18 @@ HISTORIAS.push({
         { a: 1995, art: "Garbage", t: "Only Happy When It Rains", n: "Shirley Manson y Butch Vig, el productor de «Nevermind»." },
         { a: 1995, art: "The Presidents of the United States of America", t: "Lump", n: "Rock alternativo con guitarras de dos cuerdas." },
         { a: 1995, art: "No Doubt", t: "Don't Speak", n: "Gwen Stefani canta su ruptura con el bajista del grupo." },
+        { a: 1995, art: "The Smashing Pumpkins", t: "Bullet with Butterfly Wings", n: "De «Mellon Collie»: «despite all my rage I am still just a rat in a cage»." },
+        { a: 1995, art: "Deep Blue Something", t: "Breakfast at Tiffany's", n: "Una pareja que solo tiene en común la película de Audrey Hepburn." },
         { a: 1996, art: "Extremoduro", t: "So payaso", n: "Robe Iniesta y el rock transgresivo de Extremadura." },
         { a: 1997, art: "Third Eye Blind", t: "Semi-Charmed Life", n: "Una canción alegre sobre algo bastante oscuro." },
+        { a: 1997, art: "Meredith Brooks", t: "Bitch", n: "Un himno de las mujeres contradictorias, nominado al Grammy." },
+        { a: 1997, art: "Chumbawamba", t: "Tubthumping", n: "Un grupo anarquista de Leeds con una canción de borrachera que acabó en todos los estadios." },
+        { a: 1997, art: "Smash Mouth", t: "Why Can't We Be Friends", n: "Versión del clásico de War, del primer disco de Smash Mouth." },
         { a: 1998, art: "Hole", t: "Celebrity Skin", n: "Courtney Love y su disco más pop." },
         { a: 1998, art: "Placebo", t: "Pure Morning", n: "Brian Molko y el rock andrógino." },
-        { a: 1998, art: "Semisonic", t: "Closing Time", n: "La canción de cuando encienden las luces del bar, que en realidad trata de ser padre." }
+        { a: 1998, art: "Semisonic", t: "Closing Time", n: "La canción de cuando encienden las luces del bar, que en realidad trata de ser padre." },
+        { a: 1998, art: "The Cardigans", t: "Erase / Rewind", n: "Los suecos de «Lovefool» en su disco más oscuro, «Gran Turismo»." },
+        { a: 1998, art: "The Goo Goo Dolls", t: "Iris", n: "Para la película «City of Angels»: dieciocho semanas número uno en las radios de EE. UU." }
       ]
     },
     {
@@ -81,6 +93,7 @@ HISTORIAS.push({
         { a: 2000, art: "Nine Days", t: "Absolutely (Story of a Girl)", n: "Una sola canción famosa y un estribillo que se queda." },
         { a: 2001, art: "Muse", t: "Plug In Baby", n: "El riff de Matt Bellamy, a medio camino entre Bach y el metal, que hizo de Muse una banda de estadio." },
         { a: 2001, art: "Weezer", t: "Island in the Sun", n: "Del «Green Album»: un tema de verano que no querían como single." },
+        { a: 2001, art: "The Calling", t: "Wherever You Will Go", n: "Rock post-grunge de estribillo enorme, de su único gran disco." },
         { a: 2002, art: "Queens of the Stone Age", t: "No One Knows", n: "Con Dave Grohl a la batería: rock del desierto." },
         { a: 2002, art: "Red Hot Chili Peppers", t: "Can't Stop", n: "Del disco «By the Way»: el riff funk de John Frusciante y las letras atropelladas de Anthony Kiedis." },
         { a: 2003, art: "The Rasmus", t: "In the Shadows", n: "Los finlandeses de las plumas en el pelo." },
@@ -92,7 +105,7 @@ HISTORIAS.push({
     {
       titulo: "El rock alternativo hoy",
       corto: "Desde 2001",
-      periodo: "2001 – 2016",
+      periodo: "2001 – 2022",
       intro: "Nu metal, revival y rock de streaming.",
       items: [
         { a: 2001, art: "Linkin Park", t: "In the End", n: "El nu metal más melódico: uno de los grandes éxitos del siglo." },
@@ -102,10 +115,22 @@ HISTORIAS.push({
         { a: 2007, art: "Foo Fighters", t: "The Pretender", n: "El himno de Dave Grohl para estadios." },
         { a: 2009, art: "Muse", t: "Uprising", n: "Glam rock con aire de «Doctor Who» y teorías de la conspiración." },
         { a: 2011, art: "Foo Fighters", t: "Walk", n: "Del disco «Wasting Light», grabado en su garaje." },
+        { a: 2011, art: "Alex Clare", t: "Too Close", n: "Soul con bajos de dubstep; un anuncio de Internet Explorer la hizo famosa." },
+        { a: 2012, art: "Imagine Dragons", t: "It's Time", n: "El primer single del grupo de Las Vegas, con mandolina y percusión." },
+        { a: 2012, art: "Imagine Dragons", t: "Demons", n: "Una de «Night Visions», el disco del que salió «Radioactive»." },
         { a: 2013, art: "Arctic Monkeys", t: "Do I Wanna Know?", n: "El riff lento y la canción más escuchada del grupo." },
+        { a: 2013, art: "AJR", t: "I'm Ready", n: "Su primer single: sampleaba la voz de Bob Esponja." },
         { a: 2015, art: "El rock en streaming", t: "Las guitarras pierden terreno", tipo: "hito", n: "El rap y el pop dominan las listas: el rock alternativo vive de festivales y de la nostalgia." },
         { a: 2015, art: "Twenty One Pilots", t: "Stressed Out", n: "El rock alternativo de la generación del streaming." },
-        { a: 2016, art: "Red Hot Chili Peppers", t: "Dark Necessities", n: "Producida por Danger Mouse." }
+        { a: 2015, art: "AWOLNATION", t: "Run", n: "El grupo de «Sail» con una canción para correr y escapar." },
+        { a: 2016, art: "Red Hot Chili Peppers", t: "Dark Necessities", n: "Producida por Danger Mouse." },
+        { a: 2016, art: "AJR", t: "Weak", n: "Los tres hermanos Met de Nueva York, que graban en el salón de su casa." },
+        { a: 2017, art: "AJR & Rivers Cuomo", t: "Sober Up", n: "Con el cantante de Weezer: una canción sobre la nostalgia de la infancia." },
+        { a: 2017, art: "Imagine Dragons", t: "Thunder", n: "El chico que soñaba con ser estrella; voces aceleradas y palmas." },
+        { a: 2018, art: "Imagine Dragons", t: "Bad Liar", n: "Dan Reynolds escribe sobre la crisis de su matrimonio." },
+        { a: 2021, art: "AJR", t: "Thirsty", n: "Del disco «OK Orchestra», con su pop de musical (año aproximado)." },
+        { a: 2021, art: "Tom Morello, Portugal. The Man & Whethan", t: "Every Step That I Take", n: "Del disco de colaboraciones «The Atlas Underground Fire» de Tom Morello." },
+        { a: 2022, art: "Imagine Dragons", t: "Bones", n: "Una de sus canciones más usadas en series y anuncios, de «Mercury – Act 2»." }
       ]
     }
   ]

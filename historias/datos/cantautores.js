@@ -38,6 +38,8 @@ HISTORIAS.push({
         { a: 1971, art: "Leonard Cohen", t: "Famous Blue Raincoat", n: "Una carta a un hombre que tuvo una aventura con su mujer." },
         { a: 1972, art: "Townes Van Zandt", t: "Pancho and Lefty", n: "La balada de dos forajidos, muy versionada." },
         { a: 1972, art: "Randy Newman", t: "Sail Away", n: "Un traficante de esclavos vende América: ironía brutal." },
+        { a: 1972, art: "Jim Croce", t: "Operator (That's Not the Way It Feels)", n: "Un hombre llama a la operadora para hablar con su ex, que se ha ido con su mejor amigo." },
+        { a: 1972, art: "Jim Croce", t: "Walkin' Back to Georgia", n: "Del disco «You Don't Mess Around with Jim» (año aproximado)." },
         { a: 1974, art: "Jackson Browne", t: "Late for the Sky", n: "El cantautor de Los Ángeles en su disco más triste." },
         { a: 1974, art: "Harry Chapin", t: "Cat's in the Cradle", n: "Un padre sin tiempo para su hijo." },
         { a: 1975, art: "Bruce Springsteen", t: "Thunder Road", n: "El arranque de «Born to Run»: la huida en coche." },

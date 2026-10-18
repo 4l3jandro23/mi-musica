@@ -35,6 +35,7 @@ HISTORIAS.push({
         { a: 2006, art: "Valentín Elizalde", t: "Vete ya", n: "El «Gallo de oro» de la banda, asesinado ese mismo año." },
         { a: 2009, art: "Los hermanos Valenzuela", t: "Nace el movimiento alterado", tipo: "hito", n: "Los gemelos Adolfo y Omar Valenzuela lanzan desde California su sello Twiins y un corrido más duro." },
         { a: 2009, art: "El Komander, BuKnas de Culiacán y otros", t: "Sanguinarios del M1", q: "Sanguinarios del M1", n: "El himno del «movimiento alterado» de Sinaloa." },
+        { a: 2009, art: "Los Cuates de Sinaloa", t: "Negro y Azul: The Ballad of Heisenberg", n: "Un narcocorrido escrito para «Breaking Bad»: sale en la segunda temporada sobre Walter White." },
         { a: 2011, art: "Gerardo Ortiz", t: "Dámaso", n: "Corridos con banda y violencia en la letra." },
         { a: 2014, art: "Ariel Camacho y Los Plebes del Rancho", t: "El karma", n: "El requinto de Ariel Camacho, muerto en 2015 con 22 años." },
         { a: 2018, art: "Fuerza Regida", t: "Radicamos en South Central", n: "Mexicanos de California: el corrido mira hacia la ciudad." }
@@ -52,6 +53,8 @@ HISTORIAS.push({
         { a: 2020, art: "Natanael Cano", t: "Amor tumbado", n: "El corrido tumbado también sabe ser romántico." },
         { a: 2020, art: "Junior H", t: "Se amerita", n: "Junior H y el corrido «sad»: guitarras tristes y ritmo lento." },
         { a: 2021, art: "Eslabon Armado", t: "Jugaste y sufrí", n: "Un trío de California con corridos de desamor." },
+        { a: 2021, art: "Natanael Cano", t: "El Drip", n: "Corrido tumbado con estética de trap (año aproximado)." },
+        { a: 2021, art: "Peso Pluma", t: "Por las Noches", n: "De sus primeros temas: explotó en TikTok dos años después (año aproximado)." },
         { a: 2022, art: "Gabito Ballesteros, Peso Pluma & Natanael Cano", t: "AMG", n: "El trío que anunció la explosión del género." },
         { a: 2022, art: "Junior H", t: "Y lloro", n: "Corrido tumbado triste: guitarras acústicas y desamor de la nueva generación." },
         { a: 2022, art: "Fuerza Regida & Grupo Frontera", t: "Bebe dame", n: "Corrido y cumbia norteña juntos." },
@@ -62,7 +65,15 @@ HISTORIAS.push({
         { a: 2023, art: "Fuerza Regida", t: "Sabor fresa", n: "Los de San Bernardino también llegan al top mundial." },
         { a: 2023, art: "Peso Pluma & Grupo Frontera", t: "TULUM", n: "La cumbia norteña y el corrido tumbado se juntan en el disco «Génesis»." },
         { a: 2023, art: "Peso Pluma", t: "Bye", n: "Del disco «Génesis», el que lo confirmó como la cara del corrido tumbado en todo el mundo." },
-        { a: 2024, art: "Xavi", t: "La diabla", n: "Un corrido romántico de un chaval de 19 años que llegó al número uno en México." }
+        { a: 2023, art: "Peso Pluma & Anitta", t: "BELLAKEO", n: "Peso Pluma se pasa al reguetón con la brasileña Anitta." },
+        { a: 2024, art: "Xavi", t: "La diabla", n: "Un corrido romántico de un chaval de 19 años que llegó al número uno en México." },
+        { a: 2024, art: "Peso Pluma & DJ Snake", t: "TEKA", n: "Corrido y electrónica francesa (año aproximado)." },
+        { a: 2024, art: "DannyLux", t: "HOUSE OF LUX", n: "El californiano de los «sad sierreños» (año aproximado)." },
+        { a: 2024, art: "Fuerza Regida", t: "NEL", n: "Los de San Bernardino en su línea de corrido con actitud (año aproximado)." },
+        { a: 2024, art: "Oscar Maydon & Fuerza Regida", t: "Tu Boda", n: "Un corrido de despecho que fue de los más escuchados de 2024 en México." },
+        { a: 2024, art: "Gabito Ballesteros, Natanael Cano, Luis R Conriquez & Neton Vega", t: "PRESIDENTE", n: "Cuatro figuras del corrido tumbado en un mismo tema (año aproximado)." },
+        { a: 2024, art: "Gabito Ballesteros & Tito Double P", t: "7 DIAS", n: "Corrido de amor de dos de los nombres nuevos del género (año aproximado)." },
+        { a: 2024, art: "Tito Double P, Joel De La P & Luis R Conriquez", t: "DEMBOW BÉLICO", n: "El corrido bélico se cruza con el dembow dominicano (año aproximado)." }
       ]
     }
   ]

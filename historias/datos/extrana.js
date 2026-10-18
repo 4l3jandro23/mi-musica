@@ -14,6 +14,7 @@ HISTORIAS.push({
       intro: "El rock de los 60 y 70 abre la puerta a la vanguardia.",
       items: [
         { a: 1966, art: "Frank Zappa & The Mothers of Invention", t: "«Freak Out!»", tipo: "hito", n: "Uno de los primeros discos dobles del rock: sátira, collage y caos." },
+        { a: 1967, art: "Captain Beefheart & His Magic Band", t: "Electricity", n: "Del primer disco, «Safe as Milk», con un theremín y la voz salvaje de Don Van Vliet." },
         { a: 1969, art: "Captain Beefheart & His Magic Band", t: "Ella Guru", n: "De «Trout Mask Replica», producido por Frank Zappa: blues desarmado pieza a pieza. Para unos, genio; para otros, ruido." },
         { a: 1970, art: "Yoko Ono", t: "Why", n: "Con la Plastic Ono Band: gritos y aullidos sobre la guitarra de John Lennon. Hoy se la reivindica como pionera." },
         { a: 1972, art: "Can", t: "Vitamin C", q: "Can Vitamin C", n: "El krautrock de Can: ritmos repetitivos y una voz japonesa." },
@@ -62,6 +63,7 @@ HISTORIAS.push({
         { a: 2012, art: "Swans", t: "The Seer", tipo: "disco", n: "Dos horas de rock hipnótico." },
         { a: 2013, art: "SOPHIE", t: "Bipp", n: "Pop de plástico, burbujas y látex: una pionera del hyperpop." },
         { a: 2018, art: "JPEGMAFIA", t: "Baby I'm Bleeding", n: "Rap cortado, samples rotos y mucha mala leche." },
+        { a: 2018, art: "The Garden", t: "Filthy Rabbit Hole", n: "Los gemelos de Orange County y su «vada vada», mezcla de punk y electrónica (año aproximado)." },
         { a: 2019, art: "100 gecs", t: "money machine", n: "Hyperpop: emo, dubstep y ska en dos minutos. «Hey, you little piss baby»." },
         { a: 2019, art: "Lingua Ignota", t: "Do You Doubt Me Traitor", n: "Lingua Ignota mezcla ópera, ruido y gritos en una canción sobre el maltrato." },
         { a: 2019, art: "Dorian Electra", t: "Flamboyant", n: "Hyperpop queer: Dorian se burla de la masculinidad vestido de traje." },

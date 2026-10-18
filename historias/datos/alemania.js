@@ -84,6 +84,7 @@ HISTORIAS.push({
         { a: 1997, art: "Sweetbox", t: "Everything's Gonna Be Alright", n: "Rap y R&B sobre el «Aria» de Bach." },
         { a: 1998, art: "Scooter", t: "How Much Is the Fish?", n: "Hard trance y gritos: kitsch glorioso." },
         { a: 1998, art: "Liquido", t: "Narcotic", n: "El riff de teclado que se oyó en todas partes en el 98." },
+        { a: 2005, art: "Rammstein", t: "Te quiero puta!", n: "Rammstein en español, con trompetas de mariachi y letra procaz." },
         { a: 2008, art: "Paul Kalkbrenner", t: "Sky and Sand", n: "De la película «Berlin Calling»: el himno del Berlín de los clubs." },
         { a: 2008, art: "Peter Fox", t: "Haus am See", n: "Pop con orquesta y rap: un clásico moderno." },
         { a: 2019, art: "Apache 207", t: "Roller", n: "El rap alemán actual, número uno durante semanas." }

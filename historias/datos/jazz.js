@@ -68,11 +68,13 @@ HISTORIAS.push({
       items: [
         { a: 1961, art: "Bill Evans Trio", t: "Waltz for Debby", n: "El piano más delicado del jazz." },
         { a: 1961, art: "John Coltrane", t: "My Favorite Things", n: "Una canción de «Sonrisas y lágrimas» convertida en trance." },
+        { a: 1963, art: "Duke Ellington & John Coltrane", t: "In a Sentimental Mood", n: "El encuentro de dos generaciones, en una toma de una delicadeza única." },
         { a: 1964, art: "Herbie Hancock", t: "Cantaloupe Island", n: "Jazz con groove de Blue Note." },
         { a: 1966, art: "Wayne Shorter", t: "Footprints", n: "Un estándar moderno del saxofonista de Miles Davis y Weather Report." },
         { a: 1967, art: "Muere John Coltrane", t: "El jazz pierde a su santo", tipo: "hito", n: "Muere con 40 años; en San Francisco una iglesia lo venera como santo." },
         { a: 1977, art: "Weather Report", t: "Birdland", n: "La fusión en las listas: un homenaje al club de Nueva York de Charlie Parker." },
         { a: 1987, art: "Pat Metheny Group", t: "Last Train Home", n: "Guitarra y un tren que no para." },
+        { a: 2004, art: "Steve Lehman Quartet", t: "Interface D", n: "Del disco «Interface» del saxofonista neoyorquino, jazz de vanguardia (año aproximado)." },
         { a: 2008, art: "Esperanza Spalding", t: "I Know You Know", n: "La contrabajista que ganó el Grammy a artista revelación." },
         { a: 2012, art: "Robert Glasper Experiment feat. Erykah Badu", t: "Afro Blue", n: "Jazz, soul y hip hop: el disco «Black Radio» ganó un Grammy de R&B." },
         { a: 2015, art: "Kamasi Washington", t: "The Rhythm Changes", n: "El jazz espiritual vuelve." }

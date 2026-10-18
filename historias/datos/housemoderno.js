@@ -26,6 +26,7 @@ HISTORIAS.push({
         { a: 2015, art: "Eric Prydz", t: "Opus", n: "Nueve minutos que crecen sin parar: un himno moderno." },
         { a: 2015, art: "Axwell Λ Ingrosso", t: "Sun Is Shining", n: "Después de Swedish House Mafia." },
         { a: 2015, art: "Eric Prydz", t: "Generate", n: "Uno de sus temas de festival." },
+        { a: 2015, art: "Sunnery James & Ryan Marciano & Miri Ben-Ari", t: "One Life", n: "Los holandeses con la violinista israelí (año aproximado)." },
         { a: 2016, art: "Joyryde", t: "Hot Drum", n: "Bass house del productor británico: graves sucios y coches de carreras." },
         { a: 2016, art: "Eric Prydz & Rob Swire", t: "Breathe", n: "Del disco «Opus», con la voz de Rob Swire, de Pendulum y Knife Party." },
         { a: 2016, art: "Eric Prydz", t: "Every Day", n: "De «Opus»: el sueco de «Call on Me» en su faceta más épica." },

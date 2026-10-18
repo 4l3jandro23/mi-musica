@@ -41,6 +41,7 @@ HISTORIAS.push({
         { a: 1992, art: "Swervedriver", t: "Duel", q: "Swervedriver Duel", n: "Shoegaze con más rock y motores." },
         { a: 1992, art: "Ride", t: "Twisterella", n: "El pop de Ride, el grupo de Oxford que luego tuvo a un miembro en Oasis." },
         { a: 1992, art: "Curve", t: "Fait Accompli", n: "Shoegaze con electrónica." },
+        { a: 1992, art: "Swervedriver", t: "Duress", n: "Shoegaze de Oxford con más rock y velocidad que sus compañeros." },
         { a: 1993, art: "El britpop", t: "Barre al shoegaze", tipo: "hito", n: "La prensa británica se pasa a Oasis y Blur." },
         { a: 1993, art: "Slowdive", t: "Alison", n: "La prensa los destrozó y su discográfica los echó. Hoy son de lo más escuchado del género." },
         { a: 1993, art: "Slowdive", t: "When the Sun Hits", n: "Slowdive en «Souvlaki»: muros de guitarra y una melodía que parece flotar." },
@@ -60,8 +61,10 @@ HISTORIAS.push({
         { a: 2012, art: "DIIV", t: "Doused", n: "El revival del nuevo siglo." },
         { a: 2013, art: "My Bloody Valentine", t: "new you", n: "El regreso de MBV con «m b v», 22 años después de «Loveless»." },
         { a: 2015, art: "Beach House", t: "Space Song", n: "Dream pop que años después se volvió viral en TikTok." },
+        { a: 2016, art: "Nothing", t: "Vertigo Flowers", n: "El grupo de Filadelfia que mezcla hardcore y shoegaze." },
         { a: 2017, art: "Slowdive y Ride", t: "Vuelven con discos nuevos", tipo: "hito", n: "Veinte años después, mejor recibidos que nunca." },
         { a: 2017, art: "Slowdive", t: "Star Roving", n: "El regreso de Slowdive, más de 20 años después." },
+        { a: 2017, art: "Slowdive", t: "Sugar for the Pill", n: "El regreso de Slowdive tras veintidós años sin disco." },
         { a: 2024, art: "Wisp", t: "Your face", n: "El shoegaze de la Generación Z." }
       ]
     }

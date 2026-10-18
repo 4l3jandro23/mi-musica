@@ -119,6 +119,7 @@ HISTORIAS.push({
         { a: 2005, art: "System of a Down", t: "Violent Pornography", n: "Contra la tele que lo enseña todo." },
         { a: 2007, art: "Linkin Park", t: "What I've Done", n: "Producida por Rick Rubin: la de «Transformers»." },
         { a: 2008, art: "Slipknot", t: "Psychosocial", n: "Su single más famoso, nominado al Grammy." },
+        { a: 2008, art: "Avenged Sevenfold", t: "Malagueña Salerosa", n: "Versión metal del clásico mexicano, del recopilatorio «Diamonds in the Rough»." },
         { a: 2009, art: "Rage Against the Machine", t: "Número uno de Navidad", tipo: "hito", n: "Una campaña en Facebook lleva «Killing in the Name» al número uno de Navidad en el Reino Unido, por delante del ganador de The X Factor." },
         { a: 2010, art: "Linkin Park", t: "The Catalyst", n: "Del disco «A Thousand Suns», más electrónico." },
         { a: 2010, art: "Linkin Park", t: "Blackout", n: "Chester gritando sobre ritmos electrónicos." },

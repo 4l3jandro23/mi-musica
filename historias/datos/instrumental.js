@@ -27,6 +27,7 @@ HISTORIAS.push({
         { a: 1962, art: "Dick Dale & His Del-Tones", t: "Misirlou", n: "La guitarra surf que años después abrió «Pulp Fiction»." },
         { a: 1963, art: "Henry Mancini", t: "The Pink Panther Theme", n: "El saxo de la Pantera Rosa." },
         { a: 1965, art: "Herb Alpert & The Tijuana Brass", t: "A Taste of Honey", n: "Trompetas alegres: el «easy listening»." },
+        { a: 1965, art: "Herb Alpert & The Tijuana Brass", t: "Spanish Flea", n: "La sintonía de mil concursos de la tele, de un trompetista que fundó el sello A&M." },
         { a: 1968, art: "Paul Mauriat", t: "L'amour est bleu", n: "Una orquesta francesa en el número uno de EE. UU." }
       ]
     },
@@ -54,9 +55,11 @@ HISTORIAS.push({
       intro: "Post-rock, lo-fi para estudiar y virtuosos de YouTube.",
       items: [
         { a: 1997, art: "Mogwai", t: "Mogwai Fear Satan", n: "El post-rock: calma, tormenta y calma." },
+        { a: 2001, art: "Mogwai", t: "Take Me Somewhere Nice", n: "Una de las pocas canciones con voz de los escoceses del post-rock." },
         { a: 2003, art: "Explosions in the Sky", t: "Your Hand in Mine", n: "Guitarras que crecen hasta emocionar." },
         { a: 2004, art: "Nujabes", t: "Aruarian Dance", n: "De «Samurai Champloo»: el padre del lo-fi hip hop." },
         { a: 2004, art: "Ludovico Einaudi", t: "Nuvole Bianche", n: "El piano más escuchado del siglo XXI." },
+        { a: 2004, art: "Joe Satriani", t: "If I Could Fly", n: "Una balada de guitarra del virtuoso que enseñó a Steve Vai y a Kirk Hammett." },
         { a: 2006, art: "Rodrigo y Gabriela", t: "Tamacun", n: "Dos guitarras mexicanas que venían del heavy metal." },
         { a: 2006, art: "Carly Comando", t: "Everyday", n: "La música del vídeo de Noah Kalina, que se hizo una foto cada día durante años." },
         { a: 2010, art: "Bonobo", t: "Kiara", n: "Electrónica orgánica para viajar." },

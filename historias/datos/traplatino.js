@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "traplatino",
   familia: "Latino",
   titulo: "Historia del trap latino",
-  periodo: "2015 – 2023",
+  periodo: "2015 – 2024",
   color: "#9b3fd1",
   lema: "De SoundCloud en Puerto Rico a Argentina, México y el número uno mundial.",
   intro: "Hacia 2015, en Puerto Rico, una generación cansada del reguetón de discoteca adopta el sonido de Atlanta: 808, autotune y letras crudas. Lo suben a SoundCloud, las grandes discográficas lo descubren y en pocos años el trap latino lo cambia todo: de Bad Bunny al trap argentino y los corridos tumbados de México.",
@@ -27,7 +27,10 @@ HISTORIAS.push({
         { a: 2018, art: "Cardi B", t: "I Like It", n: "Con Bad Bunny y J Balvin: el trap latino llega al número uno de Estados Unidos." },
         { a: 2018, art: "Ozuna", t: "Te vas", n: "Ozuna mezcla trap y R&B en una despedida." },
         { a: 2018, art: "Bad Bunny", t: "Amorfoda", n: "Trap triste: «no quiero que más nadie me hable de amor»." },
-        { a: 2018, art: "Anuel AA, Ozuna & Romeo Santos", t: "Brindemos", n: "Trap y R&B con el rey de la bachata." }
+        { a: 2018, art: "Anuel AA, Ozuna & Romeo Santos", t: "Brindemos", n: "Trap y R&B con el rey de la bachata." },
+        { a: 2018, art: "YSY A, Duki & Neo Pistea", t: "Vuelta a la Luna (Remix)", n: "El trío que salió de las batallas de El Quinto Escalón (año aproximado)." },
+        { a: 2018, art: "Neo Pistea, Duki, YSY A, Cazzu, KHEA & más", t: "Tumbando el Club (Remix)", n: "La posse de 2018 que reunió a toda la primera ola del trap argentino." },
+        { a: 2018, art: "Duki, C. Tangana, KHEA & Leebrian", t: "It's a Vibe", n: "Argentina, Madrid y Puerto Rico en el mismo trap (año aproximado)." }
       ]
     },
     {
@@ -43,16 +46,44 @@ HISTORIAS.push({
         { a: 2019, art: "Natanael Cano", t: "Soy el Diablo", n: "Desde México, los corridos tumbados: guitarras de corrido con letras de trap." },
         { a: 2019, art: "Duki", t: "Goteo", n: "Duki, de Buenos Aires, uno de los grandes del trap argentino." },
         { a: 2019, art: "Jhay Cortez", t: "No me conoce", n: "Con J Balvin y Bad Bunny en el remix." },
+        { a: 2019, art: "Duki & Obie Wanshot", t: "H.I.E.L.O.", n: "Del disco «Súper Sangre Joven» (año aproximado)." },
+        { a: 2019, art: "Duki & Alemán", t: "Me Gusta Lo Simple", n: "Duki con el rapero mexicano Alemán (año aproximado)." },
         { a: 2020, art: "Trueno", t: "Mamichula", n: "Con Nicki Nicole: el campeón de freestyle de La Boca en el pop." },
         { a: 2020, art: "Duki", t: "Givenchy", n: "El trap argentino del pibe que salió de las batallas de rap de El Quinto Escalón." },
         { a: 2020, art: "Myke Towers", t: "Diosa", n: "El trap boricua de Myke Towers, con su voz grave." },
+        { a: 2020, art: "Duki, De La Ghetto & Quevedo", t: "Si Quieren Frontear", n: "Duki junto a un pionero del reguetón y a Quevedo antes de su explosión (año aproximado)." },
         { a: 2022, art: "Bad Bunny", t: "El artista más escuchado del mundo en Spotify", tipo: "hito", n: "Tres años seguidos, cantando en español." },
         { a: 2022, art: "Bizarrap", t: "Duki: Bzrp Music Sessions, Vol. 50", q: "Bizarrap Duki Music Sessions 50", n: "Las «sesiones» de un productor argentino en su habitación se convierten en un fenómeno mundial." },
         { a: 2022, art: "Young Miko", t: "Riri", n: "Trap boricua de la rapera que canta a otras mujeres sin esconderlo." },
         { a: 2022, art: "Trueno", t: "Dance Crip", n: "Rap y trap argentino de La Boca, con un baile de los 90." },
+        { a: 2022, art: "Polimá Westcoast & Pailita", t: "ULTRA SOLO", n: "El éxito chileno de 2022, con remix de Feid, Paloma Mami y De La Ghetto." },
         { a: 2023, art: "Eladio Carrión", t: "Coco Chanel", n: "Con Bad Bunny: el trap latino, ya convertido en la música más escuchada del planeta." },
         { a: 2023, art: "Peso Pluma & Eslabón Armado", t: "Ella baila sola", n: "Los corridos tumbados llegan a lo más alto del mundo: número uno global en Spotify." },
-        { a: 2023, art: "Eladio Carrión", t: "Kemba Walker", n: "Con Bad Bunny: dos boricuas y un jugador de baloncesto en el título." }
+        { a: 2023, art: "Eladio Carrión", t: "Kemba Walker", n: "Con Bad Bunny: dos boricuas y un jugador de baloncesto en el título." },
+        { a: 2023, art: "Duki & ByMonkid", t: "Marca de la Cadena", n: "Del disco «Antes de Ameri» (año aproximado)." },
+        { a: 2023, art: "Duki & Asan", t: "Luna", n: "Del disco «Antes de Ameri» (año aproximado)." }
+      ]
+    },
+    {
+      titulo: "CA7RIEL & Paco Amoroso y la nueva Argentina",
+      corto: "Ca7riel y Paco",
+      periodo: "2022 – 2024",
+      intro: "Después de Duki, la escena argentina se expande: chicas al frente, rap de autor, cumbia y el dúo más loco del Tiny Desk.",
+      items: [
+        { a: 2022, art: "Kaleb Di Masi & Omar Varela", t: "Hace Calor", n: "Cumbia-trap argentina que se hizo viral y tuvo remix con Sfera Ebbasta." },
+        { a: 2023, art: "LIT killah, Tiago PZK, Maria Becerra, Duki, Emilia, Rusherking, Big One & FMK", t: "Los del Espacio", n: "La posse que reúne a la generación entera del trap argentino en una canción." },
+        { a: 2023, art: "Emilia & TINI", t: "La_Original.mp3", n: "Del disco «.mp3» de Emilia: pop y cumbia de los 2000 reciclados." },
+        { a: 2023, art: "Emilia, LUDMILLA & ZECCA", t: "No_se_ve.mp3", n: "Emilia con la brasileña Ludmilla: funk carioca y pop argentino." },
+        { a: 2023, art: "Milo j & Taiu", t: "Rara Vez", n: "El chico de Morón que con 16 años llegó a lo más alto de las listas argentinas." },
+        { a: 2023, art: "Dillom", t: "Cirugía", n: "De «Post Mortem»: el rapero argentino más punk de su generación (año aproximado)." },
+        { a: 2024, art: "NPR", t: "El Tiny Desk de CA7RIEL & Paco Amoroso", tipo: "hito", n: "Su concierto para NPR se convierte en uno de los más vistos de la serie y los lleva a girar por todo el mundo." },
+        { a: 2024, art: "CA7RIEL & Paco Amoroso", t: "DUMBAI (Tiny Desk)", n: "De ese Tiny Desk: funk, rap y teatro con una banda de primera." },
+        { a: 2024, art: "CA7RIEL & Paco Amoroso", t: "#TETAS", n: "Del disco «Papota»: provocación, humor y producción impecable (año aproximado)." },
+        { a: 2024, art: "CA7RIEL & Paco Amoroso", t: "No Me Sirve Más", n: "Otro tema de su gran año 2024 (año aproximado)." },
+        { a: 2024, art: "Nicki Nicole & Rels B", t: "qué le pasa conmigo?", n: "La rosarina junto al mallorquín Rels B (año aproximado)." },
+        { a: 2024, art: "LiL CaKe, Migrantes & Nico Valdi", t: "MERCHO", n: "Cumbia de fiesta argentina que fue el viral del verano austral (año aproximado)." },
+        { a: 2024, art: "Duki & Bizarrap", t: "Malbec", n: "Duki y Bizarrap, los dos nombres que sacaron el trap argentino al mundo (año aproximado)." },
+        { a: 2024, art: "Duki & JHAYCO", t: "RoCKSTAR 2.0", n: "Segunda parte de su clásico, ya con estadios llenos (año aproximado)." }
       ]
     }
   ]

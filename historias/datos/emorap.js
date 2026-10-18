@@ -56,6 +56,7 @@ HISTORIAS.push({
         { a: 2018, art: "Juice WRLD", t: "Robbery", n: "Juice WRLD, de Chicago, con su mezcla de melodía pop y desamor." },
         { a: 2018, art: "Juice WRLD", t: "Legends", n: "Juice WRLD, tras la muerte de XXXTentacion y Lil Peep: «nadie llega a los 27»." },
         { a: 2018, art: "XXXTentacion", t: "Moonlight", n: "Su último gran éxito antes de morir asesinado en 2018." },
+        { a: 2018, art: "Craig Xen & XXXTENTACION", t: "RUN IT BACK!", n: "Del círculo de XXXTENTACION, con su rap de rabia y guitarras (año aproximado)." },
         { a: 2019, art: "Juice WRLD", t: "Muere a los 21 años", tipo: "hito", n: "Una convulsión al bajar de un avión en Chicago." },
         { a: 2019, art: "Lil Peep & XXXTentacion", t: "Falling Down", n: "Una canción póstuma de los dos, grabada por separado: el emo rap mira hacia atrás." },
         { a: 2019, art: "Juice WRLD & YoungBoy Never Broke Again", t: "Bandit", n: "Emo rap con un sample de Don Toliver: entró en el top 10 de EE. UU." },

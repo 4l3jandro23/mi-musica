@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "newwave",
   familia: "Rock",
   titulo: "Historia de la new wave",
-  periodo: "1977 – 1989",
+  periodo: "1977 – 2021",
   color: "#1fa3a3",
   lema: "Después del punk: sintetizadores, flequillos, MTV y la Movida madrileña.",
   intro: "Tras el punk, muchos grupos se quedan con su energía pero añaden melodías, sintetizadores, ironía y estilo. Es la «new wave»: del pop nervioso de 1977 al synth-pop que domina la MTV en los 80. En España, su versión es la Movida.",
@@ -33,7 +33,7 @@ HISTORIAS.push({
     {
       titulo: "El synth-pop y la MTV",
       corto: "Synth-pop",
-      periodo: "1981 – 1989",
+      periodo: "1981 – 2021",
       intro: "Vídeos, sintetizadores baratos y peinados enormes.",
       items: [
         { a: 1981, art: "MTV", t: "Empieza a emitir", tipo: "hito", n: "1 de agosto: «Video Killed the Radio Star» es el primer vídeo. La imagen ya importa tanto como la música." },
@@ -43,6 +43,7 @@ HISTORIAS.push({
         { a: 1981, art: "Adam and the Ants", t: "Stand and Deliver", n: "Piratas, pinturas de guerra y dos baterías: número uno en Reino Unido." },
         { a: 1981, art: "The Psychedelic Furs", t: "Pretty in Pink", n: "La película vino después." },
         { a: 1981, art: "Men at Work", t: "Who Can It Be Now?", n: "El saxo paranoico de los australianos: número uno en EE. UU." },
+        { a: 1981, art: "Japan", t: "Ghosts", n: "El single más extraño en llegar al top 5 británico: casi sin ritmo, solo voz y sintetizador." },
         { a: 1982, art: "Duran Duran", t: "Hungry Like the Wolf", n: "Vídeos rodados como películas: la MTV los adora." },
         { a: 1982, art: "A Flock of Seagulls", t: "I Ran (So Far Away)", n: "Más famosos por el peinado que por la canción." },
         { a: 1982, art: "Mecano", t: "Me colé en una fiesta", n: "El tecnopop español en las radios de todo el país." },
@@ -64,8 +65,10 @@ HISTORIAS.push({
         { a: 1985, art: "Paul Young", t: "Every Time You Go Away", n: "La de Hall & Oates en versión de Paul Young: número uno en EE. UU." },
         { a: 1986, art: "Alaska y Dinarama", t: "A quién le importa", n: "Himno de la libertad y del orgullo en España." },
         { a: 1986, art: "Cutting Crew", t: "(I Just) Died in Your Arms", n: "Una balada de power pop: número uno en EE. UU." },
+        { a: 1987, art: "INXS", t: "Need You Tonight", n: "Michael Hutchence y un riff de guitarra con funk: número uno en EE. UU." },
         { a: 1988, art: "Fine Young Cannibals", t: "She Drives Me Crazy", n: "La voz aguda de Roland Gift y una caja de ritmos que suena a bofetada." },
-        { a: 1989, art: "The B-52's", t: "Love Shack", n: "La fiesta en una cabaña de Georgia: su mayor éxito." }
+        { a: 1989, art: "The B-52's", t: "Love Shack", n: "La fiesta en una cabaña de Georgia: su mayor éxito." },
+        { a: 2021, art: "Elvis Costello & Juanes", t: "Pump It Up", n: "Del proyecto «Spanish Model», que rehízo su disco de 1978 con cantantes en español." }
       ]
     }
   ]

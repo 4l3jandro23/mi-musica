@@ -36,6 +36,8 @@
     izq: '<path d="M15 18l-6-6 6-6"/>',
     der: '<path d="M9 18l6-6-6-6"/>',
     hito: '<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
+    quitar: '<path d="M17 7 7 17M7 7l10 10"/>',
+    deshacer: '<path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/>',
     chispa: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>',
     reloj: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
     mando: '<rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="16" cy="11.5" r="1"/><circle cx="18" cy="14" r="1"/>',
@@ -108,20 +110,45 @@
     return s.charAt(0).toUpperCase() + s.slice(1);
   };
   // Historias añadidas hace poco (salen en «Novedades» y con la etiqueta «Nueva»)
-  const NUEVAS = ['radiohead', 'bowie', 'moby', 'colon', 'daftpunk', 'himnos', 'abba', 'spinnin', 'swing', 'bebop', 'cooljazz', 'hardbop', 'freejazz', 'fusion', 'jazzlatino', 'vocesjazz', 'musicales', 'disney', 'anime'];
+  const NUEVAS = ['queen'];
   const leer = (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } };
   const guardar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
 
   let _t;
-  function toast(txt) {
-    const t = $('#toast'); t.textContent = txt; t.classList.add('ver');
-    clearTimeout(_t); _t = setTimeout(() => t.classList.remove('ver'), 2200);
+  // acc (opcional): {txt, fn} pinta un botón dentro del aviso, p. ej. «Deshacer»
+  function toast(txt, acc) {
+    const t = $('#toast'); t.textContent = txt; t.classList.add('ver'); t.classList.toggle('con-acc', !!acc);
+    if (acc) {
+      const b = document.createElement('button'); b.type = 'button'; b.innerHTML = ic('deshacer') + esc(acc.txt);
+      b.onclick = () => { t.classList.remove('ver'); acc.fn(); }; t.append(b);
+    }
+    clearTimeout(_t); _t = setTimeout(() => t.classList.remove('ver'), acc ? 6000 : 2200);
   }
 
   /* ---------- escuchadas (en este aparato) ---------- */
   const OIDAS = new Set(leer(K_OIDAS, []));
   const clave = (h, i) => h.id + '|' + i.art + '|' + i.t;
   const oidas = (h) => escuchables(h).filter((i) => OIDAS.has(clave(h, i))).length;
+
+  /* ---------- canciones quitadas (en este aparato) ----------
+     Se guardan con la misma clave que las escuchadas. Se sacan de los capítulos al cargar,
+     así que no salen en ningún sitio: listas, búsqueda, cronología, juego ni recuentos. */
+  const K_QUITADAS = 'historias_quitadas_v1';
+  const QUITADAS = new Set(leer(K_QUITADAS, []));
+  const ORIG = new Map(H.map((h) => [h.id, h.capitulos.map((c) => c.items.slice())]));
+  function aplicarQuitadas() {
+    H.forEach((h) => ORIG.get(h.id).forEach((items, k) => {
+      h.capitulos[k].items = items.filter((i) => i.tipo === 'hito' || !QUITADAS.has(clave(h, i)));
+    }));
+  }
+  const quitadasDe = (h) => ORIG.get(h.id).flat().filter((i) => i.tipo !== 'hito' && QUITADAS.has(clave(h, i)));
+  function quitar(k, fuera) {
+    fuera ? QUITADAS.add(k) : QUITADAS.delete(k);
+    guardar(K_QUITADAS, [...QUITADAS]);
+    aplicarQuitadas();
+    ruta(true);
+  }
+  aplicarQuitadas();
 
   /* ---------- «la tienes»: lo que la Fonoteca guardó en este aparato ---------- */
   const normT = (s) => norm(String(s || '').replace(/\s[-–]\s.*$/, '').replace(/[([].*?[)\]]/g, ''))
@@ -226,7 +253,7 @@
       (laTienes(i) ? ' <span class="tuya">la tienes</span>' : '') + '</div>' + (extra || '') +
       (i.n ? '<p class="nota">' + marcar(i.n, terms) + '</p>' : '') + '</div>' +
       '<div class="acc"><button class="oida' + (oida ? ' on' : '') + '" data-k="' + esc(k) + '" title="' + (oida ? 'Escuchada' : 'Marcar como escuchada') + '" aria-label="Escuchada" aria-pressed="' + oida + '">' + ic('check') + '</button>' +
-      enlaces(i) + '</div></li>';
+      enlaces(i) + (h.ranking ? '' : '<button class="quitar" data-q="' + esc(k) + '" title="Quitar de esta historia" aria-label="Quitar de esta historia">' + ic('quitar') + '</button>') + '</div></li>';
   }
 
   function progreso(h) {
@@ -347,6 +374,17 @@
   }
 
   let espia = null;
+  // Lo que has quitado de esta historia, para recuperarlo o pasarme la lista
+  function quitadasHtml(h) {
+    const q = quitadasDe(h);
+    if (!q.length) return '';
+    return '<details class="quitadas" style="--tinte:' + h.color + '"><summary>' + ic('quitar') + 'Has quitado ' + q.length + ' canci' + (q.length === 1 ? 'ón' : 'ones') + ' de esta historia</summary>' +
+      '<p>Solo se ocultan en este aparato. Si quieres que desaparezcan de la web para siempre, copia la lista y pásamela.</p>' +
+      '<ul>' + q.map((i) => '<li><span><b>' + esc(i.t) + '</b> · ' + esc(i.art) + ' · ' + esc(fa(i.a)) + '</span>' +
+        '<button class="btn sm" data-volver="' + esc(clave(h, i)) + '">' + ic('deshacer') + 'Recuperar</button></li>').join('') + '</ul>' +
+      '<button class="btn sm" id="copiarQuitadas">' + ic('copia') + 'Copiar la lista</button></details>';
+  }
+
   function historia(h) {
     main.onclick = null;
     lado(h.id);
@@ -382,8 +420,14 @@
           '<h2>' + esc(c.titulo) + '</h2>' + (c.intro ? '<p>' + esc(c.intro) + '</p>' : '') + '</div></header>' +
           '<ol class="lista">' + c.items.map((i) => fila(i, h, null, '', i.tipo === 'hito' ? '' : (varios ? L : '') + (++n))).join('') + '</ol></section>';
       }).join('') +
+      quitadasHtml(h) +
       '<div class="nav-fin">' + (ant ? '<a class="siguiente ant" href="#h/' + ant.id + '" style="--c:' + ant.color + '">' + ic('atras') + '<span><span class="eti">Anterior en ' + esc(h.familia) + '</span><b>' + esc(ant.titulo) + '</b></span></a>' : '') +
       '<a class="siguiente" href="#h/' + sig.id + '" style="--c:' + sig.color + '"><span><span class="eti">Siguiente' + (fam.length > 1 ? ' en ' + esc(h.familia) : ' historia') + '</span><b>' + esc(sig.titulo) + '</b></span>' + ic('sig') + '</a></div>';
+    const cq = $('#copiarQuitadas');
+    if (cq) cq.onclick = () => {
+      const txt = 'Quitar de «' + h.titulo + '» (' + h.id + '):\n' + quitadasDe(h).map((i) => i.art + ' — ' + i.t).join('\n');
+      navigator.clipboard.writeText(txt).then(() => toast('Lista copiada'), () => toast('No se pudo copiar'));
+    };
     $('#copiar').onclick = () => {
       const txt = escuchables(h).map((i) => fa(i.a) + ' · ' + i.art + ' — ' + i.t).join('\n');
       navigator.clipboard.writeText(txt).then(() => toast('Lista copiada'), () => toast('No se pudo copiar'));
@@ -577,6 +621,15 @@
 
   // Marcar o desmarcar una pieza como escuchada
   main.addEventListener('click', (e) => {
+    const qb = e.target.closest('.quitar');
+    if (qb) {
+      const k = qb.dataset.q, row = qb.closest('.row');
+      const hecho = () => { quitar(k, true); toast('Canción quitada', { txt: 'Deshacer', fn: () => quitar(k, false) }); };
+      if (MOV && row) { row.classList.add('saliendo'); setTimeout(hecho, 220); } else hecho();
+      return;
+    }
+    const vb = e.target.closest('[data-volver]');
+    if (vb) { quitar(vb.dataset.volver, false); toast('Canción recuperada'); return; }
     const b = e.target.closest('.oida'); if (!b) return;
     const k = b.dataset.k, on = !OIDAS.has(k);
     on ? OIDAS.add(k) : OIDAS.delete(k);

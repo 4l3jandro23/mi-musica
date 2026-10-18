@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "reggaeton",
   familia: "Latino",
   titulo: "Orígenes del reguetón",
-  periodo: "1990 – 2022",
+  periodo: "1990 – 2023",
   color: "#e0a21b",
   lema: "Del dancehall jamaicano al «Gasolina»: Panamá, el underground de San Juan y el boom.",
   intro: "Un ritmo jamaicano, el dembow, cruza a Panamá, donde se canta en español, y llega a Puerto Rico. Allí se mezcla con el rap en los caseríos y las cintas «underground». Lo persiguieron por obsceno y acabó conquistando el mundo.",
@@ -139,7 +139,7 @@ HISTORIAS.push({
     {
       titulo: "Medellín, trap y el mundo",
       corto: "Medellín y el mundo",
-      periodo: "2014 – 2022",
+      periodo: "2014 – 2023",
       intro: "2014 – 2022: J Balvin, Maluma, Ozuna, Bad Bunny y Karol G llevan el reguetón a lo más alto de las listas mundiales.",
       items: [
         { a: 2014, art: "Medellín", t: "La nueva capital del reguetón", n: "J Balvin, Maluma y los productores de Medellín suavizan el reguetón y lo llevan al pop: Colombia toma el relevo de Puerto Rico.", tipo: "hito" },
@@ -162,13 +162,18 @@ HISTORIAS.push({
         { a: 2016, art: "Ozuna & Juanka", t: "Si te dejas llevar", n: "Ozuna antes de ser estrella mundial." },
         { a: 2016, art: "Nicky Jam", t: "Descontrol", n: "De «Fénix», su gran regreso (año aproximado)." },
         { a: 2016, art: "Anuel AA, Daddy Yankee, Zion & Lennox, Farruko & Wisin", t: "Sola (Remix)", n: "El trap de Anuel convertido en reguetón con todos." },
+        { a: 2016, art: "Cosculluela", t: "Prrrum", n: "El «Príncipe» boricua y su grito de guerra convertido en canción (año aproximado)." },
         { a: 2017, art: "Despacito", t: "El vídeo más visto de YouTube", tipo: "hito", n: "Luis Fonsi y Daddy Yankee superan a todos: el reguetón es la música más escuchada del mundo." },
         { a: 2017, art: "J Balvin & Willy William", t: "Mi gente", n: "Reguetón global sobre un tema del francés Willy William; luego llegó el remix con Beyoncé." },
         { a: 2017, art: "Bryant Myers", t: "En qué país", n: "El trap y el reguetón de Bryant Myers (año aproximado)." },
+        { a: 2018, art: "Tory Lanez & Ozuna", t: "Pa Mí", n: "El canadiense Tory Lanez canta en español con Ozuna (año aproximado)." },
+        { a: 2019, art: "Tyga, J Balvin & Chris Brown", t: "Haute", n: "Rap de la Costa Oeste con J Balvin en pleno boom latino." },
+        { a: 2019, art: "Scott Storch, Ozuna & Tyga", t: "Fuego Del Calor", n: "El productor de «Lean Back» se pasa al reguetón con Ozuna." },
         { a: 2020, art: "Bad Bunny & Jhay Cortez", t: "Dákiti", n: "Perreo electrónico y casi susurrado: número uno en la lista global de Spotify." },
         { a: 2022, art: "KAROL G", t: "Provenza", n: "Reguetón suave con aire de bossa: la canción del verano de 2022." },
         { a: 2022, art: "iZaak, Luar La L & Omar Courtz", t: "Bonnie and Clyde (Remix)", n: "El reguetón de la nueva generación de Puerto Rico (año aproximado)." },
-        { a: 2022, art: "Kafu Banton & Bad Gyal", t: "Tú eres un bom bom (Remix)", n: "Un clásico del reggae en español de Panamá, con Bad Gyal (año aproximado)." }
+        { a: 2022, art: "Kafu Banton & Bad Gyal", t: "Tú eres un bom bom (Remix)", n: "Un clásico del reggae en español de Panamá, con Bad Gyal (año aproximado)." },
+        { a: 2023, art: "Luar La L", t: "Caile", n: "El boricua del underground que se hizo viral con su voz grave (año aproximado)." }
       ]
     }
   ]

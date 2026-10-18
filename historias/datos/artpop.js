@@ -18,11 +18,13 @@ HISTORIAS.push({
         { a: 1967, art: "The Velvet Underground & Nico", t: "Femme Fatale", n: "Producido por Andy Warhol, con un plátano en la portada." },
         { a: 1967, art: "The Beatles", t: "A Day in the Life", n: "La canción que cierra «Sgt. Pepper's»: el pop se convierte en arte con una orquesta en caos." },
         { a: 1977, art: "David Bowie", t: "Heroes", n: "Grabada en Berlín junto al Muro, con Brian Eno." },
+        { a: 1977, art: "Peter Gabriel", t: "Solsbury Hill", n: "Su primer single tras dejar Genesis: una colina de Somerset y la decisión de irse del grupo." },
         { a: 1978, art: "Kate Bush", t: "Wuthering Heights", n: "Con 19 años y una novela de Emily Brontë: la primera mujer en llegar al número uno británico con una canción propia." },
         { a: 1979, art: "Talking Heads", t: "Life During Wartime", n: "David Byrne y su new wave nerviosa e intelectual." },
         { a: 1981, art: "Kate Bush", t: "Sat in Your Lap", n: "Kate Bush produce ella sola su música: tambores, coros y rarezas." },
         { a: 1981, art: "Grace Jones", t: "Pull Up to the Bumper", n: "Funk, reggae y una estética imposible." },
         { a: 1982, art: "Laurie Anderson", t: "Big Science", n: "Arte de performance hecho pop." },
+        { a: 1982, art: "Roxy Music", t: "More Than This", n: "De «Avalon», el último disco de Roxy Music; Bill Murray la canta en «Lost in Translation»." },
         { a: 1985, art: "Kate Bush", t: "Running Up That Hill (A Deal with God)", n: "Volvió al número uno en 2022 gracias a «Stranger Things»." },
         { a: 1985, art: "Talk Talk", t: "Life's What You Make It", n: "Antes de su giro experimental." },
         { a: 1986, art: "Peter Gabriel", t: "Sledgehammer", n: "Animación fotograma a fotograma." }

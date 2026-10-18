@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "popespanol",
   familia: "España",
   titulo: "Pop en España",
-  periodo: "1964 – 2022",
+  periodo: "1964 – 2023",
   color: "#ff7a59",
   lema: "Del ye-yé a Aitana y Rosalía: sesenta años de pop en español hecho en España.",
   intro: "El pop llega a España en los 60 con los grupos ye-yé que imitaban a los Beatles. Después vinieron los cantantes melódicos de los 70, la Movida y el pop de los 80, los 90 de Alejandro Sanz y Jarabe de Palo, Operación Triunfo y, ya en el siglo XXI, Rosalía y C. Tangana llevando el pop español al mundo.",
@@ -61,14 +61,16 @@ HISTORIAS.push({
         { a: 1996, art: "Jarabe de Palo", t: "La flaca", n: "Un anuncio de Ron Bacardí la hizo eterna." },
         { a: 1996, art: "Ella Baila Sola", t: "Lo echamos a suertes", n: "Dos amigas con guitarras." },
         { a: 1997, art: "Alejandro Sanz", t: "Corazón partío", n: "El disco más vendido de la historia de España." },
+        { a: 1997, art: "Alejandro Sanz", t: "Regálame la silla donde te esperé", n: "Del disco «Más», el más vendido de la historia en España." },
         { a: 1998, art: "Malú", t: "Aprendiz", n: "Una canción de Alejandro Sanz." },
-        { a: 2000, art: "Mónica Naranjo", t: "Sobreviviré", n: "Mónica Naranjo, la diva del pop español, con su versión de un tema de Mina y una voz sin límites." }
+        { a: 2000, art: "Mónica Naranjo", t: "Sobreviviré", n: "Mónica Naranjo, la diva del pop español, con su versión de un tema de Mina y una voz sin límites." },
+        { a: 2000, art: "David Civera", t: "Bye Bye", n: "Otro éxito de su primera época (año aproximado)." }
       ]
     },
     {
       titulo: "Siglo XXI",
       corto: "Siglo XXI",
-      periodo: "2001 – 2022",
+      periodo: "2001 – 2023",
       intro: "De OT a Rosalía.",
       items: [
         { a: 2001, art: "Operación Triunfo", t: "Paraliza España", tipo: "hito", n: "Un concurso de televisión fabrica estrellas del pop." },
@@ -76,12 +78,18 @@ HISTORIAS.push({
         { a: 2002, art: "David Bisbal", t: "Ave María", n: "El almeriense de la primera «Operación Triunfo»: rizos, latin pop y un éxito enorme." },
         { a: 2003, art: "La Oreja de Van Gogh", t: "Rosas", n: "El pop donostiarra con la voz de Amaia Montero, en su mejor momento." },
         { a: 2008, art: "Vetusta Morla", t: "Copenhague", n: "El indie llega a las masas." },
+        { a: 2008, art: "Nancys Rubias", t: "Me Encanta", n: "El grupo de Mario Vaquerizo con su electropop de purpurina (año aproximado)." },
         { a: 2010, art: "Pablo Alborán", t: "Solamente tú", n: "El malagueño que se hizo famoso con vídeos caseros en YouTube." },
         { a: 2018, art: "Aitana", t: "Teléfono", n: "La estrella pop de la generación post OT." },
         { a: 2018, art: "Rosalía", t: "Malamente", n: "El flamenco se convierte en pop global." },
+        { a: 2018, art: "Beret", t: "Lo siento", n: "El sevillano Beret salta de YouTube a las listas con un pop-rap de desamor (año aproximado)." },
+        { a: 2018, art: "Beret", t: "Si por mi fuera", n: "Otro de los temas que lo convirtieron en ídolo adolescente (año aproximado)." },
+        { a: 2019, art: "Aitana & Cali y El Dandee", t: "+ (Más)", n: "Aitana con los colombianos tras salir de OT." },
         { a: 2020, art: "C. Tangana", t: "Tú me dejaste de querer", n: "Con La Húngara y Niño de Elche: el pop español mira a sus raíces." },
         { a: 2022, art: "Chanel", t: "Tercera en Eurovisión con «SloMo»", tipo: "hito", n: "El mejor resultado de España en décadas." },
-        { a: 2022, art: "Rosalía", t: "Despechá", n: "Rosalía se pasa al mambo playero en 2022: la canción del verano de Motomami+." }
+        { a: 2022, art: "Rosalía", t: "Despechá", n: "Rosalía se pasa al mambo playero en 2022: la canción del verano de Motomami+." },
+        { a: 2022, art: "Beret & Estopa", t: "Diablo", n: "Beret junto a los hermanos de Cornellà (año aproximado)." },
+        { a: 2023, art: "Aitana", t: "LAS BABYS", n: "Pop de discoteca de «Alpha» (año aproximado)." }
       ]
     }
   ]

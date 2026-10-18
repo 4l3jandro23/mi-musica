@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "drill",
   familia: "Hip hop",
   titulo: "Drill",
-  periodo: "2011 – 2022",
+  periodo: "2011 – 2023",
   color: "#3d4d5c",
   lema: "De Chicago a Londres y Brooklyn: el rap más crudo de la calle.",
   intro: "El drill nació en el South Side de Chicago hacia 2011: ritmos oscuros y letras sobre violencia, cantadas por adolescentes. Londres lo adaptó con ritmos deslizantes, Brooklyn lo mezcló con el UK drill y hoy se rapea en medio mundo, también en España.",
@@ -51,7 +51,7 @@ HISTORIAS.push({
     {
       titulo: "Brooklyn y el mundo",
       corto: "Brooklyn",
-      periodo: "2019 – 2022",
+      periodo: "2019 – 2023",
       intro: "Pop Smoke, Fivio y el drill global.",
       items: [
         { a: 2019, art: "Pop Smoke", t: "Welcome to the Party", n: "Producida por 808Melo, un londinense: el drill cruza el Atlántico." },
@@ -62,7 +62,8 @@ HISTORIAS.push({
         { a: 2020, art: "Pop Smoke", t: "For the Night", n: "Con Lil Baby y DaBaby. Del disco póstumo de Pop Smoke, que fue número uno en EE. UU." },
         { a: 2022, art: "Ice Spice", t: "Munch (Feelin' U)", n: "El drill del Bronx se vuelve pop." },
         { a: 2022, art: "Central Cee", t: "Doja", n: "Un tema de minuto y medio que se hizo viral en TikTok: el UK drill llega al pop." },
-        { a: 2022, art: "Kay Flock", t: "Shake It", n: "Con Cardi B, Dougie B y Bory300. El drill del Bronx llega a las listas." }
+        { a: 2022, art: "Kay Flock", t: "Shake It", n: "Con Cardi B, Dougie B y Bory300. El drill del Bronx llega a las listas." },
+        { a: 2023, art: "Dave & Central Cee", t: "Sprinter", n: "Semanas en el número uno en Reino Unido: uno de los mayores éxitos del rap británico." }
       ]
     }
   ]

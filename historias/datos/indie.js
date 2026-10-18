@@ -10,19 +10,25 @@ HISTORIAS.push({
     {
       titulo: "Sellos independientes y college radio",
       corto: "Los 80 y 90",
-      periodo: "1978 – 1998",
+      periodo: "1978 – 2000",
       intro: "Sellos independientes, fanzines y radios universitarias.",
       items: [
         { a: 1978, art: "Rough Trade", t: "Una tienda de discos de Londres se convierte en sello", tipo: "hito", n: "Rough Trade nace como tienda en 1976 y se hace sello: publicará a The Smiths y definirá el indie británico." },
         { a: 1981, art: "R.E.M.", t: "Radio Free Europe", n: "Desde Georgia, las radios universitarias de EE. UU. crean un circuito alternativo." },
         { a: 1983, art: "The Smiths", t: "This Charming Man", n: "La guitarra de Johnny Marr y las letras de Morrissey, en el sello Rough Trade." },
         { a: 1986, art: "C86", t: "La cinta del NME", tipo: "hito", n: "Una cinta regalada con la revista NME da nombre al «indie pop» de guitarras." },
+        { a: 1988, art: "Dinosaur Jr.", t: "Freak Scene", n: "J Mascis y un solo de guitarra desbordado: rock indie con ruido." },
         { a: 1989, art: "The Stone Roses", t: "I Wanna Be Adored", n: "Manchester y el «Madchester»." },
+        { a: 1991, art: "Slint", t: "Good Morning, Captain", n: "Del disco «Spiderland», base del post-rock y del math rock." },
+        { a: 1993, art: "Red House Painters", t: "Katy Song", n: "El slowcore de Mark Kozelek: diez minutos de tristeza lenta." },
         { a: 1994, art: "Pavement", t: "Cut Your Hair", n: "El lo-fi americano: desenfado y guitarras desafinadas." },
+        { a: 1994, art: "Pavement", t: "Gold Soundz", n: "De «Crooked Rain, Crooked Rain»: el indie de los 90 en estado puro." },
         { a: 1995, art: "FIB", t: "Nace el Festival de Benicàssim", tipo: "hito", n: "El festival indie de España." },
         { a: 1998, art: "Belle and Sebastian", t: "The Boy with the Arab Strap", n: "Pop tímido y literario desde Glasgow." },
         { a: 1998, art: "Neutral Milk Hotel", t: "In the Aeroplane Over the Sea", n: "Casi desconocido al salir; hoy, un disco de culto." },
-        { a: 1998, art: "Los Planetas", t: "Segundo premio", n: "Desde Granada, el indie español de guitarras y tristeza." }
+        { a: 1998, art: "Los Planetas", t: "Segundo premio", n: "Desde Granada, el indie español de guitarras y tristeza." },
+        { a: 1999, art: "Built to Spill", t: "Carry the Zero", n: "Las guitarras de Doug Martsch en «Keep It Like a Secret»." },
+        { a: 2000, art: "The Hives", t: "Hate to Say I Told You So", n: "Los suecos de traje que se colaron en el revival de las guitarras." }
       ]
     },
     {
@@ -34,6 +40,7 @@ HISTORIAS.push({
         { a: 2001, art: "The Strokes", t: "Last Nite", n: "Cinco chavales de Nueva York que devolvieron el rock de guitarras a la moda." },
         { a: 2001, art: "The Shins", t: "New Slang", n: "La canción que cambia vidas en «Algo en común»." },
         { a: 2002, art: "Interpol", t: "Obstacle 1", n: "Post-punk neoyorquino con trajes y la voz grave de Paul Banks." },
+        { a: 2002, art: "The Flaming Lips", t: "Do You Realize??", n: "La canción oficial de Oklahoma desde 2009." },
         { a: 2003, art: "The White Stripes", t: "Seven Nation Army", n: "Un riff que hoy cantan todos los estadios de fútbol." },
         { a: 2003, art: "Yeah Yeah Yeahs", t: "Maps", n: "La balada indie de Karen O." },
         { a: 2003, art: "The Libertines", t: "Don't Look Back into the Sun", n: "Single suelto de Pete Doherty y Carl Barât en pleno caos." },
@@ -56,11 +63,15 @@ HISTORIAS.push({
         { a: 2008, art: "MGMT", t: "Electric Feel", n: "Psicodelia y baile: el falsete de Andrew VanWyngarden y un bajo de funk." },
         { a: 2008, art: "The Killers", t: "Human", n: "«Are we human or are we dancer?»: la frase más discutida del pop." },
         { a: 2008, art: "Carolina Liar", t: "I'm Not Over", n: "Pop rock de un estadounidense en Suecia." },
+        { a: 2008, art: "Kings of Leon", t: "Sex on Fire", n: "Su primer número uno en Reino Unido, de «Only by the Night»." },
+        { a: 2008, art: "Kings of Leon", t: "Use Somebody", n: "Grammy a la grabación del año en 2010." },
         { a: 2009, art: "Love of Lesbian", t: "Club de fans de John Boy", n: "El indie barcelonés y los festivales de verano." },
         { a: 2009, art: "Yeah Yeah Yeahs", t: "Heads Will Roll", n: "Karen O en clave de discoteca: luego la remezcló A-Trak." },
         { a: 2009, art: "The Temper Trap", t: "Sweet Disposition", n: "La de la película «(500) días juntos»." },
         { a: 2010, art: "Two Door Cinema Club", t: "What You Know", n: "Indie bailable de festival." },
-        { a: 2010, art: "Two Door Cinema Club", t: "I Can Talk", n: "Indie bailable de Irlanda del Norte." }
+        { a: 2010, art: "Two Door Cinema Club", t: "I Can Talk", n: "Indie bailable de Irlanda del Norte." },
+        { a: 2010, art: "Deerhunter", t: "Desire Lines", n: "De «Halcyon Digest», con Lockett Pundt de cantante." },
+        { a: 2010, art: "Wild Nothing", t: "Chinatown", n: "Dream pop de dormitorio de Jack Tatum." }
       ]
     },
     {
@@ -77,6 +88,7 @@ HISTORIAS.push({
         { a: 2014, art: "The Kooks", t: "Around Town", n: "Con coro de gospel, del disco «Listen»." },
         { a: 2014, art: "The Kooks", t: "Bad Habit", n: "Otra de «Listen», el disco en el que The Kooks se pasaron al funk." },
         { a: 2014, art: "Catfish and the Bottlemen", t: "Cocoon", n: "El indie de guitarras de Gales." },
+        { a: 2014, art: "Alvvays", t: "Archie, Marry Me", n: "Los canadienses de Toronto y su indie pop de guitarras: una petición de matrimonio sin boda." },
         { a: 2015, art: "Streaming", t: "Las playlists sustituyen a los blogs", tipo: "hito", n: "Spotify se convierte en la radio del indie." },
         { a: 2017, art: "Portugal. The Man", t: "Feel It Still", n: "Un grupo de Alaska con un éxito de anuncio y Grammy." },
         { a: 2017, art: "Nothing But Thieves", t: "Sorry", n: "La voz aguda de Conor Mason." },

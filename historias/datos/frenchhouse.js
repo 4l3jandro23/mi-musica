@@ -32,7 +32,8 @@ HISTORIAS.push({
         { a: 2000, art: "Alan Braxe & Fred Falke", t: "Intro", n: "El filtro de house francés en su forma más pura." },
         { a: 2000, art: "Bob Sinclar", t: "I Feel for You", n: "El french house de Bob Sinclar." },
         { a: 2001, art: "Daft Punk", t: "Harder, Better, Faster, Stronger", n: "El tema que Kanye West sampleó en «Stronger»." },
-        { a: 2001, art: "Daft Punk", t: "Something About Us", n: "Una balada de robots con voz de vocoder, de «Discovery»." }
+        { a: 2001, art: "Daft Punk", t: "Something About Us", n: "Una balada de robots con voz de vocoder, de «Discovery»." },
+        { a: 2001, art: "Dax Riders", t: "Real Fonky Time", n: "Grupo francés entre el french touch y el rock (año aproximado)." }
       ]
     },
     {

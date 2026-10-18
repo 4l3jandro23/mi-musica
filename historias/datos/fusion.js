@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "fusion",
   familia: "Jazz",
   titulo: "Jazz fusión",
-  periodo: "1969 – 2017",
+  periodo: "1969 – 2023",
   color: "#ff7043",
   lema: "«Bitches Brew», Weather Report y Herbie Hancock: el jazz se enchufa a la electricidad del rock y el funk.",
   intro: "En 1969 Miles Davis metió guitarras eléctricas, pianos Fender Rhodes y ritmos de rock en el estudio, y el jazz se partió en dos. De sus músicos salieron los grandes grupos de la fusión: Weather Report, Return to Forever, la Mahavishnu Orchestra o los Headhunters de Herbie Hancock. En los 80 se suavizó en el smooth jazz y en Japón se hizo música de masas; hoy vuelve con Snarky Puppy o Thundercat.",
@@ -32,6 +32,7 @@ HISTORIAS.push({
         { a: 1973, art: "Herbie Hancock", t: "Chameleon", n: "El disco de jazz más vendido de su tiempo." },
         { a: 1973, art: "Billy Cobham", t: "Stratus", n: "Batería imposible; luego la samplearon Massive Attack." },
         { a: 1974, art: "Herbie Hancock", t: "Butterfly", n: "Fusión suave y espacial de «Thrust», con sintetizadores." },
+        { a: 1974, art: "Michal Urbaniak", t: "A Day in the Park", n: "El violinista polaco del jazz eléctrico, ya instalado en Nueva York (año aproximado)." },
         { a: 1975, art: "Jeff Beck", t: "Freeway Jam", n: "El guitarrista de rock en clave fusión." },
         { a: 1976, art: "Weather Report", t: "Black Market", n: "El bajo de Jaco Pastorius debuta en el grupo." },
         { a: 1976, art: "Jaco Pastorius", t: "Donna Lee", n: "Charlie Parker en un bajo eléctrico." },
@@ -50,7 +51,7 @@ HISTORIAS.push({
     {
       titulo: "Smooth jazz y lo que vino después",
       corto: "Después",
-      periodo: "1980 – 2017",
+      periodo: "1980 – 2023",
       intro: "De la radio suave al regreso.",
       items: [
         { a: 1980, art: "Grover Washington Jr. & Bill Withers", t: "Just the Two of Us", n: "El saxo suave en las listas." },
@@ -62,7 +63,9 @@ HISTORIAS.push({
         { a: 1990, art: "Paco de Lucía", t: "Zyryab", n: "Con Chick Corea: flamenco y jazz se miran de igual a igual." },
         { a: 2014, art: "Snarky Puppy", t: "Lingus", n: "La fusión de la era de YouTube." },
         { a: 2015, art: "Thundercat", t: "Them Changes", n: "El bajista de Los Ángeles: funk, nostalgia y un sample de los Isley Brothers." },
-        { a: 2017, art: "Kamasi Washington", t: "Truth", n: "Jazz espiritual y orquesta." }
+        { a: 2017, art: "Kamasi Washington", t: "Truth", n: "Jazz espiritual y orquesta." },
+        { a: 2023, art: "Hiromi & Sonicwonder", t: "Wanted", n: "La pianista japonesa con su nuevo grupo eléctrico." },
+        { a: 2023, art: "Hiromi & Sonicwonder", t: "Sonicwonderland", n: "El tema que da nombre al disco de Hiromi con Sonicwonder." }
       ]
     }
   ]

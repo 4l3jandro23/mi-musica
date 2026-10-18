@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "himnos",
   familia: "Historia",
   titulo: "Historia de los himnos",
-  periodo: "1572 – 2017",
+  periodo: "1572 – 2021",
   color: "#c62828",
   lema: "Himnos nacionales, canciones de lucha y cánticos de estadio: la música que se canta en grupo y de pie.",
   intro: "Un himno es una canción que no se escucha solo: se canta con otros. Primero fueron los himnos religiosos; con la Revolución francesa llegaron los himnos nacionales, y cada país quiso el suyo. Los obreros, los partisanos y los movimientos por los derechos civiles tuvieron los suyos. En el siglo XX el fútbol y los Juegos Olímpicos se inventaron otra clase de himnos, los que se corean en un estadio.",
@@ -50,7 +50,7 @@ HISTORIAS.push({
     {
       titulo: "Himnos de lucha, despedida y fe",
       corto: "Lucha y fe",
-      periodo: "1779 – 2017",
+      periodo: "1779 – 2021",
       intro: "Canciones que se cantan en manifestaciones, iglesias y despedidas.",
       items: [
         { a: 1779, art: "Aretha Franklin", t: "Amazing Grace", n: "Un himno escrito por un antiguo traficante de esclavos; Aretha lo canta en una iglesia de Los Ángeles en 1972." },
@@ -66,7 +66,10 @@ HISTORIAS.push({
         { a: 1968, art: "Lluís Llach", t: "L'estaca", n: "Una canción contra la dictadura que acabó cantándose en Polonia como himno de Solidaridad." },
         { a: 1970, art: "Miguel Ríos", t: "Himno a la alegría", n: "Beethoven en versión pop: millones de discos vendidos en todo el mundo." },
         { a: 1973, art: "Quilapayún", t: "El pueblo unido jamás será vencido", n: "Escrita en Chile meses antes del golpe de Pinochet." },
-        { a: 2017, art: "«La casa de papel»", t: "«Bella ciao» vuelve a sonar", tipo: "hito", n: "La serie española convierte la canción partisana en un éxito mundial y en un remix de verano." }
+        { a: 2010, art: "K'NAAN & David Bisbal", t: "Wavin' Flag (versión en español)", n: "La versión del himno de Coca-Cola para el Mundial de Sudáfrica, el que ganó España." },
+        { a: 2014, art: "Pitbull, Jennifer Lopez & Claudia Leitte", t: "We Are One (Ole Ola)", n: "La canción oficial del Mundial de Brasil 2014, criticada en Brasil por llevar poco portugués." },
+        { a: 2017, art: "«La casa de papel»", t: "«Bella ciao» vuelve a sonar", tipo: "hito", n: "La serie española convierte la canción partisana en un éxito mundial y en un remix de verano." },
+        { a: 2021, art: "Camilo", t: "KESI (versión de LaLiga)", n: "La versión de «KESI» que LaLiga usó en sus retransmisiones (año aproximado)." }
       ]
     },
     {

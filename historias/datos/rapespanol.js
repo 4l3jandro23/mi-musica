@@ -29,11 +29,12 @@ HISTORIAS.push({
     {
       titulo: "Rap consciente y global",
       corto: "Rap consciente",
-      periodo: "2009 – 2016",
+      periodo: "2009 – 2018",
       intro: "Letras sobre identidad, desigualdad y América Latina.",
       items: [
         { a: 2009, art: "Ana Tijoux", t: "1977", n: "Chilena nacida en el exilio en Francia: rap feminista y político." },
         { a: 2009, art: "Calle 13", t: "No hay nadie como tú", n: "Con Café Tacvba: Puerto Rico y México en un rap tranquilo." },
+        { a: 2009, art: "Millonario & W. Corona con Cartel de Santa", t: "Éxtasis", n: "El rap de Monterrey de Control Machete y Cartel de Santa en su cara más festiva (año aproximado)." },
         { a: 2010, art: "ChocQuibTown", t: "De donde vengo yo", n: "Desde el Pacífico colombiano: rap afrocolombiano. Ganó un Grammy Latino." },
         { a: 2010, art: "Calle 13", t: "La vuelta al mundo", n: "Calle 13 en su versión más tranquila, sobre dejarlo todo y viajar." },
         { a: 2011, art: "Calle 13", t: "Latinoamérica", n: "Con Totó la Momposina, Susana Baca y María Rita: el himno de todo un continente." },
@@ -41,8 +42,11 @@ HISTORIAS.push({
         { a: 2012, art: "Canserbero", t: "Es épico", n: "Desde Venezuela: uno de los raperos más queridos y admirados del idioma." },
         { a: 2012, art: "Canserbero", t: "Mundo de piedra", n: "El venezolano más querido." },
         { a: 2014, art: "Ana Tijoux", t: "Antipatriarca", n: "Ana Tijoux, chilena, contra el machismo." },
+        { a: 2014, art: "C-Kan & Don Aero", t: "Esta Vida Me Encanta", n: "Rap mexicano de Guadalajara, del rapero más escuchado del país en los 2010 (año aproximado)." },
         { a: 2015, art: "Portavoz", t: "El otro Chile", n: "El rap político chileno: el país que no sale en la tele." },
-        { a: 2016, art: "Red Bull Batalla y FMS", t: "El freestyle llena estadios", tipo: "hito", n: "Las batallas de improvisación se convierten en un fenómeno en toda Latinoamérica y España." }
+        { a: 2016, art: "Red Bull Batalla y FMS", t: "El freestyle llena estadios", tipo: "hito", n: "Las batallas de improvisación se convierten en un fenómeno en toda Latinoamérica y España." },
+        { a: 2017, art: "Residente", t: "Somos Anormales", n: "Del primer disco en solitario de René Pérez tras Calle 13 (año aproximado)." },
+        { a: 2018, art: "Residente, Dillon Francis & iLe", t: "Sexo", n: "Residente con su hermana iLe y el productor estadounidense (año aproximado)." }
       ]
     },
     {
@@ -54,15 +58,20 @@ HISTORIAS.push({
         { a: 2019, art: "WOS", t: "Canguro", n: "Campeón de freestyle convertido en estrella: rap, rock y canción." },
         { a: 2019, art: "Duki", t: "Goteo", n: "Duki, de Argentina, en su momento más popular." },
         { a: 2019, art: "WOS", t: "Arrancármelo", n: "El campeón de freestyle argentino." },
+        { a: 2019, art: "Residente & Bad Bunny", t: "Bellacoso", n: "Residente se pasa al perreo con Bad Bunny en un tema de pura fiesta." },
+        { a: 2019, art: "Sabino, Charles Ans & Slim", t: "Guapa!", n: "Rap y pop mexicano de buen rollo (año aproximado)." },
         { a: 2020, art: "Bzrp Music Sessions", t: "Bizarrap revoluciona el rap", tipo: "hito", n: "Sesiones en YouTube que lanzan carreras." },
         { a: 2020, art: "Residente", t: "René", n: "El cantante de Calle 13 abre su corazón: depresión, infancia y fama." },
         { a: 2020, art: "Nathy Peluso", t: "Sana Sana", n: "La argentina Nathy Peluso, criada en España, entre el rap y la salsa." },
         { a: 2020, art: "Santa Fe Klan", t: "Debo entender", n: "El rap mexicano de Guanajuato, con mucha calle." },
+        { a: 2020, art: "Alemán & Snoop Dogg", t: "Mi Tío Snoop", n: "El rapero de Baja California consigue a Snoop Dogg para su disco." },
         { a: 2022, art: "Trueno", t: "Dance Crip", n: "Rap y orgullo latinoamericano desde La Boca." },
         { a: 2022, art: "Bizarrap", t: "Residente: Bzrp Music Sessions, Vol. 49", q: "Bizarrap Residente Music Sessions 49", n: "Una tiradera de ocho minutos contra J Balvin que dio la vuelta al mundo." },
         { a: 2022, art: "Residente", t: "This Is Not America", n: "Respuesta a Childish Gambino." },
         { a: 2022, art: "Bizarrap & Duki", t: "Duki: Bzrp Music Sessions, Vol. 50", n: "El trap argentino: Duki en el estudio de Bizarrap." },
-        { a: 2023, art: "Bizarrap & Peso Pluma", t: "Peso Pluma: Bzrp Music Sessions, Vol. 55", n: "Corrido y rap: la sesión de Bizarrap más rara hasta entonces." }
+        { a: 2022, art: "Pj Sin Suela & Chuwi", t: "Escuchame", n: "El rapero boricua de corte indie junto a la banda Chuwi (año aproximado)." },
+        { a: 2023, art: "Bizarrap & Peso Pluma", t: "Peso Pluma: Bzrp Music Sessions, Vol. 55", n: "Corrido y rap: la sesión de Bizarrap más rara hasta entonces." },
+        { a: 2023, art: "Gera MX", t: "Pedrito", n: "Gera MX, uno de los raperos mexicanos más escuchados de su generación (año aproximado)." }
       ]
     }
   ]

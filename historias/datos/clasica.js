@@ -182,6 +182,7 @@ HISTORIAS.push({
         { a: 1921, art: "Sergei Prokofiev", t: "Piano Concerto No. 3", n: "El concierto más popular de Prokófiev." },
         { a: 1924, art: "George Gershwin", t: "Rhapsody in Blue", n: "Jazz y música clásica en un mismo concierto." },
         { a: 1928, art: "Maurice Ravel", t: "Boléro", n: "La misma melodía, cada vez más fuerte, durante 15 minutos." },
+        { a: 1931, art: "Edgard Varèse", t: "Ionisation", n: "Una de las primeras obras solo para percusión: trece músicos, sirenas incluidas." },
         { a: 1935, art: "Sergei Prokofiev", t: "Romeo and Juliet: Dance of the Knights", n: "El ballet soviético más dramático." },
         { a: 1936, art: "Samuel Barber", t: "Adagio for Strings", n: "La música más triste del mundo, según una encuesta de la BBC." },
         { a: 1937, art: "Carl Orff", t: "Carmina Burana: O Fortuna", n: "Poemas medievales convertidos en el coro de los tráileres." },

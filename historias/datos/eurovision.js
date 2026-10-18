@@ -38,6 +38,7 @@ HISTORIAS.push({
         { a: 1995, art: "Anabel Conde", t: "Vuelve conmigo", n: "Segundo puesto para España." },
         { a: 1998, art: "El televoto", t: "Vota el público", tipo: "hito", n: "Ese año empiezan a votar los espectadores por teléfono en casi todos los países." },
         { a: 1998, art: "Dana International", t: "Diva", n: "La primera ganadora trans de la historia del festival." },
+        { a: 2001, art: "David Civera", t: "Dile que la quiero", n: "La canción de España en Eurovisión 2001, sexta en Copenhague." },
         { a: 2002, art: "Rosa", t: "Europe's Living a Celebration", n: "La de Operación Triunfo: España entera la vio." }
       ]
     },
@@ -59,6 +60,7 @@ HISTORIAS.push({
         { a: 2017, art: "Salvador Sobral", t: "Amar pelos dois", n: "Una balada sencilla en portugués: la primera victoria de Portugal." },
         { a: 2018, art: "Netta", t: "Toy", n: "Cloqueos de gallina y un bucle de voz." },
         { a: 2019, art: "Duncan Laurence", t: "Arcade", n: "Una balada que años después fue viral en TikTok." },
+        { a: 2019, art: "Miki", t: "La Venda", n: "La de España en Eurovisión 2019, con un muñeco gigante en el escenario." },
         { a: 2021, art: "Måneskin", t: "Zitti e buoni", n: "El rock italiano gana y conquista el mundo después." },
         { a: 2022, art: "Kalush Orchestra", t: "Stefania", n: "Ucrania gana meses después de la invasión rusa." },
         { a: 2023, art: "Loreen", t: "Tattoo", n: "Loreen gana por segunda vez." },

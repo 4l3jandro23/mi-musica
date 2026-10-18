@@ -47,6 +47,7 @@ HISTORIAS.push({
         { a: 1974, art: "The Funkees", t: "Break Through", n: "Rock psicodélico y funk nigeriano de después de la guerra de Biafra." },
         { a: 1975, art: "Fela Kuti", t: "Water No Get Enemy", n: "El afrobeat: funk, jazz y yoruba en temas larguísimos." },
         { a: 1975, art: "Mahmoud Ahmed", t: "Ere Mela Mela", n: "La edad de oro de Adís Abeba, antes de que la dictadura cerrara los clubs." },
+        { a: 1975, art: "Amanaz", t: "Nsunka Lwendo", n: "El zamrock de Zambia: rock psicodélico africano de los 70 recuperado por sellos de reediciones." },
         { a: 1976, art: "Fela Kuti", t: "Zombie", n: "Contra los soldados nigerianos. El ejército respondió asaltando su casa." },
         { a: 1977, art: "República de Kalakuta", t: "El ejército asalta la comuna de Fela", tipo: "hito", n: "La música de Fela Kuti se convierte en un problema político para el régimen nigeriano." },
         { a: 1978, art: "William Onyeabor", t: "Fantastic Man", n: "Sintetizadores caseros desde Nigeria. Redescubierto décadas después." },
@@ -71,6 +72,7 @@ HISTORIAS.push({
         { a: 1992, art: "Cesária Évora", t: "Sodade", n: "La «diva descalza» de Cabo Verde y la morna, la saudade africana." },
         { a: 1994, art: "Ali Farka Touré", t: "Talking Timbuktu", tipo: "disco", n: "Con Ry Cooder: el blues del desierto, que demuestra que el blues nació en África. Ganó un Grammy." },
         { a: 1994, art: "Youssou N'Dour", t: "7 Seconds", n: "Con Neneh Cherry, en wólof, inglés y francés. Un éxito en media Europa." },
+        { a: 1994, art: "Ali Farka Touré & Ry Cooder", t: "Ai Du", n: "Del disco «Talking Timbuktu», Grammy a la mejor música del mundo." },
         { a: 1997, art: "Rachid Taha", t: "Ya Rayah", n: "Una canción argelina de 1973 sobre la emigración, convertida en un clásico." }
       ]
     },

@@ -58,7 +58,8 @@ HISTORIAS.push({
         { a: 2022, art: "Nicky Youre & dazy", t: "Sunroof", n: "La canción de verano nacida en la app." },
         { a: 2022, art: "Steve Lacy", t: "Bad Habit", n: "Un fragmento del estribillo y un número uno en Estados Unidos." },
         { a: 2022, art: "Meghan Trainor", t: "Made You Look", n: "Pop con un baile que se copió millones de veces." },
-        { a: 2023, art: "Tate McRae", t: "greedy", n: "Pop de baile de la canadiense, que antes fue bailarina de concursos." }
+        { a: 2023, art: "Tate McRae", t: "greedy", n: "Pop de baile de la canadiense, que antes fue bailarina de concursos." },
+        { a: 2023, art: "Íñigo Quintero", t: "Si No Estás", n: "El gallego que llevó una balada de piano al número uno mundial de Spotify gracias a TikTok." }
       ]
     },
     {

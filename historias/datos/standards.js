@@ -59,6 +59,7 @@ HISTORIAS.push({
       items: [
         { a: 1980, art: "Frank Sinatra", t: "Theme from New York, New York", n: "El himno de la ciudad que nunca duerme." },
         { a: 1989, art: "Harry Connick Jr.", t: "It Had to Be You", n: "De «Cuando Harry encontró a Sally»." },
+        { a: 2000, art: "Bill Charlap Trio", t: "I'm Old Fashioned", n: "El pianista neoyorquino y su lectura del estándar de Jerome Kern (año aproximado)." },
         { a: 2011, art: "Tony Bennett & Amy Winehouse", t: "Body and Soul", n: "La última grabación de Amy." },
         { a: 2014, art: "Tony Bennett & Lady Gaga", t: "Cheek to Cheek", tipo: "hito", n: "Una estrella del pop y un cantante de 88 años graban un disco de estándares que llega al número uno." },
         { a: 2014, art: "Tony Bennett & Lady Gaga", t: "Anything Goes", n: "Del disco «Cheek to Cheek»: Cole Porter en el siglo XXI." }

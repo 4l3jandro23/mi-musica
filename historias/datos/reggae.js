@@ -30,6 +30,7 @@ HISTORIAS.push({
         { a: 1969, art: "The Upsetters", t: "Return of Django", n: "Lee «Scratch» Perry, el productor loco que inventaría el dub en su estudio Black Ark." },
         { a: 1972, art: "Jimmy Cliff", t: "The Harder They Come", n: "La película que llevó el reggae al mundo." },
         { a: 1973, art: "Bob Marley & The Wailers", t: "Get Up, Stand Up", n: "Con Peter Tosh: un himno por los derechos." },
+        { a: 1973, art: "Boris Gardiner", t: "Every Nigger Is a Star", n: "La canción de la película jamaicana del mismo título; Kendrick Lamar la sampleó para abrir «To Pimp a Butterfly»." },
         { a: 1975, art: "Bob Marley & The Wailers", t: "No Woman, No Cry (Live)", q: "Bob Marley No Woman No Cry Live Lyceum", n: "Grabada en directo en Londres: la versión definitiva." },
         { a: 1975, art: "Burning Spear", t: "Marcus Garvey", n: "Reggae roots y orgullo panafricano." },
         { a: 1976, art: "Peter Tosh", t: "Legalize It", n: "La reivindicación más famosa del reggae." },

@@ -18,10 +18,14 @@ HISTORIAS.push({
         { a: 1962, art: "Etta James", t: "Something's Got a Hold on Me", n: "Su voz es el sample de «Levels» de Avicii, cincuenta años después." },
         { a: 1963, art: "El Mellotron", t: "Un teclado que reproduce cintas", tipo: "hito", n: "Cada tecla dispara una cinta grabada con un instrumento real: el abuelo del sampler." },
         { a: 1965, art: "Nina Simone", t: "Strange Fruit", n: "Kanye West la samplea en «Blood on the Leaves»." },
+        { a: 1965, art: "The Andrew Oldham Orchestra", t: "The Last Time", n: "La orquesta del mánager de los Stones; The Verve la sampleó en «Bitter Sweet Symphony» y perdió los derechos." },
         { a: 1966, art: "The Beatles", t: "Tomorrow Never Knows", n: "Bucles de cinta preparados por cada Beatle y mezclados en directo." },
+        { a: 1967, art: "David McCallum", t: "The Edge", n: "El actor de «El agente de CIPOL» grabó discos orquestales; Dr. Dre la sampleó para «The Next Episode»." },
+        { a: 1967, art: "The Charmels", t: "As Long as I've Got You", n: "Soul de Stax que el Wu-Tang Clan convirtió en «C.R.E.A.M.»." },
         { a: 1969, art: "The Winstons", t: "Amen, Brother", n: "Seis segundos de batería que serían el break más sampleado de la historia." },
         { a: 1970, art: "James Brown", t: "Funky Drummer", n: "El otro gran break: medio hip hop de los 80 y 90 está construido encima." },
         { a: 1970, art: "The Chi-Lites", t: "Are You My Woman? (Tell Me So)", n: "El sample de vientos de «Crazy in Love» de Beyoncé." },
+        { a: 1970, art: "Gil Scott-Heron", t: "Comment #1", n: "Poesía hablada que Kanye West sampleó para cerrar «My Beautiful Dark Twisted Fantasy»." },
         { a: 1972, art: "Labi Siffre", t: "My Song", n: "Kanye West la usa en «I Wonder»." },
         { a: 1972, art: "Ohio Players", t: "Funky Worm", n: "El sintetizador chillón que copió todo el G-funk de la costa oeste." },
         { a: 1972, art: "Giorgio Moroder", t: "Tears", n: "Del disco «Son of My Father»; DJ Shadow la samplea en «Organ Donor»." },
@@ -29,6 +33,7 @@ HISTORIAS.push({
         { a: 1977, art: "The Isley Brothers", t: "Footsteps in the Dark, Pts. 1 & 2", n: "La base de «It Was a Good Day» de Ice Cube." },
         { a: 1979, art: "Fairlight CMI", t: "El primer sampler digital", tipo: "hito", n: "Cuesta lo que una casa. Lo usan Peter Gabriel, Kate Bush y Herbie Hancock." },
         { a: 1979, art: "Edwin Birdsong", t: "Cola Bottle Baby", n: "Daft Punk la convierten en «Harder, Better, Faster, Stronger»." },
+        { a: 1979, art: "Eddie Johns", t: "More Spell on You", n: "Disco poco conocido de la que Daft Punk tomó el sample de «One More Time»." },
         { a: 1980, art: "Breakwater", t: "Release the Beast", n: "Daft Punk la samplean en «Robot Rock»." },
         { a: 1981, art: "Brian Eno & David Byrne", t: "Help Me Somebody", n: "De «My Life in the Bush of Ghosts»: voces de predicadores y radio sobre ritmos funk. Un disco hecho de «samples» antes de tiempo." }
       ]
@@ -40,6 +45,7 @@ HISTORIAS.push({
       intro: "Samplers baratos, sin leyes claras: todo vale.",
       items: [
         { a: 1983, art: "The Isley Brothers", t: "Between the Sheets", n: "La base de «Big Poppa» de The Notorious B.I.G." },
+        { a: 1983, art: "Mtume", t: "Juicy Fruit", n: "El funk que Notorious B.I.G. usó en «Juicy», su primer éxito." },
         { a: 1984, art: "Art of Noise", t: "Close (to the Edit)", n: "Un grupo hecho casi solo con un Fairlight: ruidos de coche convertidos en ritmo." },
         { a: 1987, art: "M|A|R|R|S", t: "Pump Up the Volume", n: "Un collage de decenas de samples que llegó al número uno en Reino Unido." },
         { a: 1988, art: "E-mu SP-1200 y Akai MPC60", t: "Las máquinas del hip hop", tipo: "hito", n: "Samplers con caja de ritmos: el sonido «sucio» del rap de Nueva York." },

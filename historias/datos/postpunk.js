@@ -34,14 +34,19 @@ HISTORIAS.push({
         { a: 1980, art: "Joy Division", t: "Love Will Tear Us Apart", n: "Salió un mes después del suicidio de Ian Curtis: la canción más conocida del post-punk." },
         { a: 1980, art: "Talking Heads", t: "Born Under Punches (The Heat Goes On)", n: "Abre «Remain in Light»: funk africano y guitarras cortadas por Brian Eno." },
         { a: 1980, art: "Talking Heads", t: "The Great Curve", n: "Polirritmos de Fela Kuti y un solo de guitarra de Adrian Belew." },
+        { a: 1980, art: "The Fall", t: "Totally Wired", n: "Mark E. Smith sobre ir pasado de café y anfetas: post-punk de Mánchester." },
+        { a: 1980, art: "Siouxsie and the Banshees", t: "Happy House", n: "Una canción sobre familias falsamente felices, con la guitarra de John McGeoch." },
         { a: 1981, art: "The Sound", t: "Winning", n: "Uno de los grandes olvidados del post-punk." },
         { a: 1981, art: "New Order", t: "Ceremony", n: "El primer single de New Order, escrito cuando todavía eran Joy Division." },
         { a: 1982, art: "The Stranglers", t: "Golden Brown", n: "Un vals con clave sobre la heroína que fue número dos en Reino Unido." },
         { a: 1983, art: "Siouxsie and the Banshees", t: "Dear Prudence", n: "Su versión de los Beatles, con Robert Smith a la guitarra: su mayor éxito." },
+        { a: 1983, art: "This Mortal Coil", t: "Song to the Siren", n: "Elizabeth Fraser canta la canción de Tim Buckley; David Lynch la quiso para «Terciopelo azul»." },
         { a: 1984, art: "Echo & the Bunnymen", t: "The Killing Moon", n: "Destino y luna: Ian McCulloch dijo que era la mejor canción jamás escrita." },
         { a: 1984, art: "Section 25", t: "Hit", n: "Del disco «From the Hip», en Factory, cuando pasaron al electro (año aproximado)." },
+        { a: 1984, art: "Killing Joke", t: "Eighties", n: "Post-punk de riff durísimo; Nirvana lo «tomó prestado» para «Come as You Are»." },
         { a: 1985, art: "The Cure", t: "Inbetween Days", n: "Robert Smith descubre la guitarra acústica y el pop." },
         { a: 1985, art: "The Cure", t: "Close to Me", n: "El vídeo del armario que cae por un acantilado con el grupo dentro." },
+        { a: 1985, art: "The Chameleons", t: "Second Skin", n: "Guitarras con eco del grupo de Mánchester que influyó a Interpol y a los Editors." },
         { a: 1986, art: "The Chameleons", t: "Swamp Thing", n: "Guitarras atmosféricas del grupo de Manchester que influyó en todo el rock de los 90." }
       ]
     },
@@ -79,7 +84,9 @@ HISTORIAS.push({
         { a: 2023, art: "Squid", t: "The Blades", n: "De «O Monolith»: un día en la vida del piloto de un helicóptero de la policía." },
         { a: 2023, art: "IDLES", t: "Gift Horse", n: "Del disco «Tangk», producido con Nigel Godrich." },
         { a: 2024, art: "Gustaf", t: "Starting and Staring", n: "De su segundo disco, en Royal Mountain." },
-        { a: 2024, art: "Amyl and The Sniffers", t: "U Should Not Be Doing That", n: "Del disco «Cartoon Darkness» de los australianos." }
+        { a: 2024, art: "Amyl and The Sniffers", t: "U Should Not Be Doing That", n: "Del disco «Cartoon Darkness» de los australianos." },
+        { a: 2024, art: "Maruja", t: "The Tinker", n: "El grupo de Mánchester con saxo y post-punk de improvisación (año aproximado)." },
+        { a: 2024, art: "Geordie Greep", t: "Holy, Holy", n: "El cantante de black midi en solitario, con músicos de Brasil y jazz desbocado." }
       ]
     }
   ]

@@ -17,6 +17,7 @@ HISTORIAS.push({
         { a: 1970, art: "The Last Poets", t: "When the Revolution Comes", n: "Poesía hablada sobre percusión. Los abuelos del rap." },
         { a: 1971, art: "Gil Scott-Heron", t: "The Revolution Will Not Be Televised", n: "Spoken word con groove: el mensaje político que heredará el hip hop." },
         { a: 1971, art: "Gil Scott-Heron", t: "Home Is Where the Hatred Is", n: "Sobre la heroína: el poeta que anticipa el rap." },
+        { a: 1971, art: "The Last Poets", t: "Mean Machine", n: "Poesía hablada y percusión de Harlem, abuelos del rap (año aproximado)." },
         { a: 1972, art: "The Jimmy Castor Bunch", t: "It's Just Begun", n: "Otro clásico de los b-boys: perfecto para el breakdance." },
         { a: 1973, art: "DJ Kool Herc", t: "Fiesta en el 1520 de Sedgwick Avenue", tipo: "hito", n: "11 de agosto, en el Bronx: Herc repite los breaks con dos copias del mismo disco. Se toma como el nacimiento del hip hop." },
         { a: 1973, art: "Incredible Bongo Band", t: "Apache", n: "Se considera el himno nacional del hip hop: su break de bongos era sagrado en las fiestas." },

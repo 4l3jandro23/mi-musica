@@ -43,7 +43,9 @@ HISTORIAS.push({
         { a: 1960, art: "Lightnin' Hopkins", t: "Mojo Hand", n: "El blues de Houston: guitarra acústica y historias de amuletos." },
         { a: 1966, art: "Koko Taylor", t: "Wang Dang Doodle", n: "La reina del blues de Chicago." },
         { a: 1967, art: "Albert King", t: "Born Under a Bad Sign", n: "El blues de Stax, con los músicos del soul de Memphis." },
-        { a: 1969, art: "B.B. King", t: "The Thrill Is Gone", n: "Con cuerdas: su mayor éxito." }
+        { a: 1968, art: "Fleetwood Mac", t: "Albatross", n: "Un instrumental de Peter Green, de la época blues del grupo: número uno en Reino Unido." },
+        { a: 1969, art: "B.B. King", t: "The Thrill Is Gone", n: "Con cuerdas: su mayor éxito." },
+        { a: 1969, art: "John Mayall", t: "Room to Move", n: "Blues acústico con armónica de quien formó a Clapton, Peter Green y Mick Taylor." }
       ]
     },
     {
@@ -56,6 +58,7 @@ HISTORIAS.push({
         { a: 1964, art: "The Rolling Stones", t: "Little Red Rooster", n: "Un blues de Howlin' Wolf en el número uno británico: los jóvenes ingleses descubren a los maestros." },
         { a: 1966, art: "John Mayall & the Bluesbreakers", t: "All Your Love", n: "Con un jovencísimo Eric Clapton: del disco al que llamaron «el Beano» por el cómic que lee en la portada." },
         { a: 1968, art: "Cream", t: "Crossroads", n: "Eric Clapton convierte a Robert Johnson en rock." },
+        { a: 1971, art: "Freddie King", t: "Let the Good Times Roll", n: "El clásico de Louis Jordan en la voz y la guitarra de uno de los tres King del blues (año aproximado)." },
         { a: 1983, art: "Stevie Ray Vaughan", t: "Pride and Joy", n: "El blues texano vuelve con fuerza." },
         { a: 1990, art: "Gary Moore", t: "Still Got the Blues", n: "Gary Moore abandona el hard rock y se pasa al blues con su mayor éxito." },
         { a: 1991, art: "Buddy Guy", t: "Damn Right, I've Got the Blues", n: "El disco del regreso de Buddy Guy, con Clapton, Beck y Knopfler: Grammy." },

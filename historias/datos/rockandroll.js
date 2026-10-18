@@ -104,13 +104,19 @@ HISTORIAS.push({
         { a: 1961, art: "Dion", t: "Runaround Sue", n: "La chica que se iba con todos." },
         { a: 1962, art: "Dick Dale", t: "Misirlou", n: "Surf rock con escala oriental. Pulp Fiction la resucitó en 1994." },
         { a: 1962, art: "The Tornados", t: "Telstar", n: "Producida por Joe Meek: el primer número uno británico en EE. UU." },
+        { a: 1962, art: "The Chantays", t: "Pipeline", n: "Surf instrumental de unos chicos de instituto de California." },
         { a: 1963, art: "The Beach Boys", t: "Surfin' U.S.A.", n: "Chuck Berry con armonías californianas." },
         { a: 1963, art: "The Beatles", t: "She Loves You", n: "«Yeah, yeah, yeah». La beatlemanía en el Reino Unido." },
         { a: 1963, art: "The Trashmen", t: "Surfin' Bird", n: "«A-well-a everybody's heard about the bird»." },
+        { a: 1963, art: "The Dave Clark Five", t: "Glad All Over", n: "Desbancó a los Beatles del número uno en Reino Unido en enero de 1964." },
         { a: 1964, art: "The Beatles", t: "Actúan en el show de Ed Sullivan", tipo: "hito", n: "73 millones de estadounidenses los ven por la tele. Empieza la invasión británica." },
         { a: 1964, art: "The Kinks", t: "You Really Got Me", n: "Un amplificador rajado con una cuchilla: el riff distorsionado que anuncia el hard rock." },
         { a: 1964, art: "Los Brincos", t: "Flamenco", n: "Los «Beatles españoles» con un guiño andaluz." },
-        { a: 1964, art: "Roy Orbison", t: "Oh, Pretty Woman", n: "El riff y el gruñido de Roy Orbison." }
+        { a: 1964, art: "Roy Orbison", t: "Oh, Pretty Woman", n: "El riff y el gruñido de Roy Orbison." },
+        { a: 1964, art: "The Searchers", t: "Needles and Pins", n: "El sonido de guitarras de doce cuerdas de Liverpool, antes que los Byrds." },
+        { a: 1964, art: "Gerry & The Pacemakers", t: "Ferry Cross the Mersey", n: "El ferri de Liverpool, del grupo de Brian Epstein que rivalizaba con los Beatles." },
+        { a: 1964, art: "Herman's Hermits", t: "I'm into Something Good", n: "Su primer número uno en Reino Unido, escrita por Carole King." },
+        { a: 1964, art: "The Zombies", t: "She's Not There", n: "El piano eléctrico y la voz susurrante de Colin Blunstone." }
       ]
     }
   ]

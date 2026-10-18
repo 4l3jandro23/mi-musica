@@ -54,6 +54,7 @@ HISTORIAS.push({
         { a: 1992, art: "Eilert Pilarm", t: "Jailhouse Rock", n: "El Elvis sueco, que cantaba a su manera sin importarle el ritmo." },
         { a: 1995, art: "Wesley Willis", t: "Rock 'n' Roll McDonald's", n: "Un músico de Chicago con esquizofrenia y cientos de canciones con la misma base de teclado." },
         { a: 2000, art: "Irwin Chusid", t: "Publica «Songs in the Key of Z»", tipo: "hito", n: "El libro y el recopilatorio que pusieron nombre a la «outsider music»." },
+        { a: 2003, art: "Bingo Gazingo", t: "I Love You So Fucking Much I Can't Shit", n: "Un poeta octogenario de Queens grita sus poemas sobre electrónica (año aproximado)." },
         { a: 2004, art: "Ariel Pink", t: "For Kate I Wait", q: "Ariel Pink", n: "Ariel Pink graba en casa un pop que suena a radio de los 80 estropeada." },
         { a: 2005, art: "«The Devil and Daniel Johnston»", t: "Un documental sobre su vida", tipo: "hito", n: "Entre la genialidad y la enfermedad mental." }
       ]

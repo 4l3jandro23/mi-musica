@@ -23,7 +23,8 @@ HISTORIAS.push({
         { a: 1991, art: "Screaming Trees", t: "Bed of Roses", q: "Screaming Trees", n: "Screaming Trees, de Ellensburg, con su grunge psicodélico." },
         { a: 1991, art: "Nirvana", t: "Lithium", n: "Calma y grito: una canción sobre un hombre que encuentra la fe tras una ruptura." },
         { a: 1991, art: "Nirvana", t: "Come as You Are", n: "El segundo sencillo de «Nevermind»." },
-        { a: 1991, art: "Soundgarden", t: "Outshined", n: "El riff de «Badmotorfinger»." }
+        { a: 1991, art: "Soundgarden", t: "Outshined", n: "El riff de «Badmotorfinger»." },
+        { a: 1991, art: "Pearl Jam", t: "Black", n: "La balada de «Ten» que el grupo nunca quiso sacar como single." }
       ]
     },
     {
@@ -51,7 +52,8 @@ HISTORIAS.push({
         { a: 1993, art: "Nirvana", t: "Scentless Apprentice", n: "Inspirada en «El perfume» de Patrick Süskind." },
         { a: 1993, art: "Nirvana", t: "Rape Me", n: "Una canción contra la violación, censurada en las tiendas." },
         { a: 1993, art: "Nirvana", t: "tourette's", n: "Gritos y velocidad de «In Utero», grabado con Steve Albini." },
-        { a: 1993, art: "Nirvana", t: "All Apologies", n: "El cierre de «In Utero», y de su carrera." }
+        { a: 1993, art: "Nirvana", t: "All Apologies", n: "El cierre de «In Utero», y de su carrera." },
+        { a: 1993, art: "Candlebox", t: "Far Behind", n: "Una canción de Seattle dedicada a Andrew Wood, el cantante de Mother Love Bone." }
       ]
     },
     {
@@ -68,8 +70,10 @@ HISTORIAS.push({
         { a: 1994, art: "Stone Temple Pilots", t: "Interstate Love Song", n: "Grunge melódico con aire de country, de su segundo disco." },
         { a: 1994, art: "Bush", t: "Glycerine", n: "El grunge británico: Gavin Rossdale y una orquesta de cuerda." },
         { a: 1994, art: "Nirvana", t: "The Man Who Sold the World (MTV Unplugged)", n: "La de David Bowie, en su «Unplugged»: se publica después de la muerte de Kurt." },
+        { a: 1994, art: "Soundgarden", t: "Spoonman", n: "Con un músico callejero de Seattle tocando cucharas: Grammy al mejor metal." },
         { a: 1995, art: "Foo Fighters", t: "I'll Stick Around", n: "Dave Grohl, el batería de Nirvana, empieza de nuevo grabándolo todo él solo." },
         { a: 1995, art: "Mad Season", t: "River of Deceit", n: "El supergrupo de Layne Staley." },
+        { a: 1995, art: "Bush", t: "Machinehead", n: "Los británicos que triunfaron en EE. UU. con el sonido de Nirvana." },
         { a: 2015, art: "Kurt Cobain", t: "And I Love Her", n: "Una cinta casera de Kurt cantando a los Beatles, del documental «Montage of Heck»." },
         { a: 2015, art: "Kurt Cobain", t: "Burn the Rain", n: "Otra grabación casera de «Montage of Heck»." }
       ]

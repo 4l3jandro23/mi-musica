@@ -61,6 +61,7 @@ HISTORIAS.push({
         { a: 2019, art: "Clairo", t: "Sofia", n: "Una canción de amor con guitarras." },
         { a: 2020, art: "Conan Gray", t: "Heather", n: "Un youtuber de Texas con uno de los éxitos de TikTok de 2020." },
         { a: 2021, art: "Clairo", t: "Blouse", n: "Clairo, ya con discográfica, en su segundo disco." },
+        { a: 2022, art: "beabadoobee", t: "the perfect pair", n: "La filipino-británica en clave de bossa nova." },
         { a: 2023, art: "Laufey", t: "From the Start", n: "El jazz de dormitorio de una islandesa." }
       ]
     }

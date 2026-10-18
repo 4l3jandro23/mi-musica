@@ -10,7 +10,7 @@ HISTORIAS.push({
     {
       titulo: "La explosión psicodélica",
       corto: "Los 60",
-      periodo: "1966 – 1968",
+      periodo: "1966 – 1970",
       intro: "LSD, sitares, cintas al revés y canciones de diez minutos.",
       items: [
         { a: 1966, art: "Los Acid Tests", t: "Ken Kesey y Grateful Dead", tipo: "hito", n: "Fiestas con LSD, todavía legal en California, y luces de colores." },
@@ -19,6 +19,7 @@ HISTORIAS.push({
         { a: 1966, art: "The Electric Prunes", t: "I Had Too Much to Dream (Last Night)", n: "Garage rock con efectos raros." },
         { a: 1966, art: "The Beatles", t: "Tomorrow Never Knows", n: "Cintas al revés y un mantra." },
         { a: 1966, art: "The Incredible String Band", t: "Schaeffer's Jig", n: "Folk psicodélico escocés." },
+        { a: 1966, art: "Donovan", t: "Season of the Witch", n: "La psicodelia oscura de Donovan, versionada por Vanilla Fudge y Julie Driscoll." },
         { a: 1967, art: "Festival de Monterey", t: "Hendrix prende fuego a su guitarra", tipo: "hito", n: "El primer gran festival de rock." },
         { a: 1967, art: "Jefferson Airplane", t: "White Rabbit", n: "«Alicia en el país de las maravillas» como metáfora de las drogas, con un crescendo de bolero." },
         { a: 1967, art: "The Doors", t: "Light My Fire", n: "El órgano de Ray Manzarek y siete minutos de improvisación." },
@@ -39,7 +40,11 @@ HISTORIAS.push({
         { a: 1968, art: "The Jimi Hendrix Experience", t: "All Along the Watchtower", n: "La de Dylan según Hendrix: al propio Dylan le gustó tanto que la toca así." },
         { a: 1968, art: "Fever Tree", t: "Ninety Nine and One-Half", n: "Psicodelia de Houston, con aire de soul de Stax." },
         { a: 1968, art: "The Doors", t: "Hello, I Love You", n: "Su segundo número uno en EE. UU., con un riff que recuerda a los Kinks." },
-        { a: 1968, art: "The Jimi Hendrix Experience", t: "Voodoo Child (Slight Return)", n: "El riff de wah-wah de «Electric Ladyland»." }
+        { a: 1968, art: "The Jimi Hendrix Experience", t: "Voodoo Child (Slight Return)", n: "El riff de wah-wah de «Electric Ladyland»." },
+        { a: 1968, art: "Tommy James & The Shondells", t: "Crimson and Clover", n: "Número uno en EE. UU. en 1969, con la voz pasada por el amplificador de guitarra." },
+        { a: 1968, art: "The Move", t: "Blackberry Way", n: "El grupo de Roy Wood, futuro ELO y Wizzard: su único número uno en Reino Unido." },
+        { a: 1969, art: "The Beach Boys", t: "Cabinessence", n: "Una de las piezas de «Smile», el disco perdido de Brian Wilson." },
+        { a: 1970, art: "Syd Barrett", t: "Terrapin", n: "Del primer disco del fundador de Pink Floyd tras salir del grupo." }
       ]
     },
     {
@@ -49,13 +54,17 @@ HISTORIAS.push({
       intro: "Cada generación redescubre el viaje.",
       items: [
         { a: 1971, art: "Pink Floyd", t: "Echoes", n: "23 minutos: de la psicodelia al rock progresivo." },
+        { a: 1996, art: "The Brian Jonestown Massacre", t: "Anemone", n: "Del grupo de Anton Newcombe, retratado en el documental «Dig!»." },
         { a: 1997, art: "Spiritualized", t: "Ladies and Gentlemen We Are Floating in Space", n: "Gospel espacial de Jason Pierce, con la cita de un libro de filosofía en el título." },
         { a: 1999, art: "The Flaming Lips", t: "Race for the Prize", n: "Psicodelia orquestal para un nuevo siglo." },
+        { a: 2006, art: "The Black Angels", t: "Young Men Dead", n: "Psicodelia oscura de Austin, con nombre sacado de una canción de The Velvet Underground." },
         { a: 2007, art: "MGMT", t: "Kids", n: "Pop psicodélico que sonó en todas las fiestas indies." },
         { a: 2009, art: "Animal Collective", t: "My Girls", n: "Psicodelia electrónica: querer una casa para tu familia, cantado en capas." },
         { a: 2010, art: "Tame Impala", t: "Publican «Innerspeaker»", tipo: "hito", n: "Kevin Parker reinventa la psicodelia desde Perth." },
         { a: 2012, art: "Tame Impala", t: "Feels Like We Only Go Backwards", n: "Kevin Parker, desde Australia, resucita el sonido de los Beatles de 1966." },
         { a: 2012, art: "Pond", t: "Giant Tortoise", n: "Pond, banda hermana de Tame Impala, con psicodelia australiana." },
+        { a: 2012, art: "Tame Impala", t: "Elephant", n: "De «Lonerism»: Kevin Parker graba solo un riff de glam con sonido de los 70." },
+        { a: 2013, art: "Temples", t: "Shelter Song", n: "Los ingleses de Kettering, nostálgicos de los Byrds y los Beatles." },
         { a: 2015, art: "Tame Impala", t: "The Less I Know the Better", n: "Psicodelia bailable: su canción más escuchada." },
         { a: 2015, art: "Unknown Mortal Orchestra", t: "Multi-Love", n: "Psicodelia y soul sobre una relación de tres." },
         { a: 2017, art: "King Gizzard & The Lizard Wizard", t: "Rattlesnake", n: "Cinco discos en un año: la banda más prolífica del rock actual." },

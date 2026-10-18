@@ -10,7 +10,7 @@ HISTORIAS.push({
     {
       titulo: "Los primeros recuerdos",
       corto: "3 – 5 años",
-      periodo: "2000 – 2002 · de 3 a 5 años",
+      periodo: "2000 – 2002",
       intro: "El fin del milenio, la radio en el coche y la primera Operación Triunfo.",
       items: [
         { a: 2000, art: "Mägo de Oz", t: "Fiesta pagana", n: "El himno de todas las fiestas de pueblo." },
@@ -22,7 +22,8 @@ HISTORIAS.push({
         { a: 2002, art: "David Bisbal", t: "Ave María", n: "El primer gran éxito de Bisbal tras OT, con los rizos y los saltos." },
         { a: 2002, art: "Chenoa", t: "Cuando tú vas", n: "Chenoa, la otra gran estrella de la primera Operación Triunfo, con su primer gran éxito en 2002." },
         { a: 2002, art: "Amaral", t: "Sin ti no soy nada", n: "La balada que sonaba en todas partes." },
-        { a: 2002, art: "Juanes", t: "A Dios le pido", n: "Rock latino de Colombia que triunfó también aquí." }
+        { a: 2002, art: "Juanes", t: "A Dios le pido", n: "Rock latino de Colombia que triunfó también aquí." },
+        { a: 2002, art: "Fórmula Abierta", t: "Te quiero más", n: "El grupo formado por concursantes de la primera Operación Triunfo." }
       ]
     },
     {

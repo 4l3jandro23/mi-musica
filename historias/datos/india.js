@@ -61,6 +61,7 @@ HISTORIAS.push({
         { a: 2016, art: "Jio", t: "Internet móvil barato para todo el país", tipo: "hito", n: "Cientos de millones de personas empiezan a escuchar música en streaming." },
         { a: 2018, art: "Prateek Kuhad", t: "cold/mess", n: "Indie folk que Barack Obama puso en su lista de favoritas del año." },
         { a: 2020, art: "Diljit Dosanjh", t: "G.O.A.T.", n: "El pop punjabi: el sonido más exportado de la India actual." },
+        { a: 2020, art: "Tesher", t: "Jalebi Baby", n: "El canadiense de origen indio mezcla bhangra y pop; el remix con Jason Derulo arrasa en TikTok." },
         { a: 2021, art: "Sidhu Moose Wala", t: "295", n: "Rap punjabi. Su asesinato en 2022 conmocionó a la India." },
         { a: 2022, art: "Rahul Sipligunj", t: "Naatu Naatu", n: "Con Kaala Bhairava, de «RRR»: el primer Óscar a mejor canción para una película india." },
         { a: 2024, art: "Hanumankind", t: "Big Dawgs (feat. Kalmi)", n: "Un rapero de Kerala grabando entre motos en un «pozo de la muerte»: viral en todo el mundo." }

@@ -29,7 +29,7 @@ HISTORIAS.push({
     {
       titulo: "La edad de oro",
       corto: "Edad de oro",
-      periodo: "1973 – 1978",
+      periodo: "1973 – 1979",
       intro: "Naves espaciales, jazz y orquestas funk.",
       items: [
         { a: 1973, art: "Kool & The Gang", t: "Jungle Boogie", n: "Gritos y metales: luego sonaría en «Pulp Fiction»." },
@@ -44,8 +44,11 @@ HISTORIAS.push({
         { a: 1975, art: "War", t: "Why Can't We Be Friends?", n: "Funk latino de Los Ángeles con mensaje." },
         { a: 1976, art: "P-Funk Earth Tour", t: "Una nave espacial aterriza en el escenario", tipo: "hito", n: "Los conciertos de Parliament-Funkadelic, pura ciencia ficción." },
         { a: 1976, art: "Stevie Wonder", t: "I Wish", n: "Stevie Wonder recuerda su infancia con un bajo y un groove perfectos." },
+        { a: 1976, art: "Wild Cherry", t: "Play That Funky Music", n: "Un grupo blanco de rock de Ohio que se pasó al funk porque se lo pedía el público." },
         { a: 1977, art: "Commodores", t: "Brick House", n: "Lionel Richie antes de las baladas." },
-        { a: 1978, art: "Earth, Wind & Fire", t: "September", n: "«Ba-dee-ya»: la canción más feliz del mundo." }
+        { a: 1978, art: "Earth, Wind & Fire", t: "September", n: "«Ba-dee-ya»: la canción más feliz del mundo." },
+        { a: 1978, art: "Earth, Wind & Fire", t: "Got to Get You into My Life", n: "Su versión de los Beatles para la película de «Sgt. Pepper's»." },
+        { a: 1979, art: "Prince", t: "I Wanna Be Your Lover", n: "Su primer éxito: Prince lo toca y lo produce todo él solo con 21 años." }
       ]
     },
     {
@@ -64,6 +67,7 @@ HISTORIAS.push({
         { a: 1983, art: "Kool & The Gang", t: "Joanna", n: "El lado balada de Kool & The Gang, en plena época dorada de los 80." },
         { a: 1984, art: "The Time", t: "Jungle Love", n: "El grupo de Prince, con Morris Day mirándose al espejo en «Purple Rain»." },
         { a: 1984, art: "Kool & The Gang", t: "Fresh", n: "Funk pop de los 80, con un vídeo inspirado en Cenicienta." },
+        { a: 1984, art: "Prince", t: "Let's Go Crazy", n: "Abre «Purple Rain» con un sermón sobre la muerte y un solo de guitarra eterno." },
         { a: 1985, art: "Kool & The Gang", t: "Cherish", n: "La balada lenta de las bodas." },
         { a: 1986, art: "Cameo", t: "Word Up!", n: "Un bigote, una bragueta roja y un éxito mundial." },
         { a: 1991, art: "Red Hot Chili Peppers", t: "Give It Away", n: "El bajo de Flea y la voz de Kiedis: el funk rock que les dio su primer Grammy y los hizo famosos en todo el mundo." },

@@ -58,6 +58,7 @@ HISTORIAS.push({
         { a: 2011, art: "Rebecca Black", t: "Friday", n: "«Friday, Friday, gotta get down on Friday»: el vídeo más odiado de su año y un clásico de culto." },
         { a: 2011, art: "daniwell", t: "Nyanyanyanyanyanyanya!", n: "Nyan Cat: un gato con cuerpo de galleta volando por el espacio dejando un arcoíris." },
         { a: 2011, art: "AWOLNATION", t: "Sail", n: "Banda sonora oficial de los vídeos de gente cayéndose." },
+        { a: 2012, art: "Ji Pyeong Kwon", t: "Sad Romance", n: "El «violín triste» que se usa en los memes para exagerar el drama (año aproximado)." },
         { a: 2013, art: "Vine", t: "Seis segundos de vídeo", tipo: "hito", n: "Fragmentos de canciones se vuelven memes en bucle." },
         { a: 2013, art: "Bring Me the Horizon", t: "Can You Feel My Heart", n: "El tema del «Gigachad» y de las transformaciones épicas." },
         { a: 2013, art: "Ylvis", t: "The Fox (What Does the Fox Say?)", n: "Dos humoristas noruegos preguntando qué dice el zorro. Cientos de millones de visitas." },
@@ -82,6 +83,7 @@ HISTORIAS.push({
         { a: 2021, art: "Nathan Evans", t: "Wellerman", n: "Un cartero escocés cantando canciones de marineros: la fiebre de las sea shanties." },
         { a: 2021, art: "Colm R. McGuinness", t: "Hoist the Colours", n: "La canción pirata de «Piratas del Caribe» que se hizo viral en TikTok (año aproximado)." },
         { a: 2022, art: "Polimá Westcoast & Pablito Pesadilla", t: "Baby Otaku", n: "Rap chileno sobre una chica otaku: viral en TikTok en septiembre de 2022." },
+        { a: 2022, art: "Tito Silva Music", t: "Mi Bebito Fiu Fiu", n: "La canción peruana sobre un escándalo político que se hizo viral en todo el mundo." },
         { a: 2023, art: "Skibidi Toilet", t: "Cabezas en inodoros", tipo: "hito", n: "Una serie de vídeos absurda con una canción pegadiza: el gran fenómeno de la generación Alfa." },
         { a: 2026, art: "KITSCHKRIEG, Blumengarten & Shirin David", t: "Gut genug", q: "KITSCHKRIEG Gut Genug Blumengarten Shirin David", n: "Medio mundo canta «Doobie Scoot Canoe» sin saber que en alemán significa «eres suficiente»." }
       ]

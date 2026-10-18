@@ -46,6 +46,7 @@ HISTORIAS.push({
         { a: 2022, art: "Rosalía", t: "CHICKEN TERIYAKI", n: "Dembow y humor en «Motomami»." },
         { a: 2023, art: "Bad Gyal, Young Miko & Tokischa", t: "Chulo pt. 2", n: "Neoperreo entre España, Puerto Rico y la República Dominicana." },
         { a: 2023, art: "Madonna & Tokischa", t: "Hung Up on Tokischa", n: "Madonna remezcla su éxito con la dominicana." },
+        { a: 2023, art: "Ingrid Laien & Los del Fino", t: "Déjame Revisarte el Celular 2", n: "Segunda parte de un dembow sobre los celos y el móvil (año aproximado)." },
         { a: 2025, art: "Bad Bunny", t: "NUEVAYoL", n: "El arranque de «Debí tirar más fotos», con dembow y El Gran Combo." }
       ]
     },

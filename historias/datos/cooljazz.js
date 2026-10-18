@@ -60,6 +60,7 @@ HISTORIAS.push({
         { a: 1959, art: "Dave Brubeck Quartet", t: "Blue Rondo à la Turk", n: "Un ritmo turco en nueve por ocho." },
         { a: 1960, art: "Miles Davis", t: "Concierto de Aranjuez", n: "De «Sketches of Spain»: Rodrigo en jazz." },
         { a: 1961, art: "Bill Evans Trio", t: "Waltz for Debby", n: "Un vals para su sobrina de tres años, grabado en directo en el Village Vanguard." },
+        { a: 1961, art: "Bill Evans Trio", t: "Nardis", n: "El tema de Miles Davis que Bill Evans convirtió en su gran pieza de trío (año aproximado)." },
         { a: 1962, art: "Vince Guaraldi Trio", t: "Cast Your Fate to the Wind", n: "Un éxito de radio y un Grammy." },
         { a: 1963, art: "Paul Desmond", t: "Take Ten", n: "El saxofonista de Brubeck en solitario." },
         { a: 1964, art: "Vince Guaraldi Trio", t: "Linus and Lucy", n: "La música de Snoopy y Charlie Brown." }

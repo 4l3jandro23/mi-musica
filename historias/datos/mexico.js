@@ -47,6 +47,7 @@ HISTORIAS.push({
         { a: 1984, art: "Juan Gabriel", t: "Querida", n: "Una de las canciones más vendidas de la historia de México." },
         { a: 1984, art: "Rocío Dúrcal", t: "Amor eterno", q: "Rocío Dúrcal Amor eterno", n: "Una canción de Juan Gabriel en la voz de la madrileña, que triunfó en México." },
         { a: 1986, art: "Juan Gabriel", t: "Hasta que te conocí", n: "El divo de Juárez, compositor de cientos de éxitos." },
+        { a: 1987, art: "Los Lobos", t: "La Bamba", n: "La versión de la banda sonora del biopic de Ritchie Valens: número uno en EE. UU. treinta años después del original." },
         { a: 1988, art: "Luis Miguel", t: "La incondicional", n: "La estrella juvenil que después revivió el bolero con «Romance»." },
         { a: 1990, art: "Juan Gabriel en Bellas Artes", t: "El pop entra en el templo", tipo: "hito", n: "Juan Gabriel es el primer cantante popular que actúa en el Palacio de Bellas Artes de Ciudad de México." }
       ]
@@ -64,6 +65,7 @@ HISTORIAS.push({
         { a: 1994, art: "Café Tacvba", t: "Las flores", n: "El rock mexicano que mezcla tradición y vanguardia." },
         { a: 1994, art: "Selena", t: "Bidi Bidi Bom Bom", n: "La reina de la cumbia tejana, de raíces mexicanas." },
         { a: 1996, art: "Café Tacvba", t: "Chilanga banda", n: "Ciudad de México hecha jerga." },
+        { a: 1997, art: "Coyote Dax", t: "No Rompas Mi Corazón", n: "Uno de los grandes éxitos gruperos de los 90 en México." },
         { a: 2003, art: "Molotov", t: "Frijolero", n: "Rap rock bilingüe contra los tópicos de la frontera." },
         { a: 2006, art: "Julieta Venegas", t: "Me voy", n: "Pop con acordeón desde Tijuana." }
       ]
