@@ -16,6 +16,7 @@ HISTORIAS.push({
         { a: 1969, art: "La grabación de «Bitches Brew»", t: "Tres días en Nueva York", tipo: "hito", n: "Miles reúne a una docena de músicos y graba improvisaciones que el productor Teo Macero monta como un collage." },
         { a: 1969, art: "Miles Davis", t: "In a Silent Way", n: "Una calma eléctrica: el primer paso." },
         { a: 1969, art: "Tony Williams Lifetime", t: "Emergency!", n: "El batería de Miles con guitarras de rock." },
+        { a: 1969, art: "Frank Zappa", t: "Peaches en Regalia", n: "Del disco «Hot Rats»: Zappa en clave jazz." },
         { a: 1970, art: "Miles Davis", t: "Pharaoh's Dance", n: "El arranque de «Bitches Brew»." },
         { a: 1971, art: "Mahavishnu Orchestra", t: "Meeting of the Spirits", n: "John McLaughlin y la guitarra a velocidad de vértigo." },
         { a: 1972, art: "Return to Forever", t: "Spain", n: "Chick Corea y el «Concierto de Aranjuez» de fondo." }

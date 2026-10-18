@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "merengue",
   familia: "Latino",
   titulo: "Historia del merengue",
-  periodo: "1850 – 2019",
+  periodo: "1850 – 2022",
   color: "#f57c00",
   lema: "De la güira y el acordeón del Cibao a Juan Luis Guerra y Elvis Crespo.",
   intro: "El merengue es la música nacional de la República Dominicana. Nació en el campo del Cibao con acordeón, tambora y güira; el dictador Trujillo lo impuso en los salones; en los 70 y 80 Johnny Ventura y Wilfrido Vargas lo hicieron rápido y bailable, y en los 90 Juan Luis Guerra, Olga Tañón y Elvis Crespo lo llevaron a todo el mundo. Desde 2016 es patrimonio de la humanidad.",
@@ -50,12 +50,14 @@ HISTORIAS.push({
         { a: 1990, art: "Juan Luis Guerra y 4.40", t: "La bilirrubina", n: "El amor como enfermedad." },
         { a: 1990, art: "Juan Luis Guerra y 4.40", t: "Woman del Callao", n: "Spanglish y merengue." },
         { a: 1991, art: "Sergio Vargas", t: "La quiero a morir", n: "Un merengue romántico que versiona a Francis Cabrel." },
+        { a: 1992, art: "Juan Luis Guerra", t: "Coronita de flores", n: "Del disco «Areíto»." },
         { a: 1993, art: "Olga Tañón", t: "Es mentiroso", n: "La puertorriqueña, «la mujer de fuego» del merengue." },
         { a: 1993, art: "Proyecto Uno", t: "El tiburón", n: "Merengue house." },
         { a: 1995, art: "Los Hermanos Rosario", t: "La dueña del swing", n: "El merengue de discoteca de los 90." },
         { a: 1995, art: "Olga Tañón", t: "Muchacho malo", n: "La mujer de fuego." },
         { a: 1997, art: "Kinito Méndez", t: "Cachamba", q: "Kinito Mendez Cachamba", n: "Merengue con mucho humor de los 90." },
         { a: 1997, art: "Fulanito", t: "Guayando", n: "Acordeón y house." },
+        { a: 1997, art: "ChiChi Peralta", t: "Procura", n: "Merengue, son y orquesta del disco «Pa' otro la'o»." },
         { a: 1998, art: "Juan Luis Guerra", t: "El Niágara en bicicleta", n: "Una crónica del hospital dominicano en forma de merengue." },
         { a: 1998, art: "Elvis Crespo", t: "Tu sonrisa", n: "Del disco «Suavemente», el más vendido del merengue." },
         { a: 1998, art: "Elvis Crespo", t: "Suavemente", n: "El merengue más bailado." },
@@ -65,13 +67,17 @@ HISTORIAS.push({
     {
       titulo: "Merengue hoy",
       corto: "Hoy",
-      periodo: "2001 – 2019",
+      periodo: "2001 – 2022",
       intro: "Patrimonio, mambo y fusión.",
       items: [
         { a: 2001, art: "Eddy Herrera", t: "Pégame tu vicio", n: "El merengue romántico del cambio de siglo." },
+        { a: 2007, art: "Omega & Roberto Ferrante", t: "Si te vas / Qué tengo que hacer", n: "El merengue de calle, el «mambo» dominicano (año aproximado)." },
+        { a: 2009, art: "Maluca & Diplo", t: "El Tigeraso", n: "Merengue y electrónica de Mad Decent." },
         { a: 2016, art: "UNESCO", t: "Patrimonio de la humanidad", tipo: "hito", n: "La música y el baile del merengue entran en la lista del patrimonio cultural inmaterial." },
         { a: 2019, art: "Juan Luis Guerra", t: "Kitipun", n: "Juan Luis Guerra sigue haciendo merengue treinta años después." },
-        { a: 2019, art: "Toño Rosario", t: "Kulikitaka", n: "Un merengue viral." }
+        { a: 2019, art: "Toño Rosario", t: "Kulikitaka", n: "Un merengue viral." },
+        { a: 2022, art: "Omega, Daddy Yankee & Roberto Ferrante", t: "Estrellita de madrugada", n: "Remezcla del clásico de Omega." },
+        { a: 2022, art: "Omega", t: "Pegao / Me miro y la miré", n: "Un viejo mambo de Omega que se hace viral en TikTok." }
       ]
     }
   ]

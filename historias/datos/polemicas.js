@@ -18,6 +18,7 @@ HISTORIAS.push({
         { a: 1939, art: "Billie Holiday", t: "Strange Fruit", n: "Una canción contra los linchamientos que muchas radios no se atrevían a poner." },
         { a: 1956, art: "Elvis Presley", t: "Hound Dog", n: "Su forma de mover las caderas en televisión escandalizó a medio país; en 1957 lo filmaron solo de cintura para arriba." },
         { a: 1963, art: "The Kingsmen", t: "Louie Louie", n: "Nadie entendía la letra: el FBI la investigó durante dos años por si era obscena." },
+        { a: 1964, art: "Twinkle", t: "Terry", n: "La BBC la vetó por hablar de un chico que muere en moto." },
         { a: 1965, art: "Bob Dylan", t: "Maggie's Farm", n: "La canción eléctrica de Newport que provocó abucheos." },
         { a: 1966, art: "Los Beatles", t: "«Más populares que Jesús»", tipo: "hito", n: "Una frase de John Lennon provoca quemas de discos de los Beatles en el sur de Estados Unidos." },
         { a: 1966, art: "The Beatles", t: "Eleanor Rigby", n: "Del disco «Revolver», que salió en plena polémica." },

@@ -69,6 +69,8 @@ HISTORIAS.push({
         { a: 2016, art: "Beyoncé", t: "Formation", n: "De «Lemonade»: R&B político y visual." },
         { a: 2017, art: "SZA", t: "Love Galore", n: "Con Travis Scott: «Ctrl», un disco de culto." },
         { a: 2017, art: "Daniel Caesar feat. H.E.R.", t: "Best Part", n: "La balada de una generación." },
+        { a: 2019, art: "James Blake, Travis Scott & Metro Boomin", t: "Mile High", n: "James Blake se pasa al rap." },
+        { a: 2019, art: "James Blake & ROSALÍA", t: "Barefoot in the Park", n: "Con Rosalía cantando en español." },
         { a: 2020, art: "Giveon", t: "Heartbreak Anniversary", n: "Una voz grave que se volvió viral." },
         { a: 2022, art: "SZA", t: "Kill Bill", n: "Una canción dulce sobre matar a tu ex: número uno en EE. UU." },
         { a: 2022, art: "RAYE & 070 Shake", t: "Escapism.", n: "Su primer número uno en el Reino Unido, ya como artista independiente." }

@@ -19,10 +19,14 @@ HISTORIAS.push({
         { a: 1972, art: "Can", t: "Vitamin C", q: "Can Vitamin C", n: "El krautrock de Can: ritmos repetitivos y una voz japonesa." },
         { a: 1973, art: "Sun Ra", t: "Space Is the Place", n: "Jazz desde Saturno." },
         { a: 1976, art: "Pere Ubu", t: "Final Solution", n: "Protopunk de Cleveland." },
+        { a: 1976, art: "The Residents", t: "Satisfaction", n: "Los Rolling Stones pasados por una trituradora: el grupo anónimo de los ojos gigantes." },
         { a: 1977, art: "Suicide", t: "Ghost Rider", n: "Un sinte y una voz: el rock más mínimo y raro de Nueva York." },
         { a: 1978, art: "DEVO", t: "(I Can't Get No) Satisfaction", n: "Los Rolling Stones en versión robótica y espasmódica." },
         { a: 1978, art: "Throbbing Gristle", t: "Hamburger Lady", n: "La música industrial." },
+        { a: 1978, art: "The Residents", t: "Constantinople", n: "Del disco «Duck Stab!»: la canción más pegadiza y rara de los Residents." },
+        { a: 1978, art: "The Residents", t: "Hello Skinny", n: "Otra de «Duck Stab!»." },
         { a: 1979, art: "The Residents", t: "Eskimo", tipo: "disco", n: "Un grupo anónimo con cabezas de globo ocular haciendo un falso documental sobre los esquimales." },
+        { a: 1980, art: "Yoko Ono", t: "Kiss Kiss Kiss", n: "Del disco «Double Fantasy», con John Lennon." },
         { a: 1981, art: "Laurie Anderson", t: "O Superman", n: "Ocho minutos de voz robótica y un «ha ha ha» en bucle. Llegó al número dos en Reino Unido." },
         { a: 1981, art: "Klaus Nomi", t: "Total Eclipse", n: "Ópera y new wave." }
       ]
@@ -61,6 +65,7 @@ HISTORIAS.push({
         { a: 2019, art: "100 gecs", t: "money machine", n: "Hyperpop: emo, dubstep y ska en dos minutos. «Hey, you little piss baby»." },
         { a: 2019, art: "Lingua Ignota", t: "Do You Doubt Me Traitor", n: "Lingua Ignota mezcla ópera, ruido y gritos en una canción sobre el maltrato." },
         { a: 2019, art: "Dorian Electra", t: "Flamboyant", n: "Hyperpop queer." },
+        { a: 2021, art: "SPELLLING", t: "Little Deer", n: "Del disco «The Turning Wheel»." },
         { a: 2023, art: "JPEGMAFIA & Danny Brown", t: "Scaring the Hoes", n: "Un disco entero de samples imposibles y rap desquiciado." }
       ]
     }

@@ -19,6 +19,7 @@ HISTORIAS.push({
         { a: 1992, art: "Tackhead", t: "Tackhead Tape Time", q: "Tackhead", n: "Tackhead mezcla hip hop, funk y sonidos industriales a finales de los 80." },
         { a: 1993, art: "Ministry, Nine Inch Nails", t: "El industrial llega al rock", tipo: "hito", n: "El industrial gana fama en el rock; poco a poco sus sonidos ásperos entrarán también en el rap." },
         { a: 2002, art: "El-P", t: "Deep Space 9mm", n: "El underground de Nueva York con ruido de ciencia ficción." },
+        { a: 2002, art: "dälek", t: "Spiritual Healing", n: "Rap con muros de ruido shoegaze, de Nueva Jersey." },
         { a: 2004, art: "Saul Williams", t: "List of Demands (Reparations)", n: "Poeta, rapero y guitarras industriales." }
       ]
     },
@@ -47,6 +48,7 @@ HISTORIAS.push({
         { a: 2014, art: "Death Grips", t: "Inanimate Sensation", n: "Ruido casi abstracto." },
         { a: 2014, art: "Run the Jewels", t: "Close Your Eyes (And Count to F**k)", n: "Con Zack de la Rocha." },
         { a: 2014, art: "clipping.", t: "Story 2", n: "Una historia contada sin respirar." },
+        { a: 2015, art: "Death Grips", t: "On GP", n: "El tema más triste de Death Grips, con guitarras." },
         { a: 2016, art: "Danny Brown", t: "Ain't It Funny", n: "Atrocity Exhibition, nombre tomado de Joy Division." },
         { a: 2016, art: "JPEGMAFIA", t: "1539 N. Calvert", n: "El rapero de Baltimore y su collage de ruido." },
         { a: 2016, art: "Danny Brown", t: "Really Doe", n: "Con Kendrick Lamar." },

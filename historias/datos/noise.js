@@ -61,7 +61,9 @@ HISTORIAS.push({
         { a: 2009, art: "A Place to Bury Strangers", t: "I Lived My Life to Stand in the Shadow of Your Heart", n: "El grupo más ruidoso de Nueva York." },
         { a: 2010, art: "Sleigh Bells", t: "Infinity Guitars", n: "Noise pop saturado hasta el límite." },
         { a: 2012, art: "Death Grips", t: "I've Seen Footage", n: "El noise llega al hip hop." },
+        { a: 2014, art: "Swans", t: "Screen Shot", n: "El primer tema de «To Be Kind»." },
         { a: 2018, art: "Daughters", t: "You Won't Get What You Want", tipo: "disco", n: "Noise rock oscuro." },
+        { a: 2018, art: "Daughters", t: "The Reason They Hate Me", n: "Del disco «You Won't Get What You Want»." },
         { a: 2019, art: "black midi", t: "bmbmbm", n: "Jóvenes británicos con el caos del noise rock clásico." }
       ]
     }

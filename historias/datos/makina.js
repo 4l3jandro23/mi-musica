@@ -46,6 +46,7 @@ HISTORIAS.push({
         { a: 1994, art: "Atlantic Ocean", t: "Waterfall", n: "Un clásico importado de Holanda: lo que se bailaba en todas partes." },
         { a: 1994, art: "Magic Affair", t: "Omen III", q: "Magic Affair Omen III", n: "Eurodance alemán basado en «La profecía», muy pinchado en las discotecas makineras." },
         { a: 1994, art: "Scooter", t: "Hyper Hyper", n: "Los alemanes Scooter, con gritos y bombo, muy pinchados en las discotecas españolas." },
+        { a: 1994, art: "New Limit", t: "Smile", q: "New Limit Smile", n: "El primer single de un grupo español de dance: un clásico del «remember» de los 90." },
         { a: 1995, art: "Pont Aeri", t: "La discoteca de Terrassa", tipo: "hito", n: "Con Xque y otros clubs, el epicentro de la makina en Cataluña." },
         { a: 1995, art: "Paco Pil", t: "Viva la fiesta", n: "Paco Pil lleva el bakalao a la televisión y a las listas: la versión festiva y comercial." },
         { a: 1995, art: "Interactive", t: "Forever Young", n: "Interactive versiona a Alphaville con bombo de discoteca." },

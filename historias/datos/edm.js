@@ -21,13 +21,17 @@ HISTORIAS.push({
         { a: 2012, art: "Swedish House Mafia feat. John Martin", t: "Don't You Worry Child", n: "Su último gran éxito antes de separarse." },
         { a: 2013, art: "Avicii", t: "Wake Me Up", n: "Folk y EDM: los fans de Ultra lo abuchearon al estrenarla y después fue número uno en medio mundo." },
         { a: 2014, art: "Calvin Harris", t: "Summer", n: "El DJ mejor pagado del mundo durante años." },
+        { a: 2014, art: "Clean Bandit & Jess Glynne", t: "Rather Be", n: "Violines y house: número uno en Reino Unido." },
         { a: 2015, art: "Alan Walker", t: "Faded", n: "Un noruego de 18 años con un éxito enorme en YouTube." },
         { a: 2016, art: "The Chainsmokers", t: "Closer", n: "Con Halsey: 12 semanas número uno. El EDM ya es pop puro." },
         { a: 2016, art: "Marshmello", t: "Alone", n: "Un DJ con un casco de nube: el EDM para adolescentes." },
+        { a: 2016, art: "Clean Bandit, Sean Paul & Anne-Marie", t: "Rockabye", n: "Una canción sobre una madre soltera: nueve semanas número uno en Reino Unido." },
         { a: 2017, art: "Sia, David Guetta & Afrojack", t: "Helium", n: "Una balada de Sia convertida en EDM de festival." },
         { a: 2017, art: "Sia & Alan Walker", t: "Move Your Body (Alan Walker Remix)", n: "Alan Walker lleva a Sia a su sonido nórdico." },
         { a: 2017, art: "Hailee Steinfeld & Alesso", t: "Let Me Go", n: "EDM con aire country, con Florida Georgia Line." },
-        { a: 2018, art: "Muere Avicii", t: "El final de una era", tipo: "hito", n: "Tim Bergling muere con 28 años; su muerte abre un debate sobre la salud mental de los DJ." }
+        { a: 2017, art: "Clean Bandit & Zara Larsson", t: "Symphony", n: "Orquesta y pop electrónico." },
+        { a: 2018, art: "Muere Avicii", t: "El final de una era", tipo: "hito", n: "Tim Bergling muere con 28 años; su muerte abre un debate sobre la salud mental de los DJ." },
+        { a: 2018, art: "Clean Bandit & Demi Lovato", t: "Solo", n: "Otro número uno en Reino Unido." }
       ]
     },
     {
@@ -78,6 +82,8 @@ HISTORIAS.push({
         { a: 2018, art: "Calvin Harris & Dua Lipa", t: "One Kiss", n: "El house con voz que dominó el verano." },
         { a: 2018, art: "Marshmello & Bastille", t: "Happier", n: "El DJ del casco y una canción triste de pop." },
         { a: 2018, art: "FISHER", t: "Losing It", n: "El tech house del australiano en todos los festivales." },
+        { a: 2018, art: "Dayvi, Víctor Cárdenas & Kelly Ruiz", t: "Baila conmigo", n: "Guaracha colombiana, la electrónica de los barrios; J. Lo hizo su versión en 2019." },
+        { a: 2019, art: "Yilberking & Anny Sepúlveda", t: "Guaracha", n: "Guaracha electrónica de Medellín (año aproximado)." },
         { a: 2021, art: "ATB, Topic & A7S", t: "Your Love (9PM)", n: "«9 PM (Till I Come)» rehecha veinte años después." },
         { a: 2022, art: "Fred again..", t: "El Boiler Room viral", tipo: "hito", n: "Su sesión de Boiler Room en Londres se ve millones de veces y agota entradas por todo el mundo." },
         { a: 2022, art: "David Guetta & Bebe Rexha", t: "I'm Good (Blue)", n: "Eiffel 65 reconvertido en éxito mundial." },

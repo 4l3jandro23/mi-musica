@@ -52,6 +52,7 @@ HISTORIAS.push({
         { a: 1992, art: "Selena", t: "Como la flor", n: "La reina del tex-mex: asesinada con 23 años en 1995." },
         { a: 1993, art: "Gloria Estefan", t: "Mi tierra", n: "La cubana de Miami canta a la isla en un disco premiado con un Grammy." },
         { a: 1993, art: "Carlos Vives", t: "La gota fría", n: "Vallenato con guitarras eléctricas: la música de la costa colombiana en todo el mundo." },
+        { a: 1995, art: "Selena", t: "Dreaming of You", n: "Publicada después de su asesinato: el primer disco de una artista latina que debuta en el número uno de EE. UU." },
         { a: 1997, art: "Maná", t: "Clavado en un bar", n: "El rock mexicano que llenaba estadios en España." },
         { a: 1998, art: "Shakira", t: "Ciega, sordomuda", n: "La Shakira morena de Barranquilla, antes del salto al inglés." }
       ]
@@ -65,10 +66,15 @@ HISTORIAS.push({
         { a: 1998, art: "Ricky Martin", t: "La copa de la vida", n: "El Mundial de Francia y el principio del «boom latino» de 1999." },
         { a: 1999, art: "Ricky Martin en los Grammy", t: "La actuación que lo cambió todo", tipo: "hito", n: "Ricky Martin canta «La copa de la vida» en la gala de los Grammy y empieza el «boom latino» en Estados Unidos." },
         { a: 1999, art: "Enrique Iglesias", t: "Bailamos", n: "El hijo de Julio Iglesias conquista EE. UU." },
+        { a: 1999, art: "Marc Anthony", t: "I Need to Know", n: "El boom latino en inglés." },
         { a: 2000, art: "Grammy Latino", t: "Primera edición", tipo: "hito", n: "La industria reconoce el peso de la música en español." },
+        { a: 2004, art: "Marc Anthony", t: "Ahora quién", n: "Una balada pop de «Amar sin mentiras»." },
         { a: 2005, art: "Shakira feat. Alejandro Sanz", t: "La tortura", n: "Un número uno en medio mundo con un español." },
+        { a: 2011, art: "Chino & Nacho", t: "Niña bonita", n: "El pop venezolano con merengue." },
+        { a: 2016, art: "Chino & Nacho & Daddy Yankee", t: "Andas en mi cabeza", n: "Un éxito en toda Latinoamérica." },
         { a: 2017, art: "Luis Fonsi", t: "Despacito", n: "Con Daddy Yankee: el vídeo más visto de YouTube durante años." },
         { a: 2017, art: "J Balvin", t: "Mi Gente", n: "Con Willy William: el reggaetón colombiano global." },
+        { a: 2018, art: "Marc Anthony, Will Smith & Bad Bunny", t: "Está rico", n: "Salsa, pop y trap." },
         { a: 2020, art: "Bad Bunny & Jhay Cortez", t: "Dákiti", n: "Reguetón electrónico y uno de los mayores éxitos de 2020." },
         { a: 2022, art: "Bad Bunny", t: "Tití Me Preguntó", n: "Del disco más escuchado del mundo ese año, todo en español." },
         { a: 2023, art: "Eslabon Armado", t: "Ella Baila Sola", n: "Con Peso Pluma: los corridos tumbados en lo más alto del mundo." },

@@ -60,6 +60,7 @@ HISTORIAS.push({
         { a: 2002, art: "Sean Paul", t: "Get Busy", n: "El dancehall llega al número uno de EE. UU." },
         { a: 2005, art: "Sean Paul", t: "Temperature", n: "El segundo número uno de Sean Paul en EE. UU.: dancehall rápido y pegadizo para todas las fiestas de 2006." },
         { a: 2005, art: "Damian Marley", t: "Welcome to Jamrock", n: "El hijo de Bob." },
+        { a: 2013, art: "De La Calle", t: "Hoy me fumé un verde", n: "Reggae en español de los 2010." },
         { a: 2014, art: "Chronixx", t: "Here Comes Trouble", n: "El reggae revival." },
         { a: 2015, art: "Protoje", t: "Who Knows", n: "Con Chronixx." },
         { a: 2016, art: "Vybz Kartel", t: "Fever", n: "Uno de los artistas más influyentes del dancehall moderno." },

@@ -80,6 +80,8 @@ HISTORIAS.push({
         { a: 2018, art: "iLOVEFRiDAY", t: "Mia Khalifa", n: "«Hit or miss, I guess they never miss, huh?»: el primer gran meme de TikTok." },
         { a: 2019, art: "Christina Perri", t: "you are my sunshine", n: "Su versión de cuna de la canción infantil acabó en montones de vídeos tristes y edits." },
         { a: 2021, art: "Nathan Evans", t: "Wellerman", n: "Un cartero escocés cantando canciones de marineros: la fiebre de las sea shanties." },
+        { a: 2021, art: "Colm R. McGuinness", t: "Hoist the Colours", n: "La canción pirata de «Piratas del Caribe» que se hizo viral en TikTok (año aproximado)." },
+        { a: 2022, art: "Polimá Westcoast & Pablito Pesadilla", t: "Baby Otaku", n: "Rap chileno sobre una chica otaku: viral en TikTok en septiembre de 2022." },
         { a: 2023, art: "Skibidi Toilet", t: "Cabezas en inodoros", tipo: "hito", n: "Una serie de vídeos absurda con una canción pegadiza: el gran fenómeno de la generación Alfa." },
         { a: 2026, art: "KITSCHKRIEG, Blumengarten & Shirin David", t: "Gut genug", q: "KITSCHKRIEG Gut Genug Blumengarten Shirin David", n: "Medio mundo canta «Doobie Scoot Canoe» sin saber que en alemán significa «eres suficiente»." }
       ]

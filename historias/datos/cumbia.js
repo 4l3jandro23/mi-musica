@@ -18,6 +18,7 @@ HISTORIAS.push({
         { a: 1955, art: "Pacho Galán", t: "Ay cosita linda", n: "Inventa el «merecumbé» (merengue + cumbia): un éxito internacional." },
         { a: 1958, art: "Lucho Bermúdez", t: "Prende la vela", n: "La cumbia de orquesta en su época dorada." },
         { a: 1960, art: "Lucho Bermúdez", t: "San Fernando", n: "Lucho Bermúdez convierte la cumbia en música de orquesta elegante." },
+        { a: 1962, art: "Calixto Ochoa & Los Corraleros de Majagual", t: "Los sabanales", n: "Cumbia de la sabana colombiana (año aproximado)." },
         { a: 1965, art: "Los Gaiteros de San Jacinto", t: "Fuego de cumbia", q: "Gaiteros de San Jacinto Fuego de cumbia", n: "Gaitas, tambores y maracas: la cumbia de antes de las orquestas." },
         { a: 1975, art: "Aniceto Molina", t: "El campanero", n: "El acordeón de Aniceto, que triunfó en México." }
       ]
@@ -35,6 +36,7 @@ HISTORIAS.push({
         { a: 1970, art: "Los Destellos", t: "Constelación", n: "La cumbia peruana con guitarra eléctrica y psicodelia: la «chicha»." },
         { a: 1972, art: "Los Mirlos", t: "Sonido amazónico", n: "La selva peruana hecha guitarra psicodélica." },
         { a: 1977, art: "Rodolfo Aicardi", t: "La colegiala", q: "La colegiala Rodolfo Aicardi", n: "Rodolfo Aicardi con Los Hispanos: una cumbia colombiana famosa por un anuncio de café." },
+        { a: 1980, art: "Pastor López", t: "El ausente", n: "La cumbia venezolana que se baila en toda Sudamérica (año aproximado)." },
         { a: 1981, art: "Rigo Tovar", t: "Mi matamoros querido", q: "Rigo Tovar", n: "Rigo Tovar, de México, con gafas oscuras y cumbia con teclados." },
         { a: 1985, art: "La Sonora Dinamita", t: "Que nadie sepa mi sufrir", n: "La cumbia colombiana que sonó en todas las fiestas del continente." },
         { a: 1990, art: "Selena y Los Dinos", t: "Baila esta cumbia", n: "La cumbia tejana de Selena." },
@@ -51,12 +53,14 @@ HISTORIAS.push({
         { a: 1995, art: "Gilda", t: "No me arrepiento de este amor", q: "Gilda No me arrepiento de este amor", n: "Gilda, la cantante argentina que se convirtió en una figura casi religiosa tras su muerte en 1996." },
         { a: 2000, art: "Los Palmeras", t: "Bombón asesino", n: "La cumbia santafesina argentina." },
         { a: 2000, art: "Damas Gratis", t: "Se te ve la tanga", n: "La «cumbia villera»: los barrios pobres de Buenos Aires tras la crisis." },
+        { a: 2000, art: "Chocolate", t: "Mayonesa", n: "Cumbia uruguaya: el «bate que bate» de todas las fiestas." },
         { a: 2001, art: "Celso Piña", t: "Cumbia sobre el río", n: "Desde Monterrey, el «rebelde del acordeón» mezcla cumbia con hip hop y ska." },
         { a: 2001, art: "A.B. Quintanilla III y Los Kumbia Kings", t: "Shhh!", n: "Cumbia con R&B." },
         { a: 2004, art: "Los Pibes Chorros", t: "Llegamos los pibes chorros", q: "Los Pibes Chorros", n: "La cumbia villera de Buenos Aires, cruda y polémica." },
         { a: 2006, art: "ZZK", t: "Nace la «cumbia digital» en Buenos Aires", tipo: "hito", n: "Un club y un sello mezclan la cumbia con la electrónica." },
         { a: 2008, art: "Bomba Estéreo", t: "Fuego", n: "La cumbia digital colombiana: electrónica y champeta." },
         { a: 2012, art: "Chico Trujillo", t: "Loca", n: "Chico Trujillo, desde Chile, con cumbia con raíces punk y ska." },
+        { a: 2016, art: "Bomba Estéreo & Tainy", t: "To My Love (Tainy Remix)", n: "El remix del productor de Bad Bunny la lleva al mundo." },
         { a: 2018, art: "Los Ángeles Azules", t: "Nunca es suficiente", n: "Con Natalia Lafourcade: más de mil millones de reproducciones." }
       ]
     },
@@ -70,6 +74,8 @@ HISTORIAS.push({
         { a: 2004, art: "A.B. Quintanilla III y Los Kumbia Kings", t: "Na Na Na (Dulce niña)", n: "El hermano de Selena y la cumbia con R&B." },
         { a: 2010, art: "Orquesta Gran Parada", t: "Cumbias Mix", q: "Orquesta Gran Parada Cumbias Mix", n: "Las orquestas de verbena gallegas tocan cumbias en todas las fiestas de pueblo (año aproximado)." },
         { a: 2014, art: "Grupo 5", t: "Motor y motivo", n: "La cumbia peruana de Chiclayo en la era de YouTube." },
+        { a: 2015, art: "Leka el Poeta & Mishelle Master Boys", t: "Ella quiere hmm haa hmm", q: "Ella Quiere Hmm Haa Hmm DJ Yayo Remix", n: "Champeta colombiana; volvió en 2021 con un remix de DJ Yayo (año aproximado)." },
+        { a: 2019, art: "Ke Personajes", t: "Hotel California", n: "Cumbia argentina: la canción de los Eagles pasada a cumbia (año aproximado)." },
         { a: 2022, art: "Grupo Frontera", t: "No se va", n: "Una canción de Morat pasada a cumbia norteña: viral en TikTok." },
         { a: 2023, art: "La cumbia en el mundo", t: "Grupo Frontera y Bad Bunny", tipo: "hito", n: "La cumbia norteña de Texas llega al top mundial de Spotify." }
       ]

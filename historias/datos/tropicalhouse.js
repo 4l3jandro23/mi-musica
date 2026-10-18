@@ -45,6 +45,7 @@ HISTORIAS.push({
         { a: 2015, art: "Lost Frequencies", t: "Reality", n: "Con Janieck Devy. El belga Lost Frequencies, de nuevo en las listas." },
         { a: 2015, art: "Kygo", t: "Here for You", n: "Con Ella Henderson. Kygo en su año más grande, con piano, flauta de pan y bombo suave." },
         { a: 2015, art: "Robin Schulz", t: "Headlights", n: "Con Ilsey. Robin Schulz, ya fuera de los remixes, con un tema propio para la radio." },
+        { a: 2015, art: "YALL & Gabriela Richardson", t: "Hundred Miles", n: "Tropical house danés para el verano." },
         { a: 2016, art: "Kygo", t: "Toca en la clausura de los Juegos de Río", tipo: "hito", n: "El tropical house en la ceremonia olímpica." },
         { a: 2016, art: "Alan Walker", t: "Faded", n: "Alan Walker y su capucha: más melancólico que tropical." },
         { a: 2016, art: "Major Lazer feat. Justin Bieber & MØ", t: "Cold Water", n: "El verano de 2016." },

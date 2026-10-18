@@ -26,6 +26,7 @@ HISTORIAS.push({
         { a: 2017, art: "Charli XCX", t: "Unlock It", n: "Con Kim Petras y Jay Park: un himno de culto." },
         { a: 2017, art: "Charli XCX", t: "Track 10", n: "Charli XCX y A. G. Cook: el pop del futuro se deshace en sintes." },
         { a: 2017, art: "Kim Petras", t: "Heart to Break", n: "Pop brillante." },
+        { a: 2017, art: "SOPHIE", t: "Ponyboy", n: "Del disco «Oil of Every Pearl's Un-Insides»." },
         { a: 2018, art: "SOPHIE", t: "Faceshopping", n: "Sobre la identidad y el cuerpo: SOPHIE, pionera trans, murió en 2021." }
       ]
     },
@@ -51,7 +52,12 @@ HISTORIAS.push({
         { a: 2021, art: "Ericdoa", t: "fool4love", q: "ericdoa", n: "El hyperpop de la generación de Discord." },
         { a: 2021, art: "Caroline Polachek", t: "Bunny Is a Rider", n: "Pop raro." },
         { a: 2021, art: "underscores", t: "Spoiled little brat", n: "Hyperpop de dormitorio." },
+        { a: 2021, art: "Arca", t: "Prada", n: "De «KICK ii»: reguetón deconstruido." },
+        { a: 2021, art: "Arca", t: "Rakata", n: "El reguetón más extraño de Arca." },
+        { a: 2021, art: "Arca", t: "Incendio", n: "De «KicK iii»." },
         { a: 2023, art: "Snow Strippers", t: "Under Your Spell", n: "Electroclash para la Generación Z." },
+        { a: 2023, art: "100 gecs", t: "Hollywood Baby", n: "Del disco «10,000 gecs»: pop punk con ruido." },
+        { a: 2023, art: "Safety Trance & Arca", t: "El alma que te trajo", n: "Reguetón industrial venezolano (año aproximado)." },
         { a: 2024, art: "Charli XCX", t: "Von dutch", n: "«Brat» lleva el hyperpop al gran público y el verano se vuelve verde lima." }
       ]
     }

@@ -45,8 +45,10 @@ HISTORIAS.push({
         { a: 2009, art: "Joker", t: "Tron", n: "El «purple sound» de Bristol." },
         { a: 2010, art: "Magnetic Man", t: "I Need Air", n: "Skream, Benga y Artwork en las listas." },
         { a: 2010, art: "James Blake", t: "CMYK", n: "Dubstep y soul." },
+        { a: 2010, art: "James Blake", t: "Limit to Your Love", n: "Una canción de Feist con silencios y bajos enormes." },
         { a: 2012, art: "Burial", t: "Kindred", n: "Doce minutos de lluvia y voces." },
         { a: 2012, art: "Mala", t: "Mala in Cuba", tipo: "disco", n: "Dubstep con músicos cubanos." },
+        { a: 2013, art: "James Blake", t: "Retrograde", n: "Gana el Mercury Prize con el disco «Overgrown»." },
         { a: 2014, art: "Kahn & Neek", t: "Percy", n: "El dubstep de Bristol." }
       ]
     }
