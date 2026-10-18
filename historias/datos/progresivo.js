@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "progresivo",
   familia: "Rock",
   titulo: "Historia del rock progresivo",
-  periodo: "1967 – 2007",
+  periodo: "1967 – 2016",
   color: "#4a6fa5",
   lema: "Canciones de veinte minutos, discos conceptuales y virtuosismo: de King Crimson a Tool.",
   intro: "A finales de los 60, el rock quiere ser arte serio: mezcla la música clásica, el jazz y la psicodelia en piezas largas, con cambios de compás, mellotrones, sintetizadores y discos que cuentan una historia. Los punks lo odiaron, pero dejó algunos de los discos más vendidos de todos los tiempos y una herencia que llega al metal progresivo.",
@@ -28,18 +28,26 @@ HISTORIAS.push({
         { a: 1973, art: "Emerson, Lake & Palmer", t: "Karn Evil 9: 1st Impression, Part 2", n: "Teclados y sintetizador Moog a lo grande." },
         { a: 1973, art: "Mike Oldfield", t: "Tubular Bells, Pt. I", q: "Mike Oldfield Tubular Bells Part One", n: "El primer disco de Virgin Records y la música de «El exorcista»." },
         { a: 1973, art: "King Crimson", t: "Larks' Tongues in Aspic, Part One", n: "King Crimson se vuelve más duro e improvisado." },
+        { a: 1973, art: "Pink Floyd", t: "Breathe (In the Air)", n: "El comienzo de «The Dark Side of the Moon»." },
+        { a: 1973, art: "Pink Floyd", t: "On the Run", n: "Un sintetizador VCS3 y pasos corriendo: electrónica antes de la electrónica." },
+        { a: 1973, art: "Pink Floyd", t: "The Great Gig in the Sky", n: "Clare Torry improvisa sin letra el solo de voz más famoso del rock." },
+        { a: 1973, art: "Pink Floyd", t: "Money", n: "El ritmo en 7/4 y las cajas registradoras." },
         { a: 1974, art: "Camel", t: "Lady Fantasy", n: "Progresivo de Canterbury." },
+        { a: 1974, art: "Gentle Giant", t: "Proclamation", n: "Del disco «The Power and the Glory»." },
         { a: 1975, art: "Pink Floyd", t: "Shine On You Crazy Diamond (Parts I–V)", n: "Homenaje a Syd Barrett, fundador del grupo." },
         { a: 1975, art: "Triana", t: "Abre la puerta", n: "Progresivo con alma flamenca." },
+        { a: 1975, art: "Pink Floyd", t: "Wish You Were Here", n: "La canción dedicada a Syd Barrett." },
         { a: 1976, art: "Kansas", t: "Carry On Wayward Son", n: "Progresivo para la radio." },
         { a: 1977, art: "El punk", t: "«Odio a Pink Floyd»", tipo: "hito", n: "Johnny Rotten llevaba una camiseta con esa frase escrita a mano: el prog se convierte en el enemigo." },
-        { a: 1977, art: "Rush", t: "Xanadu", n: "Prog con pegada de hard rock desde Canadá." }
+        { a: 1977, art: "Rush", t: "Xanadu", n: "Prog con pegada de hard rock desde Canadá." },
+        { a: 1977, art: "Pink Floyd", t: "Dogs", n: "Diecisiete minutos de «Animals», inspirado en «Rebelión en la granja»." },
+        { a: 1977, art: "Pink Floyd", t: "Pigs on the Wing", n: "Dos piezas acústicas que abren y cierran «Animals»." }
       ]
     },
     {
       titulo: "Supervivencia y metal progresivo",
       corto: "Herencia",
-      periodo: "1979 – 2007",
+      periodo: "1979 – 2016",
       intro: "El punk lo arrinconó, pero el prog sobrevivió y se volvió más pesado.",
       items: [
         { a: 1979, art: "«The Wall»", t: "Una ópera rock sobre el aislamiento", tipo: "hito", n: "En la gira, Pink Floyd construía un muro de verdad en el escenario." },
@@ -49,12 +57,17 @@ HISTORIAS.push({
         { a: 1980, art: "Rush", t: "The Spirit of Radio", n: "El espíritu de la radio." },
         { a: 1981, art: "Rush", t: "Tom Sawyer", n: "Rush en su momento más popular, con sintes y riffs complejos." },
         { a: 1983, art: "Yes", t: "Owner of a Lonely Heart", n: "Yes en los 80." },
+        { a: 1983, art: "Mike Oldfield", t: "Moonlight Shadow", n: "Con la voz de Maggie Reilly: un éxito en toda Europa." },
+        { a: 1983, art: "Mike Oldfield", t: "In High Places", n: "Con Jon Anderson, de Yes." },
+        { a: 1983, art: "Genesis", t: "That's All", n: "Genesis ya es una banda de pop." },
         { a: 1985, art: "Marillion", t: "Kayleigh", n: "El neo-progresivo." },
+        { a: 1986, art: "Genesis", t: "Invisible Touch", n: "Su único número uno en EE. UU." },
         { a: 1992, art: "Dream Theater", t: "Pull Me Under", n: "El metal progresivo, técnico y virtuoso." },
         { a: 1999, art: "Opeth", t: "Face of Melinda", q: "Opeth Face of Melinda", n: "Opeth, de Suecia, mezcla death metal y progresivo." },
         { a: 2001, art: "Tool", t: "Schism", n: "Compases imposibles: ganaron un Grammy." },
         { a: 2003, art: "The Mars Volta", t: "Inertiatic ESP", n: "El progresivo del siglo XXI." },
-        { a: 2007, art: "Porcupine Tree", t: "Fear of a Blank Planet", n: "Steven Wilson y el prog del siglo XXI." }
+        { a: 2007, art: "Porcupine Tree", t: "Fear of a Blank Planet", n: "Steven Wilson y el prog del siglo XXI." },
+        { a: 2016, art: "Polyphia", t: "G.O.A.T.", n: "Guitarras virtuosas de Texas para la era de YouTube." }
       ]
     }
   ]

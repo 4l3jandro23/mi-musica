@@ -35,6 +35,8 @@ HISTORIAS.push({
       items: [
         { a: 1970, art: "Free", t: "All Right Now", n: "Un riff sencillo y perfecto." },
         { a: 1971, art: "The Who", t: "Baba O'Riley", n: "Sintetizador y adolescencia." },
+        { a: 1971, art: "The Doors", t: "L.A. Woman", n: "El último disco con Jim Morrison." },
+        { a: 1971, art: "The Doors", t: "Riders on the Storm", n: "Lluvia y piano eléctrico: la última canción que grabó Morrison." },
         { a: 1972, art: "Deep Purple", t: "Smoke on the Water", n: "El incendio del casino de Montreux convertido en el riff más tocado del mundo." },
         { a: 1972, art: "Eagles", t: "Take It Easy", n: "El rock de California, escrito con Jackson Browne." },
         { a: 1973, art: "«The Dark Side of the Moon»", t: "Casi mil semanas en las listas", tipo: "hito", n: "El disco de Pink Floyd entra en la lista de Billboard y se queda allí durante casi veinte años." },

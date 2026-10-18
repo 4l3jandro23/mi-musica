@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "rockandroll",
   familia: "Rock",
   titulo: "Orígenes del rock and roll",
-  periodo: "1944 – 1964",
+  periodo: "1941 – 1964",
   color: "#c23b30",
   lema: "Del rhythm & blues a la invasión británica: la música que inventó a los adolescentes.",
   intro: "Músicos negros del sur de Estados Unidos aceleran el blues y el gospel. Un DJ de radio lo llama «rock and roll», Elvis lo lleva a la tele y el mundo cambia. Diez años después, cuatro chicos de Liverpool lo devuelven multiplicado.",
@@ -10,23 +10,30 @@ HISTORIAS.push({
     {
       titulo: "Las raíces: rhythm & blues y gospel",
       corto: "Raíces",
-      periodo: "1944 – 1954",
+      periodo: "1941 – 1954",
       intro: "El rhythm & blues y el gospel de los músicos negros preparan la revolución.",
       items: [
+        { a: 1941, art: "Sister Rosetta Tharpe & Lucky Millinder", t: "Rock Me", n: "Góspel con guitarra eléctrica en una orquesta de swing." },
         { a: 1944, art: "Sister Rosetta Tharpe", t: "Strange Things Happening Every Day", n: "La madrina del rock and roll: gospel con guitarra eléctrica." },
         { a: 1946, art: "Arthur Crudup", t: "That's All Right", n: "El blues que Elvis grabaría en su primer single." },
+        { a: 1947, art: "Roy Brown", t: "Good Rockin' Tonight", n: "La canción que versionó Elvis en Sun Records." },
+        { a: 1947, art: "Sister Rosetta Tharpe", t: "Up Above My Head I Hear Music in the Air", n: "Con Marie Knight: la madrina del rock and roll." },
         { a: 1948, art: "Wynonie Harris", t: "Good Rocking Tonight", n: "«Rock» ya aparece en el título, con sus dobles sentidos." },
+        { a: 1948, art: "Sister Rosetta Tharpe & Marie Knight", t: "Didn't It Rain", n: "El góspel de la guitarra eléctrica." },
+        { a: 1948, art: "Sister Rosetta Tharpe & Marie Knight", t: "My Journey to the Sky", n: "Otra de su época con Marie Knight." },
         { a: 1949, art: "Fats Domino", t: "The Fat Man", n: "Piano de Nueva Orleans: uno de los primeros discos de rock and roll en vender un millón." },
         { a: 1951, art: "Alan Freed", t: "Bautiza el «rock and roll» en la radio", tipo: "hito", n: "Un DJ de Cleveland populariza el nombre y pone música negra para un público blanco." },
         { a: 1951, art: "Jackie Brenston and his Delta Cats", t: "Rocket 88", n: "En realidad era la banda de Ike Turner. Muchos la consideran el primer rock and roll." },
         { a: 1953, art: "Big Mama Thornton", t: "Hound Dog", n: "La original, mucho más salvaje que la de Elvis." },
-        { a: 1954, art: "Big Joe Turner", t: "Shake, Rattle and Roll", n: "Rhythm & blues de Kansas City listo para explotar." }
+        { a: 1954, art: "Big Joe Turner", t: "Shake, Rattle and Roll", n: "Rhythm & blues de Kansas City listo para explotar." },
+        { a: 1954, art: "The Chords", t: "Sh-Boom", n: "Doo-wop que entra en las listas de pop: uno de los primeros rock and roll." },
+        { a: 1954, art: "Bill Haley & His Comets", t: "Shake, Rattle and Roll", n: "La versión blanca del éxito de Big Joe Turner." }
       ]
     },
     {
       titulo: "La explosión",
       corto: "La explosión",
-      periodo: "1954 – 1959",
+      periodo: "1954 – 1956",
       intro: "Los adolescentes descubren que tienen su propia música.",
       items: [
         { a: 1954, art: "Elvis Presley", t: "That's All Right", n: "En Sun Records, Memphis: un camionero de 19 años mezcla blues y country." },
@@ -34,18 +41,53 @@ HISTORIAS.push({
         { a: 1955, art: "Chuck Berry", t: "Maybellene", n: "Coches, chicas y riffs de guitarra: Chuck Berry inventa el lenguaje del rock." },
         { a: 1955, art: "Little Richard", t: "Tutti Frutti", n: "«A-wop-bop-a-loo-bop»: pura energía y desenfreno." },
         { a: 1955, art: "Bo Diddley", t: "Bo Diddley", n: "El «ritmo Bo Diddley», que luego usará todo el mundo." },
+        { a: 1955, art: "Bo Diddley", t: "I'm a Man", n: "El ritmo de Bo Diddley y la chulería del blues." },
+        { a: 1955, art: "Fats Domino", t: "Ain't That a Shame", n: "Pat Boone hizo una versión más blanca que vendió más." },
+        { a: 1956, art: "Elvis Presley", t: "El show de Ed Sullivan", tipo: "hito", n: "Unos sesenta millones de personas, más de la mitad de EE. UU., ven a Elvis en la televisión." },
         { a: 1956, art: "Carl Perkins", t: "Blue Suede Shoes", n: "Rockabilly de Sun Records." },
         { a: 1956, art: "Elvis Presley", t: "Heartbreak Hotel", n: "Su primer número uno y el inicio de la elvismanía." },
         { a: 1956, art: "Gene Vincent", t: "Be-Bop-a-Lula", n: "El rockabilly más sexy y con eco." },
+        { a: 1956, art: "Elvis Presley", t: "Hound Dog", n: "La versión de Elvis del éxito de Big Mama Thornton." },
+        { a: 1956, art: "Elvis Presley", t: "Blue Suede Shoes", n: "La de Carl Perkins, del primer disco de Elvis." },
+        { a: 1956, art: "Elvis Presley", t: "I Got a Woman", n: "Ray Charles en la voz de Elvis." },
+        { a: 1956, art: "Elvis Presley", t: "Tutti Frutti", n: "Elvis canta a Little Richard." },
+        { a: 1956, art: "Fats Domino", t: "Blueberry Hill", n: "Un estándar de los años 40 que Fats convierte en rock and roll." },
+        { a: 1956, art: "Frankie Lymon & The Teenagers", t: "Why Do Fools Fall in Love", n: "Un niño de 13 años en el número uno." },
+        { a: 1956, art: "Little Richard", t: "Long Tall Sally", n: "Más rápido que «Tutti Frutti»." },
+        { a: 1956, art: "Little Richard", t: "Rip It Up", n: "Otro grito de Little Richard." },
+        { a: 1956, art: "Chuck Berry", t: "Roll Over Beethoven", n: "Chuck Berry contra la música clásica." }
+      ]
+    },
+    {
+      titulo: "La edad de oro y el día que murió la música",
+      corto: "Edad de oro",
+      periodo: "1957 – 1959",
+      intro: "1957 – 1959: Buddy Holly, el doo-wop y los Everly Brothers, hasta el accidente de avión de 1959.",
+      items: [
         { a: 1957, art: "Jerry Lee Lewis", t: "Great Balls of Fire", n: "Aporreando el piano como nadie." },
         { a: 1957, art: "The Crickets", t: "That'll Be the Day", n: "Buddy Holly: grupo, guitarras y canciones propias. El modelo de los Beatles." },
         { a: 1957, art: "The Everly Brothers", t: "Wake Up Little Susie", n: "Armonías vocales que aprenderán los Beatles y Simon & Garfunkel." },
         { a: 1957, art: "Buddy Holly", t: "Peggy Sue", n: "La batería de tom-tom." },
+        { a: 1957, art: "Buddy Holly & The Crickets", t: "That'll Be the Day", n: "La frase la sacaron de John Wayne en «Centauros del desierto»." },
+        { a: 1957, art: "Buddy Holly & The Crickets", t: "Everyday", n: "Una canción con celesta y palmas en las rodillas." },
+        { a: 1957, art: "Elvis Presley", t: "Jailhouse Rock", n: "El número de la película «El rock de la cárcel»." },
+        { a: 1957, art: "The Del-Vikings", t: "Come Go with Me", n: "Doo-wop de un grupo con miembros blancos y negros." },
+        { a: 1957, art: "The Diamonds", t: "Little Darlin'", n: "Doo-wop con castañuelas." },
+        { a: 1957, art: "Thurston Harris", t: "Little Bitty Pretty One", n: "Rhythm and blues de Los Ángeles." },
+        { a: 1957, art: "Elvis en la tele", t: "Solo de cintura para arriba", n: "En su tercera actuación en el show de Ed Sullivan lo filman solo de cintura para arriba para que no se vea cómo mueve las caderas.", tipo: "hito" },
         { a: 1958, art: "Chuck Berry", t: "Johnny B. Goode", n: "El riff más famoso del rock and roll." },
         { a: 1958, art: "Link Wray", t: "Rumble", n: "Un instrumental tan amenazante que lo prohibieron en algunas radios. Distorsión antes de tiempo." },
         { a: 1958, art: "Eddie Cochran", t: "Summertime Blues", n: "La rebeldía adolescente hecha canción." },
         { a: 1958, art: "Ritchie Valens", t: "La Bamba", n: "Un son jarocho mexicano en rock and roll: el primer gran rock en español." },
-        { a: 1959, art: "El día que murió la música", t: "Mueren Buddy Holly, Ritchie Valens y The Big Bopper", tipo: "hito", n: "Un accidente de avioneta el 3 de febrero. Se acaba la primera era del rock and roll." }
+        { a: 1958, art: "Bobby Day", t: "Rockin' Robin", n: "Un pájaro que baila rock and roll." },
+        { a: 1958, art: "Eddie Cochran", t: "C'mon Everybody", n: "Fiesta de adolescentes." },
+        { a: 1958, art: "Little Richard", t: "Good Golly, Miss Molly", n: "Otro de sus éxitos." },
+        { a: 1958, art: "The Champs", t: "Tequila", n: "Número uno con una sola palabra." },
+        { a: 1958, art: "The Everly Brothers", t: "All I Have to Do Is Dream", n: "Las armonías que copiaron los Beatles." },
+        { a: 1958, art: "Ritchie Valens", t: "We Belong Together", n: "Una balada del chicano que murió con 17 años." },
+        { a: 1959, art: "El día que murió la música", t: "Mueren Buddy Holly, Ritchie Valens y The Big Bopper", tipo: "hito", n: "Un accidente de avioneta el 3 de febrero. Se acaba la primera era del rock and roll." },
+        { a: 1959, art: "Bo Diddley", t: "Say Man", n: "Bo Diddley y su maraquero se insultan en broma: casi un rap." },
+        { a: 1959, art: "The Isley Brothers", t: "Shout", n: "El grito que se oye en todas las bodas americanas." }
       ]
     },
     {
@@ -56,12 +98,17 @@ HISTORIAS.push({
       items: [
         { a: 1960, art: "The Shadows", t: "Apache", n: "La guitarra instrumental británica que inspiró a medio mundo, también a los grupos españoles." },
         { a: 1960, art: "Los Teen Tops", t: "La plaga", n: "Rock and roll traducido al español desde México. Llegó a toda Latinoamérica." },
+        { a: 1961, art: "Chuck Berry", t: "Route 66", n: "El clásico de Bobby Troup en la voz de Chuck Berry." },
+        { a: 1961, art: "Del Shannon", t: "Runaway", n: "El solo de musitron, un antepasado del sintetizador." },
+        { a: 1961, art: "Dion", t: "Runaround Sue", n: "La chica que se iba con todos." },
         { a: 1962, art: "Dick Dale", t: "Misirlou", n: "Surf rock con escala oriental. Pulp Fiction la resucitó en 1994." },
+        { a: 1962, art: "The Tornados", t: "Telstar", n: "Producida por Joe Meek: el primer número uno británico en EE. UU." },
         { a: 1963, art: "The Beach Boys", t: "Surfin' U.S.A.", n: "Chuck Berry con armonías californianas." },
         { a: 1963, art: "The Beatles", t: "She Loves You", n: "«Yeah, yeah, yeah». La beatlemanía en el Reino Unido." },
         { a: 1964, art: "The Beatles", t: "Actúan en el show de Ed Sullivan", tipo: "hito", n: "73 millones de estadounidenses los ven por la tele. Empieza la invasión británica." },
         { a: 1964, art: "The Kinks", t: "You Really Got Me", n: "Un amplificador rajado con una cuchilla: el riff distorsionado que anuncia el hard rock." },
-        { a: 1964, art: "Los Brincos", t: "Flamenco", n: "Los «Beatles españoles» con un guiño andaluz." }
+        { a: 1964, art: "Los Brincos", t: "Flamenco", n: "Los «Beatles españoles» con un guiño andaluz." },
+        { a: 1964, art: "Roy Orbison", t: "Oh, Pretty Woman", n: "El riff y el gruñido de Roy Orbison." }
       ]
     }
   ]

@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "psicodelia",
   familia: "Rock",
   titulo: "Historia del rock psicodélico",
-  periodo: "1966 – 2018",
+  periodo: "1966 – 2022",
   color: "#9c4dcc",
   lema: "Del LSD de San Francisco y Londres a Tame Impala y King Gizzard.",
   intro: "A mediados de los 60 el rock intenta sonar como un viaje: guitarras con efectos, sitares, cintas al revés, canciones largas y letras surrealistas. San Francisco y Londres son sus capitales. Desapareció en los 70, pero cada generación lo redescubre.",
@@ -18,6 +18,7 @@ HISTORIAS.push({
         { a: 1966, art: "The Byrds", t: "Eight Miles High", n: "Guitarra de 12 cuerdas imitando a Coltrane: muchas radios la prohibieron." },
         { a: 1966, art: "The Electric Prunes", t: "I Had Too Much to Dream (Last Night)", n: "Garage rock con efectos raros." },
         { a: 1966, art: "The Beatles", t: "Tomorrow Never Knows", n: "Cintas al revés y un mantra." },
+        { a: 1966, art: "The Incredible String Band", t: "Schaeffer's Jig", n: "Folk psicodélico escocés." },
         { a: 1967, art: "Festival de Monterey", t: "Hendrix prende fuego a su guitarra", tipo: "hito", n: "El primer gran festival de rock." },
         { a: 1967, art: "Jefferson Airplane", t: "White Rabbit", n: "«Alicia en el país de las maravillas» como metáfora de las drogas, con un crescendo de bolero." },
         { a: 1967, art: "The Doors", t: "Light My Fire", n: "El órgano de Ray Manzarek y siete minutos de improvisación." },
@@ -30,16 +31,21 @@ HISTORIAS.push({
         { a: 1967, art: "Pink Floyd", t: "See Emily Play", n: "Syd Barrett." },
         { a: 1967, art: "Small Faces", t: "Itchycoo Park", n: "Psicodelia británica." },
         { a: 1967, art: "The Chambers Brothers", t: "Time Has Come Today", n: "Once minutos de psicodelia soul." },
+        { a: 1967, art: "The Doors", t: "The End", n: "Once minutos de Edipo y desierto; abre «Apocalypse Now»." },
+        { a: 1967, art: "Strawberry Alarm Clock", t: "Incense and Peppermints", n: "Psicodelia de Los Ángeles, número uno en EE. UU." },
         { a: 1968, art: "Iron Butterfly", t: "In-A-Gadda-Da-Vida", n: "17 minutos, con un solo de batería eterno." },
         { a: 1968, art: "Grateful Dead", t: "Dark Star", n: "La base de sus improvisaciones infinitas en directo." },
         { a: 1968, art: "Os Mutantes", t: "Panis et Circenses", n: "Tropicalismo." },
-        { a: 1968, art: "The Jimi Hendrix Experience", t: "All Along the Watchtower", n: "Dylan según Hendrix." }
+        { a: 1968, art: "The Jimi Hendrix Experience", t: "All Along the Watchtower", n: "Dylan según Hendrix." },
+        { a: 1968, art: "Fever Tree", t: "Ninety Nine and One-Half", n: "Psicodelia de Houston." },
+        { a: 1968, art: "The Doors", t: "Hello, I Love You", n: "Su segundo número uno." },
+        { a: 1968, art: "The Jimi Hendrix Experience", t: "Voodoo Child (Slight Return)", n: "El riff de wah-wah de «Electric Ladyland»." }
       ]
     },
     {
       titulo: "El viaje continúa",
       corto: "De los 70 a hoy",
-      periodo: "1971 – 2018",
+      periodo: "1971 – 2022",
       intro: "Cada generación redescubre el viaje.",
       items: [
         { a: 1971, art: "Pink Floyd", t: "Echoes", n: "23 minutos: de la psicodelia al rock progresivo." },
@@ -53,7 +59,9 @@ HISTORIAS.push({
         { a: 2015, art: "Tame Impala", t: "The Less I Know the Better", n: "Psicodelia bailable: su canción más escuchada." },
         { a: 2015, art: "Unknown Mortal Orchestra", t: "Multi-Love", n: "Psicodelia y soul." },
         { a: 2017, art: "King Gizzard & The Lizard Wizard", t: "Rattlesnake", n: "Cinco discos en un año: la banda más prolífica del rock actual." },
-        { a: 2018, art: "Khruangbin", t: "Maria También", n: "Psicodelia con sonido tailandés, iraní y funk." }
+        { a: 2018, art: "Khruangbin", t: "Maria También", n: "Psicodelia con sonido tailandés, iraní y funk." },
+        { a: 2022, art: "Djo", t: "End of Beginning", n: "El actor de «Stranger Things» Joe Keery canta a Chicago; se hace viral en TikTok en 2024." },
+        { a: 2022, art: "Khruangbin & Knxwledge", t: "Dearest Alfred (MyJoy)", n: "Un remix de Knxwledge para Khruangbin (año aproximado)." }
       ]
     }
   ]

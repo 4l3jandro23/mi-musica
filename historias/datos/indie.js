@@ -40,6 +40,7 @@ HISTORIAS.push({
         { a: 2004, art: "The Killers", t: "Mr. Brightside", n: "La canción que sigue en las listas británicas veinte años después." },
         { a: 2004, art: "Arcade Fire", t: "Wake Up", n: "Indie épico desde Montreal." },
         { a: 2004, art: "Modest Mouse", t: "Float On", n: "Optimismo raro." },
+        { a: 2004, art: "Eagles of Death Metal", t: "Miss Alissa", n: "El grupo de Jesse Hughes y Josh Homme, de Queens of the Stone Age." },
         { a: 2005, art: "MySpace", t: "Los grupos se descubren en internet", tipo: "hito", n: "Arctic Monkeys, Lily Allen y una generación entera." },
         { a: 2005, art: "Arctic Monkeys", t: "I Bet You Look Good on the Dancefloor", n: "Unos chavales de Sheffield que triunfaron gracias a los fans que compartían sus maquetas en internet." },
         { a: 2005, art: "Bloc Party", t: "Banquet", n: "Guitarras nerviosas." },

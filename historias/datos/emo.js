@@ -43,6 +43,7 @@ HISTORIAS.push({
         { a: 2004, art: "Senses Fail", t: "Buried a Lie", n: "Gritos y melodía." },
         { a: 2005, art: "Fall Out Boy", t: "Sugar, We're Goin Down", n: "El emo convertido en pop de estadio." },
         { a: 2005, art: "Silverstein", t: "Smile in Your Sleep", n: "El emo de Canadá." },
+        { a: 2005, art: "Fall Out Boy", t: "Dance, Dance", n: "Del disco «From Under the Cork Tree»." },
         { a: 2006, art: "Panic! at the Disco", t: "I Write Sins Not Tragedies", n: "Un videoclip de boda circense que ganó en los MTV." },
         { a: 2006, art: "My Chemical Romance", t: "Welcome to the Black Parade", n: "La nota sol del piano que reconoce toda una generación." },
         { a: 2006, art: "AFI", t: "Miss Murder", n: "El emo gótico." },
@@ -61,6 +62,7 @@ HISTORIAS.push({
       intro: "De internet a los festivales.",
       items: [
         { a: 2014, art: "Modern Baseball", t: "Your Graduation", n: "El emo revival de Filadelfia." },
+        { a: 2014, art: "Fall Out Boy", t: "Centuries", n: "El regreso de Fall Out Boy con «American Beauty/American Psycho»." },
         { a: 2022, art: "When We Were Young", t: "El festival de la nostalgia", tipo: "hito", n: "En Las Vegas se reúnen My Chemical Romance, Paramore y Fall Out Boy: el emo ya es música clásica de una generación." },
         { a: 2022, art: "My Chemical Romance", t: "The Foundations of Decay", n: "Su primera canción nueva en ocho años." }
       ]

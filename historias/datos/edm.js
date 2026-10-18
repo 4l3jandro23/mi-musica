@@ -84,6 +84,7 @@ HISTORIAS.push({
         { a: 2018, art: "FISHER", t: "Losing It", n: "El tech house del australiano en todos los festivales." },
         { a: 2018, art: "Dayvi, Víctor Cárdenas & Kelly Ruiz", t: "Baila conmigo", n: "Guaracha colombiana, la electrónica de los barrios; J. Lo hizo su versión en 2019." },
         { a: 2019, art: "Yilberking & Anny Sepúlveda", t: "Guaracha", n: "Guaracha electrónica de Medellín (año aproximado)." },
+        { a: 2019, art: "Topic & A7S", t: "Breaking Me", n: "Un éxito de las radios en plena pandemia." },
         { a: 2021, art: "ATB, Topic & A7S", t: "Your Love (9PM)", n: "«9 PM (Till I Come)» rehecha veinte años después." },
         { a: 2022, art: "Fred again..", t: "El Boiler Room viral", tipo: "hito", n: "Su sesión de Boiler Room en Londres se ve millones de veces y agota entradas por todo el mundo." },
         { a: 2022, art: "David Guetta & Bebe Rexha", t: "I'm Good (Blue)", n: "Eiffel 65 reconvertido en éxito mundial." },

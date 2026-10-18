@@ -100,6 +100,7 @@ HISTORIAS.push({
         { a: 2013, art: "Milky Chance", t: "Stolen Dance", n: "Dos amigos de Kassel lo graban en casa y llega a medio mundo." },
         { a: 2013, art: "Milky Chance", t: "Down by the River", n: "Del mismo disco, «Sadnecessary»." },
         { a: 2016, art: "Alice Merton", t: "No Roots", n: "Una canción sobre haberse mudado de país muchas veces." },
+        { a: 2023, art: "MilleniumKid & JBS", t: "Vielleicht Vielleicht", n: "Rap alemán viral en TikTok: disco de platino en Alemania, Austria y Suiza." },
         { a: 2026, art: "KITSCHKRIEG, Blumengarten & Shirin David", t: "Gut genug", q: "KITSCHKRIEG Gut Genug Blumengarten Shirin David", n: "Número uno en Alemania y viral en EE. UU., donde el «du bist gut genug» se oye como «Doobie Scoot Canoe»." }
       ]
     }

@@ -98,6 +98,8 @@ HISTORIAS.push({
       items: [
         { a: 2002, art: "DJ BoBo", t: "Chihuahua", n: "El suizo DJ BoBo y el anuncio de Coca-Cola." },
         { a: 2002, art: "Kate Ryan", t: "Désenchantée", n: "La canción de Mylène Farmer pasada a dance." },
+        { a: 2002, art: "Scooter", t: "The Logical Song", n: "Supertramp convertido en hands up: un éxito en toda Europa." },
+        { a: 2002, art: "Scooter", t: "Nessaja", n: "La canción de «Tabaluga», en versión Scooter." },
         { a: 2005, art: "Cascada", t: "Everytime We Touch", n: "Hands up alemán: número dos en Reino Unido." },
         { a: 2006, art: "Basshunter", t: "Boten Anna", n: "Un sueco cuenta en una canción que una amiga no es un bot de IRC." },
         { a: 2006, art: "Basshunter", t: "DotA", n: "Una canción sobre el videojuego «Defense of the Ancients»." },
@@ -105,11 +107,11 @@ HISTORIAS.push({
         { a: 2007, art: "September", t: "Cry for You", n: "Un eurodance tardío de Suecia que triunfó en toda Europa." },
         { a: 2007, art: "Basshunter", t: "Now You're Gone", n: "Número uno en Reino Unido con el vídeo de Aylar Lie." },
         { a: 2007, art: "Kate Ryan", t: "Voyage voyage", n: "La versión de Desireless en dance." },
+        { a: 2008, art: "Basshunter", t: "Un sueco número uno en Reino Unido", n: "«Now You're Gone» pasa cinco semanas en el número uno británico: el eurodance resucita gracias a internet.", tipo: "hito" },
         { a: 2008, art: "Basshunter", t: "All I Ever Wanted", n: "Otro número dos en Reino Unido." },
         { a: 2008, art: "Basshunter", t: "Angel in the Night", n: "Eurodance de la década de 2000." },
         { a: 2008, art: "Basshunter", t: "I Can Walk on Water", n: "Del disco «Now You're Gone»." },
         { a: 2008, art: "Kate Ryan", t: "Ella elle l'a", n: "France Gall en clave dance." },
-        { a: 2008, art: "Basshunter", t: "Un sueco número uno en Reino Unido", n: "«Now You're Gone» pasa cinco semanas en el número uno británico: el eurodance resucita gracias a internet.", tipo: "hito" },
         { a: 2009, art: "ItaloBrothers", t: "Stamp on the Ground", n: "El hands up alemán: el eurodance resucita en internet." }
       ]
     }

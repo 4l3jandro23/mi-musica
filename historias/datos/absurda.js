@@ -57,7 +57,8 @@ HISTORIAS.push({
         { a: 2016, art: "Leticia Sabater", t: "La salchipapa", n: "Un vídeo con millones de visitas que nadie supo cómo tomarse." },
         { a: 2016, art: "Pikotaro", t: "PPAP (Pen-Pineapple-Apple-Pen)", n: "Un japonés con traje de leopardo junta un bolígrafo y una piña: récord de Guinness por ser la canción más corta en entrar en el top 100 de Billboard." },
         { a: 2016, art: "Pinkfong", t: "Baby Shark Dance", n: "La canción infantil coreana que se convirtió en el vídeo más visto de la historia de YouTube." },
-        { a: 2018, art: "El Chombo feat. Cutty Ranks", t: "Dame tu cosita", n: "Un alienígena verde bailando: uno de los vídeos más vistos de YouTube." }
+        { a: 2018, art: "El Chombo feat. Cutty Ranks", t: "Dame tu cosita", n: "Un alienígena verde bailando: uno de los vídeos más vistos de YouTube." },
+        { a: 2018, art: "Tu Madre Es Puta", t: "Canción inofensiva", n: "Un grupo de punk hispanoportugués que se ríe de la censura y del «no se puede decir nada» (año aproximado)." }
       ]
     },
     {

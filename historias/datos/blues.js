@@ -38,6 +38,7 @@ HISTORIAS.push({
         { a: 1951, art: "B.B. King", t: "Three O'Clock Blues", n: "El primer éxito del rey del blues y de su guitarra «Lucille»." },
         { a: 1952, art: "Big Mama Thornton", t: "Hound Dog", n: "El original que luego cantó Elvis." },
         { a: 1954, art: "Muddy Waters", t: "Hoochie Coochie Man", n: "Compuesta por Willie Dixon: el blues de Chicago en su cumbre." },
+        { a: 1955, art: "Muddy Waters", t: "Mannish Boy", n: "La respuesta a «I'm a Man» de Bo Diddley." },
         { a: 1956, art: "Howlin' Wolf", t: "Smokestack Lightnin'", n: "La voz rasgada de Howlin' Wolf con un riff hipnótico de un solo acorde: los Yardbirds y medio rock británico la versionaron." },
         { a: 1960, art: "Lightnin' Hopkins", t: "Mojo Hand", n: "El blues de Houston." },
         { a: 1966, art: "Koko Taylor", t: "Wang Dang Doodle", n: "La reina del blues de Chicago." },
