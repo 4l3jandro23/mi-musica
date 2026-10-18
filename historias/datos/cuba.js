@@ -33,12 +33,12 @@ HISTORIAS.push({
         { a: 1953, art: "Celia Cruz & La Sonora Matancera", t: "Burundanga", n: "Celia Cruz en su etapa cubana, con la Sonora Matancera." },
         { a: 1953, art: "Bola de Nieve", t: "Ay, mamá Inés", n: "El pianista y cantante habanero." },
         { a: 1955, art: "Orquesta Aragón", t: "El bodeguero", n: "La Orquesta Aragón, de flautas y violines, la reina del chachachá." },
-        { a: 1955, art: "Benny Moré", t: "¿Qué bueno baila usted?", n: "El bárbaro del ritmo." },
+        { a: 1955, art: "Benny Moré", t: "¿Qué bueno baila usted?", n: "«El bárbaro del ritmo» con su banda gigante: son y mambo para la pista." },
         { a: 1956, art: "Benny Moré", t: "Santa Isabel de las Lajas", n: "El «Bárbaro del Ritmo» canta a su pueblo natal." },
         { a: 1959, art: "Revolución cubana", t: "Llega Fidel Castro al poder", tipo: "hito", n: "Muchos músicos se exilian (Celia Cruz entre ellos) y la música cubana se divide en dos orillas." },
-        { a: 1965, art: "Carlos Puebla", t: "Hasta siempre, comandante", n: "La canción para el Che." },
+        { a: 1965, art: "Carlos Puebla", t: "Hasta siempre, comandante", n: "La canción de despedida al Che Guevara cuando se va de Cuba." },
         { a: 1967, art: "La Lupe", t: "Qué te pedí", n: "La reina del soul latino." },
-        { a: 1968, art: "Silvio Rodríguez", t: "La era está pariendo un corazón", n: "La Nueva Trova." }
+        { a: 1968, art: "Silvio Rodríguez", t: "La era está pariendo un corazón", n: "Una de las canciones fundacionales de la Nueva Trova cubana." }
       ]
     },
     {
@@ -62,18 +62,18 @@ HISTORIAS.push({
       periodo: "1994 – 2017",
       intro: "El mundo vuelve a mirar a Cuba: Buena Vista, el exilio y el reguetón cubano.",
       items: [
-        { a: 1994, art: "NG La Banda", t: "La bruja", n: "La timba de los 90." },
+        { a: 1994, art: "NG La Banda", t: "La bruja", n: "La timba de los 90: salsa cubana dura, con metales a toda velocidad." },
         { a: 1996, art: "Buena Vista Social Club", t: "Ry Cooder graba en La Habana", tipo: "hito", n: "Un disco grabado en seis días con músicos veteranos: vendió millones." },
         { a: 1996, art: "Compay Segundo", t: "Guajira guantanamera", n: "El abuelo del son cubano (año aproximado)." },
         { a: 1997, art: "Buena Vista Social Club", t: "Chan Chan", n: "Músicos olvidados de los años 40 y 50, con 70 y 90 años: un éxito mundial y un Grammy." },
         { a: 1997, art: "Ibrahim Ferrer", t: "Dos gardenias", n: "Ibrahim Ferrer, rescatado por el Buena Vista Social Club a los 70 años, canta un bolero clásico." },
         { a: 1997, art: "Buena Vista Social Club", t: "De camino a la vereda", n: "Ibrahim Ferrer canta una canción suya." },
-        { a: 1997, art: "Buena Vista Social Club", t: "El cuarto de Tula", n: "La de la vela encendida." },
-        { a: 1997, art: "Buena Vista Social Club", t: "Pueblo nuevo", n: "Un danzón del disco." },
+        { a: 1997, art: "Buena Vista Social Club", t: "El cuarto de Tula", n: "La de la vela encendida que quema el cuarto de Tula: el disco que redescubrió a los viejos soneros." },
+        { a: 1997, art: "Buena Vista Social Club", t: "Pueblo nuevo", n: "Un danzón del disco que grabaron Ry Cooder y los músicos veteranos de La Habana." },
         { a: 1997, art: "Buena Vista Social Club", t: "Dos gardenias", n: "El bolero de Isolina Carrillo con Ibrahim Ferrer." },
         { a: 1998, art: "Celia Cruz", t: "La vida es un carnaval", n: "Desde el exilio: «¡Azúcar!»." },
-        { a: 2000, art: "Orishas", t: "537 C.U.B.A.", n: "El rap cubano." },
-        { a: 2015, art: "Gente de Zona", t: "La Gozadera", n: "Con Marc Anthony: el reggaetón cubano." },
+        { a: 2000, art: "Orishas", t: "537 C.U.B.A.", n: "El rap cubano desde París: «Chan Chan» convertido en canción de nostalgia por la isla." },
+        { a: 2015, art: "Gente de Zona", t: "La Gozadera", n: "Con Marc Anthony: el reguetón cubano." },
         { a: 2015, art: "El Taiger & DJ Conds", t: "La historia", n: "El reparto, el reguetón cubano de los barrios de La Habana (año aproximado)." },
         { a: 2016, art: "Cimafunk", t: "Me voy", q: "Cimafunk", n: "Cimafunk mezcla funk y música cubana desde La Habana." },
         { a: 2017, art: "Camila Cabello", t: "Havana", n: "Nacida en Cuba: un homenaje pop a La Habana." }

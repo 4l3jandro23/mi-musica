@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "kanye",
-  familia: "Hip hop",
+  familia: "Artistas",
   titulo: "Kanye West",
   periodo: "2001 – 2024",
   color: "#b5523b",

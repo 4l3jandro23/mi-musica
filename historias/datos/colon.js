@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "colon",
-  familia: "Latino",
+  familia: "Artistas",
   titulo: "Willie Colón, Lavoe y Blades",
   periodo: "1967 – 1993",
   color: "#b23a48",
@@ -15,7 +15,7 @@ HISTORIAS.push({
       items: [
         { a: 1967, art: "«El Malo»", t: "Un trombonista de 17 años que posa como gánster", tipo: "hito", n: "Fania vende a Willie Colón como un gánster del Bronx: nace la imagen de la salsa de barrio." },
         { a: 1967, art: "Willie Colón", t: "El Malo", n: "El primer tema de Willie Colón con la voz de Héctor Lavoe." },
-        { a: 1968, art: "Willie Colón & Héctor Lavoe", t: "Qué lío", n: "Del disco «The Hustler»." },
+        { a: 1968, art: "Willie Colón & Héctor Lavoe", t: "Qué lío", n: "Del disco «The Hustler»: el trombón de Willie y la voz de Lavoe en su segundo año juntos." },
         { a: 1969, art: "Willie Colón & Héctor Lavoe", t: "Che Ché Colé", n: "Ritmos de Ghana en la salsa de Nueva York." },
         { a: 1970, art: "Willie Colón & Héctor Lavoe", t: "La murga", n: "Los trombones más famosos de la salsa." },
         { a: 1971, art: "Willie Colón & Héctor Lavoe", t: "Barrunto", n: "Del disco «La gran fuga», con portada de cartel de policía." },

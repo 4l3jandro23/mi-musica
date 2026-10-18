@@ -17,7 +17,7 @@ HISTORIAS.push({
         { a: 1913, art: "Luigi Russolo", t: "Risveglio di una città", q: "Luigi Russolo", n: "El «Arte de los ruidos» del futurista Russolo: el origen del noise." },
         { a: 1968, art: "The Velvet Underground", t: "Sister Ray", n: "17 minutos de acoples y distorsión grabados en una sola toma." },
         { a: 1975, art: "Lou Reed", t: "Metal Machine Music", tipo: "disco", n: "Una hora de puro acople. Muchos creyeron que era una broma para romper su contrato; hoy es un clásico del noise." },
-        { a: 1977, art: "Suicide", t: "Frankie Teardrop", n: "Diez minutos de terror." },
+        { a: 1977, art: "Suicide", t: "Frankie Teardrop", n: "Diez minutos de terror: un obrero que mata a su familia y se suicida." },
         { a: 1978, art: "Throbbing Gristle", t: "Hamburger Lady", n: "Inventan la «música industrial»: ruido, cintas y temas perturbadores." },
         { a: 1980, art: "Merzbow", t: "Masami Akita empieza su proyecto", tipo: "hito", n: "Más de cuatrocientos discos de ruido extremo desde Tokio." },
         { a: 1981, art: "Einstürzende Neubauten", t: "Kollaps", tipo: "disco", n: "Desde Berlín, tocando con taladros, chapas y martillos." },
@@ -33,15 +33,15 @@ HISTORIAS.push({
         { a: 1984, art: "Sonic Youth", t: "Death Valley '69", n: "Con Lydia Lunch: guitarras con afinaciones raras y destornilladores entre las cuerdas." },
         { a: 1985, art: "The Jesus and Mary Chain", t: "«Psychocandy»", tipo: "hito", n: "Pop de los 60 bajo una tormenta de feedback." },
         { a: 1985, art: "The Jesus and Mary Chain", t: "Never Understand", n: "Melodías de los 60 enterradas bajo acoples: el noise pop." },
-        { a: 1985, art: "Einstürzende Neubauten", t: "Yü-Gung", n: "Metal y hormigón." },
+        { a: 1985, art: "Einstürzende Neubauten", t: "Yü-Gung", n: "Metal, hormigón y herramientas de obra en lugar de instrumentos." },
         { a: 1986, art: "Big Black", t: "Kerosene", n: "Steve Albini y su caja de ritmos: noise rock brutal." },
         { a: 1987, art: "Swans", t: "Children of God", tipo: "disco", n: "Lento, pesado y abrumador." },
         { a: 1987, art: "Butthole Surfers", t: "Sweat Loaf", n: "Locura texana: psicodelia y ruido." },
         { a: 1988, art: "Sonic Youth", t: "Teen Age Riot", n: "De «Daydream Nation»: el noise rock se vuelve himno." },
-        { a: 1988, art: "Sonic Youth", t: "Silver Rocket", n: "Ruido y punk." },
-        { a: 1990, art: "Sonic Youth", t: "Kool Thing", n: "Con Chuck D." },
+        { a: 1988, art: "Sonic Youth", t: "Silver Rocket", n: "Ruido y punk de «Daydream Nation», con guitarras afinadas a su manera." },
+        { a: 1990, art: "Sonic Youth", t: "Kool Thing", n: "Con Chuck D, de Public Enemy: Kim Gordon entrevistó a LL Cool J y esto salió de ahí." },
         { a: 1991, art: "My Bloody Valentine", t: "Only Shallow", n: "De «Loveless»: el muro de sonido del shoegaze." },
-        { a: 1992, art: "The Jesus Lizard", t: "Mouth Breather", n: "Noise rock de Chicago." }
+        { a: 1992, art: "The Jesus Lizard", t: "Mouth Breather", n: "Noise rock de Chicago, con David Yow tirándose al público." }
       ]
     },
     {
@@ -52,17 +52,17 @@ HISTORIAS.push({
       items: [
         { a: 1996, art: "Merzbow", t: "El japanoise", tipo: "hito", n: "Masami Akita convierte el ruido en una obra inmensa." },
         { a: 1996, art: "Merzbow", t: "Pulse Demon", tipo: "disco", n: "El rey del noise japonés: el ruido más extremo, convertido en arte." },
-        { a: 1998, art: "Boredoms", t: "Super Ae", tipo: "disco", n: "Los japoneses en trance." },
+        { a: 1998, art: "Boredoms", t: "Super Ae", tipo: "disco", n: "Los japoneses en trance: tambores, gritos y ruido." },
         { a: 2003, art: "Lightning Bolt", t: "Dracula Mountain", n: "Bajo y batería a volumen salvaje: el noise rock más físico." },
         { a: 2004, art: "Wolf Eyes", t: "Stabbed in the Face", q: "Wolf Eyes", n: "Wolf Eyes, de Michigan, con un noise casi punk." },
         { a: 2005, art: "Boris", t: "Pink", n: "Ruido japonés y shoegaze." },
         { a: 2007, art: "Crystal Castles", t: "Crimewave", n: "Remix de HEALTH: chiptune, ruido y pista de baile." },
-        { a: 2009, art: "HEALTH", t: "Die Slow", n: "Ruido bailable." },
+        { a: 2009, art: "HEALTH", t: "Die Slow", n: "Ruido bailable de Los Ángeles: guitarras convertidas en sintetizadores." },
         { a: 2009, art: "A Place to Bury Strangers", t: "I Lived My Life to Stand in the Shadow of Your Heart", n: "El grupo más ruidoso de Nueva York." },
         { a: 2010, art: "Sleigh Bells", t: "Infinity Guitars", n: "Noise pop saturado hasta el límite." },
         { a: 2012, art: "Death Grips", t: "I've Seen Footage", n: "El noise llega al hip hop." },
         { a: 2014, art: "Swans", t: "Screen Shot", n: "El primer tema de «To Be Kind»." },
-        { a: 2018, art: "Daughters", t: "You Won't Get What You Want", tipo: "disco", n: "Noise rock oscuro." },
+        { a: 2018, art: "Daughters", t: "You Won't Get What You Want", tipo: "disco", n: "Noise rock oscuro: uno de los discos más alabados de 2018." },
         { a: 2018, art: "Daughters", t: "The Reason They Hate Me", n: "Del disco «You Won't Get What You Want»." },
         { a: 2019, art: "black midi", t: "bmbmbm", n: "Jóvenes británicos con el caos del noise rock clásico." }
       ]

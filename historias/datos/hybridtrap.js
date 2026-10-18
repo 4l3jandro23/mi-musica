@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "hybridtrap",
-  familia: "Electrónica",
+  familia: "House, techno y EDM",
   titulo: "Hybrid trap y festival trap",
   periodo: "2012 – 2019",
   color: "#c62828",
@@ -18,7 +18,7 @@ HISTORIAS.push({
         { a: 2013, art: "Mayhem & Antiserum", t: "Brick Squad Anthem", n: "Trap con bajos de dubstep para los festivales." },
         { a: 2013, art: "Yellow Claw", t: "DJ Turn It Up", n: "El trío de Ámsterdam y su tema más conocido." },
         { a: 2013, art: "Baauer & RL Grime", t: "Infinite Daps", n: "Dos nombres de la primera ola." },
-        { a: 2013, art: "Diplo feat. Faustix, Imanos & Kai", t: "Revolution", n: "Trap y subidones de EDM." },
+        { a: 2013, art: "Diplo feat. Faustix, Imanos & Kai", t: "Revolution", n: "Trap y subidones de EDM: la mezcla que reinaba en los festivales de 2013." },
         { a: 2013, art: "Bro Safari", t: "The Drop", n: "Trap con bajos de dubstep." },
         { a: 2014, art: "Trap City", t: "El trap en YouTube", tipo: "hito", n: "Canales como Trap Nation o Trap City convierten YouTube en la radio del género, con millones de suscriptores." },
         { a: 2014, art: "Tomsize & Simeon", t: "Jump", n: "El primer lanzamiento de su sello Unborn Records: festival trap de manual." },
@@ -26,10 +26,10 @@ HISTORIAS.push({
         { a: 2014, art: "LOUDPVCK & GLADIATOR feat. Nipsey Hussle", t: "Tony", n: "Trap oscuro con un rapero de Los Ángeles." },
         { a: 2014, art: "Aero Chord", t: "Surface", n: "En Monstercat, uno de los temas más pinchados de 2014." },
         { a: 2014, art: "Flosstradamus & GTA feat. Lil Jon", t: "Prison Riot", n: "Gritos de Lil Jon y bajos de festival." },
-        { a: 2014, art: "Ookay", t: "Thief", n: "Un drop con flauta." },
+        { a: 2014, art: "Ookay", t: "Thief", n: "Un drop con flauta, de los temas más tocados del trap festivalero." },
         { a: 2014, art: "What So Not", t: "Jaguar", n: "Una trompeta de sintetizador." },
         { a: 2014, art: "Carnage feat. Migos", t: "Bricks", n: "El festival trap con raperos de Atlanta." },
-        { a: 2014, art: "DJ Snake & Dillon Francis", t: "Get Low", n: "Moombahton y trap." }
+        { a: 2014, art: "DJ Snake & Dillon Francis", t: "Get Low", n: "Moombahton y trap con voces de chiste, de los dos productores más gamberros." }
       ]
     },
     {
@@ -48,7 +48,7 @@ HISTORIAS.push({
         { a: 2016, art: "Excision & Space Laces", t: "Throwin' Elbows", n: "El sonido más pesado: dubstep que roza el metal." },
         { a: 2016, art: "Hucci & GameFace", t: "The Leaves Are Brown", n: "Trap melódico y triste entre tanto golpe." },
         { a: 2016, art: "Yellow Claw & DJ Mustard", t: "In My Room", n: "Con Ty Dolla $ign y Tyga." },
-        { a: 2016, art: "Marshmello & Slushii", t: "Twinbow", n: "Future bass y trap." },
+        { a: 2016, art: "Marshmello & Slushii", t: "Twinbow", n: "Future bass y trap de dos productores de cara tapada o sonrisa de dibujos." },
         { a: 2017, art: "Hard trap", t: "Más duro todavía", tipo: "hito", n: "Los drops se vuelven casi de hardstyle y metal: es el sonido de la generación de Kayzo, Riot Ten o Getter." },
         { a: 2018, art: "NGHTMRE & A$AP Ferg", t: "REDLIGHT", n: "El hybrid trap con un rapero de Harlem." },
         { a: 2018, art: "Good Times Ahead & Juyen Sebulba", t: "Hard House", n: "Más cerca del hard trap que del trap de 2012." },

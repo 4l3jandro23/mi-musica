@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "edm",
-  familia: "Electrónica",
+  familia: "House, techno y EDM",
   titulo: "La era EDM",
   periodo: "2009 – 2023",
   color: "#ff8a00",

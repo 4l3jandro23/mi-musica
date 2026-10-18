@@ -39,10 +39,10 @@ HISTORIAS.push({
       ]
     },
     {
-      titulo: "Nacionalismo y vanguardia",
+      titulo: "Nacionalismo, vanguardia y copla",
       corto: "Albéniz, Falla y Rodrigo",
-      periodo: "1892 – 1939",
-      intro: "La música española se escucha en París.",
+      periodo: "1892 – 1962",
+      intro: "La música española se escucha en París; tras la guerra llega la copla.",
       items: [
         { a: 1892, art: "Isaac Albéniz", t: "Asturias (Leyenda)", q: "Albeniz Asturias Leyenda guitarra", n: "Escrita para piano; en guitarra se convirtió en la pieza española más tocada." },
         { a: 1911, art: "Enrique Granados", t: "Quejas, o la maja y el ruiseñor", n: "De «Goyescas»: el Madrid de Goya en el piano." },
@@ -50,15 +50,7 @@ HISTORIAS.push({
         { a: 1918, art: "Raquel Meller", t: "La violetera", n: "El cuplé triunfa en París y Nueva York." },
         { a: 1922, art: "Concurso de Cante Jondo de Granada", t: "Falla y Lorca reivindican el flamenco", tipo: "hito", n: "La élite intelectual mira al cante gitano andaluz." },
         { a: 1936, art: "Guerra Civil", t: "Se rompe todo", tipo: "hito", n: "Exilio de muchos músicos y artistas. Lorca es asesinado ese mismo verano." },
-        { a: 1939, art: "Joaquín Rodrigo", t: "Concierto de Aranjuez: II. Adagio", n: "La melodía española más famosa del siglo XX." }
-      ]
-    },
-    {
-      titulo: "Copla y posguerra",
-      corto: "Posguerra",
-      periodo: "1941 – 1962",
-      intro: "Lo cuenta con detalle la historia de la música en el franquismo.",
-      items: [
+        { a: 1939, art: "Joaquín Rodrigo", t: "Concierto de Aranjuez: II. Adagio", n: "La melodía española más famosa del siglo XX." },
         { a: 1941, art: "Concha Piquer", t: "Tatuaje", n: "La copla, música oficial de la posguerra." },
         { a: 1946, art: "Lola Flores", t: "La Zarzamora", q: "Lola Flores La Zarzamora", n: "«La Faraona» y una copla de Quintero, León y Quiroga." },
         { a: 1962, art: "El turismo", t: "Llegan los extranjeros", tipo: "hito", n: "Los guateques y el ye-yé traen la música pop a España." }

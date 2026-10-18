@@ -67,12 +67,12 @@ HISTORIAS.push({
         { a: 1920, art: "Tradicional", t: "El obispo de Ponce", q: "El obispo de Ponce plena", n: "Una de las plenas más populares." },
         { a: 1920, art: "Tradicional", t: "Matan a Bumbum", q: "Matan a Bumbum plena", n: "La muerte de un plenero contada en plena." },
         { a: 1920, art: "Tradicional", t: "Temporal", q: "Temporal plena", n: "«Temporal, temporal, allá viene el temporal»: una tormenta en plena." },
-        { a: 1920, art: "Tradicional", t: "Tanta vanidad", q: "Tanta vanidad plena", n: "Otra plena clásica." },
+        { a: 1920, art: "Tradicional", t: "Tanta vanidad", q: "Tanta vanidad plena", n: "Plena clásica que saben todos los pleneros, con panderos y coro." },
         { a: 1920, art: "Tradicional", t: "Isidora", q: "Isidora plena", n: "Plena para cantar en grupo." },
         { a: 1920, art: "Tradicional", t: "Los muchachos de Cataño", q: "Los muchachos de Cataño plena", n: "Una plena de la costa norte." },
         { a: 1920, art: "Tradicional", t: "La guagua", q: "La guagua plena", n: "Una plena sobre el autobús." },
-        { a: 1920, art: "Tradicional", t: "Julia Lee", q: "Julia Lee plena", n: "Plena tradicional." },
-        { a: 1920, art: "Tradicional", t: "La máquina", q: "La maquina plena", n: "Plena tradicional." }
+        { a: 1920, art: "Tradicional", t: "Julia Lee", q: "Julia Lee plena", n: "Plena tradicional de Puerto Rico, de las que se cantan en grupo con panderos." },
+        { a: 1920, art: "Tradicional", t: "La máquina", q: "La maquina plena", n: "Plena tradicional con panderos y coro: el periódico cantado de los barrios." }
       ]
     }
   ]

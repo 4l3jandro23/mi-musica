@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "ukf",
-  familia: "Bass music",
+  familia: "Jamaica y bass music",
   titulo: "La era UKF",
   periodo: "2008 – 2025",
   color: "#2a6be0",
@@ -8,10 +8,10 @@ HISTORIAS.push({
   intro: "Hacia 2009, un chaval británico, Luke Hood, empieza a subir temas a YouTube con un fondo y un logo. UKF Dubstep y UKF Drum & Bass se convierten en la radio de millones de adolescentes, también en España, y sus subidas marcaban lo que sonaba ese año. Esta es su época dorada, canal por canal.",
   capitulos: [
     {
-      titulo: "UKF Dubstep",
+      titulo: "UKF Dubstep: los primeros años",
       corto: "UKF Dubstep",
-      periodo: "2009 – 2018",
-      intro: "Del dubstep británico con voces al brostep de festival. Incluye los 50 temas más vistos del canal.",
+      periodo: "2009 – 2010",
+      intro: "Del dubstep británico con voces al primer brostep. Incluye los temas más vistos del canal.",
       items: [
         { a: 2009, art: "UKF", t: "Nacen los canales en YouTube", tipo: "hito", n: "Una portada, un logo y el tema completo: así se descubría música antes de Spotify." },
         { a: 2009, art: "La Roux", t: "In for the Kill (Skream's Let's Get Ravey Remix)", q: "La Roux In for the Kill Skream Remix", n: "El remix de Skream que llevó el dubstep al público pop." },
@@ -39,7 +39,15 @@ HISTORIAS.push({
         { a: 2010, art: "Flux Pavilion", t: "Hold Me Close", n: "Flux Pavilion en modo romántico." },
         { a: 2010, art: "Example", t: "Kickstarts (Bar 9 Remix)", n: "Example otra vez: en UKF el remix sonó tanto como el original." },
         { a: 2010, art: "Zeds Dead", t: "Out for Blood", n: "Zeds Dead con el rapero Omar LinX: dubstep con hip hop." },
-        { a: 2010, art: "Gemini", t: "Blue", n: "Gemini: melódico y nostálgico, un clásico de la primera época." },
+        { a: 2010, art: "Gemini", t: "Blue", n: "Gemini: melódico y nostálgico, un clásico de la primera época." }
+      ]
+    },
+    {
+      titulo: "UKF Dubstep: la era del brostep",
+      corto: "Brostep",
+      periodo: "2011 – 2018",
+      intro: "2011 – 2018: el dubstep se vuelve de festival y de estadio.",
+      items: [
         { a: 2011, art: "Flux Pavilion", t: "Bass Cannon", n: "Su título resume la época." },
         { a: 2011, art: "Modestep", t: "Feel Good", n: "Dubstep con guitarras y banda en directo." },
         { a: 2011, art: "Nero", t: "Promises", n: "El primer número uno del dubstep en las listas británicas." },
@@ -56,6 +64,7 @@ HISTORIAS.push({
         { a: 2011, art: "Feed Me", t: "Strange Behaviour", n: "Feed Me con la voz de Tasha Baxter." },
         { a: 2011, art: "Professor Green", t: "Jungle (High Rankin Remix)", n: "Professor Green, otra vez remezclado." },
         { a: 2011, art: "Excision & Downlink", t: "Existence VIP", n: "Excision y Downlink: el dubstep más pesado del canal." },
+        { a: 2012, art: "Skrillex", t: "Tres Grammys para el brostep", n: "Skrillex gana tres Grammys en una sola noche: el dubstep americano ya es mainstream.", tipo: "hito" },
         { a: 2012, art: "Knife Party", t: "Bonfire", n: "Knife Party en su punto más salvaje: electro y dubstep a la vez." },
         { a: 2012, art: "Seven Lions", t: "Days to Come", n: "El dubstep melódico, que mira hacia el trance." },
         { a: 2012, art: "Knife Party", t: "Centipede", n: "Knife Party con la voz de un documental de naturaleza: el ciempiés más amenazante de la historia." },
@@ -76,10 +85,10 @@ HISTORIAS.push({
       ]
     },
     {
-      titulo: "UKF Drum & Bass",
+      titulo: "UKF Drum & Bass: la ola de 2010",
       corto: "UKF Drum & Bass",
-      periodo: "2008 – 2025",
-      intro: "El drum & bass se vuelve masivo: melodía, voces y drops enormes. Incluye los 50 temas más vistos del canal, que llegan hasta 2025.",
+      periodo: "2008 – 2015",
+      intro: "El drum & bass se vuelve masivo: melodía, voces y drops enormes. Incluye los temas más vistos del canal.",
       items: [
         { a: 2008, art: "Sub Focus", t: "Timewarp", n: "Uno de los temas más subidos y escuchados de los primeros años." },
         { a: 2008, art: "High Contrast", t: "If We Ever", n: "Liquid de Gales: preciosa y bailable." },
@@ -112,7 +121,15 @@ HISTORIAS.push({
         { a: 2014, art: "Ed Sheeran", t: "Don't (Netsky Remix)", n: "Ed Sheeran convertido en drum & bass." },
         { a: 2014, art: "Matrix & Futurebound", t: "Control", n: "Matrix & Futurebound con Max Marshall." },
         { a: 2014, art: "Sigma", t: "Rudeboy", n: "Sigma, en su etapa de drum and bass de pista, antes de pasarse al pop." },
-        { a: 2015, art: "The Prototypes", t: "Pop It Off", n: "The Prototypes y su drum & bass de festival." },
+        { a: 2015, art: "The Prototypes", t: "Pop It Off", n: "The Prototypes y su drum & bass de festival." }
+      ]
+    },
+    {
+      titulo: "UKF Drum & Bass: el regreso",
+      corto: "Regreso",
+      periodo: "2016 – 2025",
+      intro: "2016 – 2025: el drum & bass vuelve a las listas y llega a TikTok.",
+      items: [
         { a: 2016, art: "Hybrid Minds", t: "Touch", n: "Hybrid Minds, el liquid más emotivo." },
         { a: 2016, art: "Delta Heavy", t: "White Flag VIP", n: "Delta Heavy, potente y melódico." },
         { a: 2016, art: "High Contrast", t: "Remind Me", n: "High Contrast, el galés del liquid." },
@@ -131,6 +148,7 @@ HISTORIAS.push({
         { a: 2019, art: "Metrik", t: "Gravity", n: "Metrik, otro fijo de Hospital Records." },
         { a: 2019, art: "Fox Stevenson", t: "Go Like", n: "Fox Stevenson, productor y cantante a la vez." },
         { a: 2019, art: "1991", t: "Full Send", n: "1991 y el drum & bass más directo." },
+        { a: 2021, art: "TikTok", t: "El drum & bass vuelve a las listas", n: "Nia Archives, PinkPantheress o Piri & Tommy llevan el ritmo a una generación que no había vivido la primera ola.", tipo: "hito" },
         { a: 2021, art: "K Motionz", t: "High Note", n: "K Motionz con Emily Makis: el nuevo drum & bass melódico." },
         { a: 2022, art: "Wilkinson", t: "Used to This", n: "Wilkinson con Issey Cross: el drum & bass vuelve a las listas." },
         { a: 2022, art: "Luude", t: "Big City Life", n: "Luude rehace el clásico de Mattafix: la moda de los «bootlegs»." },

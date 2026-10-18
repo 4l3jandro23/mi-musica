@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "musicaia",
   familia: "La música por dentro",
   titulo: "Música e inteligencia artificial",
-  periodo: "1957 – 2025",
+  periodo: "1951 – 2025",
   color: "#546e7a",
   lema: "Del ordenador que compuso un cuarteto en 1957 a las bandas falsas de Spotify.",
   intro: "La música hecha por máquinas no empezó con ChatGPT: en 1957 un ordenador de la Universidad de Illinois ya compuso un cuarteto de cuerda. Después vinieron los programas que imitaban a Bach, las voces sintéticas como Hatsune Miku y, desde 2023, las canciones generadas que imitan a artistas reales y los grupos que no existen. Esta historia recorre cómo ha cambiado la idea de quién compone.",
@@ -10,10 +10,12 @@ HISTORIAS.push({
     {
       titulo: "Los primeros experimentos",
       corto: "Los pioneros",
-      periodo: "1957 – 1993",
+      periodo: "1951 – 1993",
       intro: "Ordenadores que componen.",
       items: [
+        { a: 1951, art: "CSIRAC", t: "Colonel Bogey March", n: "Un ordenador australiano toca música en público: de las primeras veces que suena una máquina así." },
         { a: 1957, art: "Lejaren Hiller & Leonard Isaacson", t: "Illiac Suite", n: "El ordenador ILLIAC I de la Universidad de Illinois compone un cuarteto de cuerda: la primera partitura escrita por una máquina." },
+        { a: 1961, art: "IBM 7094", t: "Daisy Bell", n: "Un ordenador de los Bell Labs canta: Kubrick lo usa después en «2001» para la muerte de HAL." },
         { a: 1981, art: "David Cope", t: "Experiments in Musical Intelligence", tipo: "hito", n: "Un profesor de California crea un programa que imita el estilo de Bach o Mozart; muchos oyentes no notaban la diferencia." },
         { a: 1993, art: "David Cope", t: "Bach by Design", tipo: "disco", n: "El primer disco con obras compuestas por su programa al estilo de Bach." }
       ]

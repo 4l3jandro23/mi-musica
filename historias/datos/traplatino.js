@@ -5,7 +5,7 @@ HISTORIAS.push({
   periodo: "2015 – 2023",
   color: "#9b3fd1",
   lema: "De SoundCloud en Puerto Rico a Argentina, México y el número uno mundial.",
-  intro: "Hacia 2015, en Puerto Rico, una generación cansada del reggaetón de discoteca adopta el sonido de Atlanta: 808, autotune y letras crudas. Lo suben a SoundCloud, las grandes discográficas lo descubren y en pocos años el trap latino lo cambia todo: de Bad Bunny al trap argentino y los corridos tumbados de México.",
+  intro: "Hacia 2015, en Puerto Rico, una generación cansada del reguetón de discoteca adopta el sonido de Atlanta: 808, autotune y letras crudas. Lo suben a SoundCloud, las grandes discográficas lo descubren y en pocos años el trap latino lo cambia todo: de Bad Bunny al trap argentino y los corridos tumbados de México.",
   capitulos: [
     {
       titulo: "Puerto Rico: el nacimiento",
@@ -22,12 +22,12 @@ HISTORIAS.push({
         { a: 2016, art: "Arcángel, De La Ghetto & Bad Bunny", t: "Tú no vive así", n: "El trap latino en la radio." },
         { a: 2017, art: "Farruko", t: "Krippy Kush", n: "Con Bad Bunny y Rvssian: luego llegaron los remixes con Nicki Minaj, 21 Savage y Travis Scott." },
         { a: 2017, art: "Bad Bunny", t: "Chambea", n: "Trap con humor y actitud: «chambea, bebé»." },
-        { a: 2017, art: "Bad Bunny", t: "Tú no metes cabra", n: "Trap duro." },
+        { a: 2017, art: "Bad Bunny", t: "Tú no metes cabra", n: "Trap duro de sus primeros meses, antes de cantar." },
         { a: 2018, art: "Anuel AA", t: "Real Hasta la Muerte", tipo: "disco", n: "Salió mientras él seguía en la cárcel: sus fans esperaron su liberación en 2019 como un acontecimiento." },
         { a: 2018, art: "Cardi B", t: "I Like It", n: "Con Bad Bunny y J Balvin: el trap latino llega al número uno de Estados Unidos." },
-        { a: 2018, art: "Ozuna", t: "Te vas", n: "Ozuna mezcla trap y R&B." },
-        { a: 2018, art: "Bad Bunny", t: "Amorfoda", n: "Trap triste." },
-        { a: 2018, art: "Anuel AA, Ozuna & Romeo Santos", t: "Brindemos", n: "Trap y R&B." }
+        { a: 2018, art: "Ozuna", t: "Te vas", n: "Ozuna mezcla trap y R&B en una despedida." },
+        { a: 2018, art: "Bad Bunny", t: "Amorfoda", n: "Trap triste: «no quiero que más nadie me hable de amor»." },
+        { a: 2018, art: "Anuel AA, Ozuna & Romeo Santos", t: "Brindemos", n: "Trap y R&B con el rey de la bachata." }
       ]
     },
     {
@@ -44,15 +44,15 @@ HISTORIAS.push({
         { a: 2019, art: "Duki", t: "Goteo", n: "Duki, de Buenos Aires, uno de los grandes del trap argentino." },
         { a: 2019, art: "Jhay Cortez", t: "No me conoce", n: "Con J Balvin y Bad Bunny en el remix." },
         { a: 2020, art: "Trueno", t: "Mamichula", n: "Con Nicki Nicole: el campeón de freestyle de La Boca en el pop." },
-        { a: 2020, art: "Duki", t: "Givenchy", n: "El trap argentino." },
-        { a: 2020, art: "Myke Towers", t: "Diosa", n: "El trap boricua." },
+        { a: 2020, art: "Duki", t: "Givenchy", n: "El trap argentino del pibe que salió de las batallas de rap de El Quinto Escalón." },
+        { a: 2020, art: "Myke Towers", t: "Diosa", n: "El trap boricua de Myke Towers, con su voz grave." },
         { a: 2022, art: "Bad Bunny", t: "El artista más escuchado del mundo en Spotify", tipo: "hito", n: "Tres años seguidos, cantando en español." },
         { a: 2022, art: "Bizarrap", t: "Duki: Bzrp Music Sessions, Vol. 50", q: "Bizarrap Duki Music Sessions 50", n: "Las «sesiones» de un productor argentino en su habitación se convierten en un fenómeno mundial." },
-        { a: 2022, art: "Young Miko", t: "Riri", n: "Trap boricua." },
-        { a: 2022, art: "Trueno", t: "Dance Crip", n: "Rap y trap argentino." },
+        { a: 2022, art: "Young Miko", t: "Riri", n: "Trap boricua de la rapera que canta a otras mujeres sin esconderlo." },
+        { a: 2022, art: "Trueno", t: "Dance Crip", n: "Rap y trap argentino de La Boca, con un baile de los 90." },
         { a: 2023, art: "Eladio Carrión", t: "Coco Chanel", n: "Con Bad Bunny: el trap latino, ya convertido en la música más escuchada del planeta." },
         { a: 2023, art: "Peso Pluma & Eslabón Armado", t: "Ella baila sola", n: "Los corridos tumbados llegan a lo más alto del mundo: número uno global en Spotify." },
-        { a: 2023, art: "Eladio Carrión", t: "Kemba Walker", n: "Con Bad Bunny." }
+        { a: 2023, art: "Eladio Carrión", t: "Kemba Walker", n: "Con Bad Bunny: dos boricuas y un jugador de baloncesto en el título." }
       ]
     }
   ]

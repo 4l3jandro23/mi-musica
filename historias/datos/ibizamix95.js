@@ -60,7 +60,7 @@ HISTORIAS.push({
         { a: 1995, art: "Scatman John", t: "Scatman's World", n: "El segundo éxito del cantante tartamudo." },
         { a: 1995, art: "Ace of Base", t: "Beautiful Life", n: "Los suecos de «All That She Wants»." },
         { a: 1995, art: "Sin with Sebastian", t: "Shut Up (And Sleep with Me)", n: "Una canción de discoteca muy pícara." },
-        { a: 1995, art: "La Bouche", t: "Sweet Dreams", n: "Eurodance alemán." },
+        { a: 1995, art: "La Bouche", t: "Sweet Dreams", n: "Eurodance alemán con la voz de Melanie Thornton: no es la de Eurythmics." },
         { a: 1995, art: "Alexia", t: "Me and You", n: "La italiana empieza a triunfar en España." }
       ]
     }

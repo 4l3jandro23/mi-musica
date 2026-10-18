@@ -44,7 +44,7 @@ HISTORIAS.push({
         { a: 2006, art: "Red Hot Chili Peppers", t: "Snow (Hey Oh)", n: "La nieve y un riff de guitarra que no para." },
         { a: 2008, art: "Fleet Foxes", t: "White Winter Hymnal", n: "Voces en canon que suenan a nieve y bosque." },
         { a: 2008, art: "Bon Iver", t: "For Emma, Forever Ago", tipo: "disco", n: "Grabado en una cabaña helada de Wisconsin durante un invierno de soledad." },
-        { a: 2010, art: "Agnes Obel", t: "Riverside", n: "Piano danés y frío." },
+        { a: 2010, art: "Agnes Obel", t: "Riverside", n: "Piano danés y frío: una canción tranquila que se hizo viral en series y anuncios." },
         { a: 2011, art: "Kate Bush", t: "50 Words for Snow", tipo: "disco", n: "Un disco entero sobre la nieve; en la canción, Stephen Fry recita cincuenta palabras inventadas para ella." },
         { a: 2011, art: "Bon Iver", t: "Holocene", n: "Paisajes nevados de Wisconsin." },
         { a: 2011, art: "Kate Bush", t: "Snowflake", n: "Su hijo canta como un copo de nieve." }
@@ -61,7 +61,7 @@ HISTORIAS.push({
         { a: 2012, art: "Ólafur Arnalds", t: "Near Light", n: "Piano y cuerdas nórdicas." },
         { a: 2013, art: "Idina Menzel", t: "Let It Go", n: "De «Frozen»: la canción que cantaron millones de niños en todo el mundo." },
         { a: 2014, art: "«Frozen»", t: "Óscar y fenómeno", tipo: "hito", n: "«Let It Go» gana el Óscar a la mejor canción y la banda sonora es el disco más vendido del año en Estados Unidos." },
-        { a: 2019, art: "Idina Menzel & AURORA", t: "Into the Unknown", n: "De «Frozen II»." }
+        { a: 2019, art: "Idina Menzel & AURORA", t: "Into the Unknown", n: "De «Frozen II»: la voz de la noruega AURORA llama a Elsa desde el bosque." }
       ]
     }
   ]

@@ -20,7 +20,7 @@ HISTORIAS.push({
         { a: 1965, art: "Newport", t: "Dylan se electrifica", tipo: "hito", n: "En el festival de folk de Newport, Dylan toca con guitarra eléctrica y parte del público le abuchea." },
         { a: 1965, art: "Bob Dylan", t: "Like a Rolling Stone", n: "Seis minutos de rabia y poesía en la radio." },
         { a: 1966, art: "Bob Dylan", t: "Visions of Johanna", n: "Una de sus mejores canciones." },
-        { a: 1968, art: "Laura Nyro", t: "Stoned Soul Picnic", n: "Una cantautora de culto." },
+        { a: 1968, art: "Laura Nyro", t: "Stoned Soul Picnic", n: "Una cantautora de culto: otros grupos hicieron éxitos con sus canciones." },
         { a: 1969, art: "Joni Mitchell", t: "Both Sides Now", n: "Las nubes, el amor y la vida, vistos desde los dos lados." },
         { a: 1969, art: "Nick Drake", t: "River Man", n: "Cuerdas y una guitarra en una afinación extraña." },
         { a: 1969, art: "Simon & Garfunkel", t: "The Boxer", n: "Lie la lie: la historia de un boxeador pobre en Nueva York." }
@@ -35,13 +35,13 @@ HISTORIAS.push({
         { a: 1970, art: "El Troubadour", t: "El club de los cantautores", tipo: "hito", n: "En este club de Los Ángeles tocan Joni Mitchell, James Taylor o Jackson Browne; ese año debuta allí Elton John." },
         { a: 1971, art: "Chico Buarque", t: "Construção", n: "Un albañil que cae del andamio, contado con palabras que terminan en esdrújula." },
         { a: 1971, art: "John Prine", t: "Angel from Montgomery", n: "Una mujer atrapada en su vida." },
-        { a: 1971, art: "Leonard Cohen", t: "Famous Blue Raincoat", n: "Una carta a un rival." },
+        { a: 1971, art: "Leonard Cohen", t: "Famous Blue Raincoat", n: "Una carta a un hombre que tuvo una aventura con su mujer." },
         { a: 1972, art: "Townes Van Zandt", t: "Pancho and Lefty", n: "La balada de dos forajidos, muy versionada." },
         { a: 1972, art: "Randy Newman", t: "Sail Away", n: "Un traficante de esclavos vende América: ironía brutal." },
         { a: 1974, art: "Jackson Browne", t: "Late for the Sky", n: "El cantautor de Los Ángeles en su disco más triste." },
         { a: 1974, art: "Harry Chapin", t: "Cat's in the Cradle", n: "Un padre sin tiempo para su hijo." },
         { a: 1975, art: "Bruce Springsteen", t: "Thunder Road", n: "El arranque de «Born to Run»: la huida en coche." },
-        { a: 1975, art: "Paul Simon", t: "Still Crazy After All These Years", n: "Madurez." },
+        { a: 1975, art: "Paul Simon", t: "Still Crazy After All These Years", n: "Madurez de cantautor: Grammy al disco del año." },
         { a: 1976, art: "Tom Waits", t: "Tom Traubert's Blues", n: "Borracho en Copenhague y la canción de «Waltzing Matilda»." }
       ]
     },
@@ -57,12 +57,12 @@ HISTORIAS.push({
         { a: 1996, art: "Fiona Apple", t: "Criminal", n: "Una chica de 18 años con piano y culpa." },
         { a: 1997, art: "Nick Cave & The Bad Seeds", t: "Into My Arms", n: "No creo en un Dios que interviene: la balada más querida de Cave." },
         { a: 1997, art: "Elliott Smith", t: "Say Yes", n: "Optimismo raro en el cantautor más triste." },
-        { a: 2001, art: "Damien Rice", t: "The Blower's Daughter", n: "La canción de «Closer»." },
-        { a: 2010, art: "Laura Marling", t: "Rambling Man", n: "La folk británica." },
+        { a: 2001, art: "Damien Rice", t: "The Blower's Daughter", n: "El irlandés y su guitarra: la canción de la película «Closer»." },
+        { a: 2010, art: "Laura Marling", t: "Rambling Man", n: "La folk británica de la nueva generación, con voz grave y guitarra acústica." },
         { a: 2015, art: "Sufjan Stevens", t: "Should Have Known Better", n: "Del disco «Carrie & Lowell», sobre la muerte de su madre." },
         { a: 2016, art: "Bob Dylan", t: "El Nobel de Literatura", tipo: "hito", n: "Por primera vez se da el premio a un cantautor «por haber creado nuevas expresiones poéticas»." },
         { a: 2020, art: "Adrianne Lenker", t: "anything", n: "Grabado en una cabaña durante la pandemia." },
-        { a: 2020, art: "Phoebe Bridgers", t: "Kyoto", n: "Sobre su padre." }
+        { a: 2020, art: "Phoebe Bridgers", t: "Kyoto", n: "Sobre un viaje a Japón y la relación con su padre, con trompetas alegres que esconden tristeza." }
       ]
     }
   ]

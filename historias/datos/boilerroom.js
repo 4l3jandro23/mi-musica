@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "boilerroom",
-  familia: "Electrónica",
+  familia: "House, techno y EDM",
   titulo: "La era Boiler Room",
   periodo: "1986 – 2022",
   color: "#1c1c1c",
@@ -14,16 +14,16 @@ HISTORIAS.push({
       intro: "Discos más antiguos que la propia Boiler Room y que no faltan en sus sesiones.",
       items: [
         { a: 1986, art: "Mr. Fingers", t: "Can You Feel It", n: "El himno del deep house de Larry Heard." },
-        { a: 1991, art: "Crystal Waters", t: "Gypsy Woman (She's Homeless)", n: "«La da dee la dee da»." },
+        { a: 1991, art: "Crystal Waters", t: "Gypsy Woman (She's Homeless)", n: "«La da dee la dee da»: house sobre una mujer sin hogar que canta en la calle." },
         { a: 1993, art: "Robin S", t: "Show Me Love", n: "El órgano más famoso del house." },
         { a: 1997, art: "Daft Punk", t: "Revolution 909", n: "Un clásico del house de Daft Punk que no falta en las sesiones de club." },
         { a: 1998, art: "Moodymann", t: "I Can't Kick This Feelin When It Hits", n: "Moodymann, de Detroit, con un house soulero lleno de samples." },
         { a: 1999, art: "Moodymann", t: "Shades of Jae", n: "House de Detroit con alma soul." },
-        { a: 1999, art: "Armand van Helden feat. Duane Harden", t: "You Don't Know Me", n: "House de Nueva York." },
+        { a: 1999, art: "Armand van Helden feat. Duane Harden", t: "You Don't Know Me", n: "House de Nueva York con violines: número uno en Reino Unido." },
         { a: 2001, art: "Ibiza", t: "Los clásicos de club", tipo: "hito", n: "Las sesiones de las superclubs fijan el canon de himnos que aún suenan." },
-        { a: 2005, art: "Theo Parrish", t: "Falling Up (Carl Craig Remix)", n: "Un clásico de Detroit." },
+        { a: 2005, art: "Theo Parrish", t: "Falling Up (Carl Craig Remix)", n: "Un clásico de Detroit remezclado por Carl Craig: house lento y sucio." },
         { a: 2009, art: "Ben Klock", t: "Subzero", n: "El techno de Berghain: oscuro, largo e hipnótico." },
-        { a: 2009, art: "Joy Orbison", t: "Hyph Mngo", n: "UK garage y house." }
+        { a: 2009, art: "Joy Orbison", t: "Hyph Mngo", n: "Entre el UK garage y el house: el tema que lanzó al productor de Londres." }
       ]
     },
     {
@@ -40,7 +40,7 @@ HISTORIAS.push({
         { a: 2015, art: "Jamie xx", t: "Gosh", n: "Nostalgia rave hecha con detalle de orfebre." },
         { a: 2015, art: "Floating Points", t: "Silhouettes (I, II & III)", n: "Jazz, electrónica y orquesta." },
         { a: 2016, art: "KAYTRANADA", t: "Glowed Up", n: "Con Anderson .Paak: house con groove de hip hop." },
-        { a: 2016, art: "Ross From Friends", t: "Talk to Me You'll Understand", n: "Lo-fi house." }
+        { a: 2016, art: "Ross From Friends", t: "Talk to Me You'll Understand", n: "Lo-fi house con sonido de cinta gastada: el nombre es un chiste de «Friends»." }
       ]
     },
     {
@@ -53,7 +53,7 @@ HISTORIAS.push({
         { a: 2018, art: "Peggy Gou", t: "It Makes You Forget (Itgehane)", n: "Desde Corea a Berlín: house con voz en coreano." },
         { a: 2018, art: "DJ Koze", t: "Pick Up", n: "DJ Koze samplea a Gladys Knight: el tema del verano de los clubs de 2018." },
         { a: 2019, art: "Peggy Gou", t: "Starry Night", n: "La coreana Peggy Gou, una de las DJs más populares de los Boiler Room." },
-        { a: 2019, art: "Jayda G", t: "Both of Us", n: "Disco house alegre." },
+        { a: 2019, art: "Jayda G", t: "Both of Us", n: "Disco house alegre de la canadiense, que también es bióloga de orcas." },
         { a: 2020, art: "Four Tet", t: "Baby", n: "Con Ellie Goulding: house delicado." },
         { a: 2020, art: "Charlotte de Witte", t: "Doppler", n: "El techno duro de festival." },
         { a: 2020, art: "Fred again..", t: "Kyle (I Found You)", n: "Fred again.. y sus «Actual Life»: house emocional con voces de vídeos y mensajes." },

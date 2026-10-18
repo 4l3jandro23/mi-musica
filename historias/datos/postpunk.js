@@ -21,9 +21,9 @@ HISTORIAS.push({
         { a: 1979, art: "Joy Division", t: "Disorder", n: "De «Unknown Pleasures» y su portada de ondas de un púlsar, hoy en millones de camisetas." },
         { a: 1979, art: "Bauhaus", t: "Bela Lugosi's Dead", n: "Nueve minutos de vampiro: nace el rock gótico." },
         { a: 1979, art: "The Fall", t: "Rowche Rumble", n: "Mark E. Smith y su grupo de Manchester: post-punk sin concesiones." },
-        { a: 1979, art: "Wire", t: "Outdoor Miner", n: "Pop raro." },
-        { a: 1979, art: "The Cure", t: "Boys Don't Cry", n: "Los chicos no lloran." },
-        { a: 1979, art: "Gang of Four", t: "At Home He's a Tourist", n: "Post-punk político." },
+        { a: 1979, art: "Wire", t: "Outdoor Miner", n: "Pop raro de «154»: una canción preciosa sobre un insecto minador." },
+        { a: 1979, art: "The Cure", t: "Boys Don't Cry", n: "«Los chicos no lloran»: el primer single de The Cure y su canción más pop de entonces." },
+        { a: 1979, art: "Gang of Four", t: "At Home He's a Tourist", n: "Post-punk político de Leeds: guitarras cortantes y una crítica al consumo." },
         { a: 1979, art: "Joy Division", t: "She's Lost Control", n: "Sobre una chica epiléptica." },
         { a: 1980, art: "Ian Curtis", t: "Muere con 23 años", tipo: "hito", n: "La víspera de la gira por EE. UU. Sus compañeros formarían New Order." },
         { a: 1980, art: "Joy Division", t: "Atmosphere", n: "Tras el suicidio de Ian Curtis, sus compañeros formarían New Order." },
@@ -38,11 +38,11 @@ HISTORIAS.push({
         { a: 1981, art: "New Order", t: "Ceremony", n: "El primer single de New Order, escrito cuando todavía eran Joy Division." },
         { a: 1982, art: "The Stranglers", t: "Golden Brown", n: "Un vals con clave sobre la heroína que fue número dos en Reino Unido." },
         { a: 1983, art: "Siouxsie and the Banshees", t: "Dear Prudence", n: "Su versión de los Beatles, con Robert Smith a la guitarra: su mayor éxito." },
-        { a: 1984, art: "Echo & the Bunnymen", t: "The Killing Moon", n: "Destino y luna." },
+        { a: 1984, art: "Echo & the Bunnymen", t: "The Killing Moon", n: "Destino y luna: Ian McCulloch dijo que era la mejor canción jamás escrita." },
         { a: 1984, art: "Section 25", t: "Hit", n: "Del disco «From the Hip», en Factory, cuando pasaron al electro (año aproximado)." },
         { a: 1985, art: "The Cure", t: "Inbetween Days", n: "Robert Smith descubre la guitarra acústica y el pop." },
         { a: 1985, art: "The Cure", t: "Close to Me", n: "El vídeo del armario que cae por un acantilado con el grupo dentro." },
-        { a: 1986, art: "The Chameleons", t: "Swamp Thing", n: "Guitarras atmosféricas." }
+        { a: 1986, art: "The Chameleons", t: "Swamp Thing", n: "Guitarras atmosféricas del grupo de Manchester que influyó en todo el rock de los 90." }
       ]
     },
     {
@@ -55,8 +55,8 @@ HISTORIAS.push({
         { a: 2002, art: "Interpol", t: "Obstacle 1", n: "Nueva York vestida de negro, como Joy Division." },
         { a: 2004, art: "Bloc Party", t: "Banquet", n: "Guitarras cortantes del revival británico." },
         { a: 2004, art: "Franz Ferdinand", t: "Take Me Out", n: "El revival del post-punk llega a las pistas de baile." },
-        { a: 2005, art: "Editors", t: "Munich", n: "El revival británico." },
-        { a: 2009, art: "The Horrors", t: "Sea Within a Sea", n: "Krautrock y post-punk." },
+        { a: 2005, art: "Editors", t: "Munich", n: "El revival británico de Birmingham: la voz grave de Tom Smith." },
+        { a: 2009, art: "The Horrors", t: "Sea Within a Sea", n: "Krautrock y post-punk: ocho minutos que cambiaron el sonido del grupo." },
         { a: 2013, art: "Savages", t: "Husbands", n: "Post-punk feroz con voz femenina." },
         { a: 2013, art: "Fat White Family", t: "Heaven on Earth", n: "Del disco «Champagne Holocaust»: el grupo más caótico del sur de Londres." },
         { a: 2018, art: "IDLES", t: "Danny Nedelko", n: "Una canción a favor de los inmigrantes en el Reino Unido del Brexit." },

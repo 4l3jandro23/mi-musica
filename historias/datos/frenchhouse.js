@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "frenchhouse",
-  familia: "Electrónica",
+  familia: "House, techno y EDM",
   titulo: "Historia del French house",
   periodo: "1995 – 2013",
   color: "#2b59c3",
@@ -25,14 +25,14 @@ HISTORIAS.push({
         { a: 1998, art: "Étienne de Crécy", t: "Prix choc", n: "Del proyecto «Super Discount»." },
         { a: 1999, art: "Cassius", t: "1999", n: "Philippe Zdar y Boom Bass: el otro gran dúo francés." },
         { a: 1999, art: "Bob Sinclar", t: "Gym Tonic", n: "Con Thomas Bangalter. Un sample de un vídeo de aerobic de Jane Fonda." },
-        { a: 1999, art: "Cassius", t: "Feeling for You", n: "Filtros y disco." },
+        { a: 1999, art: "Cassius", t: "Feeling for You", n: "Filtros y disco del dúo que antes había producido rap francés." },
         { a: 1999, art: "Mr. Oizo", t: "Flat Beat", n: "Flat Eric y un anuncio de vaqueros." },
         { a: 2000, art: "Modjo", t: "Lady (Hear Me Tonight)", n: "Un sample de Chic y una guitarra: número uno en media Europa." },
         { a: 2000, art: "Daft Punk", t: "One More Time", n: "Autotune y fiesta: el principio de «Discovery»." },
         { a: 2000, art: "Alan Braxe & Fred Falke", t: "Intro", n: "El filtro de house francés en su forma más pura." },
         { a: 2000, art: "Bob Sinclar", t: "I Feel for You", n: "El french house de Bob Sinclar." },
         { a: 2001, art: "Daft Punk", t: "Harder, Better, Faster, Stronger", n: "El tema que Kanye West sampleó en «Stronger»." },
-        { a: 2001, art: "Daft Punk", t: "Something About Us", n: "Una balada de robots." }
+        { a: 2001, art: "Daft Punk", t: "Something About Us", n: "Una balada de robots con voz de vocoder, de «Discovery»." }
       ]
     },
     {
@@ -50,7 +50,7 @@ HISTORIAS.push({
         { a: 2009, art: "Kavinsky", t: "Testarossa Autodrive", n: "Kavinsky, de Ed Banger, con su sonido de coches y sintes de los 80." },
         { a: 2009, art: "Phoenix", t: "1901", n: "El pop francés que conquistó Estados Unidos." },
         { a: 2010, art: "Breakbot", t: "Baby I'm Yours", n: "Nu-disco elegante de Ed Banger." },
-        { a: 2010, art: "Kavinsky", t: "Nightcall", n: "El synthwave de «Drive»." },
+        { a: 2010, art: "Kavinsky", t: "Nightcall", n: "Synthwave con vocoder: la canción de los créditos de «Drive»." },
         { a: 2010, art: "Martin Solveig & Dragonette", t: "Hello", n: "El francés y un tenis de vídeo." },
         { a: 2011, art: "Justice", t: "Civilization", n: "Justice cambia el electro por el rock progresivo de estadio." },
         { a: 2013, art: "Daft Punk", t: "Get Lucky", n: "Con Pharrell y Nile Rodgers: vuelven a la música disco tocada por músicos." },

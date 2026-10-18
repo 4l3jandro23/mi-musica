@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "moby",
-  familia: "Electrónica",
+  familia: "Artistas",
   titulo: "La historia de Moby",
   periodo: "1991 – 2020",
   color: "#3d8fb8",
@@ -14,10 +14,10 @@ HISTORIAS.push({
       intro: "1991 – 1997: de «Go» al punk.",
       items: [
         { a: 1991, art: "Moby", t: "Go", n: "Un sample de la música de «Twin Peaks» sobre un ritmo de rave: su primer éxito." },
-        { a: 1992, art: "Moby", t: "Next Is the E", n: "El rave más eufórico." },
+        { a: 1992, art: "Moby", t: "Next Is the E", n: "El rave más eufórico de sus primeros años, con pianos de discoteca." },
         { a: 1993, art: "Guinness", t: "La canción más rápida del mundo", tipo: "hito", n: "El Guinness la registra como el single más rápido de la historia, a unos 1.015 golpes por minuto." },
         { a: 1993, art: "Moby", t: "Thousand", n: "Un experimento: el ritmo se acelera hasta ser casi un zumbido." },
-        { a: 1994, art: "Moby", t: "Feeling So Real", n: "Rave con voz de diva." },
+        { a: 1994, art: "Moby", t: "Feeling So Real", n: "Rave con voz de diva y un ritmo acelerado: éxito en las discotecas británicas." },
         { a: 1994, art: "Moby", t: "Hymn", n: "Una melodía casi religiosa." },
         { a: 1995, art: "Moby", t: "Everytime You Touch Me", n: "Del disco «Everything Is Wrong»." },
         { a: 1995, art: "Moby", t: "Into the Blue", n: "La balada electrónica de «Everything Is Wrong»." },
@@ -38,7 +38,7 @@ HISTORIAS.push({
         { a: 1999, art: "Moby", t: "Bodyrock", n: "Hip hop y guitarras, en el FIFA 2000." },
         { a: 1999, art: "Moby", t: "Find My Baby", n: "Otro blues antiguo sampleado." },
         { a: 1999, art: "Moby", t: "South Side", n: "Con Gwen Stefani en la versión del single." },
-        { a: 1999, art: "Moby", t: "Run On", n: "Góspel acelerado." },
+        { a: 1999, art: "Moby", t: "Run On", n: "Gospel acelerado: un sample de Bill Landford & The Landfordaires sobre un ritmo de house." },
         { a: 2000, art: "«Play»", t: "Todas sus canciones, en anuncios", tipo: "hito", n: "Moby licencia las dieciocho canciones a anuncios, series y películas: el disco que no vendía acaba superando los doce millones." },
         { a: 2000, art: "Moby", t: "Flower", n: "De la banda sonora de «60 segundos»." }
       ]
@@ -53,9 +53,9 @@ HISTORIAS.push({
         { a: 2002, art: "Moby", t: "We Are All Made of Stars", n: "El primer single de «18»." },
         { a: 2002, art: "Moby", t: "Extreme Ways", n: "La canción de los créditos de todas las películas de Jason Bourne." },
         { a: 2002, art: "Moby", t: "In This World", n: "Otro coro de góspel en bucle." },
-        { a: 2002, art: "Moby", t: "In My Heart", n: "Otra de «18»." },
-        { a: 2002, art: "Moby", t: "Sunday (The Day Before My Birthday)", n: "Pop electrónico de «18»." },
-        { a: 2005, art: "Moby", t: "Lift Me Up", n: "Del disco «Hotel»." },
+        { a: 2002, art: "Moby", t: "In My Heart", n: "Otra de «18», con un coro gospel de los Shining Light Gospel Choir." },
+        { a: 2002, art: "Moby", t: "Sunday (The Day Before My Birthday)", n: "Pop electrónico de «18» sobre una voz de Sylvia Robinson." },
+        { a: 2005, art: "Moby", t: "Lift Me Up", n: "Del disco «Hotel»: Moby canta él mismo y se acerca al rock." },
         { a: 2005, art: "Moby", t: "Slipping Away", n: "Una balada electrónica de «Hotel»." },
         { a: 2006, art: "Moby & Amaral", t: "Escapar (Slipping Away)", n: "La versión con Eva Amaral cantando en español." },
         { a: 2008, art: "Moby", t: "Disco Lies", n: "Su vuelta al baile, con «Last Night»." },

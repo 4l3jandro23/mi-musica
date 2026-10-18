@@ -108,7 +108,7 @@ HISTORIAS.push({
         { a: 2014, art: "Lilly Wood & The Prick y Robin Schulz", t: "Prayer in C", n: "El remix alemán convierte el folk francés en un éxito mundial." },
         { a: 2015, art: "Willy William", t: "Ego", n: "El DJ que luego hizo «Mi gente» con J Balvin." },
         { a: 2016, art: "MHD", t: "Afro Trap Part. 3 (Champions League)", n: "El inventor del afro trap, nacido en París." },
-        { a: 2017, art: "MHD", t: "Afro Trap Part. 7 (La puissance)", n: "El afro trap sigue." },
+        { a: 2017, art: "MHD", t: "Afro Trap Part. 7 (La puissance)", n: "La serie de afro trap de MHD, que mezclaba rap de París y música de África occidental." },
         { a: 2018, art: "Francia campeona del mundo", t: "«Ramenez la coupe à la maison»", tipo: "hito", n: "Vegedream sube a lo más alto de las listas y la canción se convierte en el himno de la selección." },
         { a: 2018, art: "Vegedream", t: "Ramenez la coupe à la maison", n: "El himno del Mundial de Rusia." },
         { a: 2018, art: "Soolking", t: "Suavemente", n: "Rap argelino con estribillo en español." },

@@ -40,9 +40,9 @@ HISTORIAS.push({
         { a: 1992, art: "Body Count", t: "Cop Killer", n: "Ice-T acabó retirando la canción del disco." },
         { a: 1992, art: "Madonna", t: "Erotica", n: "El disco y el libro «Sex»." },
         { a: 1994, art: "Snoop Doggy Dogg", t: "Gin and Juice", n: "El rap de la costa oeste, explícito y relajado." },
-        { a: 1994, art: "Nine Inch Nails", t: "Closer", n: "Un vídeo prohibido." },
+        { a: 1994, art: "Nine Inch Nails", t: "Closer", n: "Un vídeo prohibido en la MTV y una letra que no deja nada a la imaginación." },
         { a: 2000, art: "Eminem", t: "The Real Slim Shady", n: "El rapero más censurado de su época." },
-        { a: 2000, art: "Lil' Kim", t: "How Many Licks?", n: "Rap sin censura." }
+        { a: 2000, art: "Lil' Kim", t: "How Many Licks?", n: "Rap sin censura: Lil' Kim se convierte en una muñeca en el vídeo." }
       ]
     },
     {

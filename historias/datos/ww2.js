@@ -41,12 +41,12 @@ HISTORIAS.push({
         { a: 1942, art: "Spike Jones & His City Slickers", t: "Der Fuehrer's Face", n: "Una canción para burlarse de Hitler, de una película de dibujos de Disney." },
         { a: 1942, art: "Glenn Miller", t: "American Patrol", n: "Una marcha para la orquesta del ejército, poco antes de que Miller desapareciera." },
         { a: 1942, art: "Zarah Leander", t: "Davon geht die Welt nicht unter", n: "Propaganda alemana en forma de canción." },
-        { a: 1942, art: "Kay Kyser", t: "Praise the Lord and Pass the Ammunition", n: "Sobre Pearl Harbor." },
+        { a: 1942, art: "Kay Kyser", t: "Praise the Lord and Pass the Ammunition", n: "Sobre Pearl Harbor: la frase de un capellán convertida en canción." },
         { a: 1943, art: "Anna Marly", t: "Le Chant des partisans", n: "El himno de la Resistencia francesa, emitido desde Londres." },
-        { a: 1943, art: "Charles Trenet", t: "Douce France", n: "La Francia ocupada." },
+        { a: 1943, art: "Charles Trenet", t: "Douce France", n: "La dulce Francia en plena ocupación alemana." },
         { a: 1944, art: "Glenn Miller", t: "Desaparece sobre el Canal de la Mancha", tipo: "hito", n: "El avión de Glenn Miller desaparece en diciembre de 1944 cuando iba a tocar para las tropas en París. Nunca se encontró." },
-        { a: 1944, art: "Bing Crosby", t: "Swinging on a Star", n: "Óscar en plena guerra." },
-        { a: 1944, art: "Johnny Mercer", t: "G.I. Jive", n: "La vida del soldado." },
+        { a: 1944, art: "Bing Crosby", t: "Swinging on a Star", n: "Óscar en plena guerra, de la película «Siguiendo mi camino»." },
+        { a: 1944, art: "Johnny Mercer", t: "G.I. Jive", n: "La vida del soldado contada con humor." },
         { a: 1944, art: "Woody Guthrie", t: "All You Fascists", n: "«This machine kills fascists»." }
       ]
     },

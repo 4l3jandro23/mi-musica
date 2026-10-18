@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "house",
-  familia: "Electrónica",
+  familia: "House, techno y EDM",
   titulo: "Historia del house",
   periodo: "1977 – 2020",
   color: "#d6467e",
@@ -84,7 +84,7 @@ HISTORIAS.push({
       intro: "Ibiza, los DJs estrella y el house que llega a las listas.",
       items: [
         { a: 2001, art: "Roger Sanchez", t: "Another Chance", n: "Número uno en Reino Unido con un sample de Toto." },
-        { a: 2001, art: "Groove Armada", t: "Superstylin'", n: "House con dancehall." },
+        { a: 2001, art: "Groove Armada", t: "Superstylin'", n: "House con dancehall del dúo londinense, con la voz de MC M.A.D." },
         { a: 2002, art: "Benny Benassi", t: "Satisfaction", n: "Un sintetizador que zumba: nace el electro house." },
         { a: 2002, art: "David Guetta & Chris Willis", t: "Just a Little More Love", n: "El primer éxito de Guetta." },
         { a: 2002, art: "David Guetta", t: "Love Don't Let Me Go", n: "Luego la mezcla con «Walking Away» de The Egg." },
@@ -106,8 +106,8 @@ HISTORIAS.push({
         { a: 2007, art: "David Guetta", t: "Love Is Gone", n: "Guetta todavía era el DJ de las noches de Ibiza." },
         { a: 2007, art: "Alex Gaudino & Crystal Waters", t: "Destination Calabria", n: "El saxo de «Calabria» con la voz de Crystal Waters." },
         { a: 2007, art: "Enur & Natasja", t: "Calabria 2007", n: "La versión danesa de «Calabria» de Rune RK, con la rapera Natasja." },
-        { a: 2007, art: "Axwell & Steve Edwards", t: "Watch the Sunrise", n: "Progressive house sueco." },
-        { a: 2007, art: "David Guetta, Steve Angello & Cozi", t: "Baby When the Light", n: "Del disco «Pop Life»." },
+        { a: 2007, art: "Axwell & Steve Edwards", t: "Watch the Sunrise", n: "Progressive house sueco para ver amanecer en la playa." },
+        { a: 2007, art: "David Guetta, Steve Angello & Cozi", t: "Baby When the Light", n: "Del disco «Pop Life»: Guetta todavía hacía house de discoteca." },
         { a: 2007, art: "David Guetta & Tara McDonald", t: "Delirious", n: "Otro éxito de «Pop Life»." },
         { a: 2007, art: "David Guetta, Steve Angello, Sebastian Ingrosso & Chris Willis", t: "Everytime We Touch", n: "Guetta con los futuros miembros de Swedish House Mafia." },
         { a: 2009, art: "Florence + The Machine", t: "You've Got the Love", n: "Una versión del clásico de Candi Staton." },
@@ -116,7 +116,7 @@ HISTORIAS.push({
         { a: 2011, art: "Azealia Banks", t: "212", n: "Rap de Harlem sobre un tema de house de Lazy Jay: el house vuelve al rap." },
         { a: 2014, art: "Robin Schulz", t: "Waves (Remix)", n: "El «deep house» de radio que sonó en todas partes en 2014." },
         { a: 2016, art: "Bob Sinclar", t: "Someone Who Needs Me", n: "Bob Sinclar en Spinnin' Records." },
-        { a: 2017, art: "Bob Sinclar & Akon", t: "Til the Sun Rise Up", n: "Con Akon." },
+        { a: 2017, art: "Bob Sinclar & Akon", t: "Til the Sun Rise Up", n: "El francés de «Love Generation» con Akon: house para el verano." },
         { a: 2020, art: "Purple Disco Machine", t: "Hypnotized", n: "El nu-disco y el house con cuerdas vuelven a las listas." }
       ]
     }

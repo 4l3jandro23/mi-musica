@@ -31,7 +31,7 @@ HISTORIAS.push({
         { a: 1974, art: "Barry White", t: "Can't Get Enough of Your Love, Babe", n: "La voz más grave del soul y sus cuerdas de terciopelo." },
         { a: 1975, art: "Donna Summer", t: "Love to Love You Baby", n: "17 minutos de suspiros producidos por Moroder: la BBC la prohibió." },
         { a: 1976, art: "La «quiet storm»", t: "Un programa de radio da nombre al soul lento", tipo: "hito", n: "Melvin Lindsey, en una emisora de Washington, pone soul suave por la noche: nace un formato y un estilo." },
-        { a: 1978, art: "Teddy Pendergrass", t: "Close the Door", n: "Cierra la puerta." },
+        { a: 1978, art: "Teddy Pendergrass", t: "Close the Door", n: "Cierra la puerta: el soul más seductor de Filadelfia." },
         { a: 1982, art: "Marvin Gaye", t: "Sexual Healing", n: "Con caja de ritmos: el soul entra en los 80." }
       ]
     },
@@ -48,10 +48,10 @@ HISTORIAS.push({
         { a: 1989, art: "Chris Isaak", t: "Wicked Game", n: "Una guitarra con reverb y un vídeo en blanco y negro en la playa." },
         { a: 1990, art: "Madonna", t: "Justify My Love", n: "La MTV se negó a emitir el vídeo." },
         { a: 1992, art: "Sade", t: "No Ordinary Love", n: "Lenta, profunda y oceánica." },
-        { a: 1993, art: "Janet Jackson", t: "That's the Way Love Goes", n: "Janet íntima." },
+        { a: 1993, art: "Janet Jackson", t: "That's the Way Love Goes", n: "Janet íntima: ocho semanas número uno en EE. UU." },
         { a: 1994, art: "Boyz II Men", t: "I'll Make Love to You", n: "La balada de R&B de los 90 por excelencia." },
         { a: 1996, art: "Ginuwine", t: "Pony", n: "Producción de Timbaland: el R&B se vuelve futurista." },
-        { a: 1997, art: "Usher", t: "You Make Me Wanna...", n: "R&B de los 90." }
+        { a: 1997, art: "Usher", t: "You Make Me Wanna...", n: "R&B de los 90 producido por Jermaine Dupri: el gran salto de Usher." }
       ]
     },
     {
@@ -61,13 +61,13 @@ HISTORIAS.push({
       intro: "El R&B moderno: íntimo, oscuro y sin miedo.",
       items: [
         { a: 2000, art: "D'Angelo", t: "Untitled (How Does It Feel)", n: "El neo soul en su forma más pura (y un vídeo legendario)." },
-        { a: 2000, art: "Sade", t: "By Your Side", n: "Calma." },
+        { a: 2000, art: "Sade", t: "By Your Side", n: "Calma y promesa: «estaré a tu lado»." },
         { a: 2001, art: "Aaliyah", t: "Rock the Boat", n: "Su último single, R&B suave como el agua." },
         { a: 2006, art: "Justin Timberlake", t: "SexyBack", n: "Pop sensual con la producción de Timbaland." },
         { a: 2011, art: "The Weeknd", t: "El R&B alternativo", tipo: "hito", n: "Mixtapes gratis, oscuras y sensuales." },
         { a: 2011, art: "The Weeknd", t: "Wicked Games", n: "El R&B oscuro: humo, noche y melancolía." },
         { a: 2013, art: "Romeo Santos", t: "Propuesta Indecente", n: "La bachata sensual que bailó todo el mundo hispano." },
-        { a: 2013, art: "Beyoncé feat. Jay-Z", t: "Drunk in Love", n: "Beyoncé y Jay-Z." },
+        { a: 2013, art: "Beyoncé feat. Jay-Z", t: "Drunk in Love", n: "Beyoncé y Jay-Z: una canción grabada casi improvisando en el estudio." },
         { a: 2014, art: "FKA twigs", t: "Two Weeks", n: "R&B experimental y magnético." },
         { a: 2016, art: "Rihanna", t: "Kiss It Better", n: "Guitarra de los 80 y deseo." },
         { a: 2017, art: "SZA", t: "The Weekend", n: "R&B moderno, íntimo y honesto." }

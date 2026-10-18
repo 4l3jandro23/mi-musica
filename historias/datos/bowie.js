@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "bowie",
-  familia: "Rock",
+  familia: "Artistas",
   titulo: "La historia de David Bowie",
   periodo: "1969 – 2016",
   color: "#d1495b",
@@ -35,7 +35,7 @@ HISTORIAS.push({
       periodo: "1974 – 1977",
       intro: "1974 – 1979: Duque Blanco y Eno.",
       items: [
-        { a: 1974, art: "David Bowie", t: "Rebel Rebel", n: "El último himno glam." },
+        { a: 1974, art: "David Bowie", t: "Rebel Rebel", n: "El último himno glam de Bowie, con uno de los riffs más famosos del rock." },
         { a: 1974, art: "David Bowie", t: "Diamond Dogs", n: "Un futuro distópico inspirado en «1984» de Orwell." },
         { a: 1975, art: "David Bowie", t: "Young Americans", n: "Soul de Filadelfia, «plastic soul» lo llamó él." },
         { a: 1975, art: "David Bowie", t: "Fame", n: "Con John Lennon: su primer número uno en EE. UU." },

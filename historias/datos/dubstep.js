@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "dubstep",
-  familia: "Bass music",
+  familia: "Jamaica y bass music",
   titulo: "Orígenes del dubstep",
   periodo: "2001 – 2014",
   color: "#2f9e8f",
@@ -35,21 +35,21 @@ HISTORIAS.push({
         { a: 2007, art: "Burial", t: "Untrue", tipo: "disco", n: "El segundo disco de Burial: ritmos de garage rotos, voces fantasmales y la tristeza de las raves que ya pasaron." },
         { a: 2007, art: "Burial", t: "Ghost Hardware", n: "De «Untrue»: el Londres nocturno y lluvioso convertido en música." },
         { a: 2007, art: "Caspa & Rusko", t: "FabricLive.37", tipo: "disco", n: "Una sesión que llevó el dubstep a las masas." },
-        { a: 2007, art: "Distance", t: "Night Vision", n: "El dubstep más pesado." },
+        { a: 2007, art: "Distance", t: "Night Vision", n: "El dubstep más pesado de Londres, con un aire de metal en los graves." },
         { a: 2008, art: "El dubstep", t: "Hacia el brostep", tipo: "hito", n: "Algunos productores endurecen el sonido y llegan a EE. UU.: el dubstep original se separa del que vendrá después." },
         { a: 2008, art: "Benga", t: "Diary of an Afro Warrior", tipo: "disco", n: "Un álbum entero del joven prodigio de Croydon, que había empezado a los 15 años." },
         { a: 2008, art: "Joker", t: "Digidesign", n: "Desde Bristol, el «purple sound»: sintes violetas, melodía y ritmo lento." },
         { a: 2008, art: "Caspa", t: "Rubber Chicken", n: "Caspa endurece el bajo: el wobble que llevará al brostep." },
         { a: 2009, art: "Joker & Ginz", t: "Purple City", n: "El «purple sound» de Bristol: sintes violetas, melodía y ritmo lento." },
-        { a: 2009, art: "Burial & Four Tet", t: "Moth", n: "Dos genios de Londres." },
+        { a: 2009, art: "Burial & Four Tet", t: "Moth", n: "Dos genios de Londres juntos en un doce pulgadas que salió casi sin promoción." },
         { a: 2009, art: "Joker", t: "Tron", n: "El «purple sound» de Bristol." },
         { a: 2010, art: "Magnetic Man", t: "I Need Air", n: "Skream, Benga y Artwork en las listas." },
-        { a: 2010, art: "James Blake", t: "CMYK", n: "Dubstep y soul." },
+        { a: 2010, art: "James Blake", t: "CMYK", n: "Dubstep y soul: James Blake trocea voces de Kelis y Aaliyah." },
         { a: 2010, art: "James Blake", t: "Limit to Your Love", n: "Una canción de Feist con silencios y bajos enormes." },
         { a: 2012, art: "Burial", t: "Kindred", n: "Doce minutos de lluvia y voces." },
         { a: 2012, art: "Mala", t: "Mala in Cuba", tipo: "disco", n: "Dubstep con músicos cubanos." },
         { a: 2013, art: "James Blake", t: "Retrograde", n: "Gana el Mercury Prize con el disco «Overgrown»." },
-        { a: 2014, art: "Kahn & Neek", t: "Percy", n: "El dubstep de Bristol." }
+        { a: 2014, art: "Kahn & Neek", t: "Percy", n: "Dubstep de Bristol para sound system, oscuro y minimalista." }
       ]
     }
   ]

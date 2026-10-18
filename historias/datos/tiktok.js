@@ -40,9 +40,9 @@ HISTORIAS.push({
         { a: 2020, art: "Chappell Roan", t: "Pink Pony Club", n: "Una canción de 2020 que se hizo enorme en 2024." },
         { a: 2020, art: "THE ANXIETY, WILLOW & Tyler Cole", t: "Meet Me at Our Spot", n: "Una canción de amor que se hizo viral en 2021." },
         { a: 2021, art: "Nathan Evans", t: "Wellerman", n: "Una canción de marineros del siglo XIX cantada por un cartero escocés: la moda de los «sea shanties»." },
-        { a: 2021, art: "Olivia Rodrigo", t: "drivers license", n: "Un debut récord." },
-        { a: 2021, art: "Måneskin", t: "Beggin'", n: "Una versión de los 60." },
-        { a: 2021, art: "GAYLE", t: "abcdefu", n: "Rabia alfabética." }
+        { a: 2021, art: "Olivia Rodrigo", t: "drivers license", n: "Un debut récord: el single más escuchado en una semana en Spotify en su momento." },
+        { a: 2021, art: "Måneskin", t: "Beggin'", n: "Una canción de los 60 de The Four Seasons que los italianos convirtieron en éxito mundial." },
+        { a: 2021, art: "GAYLE", t: "abcdefu", n: "Rabia alfabética contra un ex, con un estribillo para gritar." }
       ]
     },
     {
@@ -58,7 +58,7 @@ HISTORIAS.push({
         { a: 2022, art: "Nicky Youre & dazy", t: "Sunroof", n: "La canción de verano nacida en la app." },
         { a: 2022, art: "Steve Lacy", t: "Bad Habit", n: "Un fragmento del estribillo y un número uno en Estados Unidos." },
         { a: 2022, art: "Meghan Trainor", t: "Made You Look", n: "Pop con un baile que se copió millones de veces." },
-        { a: 2023, art: "Tate McRae", t: "greedy", n: "Pop de baile." }
+        { a: 2023, art: "Tate McRae", t: "greedy", n: "Pop de baile de la canadiense, que antes fue bailarina de concursos." }
       ]
     },
     {
@@ -72,7 +72,7 @@ HISTORIAS.push({
         { a: 2024, art: "Rosé & Bruno Mars", t: "APT.", n: "Un juego de beber coreano convertido en baile y en número uno." },
         { a: 2024, art: "Jaxomy, Agatino Romero & Raffaella Carrà", t: "Pedro", n: "Un tema antiguo de Raffaella Carrà hecho remix y meme en todo el mundo." },
         { a: 2024, art: "Betsy & Maria Yanovskaya", t: "Sigma Boy", n: "Dos niñas rusas cantan un pop que se volvió meme mundial." },
-        { a: 2024, art: "Benson Boone", t: "Beautiful Things", n: "Una voz enorme." },
+        { a: 2024, art: "Benson Boone", t: "Beautiful Things", n: "Una voz enorme y un salto mortal en cada concierto." },
         { a: 2025, art: "Doechii", t: "Anxiety", n: "Sobre el sample de «Somebody That I Used to Know»." }
       ]
     }

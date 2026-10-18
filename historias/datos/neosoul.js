@@ -18,11 +18,11 @@ HISTORIAS.push({
         { a: 1996, art: "Erykah Badu", t: "Next Lifetime", n: "Erykah Badu canta sobre un amor para la próxima vida." },
         { a: 1997, art: "Kedar Massenburg", t: "Bautiza el «neo soul»", tipo: "hito", n: "El ejecutivo de Erykah Badu y D'Angelo le pone nombre al estilo." },
         { a: 1997, art: "Erykah Badu", t: "On & On", n: "Turbante, jazz y Billie Holiday en clave de hip hop." },
-        { a: 1997, art: "Erykah Badu", t: "Tyrone", n: "Grabada en directo." },
+        { a: 1997, art: "Erykah Badu", t: "Tyrone", n: "Grabada en directo: Erykah echa a un novio que no ayuda en nada." },
         { a: 1998, art: "Lauryn Hill", t: "Doo Wop (That Thing)", n: "The Miseducation of Lauryn Hill: el disco del movimiento." },
-        { a: 1998, art: "Lauryn Hill", t: "Ex-Factor", n: "Una ruptura." },
+        { a: 1998, art: "Lauryn Hill", t: "Ex-Factor", n: "Una ruptura que duele, de «The Miseducation of Lauryn Hill»." },
         { a: 1999, art: "Lauryn Hill", t: "Gana cinco Grammy", tipo: "hito", n: "Primera mujer en ganar cinco en una sola noche." },
-        { a: 1999, art: "Maxwell", t: "Fortunate", n: "Producida por R. Kelly." }
+        { a: 1999, art: "Maxwell", t: "Fortunate", n: "Para la película «Life»: número uno de R&B en EE. UU." }
       ]
     },
     {
@@ -38,12 +38,12 @@ HISTORIAS.push({
         { a: 2000, art: "Common", t: "The Light", n: "Una canción de amor sobre un sample de Bobby Caldwell." },
         { a: 2000, art: "Musiq Soulchild", t: "Love", n: "Musiq Soulchild, desde Filadelfia, con una de las baladas de neo soul más bonitas del año 2000." },
         { a: 2000, art: "D'Angelo", t: "Untitled (How Does It Feel)", n: "El vídeo de D'Angelo sin camiseta y una canción de soul lento y perfecto." },
-        { a: 2000, art: "Bilal", t: "Soul Sista", n: "Falsete y soul." },
+        { a: 2000, art: "Bilal", t: "Soul Sista", n: "Falsete y soul del cantante de Filadelfia, de la escena de los Soulquarians." },
         { a: 2001, art: "India.Arie", t: "Video", n: "Contra los estándares de belleza." },
         { a: 2001, art: "Alicia Keys", t: "Fallin'", n: "Piano clásico y soul: el neo soul llega al número uno." },
         { a: 2001, art: "Angie Stone", t: "Wish I Didn't Miss You", n: "Sobre un sample de los O'Jays." },
         { a: 2004, art: "Jill Scott", t: "Golden", n: "Vivir la vida como si fuera de oro." },
-        { a: 2006, art: "Corinne Bailey Rae", t: "Put Your Records On", n: "Soul británico." }
+        { a: 2006, art: "Corinne Bailey Rae", t: "Put Your Records On", n: "Soul británico de Leeds: pon tus discos y suéltate el pelo." }
       ]
     },
     {
@@ -54,10 +54,10 @@ HISTORIAS.push({
       items: [
         { a: 2010, art: "Erykah Badu", t: "Window Seat", n: "Un vídeo desnuda en Dallas." },
         { a: 2012, art: "Frank Ocean", t: "Thinkin Bout You", n: "El neo soul se cruza con el R&B alternativo." },
-        { a: 2013, art: "Hiatus Kaiyote", t: "Nakamarra", n: "Soul australiano." },
+        { a: 2013, art: "Hiatus Kaiyote", t: "Nakamarra", n: "Soul de Melbourne con la voz de Nai Palm: años después Drake sampleó al grupo." },
         { a: 2014, art: "D'Angelo", t: "Publica «Black Messiah» por sorpresa", tipo: "hito", n: "Catorce años después de Voodoo, en plena protesta por Ferguson." },
         { a: 2014, art: "D'Angelo", t: "Really Love", n: "Cuerdas, guitarra española y falsete." },
-        { a: 2015, art: "Leon Bridges", t: "River", n: "Soul de Texas." },
+        { a: 2015, art: "Leon Bridges", t: "River", n: "Soul de Texas, casi un espiritual de guitarra y voz." },
         { a: 2016, art: "Solange", t: "Cranes in the Sky", n: "A Seat at the Table: tristeza y dignidad." },
         { a: 2016, art: "Anderson .Paak", t: "Come Down", n: "Anderson .Paak toca la batería mientras canta: el funk de «Malibu» suena a banda en directo." },
         { a: 2017, art: "Daniel Caesar", t: "Get You", n: "Con Kali Uchis: el soul canadiense." },

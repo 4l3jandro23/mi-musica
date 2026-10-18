@@ -56,7 +56,7 @@ HISTORIAS.push({
         { a: 2001, art: "Stars of the Lid", t: "Requiem for Dying Mothers, Part 1", n: "Drones lentísimos de guitarra y cuerdas." },
         { a: 2002, art: "William Basinski", t: "«The Disintegration Loops»", tipo: "hito", n: "Cintas que se deshacen mientras las graba, terminadas el 11-S." },
         { a: 2002, art: "William Basinski", t: "dlp 1.1", n: "Cintas antiguas que se deshacían al digitalizarlas. Las terminó el 11 de septiembre de 2001, viendo caer las Torres Gemelas." },
-        { a: 2004, art: "Eluvium", t: "An Accidental Memory in the Case of Death", n: "Piano solo y melancolía." },
+        { a: 2004, art: "Eluvium", t: "An Accidental Memory in the Case of Death", n: "Piano solo grabado en casa por Matthew Cooper: ambient melancólico de Portland." },
         { a: 2008, art: "Grouper", t: "Heavy Water/I'd Rather Be Sleeping", n: "Una voz perdida en la niebla." },
         { a: 2011, art: "C418", t: "Sweden", n: "De Minecraft: el ambient que creció con toda una generación." },
         { a: 2011, art: "Tim Hecker", t: "Ravedeath, 1972", tipo: "disco", n: "Un órgano de iglesia deformado hasta el ruido." },

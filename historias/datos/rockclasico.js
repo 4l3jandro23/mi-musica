@@ -21,9 +21,9 @@ HISTORIAS.push({
         { a: 1967, art: "Cream", t: "Sunshine of Your Love", n: "Eric Clapton y el primer supergrupo del rock." },
         { a: 1967, art: "The Jimi Hendrix Experience", t: "Purple Haze", n: "Hendrix reinventa la guitarra eléctrica." },
         { a: 1967, art: "The Doors", t: "Light My Fire", n: "Siete minutos con solo de órgano: un número uno impensable." },
-        { a: 1967, art: "The Spencer Davis Group", t: "I'm a Man", n: "Otra con Steve Winwood." },
+        { a: 1967, art: "The Spencer Davis Group", t: "I'm a Man", n: "Otra con Steve Winwood, que tenía 18 años y ya cantaba como un veterano del soul." },
         { a: 1967, art: "The Who", t: "I Can See for Miles", n: "El single más ruidoso de The Who en 1967." },
-        { a: 1968, art: "The Jimi Hendrix Experience", t: "All Along the Watchtower", n: "Dylan según Hendrix." },
+        { a: 1968, art: "The Jimi Hendrix Experience", t: "All Along the Watchtower", n: "La canción de Dylan convertida en uno de los solos de guitarra más famosos del rock." },
         { a: 1968, art: "The Dirty Mac", t: "Yer Blues", n: "Lennon, Clapton, Keith Richards y Mitch Mitchell en el «Rock and Roll Circus» de los Stones." },
         { a: 1969, art: "The Rolling Stones", t: "Gimme Shelter", n: "La guerra, la violencia y la voz de Merry Clayton." },
         { a: 1969, art: "Creedence Clearwater Revival", t: "Fortunate Son", n: "Contra los hijos de ricos que se libraban de Vietnam." },
@@ -49,19 +49,19 @@ HISTORIAS.push({
         { a: 1973, art: "Pink Floyd", t: "Money", n: "La caja registradora en 7/4 de «The Dark Side of the Moon»." },
         { a: 1973, art: "ZZ Top", t: "La Grange", n: "Boogie tejano sobre un burdel famoso." },
         { a: 1973, art: "The Allman Brothers Band", t: "Jessica", n: "El instrumental del rock sureño, luego sintonía de «Top Gear»." },
-        { a: 1973, art: "Steve Miller Band", t: "The Joker", n: "Un guiño perezoso." },
+        { a: 1973, art: "Steve Miller Band", t: "The Joker", n: "Un guiño perezoso y un silbido de guitarra: número uno en EE. UU." },
         { a: 1973, art: "Aerosmith", t: "Dream On", n: "La primera balada de Steven Tyler." },
         { a: 1974, art: "Lynyrd Skynyrd", t: "Sweet Home Alabama", n: "La respuesta sureña a Neil Young." },
         { a: 1975, art: "Queen", t: "Bohemian Rhapsody", n: "Ópera, balada y hard rock en seis minutos." },
-        { a: 1975, art: "Led Zeppelin", t: "Kashmir", n: "Orquesta y riff." },
-        { a: 1975, art: "Bad Company", t: "Feel Like Makin' Love", n: "El rock de radio." },
+        { a: 1975, art: "Led Zeppelin", t: "Kashmir", n: "Orquesta y un riff que sube sin parar: Robert Plant la escribió conduciendo por el desierto de Marruecos." },
+        { a: 1975, art: "Bad Company", t: "Feel Like Makin' Love", n: "El rock de radio de los 70, con la voz de Paul Rodgers." },
         { a: 1976, art: "Thin Lizzy", t: "The Boys Are Back in Town", n: "El rock irlandés de Phil Lynott." },
         { a: 1976, art: "Tom Petty and the Heartbreakers", t: "American Girl", n: "Rock sencillo que no pasa de moda." },
         { a: 1977, art: "Fleetwood Mac", t: "Dreams", n: "Su único número uno en Estados Unidos; en 2020 volvió por un vídeo de TikTok." },
         { a: 1977, art: "Electric Light Orchestra", t: "Mr. Blue Sky", n: "Orquesta y pop para un día de sol." },
         { a: 1978, art: "Dire Straits", t: "Sultans of Swing", n: "Mark Knopfler toca sin púa y el pub rock llega al mundo." },
         { a: 1978, art: "Bob Seger", t: "Old Time Rock and Roll", n: "Un homenaje al rock de siempre." },
-        { a: 1979, art: "Electric Light Orchestra", t: "Last Train to London", n: "ELO en clave disco." }
+        { a: 1979, art: "Electric Light Orchestra", t: "Last Train to London", n: "ELO en clave disco: cuerdas, vocoder y un tren a Londres." }
       ]
     },
     {
@@ -72,7 +72,7 @@ HISTORIAS.push({
       items: [
         { a: 1981, art: "Radios de rock clásico", t: "Nace la etiqueta", tipo: "hito", n: "Las emisoras estadounidenses llaman «classic rock» a la música de los 60 y 70 que siguen pinchando." },
         { a: 1981, art: "The Rolling Stones", t: "Start Me Up", n: "El riff de los Stones de los 80." },
-        { a: 1981, art: "Journey", t: "Don't Stop Believin'", n: "El himno del karaoke." },
+        { a: 1981, art: "Journey", t: "Don't Stop Believin'", n: "El himno del karaoke: volvió a las listas con el final de «Los Soprano» y con «Glee»." },
         { a: 1985, art: "Live Aid", t: "Queen se come el estadio", tipo: "hito", n: "En Wembley, la actuación de Queen pasa por ser la mejor de la historia del rock en directo." }
       ]
     }

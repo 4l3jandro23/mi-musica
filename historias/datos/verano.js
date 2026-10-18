@@ -18,8 +18,8 @@ HISTORIAS.push({
         { a: 1958, art: "Eddie Cochran", t: "Summertime Blues", n: "El chaval que no puede irse de vacaciones porque tiene que trabajar." },
         { a: 1960, art: "Percy Faith", t: "Theme from «A Summer Place»", q: "Percy Faith Theme from A Summer Place", n: "El instrumental más vendido de 1960 en EE. UU." },
         { a: 1963, art: "The Beach Boys", t: "Surfin' U.S.A.", n: "El verano californiano hecho rock and roll." },
-        { a: 1963, art: "Martha and the Vandellas", t: "Heat Wave", n: "Ola de calor." },
-        { a: 1964, art: "The Drifters", t: "Under the Boardwalk", n: "Bajo el paseo marítimo." },
+        { a: 1963, art: "Martha and the Vandellas", t: "Heat Wave", n: "Ola de calor de Motown: una de las primeras canciones de Holland-Dozier-Holland." },
+        { a: 1964, art: "The Drifters", t: "Under the Boardwalk", n: "Bajo el paseo marítimo, a la sombra: el verano de Nueva York." },
         { a: 1966, art: "The Lovin' Spoonful", t: "Summer in the City", n: "El calor pegajoso de la ciudad en agosto." },
         { a: 1969, art: "Sly & the Family Stone", t: "Hot Fun in the Summertime", n: "Soul de verano para el final de los 60." },
         { a: 1970, art: "Mungo Jerry", t: "In the Summertime", n: "Uno de los sencillos más vendidos de la historia del Reino Unido." },
@@ -41,10 +41,10 @@ HISTORIAS.push({
         { a: 1989, art: "La lambada", t: "Una canción con juicio", tipo: "hito", n: "La lambada copiaba «Llorando se fue» del grupo boliviano Los Kjarkas, que ganaron el juicio por plagio." },
         { a: 1989, art: "Kaoma", t: "Lambada", n: "El baile del verano de 1989 en toda Europa." },
         { a: 1993, art: "Los del Río", t: "Macarena", n: "El baile de los veranos de los 90." },
-        { a: 2000, art: "King África", t: "La bomba", n: "El verano de 2000." },
-        { a: 2002, art: "Las Ketchup", t: "Aserejé", n: "Un baile mundial." },
+        { a: 2000, art: "King África", t: "La bomba", n: "El verano de 2000: un argentino y un baile que se hacía en todas las bodas." },
+        { a: 2002, art: "Las Ketchup", t: "Aserejé", n: "Un baile mundial de tres hermanas de Córdoba: la letra imita a la Sugarhill Gang." },
         { a: 2010, art: "Don Omar & Lucenzo", t: "Danza Kuduro", n: "El kuduro angoleño pasado por Francia y Puerto Rico." },
-        { a: 2010, art: "Shakira feat. Freshlyground", t: "Waka Waka (This Time for Africa)", n: "El Mundial de Sudáfrica." },
+        { a: 2010, art: "Shakira feat. Freshlyground", t: "Waka Waka (This Time for Africa)", n: "La canción del Mundial de Sudáfrica, que ganó España." },
         { a: 2011, art: "Michel Teló", t: "Ai se eu te pego", n: "Una canción sertaneja brasileña que bailó toda Europa." }
       ]
     },
@@ -60,10 +60,10 @@ HISTORIAS.push({
         { a: 2014, art: "Enrique Iglesias feat. Descemer Bueno & Gente de Zona", t: "Bailando", n: "Número uno en media Europa y en toda América Latina." },
         { a: 2016, art: "Carlos Vives & Shakira", t: "La bicicleta", n: "Vallenato, pop y Barranquilla." },
         { a: 2017, art: "«Despacito»", t: "Dieciséis semanas en lo más alto", tipo: "hito", n: "La canción de Luis Fonsi y Daddy Yankee iguala el récord de semanas en el número uno de Estados Unidos." },
-        { a: 2017, art: "Luis Fonsi & Daddy Yankee", t: "Despacito", n: "Todo el verano de 2017." },
+        { a: 2017, art: "Luis Fonsi & Daddy Yankee", t: "Despacito", n: "Todo el verano de 2017: el vídeo más visto de YouTube durante años." },
         { a: 2019, art: "Taylor Swift", t: "Cruel Summer", n: "Una canción de 2019 que se hizo número uno en 2023, cuatro años después." },
         { a: 2022, art: "Bad Bunny", t: "Un verano sin ti", tipo: "disco", n: "El disco más escuchado del mundo en 2022, hecho para la playa." },
-        { a: 2022, art: "Bizarrap & Quevedo", t: "Quevedo: Bzrp Music Sessions, Vol. 52", n: "El verano de 2022." }
+        { a: 2022, art: "Bizarrap & Quevedo", t: "Quevedo: Bzrp Music Sessions, Vol. 52", n: "El verano de 2022: número uno en Spotify en todo el mundo." }
       ]
     }
   ]

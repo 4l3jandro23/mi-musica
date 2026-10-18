@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "italia",
   familia: "Mundo",
   titulo: "Historia de la música italiana",
-  periodo: "1907 – 2022",
+  periodo: "1880 – 2022",
   color: "#2f8f5b",
   lema: "De Caruso al italo disco y Måneskin: melodía ante todo.",
   intro: "El país de la ópera convierte la melodía en pop. Hay canción napolitana, el Festival de Sanremo, cantautores con mensaje, rock progresivo, el italo disco que bailó media Europa (España incluida) y el eurodance de los 90.",
@@ -10,9 +10,10 @@ HISTORIAS.push({
     {
       titulo: "Ópera y canción napolitana",
       corto: "Caruso",
-      periodo: "1907 – 1916",
+      periodo: "1880 – 1916",
       intro: "La ópera y Nápoles: Italia exporta la melodía.",
       items: [
+        { a: 1880, art: "Luigi Denza", t: "Funiculì, funiculà", n: "Escrita para celebrar el funicular del Vesubio: se ha cantado en todo el mundo." },
         { a: 1907, art: "Enrico Caruso", t: "El primer cantante de discos", tipo: "hito", n: "Su «Vesti la giubba» vende un millón de copias." },
         { a: 1907, art: "Enrico Caruso", t: "Vesti la giubba", n: "Uno de los primeros discos en vender un millón de copias. Caruso hizo famoso el gramófono." },
         { a: 1916, art: "Enrico Caruso", t: "'O sole mio", n: "La canción napolitana que se convirtió en símbolo de Italia." }

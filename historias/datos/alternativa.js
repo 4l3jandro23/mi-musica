@@ -82,7 +82,7 @@ HISTORIAS.push({
         { a: 2001, art: "Muse", t: "Plug In Baby", n: "El riff de Matt Bellamy, a medio camino entre Bach y el metal, que hizo de Muse una banda de estadio." },
         { a: 2001, art: "Weezer", t: "Island in the Sun", n: "Del «Green Album»: un tema de verano que no querían como single." },
         { a: 2002, art: "Queens of the Stone Age", t: "No One Knows", n: "Con Dave Grohl a la batería: rock del desierto." },
-        { a: 2002, art: "Red Hot Chili Peppers", t: "Can't Stop", n: "Del disco «By the Way»." },
+        { a: 2002, art: "Red Hot Chili Peppers", t: "Can't Stop", n: "Del disco «By the Way»: el riff funk de John Frusciante y las letras atropelladas de Anthony Kiedis." },
         { a: 2003, art: "The Rasmus", t: "In the Shadows", n: "Los finlandeses de las plumas en el pelo." },
         { a: 2005, art: "Gorillaz", t: "Feel Good Inc.", n: "Un grupo de dibujos animados creado por Damon Albarn." },
         { a: 2005, art: "The Fray", t: "How to Save a Life", n: "Sobre un chico al que el cantante intentó ayudar: la canción de «Anatomía de Grey»." },

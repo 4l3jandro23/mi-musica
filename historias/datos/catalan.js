@@ -22,7 +22,7 @@ HISTORIAS.push({
         { a: 1968, art: "Lluís Llach", t: "L'estaca", n: "Una estaca que hay que tirar entre todos: himno contra la dictadura, cantado hasta en Polonia." },
         { a: 1968, art: "Maria del Mar Bonet", t: "Què volen aquesta gent?", n: "Desde Mallorca, sobre la muerte de un estudiante tras una detención. Fue prohibida." },
         { a: 1971, art: "Pau Riba", t: "Noia de porcellana", n: "Pau Riba, el hippie de la Nova Cançó, se pasa al rock psicodélico." },
-        { a: 1973, art: "Lluís Llach", t: "Que tinguem sort", n: "Un deseo de libertad." },
+        { a: 1973, art: "Lluís Llach", t: "Que tinguem sort", n: "Un deseo de libertad en plena dictadura, de uno de los grandes de la Nova Cançó." },
         { a: 1974, art: "Ovidi Montllor", t: "Perquè vull", n: "Un poema de Vicent Andrés Estellés." },
         { a: 1975, art: "Lluís Llach", t: "Viatge a Ítaca", n: "Sobre el poema de Kavafis: Llach convierte el viaje a Ítaca en un canto a la libertad en plena agonía del franquismo." },
         { a: 1975, art: "Jaume Sisa", t: "Qualsevol nit pot sortir el sol", n: "Personajes de cuento en una canción." }
@@ -54,13 +54,13 @@ HISTORIAS.push({
         { a: 2001, art: "Sopa de Cabra", t: "Se despiden", tipo: "hito", n: "Tras «Plou i fa sol», el grupo más popular del rock català lo deja: empieza la era del pop y la rumba festiva." },
         { a: 2001, art: "Sopa de Cabra", t: "Els teus somnis", n: "Del disco «Plou i fa sol», el último antes de su larga pausa." },
         { a: 2002, art: "Antònia Font", t: "Wa Yeah!", n: "Antònia Font, desde Mallorca, con un pop surrealista de astronautas y robots." },
-        { a: 2005, art: "Gossos", t: "Alguna cosa", n: "Pop acústico de Manresa." },
+        { a: 2005, art: "Gossos", t: "Alguna cosa", n: "Pop acústico del grupo de Manresa, con cuatro voces." },
         { a: 2006, art: "Antònia Font", t: "Batiscafo Katiuscas", n: "Su canción más conocida: un submarino y una historia de amor en el fondo del mar." },
         { a: 2007, art: "Gossos", t: "Corren", n: "Con Dani Macaco: su canción más conocida." },
         { a: 2008, art: "Manel", t: "Al mar!", n: "Indie pop con letras ingeniosas: un fenómeno inesperado." },
         { a: 2008, art: "Teràpia de Shock", t: "Sense tu", n: "Mejor grupo revelación de los premios Enderrock." },
         { a: 2009, art: "La Pegatina", t: "Gat rumberu", n: "La rumba festiva de Montcada, del disco «Via Mandarina»." },
-        { a: 2010, art: "Mishima", t: "Qui n'ha begut", n: "El indie barcelonés." }
+        { a: 2010, art: "Mishima", t: "Qui n'ha begut", n: "El indie barcelonés de David Carabén, cantado en catalán." }
       ]
     },
     {
@@ -71,22 +71,22 @@ HISTORIAS.push({
       items: [
         { a: 2011, art: "Els Catarres", t: "Jenifer", n: "Un amor imposible entre un chico de pueblo y una chica de Castelldefels." },
         { a: 2011, art: "Manel", t: "Boomerang", n: "Manel, uno de los grupos más importantes de la música catalana de los 2010." },
-        { a: 2011, art: "La Pegatina", t: "Mari Carmen", n: "Del disco «Xapomelön»." },
+        { a: 2011, art: "La Pegatina", t: "Mari Carmen", n: "Rumba y ska del disco «Xapomelön», de los de Montcada." },
         { a: 2011, art: "Sopa de Cabra", t: "Vuelven diez años después", n: "El grupo más popular del rock català, separado en 2001, vuelve a los escenarios y llena el Palau Sant Jordi.", tipo: "hito" },
         { a: 2012, art: "Sílvia Pérez Cruz", t: "Vestida de nit", n: "Una de las grandes voces catalanas." },
-        { a: 2012, art: "Joan Dausà", t: "Jo mai mai", n: "Pop catalán." },
+        { a: 2012, art: "Joan Dausà", t: "Jo mai mai", n: "Pop catalán del cantante que también fue actor." },
         { a: 2012, art: "Andreu Rifé", t: "Fil de llum", n: "La canción de la serie de TV3 «Polseres vermelles»." },
         { a: 2012, art: "Blaumut", t: "Pa amb oli i sal", n: "Pop de cuerdas del disco «El turista»; millones de reproducciones." },
         { a: 2013, art: "Els Catarres", t: "Vull estar amb tu", n: "Del disco «Postals», el que los consagró." },
-        { a: 2013, art: "Els Catarres", t: "Rock & Roll", n: "De «Postals»." },
-        { a: 2013, art: "Els Catarres", t: "Invencibles", n: "De «Postals»." },
+        { a: 2013, art: "Els Catarres", t: "Rock & Roll", n: "Del disco «Postals»: folk pop que llena las fiestas de los pueblos." },
+        { a: 2013, art: "Els Catarres", t: "Invencibles", n: "Otra de «Postals», el disco que los convirtió en el grupo del momento en Cataluña." },
         { a: 2014, art: "Txarango", t: "Músic de carrer", n: "Del disco «Som riu», que regalaban en su web." },
         { a: 2015, art: "Txarango", t: "Som riu", q: "Txarango", n: "Txarango, de Ripoll, con mestizaje y fiesta." },
-        { a: 2015, art: "Els Catarres", t: "En peu de guerra", n: "Del disco «Big Bang»." },
+        { a: 2015, art: "Els Catarres", t: "En peu de guerra", n: "Del disco «Big Bang»: un himno para levantarse." },
         { a: 2015, art: "P.A.W.N. Gang", t: "Vui se pulisia", n: "El primer grupo de trap en catalán, con faltas de ortografía a propósito." },
         { a: 2015, art: "P.A.W.N. Gang", t: "Cac blac", n: "Trap de Barcelona sin filtro." },
         { a: 2016, art: "Bad Gyal", t: "Pai", n: "Dancehall con autotune en catalán desde Vilassar de Mar." },
-        { a: 2016, art: "Oques Grasses", t: "Sense pressa", n: "La alegría de Osona." },
+        { a: 2016, art: "Oques Grasses", t: "Sense pressa", n: "La alegría del grupo de Osona: reggae y pop sin prisa." },
         { a: 2016, art: "Buhos", t: "Barcelona s'il·lumina", n: "Del disco «Lluna plena», premio Enderrock al mejor videoclip." },
         { a: 2016, art: "Doctor Prats", t: "Les nits no moren mai", n: "Su versión de «The Nights» de Avicii para el disco de La Marató." },
         { a: 2017, art: "Referéndum", t: "Música y política", tipo: "hito", n: "La canción en catalán vive un auge de público joven, del pop al trap." },
@@ -94,7 +94,7 @@ HISTORIAS.push({
         { a: 2017, art: "Txarango", t: "Una lluna a l'aigua", n: "Del disco «El cor de la terra»." },
         { a: 2018, art: "Buhos", t: "Volcans", n: "Del disco «La gran vida»." },
         { a: 2018, art: "Doctor Prats", t: "Caminem lluny", n: "Del disco «Venim de lluny», con más electrónica." },
-        { a: 2018, art: "Doctor Prats", t: "Tu fas", n: "De «Venim de lluny»." },
+        { a: 2018, art: "Doctor Prats", t: "Tu fas", n: "Del disco «Venim de lluny»: rumba y fiesta de Terrassa." },
         { a: 2018, art: "Els Catarres", t: "Fins que arribi l'alba", n: "Vuelven tras casi tres años de pausa." },
         { a: 2019, art: "ROSALÍA", t: "Milionària", n: "Rumba catalana en catalán por la artista española más global." }
       ]

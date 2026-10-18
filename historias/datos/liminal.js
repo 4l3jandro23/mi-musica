@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "liminal",
-  familia: "Especiales",
+  familia: "Humor e internet",
   titulo: "Música de espacios liminales",
   periodo: "1890 – 2019",
   color: "#c9b458",
@@ -13,14 +13,14 @@ HISTORIAS.push({
       periodo: "1890 – 1958",
       intro: "Canciones antiguas que hoy suenan como recuerdos ajenos.",
       items: [
-        { a: 1890, art: "Erik Satie", t: "Gnossienne n.º 1", n: "Piano sin compases." },
+        { a: 1890, art: "Erik Satie", t: "Gnossienne n.º 1", n: "Piano sin compases ni ritmo fijo: Satie inventó la palabra del título." },
         { a: 1931, art: "Al Bowlly", t: "Heartaches", n: "La canción que The Caretaker deformaría en «It's Just a Burning Memory»." },
         { a: 1939, art: "The Ink Spots", t: "If I Didn't Care", n: "Los Ink Spots, muy usados en videojuegos como Fallout: suena a un pasado que nunca viviste." },
         { a: 1939, art: "Glenn Miller", t: "Moonlight Serenade", n: "Una orquesta de los 40 que hoy suena como un hotel vacío." },
         { a: 1940, art: "Big bands", t: "La radio de la posguerra", tipo: "hito", n: "Las canciones de baile de entonces, hoy sinónimo de pasillos vacíos." },
         { a: 1940, art: "The Ink Spots", t: "Maybe", n: "La voz de los videojuegos postapocalípticos." },
         { a: 1941, art: "The Ink Spots", t: "I Don't Want to Set the World on Fire", n: "Sonando en un mundo arrasado en el videojuego Fallout 3." },
-        { a: 1942, art: "The Mills Brothers", t: "Paper Doll", n: "Una muñeca de papel." },
+        { a: 1942, art: "The Mills Brothers", t: "Paper Doll", n: "Una muñeca de papel que no te engaña: número uno en EE. UU. durante la guerra." },
         { a: 1944, art: "Billie Holiday", t: "I'll Be Seeing You", n: "Te veré en todos los lugares conocidos: nostalgia pura." },
         { a: 1950, art: "Patti Page", t: "Tennessee Waltz", n: "Una voz de los 50 que suena lejana y triste." },
         { a: 1958, art: "The Platters", t: "Smoke Gets in Your Eyes", n: "Un baile lento de otra década." }
@@ -42,10 +42,10 @@ HISTORIAS.push({
         { a: 2006, art: "Kazumi Totaka", t: "Wii Shop Channel", n: "El hilo musical de la tienda de la Wii." },
         { a: 2010, art: "Chuck Person", t: "Eccojams Vol. 1", tipo: "disco", n: "Bucles ralentizados: nace el vaporwave." },
         { a: 2011, art: "Macintosh Plus", t: "リサフランク420 / 現代のコンピュー", q: "Macintosh Plus リサフランク420", n: "El himno del vaporwave: Diana Ross ralentizada en un centro comercial digital." },
-        { a: 2012, art: "Blank Banshee", t: "Teen Pregnancy", n: "Vaporwave de trap." },
-        { a: 2013, art: "Disconscious", t: "Hologram Plaza", tipo: "disco", n: "El «mallsoft»." },
+        { a: 2012, art: "Blank Banshee", t: "Teen Pregnancy", n: "Vaporwave con ritmos de trap, del productor canadiense que nunca enseña la cara." },
+        { a: 2013, art: "Disconscious", t: "Hologram Plaza", tipo: "disco", n: "El «mallsoft»: música de centro comercial vacío, ralentizada y con eco." },
         { a: 2015, art: "Saint Pepsi", t: "Enjoy Yourself", n: "El vaporwave más bailable: un sample de soul que suena a centro comercial." },
-        { a: 2016, art: "Jinsang", t: "affection", n: "Lo-fi para estudiar." },
+        { a: 2016, art: "Jinsang", t: "affection", n: "Lo-fi para estudiar, del tipo que suena en los directos de YouTube." },
         { a: 2017, art: "potsu", t: "i'm closing my eyes", n: "Lo-fi hip hop para estudiar: nostalgia de un lugar que no existe." }
       ]
     },

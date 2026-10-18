@@ -52,7 +52,7 @@ HISTORIAS.push({
         { a: 1984, art: "Van Halen", t: "Jump", n: "Un sintetizador en un grupo de guitarras: su único número uno." },
         { a: 1984, art: "Scorpions", t: "Rock You Like a Hurricane", n: "Los alemanes conquistan Estados Unidos." },
         { a: 1984, art: "Scorpions", t: "Still Loving You", n: "La balada que se bailaba en todas las fiestas de instituto." },
-        { a: 1984, art: "Van Halen", t: "Panama", n: "Del disco «1984»." },
+        { a: 1984, art: "Van Halen", t: "Panama", n: "Del disco «1984»: una canción sobre un coche, con el motor del Lamborghini de Eddie grabado en el puente." },
         { a: 1985, art: "Rock in Rio", t: "Primera edición en Brasil", tipo: "hito", n: "Más de un millón de personas en diez días." },
         { a: 1985, art: "Live Aid", t: "Queen en Wembley", tipo: "hito", n: "Veinte minutos que muchos consideran la mejor actuación de la historia del rock." },
         { a: 1986, art: "Bon Jovi", t: "Livin' on a Prayer", n: "Tommy y Gina: el himno de los karaokes." },
@@ -80,7 +80,7 @@ HISTORIAS.push({
       periodo: "2000 – 2021",
       intro: "Tras el grunge, el hard rock vuelve con humor.",
       items: [
-        { a: 2000, art: "Bon Jovi", t: "It's My Life", n: "Su gran regreso." },
+        { a: 2000, art: "Bon Jovi", t: "It's My Life", n: "Su gran regreso en el 2000, con un talk box como en «Livin' on a Prayer»." },
         { a: 2001, art: "Nickelback", t: "How You Remind Me", n: "La canción más radiada de la década en EE. UU." },
         { a: 2003, art: "The Darkness", t: "El hard rock vuelve como broma y en serio", tipo: "hito", n: "Mallas, falsete y número dos en el Reino Unido." },
         { a: 2003, art: "The Darkness", t: "I Believe in a Thing Called Love", n: "Falsetes, mallas y riffs: el hard rock vuelve medio en serio, medio en broma." },

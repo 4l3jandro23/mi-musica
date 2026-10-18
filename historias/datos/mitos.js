@@ -1,8 +1,8 @@
 HISTORIAS.push({
   id: "mitos",
-  familia: "Especiales",
+  familia: "La música por dentro",
   titulo: "Mitos y leyendas de la música",
-  periodo: "1781 – 2007",
+  periodo: "1781 – 2008",
   color: "#8a5cd0",
   lema: "Pactos con el diablo, mensajes al revés, muertos que siguen vivos… y qué hay de verdad en cada uno.",
   intro: "La música está llena de historias que todo el mundo repite y casi nadie comprueba. Aquí van las más famosas, cada una con su canción y con un veredicto: mito, verdad o a medias. Algunas leyendas son falsas pero bonitas; otras parecen inventadas y resultan ser ciertas.",
@@ -20,6 +20,7 @@ HISTORIAS.push({
         { a: 1959, art: "Buddy Holly", t: "Peggy Sue", v: "cierto", n: "Se dice: «el día que murió la música» es una exageración de Don McLean. Realidad: Buddy Holly, Ritchie Valens y The Big Bopper murieron de verdad en el mismo accidente de avioneta el 3 de febrero de 1959. Valens tenía 17 años y se subió al avión tras ganar a una moneda." },
         { a: 1974, art: "The Mamas & The Papas", t: "California Dreamin'", v: "falso", n: "Se dice: Mama Cass murió atragantada con un sándwich de jamón. Realidad: murió de un ataque al corazón mientras dormía; el bulo salió de un comentario del médico a la prensa antes de la autopsia." },
         { a: 1977, art: "Elvis Presley", t: "Way Down", v: "falso", n: "Se dice: Elvis fingió su muerte y sigue vivo. Realidad: murió en Graceland en agosto de 1977. «Way Down» estaba en las listas ese mismo mes y llegó al número uno en el Reino Unido después de su muerte." },
+        { a: 1994, art: "Kurt Cobain", t: "Nace el «club de los 27»", tipo: "hito", n: "Tras su muerte, su madre dice que se ha unido a «ese club estúpido»; la prensa convierte la coincidencia en leyenda." },
         { a: 1994, art: "Nirvana", t: "Lithium", v: "falso", n: "Se dice: los músicos que mueren a los 27 son una maldición estadística. Realidad: Hendrix, Joplin, Morrison, Cobain y Winehouse murieron a esa edad, pero un estudio del BMJ en 2011 no encontró más riesgo a los 27 que a otras edades: sí más riesgo de morir joven en general." }
       ]
     },
@@ -35,6 +36,7 @@ HISTORIAS.push({
         { a: 1969, art: "Neil Diamond", t: "Sweet Caroline", v: "medias", n: "Se dice: está dedicada a Caroline Kennedy. Realidad: Diamond dijo en 2007 que se inspiró en una foto suya de niña, pero en 2014 confesó que la escribió para su mujer, Marcia, y que «Caroline» le cuadraba mejor." },
         { a: 1971, art: "Led Zeppelin", t: "Stairway to Heaven", v: "falso", n: "Se dice: escuchada al revés tiene mensajes satánicos. Realidad: es pareidolia, el cerebro busca palabras en sonidos al azar. El grupo se rió de la idea: «nuestros tocadiscos solo giran en un sentido»." },
         { a: 1981, art: "Phil Collins", t: "In the Air Tonight", v: "falso", n: "Se dice: Phil Collins vio a un hombre dejar ahogarse a otro y se lo canta en un concierto. Realidad: la escribió en pleno divorcio, con rabia, y él mismo ha desmentido la leyenda muchas veces. El famoso redoble de batería sí es tan bueno como dicen." },
+        { a: 1982, art: "Mensajes al revés", t: "California quiere avisar en los discos", tipo: "hito", n: "En pleno pánico por los mensajes satánicos escuchados al revés, en California se propone una ley para etiquetar los discos." },
         { a: 1983, art: "The Police", t: "Every Breath You Take", v: "falso", n: "Se dice: es una canción de amor para bodas. Realidad: Sting dice que trata de la obsesión y la vigilancia, casi la de un acosador. Se sigue poniendo en bodas." },
         { a: 1984, art: "Bruce Springsteen", t: "Born in the U.S.A.", v: "falso", n: "Se dice: es un himno patriótico. Realidad: es una protesta por cómo EE. UU. trató a los veteranos de Vietnam. Hasta Ronald Reagan intentó usarla en su campaña." },
         { a: 1991, art: "Nirvana", t: "Smells Like Teen Spirit", v: "cierto", n: "Se dice: el título es una frase sobre el espíritu adolescente. Realidad: Kathleen Hanna, de Bikini Kill, pintó en una pared «Kurt huele a Teen Spirit», que era una marca de desodorante que llevaba su novia. Kurt no lo sabía." },
@@ -64,14 +66,15 @@ HISTORIAS.push({
     {
       titulo: "Mitos españoles",
       corto: "España",
-      periodo: "1968 – 2002",
+      periodo: "1968 – 2008",
       intro: "Eurovisión, Asereje y la letra que no tiene el himno.",
       items: [
         { a: 1968, art: "Massiel", t: "La, la, la", v: "medias", n: "Se dice: Franco compró los votos para ganar Eurovisión. Realidad: un documental de 2008 lo afirmó, pero nunca se ha probado. Los jurados de la época eran pequeños y había intercambios de favores entre países, así que nadie lo descarta del todo." },
         { a: 1968, art: "Julio Iglesias", t: "La vida sigue igual", v: "medias", n: "Se dice: Julio Iglesias fue portero del Real Madrid. Realidad: jugó en el juvenil y el filial; un accidente de coche le dejó parapléjico temporalmente y, en el hospital, empezó a tocar la guitarra." },
         { a: 1972, art: "Nino Bravo", t: "Libre", v: "cierto", n: "Se dice: «Libre» habla de un chico que muere en el Muro de Berlín. Realidad: es cierto: está inspirada en Peter Fechter, de 18 años, muerto en 1962 al intentar saltar el muro. La censura no lo vio." },
         { a: 1997, art: "Himno nacional de España", t: "Marcha Real", q: "Marcha Real", v: "cierto", n: "Se dice: el himno de España no tiene letra. Realidad: es cierto: tuvo letras en distintas épocas, pero ninguna oficial hoy. Es uno de los pocos himnos del mundo sin letra." },
-        { a: 2002, art: "Las Ketchup", t: "Aserejé", v: "falso", n: "Se dice: el estribillo es un mensaje satánico. Realidad: en Latinoamérica corrió el rumor; el estribillo es la forma en que alguien que no sabe inglés canta «Rapper's Delight» de Sugarhill Gang." }
+        { a: 2002, art: "Las Ketchup", t: "Aserejé", v: "falso", n: "Se dice: el estribillo es un mensaje satánico. Realidad: en Latinoamérica corrió el rumor; el estribillo es la forma en que alguien que no sabe inglés canta «Rapper's Delight» de Sugarhill Gang." },
+        { a: 2008, art: "La Sexta", t: "Un documental reabre lo de Massiel", tipo: "hito", n: "«1968. Yo viví el mayo español» sostiene que el régimen compró votos en Eurovisión; nunca se ha probado." }
       ]
     }
   ]

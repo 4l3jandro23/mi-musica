@@ -17,9 +17,9 @@ HISTORIAS.push({
         { a: 1994, art: "Tommy Wright III", t: "Ashes 2 Ashes, Dust 2 Dust", tipo: "disco", n: "Rap de Memphis crudo y paranoico, con la producción lo-fi de cinta que definirá el sonido." },
         { a: 1995, art: "Three 6 Mafia", t: "Mystic Stylez", tipo: "disco", n: "El disco fundacional del horrorcore de Memphis: ocultismo, cencerros y bajos lentos." },
         { a: 1996, art: "DJ Screw", t: "3 'N the Mornin' (Part Two)", tipo: "disco", n: "Desde Houston, la técnica chopped & screwed: todo ralentizado y cortado. La otra pata del sonido phonk." },
-        { a: 1996, art: "Three 6 Mafia", t: "Late Nite Tip", n: "Memphis oscuro." },
+        { a: 1996, art: "Three 6 Mafia", t: "Late Nite Tip", n: "Memphis oscuro: los casetes que luego samplearía todo el phonk." },
         { a: 1997, art: "Three 6 Mafia", t: "Tear da Club Up '97", n: "Los Three 6 Mafia en su versión más salvaje." },
-        { a: 1998, art: "Gangsta Boo", t: "Where Dem Dollas At", n: "La reina de Memphis." },
+        { a: 1998, art: "Gangsta Boo", t: "Where Dem Dollas At", n: "La reina de Memphis, la única mujer de Three 6 Mafia." },
         { a: 2001, art: "Project Pat", t: "Chickenhead", n: "Con La Chat y Three 6 Mafia: el Memphis rap llega a las listas." }
       ]
     },
@@ -41,10 +41,10 @@ HISTORIAS.push({
       periodo: "2019 – 2022",
       intro: "Cencerros a toda velocidad, bajos saturados y vídeos de coches derrapando. TikTok hace el resto.",
       items: [
-        { a: 2019, art: "Freddie Dredd", t: "Cha Cha", n: "Phonk de TikTok." },
+        { a: 2019, art: "Freddie Dredd", t: "Cha Cha", n: "Phonk de TikTok, con samples de Memphis acelerados." },
         { a: 2020, art: "Freddie Dredd", t: "Limbo", n: "Phonk oscuro y corto, hecho para viralizarse." },
         { a: 2020, art: "Kaito Shoma", t: "Scary Garry", q: "Kaito Shoma Scary Garry", n: "El drift phonk de TikTok, con cencerros y bajo distorsionado." },
-        { a: 2020, art: "Lxst Cxntury", t: "Odium", n: "Drift phonk." },
+        { a: 2020, art: "Lxst Cxntury", t: "Odium", n: "Drift phonk: el sonido de los vídeos de coches derrapando." },
         { a: 2021, art: "TikTok", t: "El drift phonk en vídeos de coches", tipo: "hito", n: "El phonk se vuelve viral en todo el mundo." },
         { a: 2021, art: "DVRST", t: "Close Eyes", n: "El tema que sacó el drift phonk de los nichos." },
         { a: 2021, art: "INTERWORLD", t: "Metamorphosis", n: "Hipnótico y melódico: pura banda sonora de TikTok." },
@@ -54,12 +54,12 @@ HISTORIAS.push({
         { a: 2021, art: "Ghostface Playa", t: "Why Not", q: "Ghostface Playa Why Not", n: "Phonk melancólico muy usado en vídeos de coches." },
         { a: 2021, art: "PlayaPhonk", t: "PHONKY TOWN", n: "Uno de los temas de phonk más virales en TikTok." },
         { a: 2021, art: "Kordhell", t: "Killers from the Northside", n: "Kordhell, británico, uno de los reyes del drift phonk." },
-        { a: 2021, art: "DVRST", t: "Dream Space", n: "Phonk melódico." },
-        { a: 2021, art: "INTERWORLD", t: "Rapture", n: "Phonk etéreo." },
+        { a: 2021, art: "DVRST", t: "Dream Space", n: "Phonk melódico del productor ruso." },
+        { a: 2021, art: "INTERWORLD", t: "Rapture", n: "Phonk etéreo, de los temas más escuchados del género." },
         { a: 2022, art: "Dxrk ダーク", t: "RAVE", n: "La versión más rave y agresiva: el phonk a punto de mezclarse con todo." },
-        { a: 2022, art: "Kordhell", t: "Live Another Day", n: "Phonk de gimnasio." },
-        { a: 2022, art: "MoonDeity", t: "Neon Blade", n: "Phonk japonés." },
-        { a: 2022, art: "ONIMXRU & SMITHMANE", t: "Shadow", n: "Phonk de TikTok." }
+        { a: 2022, art: "Kordhell", t: "Live Another Day", n: "Phonk de gimnasio con cencerro, del productor británico." },
+        { a: 2022, art: "MoonDeity", t: "Neon Blade", n: "Phonk con aire japonés y ciberpunk." },
+        { a: 2022, art: "ONIMXRU & SMITHMANE", t: "Shadow", n: "Phonk de TikTok, con cencerro y bajos distorsionados." }
       ]
     },
     {

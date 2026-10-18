@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "sampling",
-  familia: "Especiales",
+  familia: "La música por dentro",
   titulo: "Historia del sampling",
   periodo: "1948 – 2023",
   color: "#3d8bb5",
@@ -71,8 +71,8 @@ HISTORIAS.push({
         { a: 2003, art: "Kanye West", t: "Through the Wire", n: "El «chipmunk soul»: samples de soul acelerados. La grabó con la mandíbula rota." },
         { a: 2004, art: "Gwen Stefani & Eve", t: "Rich Girl", n: "Toma «If I Were a Rich Man», de El violinista en el tejado." },
         { a: 2006, art: "J Dilla", t: "Workinonit", n: "De «Donuts», grabado con un MPC desde la cama del hospital poco antes de morir. Una obra maestra del beatmaking." },
-        { a: 2007, art: "Kanye West", t: "Stronger", n: "Sobre Daft Punk." },
-        { a: 2013, art: "Kanye West", t: "Blood on the Leaves", n: "Nina Simone." },
+        { a: 2007, art: "Kanye West", t: "Stronger", n: "Sobre «Harder, Better, Faster, Stronger» de Daft Punk: número uno en EE. UU." },
+        { a: 2013, art: "Kanye West", t: "Blood on the Leaves", n: "La voz de Nina Simone cantando «Strange Fruit», cortada y repetida." },
         { a: 2023, art: "Doja Cat", t: "Paint the Town Red", n: "Un sample de Dionne Warwick." }
       ]
     }

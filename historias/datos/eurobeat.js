@@ -13,7 +13,7 @@ HISTORIAS.push({
       periodo: "1981 – 1987",
       intro: "Productores británicos e italianos fabrican pop rapidísimo.",
       items: [
-        { a: 1981, art: "Lime", t: "Babe We're Gonna Love Tonite", n: "El Hi-NRG de Canadá." },
+        { a: 1981, art: "Lime", t: "Babe We're Gonna Love Tonite", n: "El Hi-NRG de Canadá: voces robóticas de una pareja de Montreal." },
         { a: 1981, art: "Patrick Cowley", t: "Menergy", n: "El Hi-NRG de San Francisco." },
         { a: 1982, art: "Boys Town Gang", t: "Can't Take My Eyes Off You", n: "El clásico de Frankie Valli pasado a Hi-NRG." },
         { a: 1983, art: "Divine", t: "Shake It Up", n: "La musa de John Waters en las pistas gais." },
@@ -25,18 +25,18 @@ HISTORIAS.push({
         { a: 1984, art: "Modern Talking", t: "You're My Heart, You're My Soul", n: "El dúo alemán más vendido." },
         { a: 1985, art: "Italia", t: "El italo disco se acelera", tipo: "hito", n: "Productores italianos como los de Time Records aceleran el italo disco: de ahí sale el eurobeat." },
         { a: 1985, art: "Dead or Alive", t: "Lover Come Back to Me", n: "Dead or Alive con Stock Aitken Waterman, el sonido hi-NRG de Londres." },
-        { a: 1985, art: "Bad Boys Blue", t: "You're a Woman", n: "Eurodisco alemán." },
+        { a: 1985, art: "Bad Boys Blue", t: "You're a Woman", n: "Eurodisco alemán de Colonia: un éxito enorme en Europa del Este." },
         { a: 1985, art: "Sandra", t: "Maria Magdalena", n: "La alemana del pop europeo." },
         { a: 1985, art: "Piano Fantasia", t: "Song for Denise", n: "Italo disco instrumental con piano, de los neerlandeses Piano Fantasia." },
         { a: 1986, art: "Bananarama", t: "Venus", n: "Otra de SAW: pop rapidísimo." },
         { a: 1986, art: "Ken Laszlo", t: "Tonight", n: "Italo disco que en Japón se convertiría en clásico del eurobeat." },
         { a: 1986, art: "Michael Fortunati", t: "Give Me Up", n: "Italo hi-NRG que triunfó en Japón." },
-        { a: 1986, art: "Sinitta", t: "So Macho", n: "Hi-NRG británico." },
+        { a: 1986, art: "Sinitta", t: "So Macho", n: "Hi-NRG británico: busca un hombre «macho», con mucha ironía." },
         { a: 1987, art: "Kylie Minogue", t: "I Should Be So Lucky", n: "SAW convierte a una actriz de telenovela australiana en estrella." },
         { a: 1987, art: "Sabrina", t: "Boys (Summertime Love)", q: "Sabrina Boys Summertime Love", n: "Sabrina, una de las caras del italo disco que se convierte en eurobeat. Fue éxito en toda Europa en 1987." },
         { a: 1987, art: "Rick Astley", t: "Never Gonna Give You Up", n: "Producida por Stock Aitken Waterman: el pop eurobeat de Londres, años antes de convertirse en meme." },
         { a: 1987, art: "Mel & Kim", t: "Respectable", n: "Las hermanas Mel y Kim, otro éxito de Stock Aitken Waterman." },
-        { a: 1987, art: "Spagna", t: "Call Me", n: "Italo disco con voz." }
+        { a: 1987, art: "Spagna", t: "Call Me", n: "Italo disco con la voz de Ivana Spagna, número dos en Reino Unido." }
       ]
     },
     {

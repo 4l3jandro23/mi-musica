@@ -27,7 +27,7 @@ HISTORIAS.push({
         { a: 1970, art: "Simon & Garfunkel", t: "Bridge over Troubled Water", n: "La canción más vendida de Columbia en 1970." },
         { a: 1970, art: "Santana", t: "Oye cómo va", n: "El rock latino de Columbia." },
         { a: 1971, art: "Janis Joplin", t: "Me and Bobby McGee", n: "Número uno tras su muerte." },
-        { a: 1973, art: "Billy Joel", t: "Piano Man", n: "El pianista de bar." },
+        { a: 1973, art: "Billy Joel", t: "Piano Man", n: "El pianista de bar: Billy Joel tocó en uno de Los Ángeles con otro nombre." },
         { a: 1973, art: "Barbra Streisand", t: "The Way We Were", n: "Óscar a la mejor canción." },
         { a: 1975, art: "Bruce Springsteen", t: "Born to Run", n: "El Boss se juega su carrera." },
         { a: 1978, art: "Earth, Wind & Fire", t: "September", n: "Earth, Wind & Fire, en Columbia: el «ba-dee-ya» que se sigue celebrando cada 21 de septiembre." }
@@ -46,12 +46,12 @@ HISTORIAS.push({
         { a: 1998, art: "Britney Spears", t: "...Baby One More Time", n: "En Jive, hoy parte de Sony." },
         { a: 1999, art: "Destiny's Child", t: "Say My Name", n: "Columbia y uno de los grandes grupos del R&B." },
         { a: 1999, art: "Ricky Martin", t: "Livin' la Vida Loca", n: "El boom latino de Columbia." },
-        { a: 1999, art: "Jennifer Lopez", t: "Waiting for Tonight", n: "El pop dance de Epic." },
+        { a: 1999, art: "Jennifer Lopez", t: "Waiting for Tonight", n: "El pop dance de Epic: la canción del fin de milenio." },
         { a: 2003, art: "Beyoncé & JAY-Z", t: "Crazy in Love", n: "El debut en solitario de Beyoncé." },
         { a: 2004, art: "Sony BMG", t: "Fusión con BMG", tipo: "hito", n: "Sony se queda con RCA y Arista; en 2008 compra la otra mitad." },
         { a: 2006, art: "Shakira & Wyclef Jean", t: "Hips Don't Lie", n: "El éxito mundial de Epic." },
         { a: 2008, art: "Adele", t: "Chasing Pavements", n: "Adele publicó en XL en el Reino Unido y en Columbia en EE. UU." },
-        { a: 2013, art: "Daft Punk", t: "Get Lucky", n: "En Columbia." },
+        { a: 2013, art: "Daft Punk", t: "Get Lucky", n: "En Columbia: el gran éxito de «Random Access Memories»." },
         { a: 2018, art: "Rosalía", t: "Malamente", n: "El flamenco se vuelve pop global desde Columbia." },
         { a: 2022, art: "Harry Styles", t: "As It Was", n: "La canción más escuchada del mundo en 2022." },
         { a: 2023, art: "Miley Cyrus", t: "Flowers", n: "Récord de escuchas en una semana." }

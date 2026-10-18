@@ -17,22 +17,22 @@ HISTORIAS.push({
         { a: 1981, art: "Kraftwerk", t: "Numbers", n: "Números en varios idiomas: los productores de electro la samplearon sin parar." },
         { a: 1982, art: "Afrika Bambaataa & Soulsonic Force", t: "Planet Rock", n: "Kraftwerk más TR-808: el big bang del electro." },
         { a: 1982, art: "Planet Patrol", t: "Play at Your Own Risk", n: "Arthur Baker y el electro." },
-        { a: 1982, art: "Jonzun Crew", t: "Pack Jam (Look Out for the OVC)", n: "Electro espacial." },
-        { a: 1982, art: "Man Parrish", t: "Hip Hop, Be Bop (Don't Stop)", n: "Electro de Nueva York." },
+        { a: 1982, art: "Jonzun Crew", t: "Pack Jam (Look Out for the OVC)", n: "Electro espacial de Boston, con vocoder." },
+        { a: 1982, art: "Man Parrish", t: "Hip Hop, Be Bop (Don't Stop)", n: "Electro de Nueva York que bailaron los breakdancers." },
         { a: 1983, art: "Hashim", t: "Al-Naafiysh (The Soul)", n: "Un clásico absoluto de los breakdancers." },
         { a: 1983, art: "Herbie Hancock", t: "Rockit", n: "Herbie Hancock con scratch de Grand Mixer DST: el jazz se pasa al electro y el vídeo arrasa en la MTV." },
         { a: 1983, art: "Cybotron", t: "Clear", n: "Juan Atkins y Rick Davis: de este electro de Detroit nacerá el techno." },
         { a: 1983, art: "Kraftwerk", t: "Tour de France", n: "Kraftwerk, los padres del electro, con un tema sobre el ciclismo." },
-        { a: 1983, art: "Twilight 22", t: "Electric Kingdom", n: "Un reino eléctrico." },
-        { a: 1983, art: "Afrika Bambaataa & The Soulsonic Force", t: "Renegades of Funk", n: "Funk y política." },
+        { a: 1983, art: "Twilight 22", t: "Electric Kingdom", n: "Un reino eléctrico: sintetizadores y robots de Nueva York." },
+        { a: 1983, art: "Afrika Bambaataa & The Soulsonic Force", t: "Renegades of Funk", n: "Funk y política: luego la versionaron Rage Against the Machine." },
         { a: 1984, art: "«Breakin'»", t: "El breakdance llega al cine", tipo: "hito", n: "El electro es la banda sonora de los b-boys de todo el mundo." },
         { a: 1984, art: "The Egyptian Lover", t: "Egypt, Egypt", n: "El electro de Los Ángeles, con el 808 a tope." },
         { a: 1984, art: "Newcleus", t: "Jam on It", n: "Newcleus, de Brooklyn, con voces aceleradas y ritmo de 808." },
         { a: 1984, art: "Whodini", t: "Freaks Come Out at Night", n: "Whodini mezcla electro y rap en las fiestas de Nueva York." },
-        { a: 1984, art: "World Class Wreckin' Cru", t: "Surgery", n: "Dr. Dre antes de N.W.A." },
+        { a: 1984, art: "World Class Wreckin' Cru", t: "Surgery", n: "Dr. Dre con lentejuelas, antes de N.W.A." },
         { a: 1985, art: "Mantronix", t: "Bassline", n: "Kurtis Mantronik y la programación de cajas de ritmos como arte." },
         { a: 1985, art: "Model 500", t: "No UFO's", n: "Juan Atkins y el techno de Detroit." },
-        { a: 1985, art: "Freestyle", t: "Don't Stop the Rock", n: "El Miami bass." }
+        { a: 1985, art: "Freestyle", t: "Don't Stop the Rock", n: "El Miami bass: graves de 808 para coches con altavoces gigantes." }
       ]
     },
     {
@@ -58,12 +58,12 @@ HISTORIAS.push({
       items: [
         { a: 1993, art: "Drexciya", t: "Bubble Metropolis", n: "Un dúo anónimo de Detroit que inventó un mito: una civilización submarina de descendientes de esclavos." },
         { a: 1995, art: "Drexciya", t: "El mito submarino", tipo: "hito", n: "Drexciya, el dúo de Detroit, inventa una mitología: descendientes de esclavas arrojadas al mar que viven bajo el agua." },
-        { a: 2000, art: "Peaches", t: "Fuck the Pain Away", n: "El electroclash." },
+        { a: 2000, art: "Peaches", t: "Fuck the Pain Away", n: "El electroclash: una caja de ritmos y mucho descaro." },
         { a: 2001, art: "Electroclash", t: "Un festival en Nueva York pone nombre a la moda", tipo: "hito", n: "Electro de los 80, ironía y moda: Miss Kittin, Fischerspooner, Peaches." },
         { a: 2001, art: "Miss Kittin & The Hacker", t: "Frank Sinatra", n: "El «electroclash»: electro frío, irónico y de moda." },
         { a: 2001, art: "Fischerspooner", t: "Emerge", n: "El himno del electroclash: estética y sintes de los 80." },
         { a: 2002, art: "Felix da Housecat", t: "Silver Screen Shower Scene", n: "Con Miss Kittin. El electroclash más pegadizo." },
-        { a: 2002, art: "Ladytron", t: "Seventeen", n: "Synth pop frío." },
+        { a: 2002, art: "Ladytron", t: "Seventeen", n: "Synth pop frío de Liverpool: «they only want you when you're seventeen»." },
         { a: 2004, art: "Dopplereffekt", t: "Rocket Science", q: "Dopplereffekt", n: "Del círculo de Drexciya: electro frío y científico." }
       ]
     }

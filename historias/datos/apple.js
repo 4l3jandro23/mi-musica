@@ -38,17 +38,20 @@ HISTORIAS.push({
       ]
     },
     {
-      titulo: "GarageBand y el iPhone",
+      titulo: "GarageBand, el iPhone y Apple Music",
       corto: "GarageBand",
       periodo: "2004 – 2019",
-      intro: "Un estudio en cada ordenador.",
+      intro: "Un estudio en cada ordenador y, al final, la suscripción.",
       items: [
         { a: 2004, art: "GarageBand", t: "Un estudio gratis", tipo: "hito", n: "Apple incluye en sus ordenadores un programa para grabar con bucles listos para usar." },
         { a: 2007, art: "El iPhone", t: "Marimba", tipo: "hito", n: "El tono de llamada del iPhone se convierte en uno de los sonidos más oídos del mundo." },
         { a: 2007, art: "Rihanna feat. Jay-Z", t: "Umbrella", n: "La batería es un bucle de GarageBand, «Vintage Funk Kit 03», casi sin tocar." },
+        { a: 2010, art: "The Beatles", t: "Los Beatles llegan a iTunes", tipo: "hito", n: "Tras años de pleitos con Apple Corps, la empresa de los Beatles, su música se vende por fin en iTunes." },
         { a: 2012, art: "Grimes", t: "Oblivion", n: "Grimes hizo «Visions» con GarageBand en su apartamento." },
         { a: 2014, art: "Dr. Dre", t: "Still D.R.E.", n: "Apple compra Beats por 3.000 millones de dólares y Dr. Dre se vuelve el primer multimillonario del hip hop." },
+        { a: 2014, art: "U2", t: "Songs of Innocence", tipo: "disco", n: "Apple mete el disco gratis en 500 millones de cuentas sin preguntar: muchos se enfadan y Apple tiene que explicar cómo borrarlo." },
         { a: 2015, art: "Beats 1", t: "Una radio de Apple", tipo: "hito", n: "Con Apple Music llega una emisora mundial con Zane Lowe al frente." },
+        { a: 2015, art: "Apple Music", t: "Apple se pasa al streaming", tipo: "hito", n: "Apple lanza su servicio de suscripción para competir con Spotify." },
         { a: 2015, art: "Drake & Future", t: "Jumpman", n: "Taylor Swift la canta corriendo en una cinta en un anuncio de Apple Music." },
         { a: 2016, art: "Frank Ocean", t: "Nikes", n: "«Blonde» sale primero en exclusiva en Apple Music." },
         { a: 2016, art: "Marian Hill", t: "Down", n: "El anuncio de los AirPods la llevó a las listas." },
@@ -56,17 +59,6 @@ HISTORIAS.push({
         { a: 2017, art: "Sofi Tukker", t: "Best Friend", n: "La canción del anuncio del iPhone X." },
         { a: 2018, art: "Anderson .Paak", t: "'Til It's Over", n: "Un anuncio del HomePod dirigido por Spike Jonze." },
         { a: 2019, art: "Billie Eilish", t: "bad guy", n: "Apple elige a Billie Eilish artista del año en sus primeros premios de Apple Music." }
-      ]
-    },
-    {
-      titulo: "Apple Music",
-      corto: "Apple Music",
-      periodo: "2010 – 2015",
-      intro: "Del iTunes a la suscripción.",
-      items: [
-        { a: 2010, art: "The Beatles", t: "Los Beatles llegan a iTunes", tipo: "hito", n: "Tras años de pleitos con Apple Corps, la empresa de los Beatles, su música se vende por fin en iTunes." },
-        { a: 2014, art: "U2", t: "Songs of Innocence", tipo: "disco", n: "Apple mete el disco gratis en 500 millones de cuentas sin preguntar: muchos se enfadan y Apple tiene que explicar cómo borrarlo." },
-        { a: 2015, art: "Apple Music", t: "Apple se pasa al streaming", tipo: "hito", n: "Apple lanza su servicio de suscripción para competir con Spotify." }
       ]
     }
   ]

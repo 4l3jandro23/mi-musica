@@ -55,7 +55,7 @@ HISTORIAS.push({
         { a: 2000, art: "Damas Gratis", t: "Se te ve la tanga", n: "La «cumbia villera»: los barrios pobres de Buenos Aires tras la crisis." },
         { a: 2000, art: "Chocolate", t: "Mayonesa", n: "Cumbia uruguaya: el «bate que bate» de todas las fiestas." },
         { a: 2001, art: "Celso Piña", t: "Cumbia sobre el río", n: "Desde Monterrey, el «rebelde del acordeón» mezcla cumbia con hip hop y ska." },
-        { a: 2001, art: "A.B. Quintanilla III y Los Kumbia Kings", t: "Shhh!", n: "Cumbia con R&B." },
+        { a: 2001, art: "A.B. Quintanilla III y Los Kumbia Kings", t: "Shhh!", n: "Cumbia con R&B del hermano de Selena." },
         { a: 2004, art: "Los Pibes Chorros", t: "Llegamos los pibes chorros", q: "Los Pibes Chorros", n: "La cumbia villera de Buenos Aires, cruda y polémica." },
         { a: 2006, art: "ZZK", t: "Nace la «cumbia digital» en Buenos Aires", tipo: "hito", n: "Un club y un sello mezclan la cumbia con la electrónica." },
         { a: 2008, art: "Bomba Estéreo", t: "Fuego", n: "La cumbia digital colombiana: electrónica y champeta." },

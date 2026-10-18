@@ -46,12 +46,12 @@ HISTORIAS.push({
         { a: 1986, art: "Cui Jian", alias: ["崔健"], t: "No tengo nada", q: "崔健 一无所有", n: "Nace el rock chino. En 1989 sería un himno de los estudiantes de Tiananmén." },
         { a: 1990, art: "Beyond", t: "Glorious Years", q: "Beyond 光輝歲月", n: "Rock de Hong Kong dedicado a Nelson Mandela." },
         { a: 1991, art: "Black Panther", alias: ["黑豹乐队", "黑豹樂隊"], t: "Wu Di Zi Rong", q: "黑豹 无地自容", n: "Black Panther (Hei Bao), una de las primeras bandas de rock duro de Pekín, con melodías que llenaban estadios." },
-        { a: 1991, art: "Cui Jian", t: "Yi kuai hong bu (Un trozo de tela roja)", n: "El padre del rock chino." },
-        { a: 1992, art: "Tang Dynasty", t: "Meng hui Tang chao", n: "Heavy metal en chino." },
+        { a: 1991, art: "Cui Jian", t: "Yi kuai hong bu (Un trozo de tela roja)", n: "El padre del rock chino: la cantó con los ojos tapados con una tela roja." },
+        { a: 1992, art: "Tang Dynasty", t: "Meng hui Tang chao", n: "Heavy metal en chino que recuerda la dinastía Tang." },
         { a: 1993, art: "Jacky Cheung", alias: ["張學友"], t: "Kiss Goodbye", q: "張學友 吻別", n: "Uno de los discos más vendidos de la historia en chino." },
         { a: 1993, art: "Beyond", t: "Hai kuo tian kong", q: "Beyond Boundless Oceans Vast Skies", n: "Beyond y su canción más querida, sobre la libertad y los sueños." },
         { a: 1994, art: "Faye Wong", alias: ["王菲"], t: "Dream Person", q: "王菲 夢中人", n: "De «Chungking Express»: la diva más grande del pop chino." },
-        { a: 1994, art: "Andy Lau", t: "Wang qing shui (Agua del olvido)", n: "El cantopop de los 90." }
+        { a: 1994, art: "Andy Lau", t: "Wang qing shui (Agua del olvido)", n: "Cantopop de Hong Kong de uno de los «cuatro reyes celestiales» de los 90, también estrella de cine." }
       ]
     },
     {
@@ -60,18 +60,18 @@ HISTORIAS.push({
       periodo: "1999 – 2018",
       intro: "Las estrellas del mandopop y el rap que llega a la tele.",
       items: [
-        { a: 1999, art: "Faye Wong", t: "Eyes on Me", n: "De «Final Fantasy VIII»." },
+        { a: 1999, art: "Faye Wong", t: "Eyes on Me", n: "La balada de «Final Fantasy VIII», cantada en inglés por la diva de Pekín: un éxito enorme en Japón." },
         { a: 2001, art: "Jay Chou", alias: ["周杰倫"], t: "Nunchucks", q: "周杰倫 雙截棍", n: "R&B, rap y kung-fu: el rey del mandopop." },
         { a: 2003, art: "Eason Chan", t: "Shi nian (Diez años)", n: "Una balada eterna en mandarín." },
-        { a: 2004, art: "JJ Lin", t: "Jiangnan", n: "El mandopop de Singapur." },
+        { a: 2004, art: "JJ Lin", t: "Jiangnan", n: "Mandopop del cantante de Singapur: una balada sobre el sur de China que se cantó en todos los karaokes." },
         { a: 2005, art: "Jay Chou", t: "Ye qu (Nocturno)", q: "Jay Chou Nocturne", n: "Jay Chou mezcla R&B y piano clásico." },
         { a: 2007, art: "Jay Chou", alias: ["周杰倫"], t: "Porcelana azul y blanca", q: "周杰倫 青花瓷", n: "Estilo «chino tradicional» con pop. Hasta salió en los exámenes de acceso a la universidad." },
         { a: 2008, art: "Jay Chou", t: "Dao xiang (Campo de arroz)", n: "Esperanza tras un terremoto." },
-        { a: 2011, art: "Mayday", t: "Juejiang (Testarudo)", n: "El rock de Taiwán." },
+        { a: 2011, art: "Mayday", t: "Juejiang (Testarudo)", n: "El grupo de rock más popular de Taiwán: un himno a no rendirse que se canta a gritos en sus conciertos." },
         { a: 2012, art: "G.E.M.", t: "Bubble", q: "G.E.M. Bubble", n: "G.E.M., de Hong Kong, una de las voces más escuchadas de la música china." },
         { a: 2017, art: "The Rap of China", t: "El concurso que hace estallar el rap", tipo: "hito", n: "Millones de espectadores: el hip hop se vuelve masivo en China." },
         { a: 2017, art: "Higher Brothers", t: "Made in China", n: "Rap de Chengdu que triunfó también en EE. UU." },
-        { a: 2018, art: "Jolin Tsai", t: "Ugly Beauty", n: "La reina del mandopop." }
+        { a: 2018, art: "Jolin Tsai", t: "Ugly Beauty", n: "La reina del mandopop de Taiwán, con un disco sobre la belleza y el qué dirán." }
       ]
     }
   ]

@@ -35,12 +35,12 @@ HISTORIAS.push({
         { a: 2005, art: "Wisin & Yandel", t: "Rakata", n: "Para perrear sin parar: un clásico de los dúos de la época." },
         { a: 2005, art: "Daddy Yankee", t: "Rompe", n: "Daddy Yankee repite fórmula tras «Gasolina»: perreo para romper la discoteca." },
         { a: 2005, art: "Calle 13", t: "Atrévete-te-te", n: "El perreo intelectual: «Salte del closet»." },
-        { a: 2005, art: "Wisin & Yandel", t: "Pam pam", n: "Perreo duro." },
+        { a: 2005, art: "Wisin & Yandel", t: "Pam pam", n: "Perreo duro de los «líderes» del género." },
         { a: 2005, art: "Daddy Yankee", t: "Machucando", n: "De «Barrio fino en directo»." },
         { a: 2006, art: "Tito El Bambino", t: "Siente el boom", n: "Perreo de la época dorada." },
         { a: 2008, art: "Arcángel", t: "Pa' que la pases bien", n: "Arcángel, la voz que conecta la época dorada con el trap." },
         { a: 2008, art: "Wisin & Yandel", t: "Síguelo", n: "Electrónica y perreo de discoteca." },
-        { a: 2010, art: "Plan B", t: "Mi vecinita", n: "Perreo de los 2010." }
+        { a: 2010, art: "Plan B", t: "Mi vecinita", n: "Perreo de los 2010 del dúo de los primos Chencho y Maldy." }
       ]
     },
     {
@@ -49,7 +49,7 @@ HISTORIAS.push({
       periodo: "2014 – 2023",
       intro: "Del reguetón romántico al perreo duro otra vez.",
       items: [
-        { a: 2014, art: "Plan B", t: "Es un secreto", n: "El regreso de Plan B." },
+        { a: 2014, art: "Plan B", t: "Es un secreto", n: "El regreso de Plan B, con letras más que explícitas." },
         { a: 2017, art: "Bad Bunny", t: "Soy peor", n: "Del trap latino al perreo: el nuevo rey empieza." },
         { a: 2018, art: "Daddy Yankee & Anuel AA", t: "Adictiva", n: "Perreo para las discotecas de 2018." },
         { a: 2018, art: "Tomasa del Real", t: "La vampira", n: "La chilena que bautizó el «neoperreo»." },
@@ -62,9 +62,9 @@ HISTORIAS.push({
         { a: 2020, art: "KAROL G", t: "BICHOTA", n: "La «bichota» perrea a su manera." },
         { a: 2022, art: "Bad Bunny", t: "Tití me preguntó", n: "Del disco «Un verano sin ti», el más escuchado del mundo ese año." },
         { a: 2022, art: "Rosalía", t: "Saoko", n: "Un homenaje al reguetón de Daddy Yankee y Wisin pasado por la vanguardia." },
-        { a: 2022, art: "Bad Bunny", t: "El apagón", n: "Perreo político." },
-        { a: 2023, art: "Feid", t: "Classy 101", n: "Con Young Miko." },
-        { a: 2023, art: "Young Miko", t: "Lisa", n: "La boricua del perreo." }
+        { a: 2022, art: "Bad Bunny", t: "El apagón", n: "Perreo político sobre los apagones de Puerto Rico." },
+        { a: 2023, art: "Feid", t: "Classy 101", n: "Con Young Miko: el verde de Feid y el perreo de Medellín." },
+        { a: 2023, art: "Young Miko", t: "Lisa", n: "La boricua que abrió el perreo a las chicas que cantan a chicas." }
       ]
     }
   ]

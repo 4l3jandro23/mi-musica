@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "housemoderno",
-  familia: "Electrónica",
+  familia: "House, techno y EDM",
   titulo: "Las ramas del house moderno",
   periodo: "1996 – 2024",
   color: "#7d4fd6",
@@ -21,27 +21,16 @@ HISTORIAS.push({
         { a: 2011, art: "Swedish House Mafia", t: "Save the World", n: "El progressive con voz que llenó estadios." },
         { a: 2012, art: "Swedish House Mafia", t: "Greyhound", n: "Progressive para un anuncio de coches." },
         { a: 2014, art: "Alesso", t: "Heroes (we could be)", n: "Con Tove Lo: el progressive se vuelve pop." },
-        { a: 2014, art: "Tchami", t: "After Life", n: "Future house francés." },
+        { a: 2014, art: "Tchami", t: "After Life", n: "Future house francés: el productor que se vestía de cura en los conciertos." },
         { a: 2014, art: "Eric Prydz", t: "Liberate", n: "Progressive house melódico." },
         { a: 2015, art: "Eric Prydz", t: "Opus", n: "Nueve minutos que crecen sin parar: un himno moderno." },
         { a: 2015, art: "Axwell Λ Ingrosso", t: "Sun Is Shining", n: "Después de Swedish House Mafia." },
         { a: 2015, art: "Eric Prydz", t: "Generate", n: "Uno de sus temas de festival." },
-        { a: 2016, art: "Joyryde", t: "Hot Drum", n: "Bass house." },
-        { a: 2016, art: "Eric Prydz & Rob Swire", t: "Breathe", n: "Del disco «Opus»." },
-        { a: 2016, art: "Eric Prydz", t: "Every Day", n: "De «Opus»." },
+        { a: 2016, art: "Joyryde", t: "Hot Drum", n: "Bass house del productor británico: graves sucios y coches de carreras." },
+        { a: 2016, art: "Eric Prydz & Rob Swire", t: "Breathe", n: "Del disco «Opus», con la voz de Rob Swire, de Pendulum y Knife Party." },
+        { a: 2016, art: "Eric Prydz", t: "Every Day", n: "De «Opus»: el sueco de «Call on Me» en su faceta más épica." },
         { a: 2016, art: "Eric Prydz & CHVRCHES", t: "Tether", n: "Con la voz de Lauren Mayberry." },
         { a: 2017, art: "Axwell Λ Ingrosso", t: "More Than You Know", n: "Dos de los Swedish House Mafia, ya en solitario." }
-      ]
-    },
-    {
-      titulo: "Electro y dutch house",
-      corto: "Dutch house",
-      periodo: "2010 – 2011",
-      intro: "Chirridos y bombos holandeses que preparan el big room.",
-      items: [
-        { a: 2010, art: "Dirty Dutch", t: "Los holandeses toman las pistas", tipo: "hito", n: "Afrojack y Chuckie exportan su sonido." },
-        { a: 2010, art: "Afrojack", t: "Take Over Control", n: "Con Eva Simons: chirridos holandeses que prepararon el big room." },
-        { a: 2011, art: "Afrojack & Steve Aoki", t: "No Beef", n: "Dutch house de 2011, de los que llenaban los clubs." }
       ]
     },
     {
@@ -58,23 +47,9 @@ HISTORIAS.push({
         { a: 2019, art: "Dom Dolla", t: "San Frandisco", n: "Los australianos dominan el tech house." },
         { a: 2019, art: "Fisher", t: "You Little Beauty", n: "Fisher, australiano, con tech house divertido y bailable." },
         { a: 2019, art: "Meduza feat. Goodboys", t: "Piece of Your Heart", n: "House italiano en todo el mundo." },
-        { a: 2019, art: "Chris Lake & Fisher", t: "Losing My Mind", n: "Tech house." },
+        { a: 2019, art: "Chris Lake & Fisher", t: "Losing My Mind", n: "Tech house de dos de los nombres más fuertes de la escena de Ibiza." },
         { a: 2020, art: "John Summit", t: "Deep End", n: "El tech house de la nueva generación de EE. UU." },
-        { a: 2020, art: "Keinemusik", t: "Muyè", n: "El afro house de Berlín." }
-      ]
-    },
-    {
-      titulo: "Future house y bass house",
-      corto: "Future y bass house",
-      periodo: "2014 – 2016",
-      intro: "Bajos «metálicos» que suben y bajan, y graves heredados del dubstep.",
-      items: [
-        { a: 2014, art: "Oliver Heldens", t: "Nace el future house", tipo: "hito", n: "«Gecko» llega al número uno en el Reino Unido." },
-        { a: 2014, art: "Tchami", t: "Promesses", n: "El francés que bautizó el «future house» con su sonido de bajo." },
-        { a: 2014, art: "Oliver Heldens", t: "Gecko (Overdrive)", n: "Un chaval holandés de 19 años: número uno en Reino Unido con la voz de Becky Hill." },
-        { a: 2015, art: "Jauz", t: "Feel the Volume", n: "Bass house: house con la potencia del dubstep." },
-        { a: 2016, art: "Don Diablo", t: "Cutting Shapes", n: "El future house de Spinnin' Records." },
-        { a: 2016, art: "Malaa", t: "Notorious", n: "Un DJ enmascarado y bass house sucio." }
+        { a: 2020, art: "Keinemusik", t: "Muyè", n: "El afro house del colectivo berlinés que luego llenaría el Coachella." }
       ]
     },
     {
@@ -86,8 +61,25 @@ HISTORIAS.push({
         { a: 2009, art: "Black Coffee", t: "Superman", n: "Con Bucie: el DJ sudafricano que llevaría el afro house a Ibiza." },
         { a: 2019, art: "Black Coffee", t: "El afro house llega a Ibiza", tipo: "hito", n: "El sudafricano se convierte en estrella mundial." },
         { a: 2019, art: "Master KG", t: "Jerusalema", n: "Con Nomcebo Zikode: el baile que dio la vuelta al mundo." },
-        { a: 2023, art: "Dom Dolla & MK", t: "Rhyme Dust", n: "Tech house con voz." },
+        { a: 2023, art: "Dom Dolla & MK", t: "Rhyme Dust", n: "Tech house con voz: un australiano y el productor de Detroit de los 90." },
         { a: 2024, art: "Adam Port", t: "Move", n: "Con Stryv y Malachiii, del colectivo Keinemusik: el afro house llega a las listas de todo el mundo." }
+      ]
+    },
+    {
+      titulo: "Dutch, future y bass house",
+      corto: "Future y bass house",
+      periodo: "2010 – 2016",
+      intro: "De los chirridos holandeses de 2010 a los bajos metálicos del future house.",
+      items: [
+        { a: 2010, art: "Dirty Dutch", t: "Los holandeses toman las pistas", tipo: "hito", n: "Afrojack y Chuckie exportan su sonido." },
+        { a: 2010, art: "Afrojack", t: "Take Over Control", n: "Con Eva Simons: chirridos holandeses que prepararon el big room." },
+        { a: 2011, art: "Afrojack & Steve Aoki", t: "No Beef", n: "Dutch house de 2011, de los que llenaban los clubs." },
+        { a: 2014, art: "Oliver Heldens", t: "Nace el future house", tipo: "hito", n: "«Gecko» llega al número uno en el Reino Unido." },
+        { a: 2014, art: "Tchami", t: "Promesses", n: "El francés que bautizó el «future house» con su sonido de bajo." },
+        { a: 2014, art: "Oliver Heldens", t: "Gecko (Overdrive)", n: "Un chaval holandés de 19 años: número uno en Reino Unido con la voz de Becky Hill." },
+        { a: 2015, art: "Jauz", t: "Feel the Volume", n: "Bass house: house con la potencia del dubstep." },
+        { a: 2016, art: "Don Diablo", t: "Cutting Shapes", n: "El future house de Spinnin' Records." },
+        { a: 2016, art: "Malaa", t: "Notorious", n: "Un DJ enmascarado y bass house sucio." }
       ]
     }
   ]

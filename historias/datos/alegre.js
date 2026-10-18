@@ -56,7 +56,7 @@ HISTORIAS.push({
         { a: 2008, art: "Mark Ronson & Amy Winehouse", t: "Valerie", n: "Soul británico para la fiesta." },
         { a: 2013, art: "Pharrell Williams", t: "Happy", n: "Un vídeo de 24 horas de gente bailando." },
         { a: 2014, art: "Mark Ronson & Bruno Mars", t: "Uptown Funk", n: "Funk para todas las bodas." },
-        { a: 2014, art: "Taylor Swift", t: "Shake It Off", n: "Sacúdete las críticas." },
+        { a: 2014, art: "Taylor Swift", t: "Shake It Off", n: "Su paso definitivo al pop: sacudirse las críticas bailando, con un estribillo imposible de quitarse de la cabeza." },
         { a: 2015, art: "Estudio de la «canción feliz»", t: "La fórmula de la felicidad", tipo: "hito", n: "Un neurocientífico concluye que las canciones alegres rondan los 150 BPM, en tono mayor." },
         { a: 2016, art: "Justin Timberlake", t: "Can't Stop the Feeling!", n: "Escrita para la película Trolls; Justin Timberlake la convirtió en la canción más alegre de 2016 y fue nominada al Óscar." },
         { a: 2016, art: "Lizzo", t: "Good as Hell", n: "Un himno para sentirse bien." },

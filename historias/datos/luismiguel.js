@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "luismiguel",
-  familia: "Latino",
+  familia: "Artistas",
   titulo: "Los romances de Luis Miguel",
   periodo: "1991 – 2018",
   color: "#b8860b",
@@ -22,9 +22,9 @@ HISTORIAS.push({
         { a: 1991, art: "Luis Miguel", t: "Usted", n: "De Gabriel Ruiz y José Antonio Zorrilla: un clásico del bolero mexicano." },
         { a: 1991, art: "Luis Miguel", t: "La mentira", n: "De Álvaro Carrillo, el autor de «Sabor a mí»." },
         { a: 1991, art: "Luis Miguel", t: "Cuando vuelva a tu lado", n: "De la mexicana María Grever, de los años 30." },
-        { a: 1991, art: "Luis Miguel", t: "No me platiques más", n: "De Vicente Garrido." },
-        { a: 1991, art: "Luis Miguel", t: "Mucho corazón", n: "De Ema Elena Valdelamar." },
-        { a: 1991, art: "Luis Miguel", t: "Cómo", n: "De Chico Novarro." }
+        { a: 1991, art: "Luis Miguel", t: "No me platiques más", n: "Un bolero de Vicente Garrido, del disco «Romance»." },
+        { a: 1991, art: "Luis Miguel", t: "Mucho corazón", n: "Un bolero de la mexicana Ema Elena Valdelamar, de «Romance»." },
+        { a: 1991, art: "Luis Miguel", t: "Cómo", n: "Otro bolero clásico rescatado por Luis Miguel en su etapa de romances." }
       ]
     },
     {
@@ -41,9 +41,9 @@ HISTORIAS.push({
         { a: 1994, art: "Luis Miguel", t: "Historia de un amor", n: "Del panameño Carlos Eleta Almarán." },
         { a: 1994, art: "Luis Miguel", t: "Todo y nada", n: "De Vicente Garrido, autor también de «No me platiques más»." },
         { a: 1994, art: "Luis Miguel", t: "Delirio", n: "Otra de César Portillo de la Luz." },
-        { a: 1994, art: "Luis Miguel", t: "Sin ti", n: "De Pepe Guízar." },
-        { a: 1994, art: "Luis Miguel", t: "Cómo yo te amé", n: "De Manzanero." },
-        { a: 1994, art: "Luis Miguel", t: "Nosotros", n: "De Pedro Junco." }
+        { a: 1994, art: "Luis Miguel", t: "Sin ti", n: "Un bolero de Pepe Guízar, del disco «Segundo romance»." },
+        { a: 1994, art: "Luis Miguel", t: "Cómo yo te amé", n: "Un bolero de Armando Manzanero, de «Segundo romance»." },
+        { a: 1994, art: "Luis Miguel", t: "Nosotros", n: "Del cubano Pedro Junco: una despedida sin explicar el porqué." }
       ]
     },
     {
@@ -59,7 +59,7 @@ HISTORIAS.push({
         { a: 1997, art: "Luis Miguel", t: "Noche de ronda", n: "De Agustín Lara: un vals lento sobre una ronda nocturna que no vuelve." },
         { a: 1997, art: "Luis Miguel", t: "La gloria eres tú", n: "Del cubano José Antonio Méndez." },
         { a: 1997, art: "Luis Miguel", t: "Contigo aprendí", n: "De Manzanero, en un popurrí con «Voy a apagar la luz»." },
-        { a: 1997, art: "Luis Miguel", t: "El reloj", n: "De Roberto Cantoral." }
+        { a: 1997, art: "Luis Miguel", t: "El reloj", n: "De Roberto Cantoral: pedirle al reloj que no marque las horas." }
       ]
     },
     {
@@ -71,7 +71,7 @@ HISTORIAS.push({
         { a: 2001, art: "Luis Miguel", t: "Toda una vida", n: "Del cubano Osvaldo Farrés, en «Mis romances»." },
         { a: 2001, art: "Luis Miguel", t: "Amorcito corazón", n: "La canción que hizo famosa Pedro Infante en el cine." },
         { a: 2001, art: "Luis Miguel", t: "Perfidia", n: "De Alberto Domínguez, un bolero conocido en todo el mundo." },
-        { a: 2001, art: "Luis Miguel", t: "Tú me acostumbraste", n: "De Frank Domínguez." },
+        { a: 2001, art: "Luis Miguel", t: "Tú me acostumbraste", n: "Un filin cubano de Frank Domínguez, del disco «Mis romances»." },
         { a: 2018, art: "Luis Miguel, la serie", t: "Los boleros vuelven a sonar", tipo: "hito", n: "La serie de Netflix sobre su vida devuelve sus discos de boleros a las listas de streaming." }
       ]
     }

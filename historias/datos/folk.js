@@ -32,7 +32,7 @@ HISTORIAS.push({
       items: [
         { a: 1965, art: "Bob Dylan", t: "Se electrifica en Newport", tipo: "hito", n: "Le abuchean por tocar con guitarra eléctrica: el folk y el rock ya no se separarán." },
         { a: 1965, art: "Simon & Garfunkel", t: "The Sound of Silence", n: "El productor le añadió batería y guitarra eléctrica sin avisarles, y llegó al número uno." },
-        { a: 1965, art: "Donovan", t: "Catch the Wind", n: "El Dylan escocés." },
+        { a: 1965, art: "Donovan", t: "Catch the Wind", n: "El escocés que llamaban «el Dylan británico», en su primer single." },
         { a: 1966, art: "Simon & Garfunkel", t: "Scarborough Fair / Canticle", n: "Una canción tradicional inglesa convertida en un clásico del folk." },
         { a: 1967, art: "Leonard Cohen", t: "Suzanne", n: "Un poeta canadiense que empezó a cantar con 33 años." },
         { a: 1967, art: "Judy Collins", t: "Both Sides Now", n: "Una canción de Joni Mitchell." },
@@ -49,7 +49,7 @@ HISTORIAS.push({
         { a: 1972, art: "Neil Young", t: "Heart of Gold", n: "Armónica y búsqueda: su único número uno." },
         { a: 1973, art: "John Martyn", t: "Solid Air", n: "Para su amigo Nick Drake." },
         { a: 1973, art: "Bob Dylan", t: "Knockin' on Heaven's Door", n: "Para la película de Peckinpah «Pat Garrett y Billy el Niño»." },
-        { a: 1975, art: "Joan Baez", t: "Diamonds & Rust", n: "Sobre Bob Dylan." },
+        { a: 1975, art: "Joan Baez", t: "Diamonds & Rust", n: "Joan Baez recuerda su historia de amor con Bob Dylan diez años después." },
         { a: 1975, art: "Bob Dylan", t: "Hurricane", n: "Sobre el boxeador Rubin Carter, encarcelado injustamente." }
       ]
     },
@@ -62,7 +62,7 @@ HISTORIAS.push({
         { a: 1988, art: "Tracy Chapman", t: "Fast Car", n: "Una guitarra y el sueño de escapar de la pobreza." },
         { a: 1993, art: "Israel Kamakawiwo'ole", t: "Over the Rainbow", n: "El hawaiano con el ukelele, grabada de madrugada en una sola toma." },
         { a: 1997, art: "Elliott Smith", t: "Between the Bars", n: "Elliott Smith susurra sobre la bebida y la dependencia. Salió en «El indomable Will Hunting»." },
-        { a: 2004, art: "Iron & Wine", t: "Naked as We Came", n: "Susurros y guitarra." },
+        { a: 2004, art: "Iron & Wine", t: "Naked as We Came", n: "Susurros y guitarra de Sam Beam: una canción sobre envejecer juntos." },
         { a: 2005, art: "Sufjan Stevens", t: "Chicago", n: "Folk orquestal con trompetas y coros." },
         { a: 2007, art: "Bon Iver", t: "Skinny Love", n: "Grabado solo en una cabaña de Wisconsin tras una ruptura." },
         { a: 2008, art: "Bon Iver", t: "«For Emma, Forever Ago»", tipo: "hito", n: "Grabado en una cabaña: nace el indie folk de la década." },
@@ -75,10 +75,10 @@ HISTORIAS.push({
         { a: 2012, art: "Passenger", t: "Let Her Go", n: "Un músico callejero inglés con un éxito mundial." },
         { a: 2013, art: "Vance Joy", t: "Riptide", n: "El australiano del ukelele." },
         { a: 2013, art: "Hozier", t: "Take Me to Church", n: "Contra la Iglesia católica y su homofobia." },
-        { a: 2014, art: "Vance Joy", t: "Mess Is Mine", n: "Otra de su primer disco." },
+        { a: 2014, art: "Vance Joy", t: "Mess Is Mine", n: "Otra de su primer disco, sobre dejarse ver tal como uno es." },
         { a: 2017, art: "Phoebe Bridgers", t: "Motion Sickness", n: "El folk triste de la nueva generación." },
         { a: 2021, art: "Richy Mitch & The Coal Miners", t: "Evergreen", n: "Folk de TikTok de un chico de Ohio (año aproximado)." },
-        { a: 2022, art: "Noah Kahan", t: "Stick Season", n: "El folk de TikTok." },
+        { a: 2022, art: "Noah Kahan", t: "Stick Season", n: "El folk de TikTok: el invierno de Vermont y una ruptura." },
         { a: 2024, art: "Hozier", t: "Too Sweet", n: "Una canción con humor sobre ser demasiado dulce: número uno en EE. UU." }
       ]
     }

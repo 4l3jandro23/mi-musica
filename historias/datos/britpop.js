@@ -74,7 +74,7 @@ HISTORIAS.push({
         { a: 1996, art: "The Bluetones", t: "Slight Return", n: "Guitarras de domingo por la mañana." },
         { a: 1996, art: "Space", t: "Female of the Species", n: "Britpop con aire de cabaret." },
         { a: 1996, art: "Dodgy", t: "Good Enough", n: "Sol, armonías y optimismo." },
-        { a: 1996, art: "Shed Seven", t: "Going for Gold", n: "El britpop de York." },
+        { a: 1996, art: "Shed Seven", t: "Going for Gold", n: "El britpop de York: una canción con aire de concurso de la tele." },
         { a: 1997, art: "«Be Here Now»", t: "El principio del fin", tipo: "hito", n: "El tercer disco de Oasis bate récords de ventas, pero decepciona: para muchos ahí se acaba el britpop." },
         { a: 1997, art: "Kula Shaker", t: "Hush", n: "Una versión de Deep Purple con sitar y psicodelia." }
       ]

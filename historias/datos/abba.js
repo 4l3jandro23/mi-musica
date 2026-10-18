@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "abba",
-  familia: "Pop",
+  familia: "Artistas",
   titulo: "La historia de ABBA",
   periodo: "1972 – 2022",
   color: "#1e88e5",
@@ -52,11 +52,11 @@ HISTORIAS.push({
         { a: 1979, art: "Music for UNICEF", t: "«Chiquitita» en la ONU", tipo: "hito", n: "La presentan en un concierto benéfico en Nueva York y donan sus derechos a UNICEF." },
         { a: 1979, art: "ABBA", t: "Chiquitita", n: "La balada que se hizo enorme en España y América Latina." },
         { a: 1979, art: "ABBA", t: "Chiquitita (en español)", q: "ABBA Chiquitita Spanish Version", n: "Cantada fonéticamente en español: número uno en todo el mundo hispano." },
-        { a: 1979, art: "ABBA", t: "Does Your Mother Know", n: "Cantada por Björn." },
+        { a: 1979, art: "ABBA", t: "Does Your Mother Know", n: "Una de las pocas que canta Björn en vez de Agnetha y Frida: rock and roll con sintetizadores." },
         { a: 1979, art: "ABBA", t: "Voulez-Vous", n: "Grabada en parte en Miami, en el estudio de los Bee Gees." },
-        { a: 1979, art: "ABBA", t: "Angeleyes", n: "Cara B de «Voulez-Vous»." },
+        { a: 1979, art: "ABBA", t: "Angeleyes", n: "Cara B de «Voulez-Vous»: un aviso sobre un chico de ojos bonitos que rompe corazones." },
         { a: 1979, art: "ABBA", t: "Gimme! Gimme! Gimme! (A Man After Midnight)", n: "El sintetizador que luego sampleó Madonna." },
-        { a: 1979, art: "ABBA", t: "I Have a Dream", n: "Con un coro de niños." },
+        { a: 1979, art: "ABBA", t: "I Have a Dream", n: "Balada con un coro de niños de un colegio de Estocolmo: la cantaban en todas las funciones escolares." },
         { a: 1980, art: "ABBA", t: "Gracias por la música", q: "ABBA Gracias Por La Musica Spanish Version", n: "El disco con sus éxitos en español: ABBA, ídolos en Latinoamérica." },
         { a: 1980, art: "ABBA", t: "The Winner Takes It All", n: "Björn escribe sobre su divorcio y la canta Agnetha." },
         { a: 1980, art: "ABBA", t: "Super Trouper", n: "Un «super trouper» es un foco de concierto." },
@@ -82,7 +82,7 @@ HISTORIAS.push({
         { a: 2005, art: "Madonna", t: "Hung Up", n: "Samplea «Gimme! Gimme! Gimme!»: ABBA casi nunca da permiso." },
         { a: 2008, art: "Meryl Streep", t: "Mamma Mia", n: "La película lleva sus canciones a otra generación." },
         { a: 2021, art: "ABBA", t: "I Still Have Faith in You", n: "La primera canción nueva en cuarenta años." },
-        { a: 2021, art: "ABBA", t: "Don't Shut Me Down", n: "Del disco «Voyage»." },
+        { a: 2021, art: "ABBA", t: "Don't Shut Me Down", n: "Del disco «Voyage», el primero en cuarenta años: el grupo vuelve como si no hubiera pasado el tiempo." },
         { a: 2022, art: "ABBA Voyage", t: "Conciertos con avatares", tipo: "hito", n: "En Londres abren un estadio propio donde actúan sus «abbatares» digitales con una banda en directo." }
       ]
     }

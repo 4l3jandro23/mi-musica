@@ -22,8 +22,8 @@ HISTORIAS.push({
         { a: 2011, art: "Michel Teló", t: "Ai se eu te pego", n: "El «nossa, nossa» que sonaba en todas las salas." },
         { a: 2011, art: "Juan Magán", t: "Verano azul", n: "La canción del verano de 2011." },
         { a: 2011, art: "José de Rico & Henry Méndez", t: "Rayos de sol", n: "Otro éxito del electrolatino español." },
-        { a: 2011, art: "Don Omar & Juan Magán", t: "Ella no sigue modas", n: "Juan Magán con Don Omar." },
-        { a: 2012, art: "Daddy Yankee", t: "Limbo", n: "El verano de 2012." },
+        { a: 2011, art: "Don Omar & Juan Magán", t: "Ella no sigue modas", n: "El electrolatino de Juan Magán con Don Omar: sonó en todas las discotecas de Barcelona." },
+        { a: 2012, art: "Daddy Yankee", t: "Limbo", n: "La canción del verano de 2012: el baile del limbo en versión reguetón." },
         { a: 2012, art: "Wisin & Yandel feat. Chris Brown & T-Pain", t: "Algo me gusta de ti", n: "Reguetón con estrellas del R&B." },
         { a: 2012, art: "Juan Magán & Luciana", t: "Baila conmigo", n: "Electrolatino con la voz de Luciana (año aproximado)." },
         { a: 2012, art: "Tacabro", t: "Tacatà", n: "Una canción tonta italiana que se bailó en todas partes." },
@@ -33,7 +33,7 @@ HISTORIAS.push({
         { a: 2013, art: "Dyland & Lenny & Juan Magán", t: "Pégate más (Remix)", n: "Reguetón puertorriqueño en clave Magán (año aproximado)." },
         { a: 2014, art: "Las mismas canciones en todas partes", t: "Una lista común", tipo: "hito", n: "Las salas tiran de las listas de éxitos latinos de la radio y de YouTube: lo que suena en una suena en todas." },
         { a: 2014, art: "J Balvin", t: "6 AM", n: "J Balvin y Farruko: el reguetón colombiano entra fuerte." },
-        { a: 2014, art: "Nicky Jam", t: "Travesuras", n: "El regreso de Nicky Jam." },
+        { a: 2014, art: "Nicky Jam", t: "Travesuras", n: "El regreso de Nicky Jam tras años olvidado: el principio del reguetón romántico de Medellín." },
         { a: 2014, art: "Xriz", t: "Me enamoré", n: "El reguetón de Barcelona (año aproximado)." }
       ]
     },
@@ -49,10 +49,10 @@ HISTORIAS.push({
         { a: 2015, art: "J Balvin", t: "Ginza", n: "El reguetón suave de Medellín." },
         { a: 2015, art: "Juan Magán & Gente de Zona", t: "He llorado (como un niño)", n: "Electrolatino y reparto cubano (año aproximado)." },
         { a: 2016, art: "Nicky Jam", t: "Hasta el amanecer", n: "Sonaba a las seis de la mañana, como dice el título." },
-        { a: 2016, art: "CNCO", t: "Reggaetón lento (Bailemos)", n: "La boy band latina." },
+        { a: 2016, art: "CNCO", t: "Reggaetón lento (Bailemos)", n: "La boy band latina salida de un concurso de la tele, con un reguetón para bailar despacio." },
         { a: 2016, art: "Juan Magán, Belinda & Lápiz Conciente", t: "Si no te quisiera", n: "Otra con Belinda (año aproximado)." },
         { a: 2017, art: "Promusicae", t: "El reguetón manda", tipo: "hito", n: "Las listas de ventas españolas se llenan de reguetón: muchas semanas, casi todo el top 10 es latino." },
-        { a: 2017, art: "Luis Fonsi & Daddy Yankee", t: "Despacito", n: "Todo el verano de 2017." },
+        { a: 2017, art: "Luis Fonsi & Daddy Yankee", t: "Despacito", n: "Todo el verano de 2017: 16 semanas número uno en EE. UU." },
         { a: 2017, art: "Maluma", t: "Felices los 4", n: "La que coreaba toda la pista." },
         { a: 2017, art: "Becky G feat. Bad Bunny", t: "Mayores", n: "Bad Bunny empieza a aparecer en todas partes." },
         { a: 2017, art: "Natti Natasha & Ozuna", t: "Criminal", n: "Uno de los vídeos más vistos del año." },
@@ -76,7 +76,7 @@ HISTORIAS.push({
         { a: 2020, art: "La pandemia", t: "Discotecas cerradas", tipo: "hito", n: "Las salas de baile cierran en marzo de 2020; en Cataluña el baile en interior no vuelve hasta octubre de 2021." },
         { a: 2020, art: "Bad Bunny & Jhay Cortez", t: "Dákiti", n: "El perreo de la nueva normalidad." },
         { a: 2021, art: "Farruko", t: "Pepas", n: "La de los brazos arriba al volver las discotecas tras la pandemia." },
-        { a: 2021, art: "Rauw Alejandro", t: "Todo de ti", n: "El verano de 2021." },
+        { a: 2021, art: "Rauw Alejandro", t: "Todo de ti", n: "El verano de 2021: pop de los 80 con ritmo latino." },
         { a: 2022, art: "Manuel Turizo", t: "La Bachata", n: "La bachata vuelve a cerrar las noches." },
         { a: 2022, art: "Bizarrap & Quevedo", t: "Quevedo: Bzrp Music Sessions, Vol. 52", n: "El canario que lo cantaba todo el mundo." }
       ]

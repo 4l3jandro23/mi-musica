@@ -30,10 +30,10 @@ HISTORIAS.push({
       intro: "Cantos andinos, la Nueva Canción y el valse criollo.",
       items: [
         { a: 1950, art: "Chabuca Granda", t: "La flor de la canela", n: "El valse criollo peruano más famoso." },
-        { a: 1954, art: "Atahualpa Yupanqui", t: "Los ejes de mi carreta", n: "El folclore argentino." },
+        { a: 1954, art: "Atahualpa Yupanqui", t: "Los ejes de mi carreta", n: "El folclore argentino: un carretero que no engrasa los ejes porque le gusta oírlos." },
         { a: 1964, art: "The Chieftains", t: "The Chieftains 1", tipo: "disco", n: "La música tradicional irlandesa." },
         { a: 1966, art: "Violeta Parra", t: "Gracias a la vida", n: "La recopiladora del folclore chileno y su canción eterna." },
-        { a: 1966, art: "Ravi Shankar & Yehudi Menuhin", t: "West Meets East", tipo: "disco", n: "El sitar y el violín." },
+        { a: 1966, art: "Ravi Shankar & Yehudi Menuhin", t: "West Meets East", tipo: "disco", n: "El sitar indio y el violín clásico juntos: Grammy." },
         { a: 1969, art: "Víctor Jara", t: "Te recuerdo Amanda", n: "La Nueva Canción chilena, antes del golpe de 1973." },
         { a: 1969, art: "Mercedes Sosa", t: "Alfonsina y el mar", n: "La zamba argentina, con la voz de «La Negra»." },
         { a: 1973, art: "Golpe en Chile", t: "Asesinan a Víctor Jara", tipo: "hito", n: "La Nueva Canción chilena se exilia." },
@@ -54,10 +54,10 @@ HISTORIAS.push({
         { a: 1986, art: "Ladysmith Black Mambazo", t: "Homeless", n: "Los coros zulúes de «Graceland»." },
         { a: 1987, art: "The Dubliners & The Pogues", t: "The Irish Rover", n: "Una canción popular irlandesa a toda velocidad." },
         { a: 1989, art: "Mari Boine", t: "Gula Gula", n: "El joik sami del norte de Escandinavia." },
-        { a: 1992, art: "Värttinä", t: "Seleniko", tipo: "disco", n: "Las voces finlandesas." },
+        { a: 1992, art: "Värttinä", t: "Seleniko", tipo: "disco", n: "Voces finlandesas de Carelia, cantando juntas y muy rápido." },
         { a: 1993, art: "Huun-Huur-Tu", t: "60 Horses in My Herd", tipo: "disco", n: "El canto difónico de Tuvá." },
         { a: 1993, art: "Totó la Momposina", t: "La candela viva", tipo: "disco", n: "La cumbia de antes de la cumbia." },
-        { a: 1994, art: "Taraf de Haïdouks", t: "Honourable Brigands, Magic Horses and Evil Eye", tipo: "disco", n: "Los gitanos de Rumanía." },
+        { a: 1994, art: "Taraf de Haïdouks", t: "Honourable Brigands, Magic Horses and Evil Eye", tipo: "disco", n: "Los gitanos de Clejani, en Rumanía, que acabaron tocando para Johnny Depp." },
         { a: 1997, art: "Loreena McKennitt", t: "The Mummers' Dance", n: "La canadiense Loreena McKennitt mezcla folk celta y ritmos modernos y llega a las radios de EE. UU." },
         { a: 1998, art: "Hevia", t: "Busindre Reel", n: "La gaita electrónica asturiana que vendió millones." }
       ]
@@ -72,7 +72,7 @@ HISTORIAS.push({
         { a: 1993, art: "Israel Kamakawiwoʻole", t: "Over the Rainbow / What a Wonderful World", n: "Un ukelele hawaiano y una voz inmensa." },
         { a: 2003, art: "UNESCO", t: "Patrimonio cultural inmaterial", tipo: "hito", n: "La UNESCO aprueba proteger las tradiciones orales, música incluida." },
         { a: 2007, art: "Tinariwen", t: "Cler Achel", n: "Tinariwen, músicos tuareg de Malí, con guitarras eléctricas del desierto." },
-        { a: 2013, art: "Wardruna", t: "Helvegen", n: "Folk nórdico ancestral." },
+        { a: 2013, art: "Wardruna", t: "Helvegen", n: "Folk nórdico con instrumentos antiguos: luego sonó en la serie «Vikingos»." },
         { a: 2019, art: "The HU", t: "Wolf Totem", n: "Canto de garganta mongol y metal." }
       ]
     }

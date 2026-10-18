@@ -20,7 +20,7 @@ HISTORIAS.push({
         { a: 1842, art: "Felix Mendelssohn", t: "Canción de primavera", n: "De sus «Canciones sin palabras»: una de las piezas de piano más tocadas del siglo XIX." },
         { a: 1876, art: "Piotr Ilich Chaikovski", t: "Las estaciones: Abril", n: "La campanilla de invierno, la primera flor que sale con el deshielo ruso." },
         { a: 1883, art: "Johann Strauss II", t: "Voces de primavera", n: "Un vals vienés que empezó con soprano y hoy se toca sin voz." },
-        { a: 1886, art: "Edvard Grieg", t: "A la primavera", n: "De sus «Piezas líricas»." },
+        { a: 1886, art: "Edvard Grieg", t: "A la primavera", n: "De sus «Piezas líricas» para piano: el deshielo de Noruega." },
         { a: 1887, art: "Claude Debussy", t: "Printemps", n: "Una suite sinfónica de juventud." },
         { a: 1896, art: "Serguéi Rajmáninov", t: "Aguas de primavera", n: "Una canción rusa sobre el deshielo." },
         { a: 1912, art: "Frederick Delius", t: "On Hearing the First Cuckoo in Spring", n: "El cuco anuncia la primavera en el campo inglés." },
@@ -39,7 +39,7 @@ HISTORIAS.push({
         { a: 1959, art: "Blossom Dearie", t: "Spring Can Really Hang You Up the Most", n: "La primavera que no llega." },
         { a: 1965, art: "The Byrds", t: "Turn! Turn! Turn!", n: "Un texto del Eclesiastés sobre las estaciones: «hay un tiempo para todo»." },
         { a: 1966, art: "Simon & Garfunkel", t: "April Come She Will", n: "Un amor que dura de abril a septiembre, mes a mes." },
-        { a: 1966, art: "The Lovin' Spoonful", t: "Daydream", n: "Soñar despierto." },
+        { a: 1966, art: "The Lovin' Spoonful", t: "Daydream", n: "Soñar despierto un día de sol, con armónica y silbidos." },
         { a: 1968, art: "The Zombies", t: "Time of the Season", n: "Psicodelia de primavera y uno de los bajos más reconocibles de los 60." },
         { a: 1969, art: "George Harrison", t: "Novillos en el jardín", tipo: "hito", n: "Harrison se salta una reunión de negocios de los Beatles y escribe «Here Comes the Sun» en el jardín de Eric Clapton." },
         { a: 1969, art: "The Beatles", t: "Here Comes the Sun", n: "George Harrison la escribió en el jardín de Eric Clapton al acabar un invierno largo." },
@@ -61,7 +61,7 @@ HISTORIAS.push({
         { a: 2005, art: "Kobukuro", t: "Sakura", n: "El dúo que convirtió los cerezos en balada." },
         { a: 2006, art: "Ikimonogakari", t: "Sakura", n: "Su primer sencillo, ligado para siempre a la estación." },
         { a: 2019, art: "Aimyon", t: "Haru no hi", q: "Aimyon Haru no hi", n: "El pop japonés de primavera de la nueva generación." },
-        { a: 2019, art: "Vampire Weekend", t: "Spring Snow", n: "Nieve en primavera." }
+        { a: 2019, art: "Vampire Weekend", t: "Spring Snow", n: "Nieve en primavera: una canción breve de «Father of the Bride»." }
       ]
     },
     {

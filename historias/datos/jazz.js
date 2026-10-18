@@ -18,6 +18,7 @@ HISTORIAS.push({
         { a: 1917, art: "Original Dixieland Jass Band", t: "Livery Stable Blues", n: "El primer disco de jazz de la historia. Una banda blanca, polémica, pero fue la primera." },
         { a: 1923, art: "King Oliver's Creole Jazz Band", t: "Dipper Mouth Blues", n: "Con un joven Louis Armstrong de segunda corneta." },
         { a: 1925, art: "Bessie Smith", t: "St. Louis Blues", n: "La emperatriz del blues, con Armstrong respondiendo a su voz." },
+        { a: 1925, art: "Fletcher Henderson", t: "Sugar Foot Stomp", n: "La big band que enseñó el swing a todos." },
         { a: 1926, art: "Jelly Roll Morton", t: "Black Bottom Stomp", n: "Composición y arreglos: el jazz se escribe y no solo se improvisa." },
         { a: 1927, art: "Frankie Trumbauer", t: "Singin' the Blues", n: "Con Bix Beiderbecke a la corneta: un solo lírico que imitaron todos." },
         { a: 1928, art: "Louis Armstrong", t: "West End Blues", n: "La introducción a trompeta más famosa del jazz. El solista se vuelve el centro." }
@@ -62,19 +63,18 @@ HISTORIAS.push({
     {
       titulo: "Del free al jazz de hoy",
       corto: "Desde 1960",
-      periodo: "1925 – 2015",
+      periodo: "1961 – 2015",
       intro: "Modal, fusión, jazz espiritual y una nueva generación.",
       items: [
-        { a: 1925, art: "Fletcher Henderson", t: "Sugar Foot Stomp", n: "La big band que enseñó el swing a todos." },
         { a: 1961, art: "Bill Evans Trio", t: "Waltz for Debby", n: "El piano más delicado del jazz." },
         { a: 1961, art: "John Coltrane", t: "My Favorite Things", n: "Una canción de «Sonrisas y lágrimas» convertida en trance." },
         { a: 1964, art: "Herbie Hancock", t: "Cantaloupe Island", n: "Jazz con groove de Blue Note." },
-        { a: 1966, art: "Wayne Shorter", t: "Footprints", n: "Un estándar moderno." },
+        { a: 1966, art: "Wayne Shorter", t: "Footprints", n: "Un estándar moderno del saxofonista de Miles Davis y Weather Report." },
         { a: 1967, art: "Muere John Coltrane", t: "El jazz pierde a su santo", tipo: "hito", n: "Muere con 40 años; en San Francisco una iglesia lo venera como santo." },
-        { a: 1977, art: "Weather Report", t: "Birdland", n: "La fusión en las listas." },
+        { a: 1977, art: "Weather Report", t: "Birdland", n: "La fusión en las listas: un homenaje al club de Nueva York de Charlie Parker." },
         { a: 1987, art: "Pat Metheny Group", t: "Last Train Home", n: "Guitarra y un tren que no para." },
         { a: 2008, art: "Esperanza Spalding", t: "I Know You Know", n: "La contrabajista que ganó el Grammy a artista revelación." },
-        { a: 2012, art: "Robert Glasper Experiment feat. Erykah Badu", t: "Afro Blue", n: "Jazz, soul y hip hop." },
+        { a: 2012, art: "Robert Glasper Experiment feat. Erykah Badu", t: "Afro Blue", n: "Jazz, soul y hip hop: el disco «Black Radio» ganó un Grammy de R&B." },
         { a: 2015, art: "Kamasi Washington", t: "The Rhythm Changes", n: "El jazz espiritual vuelve." }
       ]
     }

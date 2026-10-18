@@ -24,7 +24,7 @@ HISTORIAS.push({
         { a: 1966, art: "The Beatles", t: "Eleanor Rigby", n: "Del disco «Revolver», que salió en plena polémica." },
         { a: 1967, art: "The Doors", t: "Light My Fire", n: "En el programa de Ed Sullivan no cambian la palabra «higher» como les pidieron: no vuelven a invitarlos." },
         { a: 1968, art: "Eurovisión", t: "Serrat quería cantar en catalán", tipo: "hito", n: "Joan Manuel Serrat pide cantar «La, la, la» en catalán y lo sustituyen por Massiel, que gana." },
-        { a: 1968, art: "The Rolling Stones", t: "Sympathy for the Devil", n: "El diablo como narrador." },
+        { a: 1968, art: "The Rolling Stones", t: "Sympathy for the Devil", n: "El diablo como narrador, en plena histeria por los Stones y el satanismo." },
         { a: 1969, art: "Jane Birkin & Serge Gainsbourg", t: "Je t'aime… moi non plus", n: "Gemidos en la radio: la prohibieron en varios países y la criticó el Vaticano." }
       ]
     },
@@ -71,7 +71,7 @@ HISTORIAS.push({
       items: [
         { a: 2012, art: "Pussy Riot", t: "Punk Prayer", n: "Una oración punk contra Putin en una catedral: dos de ellas, a la cárcel." },
         { a: 2013, art: "Robin Thicke feat. T.I. & Pharrell", t: "Blurred Lines", n: "En 2015 un jurado decide que copia el ambiente de «Got to Give It Up» de Marvin Gaye." },
-        { a: 2013, art: "Miley Cyrus", t: "We Can't Stop", n: "Los MTV del «twerking»." },
+        { a: 2013, art: "Miley Cyrus", t: "We Can't Stop", n: "Los premios MTV del «twerking» con Robin Thicke: la Hannah Montana se acabó." },
         { a: 2016, art: "Kanye West", t: "Famous", n: "La pelea con Taylor Swift otra vez." },
         { a: 2018, art: "Rosalía", t: "Malamente", n: "El debate sobre la apropiación del flamenco por una catalana no gitana." },
         { a: 2019, art: "Taylor Swift", t: "Las grabaciones originales", tipo: "hito", n: "Sus primeros discos se venden sin que ella pueda comprarlos, y decide regrabarlos todos." },

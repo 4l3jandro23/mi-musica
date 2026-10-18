@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "memes",
-  familia: "Especiales",
+  familia: "Humor e internet",
   titulo: "Historia de la música meme",
   periodo: "1971 – 2026",
   color: "#f2b705",
@@ -42,7 +42,7 @@ HISTORIAS.push({
         { a: 2005, art: "YouTube", t: "Nace YouTube", tipo: "hito", n: "La música viral tiene por fin su plataforma." },
         { a: 2005, art: "Crazy Frog", t: "Axel F", n: "Empezó como politono y acabó en el número uno. Hoy, puro shitpost." },
         { a: 2005, art: "Crazy Frog", t: "Popcorn", n: "La rana del politono, otra vez." },
-        { a: 2005, art: "Crazy Frog", t: "Hey Baby", n: "Más Crazy Frog." },
+        { a: 2005, art: "Crazy Frog", t: "Hey Baby", n: "Más Crazy Frog: la rana del politono vuelve con otra versión para pistas de verano." },
         { a: 2006, art: "Teriyaki Boyz", t: "Tokyo Drift (Fast & Furious)", n: "El sonido de cualquier cosa que gira o derrapa en un vídeo." },
         { a: 2007, art: "Tay Zonday", t: "Chocolate Rain", n: "Una voz grave y un «I move away from the mic to breathe in». Viral de los primeros YouTube." },
         { a: 2008, art: "Bag Raiders", t: "Shooting Stars", n: "En 2017 empezó a sonar en vídeos de gente saliendo disparada al espacio." }

@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "radiohead",
-  familia: "Rock",
+  familia: "Artistas",
   titulo: "La historia de Radiohead",
   periodo: "1992 – 2016",
   color: "#5a7d9a",

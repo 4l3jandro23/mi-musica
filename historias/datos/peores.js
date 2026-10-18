@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "peores",
-  familia: "Especiales",
+  familia: "Humor e internet",
   titulo: "Las peores canciones de la historia",
   periodo: "1966 – 2017",
   color: "#8b8b3a",
@@ -35,8 +35,8 @@ HISTORIAS.push({
         { a: 1985, art: "Starship", t: "We Built This City", n: "La número uno en la lista de las 50 peores canciones de la revista Blender." },
         { a: 1985, art: "Eddie Murphy", t: "Party All the Time", n: "Producida por Rick James." },
         { a: 1986, art: "Chris de Burgh", t: "The Lady in Red", n: "Votada a menudo como de las peores." },
-        { a: 1987, art: "Bruce Willis", t: "Respect Yourself", n: "El actor cantante." },
-        { a: 1988, art: "David Hasselhoff", t: "Looking for Freedom", n: "Número uno en Alemania." },
+        { a: 1987, art: "Bruce Willis", t: "Respect Yourself", n: "El actor de «Luz de luna» se pone a cantar soul." },
+        { a: 1988, art: "David Hasselhoff", t: "Looking for Freedom", n: "Número uno en Alemania: la cantó encima del Muro de Berlín." },
         { a: 1990, art: "Vanilla Ice", t: "«Ice Ice Baby», primer single de rap número uno en EE. UU.", tipo: "hito", n: "Hoy se recuerda más como broma." },
         { a: 1990, art: "Vanilla Ice", t: "Ice Ice Baby", n: "Con el bajo de «Under Pressure» de Queen sin permiso." },
         { a: 1992, art: "Billy Ray Cyrus", t: "Achy Breaky Heart", n: "Un baile en línea que el mundo entero intentó olvidar (y el padre de Miley Cyrus)." },
@@ -59,7 +59,7 @@ HISTORIAS.push({
         { a: 2005, art: "Crazy Frog", t: "Axel F", q: "Crazy Frog Axel F", n: "Un ringtone que llegó a número uno en el Reino Unido en 2005." },
         { a: 2010, art: "Justin Bieber feat. Ludacris", t: "Baby", n: "El vídeo con más «no me gusta» de su época." },
         { a: 2011, art: "Rebecca Black", t: "Friday", n: "El vídeo con más «no me gusta» de su época. Hoy ella misma se ríe y la canta en directo." },
-        { a: 2011, art: "Jedward", t: "Lipstick", n: "Eurovisión con tupés." },
+        { a: 2011, art: "Jedward", t: "Lipstick", n: "Eurovisión con tupés: dos gemelos irlandeses gritando." },
         { a: 2012, art: "PSY", t: "Gangnam Style", n: "El primer vídeo en llegar a mil millones de visitas en YouTube. Muchos acabaron hartos." },
         { a: 2017, art: "Jake Paul feat. Team 10", t: "It's Everyday Bro", n: "Uno de los vídeos más odiados de YouTube." }
       ]

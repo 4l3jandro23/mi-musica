@@ -16,9 +16,9 @@ HISTORIAS.push({
         { a: 1521, art: "La conquista", t: "Encuentro de dos mundos", tipo: "hito", n: "La música indígena se mezcla con la española y, después, con la africana: de ahí salen los sones de cada región." },
         { a: 1915, art: "El Combo Dominicano", t: "La cucaracha", q: "El Combo Dominicano La Cucaracha", n: "La canción de la Revolución mexicana, aquí en versión merengue." },
         { a: 1938, art: "Lorenzo Barcelata", t: "El cascabel", n: "Un son jarocho de Veracruz que acabó en el disco de oro de las sondas Voyager." },
-        { a: 1952, art: "Mariachi Vargas de Tecalitlán", t: "El son de la negra", n: "El mariachi más famoso." },
+        { a: 1952, art: "Mariachi Vargas de Tecalitlán", t: "El son de la negra", n: "El mariachi más famoso de México y el son que todo el país reconoce." },
         { a: 1958, art: "Ritchie Valens", t: "La Bamba", n: "Un son jarocho tradicional pasado al rock and roll en California." },
-        { a: 1961, art: "Chavela Vargas", t: "La llorona", n: "La voz desnuda." }
+        { a: 1961, art: "Chavela Vargas", t: "La llorona", n: "La voz desnuda de Chavela, que cantaba como si se le fuera la vida." }
       ]
     },
     {
@@ -43,7 +43,7 @@ HISTORIAS.push({
       intro: "De José José a Juan Gabriel.",
       items: [
         { a: 1970, art: "José José", t: "El triste", n: "Su actuación en el festival de 1970 lo convierte en «el príncipe de la canción»." },
-        { a: 1972, art: "Vicente Fernández", t: "Volver, volver", n: "La ranchera." },
+        { a: 1972, art: "Vicente Fernández", t: "Volver, volver", n: "La ranchera que se canta a gritos en todas las cantinas de México." },
         { a: 1984, art: "Juan Gabriel", t: "Querida", n: "Una de las canciones más vendidas de la historia de México." },
         { a: 1984, art: "Rocío Dúrcal", t: "Amor eterno", q: "Rocío Dúrcal Amor eterno", n: "Una canción de Juan Gabriel en la voz de la madrileña, que triunfó en México." },
         { a: 1986, art: "Juan Gabriel", t: "Hasta que te conocí", n: "El divo de Juárez, compositor de cientos de éxitos." },
@@ -76,12 +76,12 @@ HISTORIAS.push({
       items: [
         { a: 1997, art: "Los Tigres del Norte", t: "Jefe de jefes", n: "Los reyes del norteño y del corrido." },
         { a: 2013, art: "Banda MS", t: "Hermosa experiencia", n: "La banda sinaloense, de metales y tambora." },
-        { a: 2015, art: "Natalia Lafourcade", t: "Hasta la raíz", n: "Raíces y pop." },
+        { a: 2015, art: "Natalia Lafourcade", t: "Hasta la raíz", n: "Raíces y pop: Grammy Latino a la canción del año." },
         { a: 2020, art: "Natanael Cano", t: "Amor tumbado", n: "El corrido tumbado: guitarras de corrido con actitud de trap." },
         { a: 2023, art: "Peso Pluma", t: "El regional mexicano en el mundo", tipo: "hito", n: "Peso Pluma se convierte en el artista mexicano más escuchado del planeta." },
         { a: 2023, art: "Eslabon Armado & Peso Pluma", t: "Ella baila sola", n: "La primera canción de regional mexicano en el top 10 mundial de Spotify." },
         { a: 2023, art: "Grupo Frontera & Bad Bunny", t: "Un x100to", n: "Cumbia norteña de Texas con el puertorriqueño." },
-        { a: 2023, art: "Peso Pluma & Natanael Cano", t: "PRC", n: "El corrido tumbado." }
+        { a: 2023, art: "Peso Pluma & Natanael Cano", t: "PRC", n: "El corrido tumbado de dos de sus grandes estrellas." }
       ]
     }
   ]

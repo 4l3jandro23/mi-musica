@@ -38,9 +38,7 @@ HISTORIAS.push({
         { a: 1981, art: "Kiss", t: "Music from \"The Elder\"", tipo: "disco", n: "Un disco conceptual que confundió a sus fans: no hubo ni gira." },
         { a: 1997, art: "U2", t: "Discothèque", n: "El disco «Pop» y una gira con un limón gigante que se atascaba." },
         { a: 1999, art: "Chris Gaines", t: "Lost in You", n: "Garth Brooks inventa un rockero alternativo como alter ego: el público no entendió nada." },
-        { a: 1999, art: "Limp Bizkit", t: "Break Stuff", n: "La canción que encendió Woodstock 99." },
         { a: 2001, art: "Mariah Carey", t: "Loverboy", n: "De «Glitter», película y disco que fracasaron a la vez." },
-        { a: 2004, art: "Ashlee Simpson", t: "Pieces of Me", n: "La pillaron haciendo playback en directo en la televisión." },
         { a: 2008, art: "Guns N' Roses", t: "Chinese Democracy", tipo: "disco", n: "Catorce años y millones de dólares para un disco que vendió mucho menos de lo esperado." },
         { a: 2011, art: "Lou Reed & Metallica", t: "Lulu", tipo: "disco", n: "Una de las colaboraciones peor recibidas de la historia del rock." },
         { a: 2013, art: "Lady Gaga", t: "ARTPOP", tipo: "disco", n: "Tras una campaña enorme, vendió mucho menos que sus discos anteriores." },
@@ -49,16 +47,6 @@ HISTORIAS.push({
         { a: 2021, art: "James Newman", t: "Embers", n: "El Reino Unido, cero puntos." },
         { a: 2022, art: "Kanye West", t: "Donda 2", tipo: "disco", n: "Solo se podía escuchar en un aparato de 200 dólares, el Stem Player." },
         { a: 2024, art: "Katy Perry", t: "Woman's World", n: "Un regreso con un videoclip y una producción que las críticas destrozaron." }
-      ]
-    },
-    {
-      titulo: "Desastres en directo",
-      corto: "Desastres",
-      periodo: "1999 – 2017",
-      intro: "Festivales que salieron mal.",
-      items: [
-        { a: 1999, art: "Woodstock 99", t: "Fuego y caos", tipo: "hito", n: "El aniversario de Woodstock acaba con incendios, saqueos y agua a precios abusivos." },
-        { a: 2017, art: "Fyre Festival", t: "El festival que no existía", tipo: "hito", n: "Prometía lujo en una isla de Bahamas; los asistentes encontraron tiendas de campaña y sándwiches de queso." }
       ]
     },
     {
@@ -73,6 +61,21 @@ HISTORIAS.push({
         { a: 1999, art: "Lydia", t: "No quiero escuchar", n: "Último puesto para España en Jerusalén." },
         { a: 2003, art: "Jemini", t: "Cry Baby", n: "El Reino Unido, desafinado y sin un solo punto." },
         { a: 2008, art: "Rodolfo Chikilicuatre", t: "Baila el chiki chiki", n: "Un personaje de humor de la tele elegido por votación popular; quedó en el puesto 16." }
+      ]
+    },
+    {
+      titulo: "Desastres en directo",
+      corto: "Desastres",
+      periodo: "1969 – 2018",
+      intro: "Festivales, playbacks e himnos que salieron mal delante de todo el mundo.",
+      items: [
+        { a: 1969, art: "The Rolling Stones", t: "Under My Thumb", n: "En Altamont, con los Ángeles del Infierno haciendo de seguridad, matan a un chico delante del escenario mientras suena esta canción." },
+        { a: 1999, art: "Woodstock 99", t: "Fuego y caos", tipo: "hito", n: "El aniversario de Woodstock acaba con incendios, saqueos y agua a precios abusivos." },
+        { a: 1999, art: "Limp Bizkit", t: "Break Stuff", n: "La canción que encendió Woodstock 99." },
+        { a: 2004, art: "Ashlee Simpson", t: "Pieces of Me", n: "La pillaron haciendo playback en directo en la televisión." },
+        { a: 2011, art: "Christina Aguilera", t: "The Star-Spangled Banner", n: "En la Super Bowl se equivoca en un verso del himno de EE. UU. delante de 110 millones de personas." },
+        { a: 2017, art: "Fyre Festival", t: "El festival que no existía", tipo: "hito", n: "Prometía lujo en una isla de Bahamas; los asistentes encontraron tiendas de campaña y sándwiches de queso." },
+        { a: 2018, art: "Fergie", t: "The Star-Spangled Banner", n: "Su versión lenta y sensual del himno en el All-Star de la NBA: los jugadores no podían aguantar la risa." }
       ]
     }
   ]

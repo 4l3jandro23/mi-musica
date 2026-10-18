@@ -26,7 +26,7 @@ HISTORIAS.push({
         { a: 1994, art: "David Wise", t: "Aquatic Ambience", n: "De «Donkey Kong Country»." },
         { a: 1995, art: "Yasunori Mitsuda", t: "Corridors of Time", n: "Chrono Trigger, la banda sonora de culto del Super Nintendo." },
         { a: 1996, art: "Junichi Masuda", t: "Pokémon: tema de apertura", n: "El tema de «Pokémon Rojo y Azul»." },
-        { a: 1996, art: "Koji Kondo", t: "Dire, Dire Docks", n: "De «Super Mario 64»." }
+        { a: 1996, art: "Koji Kondo", t: "Dire, Dire Docks", n: "De «Super Mario 64»: la música del nivel del agua, tranquila y líquida." }
       ]
     },
     {
@@ -36,13 +36,13 @@ HISTORIAS.push({
       intro: "Del PlayStation a las orquestas.",
       items: [
         { a: 1997, art: "Nobuo Uematsu", t: "One-Winged Angel", n: "Coro en latín y el combate contra Sefirot." },
-        { a: 1997, art: "Nobuo Uematsu", t: "Aerith's Theme", n: "De «Final Fantasy VII»." },
+        { a: 1997, art: "Nobuo Uematsu", t: "Aerith's Theme", n: "De «Final Fantasy VII»: la escena que hizo llorar a toda una generación." },
         { a: 1998, art: "Koji Kondo", t: "Song of Storms", n: "Ocarina of Time: la ocarina en tu mano." },
         { a: 1998, art: "Koji Kondo", t: "Gerudo Valley", q: "Gerudo Valley Ocarina of Time", n: "Guitarras españolas en «Zelda: Ocarina of Time»." },
-        { a: 1998, art: "Grant Kirkhope", t: "Spiral Mountain", n: "De «Banjo-Kazooie»." },
+        { a: 1998, art: "Grant Kirkhope", t: "Spiral Mountain", n: "De «Banjo-Kazooie»: la música cambia según la zona en la que estés." },
         { a: 2001, art: "Martin O'Donnell & Michael Salvatori", t: "Halo Theme", n: "Monjes gregorianos y guitarras." },
         { a: 2002, art: "GTA: Vice City", t: "Emisoras de radio ochenteras", tipo: "hito", n: "Las canciones con licencia convierten el juego en una cápsula del tiempo." },
-        { a: 2002, art: "Hikaru Utada", t: "Simple and Clean", n: "De «Kingdom Hearts»." }
+        { a: 2002, art: "Hikaru Utada", t: "Simple and Clean", n: "De «Kingdom Hearts»: la canción de Disney y Square que se sabían todos los jugadores." }
       ]
     },
     {
@@ -57,8 +57,8 @@ HISTORIAS.push({
         { a: 2012, art: "Austin Wintory", t: "Apotheosis", n: "De «Journey»: fue candidata al Grammy." },
         { a: 2013, art: "Gustavo Santaolalla", t: "The Last of Us", n: "Guitarra desnuda para el fin del mundo." },
         { a: 2015, art: "Toby Fox", t: "MEGALOVANIA", n: "Undertale, compuesto casi entero por una sola persona." },
-        { a: 2016, art: "Shoji Meguro", t: "Last Surprise", n: "De «Persona 5»." },
-        { a: 2016, art: "Mick Gordon", t: "BFG Division", n: "El metal de «Doom»." },
+        { a: 2016, art: "Shoji Meguro", t: "Last Surprise", n: "De «Persona 5»: jazz y funk para los combates." },
+        { a: 2016, art: "Mick Gordon", t: "BFG Division", n: "El metal de «Doom» con guitarras de nueve cuerdas." },
         { a: 2017, art: "Koji Kondo & Naoto Kubo", t: "Jump Up, Super Star!", n: "Super Mario Odyssey en versión big band." },
         { a: 2018, art: "Lena Raine", t: "Resurrections", q: "Lena Raine Resurrections", n: "La banda sonora de «Celeste», un juego sobre la ansiedad y la superación." },
         { a: 2018, art: "Bear McCreary", t: "God of War", q: "Bear McCreary God of War", n: "Coro nórdico y orquesta para el regreso de Kratos." },

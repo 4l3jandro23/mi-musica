@@ -16,7 +16,7 @@ HISTORIAS.push({
         { a: 1903, art: "W. C. Handy", t: "Escucha el blues en una estación de tren", tipo: "hito", n: "Un hombre toca la guitarra deslizando un cuchillo por las cuerdas. Handy sería el «padre del blues»." },
         { a: 1920, art: "Mamie Smith", t: "Crazy Blues", n: "El primer blues grabado por una cantante negra: vendió un millón y abrió la industria." },
         { a: 1923, art: "Bessie Smith", t: "Downhearted Blues", n: "La «emperatriz del blues»." },
-        { a: 1924, art: "Ma Rainey", t: "See See Rider Blues", n: "La madre del blues." },
+        { a: 1924, art: "Ma Rainey", t: "See See Rider Blues", n: "La «madre del blues», con Louis Armstrong a la corneta." },
         { a: 1927, art: "Blind Lemon Jefferson", t: "Matchbox Blues", n: "El blues de Texas: guitarra y voz solas." },
         { a: 1929, art: "Charley Patton", t: "Pony Blues", n: "El padre del blues del delta del Misisipi." },
         { a: 1931, art: "Skip James", t: "Devil Got My Woman", n: "Falsete y guitarra del Delta." },
@@ -40,7 +40,7 @@ HISTORIAS.push({
         { a: 1954, art: "Muddy Waters", t: "Hoochie Coochie Man", n: "Compuesta por Willie Dixon: el blues de Chicago en su cumbre." },
         { a: 1955, art: "Muddy Waters", t: "Mannish Boy", n: "La respuesta a «I'm a Man» de Bo Diddley." },
         { a: 1956, art: "Howlin' Wolf", t: "Smokestack Lightnin'", n: "La voz rasgada de Howlin' Wolf con un riff hipnótico de un solo acorde: los Yardbirds y medio rock británico la versionaron." },
-        { a: 1960, art: "Lightnin' Hopkins", t: "Mojo Hand", n: "El blues de Houston." },
+        { a: 1960, art: "Lightnin' Hopkins", t: "Mojo Hand", n: "El blues de Houston: guitarra acústica y historias de amuletos." },
         { a: 1966, art: "Koko Taylor", t: "Wang Dang Doodle", n: "La reina del blues de Chicago." },
         { a: 1967, art: "Albert King", t: "Born Under a Bad Sign", n: "El blues de Stax, con los músicos del soul de Memphis." },
         { a: 1969, art: "B.B. King", t: "The Thrill Is Gone", n: "Con cuerdas: su mayor éxito." }
@@ -58,11 +58,11 @@ HISTORIAS.push({
         { a: 1968, art: "Cream", t: "Crossroads", n: "Eric Clapton convierte a Robert Johnson en rock." },
         { a: 1983, art: "Stevie Ray Vaughan", t: "Pride and Joy", n: "El blues texano vuelve con fuerza." },
         { a: 1990, art: "Gary Moore", t: "Still Got the Blues", n: "Gary Moore abandona el hard rock y se pasa al blues con su mayor éxito." },
-        { a: 1991, art: "Buddy Guy", t: "Damn Right, I've Got the Blues", n: "El regreso de Buddy Guy." },
+        { a: 1991, art: "Buddy Guy", t: "Damn Right, I've Got the Blues", n: "El disco del regreso de Buddy Guy, con Clapton, Beck y Knopfler: Grammy." },
         { a: 1998, art: "R.L. Burnside", t: "It's Bad You Know", n: "El blues de las colinas de Misisipi, de «Los Soprano»." },
         { a: 2000, art: "The White Stripes", t: "Death Letter", n: "Un blues de Son House a todo volumen." },
         { a: 2010, art: "The Black Keys", t: "Tighten Up", n: "Garage blues de Ohio para el siglo XXI." },
-        { a: 2011, art: "Gary Clark Jr.", t: "Bright Lights", n: "El blues del siglo XXI." },
+        { a: 2011, art: "Gary Clark Jr.", t: "Bright Lights", n: "El blues del siglo XXI: guitarra distorsionada de Austin." },
         { a: 2015, art: "KALEO", t: "Way Down We Go", n: "Blues rock islandés: sonó en series y anuncios." },
         { a: 2019, art: "Christone «Kingfish» Ingram", t: "Fresh Out", q: "Kingfish Fresh Out", n: "Un chaval de Clarksdale con la guitarra en la mano." }
       ]

@@ -21,7 +21,7 @@ HISTORIAS.push({
         { a: 1941, art: "Invasión alemana", t: "La Gran Guerra Patria", tipo: "hito", n: "Canciones como «Katiusha» acompañan a los soldados." },
         { a: 1941, art: "Dmitri Shostakovich", t: "Symphony No. 7 \"Leningrad\"", q: "Shostakovich Symphony No. 7 Leningrad", n: "Estrenada en Leningrado durante el asedio, con músicos famélicos. Se emitió por altavoces hacia las líneas alemanas." },
         { a: 1942, art: "Klavdiya Shulzhenko", alias: ["Клавдия Шульженко"], t: "Siniy platochek", q: "Клавдия Шульженко Синий платочек", n: "«El pañuelo azul»: la canción que llevaban los soldados al frente." },
-        { a: 1942, art: "Aram Jachaturián", t: "Danza del sable", n: "Del ballet «Gayane»." }
+        { a: 1942, art: "Aram Jachaturián", t: "Danza del sable", n: "Del ballet «Gayane»: la escribió en una noche y se hizo famosa en todo el mundo." }
       ]
     },
     {
@@ -33,7 +33,7 @@ HISTORIAS.push({
         { a: 1950, art: "Música «en los huesos»", t: "Discos grabados en radiografías", tipo: "hito", n: "Rock and roll y jazz prohibidos, copiados en placas de rayos X recortadas: el «roentgenizdat»." },
         { a: 1957, art: "Festival de la Juventud", t: "Moscú se abre al mundo", tipo: "hito", n: "Miles de jóvenes extranjeros traen jazz, rock and roll y vaqueros." },
         { a: 1957, art: "Vladimir Troshin", alias: ["Владимир Трошин"], t: "Podmoskovnye vechera", q: "Владимир Трошин Подмосковные вечера", n: "«Noches de Moscú»: la canción soviética que conoció todo el mundo." },
-        { a: 1964, art: "Muslim Magomáyev", t: "Luchshiy gorod Zemli", n: "El Sinatra soviético." },
+        { a: 1964, art: "Muslim Magomáyev", t: "Luchshiy gorod Zemli", n: "«El Sinatra soviético», un barítono de Azerbaiyán con aire de twist." },
         { a: 1966, art: "Eduard Khil", alias: ["Эдуард Хиль"], t: "Trololo", q: "Eduard Khil Trololo", n: "Una canción sin letra (la original fue censurada). En 2010 se convirtió en meme mundial." }
       ]
     },
@@ -43,7 +43,7 @@ HISTORIAS.push({
       periodo: "1971 – 1983",
       intro: "Casetes copiadas a mano, ídolos del pop y rock en clubs vigilados.",
       items: [
-        { a: 1971, art: "Sofía Rotaru", t: "Chervona ruta", n: "La voz ucraniana." },
+        { a: 1971, art: "Sofía Rotaru", t: "Chervona ruta", n: "La voz ucraniana que llenaba estadios en toda la URSS." },
         { a: 1972, art: "Vladimir Vysotsky", alias: ["Владимир Высоцкий"], t: "Koni priveredlivye", q: "Владимир Высоцкий Кони привередливые", n: "El bardo más querido: casi nada se publicaba oficialmente, pero todo el país tenía sus cintas." },
         { a: 1975, art: "Alla Pugachova", t: "Arlekino", n: "El arlequín que la hizo famosa." },
         { a: 1979, art: "Mashina Vremeni", alias: ["Машина времени"], t: "Povorot", q: "Машина времени Поворот", n: "Rock soviético que por fin sonó en la radio." },

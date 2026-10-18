@@ -52,7 +52,7 @@ HISTORIAS.push({
         { a: 1997, art: "Hakkûhbar", t: "Gabbertje", n: "Una canción de humor sobre un gabber enamorado que llegó al número uno en Holanda." },
         { a: 1997, art: "Neophyte", t: "Army of Hardcore", q: "Neophyte Army of Hardcore", n: "Uno de los nombres clásicos del hardcore de Rotterdam." },
         { a: 1998, art: "Neophyte vs. The Stunned Guys", t: "Nation of Domination", n: "El hardcore de Rotterdam de finales de los 90." },
-        { a: 2000, art: "Neophyte & The Viper", t: "This Is Real Hardcore", n: "Un himno de la escena." },
+        { a: 2000, art: "Neophyte & The Viper", t: "This Is Real Hardcore", n: "Un himno de la escena hardcore holandesa de Rotterdam." },
         { a: 2005, art: "Angerfist", t: "The World Will Shiver", n: "El himno de Masters of Hardcore 2005." },
         { a: 2005, art: "Angerfist", t: "Raise Your Fist", n: "El «rey del hardcore» y su máscara." },
         { a: 2006, art: "Angerfist", t: "Dance with the Wolves", n: "Un clásico de sus sesiones." },

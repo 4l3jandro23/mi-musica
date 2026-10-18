@@ -69,7 +69,7 @@ HISTORIAS.push({
         { a: 2016, art: "Frank Ocean", t: "Nikes", n: "La voz acelerada y aguda como recurso." },
         { a: 2017, art: "El autotune en directo", t: "La voz procesada ya es la voz normal", tipo: "hito", n: "Los raperos y reguetoneros lo usan también en los conciertos: para muchos oyentes jóvenes, así suena cantar." },
         { a: 2017, art: "Future", t: "Mask Off", n: "Future canta y rapea con el autotune siempre puesto." },
-        { a: 2017, art: "Lil Uzi Vert", t: "XO Tour Llif3", n: "El autotune del emo rap." },
+        { a: 2017, art: "Lil Uzi Vert", t: "XO Tour Llif3", n: "«Push me to the edge»: el autotune al servicio de la tristeza, el himno del emo rap." },
         { a: 2018, art: "Bad Bunny", t: "Amorfoda", n: "El autotune melancólico del trap latino." }
       ]
     }

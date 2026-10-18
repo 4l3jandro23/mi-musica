@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "tropicalhouse",
-  familia: "Electrónica",
+  familia: "House, techno y EDM",
   titulo: "Tropical house",
   periodo: "2013 – 2019",
   color: "#2bb3a3",
@@ -23,8 +23,8 @@ HISTORIAS.push({
         { a: 2014, art: "Robin Schulz", t: "Sun Goes Down", n: "Con Jasmine Thompson. El remix fácil para el verano." },
         { a: 2014, art: "Thomas Jack", t: "Rivers", q: "Thomas Jack Rivers", n: "El inventor del nombre «tropical house»." },
         { a: 2015, art: "Kygo", t: "Stay", n: "Con Maty Noyes. Más Kygo de piano y flauta." },
-        { a: 2015, art: "Robin Schulz feat. Francesco Yates", t: "Sugar", n: "Tropical house alemán." },
-        { a: 2015, art: "Felix Jaehn", t: "Book of Love", n: "Tropical house suave." },
+        { a: 2015, art: "Robin Schulz feat. Francesco Yates", t: "Sugar", n: "Tropical house alemán con un sample de Baby Bash." },
+        { a: 2015, art: "Felix Jaehn", t: "Book of Love", n: "Tropical house suave del alemán de «Ain't Nobody»." },
         { a: 2015, art: "Sam Feldt feat. Kimberly Anne", t: "Show Me Love", n: "Robin S en tropical house." },
         { a: 2015, art: "Justin Bieber", t: "What Do You Mean?", n: "El tropical house llega al número uno." }
       ]
@@ -48,11 +48,11 @@ HISTORIAS.push({
         { a: 2015, art: "YALL & Gabriela Richardson", t: "Hundred Miles", n: "Tropical house danés para el verano." },
         { a: 2016, art: "Kygo", t: "Toca en la clausura de los Juegos de Río", tipo: "hito", n: "El tropical house en la ceremonia olímpica." },
         { a: 2016, art: "Alan Walker", t: "Faded", n: "Alan Walker y su capucha: más melancólico que tropical." },
-        { a: 2016, art: "Major Lazer feat. Justin Bieber & MØ", t: "Cold Water", n: "El verano de 2016." },
-        { a: 2016, art: "Jonas Blue feat. JP Cooper", t: "Perfect Strangers", n: "Pop dance." },
+        { a: 2016, art: "Major Lazer feat. Justin Bieber & MØ", t: "Cold Water", n: "El verano de 2016: Diplo, Bieber y la danesa MØ." },
+        { a: 2016, art: "Jonas Blue feat. JP Cooper", t: "Perfect Strangers", n: "Pop dance británico del que hizo la versión de «Fast Car»." },
         { a: 2016, art: "Seeb & Neev", t: "Breathe", n: "Los noruegos de los remixes." },
         { a: 2017, art: "Kygo & Selena Gomez", t: "It Ain't Me", n: "El final de la ola tropical." },
-        { a: 2018, art: "Kygo feat. Justin Jesso", t: "Stargazing", n: "Kygo más maduro." },
+        { a: 2018, art: "Kygo feat. Justin Jesso", t: "Stargazing", n: "Kygo más maduro, sin marimbas." },
         { a: 2019, art: "Kygo & Whitney Houston", t: "Higher Love", n: "Whitney resucitada en tropical house." }
       ]
     }

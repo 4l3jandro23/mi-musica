@@ -31,7 +31,7 @@ HISTORIAS.push({
         { a: 2016, art: "Trippie Redd", t: "Love Scars", n: "Melodía rota y voz rasgada." },
         { a: 2016, art: "Lil Peep", t: "Benz Truck", n: "Una melodía triste, guitarras y voz rota: Lil Peep en su estilo más reconocible." },
         { a: 2016, art: "Lil Peep", t: "The Way I See Things", n: "Una guitarra triste y la voz rota de Lil Peep." },
-        { a: 2016, art: "Lil Peep", t: "Beamer Boy", n: "Guitarras emo y trap." },
+        { a: 2016, art: "Lil Peep", t: "Beamer Boy", n: "Guitarras emo y trap: el chico tatuado que inventó un género antes de morir con 21 años." },
         { a: 2016, art: "Lil Peep", t: "crybaby", n: "Un clásico de SoundCloud." },
         { a: 2017, art: "Lil Peep", t: "Muere a los 21 años", tipo: "hito", n: "Una sobredosis en la gira de su primer disco." },
         { a: 2017, art: "XXXTentacion", t: "Look at Me!", n: "Distorsión y gritos: la canción con la que se dio a conocer." },
@@ -39,9 +39,9 @@ HISTORIAS.push({
         { a: 2017, art: "Lil Peep", t: "Awful Things", n: "Con Lil Tracy. Guitarras de pop-punk y voz rota: el tema donde mejor se ve que Lil Peep era emo antes que rapero." },
         { a: 2017, art: "Lil Peep & Lil Tracy", t: "Witchblades", n: "El dúo más querido de GothBoiClique: trap con guitarras distorsionadas." },
         { a: 2017, art: "Lil Peep", t: "Save That Shit", n: "Del disco «Come Over When You're Sober», publicado poco antes de su muerte." },
-        { a: 2017, art: "Lil Uzi Vert", t: "XO Tour Llif3", n: "El himno del emo rap." },
-        { a: 2017, art: "Lil Xan", t: "Betrayed", n: "Contra las pastillas." },
-        { a: 2017, art: "Lil Skies", t: "Red Roses", n: "El emo rap melódico." }
+        { a: 2017, art: "Lil Uzi Vert", t: "XO Tour Llif3", n: "«All my friends are dead»: una canción triste que se cantó en todas las fiestas." },
+        { a: 2017, art: "Lil Xan", t: "Betrayed", n: "Un rapero que cantaba contra las pastillas que tomaba toda su generación." },
+        { a: 2017, art: "Lil Skies", t: "Red Roses", n: "Emo rap melódico de Pensilvania, con Landon Cube." }
       ]
     },
     {
@@ -55,11 +55,11 @@ HISTORIAS.push({
         { a: 2018, art: "Juice WRLD", t: "All Girls Are the Same", n: "La canción de desamor con la que firmó." },
         { a: 2018, art: "Juice WRLD", t: "Robbery", n: "Juice WRLD, de Chicago, con su mezcla de melodía pop y desamor." },
         { a: 2018, art: "Juice WRLD", t: "Legends", n: "Juice WRLD, tras la muerte de XXXTentacion y Lil Peep: «nadie llega a los 27»." },
-        { a: 2018, art: "XXXTentacion", t: "Moonlight", n: "Su último gran éxito." },
+        { a: 2018, art: "XXXTentacion", t: "Moonlight", n: "Su último gran éxito antes de morir asesinado en 2018." },
         { a: 2019, art: "Juice WRLD", t: "Muere a los 21 años", tipo: "hito", n: "Una convulsión al bajar de un avión en Chicago." },
         { a: 2019, art: "Lil Peep & XXXTentacion", t: "Falling Down", n: "Una canción póstuma de los dos, grabada por separado: el emo rap mira hacia atrás." },
-        { a: 2019, art: "Juice WRLD & YoungBoy Never Broke Again", t: "Bandit", n: "El emo rap en el top 10." },
-        { a: 2019, art: "iann dior", t: "emotions", n: "Pop punk y trap." },
+        { a: 2019, art: "Juice WRLD & YoungBoy Never Broke Again", t: "Bandit", n: "Emo rap con un sample de Don Toliver: entró en el top 10 de EE. UU." },
+        { a: 2019, art: "iann dior", t: "emotions", n: "Pop punk y trap del chico de Texas que luego cantó con 24kGoldn." },
         { a: 2019, art: "Machine Gun Kelly", t: "I Think I'm OKAY", n: "Con YUNGBLUD y Travis Barker." },
         { a: 2020, art: "Juice WRLD", t: "Wishing Well", n: "Juice WRLD habla de su adicción en una canción que salió después de su muerte." },
         { a: 2020, art: "The Kid LAROI", t: "WITHOUT YOU", n: "La balada emo del australiano." }

@@ -21,7 +21,7 @@ HISTORIAS.push({
         { a: 1995, art: "Hallucinogen", t: "Angelic Particles", n: "Melodía luminosa y ritmo implacable." },
         { a: 1995, art: "Astral Projection", t: "People Can Fly", n: "Los israelíes que llevaron el goa a las grandes pistas." },
         { a: 1996, art: "Astral Projection", t: "Mahadeva", n: "El arpegio más reconocible del goa." },
-        { a: 1996, art: "Man With No Name", t: "Teleport", n: "El Goa trance británico." },
+        { a: 1996, art: "Man With No Name", t: "Teleport", n: "El Goa trance británico, de los temas que más sonaron en las fiestas de playa." },
         { a: 1997, art: "Astral Projection", t: "Dancing Galaxy", n: "Astral Projection, desde Israel, con el lado más melódico y espacial del Goa trance." },
         { a: 1997, art: "Juno Reactor", t: "Conga Fury", n: "Percusión africana y electrónica: Juno Reactor en su punto álgido." }
       ]
@@ -33,15 +33,15 @@ HISTORIAS.push({
       intro: "El goa se acelera y se convierte en psytrance: Israel, Portugal y Hungría.",
       items: [
         { a: 1997, art: "Boom Festival", t: "Primera edición en Portugal", tipo: "hito", n: "Un festival bienal que se convierte en la meca mundial del psytrance." },
-        { a: 1998, art: "Electric Universe", t: "Ancient Aum", q: "Electric Universe Ancient Aum", n: "El psytrance alemán." },
+        { a: 1998, art: "Electric Universe", t: "Ancient Aum", q: "Electric Universe Ancient Aum", n: "El psytrance alemán, con el «om» de los mantras." },
         { a: 1999, art: "Solipse", t: "Eclipse total en Hungría", tipo: "hito", n: "Una fiesta para ver el eclipse de 1999: la semilla del festival Ozora." },
         { a: 2000, art: "Infected Mushroom", t: "Bliss", n: "Del disco «Classical Mushroom»: melodías clásicas y psytrance a toda velocidad." },
-        { a: 2000, art: "Juno Reactor", t: "Pistolero", n: "Flamenco y trance." },
+        { a: 2000, art: "Juno Reactor", t: "Pistolero", n: "Flamenco y trance: guitarras españolas a toda velocidad." },
         { a: 2000, art: "Infected Mushroom", t: "Classical Mushroom", tipo: "disco", n: "El disco que los hizo famosos." },
-        { a: 2000, art: "Electric Universe", t: "Calling for Peace", q: "Electric Universe Calling for Peace", n: "Uno de sus clásicos." },
+        { a: 2000, art: "Electric Universe", t: "Calling for Peace", q: "Electric Universe Calling for Peace", n: "Uno de sus clásicos: melodías largas para bailar al amanecer." },
         { a: 2001, art: "Infected Mushroom", t: "I Wish", n: "Un clásico que tiene una remezcla oscura de Skazi." },
         { a: 2001, art: "Shpongle", t: "Nothing Is Something Worth Doing", n: "Psybient de Simon Posford y Raja Ram." },
-        { a: 2002, art: "1200 Micrograms", t: "DMT", n: "Una oda a la molécula." },
+        { a: 2002, art: "1200 Micrograms", t: "DMT", n: "Una oda a la molécula psicodélica del grupo de Ibiza." },
         { a: 2003, art: "Infected Mushroom", t: "Converting Vegetarians", n: "El dúo de Haifa abre el psytrance al rock y la electrónica." },
         { a: 2003, art: "Juno Reactor & Don Davis", t: "Navras", n: "El final de Matrix Revolutions, en sánscrito y a toda orquesta." },
         { a: 2003, art: "Infected Mushroom", t: "Bust a Move", n: "Infected Mushroom en «Converting Vegetarians», con guitarras y voces." },

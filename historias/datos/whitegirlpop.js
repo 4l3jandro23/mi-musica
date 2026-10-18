@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "whitegirlpop",
-  familia: "Especiales",
+  familia: "Pop",
   titulo: "White girl pop",
   periodo: "1981 – 2025",
   color: "#e86aa8",

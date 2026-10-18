@@ -19,8 +19,8 @@ HISTORIAS.push({
         { a: 1965, art: "Barry McGuire", t: "Eve of Destruction", n: "Una lista de los miedos de la época: la bomba, el racismo y la guerra." },
         { a: 1965, art: "The Mamas & The Papas", t: "California Dreamin'", n: "Soñar con California en pleno invierno." },
         { a: 1966, art: "Donovan", t: "Sunshine Superman", n: "El Dylan británico se vuelve psicodélico." },
-        { a: 1966, art: "The Byrds", t: "Eight Miles High", n: "Psicodelia en el aire." },
-        { a: 1966, art: "Donovan", t: "Mellow Yellow", n: "Psicodelia pop." }
+        { a: 1966, art: "The Byrds", t: "Eight Miles High", n: "Psicodelia en el aire: muchas radios la prohibieron porque creían que hablaba de drogas." },
+        { a: 1966, art: "Donovan", t: "Mellow Yellow", n: "Psicodelia pop con un rumor famoso: que fumar cáscara de plátano colocaba." }
       ]
     },
     {
@@ -36,7 +36,7 @@ HISTORIAS.push({
         { a: 1967, art: "The Youngbloods", t: "Get Together", n: "«Come on people now, smile on your brother»." },
         { a: 1967, art: "The Beatles", t: "All You Need Is Love", n: "La canción que los Beatles cantaron para todo el mundo en la primera emisión mundial por satélite." },
         { a: 1967, art: "Jefferson Airplane", t: "Somebody to Love", n: "Grace Slick y la psicodelia de San Francisco." },
-        { a: 1967, art: "Jefferson Airplane", t: "White Rabbit", n: "Alicia y el LSD." },
+        { a: 1967, art: "Jefferson Airplane", t: "White Rabbit", n: "Alicia en el País de las Maravillas convertida en un bolero psicodélico sobre el LSD." },
         { a: 1967, art: "Arlo Guthrie", t: "Alice's Restaurant Massacree", n: "Dieciocho minutos contra el reclutamiento." },
         { a: 1967, art: "The Beatles", t: "Lucy in the Sky with Diamonds", n: "Una canción que muchos leyeron como un guiño al LSD." },
         { a: 1968, art: "Big Brother & The Holding Company", t: "Piece of My Heart", n: "La voz desgarrada de Janis Joplin." },
@@ -62,7 +62,7 @@ HISTORIAS.push({
         { a: 1970, art: "Crosby, Stills, Nash & Young", t: "Ohio", n: "Escrita tras la matanza de estudiantes en la Universidad de Kent State." },
         { a: 1970, art: "Melanie", t: "Lay Down (Candles in the Rain)", n: "Inspirada por las velas encendidas bajo la lluvia en Woodstock." },
         { a: 1970, art: "Grateful Dead", t: "Truckin'", n: "Qué viaje tan largo y tan raro." },
-        { a: 1971, art: "Cat Stevens", t: "Peace Train", n: "Un tren de paz." }
+        { a: 1971, art: "Cat Stevens", t: "Peace Train", n: "Un tren de paz que pasa por todos: uno de los himnos pacifistas de los 70." }
       ]
     }
   ]

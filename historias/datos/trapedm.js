@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "trapedm",
-  familia: "Electrónica",
+  familia: "House, techno y EDM",
   titulo: "Trap electrónico",
   periodo: "2010 – 2017",
   color: "#ff6f3c",
@@ -14,7 +14,7 @@ HISTORIAS.push({
       intro: "El rap del sur y los primeros remixes.",
       items: [
         { a: 2010, art: "Waka Flocka Flame", t: "Hard in da Paint", n: "Producida por Lex Luger: los 808 y los hi-hats que copiarán los productores de electrónica." },
-        { a: 2011, art: "Hudson Mohawke", t: "Cbat", n: "Bajos lentos y raros." },
+        { a: 2011, art: "Hudson Mohawke", t: "Cbat", n: "Bajos lentos y raros del escocés: un ritmo cojo que acabó siendo copiado por todos." },
         { a: 2012, art: "El trap de los DJ", t: "Una palabra prestada", tipo: "hito", n: "Los productores de EDM empiezan a llamar «trap» a su música, aunque se parece poco al rap de las «trap houses» de Atlanta." },
         { a: 2012, art: "Major Lazer", t: "Original Don (Flosstradamus Remix)", n: "La remezcla de enero de 2012 que muchos consideran el principio del trap electrónico." },
         { a: 2012, art: "Hucci & Stööki Sound", t: "Ball So Hard", n: "El trap británico de los primeros meses." },
@@ -22,7 +22,7 @@ HISTORIAS.push({
         { a: 2012, art: "ETC!ETC! & Brillz", t: "Swoop", n: "El sonido del verano de 2012 en las fiestas de Mad Decent." },
         { a: 2012, art: "UZ", t: "Trap Shit", q: "UZ Trap Shit", n: "La serie de temas de un productor enmascarado que daba nombre a la escena." },
         { a: 2012, art: "Major Lazer", t: "Express Yourself", n: "Diplo y el trap de baile." },
-        { a: 2012, art: "TNGHT", t: "Goooo", n: "Del EP de TNGHT." }
+        { a: 2012, art: "TNGHT", t: "Goooo", n: "Del EP de TNGHT, el dúo de Hudson Mohawke y Lunice que fichó Kanye." }
       ]
     },
     {
@@ -41,8 +41,8 @@ HISTORIAS.push({
         { a: 2013, art: "DJ Snake & Lil Jon", t: "Turn Down for What", n: "Gritos, bajos y un vídeo absurdo: seis veces platino en Estados Unidos." },
         { a: 2013, art: "Mayhem & Antiserum", t: "Hustle", n: "Bocinas y graves de la época dorada." },
         { a: 2013, art: "DJ Snake & Alesia", t: "Bird Machine", n: "El primer tema de DJ Snake en Mad Decent." },
-        { a: 2013, art: "DJ Fresh vs. Diplo feat. Dominique Young Unique", t: "Earthquake", n: "De «Kick-Ass 2»." },
-        { a: 2013, art: "Stööki Sound x Mr. Carmack", t: "UPPERS", n: "Trap con bocinas." },
+        { a: 2013, art: "DJ Fresh vs. Diplo feat. Dominique Young Unique", t: "Earthquake", n: "Drum & bass y trap a la vez, para la película «Kick-Ass 2»." },
+        { a: 2013, art: "Stööki Sound x Mr. Carmack", t: "UPPERS", n: "Trap con bocinas del dúo londinense, de los temas raros de SoundCloud." },
         { a: 2013, art: "Zedd feat. Foxes", t: "Clarity (Brillz Remix)", n: "El remix más conocido de Brillz." }
       ]
     },
@@ -55,8 +55,8 @@ HISTORIAS.push({
         { a: 2014, art: "RL Grime", t: "Core", n: "Del disco «Void»: el himno de los festivales." },
         { a: 2014, art: "Mura Masa", t: "Lotus Eater", n: "Trap eufórico con flauta, de su primer disco." },
         { a: 2014, art: "Hudson Mohawke", t: "Chimes", n: "Bocinas siniestras; Kanye West la usó después." },
-        { a: 2014, art: "S-Type", t: "Billboard (Lido Remix)", n: "El trap de Glasgow." },
-        { a: 2014, art: "Grandtheft & Keys N Krates", t: "Keep It 100", n: "En Mad Decent." },
+        { a: 2014, art: "S-Type", t: "Billboard (Lido Remix)", n: "El trap de Glasgow, remezclado por el noruego Lido." },
+        { a: 2014, art: "Grandtheft & Keys N Krates", t: "Keep It 100", n: "Trap de festival en Mad Decent, el sello de Diplo." },
         { a: 2014, art: "Baauer feat. AlunaGeorge & Rae Sremmurd", t: "One Touch", n: "Baauer después del «Harlem Shake»." },
         { a: 2015, art: "Flosstradamus & TroyBoi", t: "Soundclash", n: "El trap de Chicago y el de Londres en un solo tema." },
         { a: 2015, art: "Alison Wonderland", t: "I Want U", n: "La australiana en su primer disco, «Run»." },

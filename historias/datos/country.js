@@ -30,7 +30,7 @@ HISTORIAS.push({
       intro: "Nashville se convierte en la capital del country.",
       items: [
         { a: 1955, art: "Johnny Cash", t: "Folsom Prison Blues", n: "«Le disparé a un hombre en Reno solo para verlo morir»." },
-        { a: 1957, art: "Patsy Cline", t: "Walkin' After Midnight", n: "Su primer gran éxito." },
+        { a: 1957, art: "Patsy Cline", t: "Walkin' After Midnight", n: "Su primer gran éxito, cantado en un concurso de talentos de la tele." },
         { a: 1958, art: "Chet Atkins", t: "El «Nashville sound»", tipo: "hito", n: "Cuerdas y coros suaves para llevar el country a la radio pop." },
         { a: 1959, art: "Johnny Horton", t: "The Battle of New Orleans", n: "La batalla de 1815 convertida en canción: número uno en EE. UU." },
         { a: 1961, art: "Patsy Cline", t: "Crazy", n: "Escrita por un joven Willie Nelson: el «sonido Nashville», con cuerdas." },
@@ -52,7 +52,7 @@ HISTORIAS.push({
         { a: 1975, art: "Glen Campbell", t: "Rhinestone Cowboy", n: "El vaquero de lentejuelas: número uno en EE. UU." },
         { a: 1977, art: "Waylon Jennings", t: "Luckenbach, Texas (Back to the Basics of Love)", n: "El «outlaw country»: los forajidos contra el Nashville comercial." },
         { a: 1977, art: "Glen Campbell", t: "Southern Nights", n: "La de Allen Toussaint: otro número uno." },
-        { a: 1978, art: "Kenny Rogers", t: "The Gambler", n: "Saber cuándo plantarse." },
+        { a: 1978, art: "Kenny Rogers", t: "The Gambler", n: "«Saber cuándo plantarse»: un consejo de jugador en un tren, convertido en película." },
         { a: 1979, art: "Johnny Cash", t: "(Ghost) Riders in the Sky", n: "Los jinetes fantasma en versión del Hombre de Negro." },
         { a: 1980, art: "Willie Nelson", t: "On the Road Again", n: "Willie Nelson la escribió en pleno vuelo, en unos minutos: la canción oficial de quien vive de gira." },
         { a: 1980, art: "Dolly Parton", t: "9 to 5", n: "La canción de la película de oficina." },
@@ -86,7 +86,7 @@ HISTORIAS.push({
         { a: 2009, art: "Lady A", t: "Need You Now", n: "Una llamada a la una y media de la madrugada: Grammy a la canción del año." },
         { a: 2016, art: "Florida Georgia Line", t: "H.O.L.Y.", n: "Country pop de iglesia y bodas." },
         { a: 2019, art: "Billboard", t: "«Old Town Road» sale de la lista country", tipo: "hito", n: "Billboard quita la canción de Lil Nas X de la lista de country por «no ser bastante country»: acaba 19 semanas en el número uno." },
-        { a: 2019, art: "Dan + Shay & Justin Bieber", t: "10,000 Hours", n: "Country pop para bodas." },
+        { a: 2019, art: "Dan + Shay & Justin Bieber", t: "10,000 Hours", n: "Country pop para bodas: el dúo de Nashville con Justin Bieber, en el top 5 de EE. UU." },
         { a: 2020, art: "Little Big Town", t: "Wine, Beer, Whiskey", n: "Una canción de bar sobre las tres bebidas." },
         { a: 2023, art: "Dolly Parton, Paul McCartney & Ringo Starr", t: "Let It Be", n: "Del disco de rock de Dolly, con dos Beatles y Peter Frampton." }
       ]

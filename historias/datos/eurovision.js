@@ -33,7 +33,7 @@ HISTORIAS.push({
       items: [
         { a: 1979, art: "Milk and Honey", t: "Hallelujah", n: "Israel gana por segunda vez seguida." },
         { a: 1982, art: "Nicole", t: "Ein bißchen Frieden", n: "Un poco de paz: la primera victoria de Alemania." },
-        { a: 1987, art: "Johnny Logan", t: "Hold Me Now", n: "Su segunda victoria." },
+        { a: 1987, art: "Johnny Logan", t: "Hold Me Now", n: "Su segunda victoria, siete años después de la primera: récord en el festival." },
         { a: 1988, art: "Céline Dion", t: "Ne partez pas sans moi", n: "Una canadiense gana para Suiza por un solo punto." },
         { a: 1995, art: "Anabel Conde", t: "Vuelve conmigo", n: "Segundo puesto para España." },
         { a: 1998, art: "El televoto", t: "Vota el público", tipo: "hito", n: "Ese año empiezan a votar los espectadores por teléfono en casi todos los países." },
@@ -52,7 +52,7 @@ HISTORIAS.push({
         { a: 2006, art: "Lordi", t: "Hard Rock Hallelujah", n: "Finlandia gana con monstruos de látex y heavy metal." },
         { a: 2009, art: "Alexander Rybak", t: "Fairytale", n: "Violín, sonrisa y la puntuación más alta de su época." },
         { a: 2009, art: "Soraya", t: "La noche es para mí", n: "La representante de España en Moscú: penúltima." },
-        { a: 2010, art: "Lena", t: "Satellite", n: "Alemania vuelve a ganar." },
+        { a: 2010, art: "Lena", t: "Satellite", n: "Alemania vuelve a ganar 28 años después, con una chica de 19 años." },
         { a: 2012, art: "Loreen", t: "Euphoria", n: "Uno de los mayores éxitos que ha dado el festival." },
         { a: 2012, art: "Buranovskiye Babushki", t: "Party for Everybody", n: "Seis abuelas rusas y un horno en el escenario." },
         { a: 2014, art: "Conchita Wurst", t: "Rise Like a Phoenix", n: "Una drag con barba gana para Austria." },

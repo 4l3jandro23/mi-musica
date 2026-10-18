@@ -15,8 +15,8 @@ HISTORIAS.push({
       items: [
         { a: 1885, art: "Pepe Sánchez", t: "«Tristezas», el primer bolero", tipo: "hito", n: "Un sastre y trovador de Santiago de Cuba compone el que se considera el primer bolero." },
         { a: 1929, art: "Rafael Hernández", t: "Lamento borincano", n: "Rafael Hernández, puertorriqueño, escribe la canción de un campesino pobre que se convirtió en himno." },
-        { a: 1930, art: "Agustín Lara", t: "Mujer", n: "El poeta del bolero." },
-        { a: 1931, art: "Trío Matamoros", t: "Lágrimas negras", n: "Bolero y son cubano." },
+        { a: 1930, art: "Agustín Lara", t: "Mujer", n: "«El flaco de oro», el poeta del bolero mexicano." },
+        { a: 1931, art: "Trío Matamoros", t: "Lágrimas negras", n: "Empieza como bolero y acaba en son cubano: una de las canciones más versionadas." },
         { a: 1935, art: "Agustín Lara", t: "Noche de ronda", n: "El «flaco de oro» convierte el bolero en canción de cabaret elegante." },
         { a: 1935, art: "María Teresa Vera", t: "Veinte años", n: "La gran trovadora cubana." },
         { a: 1940, art: "Consuelo Velázquez", t: "Bésame mucho", tipo: "hito", n: "La compone una joven mexicana: se convertirá en una de las canciones más grabadas del mundo." },
@@ -36,7 +36,7 @@ HISTORIAS.push({
         { a: 1949, art: "Bienvenido Granda", t: "Angustia", q: "Bienvenido Granda Angustia", n: "La voz de la Sonora Matancera, el «bigote que canta»." },
         { a: 1953, art: "Lucho Gatica", t: "Contigo en la distancia", n: "El chileno «rey del bolero», con una canción del cubano César Portillo de la Luz." },
         { a: 1955, art: "Pedro Infante", t: "Cien años", n: "Pedro Infante, ídolo del cine mexicano, canta un bolero de despedida." },
-        { a: 1955, art: "Benny Moré", t: "Cómo fue", n: "El bárbaro del ritmo." },
+        { a: 1955, art: "Benny Moré", t: "Cómo fue", n: "«El bárbaro del ritmo» canta un bolero que todavía se oye en Cuba." },
         { a: 1956, art: "Olga Guillot", t: "Miénteme", n: "La «reina del bolero», dramática y teatral." },
         { a: 1958, art: "Los Panchos", t: "Historia de un amor", n: "Un bolero panameño de Carlos Eleta Almarán que se volvió universal." },
         { a: 1958, art: "Vicentico Valdés", t: "Los aretes de la luna", q: "Vicentico Valdes Los aretes de la luna", n: "La voz suave de la Sonora Matancera." },
@@ -63,7 +63,7 @@ HISTORIAS.push({
         { a: 1997, art: "Omara Portuondo", t: "Veinte años", n: "Con Buena Vista Social Club." },
         { a: 1999, art: "Ibrahim Ferrer", t: "Dos gardenias", n: "El bolero de Isolina Carrillo." },
         { a: 2000, art: "Café Tacvba", t: "Esta noche", q: "Café Tacvba", n: "El bolero en el rock alternativo mexicano." },
-        { a: 2003, art: "Bebo Valdés & Diego el Cigala", t: "Lágrimas negras", n: "Bolero y flamenco." },
+        { a: 2003, art: "Bebo Valdés & Diego el Cigala", t: "Lágrimas negras", n: "El pianista cubano, con más de 80 años, y el cantaor madrileño: bolero y flamenco." },
         { a: 2006, art: "Andrea Bocelli", t: "Bésame mucho", n: "El tenor italiano canta boleros en español en el disco «Amor»." },
         { a: 2019, art: "Los boleros", t: "De la radio a TikTok", tipo: "hito", n: "Muchas versiones nuevas de boleros clásicos se hacen virales entre gente joven." }
       ]

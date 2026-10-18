@@ -23,14 +23,14 @@ HISTORIAS.push({
         { a: 1967, art: "The Velvet Underground & Nico", t: "All Tomorrow's Parties", n: "La canción favorita de Warhol." },
         { a: 1967, art: "The Velvet Underground & Nico", t: "Heroin", n: "Siete minutos sin moralina sobre la heroína." },
         { a: 1967, art: "The Velvet Underground & Nico", t: "European Son", n: "Ruido y feedback para cerrar el disco." },
-        { a: 1968, art: "The Velvet Underground", t: "White Light/White Heat", n: "Más ruido, más speed." },
+        { a: 1968, art: "The Velvet Underground", t: "White Light/White Heat", n: "Más ruido y más anfetamina: el segundo disco de la Velvet, grabado a todo volumen." },
         { a: 1968, art: "The Velvet Underground", t: "Sister Ray", n: "Diecisiete minutos de ruido grabados en una sola toma." },
         { a: 1969, art: "MC5", t: "Kick Out the Jams", n: "Rock político de Detroit, grabado en directo." },
         { a: 1969, art: "The Stooges", t: "I Wanna Be Your Dog", n: "Iggy Pop y tres acordes machacones. El punk diez años antes." },
         { a: 1969, art: "The Velvet Underground", t: "Pale Blue Eyes", n: "Lou Reed en su versión más tierna." },
         { a: 1969, art: "The Velvet Underground", t: "After Hours", n: "Cantada por la batería, Moe Tucker." },
         { a: 1970, art: "The Velvet Underground", t: "Sweet Jane", n: "Del disco «Loaded», el más accesible." },
-        { a: 1970, art: "The Velvet Underground", t: "Oh! Sweet Nuthin'", n: "El cierre de «Loaded»." },
+        { a: 1970, art: "The Velvet Underground", t: "Oh! Sweet Nuthin'", n: "El cierre de «Loaded», con Doug Yule cantando: siete minutos de despedida." },
         { a: 1973, art: "New York Dolls", t: "Personality Crisis", n: "Glam, desorden y actitud: los padres directos del punk neoyorquino." },
         { a: 1974, art: "CBGB", t: "Abre el club del Bowery", tipo: "hito", n: "Un bar de Nueva York donde tocarán Ramones, Patti Smith, Television y Blondie." },
         { a: 1975, art: "Patti Smith", t: "Gloria", n: "«Jesus died for somebody's sins, but not mine». Poesía y punk." }
@@ -54,11 +54,11 @@ HISTORIAS.push({
         { a: 1977, art: "Television", t: "Marquee Moon", n: "Del CBGB también salían guitarras complejas: diez minutos de magia." },
         { a: 1977, art: "Richard Hell & The Voidoids", t: "Blank Generation", n: "El himno generacional. Su estilo de camisetas rotas inspiró a los Sex Pistols." },
         { a: 1977, art: "X-Ray Spex", t: "Oh Bondage Up Yours!", n: "Poly Styrene, con aparato en los dientes, gritando contra el consumismo." },
-        { a: 1977, art: "The Jam", t: "In the City", n: "Paul Weller." },
-        { a: 1977, art: "Iggy Pop", t: "The Passenger", n: "Iggy y Bowie en Berlín." },
+        { a: 1977, art: "The Jam", t: "In the City", n: "Paul Weller y su primer single: punk con trajes y aire de los Who." },
+        { a: 1977, art: "Iggy Pop", t: "The Passenger", n: "Iggy y Bowie en Berlín: un viaje en coche por la ciudad de noche." },
         { a: 1978, art: "Buzzcocks", t: "Ever Fallen in Love (With Someone You Shouldn't've)", n: "El punk también sabe ser pop y romántico." },
         { a: 1978, art: "The Undertones", t: "Teenage Kicks", n: "La canción favorita de John Peel." },
-        { a: 1978, art: "Stiff Little Fingers", t: "Alternative Ulster", n: "Punk de Belfast." },
+        { a: 1978, art: "Stiff Little Fingers", t: "Alternative Ulster", n: "Punk de Belfast en plena guerra: querer un Ulster diferente." },
         { a: 1978, art: "Ramones", t: "I Wanna Be Sedated", n: "Una canción alegre sobre el aburrimiento de las giras." },
         { a: 1978, art: "Patti Smith", t: "Because the Night", n: "Escrita con Bruce Springsteen: su mayor éxito." }
       ]
@@ -73,7 +73,7 @@ HISTORIAS.push({
         { a: 1979, art: "Dead Kennedys", t: "California Über Alles", n: "Sátira política al ritmo del punk de San Francisco." },
         { a: 1979, art: "The Clash", t: "London Calling", n: "El punk se abre al reggae, el rockabilly y el ska." },
         { a: 1979, art: "Patti Smith", t: "Frederick", n: "Una canción para su marido, Fred «Sonic» Smith." },
-        { a: 1979, art: "Patti Smith", t: "Dancing Barefoot", n: "Del disco «Wave»." },
+        { a: 1979, art: "Patti Smith", t: "Dancing Barefoot", n: "Del disco «Wave»: una canción de amor y trance que versionó U2." },
         { a: 1980, art: "Bad Brains", t: "Pay to Cum", n: "Hardcore a toda velocidad." },
         { a: 1980, art: "Dead Kennedys", t: "Terminal Preppie", n: "Hardcore de San Francisco contra los niños pijos." },
         { a: 1981, art: "Black Flag", t: "Rise Above", n: "El hardcore de California: más rápido y más furioso." },
@@ -81,11 +81,11 @@ HISTORIAS.push({
         { a: 1981, art: "Dead Kennedys", t: "Nazi Punks Fuck Off", n: "El himno antinazi del hardcore." },
         { a: 1982, art: "Hardcore", t: "El punk se acelera", tipo: "hito", n: "Black Flag, Minor Threat y Bad Brains: más rápido y más duro." },
         { a: 1982, art: "Siniestro Total", t: "Ayatolah! No me toques la pirola", n: "Desde Vigo, humor gamberro: el punk en español." },
-        { a: 1982, art: "Descendents", t: "Suburban Home", n: "Pop punk primitivo." },
+        { a: 1982, art: "Descendents", t: "Suburban Home", n: "Pop punk primitivo: el chico que quiere una vida normal de barrio." },
         { a: 1982, art: "The Clash", t: "Should I Stay or Should I Go", n: "El único número uno de The Clash en Reino Unido, en 1991, gracias a un anuncio." },
         { a: 1985, art: "Kortatu", t: "Sarri, Sarri", n: "El rock radical vasco, con Fermin Muguruza y ritmo de ska." },
-        { a: 1985, art: "Eskorbuto", t: "Mucha policía, poca diversión", n: "El punk de Santurce." },
-        { a: 1993, art: "Bikini Kill", t: "Rebel Girl", n: "Riot grrrl." },
+        { a: 1985, art: "Eskorbuto", t: "Mucha policía, poca diversión", n: "El punk de Santurce, el más rabioso del rock radical vasco." },
+        { a: 1993, art: "Bikini Kill", t: "Rebel Girl", n: "Riot grrrl: Kathleen Hanna y el himno del punk feminista." },
         { a: 1999, art: "Fugazi", t: "I'm So Tired", n: "Ian MacKaye, de Minor Threat, fundó Fugazi: post-hardcore «hazlo tú mismo» con entradas a cinco dólares. Aquí, en su lado más tranquilo." },
         { a: 1999, art: "Suburban Rebels", t: "Vacaciones en Hannover", n: "Oi! de Barcelona (año aproximado)." }
       ]
@@ -98,15 +98,15 @@ HISTORIAS.push({
       items: [
         { a: 1994, art: "«Dookie»", t: "El punk vende veinte millones", tipo: "hito", n: "El disco de Green Day vende más de veinte millones de copias y abre la puerta al pop punk." },
         { a: 1994, art: "Green Day", t: "Basket Case", n: "Del disco «Dookie»: el punk vuelve a las listas." },
-        { a: 1994, art: "Green Day", t: "When I Come Around", n: "Otra de «Dookie»." },
+        { a: 1994, art: "Green Day", t: "When I Come Around", n: "Otra de «Dookie»: uno de los singles que más sonaron en las radios de 1995." },
         { a: 1997, art: "Green Day", t: "Good Riddance (Time of Your Life)", n: "Una balada acústica para todas las graduaciones." },
         { a: 1999, art: "blink-182", t: "All the Small Things", n: "El vídeo que se ríe de las boy bands." },
         { a: 2001, art: "Sum 41", t: "Fat Lip", n: "El himno de los skaters de 2001." },
-        { a: 2001, art: "Sum 41", t: "In Too Deep", n: "Pop punk de Canadá." },
+        { a: 2001, art: "Sum 41", t: "In Too Deep", n: "Pop punk de Canadá con un vídeo de concurso de saltos en piscina." },
         { a: 2002, art: "Sum 41", t: "Still Waiting", n: "Más rápido y más rabioso." },
         { a: 2002, art: "Simple Plan", t: "I'm Just a Kid", n: "Pop punk de Montreal para adolescentes." },
         { a: 2002, art: "Simple Plan", t: "Perfect", n: "La balada contra el padre que exige demasiado." },
-        { a: 2003, art: "blink-182", t: "I Miss You", n: "Su lado más oscuro." },
+        { a: 2003, art: "blink-182", t: "I Miss You", n: "Su lado más oscuro: un violonchelo y una referencia a «Pesadilla antes de Navidad»." },
         { a: 2004, art: "Green Day", t: "American Idiot", n: "Una ópera rock contra la América de Bush: gana el Grammy." },
         { a: 2004, art: "Green Day", t: "Boulevard of Broken Dreams", n: "El tema más escuchado de «American Idiot»." },
         { a: 2004, art: "Green Day", t: "Wake Me Up When September Ends", n: "Billie Joe Armstrong y la muerte de su padre." },
@@ -114,7 +114,7 @@ HISTORIAS.push({
         { a: 2005, art: "Dropkick Murphys", t: "I'm Shipping Up to Boston", n: "Punk celta de Boston que sale en «Infiltrados»." },
         { a: 2008, art: "The All-American Rejects", t: "Gives You Hell", n: "La canción de despecho de 2008." },
         { a: 2008, art: "The Offspring", t: "You're Gonna Go Far, Kid", n: "La vuelta de The Offspring a las listas." },
-        { a: 2011, art: "Simple Plan & Sean Paul", t: "Summer Paradise", n: "Pop punk con dancehall." }
+        { a: 2011, art: "Simple Plan & Sean Paul", t: "Summer Paradise", n: "Pop punk con dancehall para el verano." }
       ]
     }
   ]

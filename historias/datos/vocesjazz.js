@@ -18,9 +18,9 @@ HISTORIAS.push({
         { a: 1933, art: "Ethel Waters", t: "Stormy Weather", n: "Una de las grandes voces de los años 30." },
         { a: 1936, art: "Billie Holiday", t: "Summertime", n: "Lady Day canta a Gershwin." },
         { a: 1939, art: "Billie Holiday", t: "Strange Fruit", n: "La canción contra los linchamientos." },
-        { a: 1941, art: "Billie Holiday", t: "God Bless the Child", n: "Escrita por ella misma." },
-        { a: 1944, art: "Billie Holiday", t: "Lover Man", n: "Una balada de soledad." },
-        { a: 1947, art: "Ella Fitzgerald", t: "Oh, Lady Be Good!", n: "El scat de Ella." }
+        { a: 1941, art: "Billie Holiday", t: "God Bless the Child", n: "Escrita por ella misma tras una pelea con su madre por dinero." },
+        { a: 1944, art: "Billie Holiday", t: "Lover Man", n: "Una balada de soledad, en plena guerra." },
+        { a: 1947, art: "Ella Fitzgerald", t: "Oh, Lady Be Good!", n: "El scat de Ella: improvisar con la voz como un instrumento." }
       ]
     },
     {
@@ -31,17 +31,17 @@ HISTORIAS.push({
       items: [
         { a: 1950, art: "Nat King Cole", t: "Mona Lisa", n: "El pianista que se hizo cantante." },
         { a: 1956, art: "Mel Tormé", t: "Mountain Greenery", n: "«La niebla de terciopelo»." },
-        { a: 1957, art: "Ella Fitzgerald & Louis Armstrong", t: "Cheek to Cheek", n: "Dos voces juntas." },
+        { a: 1957, art: "Ella Fitzgerald & Louis Armstrong", t: "Cheek to Cheek", n: "Dos voces juntas: la dulzura de Ella y la voz rota de Louis." },
         { a: 1958, art: "Frank Sinatra", t: "One for My Baby (and One More for the Road)", n: "Sinatra en un bar de madrugada." },
-        { a: 1958, art: "Sarah Vaughan", t: "Misty", n: "La divina." },
+        { a: 1958, art: "Sarah Vaughan", t: "Misty", n: "«La divina» con la balada de Erroll Garner." },
         { a: 1958, art: "Anita O'Day", t: "Sweet Georgia Brown", n: "Su actuación en el festival de Newport." },
         { a: 1958, art: "Nina Simone", t: "My Baby Just Cares for Me", n: "Un éxito tardío gracias a un anuncio en 1987." },
         { a: 1958, art: "Billie Holiday", t: "I'm a Fool to Want You", n: "De «Lady in Satin», con la voz cansada." },
         { a: 1959, art: "Lambert, Hendricks & Ross", t: "Twisted", n: "Letras sobre solos de saxo." },
-        { a: 1959, art: "Abbey Lincoln", t: "Afro Blue", n: "Con Max Roach." },
+        { a: 1959, art: "Abbey Lincoln", t: "Afro Blue", n: "Con Max Roach, que luego sería su marido: jazz con conciencia." },
         { a: 1960, art: "Ella Fitzgerald", t: "Mack the Knife (Live in Berlin)", n: "Se le olvida la letra y improvisa: gana un Grammy." },
-        { a: 1960, art: "Dinah Washington", t: "This Bitter Earth", n: "La reina del blues." },
-        { a: 1960, art: "Ella Fitzgerald", t: "How High the Moon (Live in Berlin)", n: "Siete minutos de scat." },
+        { a: 1960, art: "Dinah Washington", t: "This Bitter Earth", n: "«La reina del blues»: luego la usó Scorsese en «Shutter Island»." },
+        { a: 1960, art: "Ella Fitzgerald", t: "How High the Moon (Live in Berlin)", n: "Siete minutos de scat, en el mismo concierto en que se olvidó la letra de «Mack the Knife»." },
         { a: 1961, art: "Carmen McRae", t: "Take Five", n: "La letra de un clásico instrumental." },
         { a: 1964, art: "Satchmo contra los Beatles", t: "Un número uno a los 62 años", tipo: "hito", n: "«Hello, Dolly!» desbanca a los Beatles de lo más alto de la lista de Billboard." },
         { a: 1964, art: "Louis Armstrong", t: "Hello, Dolly!", n: "Le quita el número uno a los Beatles." }
@@ -56,8 +56,8 @@ HISTORIAS.push({
         { a: 1997, art: "Diana Krall", t: "Peel Me a Grape", n: "La pianista y cantante canadiense." },
         { a: 2002, art: "Norah Jones", t: "Don't Know Why", n: "Su primer disco ganó ocho Grammy." },
         { a: 2003, art: "Norah Jones", t: "Ocho Grammy", tipo: "hito", n: "El primer disco de Norah Jones arrasa en los Grammy y vende millones: el jazz cantado vuelve a las listas." },
-        { a: 2004, art: "Madeleine Peyroux", t: "Dance Me to the End of Love", n: "Leonard Cohen en jazz." },
-        { a: 2008, art: "Esperanza Spalding", t: "I Know You Know", n: "Contrabajo y voz." },
+        { a: 2004, art: "Madeleine Peyroux", t: "Dance Me to the End of Love", n: "Leonard Cohen en jazz, con una voz que recuerda a Billie Holiday." },
+        { a: 2008, art: "Esperanza Spalding", t: "I Know You Know", n: "Contrabajo y voz de la que ganó el Grammy a artista revelación en 2011." },
         { a: 2011, art: "Tony Bennett & Amy Winehouse", t: "Body and Soul", n: "La última grabación de Amy." },
         { a: 2013, art: "Gregory Porter", t: "Liquid Spirit", n: "El barítono del jazz actual." },
         { a: 2022, art: "Samara Joy", t: "Can't Get Out of This Mood", n: "La joven que ganó el Grammy a artista revelación." },

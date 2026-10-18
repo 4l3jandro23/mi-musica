@@ -27,7 +27,7 @@ HISTORIAS.push({
         { a: 1965, art: "Smokey Robinson & the Miracles", t: "The Tracks of My Tears", n: "Las huellas de las lágrimas." },
         { a: 1966, art: "Stevie Wonder", t: "Uptight (Everything's Alright)", n: "El niño prodigio se hace mayor." },
         { a: 1966, art: "The Supremes", t: "You Can't Hurry Love", n: "Otra de Holland-Dozier-Holland para las Supremes." },
-        { a: 1967, art: "Marvin Gaye & Tammi Terrell", t: "Ain't No Mountain High Enough", n: "El dúo de Motown." },
+        { a: 1967, art: "Marvin Gaye & Tammi Terrell", t: "Ain't No Mountain High Enough", n: "El dúo de Motown que se quería en las canciones: Tammi murió con solo 24 años." },
         { a: 1968, art: "Marvin Gaye", t: "I Heard It Through the Grapevine", n: "El mayor éxito de Motown en los 60." },
         { a: 1969, art: "The Jackson 5", t: "I Want You Back", n: "Un niño de once años llamado Michael." },
         { a: 1970, art: "Edwin Starr", t: "War", n: "¿Para qué sirve la guerra?" },
@@ -47,7 +47,7 @@ HISTORIAS.push({
         { a: 1972, art: "The Temptations", t: "Papa Was a Rollin' Stone", n: "Doce minutos de psicodelia soul en la versión larga." },
         { a: 1976, art: "Stevie Wonder", t: "Sir Duke", n: "Stevie Wonder homenajea a Duke Ellington y a los grandes del jazz." },
         { a: 1977, art: "Commodores", t: "Easy", n: "Soul suave con Lionel Richie." },
-        { a: 1980, art: "Diana Ross", t: "Upside Down", n: "Producida por Chic." },
+        { a: 1980, art: "Diana Ross", t: "Upside Down", n: "Producida por Nile Rodgers y Bernard Edwards, de Chic: número uno en EE. UU." },
         { a: 1981, art: "Rick James", t: "Super Freak", n: "El riff que luego samplearía MC Hammer en «U Can't Touch This»: Rick James lleva el funk a lo más descarado." },
         { a: 1983, art: "Motown 25", t: "Michael Jackson presenta el moonwalk", tipo: "hito", n: "En la gala del 25 aniversario, ante 47 millones de espectadores." },
         { a: 1983, art: "Lionel Richie", t: "All Night Long (All Night)", n: "Lionel Richie con ritmos caribeños y un estribillo inventado: la canción de fiesta de 1983. La tocó en la clausura de los Juegos de Los Ángeles 1984." },
@@ -55,7 +55,7 @@ HISTORIAS.push({
         { a: 1984, art: "Stevie Wonder", t: "I Just Called to Say I Love You", n: "Óscar a la mejor canción." },
         { a: 1985, art: "DeBarge", t: "Rhythm of the Night", n: "Una canción de Diane Warren." },
         { a: 1988, art: "Motown", t: "Gordy vende la discográfica", tipo: "hito", n: "Hoy forma parte de Universal." },
-        { a: 1991, art: "Boyz II Men", t: "Motownphilly", n: "El R&B de Filadelfia." },
+        { a: 1991, art: "Boyz II Men", t: "Motownphilly", n: "El R&B de Filadelfia en Motown, con Michael Bivins de New Edition de padrino." },
         { a: 1992, art: "Boyz II Men", t: "End of the Road", n: "Récord de semanas en el número uno de su época." }
       ]
     }

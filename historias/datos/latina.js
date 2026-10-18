@@ -5,7 +5,7 @@ HISTORIAS.push({
   periodo: "1930 – 2024",
   color: "#e8573a",
   lema: "Un siglo en el idioma de medio continente: del bolero y la canción protesta a Despacito y Bad Bunny.",
-  intro: "Un panorama general de la música latinoamericana en español: los ídolos del cine mexicano, la canción protesta frente a las dictaduras, el rock en español, las baladas de los 80, el boom latino del 99 y el dominio mundial del streaming. Cada género tiene además su propia historia: salsa, cumbia, bachata, bolero, tango, Cuba, reggaetón o trap latino.",
+  intro: "Un panorama general de la música latinoamericana en español: los ídolos del cine mexicano, la canción protesta frente a las dictaduras, el rock en español, las baladas de los 80, el boom latino del 99 y el dominio mundial del streaming. Cada género tiene además su propia historia: salsa, cumbia, bachata, bolero, tango, Cuba, reguetón o trap latino.",
   capitulos: [
     {
       titulo: "La edad de oro: radio y cine",
@@ -73,8 +73,8 @@ HISTORIAS.push({
         { a: 2011, art: "Chino & Nacho", t: "Niña bonita", n: "El pop venezolano con merengue." },
         { a: 2016, art: "Chino & Nacho & Daddy Yankee", t: "Andas en mi cabeza", n: "Un éxito en toda Latinoamérica." },
         { a: 2017, art: "Luis Fonsi", t: "Despacito", n: "Con Daddy Yankee: el vídeo más visto de YouTube durante años." },
-        { a: 2017, art: "J Balvin", t: "Mi Gente", n: "Con Willy William: el reggaetón colombiano global." },
-        { a: 2018, art: "Marc Anthony, Will Smith & Bad Bunny", t: "Está rico", n: "Salsa, pop y trap." },
+        { a: 2017, art: "J Balvin", t: "Mi Gente", n: "Con Willy William: el reguetón colombiano global." },
+        { a: 2018, art: "Marc Anthony, Will Smith & Bad Bunny", t: "Está rico", n: "Salsa, pop y trap: tres generaciones distintas en una misma canción." },
         { a: 2020, art: "Bad Bunny & Jhay Cortez", t: "Dákiti", n: "Reguetón electrónico y uno de los mayores éxitos de 2020." },
         { a: 2022, art: "Bad Bunny", t: "Tití Me Preguntó", n: "Del disco más escuchado del mundo ese año, todo en español." },
         { a: 2023, art: "Eslabon Armado", t: "Ella Baila Sola", n: "Con Peso Pluma: los corridos tumbados en lo más alto del mundo." },

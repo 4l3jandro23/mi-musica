@@ -23,7 +23,7 @@ HISTORIAS.push({
         { a: 1934, art: "Carlos Gardel", t: "Volver", n: "«Que veinte años no es nada»." },
         { a: 1934, art: "Carlos Gardel", t: "Mi Buenos Aires querido", n: "Gardel en su etapa de cine en Nueva York." },
         { a: 1935, art: "Carlos Gardel", t: "Por una cabeza", n: "Sobre las carreras de caballos. Ese mismo año muere en un accidente de avión en Medellín." },
-        { a: 1935, art: "Francisco Canaro", t: "Poema", n: "Tango de salón." },
+        { a: 1935, art: "Francisco Canaro", t: "Poema", n: "Tango de salón: uno de los más bailados en las milongas." },
         { a: 1935, art: "Carlos Gardel", t: "El día que me quieras", n: "De la película del mismo nombre." }
       ]
     },
@@ -39,8 +39,8 @@ HISTORIAS.push({
         { a: 1946, art: "Osvaldo Pugliese", t: "La yumba", n: "Un ritmo pesado y dramático, imitando el sonido del bandoneón." },
         { a: 1948, art: "Aníbal Troilo", t: "Sur", n: "«Pichuco» y la nostalgia del barrio de Pompeya." },
         { a: 1949, art: "Osvaldo Pugliese", t: "Malandraca", n: "La orquesta de Pugliese, potente y dramática." },
-        { a: 1951, art: "Juan D'Arienzo", t: "La puñalada", n: "El rey del compás." },
-        { a: 1954, art: "Julio Sosa", t: "Cambalache", n: "Un mundo sin valores." },
+        { a: 1951, art: "Juan D'Arienzo", t: "La puñalada", n: "«El rey del compás», el tango más rítmico para bailar." },
+        { a: 1954, art: "Julio Sosa", t: "Cambalache", n: "Un mundo sin valores: el tango de Discépolo cantado por «el varón del tango»." },
         { a: 1954, art: "Tita Merello", t: "Se dice de mí", n: "La actriz y cantante porteña." },
         { a: 1955, art: "El golpe de 1955", t: "Se apaga la edad de oro", tipo: "hito", n: "La dictadura y la llegada del rock and roll vacían las milongas." },
         { a: 1957, art: "Carlos Di Sarli", t: "Bahía Blanca", n: "Elegancia pura para bailar." }
@@ -54,13 +54,13 @@ HISTORIAS.push({
       items: [
         { a: 1959, art: "Astor Piazzolla", t: "Adiós Nonino", n: "Escrita al morir su padre: una obra maestra." },
         { a: 1965, art: "Astor Piazzolla", t: "Verano porteño", n: "La primera de las «Cuatro estaciones porteñas» de Piazzolla." },
-        { a: 1968, art: "Roberto Goyeneche", t: "Naranjo en flor", n: "El polaco." },
+        { a: 1968, art: "Roberto Goyeneche", t: "Naranjo en flor", n: "«El Polaco», que decía los tangos más que cantarlos." },
         { a: 1969, art: "Astor Piazzolla", t: "Balada para un loco", n: "Con Amelita Baltar: polémica en el festival y éxito en la calle." },
         { a: 1970, art: "Astor Piazzolla", t: "Invierno porteño", n: "De «Las cuatro estaciones porteñas»." },
         { a: 1974, art: "Astor Piazzolla", t: "Libertango", n: "Libertad y tango: la pieza que dio la vuelta al mundo (y Grace Jones convirtió en canción pop)." },
         { a: 1982, art: "Astor Piazzolla", t: "Oblivion", n: "Una de sus piezas más tranquilas y melancólicas." },
         { a: 2001, art: "Gotan Project", t: "Santa María (del Buen Ayre)", n: "Desde París: tango con electrónica. El «electrotango»." },
-        { a: 2001, art: "Gotan Project", t: "Época", n: "El electrotango." },
+        { a: 2001, art: "Gotan Project", t: "Época", n: "El electrotango hecho en París: bandoneón y ritmos de club." },
         { a: 2007, art: "Bajofondo", t: "Pa' bailar", n: "Bajofondo, de Gustavo Santaolalla, mezcla tango con electrónica." },
         { a: 2009, art: "UNESCO", t: "El tango, patrimonio de la humanidad", tipo: "hito", n: "Argentina y Uruguay lo presentaron juntos." }
       ]

@@ -20,12 +20,12 @@ HISTORIAS.push({
         { a: 1960, art: "Ornette Coleman", t: "Free Jazz", tipo: "disco", n: "Dos cuartetos improvisando a la vez durante 37 minutos: el disco que dio nombre al estilo." },
         { a: 1961, art: "John Coltrane", t: "Chasin' the Trane", n: "Dieciséis minutos de saxo en el Village Vanguard." },
         { a: 1963, art: "John Coltrane", t: "Alabama", n: "Una elegía por las niñas asesinadas en una iglesia de Birmingham." },
-        { a: 1963, art: "Charles Mingus", t: "The Black Saint and the Sinner Lady", tipo: "disco", n: "Un ballet de jazz." },
+        { a: 1963, art: "Charles Mingus", t: "The Black Saint and the Sinner Lady", tipo: "disco", n: "Un ballet de jazz: Mingus escribió las notas del disco junto con su psicólogo." },
         { a: 1964, art: "La revolución de octubre del jazz", t: "Conciertos en un café", tipo: "hito", n: "Bill Dixon organiza cuatro noches de free jazz en Nueva York: nace una escena propia." },
         { a: 1964, art: "Eric Dolphy", t: "Hat and Beard", n: "Del disco «Out to Lunch!»." },
         { a: 1964, art: "Albert Ayler", t: "Ghosts", n: "Un saxo que suena a himno y grito a la vez." },
-        { a: 1964, art: "Albert Ayler", t: "Spiritual Unity", tipo: "disco", n: "El free jazz más crudo." },
-        { a: 1964, art: "Eric Dolphy", t: "Gazzelloni", n: "Flauta y vanguardia." }
+        { a: 1964, art: "Albert Ayler", t: "Spiritual Unity", tipo: "disco", n: "El free jazz más crudo: el saxo de Ayler grita como en una iglesia." },
+        { a: 1964, art: "Eric Dolphy", t: "Gazzelloni", n: "Flauta y vanguardia, de «Out to Lunch!»: homenaje a un flautista clásico italiano." }
       ]
     },
     {
@@ -36,18 +36,18 @@ HISTORIAS.push({
       items: [
         { a: 1965, art: "John Coltrane", t: "A Love Supreme, Pt. I: Acknowledgement", n: "El cuarteto clásico y una oración." },
         { a: 1965, art: "John Coltrane", t: "Ascension", n: "Once músicos improvisando en libertad." },
-        { a: 1966, art: "Cecil Taylor", t: "Unit Structures", n: "Piano percutido." },
+        { a: 1966, art: "Cecil Taylor", t: "Unit Structures", n: "Piano percutido como si fueran 88 tambores." },
         { a: 1966, art: "Archie Shepp", t: "Mama Too Tight", n: "Free jazz con rhythm and blues." },
         { a: 1967, art: "Muere John Coltrane", t: "Un santo del jazz", tipo: "hito", n: "Muere con 40 años; años después una iglesia de San Francisco lo venera como santo." },
         { a: 1967, art: "John Coltrane", t: "Interstellar Space", n: "Saxo y batería, grabado meses antes de su muerte." },
         { a: 1968, art: "Peter Brötzmann", t: "Machine Gun", n: "El free jazz europeo, a todo volumen." },
         { a: 1969, art: "Pharoah Sanders", t: "The Creator Has a Master Plan", n: "Treinta y dos minutos de trance." },
         { a: 1969, art: "Anthony Braxton", t: "For Alto", tipo: "disco", n: "Un disco entero de saxo solo." },
-        { a: 1969, art: "Sonny Sharrock", t: "Black Woman", n: "La guitarra free." },
-        { a: 1970, art: "Art Ensemble of Chicago", t: "Theme de Yoyo", n: "Free jazz con funk." },
+        { a: 1969, art: "Sonny Sharrock", t: "Black Woman", n: "La guitarra free: Sharrock quería tocar como un saxo y acabó haciendo ruido." },
+        { a: 1970, art: "Art Ensemble of Chicago", t: "Theme de Yoyo", n: "Free jazz con funk, grabado en París con la cantante Fontella Bass." },
         { a: 1970, art: "Alice Coltrane", t: "Turiya and Ramakrishna", n: "Piano, arpa y espiritualidad." },
-        { a: 1971, art: "Alice Coltrane", t: "Journey in Satchidananda", n: "Arpa y tanpura." },
-        { a: 1971, art: "Pharoah Sanders", t: "Astral Traveling", n: "Del disco «Thembi»." },
+        { a: 1971, art: "Alice Coltrane", t: "Journey in Satchidananda", n: "Arpa, tanpura y Pharoah Sanders: jazz espiritual dedicado a su gurú." },
+        { a: 1971, art: "Pharoah Sanders", t: "Astral Traveling", n: "Del disco «Thembi»: un piano eléctrico flotante, casi ambient." },
         { a: 1972, art: "Archie Shepp", t: "Attica Blues", n: "Por la revuelta de la cárcel de Attica." }
       ]
     },

@@ -43,7 +43,7 @@ HISTORIAS.push({
         { a: 1962, art: "Pierre Henry", t: "Le voyage", q: "Pierre Henry Le voyage", n: "Pierre Henry se inspira en el Libro tibetano de los muertos." },
         { a: 1963, art: "Delia Derbyshire", t: "Doctor Who Theme", n: "Cinta cortada a mano y osciladores: la sintonía más famosa de la tele británica." },
         { a: 1965, art: "Steve Reich", t: "It's Gonna Rain", n: "Un predicador en bucle que se desfasa poco a poco." },
-        { a: 1965, art: "Pauline Oliveros", t: "Bye Bye Butterfly", n: "Ópera y osciladores." },
+        { a: 1965, art: "Pauline Oliveros", t: "Bye Bye Butterfly", n: "Un disco de ópera de «Madama Butterfly» mezclado con osciladores: un adiós a la música del pasado." },
         { a: 1966, art: "Steve Reich", t: "Come Out", n: "La misma técnica, con la voz de un joven golpeado por la policía." }
       ]
     },

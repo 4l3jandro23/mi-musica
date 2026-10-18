@@ -23,7 +23,7 @@ HISTORIAS.push({
         { a: 1999, art: "Orishas", t: "Represent", n: "Cubanos en París: rap con son, rumba y guaguancó." },
         { a: 1999, art: "Control Machete", t: "Así son mis días", q: "Control Machete", n: "Desde Monterrey: el rap mexicano de los 90." },
         { a: 2000, art: "Orishas", t: "537 C.U.B.A.", n: "El rap cubano en el mundo." },
-        { a: 2003, art: "Akwid", t: "No hay manera", n: "Rap y banda." }
+        { a: 2003, art: "Akwid", t: "No hay manera", n: "Rap mexicano de Los Ángeles con música de banda." }
       ]
     },
     {
@@ -33,7 +33,7 @@ HISTORIAS.push({
       intro: "Letras sobre identidad, desigualdad y América Latina.",
       items: [
         { a: 2009, art: "Ana Tijoux", t: "1977", n: "Chilena nacida en el exilio en Francia: rap feminista y político." },
-        { a: 2009, art: "Calle 13", t: "No hay nadie como tú", n: "Con Café Tacvba." },
+        { a: 2009, art: "Calle 13", t: "No hay nadie como tú", n: "Con Café Tacvba: Puerto Rico y México en un rap tranquilo." },
         { a: 2010, art: "ChocQuibTown", t: "De donde vengo yo", n: "Desde el Pacífico colombiano: rap afrocolombiano. Ganó un Grammy Latino." },
         { a: 2010, art: "Calle 13", t: "La vuelta al mundo", n: "Calle 13 en su versión más tranquila, sobre dejarlo todo y viajar." },
         { a: 2011, art: "Calle 13", t: "Latinoamérica", n: "Con Totó la Momposina, Susana Baca y María Rita: el himno de todo un continente." },
@@ -41,7 +41,7 @@ HISTORIAS.push({
         { a: 2012, art: "Canserbero", t: "Es épico", n: "Desde Venezuela: uno de los raperos más queridos y admirados del idioma." },
         { a: 2012, art: "Canserbero", t: "Mundo de piedra", n: "El venezolano más querido." },
         { a: 2014, art: "Ana Tijoux", t: "Antipatriarca", n: "Ana Tijoux, chilena, contra el machismo." },
-        { a: 2015, art: "Portavoz", t: "El otro Chile", n: "El rap político chileno." },
+        { a: 2015, art: "Portavoz", t: "El otro Chile", n: "El rap político chileno: el país que no sale en la tele." },
         { a: 2016, art: "Red Bull Batalla y FMS", t: "El freestyle llena estadios", tipo: "hito", n: "Las batallas de improvisación se convierten en un fenómeno en toda Latinoamérica y España." }
       ]
     },
@@ -57,12 +57,12 @@ HISTORIAS.push({
         { a: 2020, art: "Bzrp Music Sessions", t: "Bizarrap revoluciona el rap", tipo: "hito", n: "Sesiones en YouTube que lanzan carreras." },
         { a: 2020, art: "Residente", t: "René", n: "El cantante de Calle 13 abre su corazón: depresión, infancia y fama." },
         { a: 2020, art: "Nathy Peluso", t: "Sana Sana", n: "La argentina Nathy Peluso, criada en España, entre el rap y la salsa." },
-        { a: 2020, art: "Santa Fe Klan", t: "Debo entender", n: "El rap mexicano." },
+        { a: 2020, art: "Santa Fe Klan", t: "Debo entender", n: "El rap mexicano de Guanajuato, con mucha calle." },
         { a: 2022, art: "Trueno", t: "Dance Crip", n: "Rap y orgullo latinoamericano desde La Boca." },
         { a: 2022, art: "Bizarrap", t: "Residente: Bzrp Music Sessions, Vol. 49", q: "Bizarrap Residente Music Sessions 49", n: "Una tiradera de ocho minutos contra J Balvin que dio la vuelta al mundo." },
         { a: 2022, art: "Residente", t: "This Is Not America", n: "Respuesta a Childish Gambino." },
-        { a: 2022, art: "Bizarrap & Duki", t: "Duki: Bzrp Music Sessions, Vol. 50", n: "El trap argentino." },
-        { a: 2023, art: "Bizarrap & Peso Pluma", t: "Peso Pluma: Bzrp Music Sessions, Vol. 55", n: "Corrido y rap." }
+        { a: 2022, art: "Bizarrap & Duki", t: "Duki: Bzrp Music Sessions, Vol. 50", n: "El trap argentino: Duki en el estudio de Bizarrap." },
+        { a: 2023, art: "Bizarrap & Peso Pluma", t: "Peso Pluma: Bzrp Music Sessions, Vol. 55", n: "Corrido y rap: la sesión de Bizarrap más rara hasta entonces." }
       ]
     }
   ]

@@ -66,7 +66,7 @@ HISTORIAS.push({
         { a: 1985, art: "Falco", t: "Rock Me Amadeus", n: "Desde Austria, rap en alemán: número uno en Estados Unidos." },
         { a: 1985, art: "Modern Talking", t: "Cheri Cheri Lady", n: "El dúo de Dieter Bohlen y Thomas Anders." },
         { a: 1986, art: "Modern Talking", t: "Brother Louie", n: "Otro número uno en Alemania." },
-        { a: 1986, art: "Modern Talking", t: "Geronimo's Cadillac", n: "Eurodisco del Oeste." }
+        { a: 1986, art: "Modern Talking", t: "Geronimo's Cadillac", n: "Eurodisco con falsete de Dieter Bohlen y Thomas Anders: un éxito enorme en Alemania y en España." }
       ]
     },
     {
@@ -95,7 +95,7 @@ HISTORIAS.push({
       periodo: "2002 – 2026",
       intro: "De Sportfreunde Stiller a Milky Chance: el pop alemán que se escucha fuera.",
       items: [
-        { a: 2002, art: "Sportfreunde Stiller", t: "Independent", n: "Indie rock de Múnich." },
+        { a: 2002, art: "Sportfreunde Stiller", t: "Independent", n: "Indie rock de Múnich: el grupo que luego haría el himno del Mundial de 2006." },
         { a: 2006, art: "El Mundial de Alemania", t: "«'54, '74, '90, 2006»", tipo: "hito", n: "La canción de Sportfreunde Stiller sobre los Mundiales ganados por Alemania se convierte en el himno del verano." },
         { a: 2013, art: "Milky Chance", t: "Stolen Dance", n: "Dos amigos de Kassel lo graban en casa y llega a medio mundo." },
         { a: 2013, art: "Milky Chance", t: "Down by the River", n: "Del mismo disco, «Sadnecessary»." },

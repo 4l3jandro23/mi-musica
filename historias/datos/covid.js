@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "covid",
-  familia: "Especiales",
+  familia: "Historia",
   titulo: "La música de la pandemia",
   periodo: "2020 – 2021",
   color: "#26a69a",
@@ -31,7 +31,7 @@ HISTORIAS.push({
         { a: 2020, art: "Jawsh 685 & Jason Derulo", t: "Savage Love (Laxed – Siren Beat)", n: "Un ritmo viral en el confinamiento." },
         { a: 2020, art: "Harry Styles", t: "Watermelon Sugar", n: "El verano que no pudimos tener." },
         { a: 2020, art: "BTS", t: "Dynamite", n: "La primera canción de BTS toda en inglés." },
-        { a: 2020, art: "Bad Bunny", t: "Yo perreo sola", n: "Bailar sola en casa." },
+        { a: 2020, art: "Bad Bunny", t: "Yo perreo sola", n: "Bailar sola en casa: un himno feminista del confinamiento, con Bad Bunny vestido de mujer en el vídeo." },
         { a: 2020, art: "C. Tangana feat. Niño de Elche & La Húngara", t: "Tú me dejaste de querer", n: "Grabada en plena pandemia." }
       ]
     },
@@ -53,7 +53,7 @@ HISTORIAS.push({
         { a: 2021, art: "Fred again..", t: "Marea (We've Lost Dancing)", n: "La nostalgia de bailar con gente cuando no se podía." },
         { a: 2021, art: "Måneskin", t: "Beggin'", n: "Una versión antigua que se volvió viral tras ganar Eurovisión." },
         { a: 2021, art: "Silk Sonic", t: "Leave the Door Open", n: "Bruno Mars y Anderson .Paak." },
-        { a: 2021, art: "Adele", t: "Easy on Me", n: "El regreso de Adele." }
+        { a: 2021, art: "Adele", t: "Easy on Me", n: "El regreso de Adele tras su divorcio: piano y voz para pedir comprensión." }
       ]
     }
   ]

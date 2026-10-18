@@ -67,21 +67,24 @@
   const FAM = {
     'Las 500': ['#c9a227', 'Los 500 mejores discos y canciones de la historia'],
     'Para cada momento': ['#f2994a', 'Estaciones, gimnasio, coche y estados de ánimo'],
-    'La música por dentro': ['#5c6bc0', 'Instrumentos, vídeos, polémicas, inventos y plataformas'],
-    'Especiales': ['#e86aa8', 'Listas temáticas, tu vida y rarezas'],
-    'Historia': ['#9a7b4f', 'De la prehistoria a la Segunda Guerra Mundial'],
+    'Artistas': ['#b04fd1', 'Los Beatles, Bowie, ABBA, Daft Punk y otros que merecen su propio disco'],
     'Pop': ['#ff7a59', 'Del pop de los 50 al hyperpop'],
     'Rock': ['#d0473a', 'Del rock and roll al metal'],
     'Hip hop': ['#d9a21b', 'Del Bronx al rage, estilo a estilo'],
     'Soul y funk': ['#b0623a', 'Soul, funk, disco y R&B'],
-    'Electrónica': ['#3aa0e8', 'House, techno, trance y compañía'],
-    'Bass music': ['#3e9e5e', 'Jungle, garage, dubstep y drum and bass'],
+    'Electrónica': ['#3aa0e8', 'De la música concreta al trance y el hardstyle'],
+    'House, techno y EDM': ['#7cb342', 'Del house de Chicago y el techno de Detroit a los festivales'],
+    'Jamaica y bass music': ['#3e9e5e', 'Del ska y el dub al jungle, el garage y el dubstep'],
     'Latino': ['#e04f8a', 'Salsa, reguetón, México, Puerto Rico y más'],
     'España': ['#e0662a', 'De la copla a la Movida y el trap'],
     'Mundo': ['#2bb3a3', 'Música de todos los rincones'],
     'Jazz': ['#6b8cae', 'Del ragtime al jazz de hoy'],
     'Raíces americanas': ['#b5883b', 'Blues, country, folk y Estados Unidos'],
     'Clásica y cine': ['#7a5ad6', 'Clásica, ópera, cine y videojuegos'],
+    'La música por dentro': ['#5c6bc0', 'Instrumentos, samples, mitos, polémicas y plataformas'],
+    'Historia': ['#9a7b4f', 'De la prehistoria a la pandemia'],
+    'Humor e internet': ['#c7a63a', 'Memes, canciones absurdas, rarezas y lo peor de lo peor'],
+    'Especiales': ['#e86aa8', 'Décadas, adolescencia, sensualidad y otras listas'],
     'Discográficas': ['#6d6d7a', 'Los sellos que hicieron la historia']
   };
   const ORDEN_FAM = Object.keys(FAM);
@@ -602,6 +605,7 @@
     const x = location.hash.match(/^#explorar(?:\/(.+))?/);
     if (x) {
       let f = ''; try { f = decodeURIComponent(x[1] || ''); } catch (e) {}
+      if (f === 'Bass music') f = 'Jamaica y bass music'; // nombre antiguo de la familia
       document.title = (f || 'Explorar') + ' · Historias'; explorar(f); scrollTo(0, mantenerScroll ? y : 0); return;
     }
     const m = location.hash.match(/^#h\/([^/]+)(?:\/(\d+))?/) || [];

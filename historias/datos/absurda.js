@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "absurda",
-  familia: "Especiales",
+  familia: "Humor e internet",
   titulo: "Música absurda",
   periodo: "1893 – 2018",
   color: "#8bc34a",

@@ -56,12 +56,12 @@ HISTORIAS.push({
         { a: 2013, art: "Prince Royce", t: "Darte un beso", n: "Bachata romántica de Nueva York." },
         { a: 2014, art: "Romeo Santos", t: "Eres mía", n: "Celos y guitarras: un clásico de las pistas." },
         { a: 2017, art: "Romeo Santos", t: "Imitadora", n: "Romeo Santos en su estilo más reconocible: guitarra punteada, bongó y despecho." },
-        { a: 2018, art: "Leslie Grace & Noriel", t: "Duro y suave", n: "Bachata urbana." },
+        { a: 2018, art: "Leslie Grace & Noriel", t: "Duro y suave", n: "Bachata con reguetón: la mezcla que se volvió normal a finales de los 2010." },
         { a: 2019, art: "La bachata", t: "Patrimonio Cultural Inmaterial de la Humanidad", tipo: "hito", n: "La UNESCO la reconoce. Mientras, la «bachata sensual», creada en Cádiz por Korke y Judith, llena academias de baile de todo el mundo." },
         { a: 2021, art: "Aventura", t: "Volví", n: "Con Bad Bunny: la bachata vuelve a lo más alto." },
         { a: 2022, art: "Rosalía", t: "DESPECHÁ", n: "Bachata pop desde Cataluña." },
         { a: 2022, art: "Manuel Turizo", t: "La Bachata", n: "Un colombiano con bachata y un éxito mundial." },
-        { a: 2023, art: "Romeo Santos & ROSALÍA", t: "El pañuelo", n: "Rosalía canta bachata." }
+        { a: 2023, art: "Romeo Santos & ROSALÍA", t: "El pañuelo", n: "El rey de la bachata y Rosalía, cantando una bachata clásica con aire de bolero." }
       ]
     }
   ]

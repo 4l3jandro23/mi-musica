@@ -48,12 +48,12 @@ HISTORIAS.push({
       items: [
         { a: 2019, art: "Natanael Cano", t: "Nace el corrido tumbado", tipo: "hito", n: "El disco «Corridos tumbados» de un chaval de 18 años da nombre al género." },
         { a: 2019, art: "Natanael Cano", t: "Soy el diablo", n: "Con Bad Bunny en la remezcla: el corrido tumbado llega a las masas." },
-        { a: 2019, art: "El Fantasma", t: "Mi 45", n: "El corrido de Durango." },
+        { a: 2019, art: "El Fantasma", t: "Mi 45", n: "Corrido de Durango con banda sinaloense, del cantante que fue jardinero antes de ser estrella." },
         { a: 2020, art: "Natanael Cano", t: "Amor tumbado", n: "El corrido tumbado también sabe ser romántico." },
         { a: 2020, art: "Junior H", t: "Se amerita", n: "Junior H y el corrido «sad»: guitarras tristes y ritmo lento." },
         { a: 2021, art: "Eslabon Armado", t: "Jugaste y sufrí", n: "Un trío de California con corridos de desamor." },
         { a: 2022, art: "Gabito Ballesteros, Peso Pluma & Natanael Cano", t: "AMG", n: "El trío que anunció la explosión del género." },
-        { a: 2022, art: "Junior H", t: "Y lloro", n: "El corrido triste." },
+        { a: 2022, art: "Junior H", t: "Y lloro", n: "Corrido tumbado triste: guitarras acústicas y desamor de la nueva generación." },
         { a: 2022, art: "Fuerza Regida & Grupo Frontera", t: "Bebe dame", n: "Corrido y cumbia norteña juntos." },
         { a: 2023, art: "Peso Pluma & Natanael Cano", t: "PRC", n: "El dúo que lideró la explosión del género." },
         { a: 2023, art: "Eslabon Armado & Peso Pluma", t: "Ella baila sola", n: "Número uno mundial en Spotify: el corrido tumbado conquista el mundo." },
@@ -61,7 +61,7 @@ HISTORIAS.push({
         { a: 2023, art: "Peso Pluma", t: "Lady Gaga", n: "Con Gabito Ballesteros y Junior H, un éxito de su disco «Génesis»." },
         { a: 2023, art: "Fuerza Regida", t: "Sabor fresa", n: "Los de San Bernardino también llegan al top mundial." },
         { a: 2023, art: "Peso Pluma & Grupo Frontera", t: "TULUM", n: "La cumbia norteña y el corrido tumbado se juntan en el disco «Génesis»." },
-        { a: 2023, art: "Peso Pluma", t: "Bye", n: "Del disco «Génesis»." },
+        { a: 2023, art: "Peso Pluma", t: "Bye", n: "Del disco «Génesis», el que lo confirmó como la cara del corrido tumbado en todo el mundo." },
         { a: 2024, art: "Xavi", t: "La diabla", n: "Un corrido romántico de un chaval de 19 años que llegó al número uno en México." }
       ]
     }

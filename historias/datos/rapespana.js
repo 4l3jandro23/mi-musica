@@ -34,7 +34,7 @@ HISTORIAS.push({
         { a: 2003, art: "La Mala Rodríguez", t: "Tengo un trato", n: "La Mala llega a todo el país." },
         { a: 2004, art: "Hablando en Plata", t: "Escuela de calor", q: "Hablando en Plata", n: "Hablando en Plata, desde Valladolid, con su versión de Radio Futura." },
         { a: 2004, art: "Tote King", t: "Música para enfermos", tipo: "disco", n: "El primer disco en solitario del sevillano Tote King, rap directo y técnico." },
-        { a: 2004, art: "ToteKing & Shotta", t: "Tu madre es una foca", n: "Humor y rap sevillano." },
+        { a: 2004, art: "ToteKing & Shotta", t: "Tu madre es una foca", n: "Humor y rap sevillano: un pique entre colegas que se volvió clásico." },
         { a: 2005, art: "Internet", t: "Los foros y Myspace", tipo: "hito", n: "Con internet, el rap español deja de depender de las discográficas: cualquiera sube sus maquetas." },
         { a: 2005, art: "Nach", t: "Urbanología", tipo: "disco", n: "El disco con el que Nach se convierte en uno de los grandes del rap español." },
         { a: 2006, art: "Violadores del Verso", t: "Vivir para contarlo", n: "Una canción sobre la vida, los amigos y seguir adelante." },
@@ -60,13 +60,13 @@ HISTORIAS.push({
         { a: 2016, art: "Kase.O", t: "Mazas y catapultas", n: "De «El Círculo», el esperadísimo disco en solitario de Kase.O tras años de silencio." },
         { a: 2016, art: "Kase.O", t: "Esto no para", n: "Del disco «El círculo»: el regreso de Kase.O, 15 años después de su último disco con Violadores." },
         { a: 2016, art: "Kase.O", t: "Basureta", n: "Del disco «El círculo»: Kase.O reflexiona sobre la basura que llevamos dentro." },
-        { a: 2016, art: "Kase.O", t: "Guapo tarde", n: "Del disco «El círculo»." },
+        { a: 2016, art: "Kase.O", t: "Guapo tarde", n: "Del disco «El círculo», su primer disco en solitario de verdad tras décadas con Violadores del Verso." },
         { a: 2017, art: "FMS", t: "La liga de freestyle", tipo: "hito", n: "Las batallas se convierten en espectáculo de masas en España y Latinoamérica." },
-        { a: 2017, art: "C. Tangana", t: "Mala mujer", n: "El cambio de C. Tangana." },
-        { a: 2017, art: "Bejo", t: "Wantan", n: "El rap absurdo y viral." },
+        { a: 2017, art: "C. Tangana", t: "Mala mujer", n: "El cambio de C. Tangana: del rap al reguetón y a ser estrella." },
+        { a: 2017, art: "Bejo", t: "Wantan", n: "El rap absurdo y viral del canario, que juega con las palabras sin parar." },
         { a: 2019, art: "Freestyle", t: "Las batallas llenan pabellones", tipo: "hito", n: "La FMS y la Red Bull llenan grandes recintos: el freestyle se convierte en espectáculo de masas." },
-        { a: 2019, art: "C. Tangana", t: "Llorando en la limo", n: "Antes de «El Madrileño»." },
-        { a: 2019, art: "Rels B", t: "A mí", n: "El mallorquín." }
+        { a: 2019, art: "C. Tangana", t: "Llorando en la limo", n: "El hit antes de «El Madrileño»: llorar en una limusina." },
+        { a: 2019, art: "Rels B", t: "A mí", n: "El mallorquín y su rap melódico: uno de los éxitos de 2019 en España." }
       ]
     }
   ]

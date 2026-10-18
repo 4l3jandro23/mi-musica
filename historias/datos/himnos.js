@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "himnos",
-  familia: "Especiales",
+  familia: "Historia",
   titulo: "Historia de los himnos",
   periodo: "1572 – 2017",
   color: "#c62828",

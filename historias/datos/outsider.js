@@ -1,6 +1,6 @@
 HISTORIAS.push({
   id: "outsider",
-  familia: "Especiales",
+  familia: "Humor e internet",
   titulo: "Outsider music",
   periodo: "1944 – 2005",
   color: "#b07d2b",
@@ -32,7 +32,7 @@ HISTORIAS.push({
         { a: 1970, art: "Syd Barrett", t: "Octopus", n: "El fundador de Pink Floyd en solitario." },
         { a: 1970, art: "Linda Perhacs", t: "Parallelograms", n: "Un disco olvidado y redescubierto." },
         { a: 1973, art: "Sibylle Baier", t: "Remember the Day", n: "Grabaciones caseras publicadas en 2006." },
-        { a: 1975, art: "Roky Erickson", t: "Two Headed Dog", n: "Rock y delirio." }
+        { a: 1975, art: "Roky Erickson", t: "Two Headed Dog", n: "Rock y delirio del líder de 13th Floor Elevators tras salir del psiquiátrico." }
       ]
     },
     {
@@ -51,7 +51,7 @@ HISTORIAS.push({
         { a: 1989, art: "Jad Fair & Daniel Johnston", t: "It's Spooky", q: "Jad Fair Daniel Johnston", tipo: "disco", n: "Dos raros juntos, con un disco tan sencillo como encantador." },
         { a: 1990, art: "Daniel Johnston", t: "True Love Will Find You in the End", n: "Una de las canciones más tiernas y versionadas del indie." },
         { a: 1990, art: "The Space Lady", t: "Born to Be Wild", q: "The Space Lady Born to Be Wild", n: "Susan Dietrich tocaba versiones con un casio y un casco con alas por las calles de San Francisco." },
-        { a: 1992, art: "Eilert Pilarm", t: "Jailhouse Rock", n: "El Elvis sueco." },
+        { a: 1992, art: "Eilert Pilarm", t: "Jailhouse Rock", n: "El Elvis sueco, que cantaba a su manera sin importarle el ritmo." },
         { a: 1995, art: "Wesley Willis", t: "Rock 'n' Roll McDonald's", n: "Un músico de Chicago con esquizofrenia y cientos de canciones con la misma base de teclado." },
         { a: 2000, art: "Irwin Chusid", t: "Publica «Songs in the Key of Z»", tipo: "hito", n: "El libro y el recopilatorio que pusieron nombre a la «outsider music»." },
         { a: 2004, art: "Ariel Pink", t: "For Kate I Wait", q: "Ariel Pink", n: "Ariel Pink graba en casa un pop que suena a radio de los 80 estropeada." },
