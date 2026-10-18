@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "tropicalhouse",
   familia: "House, techno y EDM",
   titulo: "Tropical house",
-  periodo: "2013 – 2019",
+  periodo: "2013 – 2021",
   color: "#2bb3a3",
   lema: "Marimbas, flautas y saxos a 110 BPM: el house playero que conquistó la radio de 2014 a 2017.",
   intro: "El tropical house es house lento y luminoso, con marimbas, steel drums, flautas y saxos. Nace en SoundCloud con productores noruegos y alemanes que remezclaban canciones acústicas, y en dos años se convierte en el sonido de verano de las radios de todo el mundo.",
@@ -22,17 +22,21 @@ HISTORIAS.push({
         { a: 2014, art: "Lost Frequencies", t: "Are You With Me", n: "Un remix belga de una canción country, número uno en el Reino Unido." },
         { a: 2014, art: "Robin Schulz", t: "Sun Goes Down", n: "Con Jasmine Thompson. El remix fácil para el verano." },
         { a: 2014, art: "Thomas Jack", t: "Rivers", q: "Thomas Jack Rivers", n: "El inventor del nombre «tropical house»." },
+        { a: 2014, art: "Bakermat", t: "Teach Me", n: "Saxo y una voz de Martin Luther King en clave de deep house." },
+        { a: 2014, art: "felix jaehn", t: "Photograph (Felix Jaehn Remix)", n: "Versión deep house de la canción de Ed Sheeran (año aproximado)." },
         { a: 2015, art: "Kygo", t: "Stay", n: "Con Maty Noyes. Más Kygo de piano y flauta." },
         { a: 2015, art: "Robin Schulz feat. Francesco Yates", t: "Sugar", n: "Tropical house alemán con un sample de Baby Bash." },
         { a: 2015, art: "Felix Jaehn", t: "Book of Love", n: "Tropical house suave del alemán de «Ain't Nobody»." },
         { a: 2015, art: "Sam Feldt feat. Kimberly Anne", t: "Show Me Love", n: "Robin S en tropical house." },
-        { a: 2015, art: "Justin Bieber", t: "What Do You Mean?", n: "El tropical house llega al número uno." }
+        { a: 2015, art: "Justin Bieber", t: "What Do You Mean?", n: "El tropical house llega al número uno." },
+        { a: 2015, art: "OMI", t: "Hula Hoop", n: "El siguiente single del jamaicano tras «Cheerleader»." },
+        { a: 2015, art: "Nea & felix jaehn", t: "Some Say (Felix Jaehn Remix)", n: "La sueca Nea con el remix de Felix Jaehn (año aproximado)." }
       ]
     },
     {
       titulo: "El sonido de la radio",
       corto: "Radio",
-      periodo: "2015 – 2019",
+      periodo: "2015 – 2021",
       intro: "El tropical house conquista el pop.",
       items: [
         { a: 2015, art: "Kygo", t: "Stole the Show", n: "Con Parson James: su gran éxito." },
@@ -51,9 +55,28 @@ HISTORIAS.push({
         { a: 2016, art: "Major Lazer feat. Justin Bieber & MØ", t: "Cold Water", n: "El verano de 2016: Diplo, Bieber y la danesa MØ." },
         { a: 2016, art: "Jonas Blue feat. JP Cooper", t: "Perfect Strangers", n: "Pop dance británico del que hizo la versión de «Fast Car»." },
         { a: 2016, art: "Seeb & Neev", t: "Breathe", n: "Los noruegos de los remixes." },
+        { a: 2016, art: "Robin Schulz & Akon", t: "Heatwave", n: "Pop dance de verano con la voz de Akon, de su disco «Uncovered»." },
+        { a: 2016, art: "Robin Schulz & Alligatoah", t: "Willst du", n: "Remix de un tema del rapero alemán (año aproximado)." },
+        { a: 2016, art: "felix jaehn & Mike Williams", t: "Feel Good", n: "Otra de su etapa de tropical house (año aproximado)." },
+        { a: 2016, art: "Sam Feldt", t: "Been a While", n: "El holandés del tropical house (año aproximado)." },
+        { a: 2016, art: "Syn Cole & Kirstin", t: "Got the Feeling", n: "El estonio del pop dance (año aproximado)." },
         { a: 2017, art: "Kygo & Selena Gomez", t: "It Ain't Me", n: "El final de la ola tropical." },
+        { a: 2017, art: "Robin Schulz & James Blunt", t: "OK", n: "El cantante de «You're Beautiful» en clave dance." },
+        { a: 2017, art: "Robin Schulz, David Guetta & Cheat Codes", t: "Shed a Light", n: "Tres nombres del dance de radio juntos." },
+        { a: 2017, art: "Lost Frequencies & Netsky", t: "Here with You", n: "Dos belgas juntos: el del tropical house y el del drum and bass." },
         { a: 2018, art: "Kygo feat. Justin Jesso", t: "Stargazing", n: "Kygo más maduro, sin marimbas." },
-        { a: 2019, art: "Kygo & Whitney Houston", t: "Higher Love", n: "Whitney resucitada en tropical house." }
+        { a: 2018, art: "Robin Schulz & Erika Sirola", t: "Speechless", n: "Otra de su disco «Uncovered»." },
+        { a: 2018, art: "Lost Frequencies & Zonderling", t: "Crazy", n: "Con los holandeses Zonderling (año aproximado)." },
+        { a: 2018, art: "Sam Feldt, Lush & Simon & INNA", t: "Fade Away", n: "Sam Feldt con la rumana INNA." },
+        { a: 2018, art: "Sigala & Bryn Christopher", t: "Sweet Lovin'", n: "El británico del pop dance alegre." },
+        { a: 2018, art: "Jonas Blue & RAYE", t: "By Your Side", n: "El británico de «Fast Car» con RAYE antes de su fama." },
+        { a: 2019, art: "Kygo & Whitney Houston", t: "Higher Love", n: "Whitney resucitada en tropical house." },
+        { a: 2019, art: "SHAUN, Conor Maynard & Sam Feldt", t: "Way Back Home", n: "El tema coreano de Shaun convertido en éxito mundial." },
+        { a: 2019, art: "Kygo & Miguel", t: "Remind Me to Forget", n: "Kygo con el cantante de R&B." },
+        { a: 2019, art: "Kygo, Avicii & Sandro Cavazza", t: "Forever Yours (Avicii Tribute)", n: "Kygo termina una canción inacabada de Avicii." },
+        { a: 2020, art: "Kygo & Imagine Dragons", t: "Born to Be Yours", n: "El noruego con el grupo de Las Vegas." },
+        { a: 2020, art: "LVNDSCAPE, Holland Park & Nico Santos", t: "Waterfalls", n: "Pop dance holandés con el cantante alemán (año aproximado)." },
+        { a: 2021, art: "Lost Frequencies & Calum Scott", t: "Where Are You Now", n: "Su gran éxito de 2021, número uno en media Europa." }
       ]
     }
   ]

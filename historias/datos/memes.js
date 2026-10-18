@@ -28,7 +28,7 @@ HISTORIAS.push({
     {
       titulo: "Los primeros virales de internet",
       corto: "Primeros virales",
-      periodo: "1999 – 2008",
+      periodo: "1999 – 2009",
       intro: "Foros, Flash, MSN y los primeros años de YouTube.",
       items: [
         { a: 1999, art: "Darude", t: "Sandstorm", n: "Cuando alguien pregunta «¿cómo se llama esta canción?», la respuesta siempre es «Darude – Sandstorm»." },
@@ -46,7 +46,9 @@ HISTORIAS.push({
         { a: 2006, art: "Teriyaki Boyz", t: "Tokyo Drift (Fast & Furious)", n: "El sonido de cualquier cosa que gira o derrapa en un vídeo." },
         { a: 2007, art: "Tay Zonday", t: "Chocolate Rain", n: "Una voz grave y un «I move away from the mic to breathe in». Viral de los primeros YouTube." },
         { a: 2007, art: "Gangsta Rap", t: "Ni**a Ni**a Ni**a", n: "La parodia del falso grupo de «Gangsta Rap: The Glockumentary» que acabó convertida en meme." },
-        { a: 2008, art: "Bag Raiders", t: "Shooting Stars", n: "En 2017 empezó a sonar en vídeos de gente saliendo disparada al espacio." }
+        { a: 2007, art: "XS Project", t: "Bochka, Bass, Kolbaser", n: "El hardbass ruso que en internet se convirtió en el meme de los chicos en chándal en cuclillas." },
+        { a: 2008, art: "Bag Raiders", t: "Shooting Stars", n: "En 2017 empezó a sonar en vídeos de gente saliendo disparada al espacio." },
+        { a: 2009, art: "Hard Bass School", t: "Narkotik Kal", n: "Otro himno del hardbass ruso, convertido en meme en todo el mundo (año aproximado)." }
       ]
     },
     {

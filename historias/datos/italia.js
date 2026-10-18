@@ -131,6 +131,7 @@ HISTORIAS.push({
         { a: 1998, art: "Nek", t: "Tu nombre", n: "Nek en su etapa de mayor fama en España (año aproximado)." },
         { a: 2000, art: "Eros Ramazzotti", t: "Fuego en el fuego", n: "«Fuoco nel fuoco», del disco «Estilolibre», en español." },
         { a: 2008, art: "Tiziano Ferro & Amaia Montero", t: "El regalo más grande", n: "Con la cantante de La Oreja de Van Gogh." },
+        { a: 2020, art: "DJ Matrix, Matt Joe & Carolina Márquez", t: "Será porque te amo", n: "El clásico de Ricchi e Poveri convertido en tema de discoteca (año aproximado)." },
         { a: 2021, art: "sangiovanni & Aitana", t: "mariposas", n: "Pop italiano y español a medias." }
       ]
     }

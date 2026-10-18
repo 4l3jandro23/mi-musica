@@ -28,7 +28,8 @@ HISTORIAS.push({
         { a: 1992, art: "Captain Hollywood Project", t: "More and More", n: "Un exbailarín estadounidense en Alemania." },
         { a: 1992, art: "Double You", t: "Please Don't Go", n: "Double You, desde Italia, versiona a KC and the Sunshine Band y la convierte en un éxito de discoteca en toda Europa." },
         { a: 1992, art: "DJ BoBo", t: "Somebody Dance with Me", n: "El suizo del eurodance, con un sample de Rockwell." },
-        { a: 1992, art: "SNAP!", t: "Rhythm Is a Dancer", n: "Número uno en media Europa: el eurodance despega." }
+        { a: 1992, art: "SNAP!", t: "Rhythm Is a Dancer", n: "Número uno en media Europa: el eurodance despega." },
+        { a: 1992, art: "Leila K", t: "Open Sesame", n: "La rapera sueca de origen marroquí, una de las voces del eurodance." }
       ]
     },
     {
@@ -71,6 +72,7 @@ HISTORIAS.push({
         { a: 1996, art: "Alexia", t: "Summer Is Crazy", n: "La voz de Corona y Ice MC, ya en solitario." },
         { a: 1996, art: "Mr. President", t: "Coco Jamboo", n: "El verano de 1996 en todas las playas." },
         { a: 1996, art: "Rebeca", t: "Duro de pelar", n: "La cantante española del dance de los 90." },
+        { a: 1996, art: "Gala", t: "Let a Boy Cry", n: "La italiana del eurodance que triunfó en Europa (y en las verbenas españolas)." },
         { a: 1997, art: "Alexia", t: "Uh La La La", n: "Eurodance italiano en clave pop." },
         { a: 1997, art: "Sash!", t: "Ecuador", n: "Trompetas y sintetizadores." },
         { a: 1997, art: "Bellini", t: "Samba de Janeiro", n: "Batucada y samba para las discotecas alemanas." },

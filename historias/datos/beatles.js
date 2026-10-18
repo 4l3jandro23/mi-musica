@@ -378,6 +378,7 @@ HISTORIAS.push({
         { a: 1976, art: "Wings", t: "Silly Love Songs", n: "La respuesta de Paul a quienes le acusaban de escribir solo tonterías de amor." },
         { a: 1976, art: "George Harrison", t: "Crackerbox Palace", n: "Del disco «Thirty Three & 1/3», con un vídeo de los Monty Python." },
         { a: 1977, art: "Wings", t: "Mull of Kintyre", n: "Con gaitas escocesas: el single más vendido de la historia en Reino Unido hasta 1984." },
+        { a: 1979, art: "Paul McCartney", t: "Wonderful Christmastime", n: "Grabada solo en su estudio con sintetizadores: Paul cobra cada Navidad gracias a ella." },
         { a: 1980, art: "John Lennon", t: "Asesinado en Nueva York", tipo: "hito", n: "8 de diciembre, a la puerta de su casa. El mundo entero se paró." },
         { a: 1980, art: "John Lennon", t: "Watching the Wheels", n: "Semanas antes de su asesinato." },
         { a: 1980, art: "Paul McCartney", t: "Coming Up", n: "Grabada solo en su granja; dicen que animó a Lennon a volver a la música." },

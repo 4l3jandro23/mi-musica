@@ -64,6 +64,7 @@ HISTORIAS.push({
         { a: 2020, art: "Tesher", t: "Jalebi Baby", n: "El canadiense de origen indio mezcla bhangra y pop; el remix con Jason Derulo arrasa en TikTok." },
         { a: 2021, art: "Sidhu Moose Wala", t: "295", n: "Rap punjabi. Su asesinato en 2022 conmocionó a la India." },
         { a: 2022, art: "Rahul Sipligunj", t: "Naatu Naatu", n: "Con Kaala Bhairava, de «RRR»: el primer Óscar a mejor canción para una película india." },
+        { a: 2023, art: "Midé Naike", t: "Patakha Guddi (Drill Remix)", n: "Drill sobre la canción punjabi de la película «Highway» (año aproximado)." },
         { a: 2024, art: "Hanumankind", t: "Big Dawgs (feat. Kalmi)", n: "Un rapero de Kerala grabando entre motos en un «pozo de la muerte»: viral en todo el mundo." }
       ]
     }

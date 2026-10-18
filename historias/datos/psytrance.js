@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "psytrance",
   familia: "Electrónica",
   titulo: "Goa y psytrance",
-  periodo: "1970 – 2017",
+  periodo: "1970 – 2020",
   color: "#9b3fd1",
   lema: "De las playas de Goa al Boom y Ozora: el trance psicodélico, sus fiestas y sus subgéneros.",
   intro: "En los años 70 los hippies que llegaban a Goa, en la India, montaban fiestas en la playa. A finales de los 80 los DJs sustituyeron el rock por electrónica en cintas DAT, y de ahí nació el goa trance: melodías orientales, ritmo hipnótico y noches de luna llena. En los 2000 se convirtió en psytrance, con escenas enormes en Israel, Brasil, Portugal y Hungría.",
@@ -29,7 +29,7 @@ HISTORIAS.push({
     {
       titulo: "Full on y el psytrance israelí",
       corto: "Full on",
-      periodo: "1997 – 2008",
+      periodo: "1997 – 2009",
       intro: "El goa se acelera y se convierte en psytrance: Israel, Portugal y Hungría.",
       items: [
         { a: 1997, art: "Boom Festival", t: "Primera edición en Portugal", tipo: "hito", n: "Un festival bienal que se convierte en la meca mundial del psytrance." },
@@ -45,24 +45,36 @@ HISTORIAS.push({
         { a: 2003, art: "Infected Mushroom", t: "Converting Vegetarians", n: "El dúo de Haifa abre el psytrance al rock y la electrónica." },
         { a: 2003, art: "Juno Reactor & Don Davis", t: "Navras", n: "El final de Matrix Revolutions, en sánscrito y a toda orquesta." },
         { a: 2003, art: "Infected Mushroom", t: "Bust a Move", n: "Infected Mushroom en «Converting Vegetarians», con guitarras y voces." },
+        { a: 2003, art: "Infected Mushroom", t: "Saeed", n: "De «Converting Vegetarians»: los israelíes mezclan psytrance con melodías de Oriente Medio (año aproximado)." },
         { a: 2004, art: "O.Z.O.R.A.", t: "Primer festival Ozora en Hungría", tipo: "hito", n: "Una semana en el campo que se ha convertido en peregrinación psicodélica." },
         { a: 2004, art: "Infected Mushroom", t: "Heavyweight", n: "Del disco IM the Supervisor." },
         { a: 2007, art: "Infected Mushroom", t: "Becoming Insane", n: "Guitarras, voces y psytrance: su canción más famosa." },
         { a: 2007, art: "Astrix & Atomic Pulse", t: "Side Effect", n: "Para escuchar con los ojos cerrados." },
-        { a: 2008, art: "Astrix", t: "Deep Jungle Walk", n: "El full on israelí que sonó en todas las fiestas." }
+        { a: 2007, art: "Infected Mushroom", t: "U R So F****d", n: "De «Vicious Delicious», el disco con el que llenan festivales de rock y electrónica." },
+        { a: 2008, art: "Astrix", t: "Deep Jungle Walk", n: "El full on israelí que sonó en todas las fiestas." },
+        { a: 2009, art: "Infected Mushroom", t: "Never Mind", n: "Otra de su etapa de guitarras y voz (año aproximado)." }
       ]
     },
     {
       titulo: "Progressive, dark y psytrance de festival",
       corto: "Progressive",
-      periodo: "2010 – 2017",
+      periodo: "2010 – 2020",
       intro: "El psytrance se divide en mil estilos y llega a los grandes festivales.",
       items: [
         { a: 2010, art: "Dark psy y forest", t: "El psytrance se oscurece", tipo: "hito", n: "En Rusia, Alemania y México crecen estilos más rápidos y oscuros, para bosques de madrugada." },
+        { a: 2012, art: "Infected Mushroom & Hatikva 6", t: "Where Do I Belong", n: "Con el grupo de reggae israelí, de «Army of Mushrooms»." },
         { a: 2014, art: "Vini Vici & Hilight Tribe", t: "Free Tibet", q: "Free Tibet Hilight Tribe Vini Vici", n: "Psytrance con guitarras e instrumentos tibetanos, uno de los himnos de los festivales." },
         { a: 2015, art: "Vini Vici", t: "The Tribe", n: "Psytrance para escenarios gigantes." },
         { a: 2016, art: "Armin van Buuren & Vini Vici", t: "Great Spirit", n: "Con Hilight Tribe: el psytrance entra en el trance de festival." },
-        { a: 2017, art: "W&W & Vini Vici", t: "Chakra", n: "El psytrance en los grandes festivales." }
+        { a: 2016, art: "Ace Ventura & Astrix", t: "Pranava", n: "Dos grandes del progressive psytrance israelí juntos (año aproximado)." },
+        { a: 2016, art: "Vegas (Brazil), Bizzare Contact & Vini Vici", t: "Answer from the Stars (Vini Vici vs. Bizzare Contact Remix)", n: "Un remix de la generación de festival del psytrance (año aproximado)." },
+        { a: 2016, art: "Mandragora", t: "AK-47", n: "El brasileño del psytrance de tempo alto y bajos pesados (año aproximado)." },
+        { a: 2017, art: "W&W & Vini Vici", t: "Chakra", n: "El psytrance en los grandes festivales." },
+        { a: 2018, art: "Vini Vici, Shapov & NERVO", t: "My World", n: "Los israelíes de «The Tribe» se pasan al mainstage del EDM (año aproximado)." },
+        { a: 2019, art: "Mandragora & 4i20", t: "Pachamama", n: "Psytrance con cantos andinos (año aproximado)." },
+        { a: 2019, art: "Vini Vici, Blastoyz & Jean Marie", t: "Gaia", n: "Psytrance de festival con aire espiritual (año aproximado)." },
+        { a: 2020, art: "Mandragora & DJ Moon", t: "Oie (DJ Moon Remix)", n: "Otra de su catálogo de festival (año aproximado)." },
+        { a: 2020, art: "Vini Vici, Timmy Trumpet & Symphonic", t: "100", n: "Psytrance con la trompeta del australiano (año aproximado)." }
       ]
     },
     {

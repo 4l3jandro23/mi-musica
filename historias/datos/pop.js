@@ -108,6 +108,7 @@ HISTORIAS.push({
         { a: 2002, art: "Robbie Williams", t: "Feel", n: "Una de sus baladas más queridas, del disco «Escapology»." },
         { a: 2003, art: "Beyoncé", t: "Crazy in Love", n: "Con Jay-Z: el debut en solitario más potente del siglo." },
         { a: 2003, art: "No Doubt", t: "It's My Life", n: "La versión de Talk Talk, con un vídeo a lo cine negro." },
+        { a: 2003, art: "Jamelia", t: "Superstar", n: "La británica de Birmingham y su gran éxito en las listas." },
         { a: 2007, art: "Rihanna", t: "Umbrella", n: "Iba a ser para Britney Spears. Rihanna la grabó, estuvo diez semanas de número uno en el Reino Unido y se volvió estrella mundial." }
       ]
     },
@@ -133,6 +134,7 @@ HISTORIAS.push({
         { a: 2019, art: "The Weeknd", t: "Blinding Lights", n: "Sintetizadores ochenteros: la canción más escuchada de la historia de Spotify." },
         { a: 2019, art: "Shawn Mendes", t: "If I Can't Have You", n: "Del canadiense antes de su parón." },
         { a: 2019, art: "benny blanco, Selena Gomez, J Balvin & Tainy", t: "I Can't Get Enough", n: "El productor estadounidense junta pop y reguetón con Selena y J Balvin." },
+        { a: 2019, art: "Mabel", t: "Don't Call Me Up", n: "La hija de Neneh Cherry: número 3 en Reino Unido." },
         { a: 2022, art: "Harry Styles", t: "As It Was", n: "De boy band a estrella mundial." },
         { a: 2023, art: "Troye Sivan", t: "Rush", n: "Pop de discoteca y gay, el himno del verano de 2023." }
       ]

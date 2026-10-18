@@ -23,6 +23,7 @@ HISTORIAS.push({
         { a: 2014, art: "Alesso", t: "Heroes (we could be)", n: "Con Tove Lo: el progressive se vuelve pop." },
         { a: 2014, art: "Tchami", t: "After Life", n: "Future house francés: el productor que se vestía de cura en los conciertos." },
         { a: 2014, art: "Eric Prydz", t: "Liberate", n: "Progressive house melódico." },
+        { a: 2014, art: "DR. KUCHO!, Gregor Salto & Oliver Heldens", t: "Can't Stop Playing (Oliver Heldens & Gregor Salto Remix)", n: "El remix future house de un tema del productor vasco Dr. Kucho!." },
         { a: 2015, art: "Eric Prydz", t: "Opus", n: "Nueve minutos que crecen sin parar: un himno moderno." },
         { a: 2015, art: "Axwell Λ Ingrosso", t: "Sun Is Shining", n: "Después de Swedish House Mafia." },
         { a: 2015, art: "Eric Prydz", t: "Generate", n: "Uno de sus temas de festival." },
@@ -31,7 +32,8 @@ HISTORIAS.push({
         { a: 2016, art: "Eric Prydz & Rob Swire", t: "Breathe", n: "Del disco «Opus», con la voz de Rob Swire, de Pendulum y Knife Party." },
         { a: 2016, art: "Eric Prydz", t: "Every Day", n: "De «Opus»: el sueco de «Call on Me» en su faceta más épica." },
         { a: 2016, art: "Eric Prydz & CHVRCHES", t: "Tether", n: "Con la voz de Lauren Mayberry." },
-        { a: 2017, art: "Axwell Λ Ingrosso", t: "More Than You Know", n: "Dos de los Swedish House Mafia, ya en solitario." }
+        { a: 2017, art: "Axwell Λ Ingrosso", t: "More Than You Know", n: "Dos de los Swedish House Mafia, ya en solitario." },
+        { a: 2017, art: "CAMELPHAT & Jem Cooke", t: "Rabbit Hole", n: "Los de Liverpool en la estela de «Cola» (año aproximado)." }
       ]
     },
     {
@@ -45,10 +47,12 @@ HISTORIAS.push({
         { a: 2018, art: "FISHER", t: "Losing It", n: "Un australiano y un drop que medio mundo coreó." },
         { a: 2018, art: "Chris Lake", t: "Turn Off the Lights", n: "Con Alexis Roberts: tech house con voz." },
         { a: 2018, art: "Black Coffee feat. David Guetta", t: "Drive", n: "El afro house de Sudáfrica con Guetta." },
+        { a: 2018, art: "CAMELPHAT & Jake Bugg", t: "Be Someone", n: "Tech house con el cantante de Nottingham." },
         { a: 2019, art: "Dom Dolla", t: "San Frandisco", n: "Los australianos dominan el tech house." },
         { a: 2019, art: "Fisher", t: "You Little Beauty", n: "Fisher, australiano, con tech house divertido y bailable." },
         { a: 2019, art: "Meduza feat. Goodboys", t: "Piece of Your Heart", n: "House italiano en todo el mundo." },
         { a: 2019, art: "Chris Lake & Fisher", t: "Losing My Mind", n: "Tech house de dos de los nombres más fuertes de la escena de Ibiza." },
+        { a: 2019, art: "Eelke Kleijn", t: "Celebrate Life", n: "Progressive house melódico del holandés (año aproximado)." },
         { a: 2020, art: "John Summit", t: "Deep End", n: "El tech house de la nueva generación de EE. UU." },
         { a: 2020, art: "Keinemusik", t: "Muyè", n: "El afro house del colectivo berlinés que luego llenaría el Coachella." }
       ]
@@ -63,6 +67,7 @@ HISTORIAS.push({
         { a: 2019, art: "Black Coffee", t: "El afro house llega a Ibiza", tipo: "hito", n: "El sudafricano se convierte en estrella mundial." },
         { a: 2019, art: "Master KG", t: "Jerusalema", n: "Con Nomcebo Zikode: el baile que dio la vuelta al mundo." },
         { a: 2023, art: "Dom Dolla & MK", t: "Rhyme Dust", n: "Tech house con voz: un australiano y el productor de Detroit de los 90." },
+        { a: 2023, art: "Rebūke", t: "Along Came Polly", n: "El irlandés del techno melódico y su gran tema de festival (año aproximado)." },
         { a: 2024, art: "Adam Port", t: "Move", n: "Con Stryv y Malachiii, del colectivo Keinemusik: el afro house llega a las listas de todo el mundo." }
       ]
     },

@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "gabber",
   familia: "Electrónica",
   titulo: "Historia del gabber",
-  periodo: "1990 – 2020",
+  periodo: "1990 – 2022",
   color: "#9e9e9e",
   lema: "Rotterdam, 200 pulsaciones por minuto y cabezas rapadas: el hardcore holandés y sus hijos.",
   intro: "El gabber es el hardcore más rápido y ruidoso: bombos distorsionados a más de 160 o 200 pulsaciones por minuto. Nació en Rotterdam hacia 1992 como reacción al house elegante de Ámsterdam, con chándales, cabezas rapadas y fiestas enormes como Thunderdome. Después vinieron el happy hardcore, el hardcore moderno, el frenchcore y un revival que llega hasta Indonesia.",
@@ -46,7 +46,7 @@ HISTORIAS.push({
     {
       titulo: "Hardcore de hoy",
       corto: "Hoy",
-      periodo: "1997 – 2020",
+      periodo: "1997 – 2022",
       intro: "Hardcore moderno, frenchcore y revival.",
       items: [
         { a: 1997, art: "Hakkûhbar", t: "Gabbertje", n: "Una canción de humor sobre un gabber enamorado que llegó al número uno en Holanda." },
@@ -62,8 +62,14 @@ HISTORIAS.push({
         { a: 2015, art: "Dr. Peacock", t: "Trip to Ireland", n: "El frenchcore: violines irlandeses a 200 pulsaciones." },
         { a: 2016, art: "Sefa", t: "Le mystère", n: "Frenchcore melódico del holandés Sefa." },
         { a: 2016, art: "Partyraiser", t: "Sound Becomes One", q: "Partyraiser Sound Becomes One", n: "El hardcore duro que se suaviza en el medio." },
+        { a: 2016, art: "Angerfist", t: "Burn This MF Down", n: "El holandés de la máscara, el gran nombre del hardcore de los 2010 (año aproximado)." },
         { a: 2018, art: "Gabber Modus Operandi", t: "Puja", n: "Un dúo de Bali mezcla gabber y música tradicional indonesia." },
-        { a: 2020, art: "Uptempo", t: "Más rápido imposible", tipo: "hito", n: "El «uptempo» supera las 200 pulsaciones: el gabber sigue acelerando." }
+        { a: 2018, art: "Dr. Peacock & Sefa", t: "Muzika (Sefa Remix)", n: "Frenchcore holandés, el hardcore con violines (año aproximado)." },
+        { a: 2019, art: "Angerfist", t: "Loser", n: "Otra de Angerfist, hardcore a 180 BPM (año aproximado)." },
+        { a: 2020, art: "Uptempo", t: "Más rápido imposible", tipo: "hito", n: "El «uptempo» supera las 200 pulsaciones: el gabber sigue acelerando." },
+        { a: 2020, art: "GPF & Mind Compressor", t: "Spaghetti Love", n: "Uptempo hardcore de la escena holandesa (año aproximado)." },
+        { a: 2021, art: "N-Vitral, BOMBSQUAD & GPF", t: "Greazy Counter", n: "Hardcore uptempo de la nueva generación (año aproximado)." },
+        { a: 2022, art: "Unicorn on K", t: "Gangrena", n: "Hard techno y hardcore con humor (año aproximado)." }
       ]
     }
   ]

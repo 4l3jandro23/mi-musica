@@ -28,6 +28,7 @@ HISTORIAS.push({
       items: [
         { a: 1969, art: "Willie Colón & Héctor Lavoe", t: "Che che colé", n: "Un tema ghanés convertido en salsa del Bronx." },
         { a: 1969, art: "La Sonora Ponceña", t: "Fuego en el 23", q: "Sonora Poncena Fuego en el 23", n: "La salsa de Ponce: el piano de Papo Lucca y un incendio en el barrio." },
+        { a: 1970, art: "José Feliciano", t: "Feliz Navidad", n: "El puertorriqueño ciego la escribió en Los Ángeles echando de menos a su familia: una de las más escuchadas cada diciembre." },
         { a: 1971, art: "Fania All-Stars en el Cheetah", t: "La salsa tiene nombre", tipo: "hito", n: "El concierto de Nueva York, lleno de músicos puertorriqueños, da fama mundial a la salsa." },
         { a: 1974, art: "Ismael Rivera", t: "El Nazareno", n: "«Maelo», el sonero mayor, canta al Cristo Negro de Portobelo." },
         { a: 1975, art: "El Gran Combo de Puerto Rico", t: "Un verano en Nueva York", n: "La orquesta más longeva de la salsa boricua." },
@@ -44,9 +45,10 @@ HISTORIAS.push({
     {
       titulo: "Pop e ídolos",
       corto: "Pop",
-      periodo: "1963 – 2002",
+      periodo: "1960 – 2002",
       intro: "De José Feliciano a Ricky Martin.",
       items: [
+        { a: 1960, art: "Trío Vegabajeño", t: "Cantares de Navidad", n: "Aguinaldo puertorriqueño de los tríos de guitarras y cuatro (año aproximado)." },
         { a: 1963, art: "Tito Rodríguez", t: "Inolvidable", n: "El bolero que hizo famoso el cantante boricua del Palladium de Nueva York." },
         { a: 1968, art: "José Feliciano", t: "Light My Fire", n: "El guitarrista ciego de Lares versiona a The Doors y triunfa en Estados Unidos." },
         { a: 1981, art: "Menudo", t: "Súbete a mi moto", n: "La primera boy band latina, con cambios de miembros cuando cumplían 16 años." },

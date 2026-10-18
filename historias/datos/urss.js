@@ -56,7 +56,7 @@ HISTORIAS.push({
     {
       titulo: "Perestroika: «¡Queremos cambios!»",
       corto: "Perestroika",
-      periodo: "1986 – 1992",
+      periodo: "1986 – 2002",
       intro: "Gorbachov abre la mano y el rock sale a los estadios.",
       items: [
         { a: 1986, art: "Nautilus Pompilius", alias: ["Наутилус Помпилиус"], t: "Skovannye odnoy tsepyu", q: "Наутилус Помпилиус Скованные одной цепью", n: "«Encadenados con la misma cadena»: una crítica directa al sistema." },
@@ -70,7 +70,8 @@ HISTORIAS.push({
         { a: 1990, art: "Kino", alias: ["Кино"], t: "Kukushka", q: "Кино Кукушка", n: "Tsoi muere ese verano en un accidente de coche. En Moscú aún hay un muro lleno de mensajes para él." },
         { a: 1990, art: "Kombinatsiya", t: "American Boy", n: "El pop de la perestroika." },
         { a: 1991, art: "Fin de la URSS", t: "Se disuelve la Unión Soviética", tipo: "hito", n: "Termina una época… y su música se convierte en nostalgia." },
-        { a: 1992, art: "DDT", t: "Osen'", q: "DDT Осень", n: "DDT, de Yuri Shevchuk, con una de las baladas de rock más queridas de Rusia." }
+        { a: 1992, art: "DDT", t: "Osen'", q: "DDT Осень", n: "DDT, de Yuri Shevchuk, con una de las baladas de rock más queridas de Rusia." },
+        { a: 2002, art: "t.A.T.u.", t: "All the Things She Said", n: "El dúo ruso que llegó al número uno en Reino Unido y en media Europa, entre el escándalo y el pop." }
       ]
     },
     {

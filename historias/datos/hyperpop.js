@@ -55,6 +55,8 @@ HISTORIAS.push({
         { a: 2021, art: "Arca", t: "Prada", n: "De «KICK ii»: reguetón deconstruido." },
         { a: 2021, art: "Arca", t: "Rakata", n: "El reguetón más extraño de Arca." },
         { a: 2021, art: "Arca", t: "Incendio", n: "De «KicK iii»: la venezolana Arca, entre el reguetón deforme y el ruido." },
+        { a: 2021, art: "Arca", t: "Doña", n: "De la serie de discos «KiCk», la venezolana en su lado más experimental (año aproximado)." },
+        { a: 2021, art: "Arca & Sia", t: "Born Yesterday", n: "Arca con Sia, de «KiCk iiii» (año aproximado)." },
         { a: 2023, art: "Snow Strippers", t: "Under Your Spell", n: "Electroclash para la Generación Z." },
         { a: 2023, art: "100 gecs", t: "Hollywood Baby", n: "Del disco «10,000 gecs»: pop punk con ruido." },
         { a: 2023, art: "Safety Trance & Arca", t: "El alma que te trajo", n: "Reguetón industrial venezolano (año aproximado)." },

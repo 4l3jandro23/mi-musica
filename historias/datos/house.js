@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "house",
   familia: "House, techno y EDM",
   titulo: "Historia del house",
-  periodo: "1977 – 2020",
+  periodo: "1977 – 2023",
   color: "#d6467e",
   lema: "De los clubs gais de Chicago al acid house, Ibiza, el vocal house y el house de hoy.",
   intro: "Cuando Estados Unidos «mata» la música disco, los clubs gais y negros de Chicago la mantienen viva. Los DJs la alargan con cajas de ritmos y la llaman por el club donde sonaba, el Warehouse. Cruza el Atlántico con el acid house y el «verano del amor», conquista Ibiza y las listas de los 90, y desde entonces no ha dejado de reinventarse. (Sus ramas modernas, como el progressive, el tech house o el future house, y el French house tienen su propia historia.)",
@@ -49,7 +49,8 @@ HISTORIAS.push({
         { a: 1990, art: "Madonna", t: "Vogue", n: "El house y el voguing de la escena ballroom llegan al pop más grande." },
         { a: 1990, art: "Alison Limerick", t: "Where Love Lives", n: "Un clásico del house británico." },
         { a: 1990, art: "Awesome 3", t: "Don't Go", n: "Rave británica con piano y voz soul." },
-        { a: 1990, art: "C+C Music Factory", t: "Gonna Make You Sweat (Everybody Dance Now)", n: "El «Everybody dance now» de todas las fiestas." }
+        { a: 1990, art: "C+C Music Factory", t: "Gonna Make You Sweat (Everybody Dance Now)", n: "El «Everybody dance now» de todas las fiestas." },
+        { a: 1990, art: "Mixmasters", t: "In the Mix (Fast Eddie Mix)", n: "House de Chicago con el rap de Fast Eddie (año aproximado)." }
       ]
     },
     {
@@ -65,6 +66,7 @@ HISTORIAS.push({
         { a: 1993, art: "Robin S", t: "Show Me Love", n: "El remix de StoneBridge y ese bajo de órgano que se ha sampleado mil veces." },
         { a: 1993, art: "Hardrive", t: "Deep Inside", n: "Louie Vega y la voz de Barbara Tucker: un clásico del house de Nueva York." },
         { a: 1994, art: "The Bucketheads", t: "The Bomb! (These Sounds Fall into My Mind)", n: "Kenny «Dope» González y un sample de Chicago." },
+        { a: 1994, art: "Jhelisa", t: "Friendly Pressure (Into the Sunshine Mix)", n: "Soul y house británico del sello Dorado (año aproximado)." },
         { a: 1995, art: "Ibiza", t: "Las superclubs", tipo: "hito", n: "Manumission, Pacha y Amnesia convierten la isla en la meca del house." },
         { a: 1996, art: "Toni Braxton", t: "Un-Break My Heart (Frankie Knuckles Remix)", q: "Toni Braxton Frankie Knuckles Un-Break My Heart", n: "Frankie Knuckles convierte la balada en un tema de house para la pista." },
         { a: 1996, art: "The Bad Yard Club & Crystal Waters", t: "In de Ghetto", n: "La voz de «Gypsy Woman» con David Morales." },
@@ -80,7 +82,7 @@ HISTORIAS.push({
     {
       titulo: "Electro house, Ibiza y el house de hoy",
       corto: "2000s hasta hoy",
-      periodo: "2001 – 2020",
+      periodo: "2001 – 2023",
       intro: "Ibiza, los DJs estrella y el house que llega a las listas.",
       items: [
         { a: 2001, art: "Roger Sanchez", t: "Another Chance", n: "Número uno en Reino Unido con un sample de Toto." },
@@ -91,6 +93,7 @@ HISTORIAS.push({
         { a: 2002, art: "Milky", t: "Just the Way You Are", n: "House italiano del verano de 2002." },
         { a: 2002, art: "Timo Maas", t: "To Get Down", n: "El alemán de los remixes." },
         { a: 2003, art: "Room 5 & Oliver Cheatham", t: "Make Luv", n: "El sample de «Get Down Saturday Night»: número uno en Reino Unido." },
+        { a: 2003, art: "Paris Avenue", t: "I Want You", n: "House holandés de 2003 (año aproximado)." },
         { a: 2004, art: "Beatport", t: "Las descargas para DJs", tipo: "hito", n: "Los vinilos dan paso a los archivos digitales." },
         { a: 2004, art: "Eric Prydz", t: "Call on Me", n: "Un sample de Steve Winwood y un vídeo de aeróbic: número uno." },
         { a: 2004, art: "Armand Van Helden", t: "My My My", n: "El anuncio del verano y un sample de Gary Wright." },
@@ -103,6 +106,8 @@ HISTORIAS.push({
         { a: 2004, art: "The Shapeshifters", t: "Lola's Theme", n: "Número uno en Reino Unido." },
         { a: 2005, art: "Bob Sinclar", t: "Love Generation", n: "Un silbido feliz: el verano de 2005 en todas partes." },
         { a: 2006, art: "Bob Sinclar & Steve Edwards", t: "World Hold On (Children of the Sky)", n: "Uno de los himnos del verano de 2006." },
+        { a: 2006, art: "Eddie Thoneick, Kurd Maverick & Ann Bailey", t: "Love Sensation", n: "El clásico de Loleatta Holloway en clave de house de Ibiza (año aproximado)." },
+        { a: 2006, art: "Bob Sinclar, Pitbull, Dragonfly & Fatman Scoop", t: "Rock the Boat", n: "El francés de «Love Generation» en clave de fiesta." },
         { a: 2007, art: "David Guetta", t: "Love Is Gone", n: "Guetta todavía era el DJ de las noches de Ibiza." },
         { a: 2007, art: "Alex Gaudino & Crystal Waters", t: "Destination Calabria", n: "El saxo de «Calabria» con la voz de Crystal Waters." },
         { a: 2007, art: "Enur & Natasja", t: "Calabria 2007", n: "La versión danesa de «Calabria» de Rune RK, con la rapera Natasja." },
@@ -115,12 +120,16 @@ HISTORIAS.push({
         { a: 2009, art: "Bob Sinclar", t: "Lala Song", n: "Con los raperos de la Sugarhill Gang." },
         { a: 2010, art: "Swedish House Mafia", t: "One", n: "Tres suecos que llevarían el house a los estadios." },
         { a: 2011, art: "Azealia Banks", t: "212", n: "Rap de Harlem sobre un tema de house de Lazy Jay: el house vuelve al rap." },
+        { a: 2011, art: "Bob Sinclar & Raffaella Carrà", t: "Far l'amore", n: "Sobre «A far l'amore comincia tu» de Raffaella Carrà, de 1976." },
         { a: 2014, art: "Robin Schulz", t: "Waves (Remix)", n: "El «deep house» de radio que sonó en todas partes en 2014." },
         { a: 2016, art: "Bob Sinclar", t: "Someone Who Needs Me", n: "Bob Sinclar en Spinnin' Records." },
         { a: 2016, art: "Armand Van Helden", t: "Know Thyself", n: "El de «You Don't Know Me» vuelve al house clásico." },
         { a: 2017, art: "Bob Sinclar & Akon", t: "Til the Sun Rise Up", n: "El francés de «Love Generation» con Akon: house para el verano." },
+        { a: 2018, art: "Armand Van Helden & Steve Aoki", t: "Brrrat!", n: "El de «You Don't Know Me» con Steve Aoki (año aproximado)." },
+        { a: 2019, art: "Bob Sinclar & Robbie Williams", t: "Electrico Romantico", n: "El francés con Robbie, con aire italiano." },
         { a: 2020, art: "Purple Disco Machine", t: "Hypnotized", n: "El nu-disco y el house con cuerdas vuelven a las listas." },
-        { a: 2020, art: "Channel Tres & Tyler, The Creator", t: "fuego", n: "De «i can't go outside», el disco del confinamiento del house rapeado de Compton." }
+        { a: 2020, art: "Channel Tres & Tyler, The Creator", t: "fuego", n: "De «i can't go outside», el disco del confinamiento del house rapeado de Compton." },
+        { a: 2023, art: "Armand Van Helden", t: "Wings", n: "Otra de sus vueltas al house (año aproximado)." }
       ]
     }
   ]

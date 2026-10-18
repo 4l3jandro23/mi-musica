@@ -42,6 +42,7 @@ HISTORIAS.push({
         { a: 1942, art: "Glenn Miller", t: "American Patrol", n: "Una marcha para la orquesta del ejército, poco antes de que Miller desapareciera." },
         { a: 1942, art: "Zarah Leander", t: "Davon geht die Welt nicht unter", n: "Propaganda alemana en forma de canción." },
         { a: 1942, art: "Kay Kyser", t: "Praise the Lord and Pass the Ammunition", n: "Sobre Pearl Harbor: la frase de un capellán convertida en canción." },
+        { a: 1942, art: "Bing Crosby", t: "White Christmas", n: "La añoranza de casa de millones de soldados: el single más vendido de la historia." },
         { a: 1943, art: "Anna Marly", t: "Le Chant des partisans", n: "El himno de la Resistencia francesa, emitido desde Londres." },
         { a: 1943, art: "Charles Trenet", t: "Douce France", n: "La dulce Francia en plena ocupación alemana." },
         { a: 1944, art: "Glenn Miller", t: "Desaparece sobre el Canal de la Mancha", tipo: "hito", n: "El avión de Glenn Miller desaparece en diciembre de 1944 cuando iba a tocar para las tropas en París. Nunca se encontró." },

@@ -37,6 +37,7 @@ HISTORIAS.push({
         { a: 1982, art: "Seiko Matsuda", alias: ["松田聖子"], t: "Akai Sweet Pea", q: "松田聖子 赤いスイートピー", n: "Seiko Matsuda, la gran ídolo de los 80 en Japón, en una balada que define su estilo dulce." },
         { a: 1982, art: "Hiroshi Yoshimura", alias: ["吉村弘"], t: "Music for Nine Postcards", tipo: "disco", n: "Ambient japonés, redescubierto gracias al algoritmo de YouTube." },
         { a: 1983, art: "Tomoko Aran", alias: ["亜蘭知子"], t: "Midnight Pretenders", n: "Redescubierta en internet: The Weeknd la sampleó en «Out of Time» en 2022." },
+        { a: 1983, art: "Ryuichi Sakamoto", t: "Merry Christmas Mr. Lawrence", n: "El tema de la película de Nagisa Ōshima en la que actuaba junto a Bowie: una de las melodías de piano más bonitas del siglo." },
         { a: 1984, art: "Mariya Takeuchi", alias: ["竹内まりや"], t: "Plastic Love", n: "El himno del city pop, que YouTube convirtió en leyenda en 2017." }
       ]
     },

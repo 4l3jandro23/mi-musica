@@ -76,6 +76,7 @@ HISTORIAS.push({
         { a: 1957, art: "The Del-Vikings", t: "Come Go with Me", n: "Doo-wop de un grupo con miembros blancos y negros." },
         { a: 1957, art: "The Diamonds", t: "Little Darlin'", n: "Doo-wop con castañuelas de un grupo canadiense: medio en serio, medio en broma." },
         { a: 1957, art: "Thurston Harris", t: "Little Bitty Pretty One", n: "Rhythm and blues de Los Ángeles." },
+        { a: 1957, art: "Bobby Helms", t: "Jingle Bell Rock", n: "El villancico rockabilly que cada diciembre vuelve a las listas de EE. UU." },
         { a: 1958, art: "Chuck Berry", t: "Johnny B. Goode", n: "El riff más famoso del rock and roll." },
         { a: 1958, art: "Link Wray", t: "Rumble", n: "Un instrumental tan amenazante que lo prohibieron en algunas radios. Distorsión antes de tiempo." },
         { a: 1958, art: "Eddie Cochran", t: "Summertime Blues", n: "La rebeldía adolescente hecha canción." },
