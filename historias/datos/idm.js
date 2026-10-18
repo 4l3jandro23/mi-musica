@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "idm",
   familia: "Electrónica",
   titulo: "Historia del IDM",
-  periodo: "1990 – 2018",
+  periodo: "1990 – 2021",
   color: "#5a6fb0",
   lema: "Electrónica para escuchar en casa: Warp, Aphex Twin, Autechre y Boards of Canada.",
   intro: "«IDM» (Intelligent Dance Music) es un nombre que casi todos sus artistas odian, pero sirve: electrónica de los 90 hecha para escuchar con cascos más que para bailar. Ritmos rotos y complejos, melodías nostálgicas y mucha experimentación, casi siempre desde el sello británico Warp.",
@@ -26,6 +26,7 @@ HISTORIAS.push({
         { a: 1997, art: "Squarepusher", t: "Come On My Selector", n: "Drum & bass acelerado hasta lo absurdo y un bajo virtuoso." },
         { a: 1997, art: "Aphex Twin", t: "Come to Daddy", n: "Su cara más terrorífica, con un vídeo de Chris Cunningham." },
         { a: 1997, art: "µ-Ziq", t: "Hasty Boom Alert", n: "Drill 'n' bass." },
+        { a: 1997, art: "Aphex Twin", t: "Flim", n: "Del EP «Come to Daddy»: la cara tierna de Aphex Twin." },
         { a: 1998, art: "Boards of Canada", t: "Roygbiv", n: "Nostalgia de documentales de los 70 y cintas gastadas." },
         { a: 1998, art: "Amon Tobin", t: "Get Your Snack On", n: "Jazz y breakbeat." },
         { a: 1999, art: "Aphex Twin", t: "Windowlicker", n: "Ritmos imposibles y un vídeo de Chris Cunningham que todavía inquieta." },
@@ -35,12 +36,13 @@ HISTORIAS.push({
     {
       titulo: "Más allá del IDM",
       corto: "2000s",
-      periodo: "2000 – 2018",
+      periodo: "2000 – 2021",
       intro: "Lo que se llamaba «IDM» se mezcla con el rock, el hip hop y el folk.",
       items: [
         { a: 2000, art: "Radiohead", t: "Idioteque", n: "Radiohead se pasan a la electrónica de Warp en «Kid A»." },
         { a: 2001, art: "Aphex Twin", t: "Avril 14th", n: "Un piano sencillo: su pieza más escuchada (Kanye la sampleó)." },
         { a: 2001, art: "Squarepusher", t: "My Red Hot Car", n: "Squarepusher se ríe del UK garage con un tema de ritmos rotos." },
+        { a: 2001, art: "Aphex Twin", t: "QKThr", n: "Un vals de cuerdas de «Drukqs»." },
         { a: 2002, art: "Autechre", t: "Gantz Graf", n: "Ruido y ritmo casi abstractos." },
         { a: 2002, art: "Boards of Canada", t: "Music Is Math", n: "De «Geogaddi»: nostalgia, patrones matemáticos y voces infantiles." },
         { a: 2003, art: "Four Tet", t: "She Moves She", n: "La «folktrónica»: guitarras y samples orgánicos." },
@@ -54,8 +56,10 @@ HISTORIAS.push({
         { a: 2013, art: "Jon Hopkins", t: "Open Eye Signal", n: "IDM con pegada de techno." },
         { a: 2014, art: "Aphex Twin", t: "Un dirigible verde sobre Londres", tipo: "hito", n: "Así anuncia Syro, su primer disco en trece años." },
         { a: 2014, art: "Aphex Twin", t: "minipops 67 [120.2][source field mix]", n: "Su regreso tras 13 años, anunciado con un dirigible sobre Londres." },
+        { a: 2014, art: "Aphex Twin", t: "180db_ [130]", n: "De «Syro», su regreso tras trece años: gana el Grammy." },
         { a: 2018, art: "Oneohtrix Point Never", t: "Black Snow", n: "El IDM se cruza con el pop extraño de los 2010." },
-        { a: 2018, art: "Jon Hopkins", t: "Emerald Rush", n: "Electrónica que sube." }
+        { a: 2018, art: "Jon Hopkins", t: "Emerald Rush", n: "Electrónica que sube." },
+        { a: 2021, art: "Flying Lotus", t: "Crust", n: "De la banda sonora del anime «Yasuke»." }
       ]
     }
   ]

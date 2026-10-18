@@ -60,6 +60,7 @@ HISTORIAS.push({
       intro: "La nostalgia de los 80 vuelve con «Drive», «Stranger Things» y el pop del streaming.",
       items: [
         { a: 2004, art: "The Killers", t: "Somebody Told Me", n: "Guitarras y sintes de los 80 en el indie de los 2000." },
+        { a: 2005, art: "Goldfrapp", t: "Ooh La La", n: "El glam rock pasado a sintetizador." },
         { a: 2009, art: "La Roux", t: "Bulletproof", n: "El synth pop vuelve." },
         { a: 2010, art: "Kavinsky", t: "Nightcall", n: "De la película «Drive»: el himno del synthwave." },
         { a: 2011, art: "«Drive»", t: "La película resucita el synthwave", tipo: "hito", n: "Una banda sonora de sintetizadores ochenteros." },

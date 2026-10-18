@@ -84,10 +84,12 @@ HISTORIAS.push({
       intro: "Ibiza, los DJs estrella y el house que llega a las listas.",
       items: [
         { a: 2001, art: "Roger Sanchez", t: "Another Chance", n: "Número uno en Reino Unido con un sample de Toto." },
+        { a: 2001, art: "Groove Armada", t: "Superstylin'", n: "House con dancehall." },
         { a: 2002, art: "Benny Benassi", t: "Satisfaction", n: "Un sintetizador que zumba: nace el electro house." },
         { a: 2002, art: "David Guetta & Chris Willis", t: "Just a Little More Love", n: "El primer éxito de Guetta." },
         { a: 2002, art: "David Guetta", t: "Love Don't Let Me Go", n: "Luego la mezcla con «Walking Away» de The Egg." },
         { a: 2002, art: "Milky", t: "Just the Way You Are", n: "House italiano del verano de 2002." },
+        { a: 2002, art: "Timo Maas", t: "To Get Down", n: "El alemán de los remixes." },
         { a: 2003, art: "Room 5 & Oliver Cheatham", t: "Make Luv", n: "El sample de «Get Down Saturday Night»: número uno en Reino Unido." },
         { a: 2004, art: "Beatport", t: "Las descargas para DJs", tipo: "hito", n: "Los vinilos dan paso a los archivos digitales." },
         { a: 2004, art: "Eric Prydz", t: "Call on Me", n: "Un sample de Steve Winwood y un vídeo de aeróbic: número uno." },

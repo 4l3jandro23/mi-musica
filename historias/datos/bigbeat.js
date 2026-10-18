@@ -49,6 +49,7 @@ HISTORIAS.push({
         { a: 1999, art: "The Chemical Brothers", t: "Hey Boy Hey Girl", n: "El himno de los festivales de 1999." },
         { a: 1999, art: "Groove Armada", t: "I See You Baby", n: "Con Gram'ma Funk; sonó en todos los anuncios." },
         { a: 1999, art: "Bomfunk MC's", t: "Freestyler", n: "El rap finlandés con el vídeo del mando a distancia." },
+        { a: 1999, art: "Apollo 440", t: "Stop the Rock", n: "Big beat con guitarras de rock." },
         { a: 2000, art: "Fatboy Slim", t: "Sunset (Bird of Prey)", n: "Con la voz de Jim Morrison." }
       ]
     },

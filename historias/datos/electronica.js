@@ -87,6 +87,7 @@ HISTORIAS.push({
         { a: 1984, art: "Chicago y Detroit", t: "Nacen el house y el techno", tipo: "hito", n: "Dos ciudades industriales de EE. UU. inventan la música de baile electrónica moderna." },
         { a: 1988, art: "El verano del amor", t: "Raves en Reino Unido", tipo: "hito", n: "Acid house en almacenes y campos: la electrónica se convierte en cultura juvenil." },
         { a: 1990, art: "Enigma", t: "Sadeness (Part I)", n: "Canto gregoriano sobre ritmo de hip hop: número uno en media Europa." },
+        { a: 1993, art: "Orbital", t: "Halcyon + On + On", n: "Un tema dedicado a la madre de los hermanos Hartnoll." },
         { a: 1996, art: "The Prodigy", t: "Firestarter", n: "La electrónica con actitud punk: número uno en Reino Unido." },
         { a: 1997, art: "The Chemical Brothers", t: "Block Rockin' Beats", n: "El «big beat»: breaks y guitarras." },
         { a: 1997, art: "Daft Punk", t: "Around the World", n: "La French touch conquista el mundo." },
@@ -102,8 +103,13 @@ HISTORIAS.push({
         { a: 2000, art: "Daft Punk", t: "One More Time", n: "El autotune entra en la pista de baile." },
         { a: 2010, art: "Skrillex", t: "Scary Monsters and Nice Sprites", n: "El dubstep americano y el principio de la era EDM." },
         { a: 2011, art: "Avicii", t: "Levels", n: "El himno de una generación de festivales." },
+        { a: 2011, art: "The Glitch Mob", t: "We Can Make the World Stop", n: "Glitch hop de Los Ángeles." },
         { a: 2013, art: "Daft Punk", t: "«Random Access Memories»", tipo: "hito", n: "Grammy al disco del año: la electrónica vuelve a los instrumentos." },
         { a: 2013, art: "Disclosure", t: "Latch", n: "El house británico vuelve a las listas." },
+        { a: 2019, art: "Scizzie", t: "aquatic ambience", n: "La música del «Donkey Kong Country» pasada a drum & bass lo-fi: viral en internet (año aproximado)." },
+        { a: 2020, art: "sapientdream", t: "Stargazing", n: "Electrónica lo-fi de internet (año aproximado)." },
+        { a: 2021, art: "sapientdream & Slushii", t: "Past Lives", n: "Un éxito de TikTok, también en versión «slowed + reverb» (año aproximado)." },
+        { a: 2021, art: "recovery girl & galen tipton", t: "IM UPSET", n: "Hyperpop y breakcore de internet (año aproximado)." },
         { a: 2022, art: "Fred again..", t: "Delilah (pull me out of this)", n: "La electrónica emocional hecha con notas de voz y vídeos del móvil." }
       ]
     }
