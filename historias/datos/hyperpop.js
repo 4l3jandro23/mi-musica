@@ -27,7 +27,8 @@ HISTORIAS.push({
         { a: 2017, art: "Charli XCX", t: "Track 10", n: "Charli XCX y A. G. Cook: el pop del futuro se deshace en sintes." },
         { a: 2017, art: "Kim Petras", t: "Heart to Break", n: "Pop brillante de la alemana que luego ganó un Grammy con Sam Smith." },
         { a: 2017, art: "SOPHIE", t: "Ponyboy", n: "Del disco «Oil of Every Pearl's Un-Insides»." },
-        { a: 2018, art: "SOPHIE", t: "Faceshopping", n: "Sobre la identidad y el cuerpo: SOPHIE, pionera trans, murió en 2021." }
+        { a: 2018, art: "SOPHIE", t: "Faceshopping", n: "Sobre la identidad y el cuerpo: SOPHIE, pionera trans, murió en 2021." },
+        { a: 2018, art: "Ecco2k, Thaiboy Digital & Bladee", t: "Western Union", n: "Los suecos de Drain Gang." }
       ]
     },
     {
@@ -49,6 +50,8 @@ HISTORIAS.push({
         { a: 2020, art: "Arca", t: "KLK", n: "Con Rosalía: reguetón deformado por una de las productoras más radicales." },
         { a: 2020, art: "Charli XCX", t: "claws", n: "De «how i'm feeling now», el disco hecho en casa durante la pandemia." },
         { a: 2020, art: "Glaive", t: "astrid", q: "glaive astrid", n: "Glaive, de Carolina del Norte, con 15 años y un hyperpop emo." },
+        { a: 2020, art: "A. G. Cook & Charli XCX", t: "Xcxoplex", n: "Del disco «Apple» del productor." },
+        { a: 2020, art: "ElyOtto", t: "SugarCrash!", n: "El viral de TikTok de 2020 con voces aceleradas." },
         { a: 2021, art: "Ericdoa", t: "fool4love", q: "ericdoa", n: "El hyperpop de la generación de Discord." },
         { a: 2021, art: "Caroline Polachek", t: "Bunny Is a Rider", n: "Pop raro y elegante: un éxito de culto del verano de 2021." },
         { a: 2021, art: "underscores", t: "Spoiled little brat", n: "Hyperpop de dormitorio: guitarras pop punk y voces cortadas." },
@@ -57,10 +60,37 @@ HISTORIAS.push({
         { a: 2021, art: "Arca", t: "Incendio", n: "De «KicK iii»: la venezolana Arca, entre el reguetón deforme y el ruido." },
         { a: 2021, art: "Arca", t: "Doña", n: "De la serie de discos «KiCk», la venezolana en su lado más experimental (año aproximado)." },
         { a: 2021, art: "Arca & Sia", t: "Born Yesterday", n: "Arca con Sia, de «KiCk iiii» (año aproximado)." },
+        { a: 2021, art: "A. G. Cook", t: "2021", n: "Del fundador de PC Music (año aproximado)." },
+        { a: 2021, art: "Ezekiel", t: "help_urself", n: "Hyperpop de SoundCloud (año aproximado)." },
+        { a: 2021, art: "Pussy Riot, Boys Noize & Alice Glass", t: "Chastity", n: "El colectivo ruso con Alice Glass (año aproximado)." },
+        { a: 2021, art: "Coco & Clair Clair", t: "Pretty", n: "El dúo de Atlanta de rap y pop de internet (año aproximado)." },
+        { a: 2022, art: "Magdalena Bay", t: "Killshot", n: "De la versión deluxe de «Mercurial World»." },
+        { a: 2022, art: "Shygirl, Danny L Harle & Club Shy", t: "encore", n: "Remezcla de club de Shygirl (año aproximado)." },
         { a: 2023, art: "Snow Strippers", t: "Under Your Spell", n: "Electroclash para la Generación Z." },
         { a: 2023, art: "100 gecs", t: "Hollywood Baby", n: "Del disco «10,000 gecs»: pop punk con ruido." },
         { a: 2023, art: "Safety Trance & Arca", t: "El alma que te trajo", n: "Reguetón industrial venezolano (año aproximado)." },
-        { a: 2024, art: "Charli XCX", t: "Von dutch", n: "«Brat» lleva el hyperpop al gran público y el verano se vuelve verde lima." }
+        { a: 2023, art: "SyKo", t: "#BrooklynBloodPop!", n: "El viral de TikTok de 2022 (año aproximado)." },
+        { a: 2023, art: "patchymate", t: "babyur2nice", n: "Hyperpop de internet (año aproximado)." },
+        { a: 2023, art: "Alice Gas", t: "Ferrari", n: "Hyperpop de internet (año aproximado)." },
+        { a: 2024, art: "Charli XCX", t: "Von dutch", n: "«Brat» lleva el hyperpop al gran público y el verano se vuelve verde lima." },
+        { a: 2024, art: "Magdalena Bay", t: "Image", n: "De «Imaginal Disk», uno de los discos del año." },
+        { a: 2024, art: "Magdalena Bay", t: "She Looked Like Me!", n: "Abre «Imaginal Disk», su disco de 2024." },
+        { a: 2024, art: "Magdalena Bay", t: "True Blue Interlude", n: "Un interludio de «Imaginal Disk»." },
+        { a: 2024, art: "Magdalena Bay", t: "Fear, Sex", n: "Otra de «Imaginal Disk», su disco de 2024." },
+        { a: 2024, art: "Magdalena Bay", t: "Watching T.V.", n: "Otra de «Imaginal Disk», su disco de 2024." },
+        { a: 2024, art: "Magdalena Bay", t: "Tunnel Vision", n: "Otra de «Imaginal Disk», su disco de 2024." },
+        { a: 2024, art: "Magdalena Bay", t: "Love Is Everywhere", n: "Otra de «Imaginal Disk», su disco de 2024." },
+        { a: 2024, art: "Magdalena Bay", t: "That's My Floor", n: "Otra de «Imaginal Disk», con rock y sintes." },
+        { a: 2024, art: "Magdalena Bay", t: "Cry for Me", n: "Otra de «Imaginal Disk», su disco de 2024." },
+        { a: 2024, art: "Magdalena Bay", t: "Angel on a Satellite", n: "Otra de «Imaginal Disk», su disco de 2024." },
+        { a: 2024, art: "Magdalena Bay", t: "The Ballad of Matt & Mica", n: "Sobre la pareja que forma el grupo." },
+        { a: 2024, art: "Magdalena Bay", t: "Death & Romance", n: "Otra de «Imaginal Disk», su disco de 2024." },
+        { a: 2024, art: "Magdalena Bay", t: "Vampire in the Corner", n: "Otra de «Imaginal Disk», su disco de 2024." },
+        { a: 2024, art: "Magdalena Bay", t: "Killing Time", n: "Otra de «Imaginal Disk», su disco de 2024." },
+        { a: 2024, art: "The Dare", t: "Girls", n: "El productor de la escena indie de Nueva York." },
+        { a: 2024, art: "Artemas", t: "i like the way you kiss me", n: "El viral de TikTok de 2024." },
+        { a: 2024, art: "Artemas", t: "if u think i'm pretty", n: "Otra del cantante británico (año aproximado)." },
+        { a: 2024, art: "Basement Jaxx & 100 gecs", t: "where's my head at _", n: "100 gecs remezclan el clásico de Basement Jaxx (año aproximado)." }
       ]
     }
   ]

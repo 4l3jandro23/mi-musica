@@ -45,6 +45,7 @@ HISTORIAS.push({
         { a: 2011, art: "Macintosh Plus", t: "リサフランク420 / 現代のコンピュー", q: "Macintosh Plus リサフランク420", n: "El himno del vaporwave: Diana Ross ralentizada en un centro comercial digital." },
         { a: 2012, art: "Blank Banshee", t: "Teen Pregnancy", n: "Vaporwave con ritmos de trap, del productor canadiense que nunca enseña la cara." },
         { a: 2013, art: "Disconscious", t: "Hologram Plaza", tipo: "disco", n: "El «mallsoft»: música de centro comercial vacío, ralentizada y con eco." },
+        { a: 2013, art: "DaffDzn", t: "Frutiger Aero", n: "La estética de los 2000 hecha canción (año aproximado)." },
         { a: 2015, art: "Saint Pepsi", t: "Enjoy Yourself", n: "El vaporwave más bailable: un sample de soul que suena a centro comercial." },
         { a: 2016, art: "Jinsang", t: "affection", n: "Lo-fi para estudiar, del tipo que suena en los directos de YouTube." },
         { a: 2017, art: "potsu", t: "i'm closing my eyes", n: "Lo-fi hip hop para estudiar: nostalgia de un lugar que no existe." }

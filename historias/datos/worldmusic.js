@@ -15,6 +15,7 @@ HISTORIAS.push({
       items: [
         { a: 1935, art: "Markos Vamvakaris", t: "Frangosyriani", n: "El rebetiko, el blues de los puertos griegos." },
         { a: 1955, art: "Amália Rodrigues", t: "Barco negro", n: "La reina del fado en la película francesa «Les amants du Tage»." },
+        { a: 1962, art: "Nana Mouskouri", t: "Habanera", n: "La griega con la «Habanera» de Carmen (año aproximado)." },
         { a: 1964, art: "Mikis Theodorakis", t: "Zorba's Dance", n: "El sirtaki de «Zorba el griego», un baile inventado para la película." },
         { a: 1987, art: "Madredeus", t: "O pastor", n: "Fado, música antigua y una voz celestial desde Lisboa." },
         { a: 1988, art: "Enya", t: "Orinoco Flow", n: "La irlandesa convierte las capas de voz en un éxito mundial." },

@@ -21,6 +21,7 @@ HISTORIAS.push({
         { a: 1947, art: "Antonio Machín", t: "Angelitos negros", n: "Un cubano negro cantando contra el racismo en la España de la posguerra." },
         { a: 1950, art: "Jorge Sepúlveda", t: "Mirando al mar", n: "El bolero más famoso de la posguerra española, cantado por el valenciano Jorge Sepúlveda." },
         { a: 1950, art: "Jorge Sepúlveda", t: "Tres veces guapa", n: "El valenciano de los boleros y pasodobles de la radio de los 50." },
+        { a: 1955, art: "Los Xey", t: "Si vas a Calatayud", n: "El grupo vasco de voces y su versión de la jota de «La Dolores» (año aproximado)." },
         { a: 1956, art: "Joselito", t: "Campanera", n: "El niño de la voz de oro." },
         { a: 1957, art: "Sara Montiel", t: "Fumando espero", n: "Sensualidad en el cine, con la censura vigilando." }
       ]
@@ -33,10 +34,12 @@ HISTORIAS.push({
       items: [
         { a: 1959, art: "Festival de Benidorm", t: "Primera edición", tipo: "hito", n: "Creado para promocionar el turismo: un escaparate de la canción ligera que lanzó a Julio Iglesias y Raphael." },
         { a: 1960, art: "Lolita Garrido", t: "La televisión", n: "La tele llega a los hogares españoles y Lolita Garrido le canta (año aproximado)." },
+        { a: 1961, art: "Marisol", t: "Estando contigo", n: "Del cine de la niña prodigio de Málaga." },
         { a: 1962, art: "Dúo Dinámico", t: "Quisiera ser", n: "Los primeros ídolos juveniles del pop español." },
         { a: 1962, art: "Marisol", t: "Tómbola", n: "Marisol, la niña prodigio del cine español del desarrollismo." },
         { a: 1963, art: "Raimon", t: "Al vent", n: "La Nova Cançó contra la dictadura." },
         { a: 1964, art: "Los Brincos", t: "Flamenco", n: "Los «Beatles españoles»: el pop beat llega a la España de Franco." },
+        { a: 1964, art: "Marisol", t: "Typical Spanish", n: "Una canción para el turismo de los 60 (año aproximado)." },
         { a: 1965, art: "Concha Velasco", t: "La chica ye-yé", n: "La moda yeyé: guateques y minifaldas (con permiso)." },
         { a: 1965, art: "Rocío Dúrcal", t: "Más bonita que ninguna", n: "La niña prodigio del cine de los 60, en la película del mismo nombre." },
         { a: 1966, art: "Los Bravos", t: "Black Is Black", n: "Un grupo español en las listas de medio mundo, cantando en inglés." },

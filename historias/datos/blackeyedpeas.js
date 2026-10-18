@@ -1,0 +1,133 @@
+HISTORIAS.push({
+  id: "blackeyedpeas",
+  familia: "Artistas",
+  titulo: "La historia de Black Eyed Peas",
+  periodo: "2003 – 2022",
+  color: "#9b59b6",
+  lema: "De un grupo de rap alternativo de Los Ángeles a «I Gotta Feeling», y de ahí al reguetón: la banda que se reinventó tres veces.",
+  intro: "will.i.am, apl.de.ap y Taboo empezaron en los 90 como un trío de rap consciente con banda en directo. En 2003 ficharon a Fergie y con «Elephunk» se convirtieron en el grupo más pop del planeta; en 2009 «The E.N.D.» les dio el récord de semanas en el número uno de EE. UU. Tras la salida de Fergie volvieron en 2020 con un disco casi entero en español con estrellas latinas. Algunas de sus canciones más famosas («Where Is the Love?», «Hey Mama», «Boom Boom Pow», «I Gotta Feeling», «My Humps») ya están en otras historias y aquí salen como hitos.",
+  capitulos: [
+    {
+      titulo: "Elephunk",
+      corto: "Elephunk",
+      periodo: "2003",
+      intro: "2003 – 2004: llega Fergie.",
+      items: [
+        { a: 2003, art: "Black Eyed Peas", t: "«Where Is the Love?» con Justin Timberlake", tipo: "hito", n: "La canción contra la violencia tras el 11-S es número uno en medio mundo y el grupo ficha a Fergie para el disco." },
+        { a: 2003, art: "Black Eyed Peas", t: "Hands Up", n: "Abre «Elephunk» con un estribillo para levantar los brazos." },
+        { a: 2003, art: "Black Eyed Peas", t: "Labor Day (It's a Holiday)", n: "Funk de fiesta de «Elephunk»." },
+        { a: 2003, art: "Black Eyed Peas", t: "Let's Get It Started (Spike Mix)", n: "La versión «limpia» de «Let's Get Retarded», que acabó en la NBA y en mil anuncios." },
+        { a: 2003, art: "Black Eyed Peas", t: "Shut Up", n: "Una pelea de pareja entre will.i.am y Fergie: número uno en media Europa." },
+        { a: 2003, art: "Black Eyed Peas", t: "Smells Like Funk", n: "Funk y rap de «Elephunk»." },
+        { a: 2003, art: "Black Eyed Peas", t: "Latin Girls", n: "Un homenaje a las chicas latinas, con salsa y rap." },
+        { a: 2003, art: "Black Eyed Peas", t: "Sexy", n: "Otra de «Elephunk», con aire de soul." },
+        { a: 2003, art: "Black Eyed Peas", t: "Fly Away", n: "Rap alternativo de su etapa de transición." },
+        { a: 2003, art: "Black Eyed Peas", t: "The Boogie That Be", n: "Funk para la pista, de «Elephunk»." },
+        { a: 2003, art: "Black Eyed Peas", t: "The Apl Song", n: "apl.de.ap rapea en tagalo sobre su infancia en Filipinas." },
+        { a: 2003, art: "Black Eyed Peas & Papa Roach", t: "Anxiety", n: "Rap y nu metal con Papa Roach." }
+      ]
+    },
+    {
+      titulo: "Monkey Business",
+      corto: "Monkey Business",
+      periodo: "2005",
+      intro: "2005 – 2006: el grupo más pop del mundo.",
+      items: [
+        { a: 2005, art: "Black Eyed Peas", t: "«Monkey Business» vende diez millones", tipo: "hito", n: "Su cuarto disco, con «Don't Phunk with My Heart» y «My Humps», los convierte en uno de los grupos más vendidos del mundo." },
+        { a: 2005, art: "Black Eyed Peas", t: "Don't Phunk with My Heart", n: "Sobre un sample de Bollywood: Grammy a la mejor interpretación de rap en grupo." },
+        { a: 2005, art: "Black Eyed Peas, Justin Timberlake & Timbaland", t: "My Style", n: "Con Justin Timberlake y Timbaland." },
+        { a: 2005, art: "Black Eyed Peas", t: "Don't Lie", n: "Una canción sobre las mentiras en la pareja." },
+        { a: 2005, art: "Black Eyed Peas, Q-Tip, Talib Kweli, CeeLo Green & John Legend", t: "Like That", n: "Una posse con nombres del rap alternativo." },
+        { a: 2005, art: "Black Eyed Peas & Dante Santiago", t: "Dum Diddly", n: "Otra de «Monkey Business»." },
+        { a: 2005, art: "Black Eyed Peas", t: "Feel It", n: "Rap y fiesta de «Monkey Business»." },
+        { a: 2005, art: "Black Eyed Peas", t: "Gone Going", n: "Con Jack Johnson, sobre «Gone» del surfista." },
+        { a: 2005, art: "Black Eyed Peas & James Brown", t: "They Don't Want Music", n: "Con el padrino del soul, en una de sus últimas grabaciones." },
+        { a: 2005, art: "Black Eyed Peas", t: "Disco Club", n: "Electro y pop de pista, el aperitivo del sonido de «The E.N.D.»." },
+        { a: 2005, art: "Black Eyed Peas", t: "Bebot", n: "apl.de.ap canta en tagalo; el vídeo homenajea a los filipinos de EE. UU." },
+        { a: 2005, art: "Black Eyed Peas", t: "Ba Bump", n: "Otra de «Monkey Business»." },
+        { a: 2005, art: "Black Eyed Peas", t: "Audio Delite at Low Fidelity", n: "Hip hop electrónico con guiños al funk de los 80." },
+        { a: 2005, art: "Black Eyed Peas & Sting", t: "Union", n: "Sobre «Englishman in New York» de Sting." },
+        { a: 2005, art: "Black Eyed Peas", t: "Do What You Want", n: "Cierra «Monkey Business»." }
+      ]
+    },
+    {
+      titulo: "The E.N.D.",
+      corto: "The E.N.D.",
+      periodo: "2009",
+      intro: "2009: veintiséis semanas seguidas en el número uno.",
+      items: [
+        { a: 2009, art: "Billboard", t: "Veintiséis semanas seguidas en el número uno", tipo: "hito", n: "«Boom Boom Pow» y luego «I Gotta Feeling» ocupan el número uno de EE. UU. durante medio año." },
+        { a: 2009, art: "Black Eyed Peas", t: "Rock That Body", n: "Electro de discoteca producido con David Guetta." },
+        { a: 2009, art: "Black Eyed Peas", t: "Meet Me Halfway", n: "Una balada electrónica de Fergie." },
+        { a: 2009, art: "Black Eyed Peas", t: "Imma Be", n: "Su tercer número uno del año." },
+        { a: 2009, art: "Black Eyed Peas", t: "Alive", n: "Pop electrónico de «The E.N.D.»." },
+        { a: 2009, art: "Black Eyed Peas", t: "Missing You", n: "Otra de «The E.N.D.», con la voz de Fergie en el estribillo." },
+        { a: 2009, art: "Black Eyed Peas", t: "Ring-A-Ling", n: "Una canción sobre un teléfono que no para de sonar." },
+        { a: 2009, art: "Black Eyed Peas", t: "Party All the Time", n: "Otra de pista de «The E.N.D.»." },
+        { a: 2009, art: "Black Eyed Peas", t: "Out of My Head", n: "Otra de «The E.N.D.», con aire de los 80." },
+        { a: 2009, art: "Black Eyed Peas", t: "Electric City", n: "Electro de su disco más vendido." },
+        { a: 2009, art: "Black Eyed Peas", t: "Showdown", n: "Otra de «The E.N.D.», electro con aire de duelo del Oeste." },
+        { a: 2009, art: "Black Eyed Peas", t: "Now Generation", n: "Sobre la generación de internet y los móviles." },
+        { a: 2009, art: "Black Eyed Peas", t: "One Tribe", n: "Un himno de unión de «The E.N.D.»." },
+        { a: 2009, art: "Black Eyed Peas", t: "Rockin to the Beat", n: "Cierra el disco con house." }
+      ]
+    },
+    {
+      titulo: "The Beginning",
+      corto: "The Beginning",
+      periodo: "2010 – 2011",
+      intro: "2010 – 2011: la Super Bowl y la pausa.",
+      items: [
+        { a: 2010, art: "Black Eyed Peas", t: "The Time (Dirty Bit)", n: "Sobre «(I've Had) The Time of My Life» de «Dirty Dancing»." },
+        { a: 2010, art: "Black Eyed Peas", t: "Light Up the Night", n: "Otra de «The Beginning», su disco de 2010." },
+        { a: 2010, art: "Black Eyed Peas", t: "Love You Long Time", n: "Otra de «The Beginning», con autotune y sintetizadores." },
+        { a: 2010, art: "Black Eyed Peas", t: "XOXOXO", n: "Electropop de «The Beginning»." },
+        { a: 2010, art: "Black Eyed Peas", t: "Someday", n: "Una canción con aire de balada." },
+        { a: 2010, art: "Black Eyed Peas", t: "Whenever", n: "Otra de «The Beginning», una de las más melódicas." },
+        { a: 2010, art: "Black Eyed Peas", t: "Fashion Beats", n: "Electro de «The Beginning»." },
+        { a: 2010, art: "Black Eyed Peas", t: "Don't Stop the Party", n: "Una canción de fiesta que se alarga como una sesión de DJ." },
+        { a: 2010, art: "Black Eyed Peas", t: "Do It Like This", n: "Otra de «The Beginning», electro para bailar." },
+        { a: 2010, art: "Black Eyed Peas", t: "The Best One Yet (The Boy)", n: "Otra de «The Beginning», con un piano de house." },
+        { a: 2010, art: "Black Eyed Peas", t: "Just Can't Get Enough", n: "El vídeo se rodó en Tokio poco antes del terremoto de 2011." },
+        { a: 2010, art: "Black Eyed Peas", t: "Play It Loud", n: "Cierra «The Beginning», el último disco con Fergie." },
+        { a: 2010, art: "Black Eyed Peas", t: "The Situation", n: "Una pista extra de «The Beginning»." },
+        { a: 2010, art: "Black Eyed Peas", t: "The Coming", n: "Una pista extra de «The Beginning», más oscura." },
+        { a: 2010, art: "Black Eyed Peas", t: "Own It", n: "Otra pista extra de la edición especial de «The Beginning»." },
+        { a: 2011, art: "Super Bowl", t: "Actúan en el descanso de la Super Bowl", tipo: "hito", n: "Antes de tomarse un descanso de varios años, cantan con Usher y Slash en Dallas." }
+      ]
+    },
+    {
+      titulo: "Sin Fergie y en español",
+      corto: "En español",
+      periodo: "2016 – 2022",
+      intro: "2016 – 2022: rap consciente y reguetón.",
+      items: [
+        { a: 2016, art: "Black Eyed Peas & The World", t: "#WHERESTHELOVE", n: "Una nueva versión de su clásico con decenas de estrellas, tras los tiroteos de 2016." },
+        { a: 2018, art: "Black Eyed Peas & Nas", t: "BACK 2 HIPHOP", n: "De «Masters of the Sun», su vuelta al rap consciente sin Fergie." },
+        { a: 2018, art: "Black Eyed Peas & Slick Rick", t: "CONSTANT pt.1 pt.2", n: "Con la leyenda del rap Slick Rick." },
+        { a: 2018, art: "Black Eyed Peas", t: "BIG LOVE", n: "Contra la violencia armada en EE. UU." },
+        { a: 2019, art: "Black Eyed Peas & J Balvin", t: "RITMO (Bad Boys For Life)", n: "Sobre «The Rhythm of the Night» de Corona: el gran regreso del grupo." },
+        { a: 2020, art: "Black Eyed Peas", t: "«Translation», en español", tipo: "hito", n: "Publican un disco con Maluma, Ozuna, Shakira, Nicky Jam o Becky G." },
+        { a: 2020, art: "Black Eyed Peas & Maluma", t: "FEEL THE BEAT", n: "Con Maluma, reguetón de «Translation»." },
+        { a: 2020, art: "Black Eyed Peas, Ozuna & J. Rey Soul", t: "MAMACITA", n: "Con Ozuna y la filipina J. Rey Soul, la nueva voz del grupo." },
+        { a: 2020, art: "Black Eyed Peas & Shakira", t: "GIRL LIKE ME", n: "Con Shakira, uno de los singles de «Translation»." },
+        { a: 2020, art: "Black Eyed Peas, Nicky Jam & Tyga", t: "VIDA LOCA", n: "Con Nicky Jam y Tyga, reguetón con aire de los 2000." },
+        { a: 2020, art: "Black Eyed Peas & El Alfa", t: "NO MAÑANA", n: "Con El Alfa, el rey del dembow dominicano." },
+        { a: 2020, art: "Black Eyed Peas & J. Rey Soul", t: "TONTA LOVE", n: "Con J. Rey Soul, la nueva voz del grupo." },
+        { a: 2020, art: "Black Eyed Peas", t: "CELEBRATE", n: "Otra de «Translation», pop de pista en inglés y español." },
+        { a: 2020, art: "Black Eyed Peas & Piso 21", t: "TODO BUENO", n: "Con los colombianos Piso 21." },
+        { a: 2020, art: "Black Eyed Peas & Becky G", t: "DURO HARD", n: "Con Becky G, en inglés y español." },
+        { a: 2020, art: "Black Eyed Peas & French Montana", t: "MABUTI", n: "Con French Montana; el título significa «bueno» en tagalo." },
+        { a: 2020, art: "Black Eyed Peas", t: "I WOKE UP", n: "Otra de «Translation», con aire de house." },
+        { a: 2020, art: "Black Eyed Peas", t: "GET LOOSE NOW", n: "Otra de «Translation», hip hop de pista." },
+        { a: 2020, art: "Black Eyed Peas", t: "ACTION", n: "Otra de «Translation», con sintetizadores de los 80." },
+        { a: 2022, art: "Black Eyed Peas, Shakira & David Guetta", t: "DON'T YOU WORRY", n: "De «Elevation», con Shakira y Guetta." },
+        { a: 2022, art: "Black Eyed Peas, Anitta & El Alfa", t: "SIMPLY THE BEST", n: "Con Anitta y El Alfa, de «Elevation», su disco de 2022." },
+        { a: 2022, art: "Black Eyed Peas, Anuel AA & Marshall Jefferson", t: "MUEVELO", n: "Con Anuel y un pionero del house de Chicago." },
+        { a: 2022, art: "Black Eyed Peas & Daddy Yankee", t: "BAILAR CONTIGO", n: "Con Daddy Yankee, de «Elevation»." },
+        { a: 2022, art: "Black Eyed Peas & J. Rey Soul", t: "DOUBLE D'Z", n: "Otra de «Elevation», con J. Rey Soul." },
+        { a: 2022, art: "Black Eyed Peas & Snoop Dogg", t: "Be Nice", n: "Con Snoop Dogg, de «Elevation»." }
+      ]
+    }
+  ]
+});

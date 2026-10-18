@@ -54,7 +54,7 @@ HISTORIAS.push({
     {
       titulo: "La guerra y el final",
       corto: "El final",
-      periodo: "1942 – 1946",
+      periodo: "1942 – 1967",
       intro: "La huelga, la guerra y el fin de las big bands.",
       items: [
         { a: 1942, art: "La huelga de los músicos", t: "Dos años sin grabar", tipo: "hito", n: "El sindicato de músicos prohíbe grabar discos hasta 1944: las big bands pierden fuerza y los cantantes ganan protagonismo." },
@@ -63,7 +63,8 @@ HISTORIAS.push({
         { a: 1942, art: "Lionel Hampton", t: "Flying Home", n: "El vibráfono y el rhythm and blues que se acerca." },
         { a: 1944, art: "Glenn Miller desaparece", t: "Un avión sobre el canal de la Mancha", tipo: "hito", n: "El director de la orquesta del ejército desaparece en un vuelo hacia París." },
         { a: 1945, art: "Woody Herman", t: "Apple Honey", n: "El swing que suena ya a bebop." },
-        { a: 1946, art: "El final de las big bands", t: "Ocho orquestas se disuelven", tipo: "hito", n: "En un solo invierno se separan las orquestas de Goodman, Dorsey, James y otras: la era del swing termina." }
+        { a: 1946, art: "El final de las big bands", t: "Ocho orquestas se disuelven", tipo: "hito", n: "En un solo invierno se separan las orquestas de Goodman, Dorsey, James y otras: la era del swing termina." },
+        { a: 1967, art: "Louis Prima, Phil Harris & Bruce Reitherman", t: "I Wan'na Be Like You", n: "La canción del rey Louie de «El libro de la selva»." }
       ]
     },
     {

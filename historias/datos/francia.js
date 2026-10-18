@@ -35,7 +35,8 @@ HISTORIAS.push({
         { a: 1957, art: "Dalida", t: "Histoire d'un amour", n: "Versión francesa de «Historia de un amor», el bolero panameño." },
         { a: 1959, art: "Jacques Brel", t: "Ne me quitte pas", n: "El belga que cantaba como si se le fuera la vida." },
         { a: 1959, art: "Gloria Lasso", t: "Luna de miel", n: "Una cantante catalana que triunfó en Francia y fue la gran rival de Dalida." },
-        { a: 1960, art: "Édith Piaf", t: "Non, je ne regrette rien", n: "«No me arrepiento de nada»: el resumen de su vida." }
+        { a: 1960, art: "Édith Piaf", t: "Non, je ne regrette rien", n: "«No me arrepiento de nada»: el resumen de su vida." },
+        { a: 1960, art: "Charles Aznavour", t: "Parce que tu crois", n: "Otra de sus canciones de los 60 (año aproximado)." }
       ]
     },
     {
@@ -48,10 +49,12 @@ HISTORIAS.push({
         { a: 1962, art: "«Salut les copains»", t: "La revista de los yeyés", tipo: "hito", n: "Del programa de radio sale una revista que vende un millón de ejemplares." },
         { a: 1962, art: "Françoise Hardy", t: "Tous les garçons et les filles", n: "La melancolía adolescente hecha icono de estilo." },
         { a: 1964, art: "Sylvie Vartan", t: "La plus belle pour aller danser", n: "Escrita por Aznavour para Sylvie Vartan: el gran éxito de la era yeyé francesa." },
+        { a: 1964, art: "Charles Aznavour", t: "Hier encore", n: "La de la nostalgia de la juventud perdida." },
         { a: 1965, art: "France Gall", t: "Poupée de cire, poupée de son", n: "Escrita por Gainsbourg: gana Eurovisión por Luxemburgo." },
         { a: 1965, art: "Charles Aznavour", t: "La Bohème", n: "Nostalgia de la juventud pobre en Montmartre." },
         { a: 1966, art: "Jacques Dutronc", t: "Et moi, et moi, et moi", n: "Dutronc se ríe de su generación con garaje rock e ironía: «700 millones de chinos… y yo, y yo, y yo»." },
         { a: 1967, art: "Brigitte Bardot", t: "Harley Davidson", n: "Otra de Gainsbourg, que escribía para todas." },
+        { a: 1967, art: "Charles Aznavour", t: "Emmenez-moi", n: "La de los sueños de viajar." },
         { a: 1969, art: "Jane Birkin & Serge Gainsbourg", t: "Je t'aime… moi non plus", n: "Prohibida por el Vaticano y por media Europa. Número uno en Reino Unido." },
         { a: 1970, art: "Léo Ferré", t: "Avec le temps", n: "Sobre cómo el tiempo lo borra todo. Desgarradora." },
         { a: 1971, art: "Serge Gainsbourg", t: "Histoire de Melody Nelson", tipo: "disco", n: "Un disco conceptual con orquesta: obra maestra de culto." },
@@ -71,7 +74,8 @@ HISTORIAS.push({
         { a: 1984, art: "Téléphone", t: "Un autre monde", n: "El gran grupo de rock francés." },
         { a: 1984, art: "Étienne Daho", t: "Week-end à Rome", n: "Étienne Daho reinventa el pop francés de los 80 con elegancia y aire de «nouvelle vague»." },
         { a: 1986, art: "Desireless", t: "Voyage, voyage", n: "Número uno en España y media Europa." },
-        { a: 1986, art: "Mylène Farmer", t: "Libertine", n: "La diva más misteriosa del pop francés." }
+        { a: 1986, art: "Mylène Farmer", t: "Libertine", n: "La diva más misteriosa del pop francés." },
+        { a: 1986, art: "Brigitte Bardot & Serge Gainsbourg", t: "Je t'aime… moi non plus", n: "La versión grabada con Bardot en 1967, que ella no dejó publicar hasta 1986." }
       ]
     },
     {

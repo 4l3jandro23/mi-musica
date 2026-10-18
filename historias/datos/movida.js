@@ -45,6 +45,7 @@ HISTORIAS.push({
         { a: 1983, art: "Tino Casal", t: "Embrujada", n: "Tino Casal, el gran icono glam de los 80 en España, con un tema de sintes y misterio." },
         { a: 1983, art: "Golpes Bajos", t: "Malos tiempos para la lírica", n: "Golpes Bajos, desde Vigo, demuestra que la Movida no era solo madrileña: post-punk elegante y triste." },
         { a: 1983, art: "Loquillo y los Trogloditas", t: "Cadillac solitario", n: "Loquillo, de Barcelona, con un rock and roll de chupa de cuero." },
+        { a: 1983, art: "Vulpes", t: "Me gusta ser una zorra", n: "La versión punk de las Stooges que provocó un escándalo al sonar en televisión." },
         { a: 1984, art: "Tierno Galván", t: "«Rockeros: el que no esté colocado, que se coloque»", tipo: "hito", n: "El alcalde de Madrid, en un concierto, se convierte en mito." },
         { a: 1984, art: "Radio Futura", t: "Escuela de calor", n: "Radio Futura canta una ciudad que arde en verano, con ritmo bailable: la Movida se vuelve madura y propia." },
         { a: 1984, art: "Alaska y Dinarama", t: "Ni tú ni nadie", n: "Un himno de la Movida con tupés, sintetizadores y desamor." },

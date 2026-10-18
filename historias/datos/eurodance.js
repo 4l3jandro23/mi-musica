@@ -65,7 +65,7 @@ HISTORIAS.push({
     {
       titulo: "El final pop",
       corto: "Final",
-      periodo: "1996 – 2000",
+      periodo: "1996 – 2001",
       intro: "El eurodance se vuelve pop casi infantil y se despide.",
       items: [
         { a: 1996, art: "Gala", t: "Freed from Desire", n: "Una italiana y un «na na na» que hoy cantan los estadios de fútbol." },
@@ -90,7 +90,8 @@ HISTORIAS.push({
         { a: 2000, art: "French Affair", t: "Sexy", n: "Eurodance francés con estribillo a lo «Sexy, sexy»." },
         { a: 2000, art: "French Affair", t: "My Heart Goes Boom", n: "El «la di da di da» de las discotecas del cambio de siglo." },
         { a: 2000, art: "Prezioso feat. Marvin", t: "The Riddle", n: "La versión italiana de Nik Kershaw: la misma que luego rehízo Gigi D'Agostino." },
-        { a: 2000, art: "A Touch of Class", t: "Around the World (La La La La La)", n: "Versión de «Pesenka», del grupo ruso Ruki Vverh: el «la la la» de todas las fiestas." }
+        { a: 2000, art: "A Touch of Class", t: "Around the World (La La La La La)", n: "Versión de «Pesenka», del grupo ruso Ruki Vverh: el «la la la» de todas las fiestas." },
+        { a: 2001, art: "Safri Duo", t: "Played-A-Live (The Bongo Song)", n: "Los daneses de los bongos." }
       ]
     },
     {
@@ -103,13 +104,18 @@ HISTORIAS.push({
         { a: 2002, art: "Kate Ryan", t: "Désenchantée", n: "La canción de Mylène Farmer pasada a dance." },
         { a: 2002, art: "Scooter", t: "The Logical Song", n: "Supertramp convertido en hands up: un éxito en toda Europa." },
         { a: 2002, art: "Scooter", t: "Nessaja", n: "La canción de «Tabaluga», en versión Scooter." },
+        { a: 2004, art: "David Tavaré", t: "Summerlove", n: "Una canción de verano (año aproximado)." },
         { a: 2005, art: "Cascada", t: "Everytime We Touch", n: "Hands up alemán: número dos en Reino Unido." },
+        { a: 2005, art: "Bodyrox & Luciana", t: "Yeah Yeah", n: "El éxito de 2006 con la remezcla de D. Ramírez (año aproximado)." },
         { a: 2006, art: "Basshunter", t: "Boten Anna", n: "Un sueco cuenta en una canción que una amiga no es un bot de IRC." },
         { a: 2006, art: "Basshunter", t: "DotA", n: "Una canción sobre el videojuego «Defense of the Ancients»." },
         { a: 2006, art: "Basshunter", t: "Russia Privjet", n: "El hands up de la LAN party." },
+        { a: 2006, art: "Tom Boxer & Jay", t: "A Beautiful Day", n: "Dance rumano (año aproximado)." },
         { a: 2007, art: "September", t: "Cry for You", n: "Un eurodance tardío de Suecia que triunfó en toda Europa." },
         { a: 2007, art: "Basshunter", t: "Now You're Gone", n: "Número uno en Reino Unido con el vídeo de Aylar Lie." },
         { a: 2007, art: "Kate Ryan", t: "Voyage voyage", n: "La versión de Desireless en dance." },
+        { a: 2007, art: "Guru Josh Project", t: "Infinity 2008", n: "El regreso de «Infinity» de 1989, con la remezcla de Klaas." },
+        { a: 2007, art: "Supermode", t: "Tell Me Why", n: "Axwell y Steve Angello, futuros Swedish House Mafia, con un sample de Bronski Beat." },
         { a: 2008, art: "Basshunter", t: "Un sueco número uno en Reino Unido", n: "«Now You're Gone» pasa cinco semanas en el número uno británico: el eurodance resucita gracias a internet.", tipo: "hito" },
         { a: 2008, art: "Basshunter", t: "All I Ever Wanted", n: "Otro número dos en Reino Unido." },
         { a: 2008, art: "Basshunter", t: "Angel in the Night", n: "Eurodance de la década de 2000." },

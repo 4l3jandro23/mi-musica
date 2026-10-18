@@ -57,6 +57,8 @@ HISTORIAS.push({
         { a: 2003, art: "Baby Bash & Frankie J", t: "Suga Suga", n: "El rapero chicano de Texas y su éxito de radio con guitarra suave." },
         { a: 2004, art: "Akon", t: "Locked Up", n: "El primer éxito del senegalés-estadounidense, sobre sus días en la cárcel." },
         { a: 2004, art: "Akon", t: "Lonely", n: "Con su voz acelerada sobre un sample de Bobby Vinton: número uno en Reino Unido." },
+        { a: 2004, art: "Pitbull & Lil Jon", t: "Culo", n: "El primer éxito de Pitbull, con Lil Jon y el crunk de Miami." },
+        { a: 2004, art: "Pitbull & Lil Jon", t: "305 Anthem", n: "El himno al prefijo telefónico de Miami." },
         { a: 2005, art: "Kanye West feat. Jamie Foxx", t: "Gold Digger", n: "Jamie Foxx imita a Ray Charles, al que acababa de interpretar en el cine." },
         { a: 2005, art: "Ray J", t: "One Wish", n: "El hermano de Brandy y su balada de R&B de 2005." },
         { a: 2005, art: "Akon", t: "Bananza (Belly Dancer)", n: "Del primer disco, «Trouble»." },

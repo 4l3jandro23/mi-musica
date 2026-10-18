@@ -65,6 +65,7 @@ HISTORIAS.push({
         { a: 1983, art: "Brenda Fassie", t: "Weekend Special", n: "La «Madonna de los townships»: pop sudafricano para bailar." },
         { a: 1985, art: "Franco & le T.P. OK Jazz", t: "Mario", n: "El gran maestro de la rumba congoleña y su mayor éxito." },
         { a: 1986, art: "Paul Simon", t: "Graceland", tipo: "hito", n: "Con Ladysmith Black Mambazo y músicos sudafricanos: millones de personas descubren esta música (y una gran polémica por saltarse el boicot al apartheid)." },
+        { a: 1986, art: "Golden Sounds", t: "Zangalewa", n: "La canción camerunesa de la que salió «Waka Waka» de Shakira." },
         { a: 1987, art: "Mory Kanté", t: "Yeke Yeke", n: "El griot guineano con kora y ritmo de discoteca: el primer single africano que vende un millón." },
         { a: 1988, art: "Toumani Diabaté", t: "Kaira", n: "La kora sola, como un arpa de 21 cuerdas: la tradición griot en su forma más pura." },
         { a: 1989, art: "Oumou Sangaré", t: "Moussolou", tipo: "disco", n: "El wassoulou de Malí y una voz que defiende a las mujeres." },

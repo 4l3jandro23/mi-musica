@@ -30,6 +30,7 @@ HISTORIAS.push({
         { a: 1981, art: "Rocío Dúrcal", t: "La gata bajo la lluvia", n: "La madrileña con canción de Rafael Pérez Botija, éxito en todo el mundo hispano." },
         { a: 1982, art: "Pimpinela", t: "Olvídame y pega la vuelta", n: "Una discusión de pareja entre dos hermanos argentinos." },
         { a: 1984, art: "Emmanuel", t: "Toda la vida", n: "El pop mexicano más bailable de los 80." },
+        { a: 1984, art: "Gloria Estefan & Miami Sound Machine", t: "Dr. Beat", n: "El primer éxito internacional de Miami Sound Machine." },
         { a: 1985, art: "Lucero", t: "Electricidad", n: "La novia de la juventud mexicana." },
         { a: 1985, art: "Flans", t: "No controles", n: "El trío mexicano versiona a Olé Olé y lo convierte en un clásico del pop adolescente." },
         { a: 1986, art: "Rocío Dúrcal", t: "Ya te olvidé", n: "Otra de sus canciones de despecho, con Juan Gabriel de compositor (año aproximado)." },
@@ -64,6 +65,7 @@ HISTORIAS.push({
         { a: 1998, art: "Marcela Morelo", t: "Corazón salvaje", n: "La argentina en su primer gran éxito (año aproximado)." },
         { a: 1999, art: "Chayanne", t: "Salomé", n: "El baile de Chayanne: un hit de verano en toda Latinoamérica y España." },
         { a: 1999, art: "Enrique Iglesias", t: "Rhythm Divine", n: "Su primer gran éxito en inglés, también en español como «Ritmo total»." },
+        { a: 1999, art: "La Mosca Tsé-Tsé", t: "Para no verte más", n: "El grupo argentino y su canción de fiesta de 1999." },
         { a: 2000, art: "Los Latin Grammy", t: "Premios propios", tipo: "hito", n: "Se celebra la primera gala de los Grammy Latinos." },
         { a: 2000, art: "Mónica Naranjo", t: "Sólo se vive una vez", n: "Mónica Naranjo en su etapa de gran diva del pop (año aproximado)." },
         { a: 2002, art: "Juanes", t: "A Dios le pido", n: "El rock colombiano con mensaje." },
@@ -83,8 +85,10 @@ HISTORIAS.push({
         { a: 2009, art: "Nelly Furtado", t: "Manos al Aire", n: "La canadiense de origen portugués canta en español en «Mi plan», disco que ganó el Grammy Latino." },
         { a: 2011, art: "Jesse & Joy", t: "¡Corre!", n: "Los hermanos mexicanos y su balada más famosa: Grammy Latino a la canción del año." },
         { a: 2011, art: "Enrique Iglesias, Pitbull & The WAV.s", t: "I Like How It Feels", n: "Pop dance de su disco «Euphoria»." },
+        { a: 2011, art: "Cali y El Dandee", t: "Gol", n: "Otra del dúo colombiano (año aproximado)." },
         { a: 2012, art: "Carla Morrison", t: "Disfruto", n: "La mexicana y su canción de amor más famosa." },
-        { a: 2012, art: "Carla Morrison", t: "Te regalo", n: "Otra de sus grandes baladas." }
+        { a: 2012, art: "Carla Morrison", t: "Te regalo", n: "Otra de sus grandes baladas." },
+        { a: 2012, art: "Cali y El Dandee", t: "Yo te esperaré", n: "El dúo colombiano en su mayor éxito." }
       ]
     },
     {

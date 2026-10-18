@@ -36,6 +36,7 @@ HISTORIAS.push({
         { a: 1953, art: "Dean Martin", t: "That's Amore", n: "El crooner italoamericano." },
         { a: 1954, art: "Chet Baker", t: "My Funny Valentine", n: "La trompeta y la voz frágil del jazz de la Costa Oeste." },
         { a: 1954, art: "Sarah Vaughan", t: "Lullaby of Birdland", n: "«La divina», con un tema de George Shearing." },
+        { a: 1954, art: "Perry Como", t: "Papa Loves Mambo", n: "La fiebre del mambo en los 50." },
         { a: 1955, art: "Julie London", t: "Cry Me a River", n: "Voz grave y guitarra: casi un susurro, con Barney Kessel." },
         { a: 1956, art: "Ella Fitzgerald", t: "Los «Songbooks»", tipo: "hito", n: "Ella graba disco a disco las canciones de Cole Porter, Rodgers y Hart o Gershwin: el canon queda fijado." },
         { a: 1956, art: "Frank Sinatra", t: "I've Got You Under My Skin", n: "Con el arreglo de Nelson Riddle, una de sus grabaciones definitivas." },
