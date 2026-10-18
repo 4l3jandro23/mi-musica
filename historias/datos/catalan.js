@@ -21,6 +21,7 @@ HISTORIAS.push({
         { a: 1968, art: "Joan Manuel Serrat", t: "Se niega a cantar en castellano en Eurovisión", tipo: "hito", n: "Le sustituye Massiel con «La, la, la»… y gana." },
         { a: 1968, art: "Lluís Llach", t: "L'estaca", n: "Una estaca que hay que tirar entre todos: himno contra la dictadura, cantado hasta en Polonia." },
         { a: 1968, art: "Maria del Mar Bonet", t: "Què volen aquesta gent?", n: "Desde Mallorca, sobre la muerte de un estudiante tras una detención. Fue prohibida." },
+        { a: 1969, art: "Lluís Llach", t: "El bandoler", n: "Una canción popular sobre el bandolero Serrallonga (año aproximado)." },
         { a: 1971, art: "Pau Riba", t: "Noia de porcellana", n: "Pau Riba, el hippie de la Nova Cançó, se pasa al rock psicodélico." },
         { a: 1973, art: "Lluís Llach", t: "Que tinguem sort", n: "Un deseo de libertad en plena dictadura, de uno de los grandes de la Nova Cançó." },
         { a: 1974, art: "Ovidi Montllor", t: "Perquè vull", n: "Un poema de Vicent Andrés Estellés." },
@@ -54,6 +55,7 @@ HISTORIAS.push({
         { a: 2001, art: "Sopa de Cabra", t: "Se despiden", tipo: "hito", n: "Tras «Plou i fa sol», el grupo más popular del rock català lo deja: empieza la era del pop y la rumba festiva." },
         { a: 2001, art: "Sopa de Cabra", t: "Els teus somnis", n: "Del disco «Plou i fa sol», el último antes de su larga pausa." },
         { a: 2002, art: "Antònia Font", t: "Wa Yeah!", n: "Antònia Font, desde Mallorca, con un pop surrealista de astronautas y robots." },
+        { a: 2002, art: "Antònia Font", t: "Alegria", n: "Los mallorquines del pop espacial." },
         { a: 2005, art: "Gossos", t: "Alguna cosa", n: "Pop acústico del grupo de Manresa, con cuatro voces." },
         { a: 2006, art: "Antònia Font", t: "Batiscafo Katiuscas", n: "Su canción más conocida: un submarino y una historia de amor en el fondo del mar." },
         { a: 2007, art: "Gossos", t: "Corren", n: "Con Dani Macaco: su canción más conocida." },
@@ -69,14 +71,15 @@ HISTORIAS.push({
       periodo: "2011 – 2019",
       intro: "2011 – 2019: Els Catarres, Txarango, Buhos y el pop en catalán que llena festivales.",
       items: [
+        { a: 2011, art: "Sopa de Cabra", t: "Vuelven diez años después", n: "El grupo más popular del rock català, separado en 2001, vuelve a los escenarios y llena el Palau Sant Jordi.", tipo: "hito" },
         { a: 2011, art: "Els Catarres", t: "Jenifer", n: "Un amor imposible entre un chico de pueblo y una chica de Castelldefels." },
         { a: 2011, art: "Manel", t: "Boomerang", n: "Manel, uno de los grupos más importantes de la música catalana de los 2010." },
         { a: 2011, art: "La Pegatina", t: "Mari Carmen", n: "Rumba y ska del disco «Xapomelön», de los de Montcada." },
-        { a: 2011, art: "Sopa de Cabra", t: "Vuelven diez años después", n: "El grupo más popular del rock català, separado en 2001, vuelve a los escenarios y llena el Palau Sant Jordi.", tipo: "hito" },
         { a: 2012, art: "Sílvia Pérez Cruz", t: "Vestida de nit", n: "Una de las grandes voces catalanas." },
         { a: 2012, art: "Joan Dausà", t: "Jo mai mai", n: "Pop catalán del cantante que también fue actor." },
         { a: 2012, art: "Andreu Rifé", t: "Fil de llum", n: "La canción de la serie de TV3 «Polseres vermelles»." },
         { a: 2012, art: "Blaumut", t: "Pa amb oli i sal", n: "Pop de cuerdas del disco «El turista»; millones de reproducciones." },
+        { a: 2012, art: "Els Amics de les Arts", t: "Jean-Luc", n: "El grupo de Barcelona de pop con humor." },
         { a: 2013, art: "Els Catarres", t: "Vull estar amb tu", n: "Del disco «Postals», el que los consagró." },
         { a: 2013, art: "Els Catarres", t: "Rock & Roll", n: "Del disco «Postals»: folk pop que llena las fiestas de los pueblos." },
         { a: 2013, art: "Els Catarres", t: "Invencibles", n: "Otra de «Postals», el disco que los convirtió en el grupo del momento en Cataluña." },
@@ -92,6 +95,7 @@ HISTORIAS.push({
         { a: 2017, art: "Referéndum", t: "Música y política", tipo: "hito", n: "La canción en catalán vive un auge de público joven, del pop al trap." },
         { a: 2017, art: "ZOO", t: "Estiu", n: "Desde Valencia: rap y mestizaje en valenciano." },
         { a: 2017, art: "Txarango", t: "Una lluna a l'aigua", n: "Del disco «El cor de la terra»." },
+        { a: 2017, art: "Shakira", t: "Boig per tu", n: "Su versión en catalán del clásico de Sau." },
         { a: 2018, art: "Buhos", t: "Volcans", n: "Del disco «La gran vida»." },
         { a: 2018, art: "Doctor Prats", t: "Caminem lluny", n: "Del disco «Venim de lluny», con más electrónica." },
         { a: 2018, art: "Doctor Prats", t: "Tu fas", n: "Del disco «Venim de lluny»: rumba y fiesta de Terrassa." },
@@ -110,7 +114,8 @@ HISTORIAS.push({
         { a: 2020, art: "Txarango", t: "Aguacero", n: "De «De vent i ales», su disco de despedida." },
         { a: 2021, art: "Lildami & Santi Balmes", t: "Mentrestant", n: "Con el cantante de Love of Lesbian." },
         { a: 2023, art: "Alizzz", t: "Que pasa nen", n: "El productor de C. Tangana canta a su Baix Llobregat con guitarras noventeras." },
-        { a: 2023, art: "The Tyets", t: "Coti x Coti", n: "La canción del verano en catalán." }
+        { a: 2023, art: "The Tyets", t: "Coti x Coti", n: "La canción del verano en catalán." },
+        { a: 2023, art: "Figa Flawas", t: "LA MARINA STA MORENA", n: "El grupo catalán de la «festa» y el reguetón (año aproximado)." }
       ]
     }
   ]

@@ -43,9 +43,11 @@ HISTORIAS.push({
         { a: 2020, art: "Digga D", t: "Woi", n: "Digga D, que tenía órdenes judiciales sobre lo que podía rapear: el choque del drill con la policía británica." },
         { a: 2020, art: "Headie One & Drake", t: "Only You Freestyle", n: "Drake se pasa al UK drill." },
         { a: 2020, art: "Pop Smoke", t: "Mood Swings", n: "La cara romántica de Pop Smoke." },
+        { a: 2020, art: "Pop Smoke", t: "What You Know Bout Love", n: "De su disco póstumo, sobre un sample de Ginuwine." },
         { a: 2021, art: "Tion Wayne & Russ Millions", t: "Body", n: "El primer número uno de drill en el Reino Unido." },
         { a: 2021, art: "Russ Millions, Buni & YV", t: "Gun Lean", n: "El baile del «gun lean» se hizo viral: drill británico con humor." },
-        { a: 2021, art: "Central Cee", t: "Day in the Life", n: "El UK drill más escuchado." }
+        { a: 2021, art: "Central Cee", t: "Day in the Life", n: "El UK drill más escuchado." },
+        { a: 2021, art: "Pop Smoke", t: "AP", n: "Del segundo disco póstumo (año aproximado)." }
       ]
     },
     {
@@ -63,7 +65,11 @@ HISTORIAS.push({
         { a: 2022, art: "Ice Spice", t: "Munch (Feelin' U)", n: "El drill del Bronx se vuelve pop." },
         { a: 2022, art: "Central Cee", t: "Doja", n: "Un tema de minuto y medio que se hizo viral en TikTok: el UK drill llega al pop." },
         { a: 2022, art: "Kay Flock", t: "Shake It", n: "Con Cardi B, Dougie B y Bory300. El drill del Bronx llega a las listas." },
-        { a: 2023, art: "Dave & Central Cee", t: "Sprinter", n: "Semanas en el número uno en Reino Unido: uno de los mayores éxitos del rap británico." }
+        { a: 2022, art: "Central Cee", t: "Obsessed with You", n: "Sobre un sample de «Just for Me» de PinkPantheress." },
+        { a: 2022, art: "Ice Spice", t: "Bikini Bottom", n: "Otra de sus primeras canciones." },
+        { a: 2023, art: "Dave & Central Cee", t: "Sprinter", n: "Semanas en el número uno en Reino Unido: uno de los mayores éxitos del rap británico." },
+        { a: 2023, art: "Ice Spice", t: "In Ha Mood", n: "Otra de Ice Spice, del Bronx a las listas de EE. UU." },
+        { a: 2023, art: "Ice Spice", t: "Deli", n: "Otra de Ice Spice, con su flow tranquilo y cortante." }
       ]
     }
   ]

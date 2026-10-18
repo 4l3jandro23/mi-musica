@@ -22,10 +22,12 @@ HISTORIAS.push({
         { a: 2016, art: "Bad Gyal", t: "Fiebre", n: "Desde Vilassar de Mar: dancehall y reguetón con autotune. Nace una estrella." },
         { a: 2016, art: "Bad Gyal", t: "Indapanden", q: "Bad Gyal Indapanden", n: "Bad Gyal canta en catalán sobre autotune: el trap de Vilassar de Mar." },
         { a: 2016, art: "Yung Beef & Steve Lean", t: "Beef Boy", n: "El productor de PXXR GVNG con Yung Beef (año aproximado)." },
+        { a: 2016, art: "Bad Gyal", t: "La Prendo", n: "De su primera mixtape: la de Vilassar de Mar se hace famosa con dancehall en catalán y castellano (año aproximado)." },
         { a: 2017, art: "C. Tangana", t: "Mala mujer", n: "Del trap al reguetón: C. Tangana se convierte en estrella." },
         { a: 2017, art: "Kidd Keo", t: "Foreign", n: "Kidd Keo, de Alicante, en inglés y castellano: el trap español mira a Atlanta." },
         { a: 2017, art: "Kidd Keo", t: "Lollypop", n: "Kidd Keo, de Alicante, mezcla inglés y español con estética de SoundCloud (año aproximado)." },
-        { a: 2017, art: "Jarfaiter", t: "Política de Parque", n: "El rapero de Moratalaz que unía calle y conciencia, una de las voces más queridas del underground madrileño (año aproximado)." }
+        { a: 2017, art: "Jarfaiter", t: "Política de Parque", n: "El rapero de Moratalaz que unía calle y conciencia, una de las voces más queridas del underground madrileño (año aproximado)." },
+        { a: 2017, art: "Kaydy Cain, Marko Italia & Kabasaki", t: "Ina", n: "Kaydy Cain, del círculo de PXXR GVNG (año aproximado)." }
       ]
     },
     {
@@ -43,6 +45,10 @@ HISTORIAS.push({
         { a: 2018, art: "Kidd Keo", t: "Dracukeo", n: "Del disco del mismo nombre: Kidd Keo convertido en vampiro del trap (año aproximado)." },
         { a: 2018, art: "Cecilio G", t: "Teletubi", n: "Con Yung Beef: el humor absurdo de Cecilio G, el rapero más imprevisible de Barcelona (año aproximado)." },
         { a: 2018, art: "Maikel Delacalle", t: "Replay", n: "El canario Maikel Delacalle, pionero del pop urbano de las islas antes de Quevedo (año aproximado)." },
+        { a: 2018, art: "Bad Gyal & Busy Signal", t: "Santa María", n: "Con el jamaicano Busy Signal, de «Worldwide Angel»." },
+        { a: 2018, art: "Bad Gyal, Jam City & Dubbel Dutch", t: "Internationally", n: "Con dos productores de la escena de clubs de Londres." },
+        { a: 2018, art: "Yung Beef, Steve Lean & 6ix9ine", t: "No Fuks (Remix)", n: "Con 6ix9ine, en su momento de mayor fama (año aproximado)." },
+        { a: 2018, art: "Ms Nina & Beauty Brain", t: "Tu Sicaria", n: "La argentina afincada en Madrid (año aproximado)." },
         { a: 2019, art: "Rels B", t: "A Mí", n: "Desde Mallorca: trap con R&B romántico, uno de los más escuchados de España." },
         { a: 2019, art: "Rels B", t: "Cómo dormiste?", n: "Rels B, de Mallorca, suaviza el trap con R&B y lo convierte en uno de los más escuchados de España." },
         { a: 2019, art: "C. Tangana", t: "Llorando en la limo", n: "C. Tangana se aleja del trap con una mezcla de reguetón y pop." },
@@ -57,13 +63,21 @@ HISTORIAS.push({
         { a: 2019, art: "Don Patricio", t: "Enchochado de Ti", n: "El canario se hace famoso con su humor y un dembow desenfadado." },
         { a: 2019, art: "Don Patricio & Cruzzi", t: "Contando Lunares", n: "Una de las canciones más escuchadas de 2019 en España, con el sello canario de Don Patricio." },
         { a: 2019, art: "Ms Nina & Ikki", t: "Chic", n: "El tema más escuchado de la argentina afincada en Madrid, producido por Ikki (año aproximado)." },
+        { a: 2019, art: "Bad Gyal", t: "Nueva York (Tot*)", n: "Otra de sus canciones de 2019 (año aproximado)." },
         { a: 2020, art: "Morad", t: "La calle de L'Hospitalet", tipo: "hito", n: "Morad, desde el barrio de La Florida: el drill y la vida de los barrios de Barcelona llegan a todo el país." },
         { a: 2020, art: "Kidd Keo & Ele A El Dominio", t: "Serpiente Veneno", n: "Con el puertorriqueño Ele A: trap duro entre Alicante y San Juan (año aproximado)." },
         { a: 2020, art: "Cecilio G", t: "From Darkness With Love", n: "Cecilio G en plan melancólico (año aproximado)." },
         { a: 2020, art: "Ikki & Denom", t: "Veneno", n: "El productor de Ms Nina con Denom (año aproximado)." },
+        { a: 2020, art: "Rels B & Maikel Delacalle", t: "Girlfriend", n: "El mallorquín Rels B con el canario Maikel Delacalle (año aproximado)." },
+        { a: 2020, art: "Rels B", t: "Ballin'", n: "Rels B en su lado más fanfarrón (año aproximado)." },
+        { a: 2020, art: "Kinder Malo", t: "La Ley de Eddie Murphy", n: "Rap absurdo y melancólico de Kinder Malo (año aproximado)." },
         { a: 2021, art: "Morad", t: "Pelele", n: "Morad, de La Florida (L'Hospitalet), cuenta su barrio con un estilo que mezcla drill y raíces marroquíes." },
         { a: 2021, art: "Morad", t: "Motorola", n: "Morad, de L'Hospitalet, uno de los nombres más importantes del drill español." },
         { a: 2021, art: "Cecilio G & Suave44", t: "Bakanito", n: "Colaboración festiva de su etapa más prolífica (año aproximado)." },
+        { a: 2021, art: "Rels B & DELLAFUENTE", t: "Buenos Genes", n: "Con el granadino Dellafuente (año aproximado)." },
+        { a: 2021, art: "La Zowi & Flynt Hustle", t: "Putas (Remix)", n: "La Zowi, del círculo de Pxxr Gvng (año aproximado)." },
+        { a: 2021, art: "Soto Asa & SVJ", t: "Klub", n: "El madrileño del trap y el bakalao (año aproximado)." },
+        { a: 2021, art: "Kinder Malo, Louly, Omar Varela & Zava", t: "Mentira", n: "Otra de Kinder Malo (año aproximado)." },
         { a: 2022, art: "Bizarrap", t: "Quevedo: Bzrp Music Sessions, Vol. 52", q: "Bizarrap Quevedo Music Sessions 52", n: "Un canario de 20 años en la sesión de Bizarrap: número uno mundial en Spotify." },
         { a: 2022, art: "Saiko", t: "Supernova", n: "El trap melódico de la nueva generación." },
         { a: 2022, art: "Quevedo", t: "Playa del Inglés", n: "Con Myke Towers. Quevedo, de Canarias, en el verano en que fue el artista más escuchado de España." },
@@ -71,13 +85,26 @@ HISTORIAS.push({
         { a: 2022, art: "Cecilio G, NeroBeatz & Myto", t: "LOLA FLORES", n: "De «Second Life», el disco de 2022 con Myto: un homenaje gamberro a la Faraona." },
         { a: 2022, art: "Cecilio G", t: "FAJOS GORDOS", n: "Trap de ostentación con su ironía de siempre (año aproximado)." },
         { a: 2022, art: "Cecilio G", t: "THE ANIMALS", n: "Uno de sus temas de 2022 (año aproximado)." },
+        { a: 2022, art: "Bad Gyal", t: "Da Me", n: "Otra de su etapa de «La joia» (año aproximado)." },
+        { a: 2022, art: "Yung Beef", t: "METALLICA", n: "Yung Beef en su etapa más rockera (año aproximado)." },
+        { a: 2022, art: "Rels B", t: "LA LATINA", n: "Del disco de Rels B «Afrolova 94» (año aproximado)." },
+        { a: 2022, art: "Rels B", t: "TU VAS SIN (fav)", n: "Uno de los temas más escuchados de Rels B (año aproximado)." },
+        { a: 2022, art: "Esviyei & Soto Asa", t: "Sin Ingresos", n: "Otra colaboración de la escena madrileña (año aproximado)." },
+        { a: 2022, art: "JEDET", t: "PORQUE TE VAS", n: "La actriz y cantante versiona a Jeanette en clave urbana (año aproximado)." },
+        { a: 2022, art: "La Nueva Escuela & Omar Montes", t: "La Rubia (Remix 2)", n: "Un viral de verbena urbana (año aproximado)." },
+        { a: 2022, art: "Kinder Malo & Pimp Flaco", t: "Terremoto Turquesa", n: "El dúo madrileño de rap de culto (año aproximado)." },
         { a: 2023, art: "El trap español", t: "De la periferia al número uno", tipo: "hito", n: "En menos de diez años el trap pasa de los vídeos de YouTube con pocos medios a llenar estadios." },
         { a: 2023, art: "Saiko & Feid", t: "Supernova (Remix)", n: "Con Feid y Quevedo. El trap español se mezcla con el reguetón colombiano en las listas." },
         { a: 2023, art: "Quevedo", t: "Columbia", n: "Quevedo, de Canarias, número uno en España con un tema de reguetón tranquilo." },
         { a: 2023, art: "Saiko", t: "Polaris (Remix)", q: "Saiko Polaris Remix", n: "Con Feid, Quevedo y Mora. El trap y el reguetón españoles mirando a Latinoamérica." },
         { a: 2023, art: "Quevedo", t: "Punto G", n: "Del disco «Donde quiera que estés»." },
         { a: 2023, art: "Bad Gyal", t: "Flow 2000", n: "Bad Gyal en su mejor momento." },
-        { a: 2023, art: "Bad Gyal, Young Miko & Tokischa", t: "Chulo pt. 2", n: "Neoperreo de Barcelona, Puerto Rico y República Dominicana." }
+        { a: 2023, art: "Bad Gyal, Young Miko & Tokischa", t: "Chulo pt. 2", n: "Neoperreo de Barcelona, Puerto Rico y República Dominicana." },
+        { a: 2023, art: "Bad Gyal & El Guincho", t: "Pussy", n: "Con El Guincho, productor de Rosalía (año aproximado)." },
+        { a: 2023, art: "Rels B & Don Patricio", t: "¿CÓMO TE VA, QUERIDA?", n: "Mallorca y Canarias juntas (año aproximado)." },
+        { a: 2023, art: "Merca Bae & OCTUBRXLIBRV", t: "Katana", n: "La nueva generación de Barcelona (año aproximado)." },
+        { a: 2023, art: "Merca Bae", t: "WYLYL", n: "Otra de Merca Bae (año aproximado)." },
+        { a: 2023, art: "María Escarmiento, Fran Laoren & detunedfreq", t: "M€ GU$TA €L DIN€RO $$$", n: "La madrileña del pop de internet (año aproximado)." }
       ]
     },
     {
@@ -138,7 +165,11 @@ HISTORIAS.push({
         { a: 2024, art: "SAIKO", t: "COSAS QUE NO TE DIJE", n: "SAIKO en clave de balada urbana, de su etapa tras «Polaris» (año aproximado)." },
         { a: 2024, art: "Gonzy, SAIKO & Arcángel", t: "X'CLUSIVO (Remix)", n: "Remix con Arcángel, uno de los nombres que inventaron el reguetón romántico (año aproximado)." },
         { a: 2024, art: "Aissa, SAIKO, JC Reyes, Nickzzy, El Bobe, Juseph & GIO", t: "Las Bratz (Remix)", n: "La canción viral de Aissa de 2024, convertida en remix de siete artistas." },
-        { a: 2024, art: "Vreno Yg", t: "Con el guapo subido", n: "Rapero zaragozano afincado en Madrid, de la generación de las batallas (año aproximado)." }
+        { a: 2024, art: "Vreno Yg", t: "Con el guapo subido", n: "Rapero zaragozano afincado en Madrid, de la generación de las batallas (año aproximado)." },
+        { a: 2024, art: "Bad Gyal & Rema", t: "44", n: "Con el nigeriano Rema (año aproximado)." },
+        { a: 2024, art: "Imaabs & Merca Bae", t: "Costa Brava", n: "El productor chileno con Merca Bae (año aproximado)." },
+        { a: 2024, art: "María Escarmiento, BLNCO & detunedfreq", t: "PUEDES CONTAR CONMIGO", n: "Su versión del clásico de La Oreja de Van Gogh (año aproximado)." },
+        { a: 2024, art: "JC Reyes & Camin", t: "34 Amor y Mafia", n: "JC Reyes en su etapa de 2024 (año aproximado)." }
       ]
     }
   ]

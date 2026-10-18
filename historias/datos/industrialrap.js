@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "industrialrap",
   familia: "Hip hop",
   titulo: "Rap industrial",
-  periodo: "1987 – 2018",
+  periodo: "1987 – 2024",
   color: "#6b6b6b",
   lema: "Ruido, distorsión y gritos: el rap que suena como una fábrica.",
   intro: "El rap industrial mezcla hip hop con el ruido del rock industrial y la música experimental. Public Enemy y su Bomb Squad ya llenaban sus ritmos de sirenas en los 80; en los 2000 El-P lo llevó al underground y en 2011 Death Grips lo convirtió en culto.",
@@ -26,7 +26,7 @@ HISTORIAS.push({
     {
       titulo: "Death Grips, Yeezus y después",
       corto: "Death Grips",
-      periodo: "2011 – 2018",
+      periodo: "2011 – 2024",
       intro: "El rap más extremo llega al gran público.",
       items: [
         { a: 2011, art: "Death Grips", t: "Takyon (Death Yon)", n: "MC Ride gritando sobre ruido: nace un culto." },
@@ -55,7 +55,12 @@ HISTORIAS.push({
         { a: 2017, art: "Ho99o9", t: "United States of Horror", n: "Punk, rap y ruido de Nueva Jersey." },
         { a: 2017, art: "Vince Staples", t: "BagBak", n: "Rap con electrónica dura de Long Beach." },
         { a: 2017, art: "Scarlxrd", t: "Heart Attakk", n: "Trap metal del británico que grita sobre bajos distorsionados." },
-        { a: 2018, art: "JPEGMAFIA", t: "Baby I'm Bleeding", n: "JPEGMAFIA, de Baltimore, con un rap caótico y lleno de ruido." }
+        { a: 2018, art: "JPEGMAFIA", t: "Baby I'm Bleeding", n: "JPEGMAFIA, de Baltimore, con un rap caótico y lleno de ruido." },
+        { a: 2018, art: "JPEGMAFIA", t: "Thug Tears", n: "Otra de «Veteran», rap experimental de Baltimore." },
+        { a: 2020, art: "JPEGMAFIA", t: "BALD!", n: "Un single del rapero de Baltimore, ruidoso y divertido (año aproximado)." },
+        { a: 2021, art: "JPEGMAFIA & Kenny Beats", t: "Puff Daddy", n: "Con Kenny Beats (año aproximado)." },
+        { a: 2024, art: "JPEGMAFIA", t: "SIN MIEDO", n: "De «I Lay Down My Life for You»." },
+        { a: 2024, art: "JPEGMAFIA & Denzel Curry", t: "JPEGULTRA!", n: "Otra de su disco de 2024." }
       ]
     }
   ]

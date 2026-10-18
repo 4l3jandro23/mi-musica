@@ -64,7 +64,16 @@ HISTORIAS.push({
         { a: 1999, art: "Dr. Dre feat. Snoop Dogg, Kurupt & Nate Dogg", t: "The Next Episode", n: "El regreso de Dre con «2001»: el final de Nate Dogg es de los más citados del rap." },
         { a: 2001, art: "Nate Dogg", t: "I Got Love", n: "La voz de los estribillos del G-funk." },
         { a: 2001, art: "Snoop Dogg", t: "Lay Low", n: "Snoop Dogg mantiene el G-funk vivo en los 2000." },
+        { a: 2014, art: "YG", t: "BPT", n: "De «My Krazy Life», el disco que resucitó el G-funk con DJ Mustard." },
+        { a: 2014, art: "YG, ScHoolboy Q & Jay Rock", t: "I Just Wanna Party", n: "Con ScHoolboy Q y Jay Rock, dos raperos de TDE." },
+        { a: 2014, art: "YG & DJ Mustard", t: "Left, Right", n: "El ritmo de DJ Mustard que dominó las radios." },
+        { a: 2014, art: "YG", t: "Bicken Back Being Bool", n: "Otra de «My Krazy Life», con el argot de los Bloods de Compton." },
+        { a: 2014, art: "YG & Tee Cee", t: "Meet the Flockers", n: "Una canción sobre robar casas que se hizo viral... por polémica." },
+        { a: 2014, art: "YG & Drake", t: "Who Do You Love?", n: "Con Drake: uno de los éxitos del disco." },
+        { a: 2014, art: "YG & Kendrick Lamar", t: "Really Be (Smokin N Drinkin)", n: "Con Kendrick, sobre Compton." },
+        { a: 2014, art: "YG & Ty Dolla $ign", t: "Sorry Momma", n: "Con Ty Dolla $ign: una disculpa a su madre por la vida que llevó." },
         { a: 2015, art: "Kendrick Lamar", t: "King Kunta", n: "El funk de la Costa Oeste en To Pimp a Butterfly." },
+        { a: 2019, art: "YG, Tyga & Jon Z", t: "Go Loko", n: "Con Tyga y el boricua Jon Z: rap y reguetón." },
         { a: 2022, art: "Super Bowl", t: "Dr. Dre, Snoop y compañía", tipo: "hito", n: "El G-funk en el descanso de la Super Bowl de Los Ángeles." }
       ]
     }

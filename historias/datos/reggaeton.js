@@ -20,6 +20,7 @@ HISTORIAS.push({
         { a: 1991, art: "El General", t: "Te ves buena", n: "Un éxito en toda Latinoamérica antes de que existiera la palabra «reguetón»." },
         { a: 1991, art: "El General & Anayka", t: "Rica y apretadita", n: "El reggae en español de Panamá (año aproximado)." },
         { a: 1991, art: "El General", t: "Muévelo", n: "Otro de sus primeros éxitos (año aproximado)." },
+        { a: 1996, art: "Don Chezina", t: "Tra, Tra", n: "El underground de Puerto Rico de los 90, con el «tra, tra» que se copió durante años (año aproximado)." },
         { a: 1997, art: "El Chombo & Cutty Ranks", t: "Dame tu cosita", n: "Reggae en español de Panamá; veinte años después la baila un alien en internet." },
         { a: 1998, art: "El Chombo", t: "El cubo de leche", n: "De la serie de casetes «Cuentos de la cripta» (año aproximado)." }
       ]
@@ -81,6 +82,7 @@ HISTORIAS.push({
         { a: 2004, art: "Daddy Yankee", t: "Dónde mi no vengas", n: "De la época de «Barrio fino» (año aproximado)." },
         { a: 2004, art: "Baby Rasta & Gringo", t: "Me niegas", n: "Reguetón romántico (año aproximado)." },
         { a: 2004, art: "Chezina y Pirin", t: "La combinación perfecta", n: "Reguetón boricua del underground de los 2000 (año aproximado)." },
+        { a: 2004, art: "Angel y Khriz", t: "Ven Bailalo", n: "Uno de los éxitos de la explosión del reguetón." },
         { a: 2005, art: "Wisin & Yandel", t: "Rakata", n: "Los «dúo de la historia» en su momento más fiestero." },
         { a: 2005, art: "Calle 13", t: "Atrévete-te-te", n: "Ingenio, humor y cumbia: el reguetón también podía ser otra cosa." },
         { a: 2005, art: "Daddy Yankee", t: "Rompe", n: "Otra de «Barrio Fino», el disco que llevó el reguetón al mundo." },
@@ -90,12 +92,14 @@ HISTORIAS.push({
         { a: 2005, art: "Wisin & Yandel", t: "Pégate", n: "De «Pa'l mundo» (año aproximado)." },
         { a: 2005, art: "Wisin & Yandel & Romeo Santos", t: "Noche de sexo", n: "Reguetón y bachata con la voz de Romeo." },
         { a: 2005, art: "Alexis & Fido & Baby Ranks", t: "El tiburón", n: "El dúo del «perreo» más bailable (año aproximado)." },
+        { a: 2005, art: "Don Omar & Tego Calderón", t: "Bandoleros", n: "De la banda sonora de «A todo gas: Tokyo Race»." },
         { a: 2006, art: "Daddy Yankee, Wisin & Yandel, Héctor «El Father», Zion & Tonny Tun Tun", t: "Noche de entierro (Nuestro amor)", n: "Del disco «Más Flow: Los Benjamins», con todos los grandes juntos." },
         { a: 2006, art: "Tito El Bambino, Beenie Man & Deevani", t: "Flow natural", n: "Reguetón con dancehall jamaicano." },
         { a: 2006, art: "Héctor «El Father» & Wisin & Yandel", t: "El teléfono", n: "El Father antes de dejar la música por la iglesia (año aproximado)." },
         { a: 2006, art: "Don Omar", t: "Salió el sol", n: "De «King of Kings»: reguetón con música electrónica." },
         { a: 2006, art: "Don Omar", t: "Ayer la vi", n: "Otra de «King of Kings», sobre ver a una ex con otro." },
-        { a: 2006, art: "Las Guanábanas & Don Chezina", t: "Brotis", n: "Reguetón de la vieja escuela (año aproximado)." }
+        { a: 2006, art: "Las Guanábanas & Don Chezina", t: "Brotis", n: "Reguetón de la vieja escuela (año aproximado)." },
+        { a: 2006, art: "Tony Dize, Ken-Y & Marioso", t: "Quizás (Remix)", n: "El reguetón romántico de los 2000 (año aproximado)." }
       ]
     },
     {
@@ -104,15 +108,16 @@ HISTORIAS.push({
       periodo: "2007 – 2013",
       intro: "2007 – 2013: Wisin & Yandel, Don Omar, el reguetón romántico y los temas con todos los cantantes juntos.",
       items: [
+        { a: 2007, art: "«Los extraterrestres»", t: "Wisin & Yandel ganan el Grammy", n: "Su disco «Los extraterrestres» gana el Grammy al mejor álbum de música urbana latina: el dúo es el más grande del reguetón.", tipo: "hito" },
         { a: 2007, art: "Daddy Yankee", t: "Ella me levantó", n: "Reguetón romántico de «El cartel: The Big Boss»." },
         { a: 2007, art: "Wisin & Yandel & Nelly Furtado", t: "Sexy movimiento", n: "De «Los extraterrestres»." },
-        { a: 2007, art: "«Los extraterrestres»", t: "Wisin & Yandel ganan el Grammy", n: "Su disco «Los extraterrestres» gana el Grammy al mejor álbum de música urbana latina: el dúo es el más grande del reguetón.", tipo: "hito" },
         { a: 2008, art: "Talento de barrio", t: "Daddy Yankee, estrella de cine", tipo: "hito", n: "Protagoniza su propia película: el reguetón ya es un negocio enorme." },
         { a: 2008, art: "Daddy Yankee", t: "Llamado de emergencia", n: "De «Talento de barrio», su película." },
         { a: 2008, art: "Daddy Yankee", t: "Salgo pa' la calle", n: "Con Randy Nota Loca, de la película «Talento de barrio»." },
         { a: 2008, art: "Daddy Yankee", t: "Perros salvajes", n: "De «Talento de barrio», la película que protagonizó él mismo." },
         { a: 2008, art: "Daddy Yankee", t: "¿Qué tengo que hacer?", n: "Otra de «Talento de barrio»." },
         { a: 2008, art: "Arcángel", t: "Me prefieres a mí", n: "Arcángel, «La Maravilla», en solitario (año aproximado)." },
+        { a: 2008, art: "De La Ghetto & Randy", t: "Sensación del Bloque", n: "Un clásico del reguetón de los 2000 (año aproximado)." },
         { a: 2009, art: "Wisin & Yandel", t: "Abusadora", n: "Reguetón electrónico con sintetizadores de discoteca." },
         { a: 2009, art: "Don Omar", t: "Virtual diva", n: "De «iDon»: un reguetón futurista sobre una chica perfecta." },
         { a: 2009, art: "Don Omar", t: "Ojitos chiquitos", n: "De «iDon» (año aproximado)." },
@@ -175,6 +180,7 @@ HISTORIAS.push({
         { a: 2022, art: "KAROL G", t: "Provenza", n: "Reguetón suave con aire de bossa: la canción del verano de 2022." },
         { a: 2022, art: "iZaak, Luar La L & Omar Courtz", t: "Bonnie and Clyde (Remix)", n: "El reguetón de la nueva generación de Puerto Rico (año aproximado)." },
         { a: 2022, art: "Kafu Banton & Bad Gyal", t: "Tú eres un bom bom (Remix)", n: "Un clásico del reggae en español de Panamá, con Bad Gyal (año aproximado)." },
+        { a: 2022, art: "Wisin & Yandel & ROSALÍA", t: "Besos Moja2", n: "El dúo de Cayey con Rosalía en su disco de despedida." },
         { a: 2023, art: "Luar La L", t: "Caile", n: "El boricua del underground que se hizo viral con su voz grave (año aproximado)." }
       ]
     }

@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "graciosas",
   familia: "Humor e internet",
   titulo: "Canciones graciosas",
-  periodo: "1959 – 2021",
+  periodo: "1959 – 2023",
   color: "#ffca28",
   lema: "De «Mi agüita amarilla» a The Lonely Island: canciones para reírse.",
   intro: "Hay canciones hechas para hacer reír: parodias, letras absurdas, humor negro y chistes con música. Esta lista junta clásicos en inglés, como Weird Al Yankovic o Monty Python, con el humor musical español, de Los Toreros Muertos a Ojete Calor.",
@@ -33,7 +33,7 @@ HISTORIAS.push({
     {
       titulo: "Humor en español",
       corto: "En España",
-      periodo: "1983 – 2015",
+      periodo: "1983 – 2023",
       intro: "De la Movida a Ojete Calor.",
       items: [
         { a: 1983, art: "Siniestro Total", t: "Ayatollah!", n: "El punk gallego más gamberro." },
@@ -46,7 +46,8 @@ HISTORIAS.push({
         { a: 2010, art: "Tu Madre Es Puta", t: "Susanna Griso", n: "El grupo hispano-portugués de metal en broma, con títulos de provocación (año aproximado)." },
         { a: 2011, art: "The Lonely Island feat. Michael Bolton", t: "Jack Sparrow", n: "Michael Bolton obsesionado con «Piratas del Caribe»." },
         { a: 2015, art: "Ojete Calor", t: "Opino de que", n: "Carlos Areces y Aníbal Gómez: el «subnopop»." },
-        { a: 2015, art: "Los Ganglios", t: "El Subiduki", n: "El punk de Barcelona que mezcla cumbia, Eskorbuto y bakalao: «música porc» (año aproximado)." }
+        { a: 2015, art: "Los Ganglios", t: "El Subiduki", n: "El punk de Barcelona que mezcla cumbia, Eskorbuto y bakalao: «música porc» (año aproximado)." },
+        { a: 2023, art: "S Curro, Manul & Energy Man", t: "Crustcampo (Mahou diss)", n: "Una «guerra» de rap entre cervezas, convertida en meme (año aproximado)." }
       ]
     },
     {

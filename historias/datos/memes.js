@@ -77,17 +77,24 @@ HISTORIAS.push({
     {
       titulo: "Shitpost y TikTok",
       corto: "TikTok",
-      periodo: "2018 – 2026",
+      periodo: "2010 – 2026",
       intro: "TikTok convierte cualquier canción en un baile o un sonido.",
       items: [
+        { a: 2010, art: "The Lonely Island & Akon", t: "I Just Had Sex", n: "El sketch musical de «Saturday Night Live»." },
+        { a: 2017, art: "Pink Guy", t: "STFU", n: "El personaje de Joji antes de ser cantante." },
         { a: 2018, art: "El Chombo", t: "Dame Tu Cosita", n: "Un alien verde bailando: uno de los vídeos más vistos de YouTube." },
         { a: 2018, art: "iLOVEFRiDAY", t: "Mia Khalifa", n: "«Hit or miss, I guess they never miss, huh?»: el primer gran meme de TikTok." },
+        { a: 2018, art: "Bhad Bhabie", t: "Hi Bich", n: "La chica del «Cash me ousside»." },
         { a: 2019, art: "Christina Perri", t: "you are my sunshine", n: "Su versión de cuna de la canción infantil acabó en montones de vídeos tristes y edits." },
+        { a: 2019, art: "Lil Dicky", t: "Earth", n: "Con decenas de estrellas haciendo de animales." },
         { a: 2021, art: "Nathan Evans", t: "Wellerman", n: "Un cartero escocés cantando canciones de marineros: la fiebre de las sea shanties." },
         { a: 2021, art: "Colm R. McGuinness", t: "Hoist the Colours", n: "La canción pirata de «Piratas del Caribe» que se hizo viral en TikTok (año aproximado)." },
+        { a: 2021, art: "Flyysoulja", t: "Island Boy Freestyle", n: "El viral de los gemelos de los tatuajes en la cara." },
         { a: 2022, art: "Polimá Westcoast & Pablito Pesadilla", t: "Baby Otaku", n: "Rap chileno sobre una chica otaku: viral en TikTok en septiembre de 2022." },
         { a: 2022, art: "Tito Silva Music", t: "Mi Bebito Fiu Fiu", n: "La canción peruana sobre un escándalo político que se hizo viral en todo el mundo." },
         { a: 2023, art: "Skibidi Toilet", t: "Cabezas en inodoros", tipo: "hito", n: "Una serie de vídeos absurda con una canción pegadiza: el gran fenómeno de la generación Alfa." },
+        { a: 2023, art: "Yuno Miles", t: "Indiana Jones", n: "El rapero de los versos absurdos." },
+        { a: 2024, art: "Yuno Miles & Fantano", t: "Bobo's Chicken", n: "Con el crítico Anthony Fantano." },
         { a: 2026, art: "KITSCHKRIEG, Blumengarten & Shirin David", t: "Gut genug", q: "KITSCHKRIEG Gut Genug Blumengarten Shirin David", n: "Medio mundo canta «Doobie Scoot Canoe» sin saber que en alemán significa «eres suficiente»." }
       ]
     },

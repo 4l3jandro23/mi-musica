@@ -40,6 +40,9 @@ HISTORIAS.push({
         { a: 1981, art: "Rigo Tovar", t: "Mi matamoros querido", q: "Rigo Tovar", n: "Rigo Tovar, de México, con gafas oscuras y cumbia con teclados." },
         { a: 1985, art: "La Sonora Dinamita", t: "Que nadie sepa mi sufrir", n: "La cumbia colombiana que sonó en todas las fiestas del continente." },
         { a: 1990, art: "Selena y Los Dinos", t: "Baila esta cumbia", n: "La cumbia tejana de Selena." },
+        { a: 1993, art: "Totó la Momposina", t: "El pescador", n: "La cantante de Talaigua y su versión del clásico de José Barros (año aproximado)." },
+        { a: 1993, art: "Totó la Momposina", t: "La verdolaga", n: "Otra de sus grabaciones de la música tradicional colombiana (año aproximado)." },
+        { a: 1993, art: "Totó la Momposina", t: "Curura", n: "Tambores del Caribe colombiano (año aproximado)." },
         { a: 1996, art: "Los Ángeles Azules", t: "Cómo te voy a olvidar", n: "Desde Iztapalapa: la cumbia mexicana, con teclados." },
         { a: 1997, art: "Los Ángeles Azules", t: "El listón de tu pelo", n: "Los Ángeles Azules, de Iztapalapa, con su cumbia sonidera de siempre." }
       ]
@@ -61,6 +64,7 @@ HISTORIAS.push({
         { a: 2006, art: "ZZK", t: "Nace la «cumbia digital» en Buenos Aires", tipo: "hito", n: "Un club y un sello mezclan la cumbia con la electrónica." },
         { a: 2008, art: "Bomba Estéreo", t: "Fuego", n: "La cumbia digital colombiana: electrónica y champeta." },
         { a: 2012, art: "Chico Trujillo", t: "Loca", n: "Chico Trujillo, desde Chile, con cumbia con raíces punk y ska." },
+        { a: 2015, art: "Monsieur Periné & Vicente García", t: "Nuestra canción", n: "El swing colombiano: Grammy Latino al mejor grupo nuevo." },
         { a: 2016, art: "Bomba Estéreo & Tainy", t: "To My Love (Tainy Remix)", n: "El remix del productor de Bad Bunny la lleva al mundo." },
         { a: 2018, art: "Los Ángeles Azules", t: "Nunca es suficiente", n: "Con Natalia Lafourcade: más de mil millones de reproducciones." }
       ]
@@ -78,7 +82,8 @@ HISTORIAS.push({
         { a: 2015, art: "Leka el Poeta & Mishelle Master Boys", t: "Ella quiere hmm haa hmm", q: "Ella Quiere Hmm Haa Hmm DJ Yayo Remix", n: "Champeta colombiana; volvió en 2021 con un remix de DJ Yayo (año aproximado)." },
         { a: 2019, art: "Ke Personajes", t: "Hotel California", n: "Cumbia argentina: la canción de los Eagles pasada a cumbia (año aproximado)." },
         { a: 2022, art: "Grupo Frontera", t: "No se va", n: "Una canción de Morat pasada a cumbia norteña: viral en TikTok." },
-        { a: 2023, art: "La cumbia en el mundo", t: "Grupo Frontera y Bad Bunny", tipo: "hito", n: "La cumbia norteña de Texas llega al top mundial de Spotify." }
+        { a: 2023, art: "La cumbia en el mundo", t: "Grupo Frontera y Bad Bunny", tipo: "hito", n: "La cumbia norteña de Texas llega al top mundial de Spotify." },
+        { a: 2023, art: "Luck Ra & BM", t: "La morocha", n: "El cuarteto cordobés llega a todo el país." }
       ]
     }
   ]

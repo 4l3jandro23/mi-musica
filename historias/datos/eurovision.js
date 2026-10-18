@@ -58,6 +58,7 @@ HISTORIAS.push({
         { a: 2012, art: "Loreen", t: "Euphoria", n: "Uno de los mayores éxitos que ha dado el festival." },
         { a: 2012, art: "Buranovskiye Babushki", t: "Party for Everybody", n: "Seis abuelas rusas y un horno en el escenario." },
         { a: 2014, art: "Conchita Wurst", t: "Rise Like a Phoenix", n: "Una drag con barba gana para Austria." },
+        { a: 2014, art: "Ruth Lorenzo", t: "Dancing in the Rain", n: "La canción de España en Eurovisión 2014, décima en Copenhague." },
         { a: 2017, art: "Salvador Sobral", t: "Amar pelos dois", n: "Una balada sencilla en portugués: la primera victoria de Portugal." },
         { a: 2018, art: "Netta", t: "Toy", n: "Cloqueos de gallina y un bucle de voz." },
         { a: 2019, art: "Duncan Laurence", t: "Arcade", n: "Una balada que años después fue viral en TikTok." },

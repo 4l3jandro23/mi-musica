@@ -1,0 +1,110 @@
+HISTORIAS.push({
+  id: "jbalvin",
+  familia: "Artistas",
+  titulo: "La historia de J Balvin",
+  periodo: "2013 – 2024",
+  color: "#f2c230",
+  lema: "Del reguetón de Medellín a «Mi Gente» y los discos de colores: el colombiano que abrió el camino del reguetón en el mundo.",
+  intro: "José Álvaro Osorio Balvín vivió de adolescente en Oklahoma y en Nueva York, volvió a Medellín y se hizo un nombre en las discotecas de la ciudad. Con «La Familia», «Energía» y «Vibras» convirtió a Colombia en la segunda capital del reguetón, y con «Mi Gente» llegó al número uno del mundo. Después hizo un disco con Bad Bunny, otro dedicado a los colores con el artista japonés Takashi Murakami y otro con su nombre, «Jose». Algunos de sus éxitos más famosos («Ginza», «Ay vamos», «Mi Gente») ya están en otras historias y aquí salen como hitos.",
+  capitulos: [
+    {
+      titulo: "De Medellín al mundo",
+      corto: "Medellín",
+      periodo: "2013 – 2017",
+      intro: "2013 – 2017: La Familia, Energía y el reguetón de Colombia.",
+      items: [
+        { a: 2013, art: "J Balvin", t: "«La Familia»", tipo: "hito", n: "Su primer gran disco convierte el reguetón de Medellín en un fenómeno latinoamericano." },
+        { a: 2013, art: "J Balvin", t: "La Familia", n: "La canción que da título al disco que le hizo estrella en Colombia." },
+        { a: 2017, art: "J Balvin & Willy William", t: "«Mi Gente» desbanca a «Despacito»", tipo: "hito", n: "En julio de 2017 llega al número uno mundial de Spotify; el remix con Beyoncé dona sus beneficios a los damnificados de huracanes." },
+        { a: 2017, art: "J Balvin & Jowell & Randy", t: "Bonita", n: "Con el dúo boricua, reguetón romántico." },
+        { a: 2017, art: "J Balvin & Ozuna", t: "Pa' Guayarte", n: "Con Ozuna, en plena ola del reguetón colombiano y boricua (año aproximado)." }
+      ]
+    },
+    {
+      titulo: "Vibras",
+      corto: "Vibras",
+      periodo: "2018",
+      intro: "2018: el disco que mezcla reguetón, R&B y electrónica.",
+      items: [
+        { a: 2018, art: "J Balvin", t: "«Vibras» se canta en todo el mundo", tipo: "hito", n: "Su disco de 2018 entra en el top 20 de EE. UU. sin una sola canción en inglés y le lleva a festivales como Coachella." },
+        { a: 2018, art: "J Balvin", t: "Reggaeton", n: "Un homenaje a los pioneros del género, con nombres de cantantes en la letra." },
+        { a: 2018, art: "J Balvin & Carla Morrison", t: "Vibras", n: "Abre el disco con la cantautora mexicana." },
+        { a: 2018, art: "J Balvin", t: "Ambiente", n: "Reguetón con aire de los 2000." },
+        { a: 2018, art: "J Balvin", t: "Cuando Tú Quieras", n: "Otra de «Vibras», reguetón suave para bailar despacio." },
+        { a: 2018, art: "J Balvin & Zion & Lennox", t: "No Es Justo", n: "Con el dúo de Carolina, una de las grandes del disco." },
+        { a: 2018, art: "J Balvin", t: "Ahora", n: "Una canción romántica del disco «Vibras»." },
+        { a: 2018, art: "J Balvin & ROSALÍA", t: "Brillo", n: "Su primera colaboración con Rosalía, antes de «Con altura»." },
+        { a: 2018, art: "J Balvin", t: "En Mí", n: "Una canción de «Vibras» sobre alguien que no se va de la cabeza." },
+        { a: 2018, art: "J Balvin & Wisin & Yandel", t: "Peligrosa", n: "Con el dúo de Cayey, reguetón de la vieja escuela." },
+        { a: 2018, art: "J Balvin", t: "Noches Pasadas", n: "Una canción de despecho del disco." },
+        { a: 2018, art: "J Balvin", t: "Tu Verdad", n: "Otra de «Vibras», sobre las mentiras en una relación." },
+        { a: 2018, art: "J Balvin", t: "Dónde Estarás", n: "Una balada urbana de «Vibras»." },
+        { a: 2018, art: "J Balvin, Jeon & Anitta", t: "Machika", n: "Con la brasileña Anitta y el arubeño Jeon: baile en tres idiomas." }
+      ]
+    },
+    {
+      titulo: "Oasis y Colores",
+      corto: "Oasis y Colores",
+      periodo: "2019 – 2020",
+      intro: "2019 – 2020: el disco con Bad Bunny y los colores de Murakami.",
+      items: [
+        { a: 2019, art: "J Balvin & Bad Bunny", t: "«Oasis»", tipo: "hito", n: "Los dos grandes del reguetón publican un disco conjunto de ocho canciones." },
+        { a: 2019, art: "J Balvin & Bad Bunny", t: "Si Tu Novio Te Deja Sola", n: "El primer adelanto del dúo." },
+        { a: 2019, art: "J Balvin & Bad Bunny", t: "MOJAITA", n: "Abre «Oasis», el disco de ocho canciones con Bad Bunny." },
+        { a: 2019, art: "J Balvin & Bad Bunny", t: "YO LE LLEGO", n: "Otra de «Oasis», reguetón de fiesta a dos voces." },
+        { a: 2019, art: "J Balvin & Bad Bunny", t: "CUIDAO POR AHÍ", n: "Reguetón del disco conjunto." },
+        { a: 2019, art: "J Balvin & Bad Bunny", t: "LA CANCIÓN", n: "La balada urbana del disco: un recuerdo asociado a una canción." },
+        { a: 2019, art: "J Balvin, Bad Bunny & Marciano Cantero", t: "UN PESO", n: "Con el cantante de Los Enanitos Verdes." },
+        { a: 2019, art: "J Balvin & Bad Bunny", t: "ODIO", n: "Otra de «Oasis», una canción de despecho a dos voces." },
+        { a: 2019, art: "J Balvin, Bad Bunny & Mr Eazi", t: "COMO UN BEBÉ", n: "Con el nigeriano Mr Eazi." },
+        { a: 2019, art: "J Balvin", t: "Ego", n: "Un single de 2019 (año aproximado)." },
+        { a: 2020, art: "J Balvin", t: "«Colores»", tipo: "hito", n: "Un disco de diez canciones, cada una con nombre de color, con portadas de Takashi Murakami." },
+        { a: 2020, art: "J Balvin", t: "Amarillo", n: "El primer color del disco, con aire de verano." },
+        { a: 2020, art: "J Balvin", t: "Azul", n: "Una canción de amor de «Colores»." },
+        { a: 2020, art: "J Balvin", t: "Rojo", n: "El color de la pasión y el peligro: uno de los singles." },
+        { a: 2020, art: "J Balvin", t: "Rosa", n: "Reguetón suave de «Colores»." },
+        { a: 2020, art: "J Balvin", t: "Morado", n: "El primer single del disco." },
+        { a: 2020, art: "J Balvin & Sky Rompiendo", t: "Verde", n: "Con su productor de cabecera." },
+        { a: 2020, art: "J Balvin", t: "Negro", n: "Otro de los colores del disco." },
+        { a: 2020, art: "J Balvin", t: "Gris", n: "Una de las más tristes del disco." },
+        { a: 2020, art: "J Balvin & Mr Eazi", t: "Arcoíris", n: "Con el nigeriano Mr Eazi." },
+        { a: 2020, art: "J Balvin", t: "Blanco", n: "Cierra «Colores», con aire de pop de pista." },
+        { a: 2020, art: "J Balvin, Dua Lipa, Bad Bunny & Tainy", t: "UN DIA (ONE DAY)", n: "Pop y reguetón en dos idiomas." },
+        { a: 2020, art: "J Balvin & Michaël Brun", t: "Positivo", n: "Una canción de ánimo en plena pandemia." },
+        { a: 2020, art: "J Balvin", t: "Tu Veneno", n: "Un single de 2020 entre «Oasis» y «Colores»." },
+        { a: 2020, art: "J Balvin", t: "Ma' G", n: "Otro single de 2020, sobre los que le criticaban." }
+      ]
+    },
+    {
+      titulo: "Jose",
+      corto: "Jose",
+      periodo: "2021 – 2024",
+      intro: "2021 – 2024: el disco con su nombre y la paternidad.",
+      items: [
+        { a: 2021, art: "J Balvin", t: "Habla de su depresión", tipo: "hito", n: "Cuenta públicamente que sufre ansiedad y depresión, algo poco habitual entre las estrellas del reguetón." },
+        { a: 2021, art: "J Balvin", t: "Querido Rio", n: "Una carta a su hijo recién nacido, Rio." },
+        { a: 2021, art: "J Balvin", t: "7 De Mayo", n: "El día de su cumpleaños: una canción sobre la ansiedad y la depresión que reconoce tener." },
+        { a: 2021, art: "J Balvin & Khalid", t: "Otra Noche Sin Ti", n: "Con Khalid, en inglés y español." },
+        { a: 2021, art: "J Balvin & Tokischa", t: "Perra", n: "Un dembow cuyo vídeo fue retirado por críticas de racismo y cosificación; Balvin pidió disculpas." },
+        { a: 2021, art: "J Balvin, KAROL G, Nicky Jam, Crissin, Totoy El Frio, Natan & Shander", t: "Poblado (Remix)", n: "El remix con los grandes de Medellín." },
+        { a: 2021, art: "J Balvin", t: "Wherever I May Roam", n: "Su versión de Metallica para el disco de homenaje «The Metallica Blacklist»." },
+        { a: 2021, art: "J Balvin", t: "F40", n: "De «Jose», el disco con su nombre." },
+        { a: 2021, art: "J Balvin & Sech", t: "Una Nota", n: "Con el panameño Sech, reguetón de «Jose»." },
+        { a: 2021, art: "J Balvin & Yandel", t: "Te Acuerdas De Mí", n: "Con Yandel, de Wisin & Yandel." },
+        { a: 2021, art: "J Balvin & Skrillex", t: "In Da Getto", n: "Con Skrillex: house y reguetón para las discotecas." },
+        { a: 2021, art: "J Balvin & Myke Towers", t: "Billetes De 100", n: "Con Myke Towers, trap y reguetón del disco «Jose»." },
+        { a: 2021, art: "J Balvin & JHAYCO", t: "La Venganza", n: "Con JHAYCO, otra canción del disco «Jose»." },
+        { a: 2021, art: "J Balvin", t: "Vestido", n: "Otra de «Jose», reguetón para las discotecas de 2021." },
+        { a: 2021, art: "J Balvin", t: "Que Locura", n: "Otra de «Jose», con aire de los 2000." },
+        { a: 2021, art: "J Balvin & Feid", t: "Bebé Que Bien Te Ves", n: "Con Feid, el nuevo nombre de Medellín." },
+        { a: 2021, art: "J Balvin", t: "Lo Que Dios Quiera", n: "Del disco «Jose», sobre dejar las cosas en manos del destino." },
+        { a: 2021, art: "J Balvin & Zion & Lennox", t: "Si Te Atreves", n: "Otra colaboración con Zion & Lennox (año aproximado)." },
+        { a: 2021, art: "J Balvin & Jay Wheeler", t: "OTRO FILI", n: "Con el boricua Jay Wheeler (año aproximado)." },
+        { a: 2021, art: "J Balvin & Maria Becerra", t: "Qué Más Pues?", n: "Con la argentina Maria Becerra: número uno en las listas latinas." },
+        { a: 2024, art: "J Balvin", t: "Fantasías", n: "De su disco «Rayo» (año aproximado)." },
+        { a: 2024, art: "J Balvin", t: "Ganas De Verte", n: "Otra de «Rayo» (año aproximado)." },
+        { a: 2024, art: "J Balvin", t: "Suerte", n: "Otra de su etapa de «Rayo» (año aproximado)." }
+      ]
+    }
+  ]
+});

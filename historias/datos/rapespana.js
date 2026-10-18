@@ -73,7 +73,8 @@ HISTORIAS.push({
         { a: 2019, art: "Freestyle", t: "Las batallas llenan pabellones", tipo: "hito", n: "La FMS y la Red Bull llenan grandes recintos: el freestyle se convierte en espectáculo de masas." },
         { a: 2019, art: "C. Tangana", t: "Llorando en la limo", n: "El hit antes de «El Madrileño»: llorar en una limusina." },
         { a: 2019, art: "Rels B", t: "A mí", n: "El mallorquín y su rap melódico: uno de los éxitos de 2019 en España." },
-        { a: 2023, art: "Midas Alonso", t: "Brixton", n: "El «himno» que lo hizo viral por su frase sobre Sturridge: rap con chistes de fútbol (año aproximado)." }
+        { a: 2023, art: "Midas Alonso", t: "Brixton", n: "El «himno» que lo hizo viral por su frase sobre Sturridge: rap con chistes de fútbol (año aproximado)." },
+        { a: 2023, art: "Los Chikos del Maiz", t: "Criptobros", n: "El grupo valenciano de rap político contra los inversores de criptomonedas." }
       ]
     }
   ]

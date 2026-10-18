@@ -14,6 +14,9 @@ HISTORIAS.push({
       intro: "Playboi Carti y su sello.",
       items: [
         { a: 2017, art: "Playboi Carti", t: "Magnolia", n: "Pierre Bourne y los sintetizadores agudos: la semilla del rage." },
+        { a: 2018, art: "Playboi Carti", t: "R.I.P.", n: "Abre «Die Lit», el primer disco de Playboi Carti." },
+        { a: 2018, art: "Playboi Carti", t: "Long Time (Intro)", n: "Otra de «Die Lit», con producción de Pi'erre Bourne." },
+        { a: 2018, art: "Playboi Carti & Skepta", t: "Lean 4 Real", n: "Con el británico Skepta, de «Die Lit»." },
         { a: 2019, art: "Opium", t: "Carti funda su sello", tipo: "hito", n: "Ken Carson y Destroy Lonely llegan después." },
         { a: 2020, art: "«Whole Lotta Red»", t: "Llega por Navidad", tipo: "hito", n: "Sintetizadores distorsionados y voz de bebé: nace el rage." },
         { a: 2020, art: "Playboi Carti", t: "Sky", n: "Whole Lotta Red: el disco que primero se odió y luego se veneró." },
@@ -50,10 +53,18 @@ HISTORIAS.push({
         { a: 2023, art: "Lil Uzi Vert", t: "Watch This (ARIZONATEARS Pluggnb Remix)", n: "Un remix acelerado y lleno de bajos que se hizo viral en TikTok." },
         { a: 2023, art: "Travis Scott", t: "I KNOW ?", n: "De «Utopia»: Travis más melódico y nostálgico." },
         { a: 2023, art: "Destroy Lonely", t: "Bane", n: "El sonido de Opium, el sello de Playboi Carti: oscuro y saturado." },
+        { a: 2023, art: "Lil Uzi Vert", t: "Flooded the Face", n: "De «Pink Tape», el disco de 2023 de Lil Uzi Vert." },
+        { a: 2023, art: "Lil Uzi Vert", t: "Suicide Doors", n: "Otra de «Pink Tape», con su lado más rabioso." },
+        { a: 2023, art: "Lil Uzi Vert & BABYMETAL", t: "The End", n: "Con el grupo japonés de metal idol." },
+        { a: 2023, art: "Lil Uzi Vert & Bring Me the Horizon", t: "Werewolf", n: "Rap y metalcore con Bring Me the Horizon, de «Pink Tape»." },
+        { a: 2023, art: "Lil Uzi Vert", t: "CS", n: "Otra de «Pink Tape», trap de pista con voz aguda." },
+        { a: 2023, art: "Lil Uzi Vert", t: "Nakamura", n: "Otra de «Pink Tape», con aire de anime." },
+        { a: 2023, art: "Lil Uzi Vert & Nicki Minaj", t: "Endless Fashion", n: "Con Nicki Minaj, otra de «Pink Tape»." },
         { a: 2024, art: "Kanye West & Ty Dolla $ign", t: "CARNIVAL", n: "Con Playboi Carti, el rage llega al número uno." },
         { a: 2024, art: "Playboi Carti", t: "ALL RED", n: "Carti adelanta su siguiente disco: el rage sigue siendo su sonido." },
         { a: 2024, art: "¥$ (Kanye West & Ty Dolla $ign)", t: "Vultures", n: "El rage de Kanye, del disco que publicó por su cuenta, sin discográfica." },
-        { a: 2024, art: "Playboi Carti", t: "EVIL J0RDAN", n: "El regreso de Carti con «MUSIC», el disco que sus fans esperaron años." }
+        { a: 2024, art: "Playboi Carti", t: "EVIL J0RDAN", n: "El regreso de Carti con «MUSIC», el disco que sus fans esperaron años." },
+        { a: 2024, art: "Lil Uzi Vert & Snow Strippers", t: "Fire Alarm", n: "Con el dúo de electro Snow Strippers (año aproximado)." }
       ]
     }
   ]

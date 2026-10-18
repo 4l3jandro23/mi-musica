@@ -149,9 +149,12 @@ HISTORIAS.push({
         { a: 2020, art: "Bring Me the Horizon & BABYMETAL", t: "Kingslayer", n: "Metal británico y japonés en la misma canción." },
         { a: 2020, art: "Ozzy Osbourne & Post Malone", t: "It's a Raid", n: "Ozzy y Post Malone juntos en «Ordinary Man»." },
         { a: 2021, art: "Der Weg einer Freiheit", t: "Haven", n: "El post-black metal alemán de Würzburg (año aproximado)." },
+        { a: 2023, art: "Falling in Reverse", t: "Watch the World Burn", n: "Metal, rap y orquesta: uno de sus mayores éxitos." },
         { a: 2024, art: "Knocked Loose & Poppy", t: "Suffocate", n: "Hardcore con una cantante de pop: nominada al Grammy." },
         { a: 2024, art: "Linkin Park", t: "IGYEIH", n: "Del disco «From Zero», con Emily Armstrong de nueva cantante." },
         { a: 2024, art: "Aborted & Shadow of Intent", t: "Dreadbringer", n: "Death metal belga y deathcore estadounidense juntos (año aproximado)." },
+        { a: 2024, art: "Falling in Reverse, Tech N9ne & Alex Terrible", t: "Ronald", n: "Con el ruso Alex Terrible." },
+        { a: 2024, art: "Falling in Reverse & Marilyn Manson", t: "God Is a Weapon", n: "Con Marilyn Manson, metal industrial." },
         { a: 2025, art: "Deftones", t: "my mind is a mountain", n: "El adelanto de «Private Music»." }
       ]
     },

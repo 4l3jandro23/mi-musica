@@ -56,6 +56,7 @@ HISTORIAS.push({
         { a: 1987, art: "Vicente Fernández", t: "Mujeres divinas", n: "Canción de despecho y tequila." },
         { a: 1987, art: "Linda Ronstadt", t: "Por un amor", n: "De «Canciones de mi padre»: la estadounidense recupera las canciones de su familia mexicana." },
         { a: 1989, art: "Vicente Fernández", t: "Por tu maldito amor", n: "Despecho y mariachi: uno de los últimos grandes éxitos del Chente." },
+        { a: 1990, art: "Pedro Fernández", t: "Yo soy el aventurero", n: "Ranchera de un ídolo infantil convertido en charro (año aproximado)." },
         { a: 1995, art: "Alejandro Fernández", t: "Como quien pierde una estrella", n: "El hijo de Chente con mariachi." },
         { a: 1996, art: "Juan Gabriel", t: "Te sigo amando", n: "El divo de Juárez también es ranchero." },
         { a: 1998, art: "Pepe Aguilar", t: "Por mujeres como tú", n: "La ranchera de los 90, del hijo de Antonio Aguilar." },

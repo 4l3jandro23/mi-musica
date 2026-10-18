@@ -63,12 +63,14 @@ HISTORIAS.push({
         { a: 1987, art: "Caifanes", t: "La negra Tomasa", n: "Un son cubano pasado por el rock: el gran éxito de Caifanes." },
         { a: 1991, art: "Maldita Vecindad y los Hijos del Quinto Patio", t: "Pachuco", n: "Ska, rock y la cultura de los pachucos." },
         { a: 1992, art: "Maná", t: "Oye mi amor", n: "El grupo más vendido del rock en español." },
+        { a: 1992, art: "Luis Miguel", t: "La fiesta del mariachi", n: "Luis Miguel con mariachi (año aproximado)." },
         { a: 1994, art: "Café Tacvba", t: "Las flores", n: "El rock mexicano que mezcla tradición y vanguardia." },
         { a: 1994, art: "Selena", t: "Bidi Bidi Bom Bom", n: "La reina de la cumbia tejana, de raíces mexicanas." },
         { a: 1996, art: "Café Tacvba", t: "Chilanga banda", n: "Ciudad de México hecha jerga." },
         { a: 1996, art: "Joan Sebastian", t: "Tatuajes", n: "El «Rey del jaripeo» en una de sus canciones más famosas (año aproximado)." },
         { a: 1997, art: "Coyote Dax", t: "No Rompas Mi Corazón", n: "Uno de los grandes éxitos gruperos de los 90 en México." },
         { a: 2003, art: "Molotov", t: "Frijolero", n: "Rap rock bilingüe contra los tópicos de la frontera." },
+        { a: 2004, art: "Luis Miguel", t: "Volver", n: "Su versión del clásico de Gardel con mariachi (año aproximado)." },
         { a: 2006, art: "Julieta Venegas", t: "Me voy", n: "Pop con acordeón desde Tijuana." }
       ]
     },
@@ -83,6 +85,7 @@ HISTORIAS.push({
         { a: 2015, art: "Natalia Lafourcade", t: "Hasta la raíz", n: "Raíces y pop: Grammy Latino a la canción del año." },
         { a: 2018, art: "Marcos Menchaca", t: "Viernes 13", n: "El cantante de Monclova cuyo tema romántico se hizo viral en TikTok (año aproximado)." },
         { a: 2020, art: "Natanael Cano", t: "Amor tumbado", n: "El corrido tumbado: guitarras de corrido con actitud de trap." },
+        { a: 2021, art: "Jósean Log", t: "Chachachá", n: "El cantautor mexicano que se hizo viral en TikTok en 2024 (año aproximado)." },
         { a: 2023, art: "Peso Pluma", t: "El regional mexicano en el mundo", tipo: "hito", n: "Peso Pluma se convierte en el artista mexicano más escuchado del planeta." },
         { a: 2023, art: "Eslabon Armado & Peso Pluma", t: "Ella baila sola", n: "La primera canción de regional mexicano en el top 10 mundial de Spotify." },
         { a: 2023, art: "Grupo Frontera & Bad Bunny", t: "Un x100to", n: "Cumbia norteña de Texas con el puertorriqueño." },

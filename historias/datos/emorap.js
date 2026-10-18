@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "emorap",
   familia: "Hip hop",
   titulo: "Emo rap",
-  periodo: "2008 – 2020",
+  periodo: "2008 – 2021",
   color: "#6a3f8f",
   lema: "Tristeza, guitarras emo y SoundCloud: Lil Peep, XXXTentacion y Juice WRLD.",
   intro: "El emo rap mezcla trap con la tristeza y las guitarras del emo de los 2000. Kanye y Kid Cudi abrieron la puerta en 2008; en SoundCloud, una generación habló de depresión y drogas con una crudeza que el rap no había tenido. Tres de sus grandes figuras murieron jóvenes.",
@@ -41,13 +41,16 @@ HISTORIAS.push({
         { a: 2017, art: "Lil Peep", t: "Save That Shit", n: "Del disco «Come Over When You're Sober», publicado poco antes de su muerte." },
         { a: 2017, art: "Lil Uzi Vert", t: "XO Tour Llif3", n: "«All my friends are dead»: una canción triste que se cantó en todas las fiestas." },
         { a: 2017, art: "Lil Xan", t: "Betrayed", n: "Un rapero que cantaba contra las pastillas que tomaba toda su generación." },
-        { a: 2017, art: "Lil Skies", t: "Red Roses", n: "Emo rap melódico de Pensilvania, con Landon Cube." }
+        { a: 2017, art: "Lil Skies", t: "Red Roses", n: "Emo rap melódico de Pensilvania, con Landon Cube." },
+        { a: 2017, art: "Ski Mask the Slump God", t: "Catch Me Outside", n: "Sobre el meme de «Cash me ousside»." },
+        { a: 2017, art: "Ski Mask the Slump God", t: "BabyWipe", n: "Uno de sus primeros éxitos." },
+        { a: 2017, art: "Noah Cyrus & XXXTENTACION", t: "Again", n: "La hermana de Miley Cyrus con XXXTENTACION." }
       ]
     },
     {
       titulo: "El emo rap llega al número uno",
       corto: "Número uno",
-      periodo: "2018 – 2020",
+      periodo: "2018 – 2021",
       intro: "Juice WRLD y el emo rap en las listas.",
       items: [
         { a: 2018, art: "XXXTentacion", t: "SAD!", n: "Número uno póstumo tras su asesinato en junio de 2018." },
@@ -57,13 +60,23 @@ HISTORIAS.push({
         { a: 2018, art: "Juice WRLD", t: "Legends", n: "Juice WRLD, tras la muerte de XXXTentacion y Lil Peep: «nadie llega a los 27»." },
         { a: 2018, art: "XXXTentacion", t: "Moonlight", n: "Su último gran éxito antes de morir asesinado en 2018." },
         { a: 2018, art: "Craig Xen & XXXTENTACION", t: "RUN IT BACK!", n: "Del círculo de XXXTENTACION, con su rap de rabia y guitarras (año aproximado)." },
+        { a: 2018, art: "Lil Peep", t: "Life Is Beautiful", n: "Del disco póstumo «Come Over When You're Sober, Pt. 2»." },
+        { a: 2018, art: "Ski Mask the Slump God", t: "Faucet Failure", n: "De «Stokeley», su primer disco, con flow a toda velocidad." },
+        { a: 2018, art: "Ski Mask the Slump God", t: "Foot Fungus", n: "Otra de «Stokeley», con rimas absurdas." },
         { a: 2019, art: "Juice WRLD", t: "Muere a los 21 años", tipo: "hito", n: "Una convulsión al bajar de un avión en Chicago." },
         { a: 2019, art: "Lil Peep & XXXTentacion", t: "Falling Down", n: "Una canción póstuma de los dos, grabada por separado: el emo rap mira hacia atrás." },
         { a: 2019, art: "Juice WRLD & YoungBoy Never Broke Again", t: "Bandit", n: "Emo rap con un sample de Don Toliver: entró en el top 10 de EE. UU." },
         { a: 2019, art: "iann dior", t: "emotions", n: "Pop punk y trap del chico de Texas que luego cantó con 24kGoldn." },
         { a: 2019, art: "Machine Gun Kelly", t: "I Think I'm OKAY", n: "Con YUNGBLUD y Travis Barker." },
+        { a: 2019, art: "Lil Peep, ILOVEMAKONNEN & Fall Out Boy", t: "I've Been Waiting", n: "Con Fall Out Boy e ILOVEMAKONNEN, publicada tras su muerte." },
+        { a: 2019, art: "Ski Mask the Slump God & Juice WRLD", t: "Nuketown", n: "Con Juice WRLD, por el mapa del videojuego «Call of Duty»." },
         { a: 2020, art: "Juice WRLD", t: "Wishing Well", n: "Juice WRLD habla de su adicción en una canción que salió después de su muerte." },
-        { a: 2020, art: "The Kid LAROI", t: "WITHOUT YOU", n: "La balada emo del australiano." }
+        { a: 2020, art: "The Kid LAROI", t: "WITHOUT YOU", n: "La balada emo del australiano." },
+        { a: 2020, art: "Juice WRLD & Marshmello", t: "Come & Go", n: "Del disco póstumo «Legends Never Die»." },
+        { a: 2020, art: "Juice WRLD & The Weeknd", t: "Smile", n: "Otra de «Legends Never Die»." },
+        { a: 2020, art: "Eminem & Juice WRLD", t: "Godzilla", n: "Eminem rapea a más de diez sílabas por segundo." },
+        { a: 2020, art: "Powfu & beabadoobee", t: "death bed (coffee for your head)", n: "Un viral de TikTok sobre «Coffee» de beabadoobee." },
+        { a: 2021, art: "Juice WRLD & Young Thug", t: "Bad Boy", n: "Con Young Thug: una canción póstuma de Juice WRLD." }
       ]
     }
   ]

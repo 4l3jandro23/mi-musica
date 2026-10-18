@@ -30,6 +30,7 @@ HISTORIAS.push({
         { a: 1966, art: "Violeta Parra", t: "Gracias a la vida", n: "Escrita poco antes de quitarse la vida. Mercedes Sosa la hizo eterna." },
         { a: 1969, art: "Mercedes Sosa", t: "Alfonsina y el mar", n: "«La Negra», la voz de Latinoamérica, cantando a la poeta Alfonsina Storni." },
         { a: 1969, art: "Víctor Jara", t: "Te recuerdo Amanda", n: "Una canción de amor obrera." },
+        { a: 1971, art: "Alberto Cortez", t: "No soy de aquí", n: "La versión de Alberto Cortez de la canción de Facundo Cabral (año aproximado)." },
         { a: 1973, art: "Golpe de Estado en Chile", t: "Víctor Jara, asesinado", tipo: "hito", n: "Tras el golpe de Pinochet, Jara es torturado y asesinado en el Estadio Chile. Muchos músicos se exilian." },
         { a: 1974, art: "Celia Cruz & Johnny Pacheco", t: "Quimbara", n: "La reina de la salsa en Nueva York." },
         { a: 1978, art: "Willie Colón & Rubén Blades", t: "Pedro Navaja", n: "Una historia de barrio inspirada en «Mack the Knife»." },
