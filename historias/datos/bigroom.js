@@ -67,9 +67,15 @@ HISTORIAS.push({
       items: [
         { a: 2017, art: "Hardwell & KSHMR", t: "Power", n: "Dos de los grandes del big room juntos en plena caída del género." },
         { a: 2017, art: "Afrojack & David Guetta & Ester Dean", t: "Another Life", n: "Afrojack y Guetta en clave pop." },
+        { a: 2017, art: "Dimitri Vegas & Like Mike & David Guetta & Kiiara", t: "Complicated", n: "Los belgas de Tomorrowland y Guetta, con la voz de Kiiara." },
+        { a: 2017, art: "Blasterjaxx & Timmy Trumpet", t: "Narco", n: "La trompeta de Timmy Trumpet sobre el big room más bruto." },
         { a: 2018, art: "Hardwell", t: "Se va de los escenarios", tipo: "hito", n: "Hardwell anuncia que deja de pinchar por agotamiento: muchos lo ven como el final de una época." },
         { a: 2018, art: "Hardwell & Blasterjaxx & Mitch Crown", t: "Bigroom Never Dies", n: "El título lo dice todo: un grito de guerra del big room." },
-        { a: 2022, art: "Hardwell", t: "INTO THE UNKNOWN", n: "Su vuelta tras años sin pinchar, con un sonido más duro y cercano al techno." }
+        { a: 2018, art: "Dimitri Vegas & Like Mike & Armin van Buuren & W&W", t: "Repeat After Me", n: "Los grandes de los mainstages juntos en un tema de cánticos para el público." },
+        { a: 2018, art: "Hardwell & Maddix", t: "Bella Ciao", n: "El himno partisano italiano, que «La casa de papel» había puesto de moda, en big room." },
+        { a: 2020, art: "Timmy Trumpet & Vitas", t: "The King", n: "El cantante ruso del meme del falsete, en un tema de festival." },
+        { a: 2022, art: "Hardwell", t: "INTO THE UNKNOWN", n: "Su vuelta tras años sin pinchar, con un sonido más duro y cercano al techno." },
+        { a: 2022, art: "Hardwell", t: "I FEEL LIKE DANCING", n: "Del disco de su regreso: big room que ya suena a techno." }
       ]
     }
   ]
