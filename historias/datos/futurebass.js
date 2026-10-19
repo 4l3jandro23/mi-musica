@@ -52,7 +52,7 @@ HISTORIAS.push({
     {
       titulo: "Future bass de festival",
       corto: "Festivales",
-      periodo: "2015 – 2019",
+      periodo: "2015 – 2020",
       intro: "2016 – 2019: San Holo, Illenium, Slander y Gryffin llenan los escenarios.",
       items: [
         { a: 2015, art: "Petit Biscuit", t: "Sunset Lover", n: "Un francés de 15 años lo graba en su cuarto: cientos de millones de escuchas." },
@@ -71,7 +71,8 @@ HISTORIAS.push({
         { a: 2018, art: "ODESZA", t: "Loyal", n: "Percusión enorme y vientos: ODESZA en plan banda de festival." },
         { a: 2019, art: "ILLENIUM & Jon Bellion", t: "Good Things Fall Apart", n: "De «Ascend», su disco de 2019, con el que llena estadios en EE. UU." },
         { a: 2019, art: "ILLENIUM, Excision & I Prevail", t: "Feel Something", n: "Melodic bass, dubstep duro y una banda de metalcore." },
-        { a: 2019, art: "Gryffin, SLANDER & Calle Lehmann", t: "All You Need to Know", n: "Dos nombres del melodic bass juntos." }
+        { a: 2019, art: "Gryffin, SLANDER & Calle Lehmann", t: "All You Need to Know", n: "Dos nombres del melodic bass juntos." },
+        { a: 2020, art: "BRONSON & lau.ra", t: "HEART ATTACK", n: "BRONSON es el proyecto de ODESZA con el australiano Golden Features: melódico y oscuro." }
       ]
     }
   ]
