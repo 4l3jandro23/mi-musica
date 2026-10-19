@@ -58,6 +58,7 @@ HISTORIAS.push({
         { a: 2003, art: "Mis-Teeq", t: "Scandalous", n: "R&B y garage del trío británico: luego sonó en «Catwoman»." },
         { a: 2007, art: "Burial", t: "Archangel", n: "El 2-step convertido en fantasma melancólico." },
         { a: 2009, art: "Joy Orbison", t: "Hyph Mngo", n: "El garage del futuro: uno de los temas que abrieron el sonido post-dubstep." },
+        { a: 2011, art: "SBTRKT & Little Dragon", t: "Wildfire", n: "El productor enmascarado SBTRKT con la voz de Little Dragon: post-dubstep para escuchar en casa." },
         { a: 2013, art: "Disclosure", t: "White Noise", n: "Con AlunaGeorge: el garage vuelve a las listas." },
         { a: 2014, art: "Revival", t: "El garage vuelve", tipo: "hito", n: "Disclosure y la nueva generación recuperan el 2-step." },
         { a: 2016, art: "Preditah & Jorja Smith", t: "On My Mind", n: "El garage vuelve con la voz de Jorja Smith." },

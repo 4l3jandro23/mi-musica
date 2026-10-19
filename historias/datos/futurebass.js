@@ -44,6 +44,8 @@ HISTORIAS.push({
         { a: 2014, art: "Adventure Club, David Solano & Zak Waters", t: "Unleash", n: "El himno del festival Life in Color de 2014." },
         { a: 2014, art: "Seven Lions, Myon & Shane 54 & Tove Lo", t: "Strangers", n: "Seven Lions junta el melodic dubstep y el trance con la voz de Tove Lo." },
         { a: 2014, art: "Kill Paris & Candyland", t: "Slap Me (Candyland Remix)", n: "Future funk y bajos de la escena de Denver (año aproximado)." },
+        { a: 2014, art: "Zeds Dead & Memorecks", t: "Collapse", n: "Los canadienses Zeds Dead en su versión más melódica." },
+        { a: 2014, art: "Zeds Dead & Twin Shadow & D'Angelo Lacy", t: "Lost You", n: "Dubstep emotivo con voz de indie: uno de sus temas más queridos." },
         { a: 2016, art: "Seven Lions", t: "Lucy", n: "Una de sus piezas más trance (año aproximado)." }
       ]
     },

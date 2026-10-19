@@ -90,9 +90,10 @@ HISTORIAS.push({
     {
       titulo: "El indie de streaming",
       corto: "2010s",
-      periodo: "2011 – 2024",
+      periodo: "2010 – 2024",
       intro: "El indie de los festivales y del streaming.",
       items: [
+        { a: 2010, art: "Crystal Castles & Robert Smith", t: "Not In Love", n: "El dúo canadiense con el cantante de The Cure en una versión de Platinum Blonde." },
         { a: 2011, art: "M83", t: "Wait", n: "La balada lenta de «Hurry Up, We're Dreaming», que sale en películas y series." },
         { a: 2011, art: "The Black Keys", t: "Lonely Boy", n: "El vídeo del hombre bailando solo en la calle." },
         { a: 2011, art: "Foster The People", t: "Imagination", n: "Otra canción del grupo de «Pumped Up Kicks» (año aproximado)." },

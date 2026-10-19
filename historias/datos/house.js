@@ -75,6 +75,7 @@ HISTORIAS.push({
         { a: 1999, art: "Armand Van Helden", t: "You Don't Know Me", n: "House con cuerdas de disco: número uno británico." },
         { a: 1999, art: "Basement Jaxx", t: "Red Alert", n: "House de Brixton, desordenado y genial." },
         { a: 1999, art: "Paul Johnson", t: "Get Get Down", n: "House de Chicago con un sample de soul." },
+        { a: 1999, art: "Wamdue Project", t: "King of My Castle", n: "Remezclada por Roy Malone, número 1 en el Reino Unido en 1999." },
         { a: 2000, art: "Spiller", t: "Groovejet (If This Ain't Love)", n: "Con Sophie Ellis-Bextor: la canción del verano del 2000." },
         { a: 2000, art: "Junior Jack", t: "My Feeling", n: "House italiano con mucho groove." }
       ]
@@ -121,6 +122,7 @@ HISTORIAS.push({
         { a: 2010, art: "Swedish House Mafia", t: "One", n: "Tres suecos que llevarían el house a los estadios." },
         { a: 2011, art: "Azealia Banks", t: "212", n: "Rap de Harlem sobre un tema de house de Lazy Jay: el house vuelve al rap." },
         { a: 2011, art: "Bob Sinclar & Raffaella Carrà", t: "Far l'amore", n: "Sobre «A far l'amore comincia tu» de Raffaella Carrà, de 1976." },
+        { a: 2013, art: "Storm Queen", t: "Look Right Through", n: "Una canción de 2010 que MK remezcló en 2013 y la llevó al número 1 en el Reino Unido." },
         { a: 2014, art: "Robin Schulz", t: "Waves (Remix)", n: "El «deep house» de radio que sonó en todas partes en 2014." },
         { a: 2016, art: "Bob Sinclar", t: "Someone Who Needs Me", n: "Bob Sinclar en Spinnin' Records." },
         { a: 2016, art: "Armand Van Helden", t: "Know Thyself", n: "El de «You Don't Know Me» vuelve al house clásico." },

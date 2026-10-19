@@ -19,6 +19,7 @@ HISTORIAS.push({
         { a: 2004, art: "Mylo", t: "Drop the Pressure", n: "Electro escocés hecho en un dormitorio." },
         { a: 2005, art: "Justice", t: "Waters of Nazareth", n: "Distorsión y órgano: el sonido de Ed Banger." },
         { a: 2005, art: "The Egg", t: "Walking Away (Tocadisco Remix)", n: "El remix que mezcló Guetta y que sonó en todas partes." },
+        { a: 2005, art: "Vitalic", t: "My Friend Dario", n: "El francés Vitalic y su electro sucio con aire de rock: un clásico de 2005." },
         { a: 2006, art: "Justice vs. Simian", t: "We Are Your Friends", tipo: "hito", n: "El himno de la generación de los blogs de música." },
         { a: 2006, art: "Fedde Le Grand", t: "Put Your Hands Up for Detroit", n: "Número uno en el Reino Unido." },
         { a: 2006, art: "Bob Sinclar", t: "Rock This Party (Everybody Dance Now)", n: "El electro house de las discotecas comerciales de 2006." },
@@ -32,7 +33,8 @@ HISTORIAS.push({
         { a: 2007, art: "Calvin Harris", t: "Acceptable in the 80's", n: "El primer éxito de Calvin Harris, hecho en su habitación." },
         { a: 2007, art: "Calvin Harris", t: "The Girls", n: "Del disco «I Created Disco»." },
         { a: 2007, art: "Calvin Harris", t: "Merrymaking at My Place", n: "Otro tema de «I Created Disco»." },
-        { a: 2007, art: "Mondotek", t: "Alive!", n: "Electro francés de la época tecktonik." }
+        { a: 2007, art: "Mondotek", t: "Alive!", n: "Electro francés de la época tecktonik." },
+        { a: 2007, art: "Black Strobe", t: "I'm a Man", n: "La canción de Bo Diddley convertida en electro: luego sonaría en «Django desencadenado»." }
       ]
     },
     {
@@ -71,7 +73,9 @@ HISTORIAS.push({
         { a: 2011, art: "Tommy Trash", t: "The End", n: "El australiano Tommy Trash en su tema más famoso de electro house." },
         { a: 2012, art: "El big room", t: "El electro se simplifica para los festivales", tipo: "hito", n: "Los grandes escenarios adoptan un sonido más sencillo y explosivo." },
         { a: 2012, art: "Zedd", t: "Clarity", n: "Con Foxes. El electro house se vuelve pop y gana un Grammy." },
-        { a: 2012, art: "Dog Blood", t: "Middle Finger", n: "Skrillex y Boys Noize juntos en un proyecto de techno y electro muy duro." }
+        { a: 2012, art: "Dog Blood", t: "Middle Finger", n: "Skrillex y Boys Noize juntos en un proyecto de techno y electro muy duro." },
+        { a: 2012, art: "deadmau5 & Chris James", t: "The Veldt", n: "Progressive house con voz, inspirado en un cuento de Ray Bradbury." },
+        { a: 2012, art: "deadmau5 & Gerard Way", t: "Professional Griefers", n: "El cantante de My Chemical Romance sobre la base de deadmau5." }
       ]
     }
   ]

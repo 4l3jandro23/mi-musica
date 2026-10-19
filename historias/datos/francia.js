@@ -95,6 +95,7 @@ HISTORIAS.push({
         { a: 2000, art: "Lara Fabian", t: "I Will Love Again", n: "La belga canta en inglés y llena las discotecas." },
         { a: 2004, art: "Kyo", t: "Contact", n: "El pop rock francés de los 2000." },
         { a: 2007, art: "Justice", t: "D.A.N.C.E.", n: "Electro de los 2000, homenaje a Michael Jackson." },
+        { a: 2007, art: "Yelle", t: "À cause des garçons", n: "Electropop francés que se hizo famoso con un remix y un baile de MySpace." },
         { a: 2009, art: "Stromae", t: "Alors on danse", n: "Desde Bélgica: bailar para olvidar la crisis." },
         { a: 2014, art: "Christine and the Queens", t: "Christine", n: "Pop francés con alma propia." },
         { a: 2018, art: "Aya Nakamura", t: "Djadja", n: "Afropop en francés: la artista francófona más escuchada del mundo." },

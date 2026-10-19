@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "bigbeat",
   familia: "Electrónica",
   titulo: "Big beat",
-  periodo: "1995 – 2013",
+  periodo: "1994 – 2015",
   color: "#ff8f00",
   lema: "Fatboy Slim, Chemical Brothers y The Prodigy: breakbeats, rock y samples en los 90.",
   intro: "El big beat es la electrónica británica que sonaba como el rock: ritmos de hip hop, guitarras, samples de funk y subidones de rave. Nació en un club de Brighton a mediados de los 90 y llegó a las radios con Fatboy Slim, The Chemical Brothers y The Prodigy. Sonó en anuncios, videojuegos y películas hasta principios de siglo.",
@@ -10,9 +10,10 @@ HISTORIAS.push({
     {
       titulo: "Brighton y los pioneros",
       corto: "Los orígenes",
-      periodo: "1995 – 1996",
+      periodo: "1994 – 1996",
       intro: "El Big Beat Boutique y los Chemical Brothers.",
       items: [
+        { a: 1994, art: "The Prodigy", t: "Voodoo People", n: "Rave con un riff de guitarra de Nirvana tocado de nuevo: el puente entre el rave y el big beat." },
         { a: 1995, art: "Big Beat Boutique", t: "Nace un club", tipo: "hito", n: "En Brighton, el sello Skint organiza una noche llamada Big Beat Boutique: el estilo toma su nombre de ahí." },
         { a: 1995, art: "The Chemical Brothers", t: "Leave Home", n: "Del disco «Exit Planet Dust»: breakbeats enormes." },
         { a: 1996, art: "The Chemical Brothers", t: "Setting Sun", n: "Con Noel Gallagher: número uno en el Reino Unido." },
@@ -56,14 +57,19 @@ HISTORIAS.push({
     {
       titulo: "El final y la herencia",
       corto: "Después",
-      periodo: "2001 – 2013",
+      periodo: "2001 – 2015",
       intro: "De los anuncios a la playa de Brighton.",
       items: [
         { a: 2001, art: "Fatboy Slim", t: "Weapon of Choice", n: "Christopher Walken bailando en un hotel vacío." },
         { a: 2002, art: "Big Beach Boutique II", t: "Una playa a reventar", tipo: "hito", n: "Fatboy Slim reúne a unas 250.000 personas en la playa de Brighton." },
         { a: 2002, art: "Elvis vs JXL", t: "A Little Less Conversation", n: "Una canción olvidada de Elvis convertida en número uno por un anuncio del Mundial." },
         { a: 2004, art: "The Chemical Brothers", t: "Galvanize", n: "Con Q-Tip y cuerdas marroquíes." },
-        { a: 2013, art: "Fatboy Slim & Riva Starr", t: "Eat Sleep Rave Repeat", n: "Comer, dormir, salir de fiesta, repetir." }
+        { a: 2007, art: "The Chemical Brothers", t: "Do It Again", n: "Uno de sus grandes éxitos del nuevo siglo, más pop, con la voz de Ali Love." },
+        { a: 2009, art: "The Prodigy", t: "Invaders Must Die", n: "The Prodigy vuelven a sonar como en los 90, con más sintetizadores y rabia." },
+        { a: 2009, art: "The Prodigy", t: "Omen", n: "Otro de su disco de vuelta: rave, guitarras y voces gritadas." },
+        { a: 2010, art: "The Chemical Brothers", t: "Swoon", n: "Del disco «Further», pensado para escucharse de principio a fin con vídeos." },
+        { a: 2013, art: "Fatboy Slim & Riva Starr", t: "Eat Sleep Rave Repeat", n: "Comer, dormir, salir de fiesta, repetir." },
+        { a: 2015, art: "The Chemical Brothers & Q-Tip", t: "Go", n: "Vuelven a juntarse con Q-Tip, diez años después de «Galvanize»." }
       ]
     }
   ]

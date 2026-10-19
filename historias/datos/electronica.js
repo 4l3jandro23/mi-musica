@@ -51,7 +51,7 @@ HISTORIAS.push({
     {
       titulo: "Sintetizadores, krautrock y el nacimiento del baile",
       corto: "Sintetizadores",
-      periodo: "1963 – 1977",
+      periodo: "1963 – 1978",
       intro: "Moog y Buchla sacan la electrónica del laboratorio. En Alemania el krautrock la convierte en viaje y en ritmo, y en 1977 Moroder la lleva a la pista de baile.",
       items: [
         { a: 1963, art: "Delia Derbyshire", t: "Doctor Who Theme", q: "Delia Derbyshire Doctor Who Theme", n: "Ron Grainer escribió la melodía; Delia la construyó nota a nota con osciladores y cinta. Sigue sonando a futuro." },
@@ -71,11 +71,13 @@ HISTORIAS.push({
         { a: 1974, art: "Kraftwerk", t: "Autobahn", n: "22 minutos de autopista alemana. La electrónica empieza a cantar sobre la vida moderna." },
         { a: 1974, art: "Isao Tomita", t: "Clair de lune", n: "Debussy tocado con Moog desde Japón. Fue nominado a cuatro Grammy." },
         { a: 1975, art: "Brian Eno", t: "Discreet Music", n: "Bucles de cinta que casi se tocan solos. El origen de la música ambient." },
+        { a: 1975, art: "Kraftwerk", t: "Radioactivity", n: "Kraftwerk canta sobre la radiactividad y la radio con voces de robot y un pulso que parece un contador Geiger." },
         { a: 1976, art: "Jean-Michel Jarre", t: "Oxygène (Pt. IV)", n: "Hecha en el piso de Jarre en París con equipo de segunda mano. Fue un éxito mundial." },
         { a: 1977, art: "Kraftwerk", t: "Trans-Europa Express", n: "Su ritmo acabará años después en «Planet Rock» de Afrika Bambaataa. Del tren alemán al Bronx." },
         { a: 1977, art: "Space", t: "Magic Fly", n: "Space disco francés con escafandras. Un número uno en media Europa." },
         { a: 1977, art: "Suicide", t: "Ghost Rider", n: "Un teclado barato, una caja de ritmos y Alan Vega gritando. El punk electrónico." },
-        { a: 1977, art: "Donna Summer", t: "I Feel Love", n: "Moroder lo graba todo con sintetizador menos la voz. Al oírla, Eno le dijo a Bowie que había escuchado el futuro." }
+        { a: 1977, art: "Donna Summer", t: "I Feel Love", n: "Moroder lo graba todo con sintetizador menos la voz. Al oírla, Eno le dijo a Bowie que había escuchado el futuro." },
+        { a: 1978, art: "Kraftwerk", t: "The Robots", n: "«We are the robots»: Kraftwerk se presenta como máquinas, con maniquíes en el escenario." }
       ]
     },
     {

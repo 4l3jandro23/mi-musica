@@ -49,6 +49,7 @@ HISTORIAS.push({
         { a: 2007, art: "Justice", t: "Genesis", n: "Electro con alma de rock épico." },
         { a: 2007, art: "SebastiAn", t: "Ross Ross Ross", n: "El sonido sucio y distorsionado de Ed Banger." },
         { a: 2007, art: "Justice", t: "Phantom Pt. II", n: "Justice y su electro de guitarra distorsionada." },
+        { a: 2007, art: "Justice", t: "Stress", n: "El tema más duro de Justice, con un vídeo de chavales destrozando París que causó polémica." },
         { a: 2009, art: "Kavinsky", t: "Testarossa Autodrive", n: "Kavinsky, de Ed Banger, con su sonido de coches y sintes de los 80." },
         { a: 2009, art: "Phoenix", t: "1901", n: "El pop francés que conquistó Estados Unidos." },
         { a: 2010, art: "Breakbot", t: "Baby I'm Yours", n: "Nu-disco elegante de Ed Banger." },

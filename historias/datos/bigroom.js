@@ -32,6 +32,7 @@ HISTORIAS.push({
         { a: 2013, art: "Quintino & Blasterjaxx", t: "Beast", n: "Drop holandés de manual: subida, silencio y bombo." },
         { a: 2013, art: "Nicky Romero & Krewella", t: "Legacy", n: "Big room con la voz de las hermanas de Krewella." },
         { a: 2013, art: "Firebeatz & Schella", t: "Dear New York", n: "Una carta de amor a Nueva York en forma de drop de festival." },
+        { a: 2013, art: "Chris Lake & Tujamo & Steve Aoki", t: "Boneless", n: "Una de las canciones de festival más pinchadas de 2013 y 2014." },
         { a: 2014, art: "W&W", t: "Bigfoot", n: "Pisotones de gigante: el bombo como protagonista absoluto." },
         { a: 2014, art: "Martin Garrix & Firebeatz", t: "Helicopter", n: "Garrix intentando repetir «Animals»… y casi lo consigue." },
         { a: 2014, art: "Martin Garrix & Afrojack", t: "Turn Up the Speakers", n: "El dutch house de Afrojack se encuentra con el big room." },

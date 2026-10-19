@@ -43,7 +43,8 @@ HISTORIAS.push({
         { a: 2013, art: "DJ Snake & Alesia", t: "Bird Machine", n: "El primer tema de DJ Snake en Mad Decent." },
         { a: 2013, art: "DJ Fresh vs. Diplo feat. Dominique Young Unique", t: "Earthquake", n: "Drum & bass y trap a la vez, para la película «Kick-Ass 2»." },
         { a: 2013, art: "Stööki Sound x Mr. Carmack", t: "UPPERS", n: "Trap con bocinas del dúo londinense, de los temas raros de SoundCloud." },
-        { a: 2013, art: "Zedd feat. Foxes", t: "Clarity (Brillz Remix)", n: "El remix más conocido de Brillz." }
+        { a: 2013, art: "Zedd feat. Foxes", t: "Clarity (Brillz Remix)", n: "El remix más conocido de Brillz." },
+        { a: 2013, art: "Yogi & Skrillex & Pusha T", t: "Burial", n: "Trap de festival con Pusha T y una caída que se cantaba como un himno." }
       ]
     },
     {

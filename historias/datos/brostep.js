@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "brostep",
   familia: "Jamaica y bass music",
   titulo: "Época dorada del brostep",
-  periodo: "2009 – 2019",
+  periodo: "2009 – 2023",
   color: "#c43d6b",
   lema: "Wobbles, robots y drops: el dubstep en versión estadio.",
   intro: "El dubstep cruza el Atlántico y pasa por el filtro del metal y del electro house. Los bajos ya no se sienten, rugen. Lo odiaron los puristas y lo adoró toda una generación.",
@@ -10,7 +10,7 @@ HISTORIAS.push({
     {
       titulo: "Del wobble al festival",
       corto: "Brostep",
-      periodo: "2009 – 2012",
+      periodo: "2009 – 2013",
       intro: "El dubstep cruza el Atlántico y se vuelve ruidoso, agresivo y de festival.",
       items: [
         { a: 2009, art: "Rusko", t: "Woo Boost", n: "El puente entre el dubstep londinense y el estadounidense: bajo saltarín y descarado." },
@@ -36,6 +36,8 @@ HISTORIAS.push({
         { a: 2011, art: "Skrillex", t: "Ruffneck (Full Flex)", n: "Del EP «Bangarang», el que le dio dos de sus Grammys." },
         { a: 2011, art: "Korn & Skrillex", t: "Get Up!", n: "Korn se pasa al dubstep con «The Path of Totality»." },
         { a: 2011, art: "Korn, Skrillex & Kill the Noise", t: "Narcissistic Cannibal", n: "Otra del disco de dubstep de Korn." },
+        { a: 2011, art: "Skrillex & Ellie Goulding", t: "Summit", n: "Skrillex en su versión más melódica, con la voz de Ellie Goulding." },
+        { a: 2011, art: "Skrillex & The Doors", t: "Breakn' a Sweat", n: "Skrillex y lo que queda de The Doors, para un documental sobre los sintetizadores." },
         { a: 2012, art: "Skrillex", t: "Grammy al mejor álbum dance", tipo: "hito", n: "El brostep llega a lo más alto de la industria. Desde ahí, todo festival quería su drop." },
         { a: 2012, art: "Knife Party", t: "Centipede", n: "El documental de naturaleza más amenazante de la historia." },
         { a: 2012, art: "Borgore", t: "Decisions", n: "Con Miley Cyrus. El brostep ya es puro pop." },
@@ -43,21 +45,28 @@ HISTORIAS.push({
         { a: 2012, art: "Excision & Downlink", t: "Existence", q: "Excision Downlink", n: "Bajos que hacían vibrar los escenarios de los festivales de 2012." },
         { a: 2012, art: "Zomboy", t: "Nuclear (Hands Up)", n: "Zomboy, británico, con un brostep de terror." },
         { a: 2012, art: "Virtual Riot", t: "Energy Drink", n: "Virtual Riot, alemán, empieza su carrera en el dubstep de los 2010." },
-        { a: 2012, art: "Knife Party", t: "Bonfire", n: "Electro y dubstep de los australianos que venían de Pendulum." }
+        { a: 2012, art: "Knife Party", t: "Bonfire", n: "Electro y dubstep de los australianos que venían de Pendulum." },
+        { a: 2013, art: "Zomboy", t: "Terror Squad", n: "Dubstep de bajos agresivos del británico Zomboy en su mejor momento." },
+        { a: 2013, art: "Knife Party", t: "LRAD", n: "Electro house y dubstep con el nombre de un cañón de sonido de la policía." }
       ]
     },
     {
       titulo: "Riddim y el dubstep de hoy",
       corto: "Riddim",
-      periodo: "2015 – 2019",
+      periodo: "2015 – 2023",
       intro: "Bajos repetitivos y minimalistas, y festivales dedicados solo al dubstep.",
       items: [
         { a: 2015, art: "El riddim", t: "Nace en SoundCloud", tipo: "hito", n: "Productores británicos y americanos repiten un mismo bajo una y otra vez: más hipnótico que melódico." },
+        { a: 2015, art: "Kill The Noise & Feed Me", t: "I Do Coke", n: "Una broma de Kill The Noise y Feed Me convertida en tema de festival." },
         { a: 2016, art: "Lost Lands", t: "El festival de Excision", tipo: "hito", n: "Un festival entero de bass music en Ohio, con dinosaurios gigantes." },
         { a: 2016, art: "Excision & Space Laces", t: "Throwin' Elbows", n: "Excision sigue en lo más alto con un dubstep de festival." },
         { a: 2016, art: "Zomboy", t: "Like A Bitch", n: "Dubstep de festival de Zomboy, con graves que suenan a motosierra." },
+        { a: 2016, art: "Getter", t: "Rip N Dip", n: "El dubstep más gamberro de Getter, uno de los nombres del sello de Skrillex." },
+        { a: 2016, art: "Skrillex & Rick Ross", t: "Purple Lamborghini", n: "De la banda sonora de «Escuadrón suicida»." },
         { a: 2017, art: "Tom Morello & Knife Party", t: "Battle Sirens", n: "El guitarrista de Rage Against the Machine con el dubstep de los australianos (año aproximado)." },
-        { a: 2019, art: "GRiZ & Subtronics", t: "Griztronics", n: "La nueva generación del dubstep, de lo más escuchado del género." }
+        { a: 2019, art: "GRiZ & Subtronics", t: "Griztronics", n: "La nueva generación del dubstep, de lo más escuchado del género." },
+        { a: 2023, art: "Skrillex & PinkPantheress & Trippie Redd", t: "Way Back", n: "Skrillex vuelve con dos discos en dos días: este es del primero, «Quest for Fire»." },
+        { a: 2023, art: "Skrillex & Missy Elliott & Mr. Oizo", t: "RATATA", n: "Skrillex junta a Missy Elliott y Mr. Oizo, el del muñeco amarillo." }
       ]
     }
   ]
