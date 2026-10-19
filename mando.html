@@ -1139,7 +1139,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-18a';
+const VERSION = '2026-10-19a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2172,6 +2172,7 @@ $('#bnav').onclick = e => {
   hoja('<h2>Más</h2><div class="opc">' + TABS.filter(t => PRINCIPALES.indexOf(t.id) < 0).map(t => '<button data-t="' + t.id + '">' + ic(t.ic) + '<span>' + t.txt + '</span></button>').join('') +
     '<div class="sec">Herramientas</div><button data-x="ira">' + ic('buscar') + '<span>Ir a…<span class="sub">busca cualquier playlist, disco, artista o herramienta</span></span></button>' +
     '<button data-x="sorpresa">' + ic('varita') + '<span>Ruleta de discos<span class="sub">un disco pendiente al azar</span></span></button>' +
+    '<button data-x="partir">' + ic('unir') + '<span>Partir Me gusta<span class="sub">en playlists de unas 1.000, por artista, para quitar ♥ desde el móvil</span></span></button>' +
     '<button data-x="triaje">' + ic('check') + '<span>¿Qué se queda?<span class="sub">cada canción a Me gusta, Archivo o Pendientes, por artista</span></span></button>' +
     '<button data-x="rulgen">' + ic('aleat') + '<span>Ruleta de géneros<span class="sub">pone en Spotify una de tus casas al azar</span></span></button>' +
     '<button data-x="etq">' + ic('etiqueta') + '<span>Etiquetar mis Me gusta<span class="sub">año real y género de cada canción (mejor en el PC, una noche)</span></span></button>' +
@@ -2182,7 +2183,7 @@ $('#bnav').onclick = e => {
       h.querySelector('.opc').onclick = ev => {
         const x = ev.target.closest('[data-t],[data-x]'); if (!x) return;
         cerrarHoja(true);
-        if (x.dataset.t) irATab(x.dataset.t); else if (x.dataset.x === 'cupo') hojaCupo(); else if (x.dataset.x === 'ira') hojaIrA(); else if (x.dataset.x === 'sorpresa') sorprendeme(); else if (x.dataset.x === 'triaje') abrirTriaje(); else if (x.dataset.x === 'rulgen') misCasasYMoods().then(C => ruletaCasas(C.casas)).catch(e => toast(explicarError(e))); else if (x.dataset.x === 'juego') hojaJuego(); else if (x.dataset.x === 'etq') etiquetarTodo(); else if (x.dataset.x === 'comparar') hojaComparar(); else if (x.dataset.x === 'imagen') hojaCompartir(); else hojaAjustes();
+        if (x.dataset.t) irATab(x.dataset.t); else if (x.dataset.x === 'cupo') hojaCupo(); else if (x.dataset.x === 'ira') hojaIrA(); else if (x.dataset.x === 'sorpresa') sorprendeme(); else if (x.dataset.x === 'triaje') abrirTriaje(); else if (x.dataset.x === 'partir') partirMeGusta(); else if (x.dataset.x === 'rulgen') misCasasYMoods().then(C => ruletaCasas(C.casas)).catch(e => toast(explicarError(e))); else if (x.dataset.x === 'juego') hojaJuego(); else if (x.dataset.x === 'etq') etiquetarTodo(); else if (x.dataset.x === 'comparar') hojaComparar(); else if (x.dataset.x === 'imagen') hojaCompartir(); else hojaAjustes();
       };
     });
 };
@@ -3582,6 +3583,63 @@ async function aplicarTriaje(V) {
 }
 
 /* ============================================================
+   PARTIR ME GUSTA en playlists de unas 1.000 canciones, por orden
+   alfabético de artista. Sirve para quitar ♥ desde el móvil, que con
+   17.000 canciones en «Canciones que te gustan» no deja. No toca Me
+   gusta. Si se corta, al volver a darle sigue por la playlist en la que
+   iba (cada una se reescribe entera, así que nunca salen repetidas).
+   ============================================================ */
+const K_PARTIR = 'fonoteca_partir_v1';
+function planPartir(ps) {
+  const cmp = (a, b) => a < b ? -1 : a > b ? 1 : 0;
+  const l = ps.filter(p => !p.local && /^spotify:track:/.test(p.uri)).slice()
+    .sort((a, b) => cmp(fold(artPpal(a)), fold(artPpal(b))) || cmp(a.year, b.year) || cmp(fold(a.album), fold(b.album)) || cmp(fold(a.title), fold(b.title)));
+  const vistas = new Set(), uris = [], arts = [];
+  for (const p of l) if (!vistas.has(p.uri)) { vistas.add(p.uri); uris.push(p.uri); arts.push(artPpal(p) || '?'); }
+  const n = Math.max(1, Math.round(uris.length / 1000)), tam = Math.ceil(uris.length / n), corto = s => s.length > 22 ? s.slice(0, 21) + '…' : s;
+  const partes = [];
+  for (let i = 0; i < n; i++) {
+    const a = i * tam, b = Math.min(uris.length, a + tam);
+    if (a >= b) break;
+    partes.push({ nombre: 'Me gusta ' + String(i + 1).padStart(2, '0') + ' · ' + corto(arts[a]) + ' – ' + corto(arts[b - 1]), uris: uris.slice(a, b) });
+  }
+  return { at: Date.now(), total: uris.length, partes: partes, ids: [], listas: 0, hecho: 0 };
+}
+async function partirMeGusta() {
+  let P = leer(K_PARTIR, null);
+  const sigue = P && !P.hecho && P.listas < P.partes.length;
+  if (!sigue) {
+    const ps = await trabajo(() => pistasMeGusta(), 'Leyendo tus Me gusta');
+    if (!ps || !ps.length) return;
+    const viejo = P;
+    P = planPartir(ps);
+    if (viejo && viejo.ids) P.ids = viejo.ids.slice(0, P.partes.length);
+  }
+  const n = P.partes.length, ej = P.partes[0].nombre + (n > 1 ? ', …, ' + P.partes[n - 1].nombre : '');
+  const txt = sigue
+    ? 'Ya hay ' + P.listas + ' de ' + n + ' hechas. Sigo con el resto, con el mismo reparto de la otra vez.'
+    : 'Voy a ' + (P.ids.length ? 'rehacer tus ' + n + ' playlists' : 'crear ' + n + ' playlists privadas') + ' de unas ' + n$(Math.ceil(P.total / n)) + ' canciones con tus ' + n$(P.total) + ' Me gusta, por orden alfabético de artista: ' + ej + '. No se quita nada de Me gusta. Desde el móvil podrás abrir cada una y quitar el ♥ ahí.';
+  if (!(await confirmar(sigue ? '¿Seguir partiendo Me gusta?' : '¿Partir Me gusta en ' + n + ' playlists?', sigue ? 'Seguir' : 'Hacerlo', txt))) return;
+  escribir(K_PARTIR, P);
+  const r = await trabajo(() => conSpotifyFresco(async mias => {
+    for (let i = P.listas; i < n; i++) {
+      const parte = P.partes[i], desc = 'Parte ' + (i + 1) + ' de ' + n + ' de tus Me gusta (' + n$(P.total) + ' canciones), por orden alfabético de artista. Para poder quitar ♥ desde el móvil.';
+      let id = P.ids[i] && mias.some(y => y.id === P.ids[i]) ? P.ids[i] : null;
+      if (!id) { const x = mias.find(y => y.name === parte.nombre); id = x ? x.id : (await crearPlaylist(parte.nombre, desc, false)).id; }
+      else { const x = mias.find(y => y.id === id); if (x && x.name !== parte.nombre) await sp('/playlists/' + id, { method: 'PUT', body: { name: parte.nombre, description: desc } }); }
+      P.ids[i] = id; escribir(K_PARTIR, P);
+      await plReescribir(id, parte.uris, 'Playlist ' + (i + 1) + ' de ' + n);
+      P.listas = i + 1; escribir(K_PARTIR, P);
+    }
+    P.hecho = Date.now(); escribir(K_PARTIR, P);
+    return true;
+  }), 'Partiendo Me gusta');
+  S.playlists = null;
+  if (r) toast('Hecho: ' + n + ' playlists «Me gusta 01…' + String(n).padStart(2, '0') + '» con ' + n$(P.total) + ' canciones', null, 8000);
+  else if (P.listas < n) toast('Se ha parado en la ' + (P.listas + 1) + ' de ' + n + '. Vuelve a darle y sigue por ahí.', null, 8000);
+}
+
+/* ============================================================
    IR A… (Ctrl+K o desde «Más»): una caja para saltar a cualquier
    playlist, disco, artista, pestaña o herramienta escribiendo
    ============================================================ */
@@ -3590,6 +3648,7 @@ function hojaIrA() {
     ['Repasar Me gusta una a una', 'play', () => { irATab('likes'); let n = 0; const t = setInterval(() => { if (S.fuente && S.fuente.kind === 'likes' && S.fuente.pistas) { clearInterval(t); repasar(S.fuente); } else if (++n > 120) clearInterval(t); }, 250); }],
     ['Toda mi música', 'buscar', () => abrirTodaMiMusica()],
     ['¿Qué se queda? Me gusta, Archivo o Pendientes', 'check', () => abrirTriaje()],
+    ['Partir Me gusta en playlists de 1.000 (para quitar ♥ desde el móvil)', 'unir', () => partirMeGusta()],
     ['Ruleta de géneros: que decida el azar', 'aleat', () => misCasasYMoods().then(C => ruletaCasas(C.casas)).catch(e => toast(explicarError(e)))],
     ['Viaje por el rock: de los 50 a hoy', 'reloj', () => { irATab('casas'); let n = 0; const t = setInterval(() => { const b = $('#tmRock'); if (b) { clearInterval(t); b.click(); } else if (++n > 40) clearInterval(t); }, 250); }],
     ['Jugar: ¿qué género es?', 'nota', () => hojaJuego('genero')],
