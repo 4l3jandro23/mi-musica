@@ -60,6 +60,7 @@ HISTORIAS.push({
         { a: 2014, art: "Baauer feat. AlunaGeorge & Rae Sremmurd", t: "One Touch", n: "Baauer después del «Harlem Shake»." },
         { a: 2015, art: "Flosstradamus & TroyBoi", t: "Soundclash", n: "El trap de Chicago y el de Londres en un solo tema." },
         { a: 2015, art: "Alison Wonderland", t: "I Want U", n: "La australiana en su primer disco, «Run»." },
+        { a: 2015, art: "Alison Wonderland", t: "Run", n: "La australiana mezcla trap y llanto: uno de los temas más queridos de su primer disco." },
         { a: 2016, art: "Jack Ü", t: "Un Grammy para el EDM", tipo: "hito", n: "Skrillex y Diplo ganan el Grammy a la mejor grabación dance con «Where Are Ü Now»." },
         { a: 2017, art: "TroyBoi", t: "O.G.", n: "Del disco «Left Is Right»: trap con aire oriental." }
       ]

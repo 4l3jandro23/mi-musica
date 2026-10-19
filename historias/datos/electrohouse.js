@@ -68,8 +68,10 @@ HISTORIAS.push({
         { a: 2011, art: "Benny Benassi, Kelis, apl.de.ap & Jean Baptiste", t: "Spaceship", n: "Electro de discoteca con Kelis y uno de los Black Eyed Peas." },
         { a: 2011, art: "Benny Benassi & Gary Go", t: "Cinema", n: "La versión original: luego Skrillex hizo el remix famoso, que ganó un Grammy." },
         { a: 2011, art: "Benny Benassi & Gary Go", t: "Cinema (Skrillex Remix)", n: "El remix gana el Grammy y lleva a Skrillex a todas partes." },
+        { a: 2011, art: "Tommy Trash", t: "The End", n: "El australiano Tommy Trash en su tema más famoso de electro house." },
         { a: 2012, art: "El big room", t: "El electro se simplifica para los festivales", tipo: "hito", n: "Los grandes escenarios adoptan un sonido más sencillo y explosivo." },
-        { a: 2012, art: "Zedd", t: "Clarity", n: "Con Foxes. El electro house se vuelve pop y gana un Grammy." }
+        { a: 2012, art: "Zedd", t: "Clarity", n: "Con Foxes. El electro house se vuelve pop y gana un Grammy." },
+        { a: 2012, art: "Dog Blood", t: "Middle Finger", n: "Skrillex y Boys Noize juntos en un proyecto de techno y electro muy duro." }
       ]
     }
   ]

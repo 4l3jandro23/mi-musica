@@ -35,9 +35,10 @@ HISTORIAS.push({
     {
       titulo: "Hybrid trap",
       corto: "Hybrid trap",
-      periodo: "2014 – 2019",
+      periodo: "2013 – 2019",
       intro: "Trap, dubstep y hardstyle a la vez.",
       items: [
+        { a: 2013, art: "Yellow Claw & Rochelle", t: "Shotgun", n: "Yellow Claw se pasan al pop con la voz de Rochelle sin perder la caída de trap." },
         { a: 2014, art: "Herobust", t: "Turn Ape", n: "De «I'm Aloud», el disco que ayudó a inventar el hybrid trap." },
         { a: 2015, art: "NGHTMRE", t: "Street", n: "El tema con el que NGHTMRE se dio a conocer." },
         { a: 2015, art: "THIEVES & ATLiens", t: "Chief", n: "808 profundos y drops con voces." },

@@ -40,6 +40,7 @@ HISTORIAS.push({
         { a: 2014, art: "Mark Ronson feat. Bruno Mars", t: "Uptown Funk", n: "Funk y disco en el número uno durante catorce semanas." },
         { a: 2014, art: "Todd Terje", t: "Delorean Dynamite", n: "Sintetizadores y velocidad." },
         { a: 2014, art: "Jungle", t: "Busy Earnin'", n: "Neo funk británico con falsete y un vídeo de baile famoso." },
+        { a: 2014, art: "The Magician & Years & Years", t: "Sunlight", n: "El belga The Magician con la voz de Olly Alexander: nu disco de verano." },
         { a: 2016, art: "Roosevelt", t: "Fever", n: "Synth disco alemán, del productor de Colonia." },
         { a: 2017, art: "Parcels", t: "Overnight", n: "Producida por Daft Punk: la última canción que produjeron juntos." }
       ]

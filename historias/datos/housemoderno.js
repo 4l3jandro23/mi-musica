@@ -20,6 +20,7 @@ HISTORIAS.push({
         { a: 2009, art: "deadmau5", t: "Strobe", n: "Diez minutos de subida: una catedral del progressive." },
         { a: 2011, art: "Swedish House Mafia", t: "Save the World", n: "El progressive con voz que llenó estadios." },
         { a: 2012, art: "Swedish House Mafia", t: "Greyhound", n: "Progressive para un anuncio de coches." },
+        { a: 2013, art: "Sebastian Ingrosso & Tommy Trash & John Martin", t: "Reload", n: "Progressive house con la voz de John Martin, el de «Don't You Worry Child»." },
         { a: 2014, art: "Alesso", t: "Heroes (we could be)", n: "Con Tove Lo: el progressive se vuelve pop." },
         { a: 2014, art: "Tchami", t: "After Life", n: "Future house francés: el productor que se vestía de cura en los conciertos." },
         { a: 2014, art: "Eric Prydz", t: "Liberate", n: "Progressive house melódico." },
@@ -84,11 +85,28 @@ HISTORIAS.push({
         { a: 2014, art: "Tchami", t: "Promesses", n: "El francés que bautizó el «future house» con su sonido de bajo." },
         { a: 2014, art: "Oliver Heldens", t: "Gecko (Overdrive)", n: "Un chaval holandés de 19 años: número uno en Reino Unido con la voz de Becky Hill." },
         { a: 2015, art: "Jauz", t: "Feel the Volume", n: "Bass house: house con la potencia del dubstep." },
+        { a: 2015, art: "Valentino Khan", t: "Deep Down Low", n: "Uno de los himnos del bass house: graves que rebotan y una voz grave repetida." },
         { a: 2016, art: "Don Diablo", t: "Cutting Shapes", n: "El future house de Spinnin' Records." },
         { a: 2016, art: "Malaa", t: "Notorious", n: "Un DJ enmascarado y bass house sucio." },
         { a: 2019, art: "DOLF, Yellow Claw & Caroline Pennell", t: "Vertigo", n: "El holandés del bass house con Yellow Claw (año aproximado)." },
         { a: 2020, art: "DOLF, Weird Genius & Rochelle", t: "Dreams", n: "Con los indonesios de Weird Genius (año aproximado)." },
         { a: 2020, art: "DOLF & JVZEL", t: "Fuck It All Up", n: "Bass house de festival (año aproximado)." }
+      ]
+    },
+    {
+      titulo: "Brazilian bass y slap house",
+      corto: "Slap house",
+      periodo: "2018 – 2022",
+      intro: "De Brasil y Kazajistán a todas las radios: graves elásticos, voces tristes y el sonido de los coches con altavoces.",
+      items: [
+        { a: 2018, art: "Dynoro & Gigi D'Agostino", t: "In My Mind", n: "El clásico de Gigi D'Agostino con bajo profundo: el sonido que preparó el terreno al slap house." },
+        { a: 2019, art: "Imanbek", t: "Roses - Imanbek Remix", n: "Un remix hecho en un portátil en Kazajistán que ganó un Grammy en 2021." },
+        { a: 2020, art: "Imanbek", t: "Las radios se llenan de slap house", tipo: "hito", n: "Tras «Roses», el sonido de Imanbek y sus imitadores (bajos que rebotan y voces graves) llena las radios." },
+        { a: 2020, art: "VIZE & Imanbek & Dieter Bohlen & Leony", t: "Brother Louie", n: "El éxito de Modern Talking en 1986, rehecho en slap house con el propio Dieter Bohlen." },
+        { a: 2020, art: "Imanbek & Afrojack & Gia Koka", t: "Hey Baby", n: "Imanbek y Afrojack juntos en pleno año de la fiebre del slap house." },
+        { a: 2020, art: "24kGoldn & Imanbek", t: "VALENTINO - Imanbek Remix", n: "Imanbek convierte en slap house la canción del rapero de «Mood»." },
+        { a: 2021, art: "Alok & Mathieu Koss", t: "Big Jet Plane", n: "Alok se pasa al slap house con una canción de Angus & Julia Stone." },
+        { a: 2022, art: "Imanbek & BYOR", t: "Belly Dancer", n: "Slap house con un sample de «Belly Dancer» de Akon: muy viral." }
       ]
     }
   ]

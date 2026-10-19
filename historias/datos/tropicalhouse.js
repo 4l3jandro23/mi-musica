@@ -60,6 +60,7 @@ HISTORIAS.push({
         { a: 2016, art: "felix jaehn & Mike Williams", t: "Feel Good", n: "Otra de su etapa de tropical house (año aproximado)." },
         { a: 2016, art: "Sam Feldt", t: "Been a While", n: "El holandés del tropical house (año aproximado)." },
         { a: 2016, art: "Syn Cole & Kirstin", t: "Got the Feeling", n: "El estonio del pop dance (año aproximado)." },
+        { a: 2016, art: "Kungs & Cookin' On 3 Burners", t: "This Girl", n: "Un francés de 19 años convierte un tema de soul australiano en el éxito del verano." },
         { a: 2017, art: "Kygo & Selena Gomez", t: "It Ain't Me", n: "El final de la ola tropical." },
         { a: 2017, art: "Robin Schulz & James Blunt", t: "OK", n: "El cantante de «You're Beautiful» en clave dance." },
         { a: 2017, art: "Robin Schulz, David Guetta & Cheat Codes", t: "Shed a Light", n: "Tres nombres del dance de radio juntos." },

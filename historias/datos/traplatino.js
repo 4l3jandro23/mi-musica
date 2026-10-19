@@ -85,7 +85,7 @@ HISTORIAS.push({
         { a: 2024, art: "Duki & Bizarrap", t: "Malbec", n: "Duki y Bizarrap, los dos nombres que sacaron el trap argentino al mundo (año aproximado)." },
         { a: 2024, art: "Duki & JHAYCO", t: "RoCKSTAR 2.0", n: "Segunda parte de su clásico, ya con estadios llenos (año aproximado)." },
         { a: 2024, art: "AgusFortnite2008, Stiffy & SwaggerBoyz", t: "BUSCANDO", n: "El dúo que conoció por Minecraft y lidera el underground argentino (año aproximado)." },
-        { a: 2025, art: "Fred again.. & CA7RIEL & Paco Amoroso", t: "Beto's Horns - fred remix", n: "Fred again.. remezcla a los argentinos tras su exitoso Tiny Desk de NPR." }
+        { a: 2025, art: "Fred again.. & CA7RIEL & Paco Amoroso", t: "Beto’s Horns - fred remix", n: "Fred again.. remezcla a los argentinos tras su exitoso Tiny Desk de NPR." }
       ]
     }
   ]
