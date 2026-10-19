@@ -70,7 +70,8 @@ HISTORIAS.push({
         { a: 2021, art: "PinkPantheress", t: "Just for Me", n: "Jungle de dormitorio: la chica que llevó el ritmo de los 90 a TikTok." },
         { a: 2022, art: "TikTok", t: "El jungle vuelve", tipo: "hito", n: "Los breaks acelerados triunfan en el pop de una nueva generación." },
         { a: 2022, art: "Nia Archives", t: "Forbidden Feelingz", n: "La cara del revival del jungle." },
-        { a: 2022, art: "Nia Archives", t: "Off Wiv Ya Headz", n: "Nia Archives sigue llevando el jungle a una nueva generación." }
+        { a: 2022, art: "Nia Archives", t: "Off Wiv Ya Headz", n: "Nia Archives sigue llevando el jungle a una nueva generación." },
+        { a: 2022, art: "Nia Archives", t: "Baianá", n: "La reina del nuevo jungle con un sample brasileño." }
       ]
     }
   ]

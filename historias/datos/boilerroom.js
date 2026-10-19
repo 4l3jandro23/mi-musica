@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "boilerroom",
   familia: "House, techno y EDM",
   titulo: "La era Boiler Room",
-  periodo: "1986 – 2022",
+  periodo: "1986 – 2023",
   color: "#1c1c1c",
   lema: "Una webcam en un almacén de Londres y la cultura de club de los 2010.",
   intro: "En 2010, en un antiguo cuarto de calderas de Londres, unos amigos retransmiten por internet a un DJ con una webcam pegada a la pared. Boiler Room se convierte en el escaparate mundial del underground: house, techno, UK garage y bass. Y de paso inventa una estética: el DJ de espaldas al público, la gente bailando detrás y los memes. Estos son los temas que definen ese sonido.",
@@ -37,8 +37,12 @@ HISTORIAS.push({
         { a: 2012, art: "Julio Bashmore", t: "Au Seve", n: "Julio Bashmore, de Bristol, con un house con bajo gordo de 2012." },
         { a: 2013, art: "Duke Dumont", t: "Need U (100%)", n: "House con voz y número uno en Reino Unido." },
         { a: 2013, art: "Bicep", t: "Vision of Love", n: "Bicep, antes de su gran éxito, con un house que miraba a los 90." },
+        { a: 2013, art: "Disclosure & Eliza Doolittle", t: "You & Me", n: "Del disco «Settle»; el remix de Flume se hizo todavía más famoso que la original." },
+        { a: 2014, art: "Oliver Dollar & Jimi Jules", t: "Pushing On", n: "House de bajo gordo con una voz de soul: éxito en el Reino Unido." },
         { a: 2015, art: "Jamie xx", t: "Gosh", n: "Nostalgia rave hecha con detalle de orfebre." },
         { a: 2015, art: "Floating Points", t: "Silhouettes (I, II & III)", n: "Jazz, electrónica y orquesta." },
+        { a: 2015, art: "Jamie xx & Young Thug & Popcaan", t: "I Know There's Gonna Be (Good Times)", n: "El de The xx junta rap de Atlanta, dancehall y un sample de soul." },
+        { a: 2015, art: "Disclosure & Sam Smith", t: "Omen", n: "Otra vez Disclosure y Sam Smith, dos años después de «Latch»." },
         { a: 2016, art: "KAYTRANADA", t: "Glowed Up", n: "Con Anderson .Paak: house con groove de hip hop." },
         { a: 2016, art: "Ross From Friends", t: "Talk to Me You'll Understand", n: "Lo-fi house con sonido de cinta gastada: el nombre es un chiste de «Friends»." }
       ]
@@ -46,12 +50,14 @@ HISTORIAS.push({
     {
       titulo: "La explosión mundial",
       corto: "2017 – 2022",
-      periodo: "2017 – 2022",
+      periodo: "2017 – 2023",
       intro: "Boiler Room se vuelve global y algunos sets se convierten en leyenda.",
       items: [
         { a: 2017, art: "Bicep", t: "Glue", n: "Nostalgia de rave y pianos: uno de los temas electrónicos más queridos de su década." },
+        { a: 2017, art: "Four Tet", t: "Two Thousand and Seventeen", n: "Four Tet en su versión más tranquila, con un instrumento de cuerda indio." },
         { a: 2018, art: "Peggy Gou", t: "It Makes You Forget (Itgehane)", n: "Desde Corea a Berlín: house con voz en coreano." },
         { a: 2018, art: "DJ Koze", t: "Pick Up", n: "DJ Koze samplea a Gladys Knight: el tema del verano de los clubs de 2018." },
+        { a: 2018, art: "Mall Grab", t: "Liverpool Street In The Rain", n: "El lo-fi house del australiano Mall Grab, con nombre de estación de Londres." },
         { a: 2019, art: "Peggy Gou", t: "Starry Night", n: "La coreana Peggy Gou, una de las DJs más populares de los Boiler Room." },
         { a: 2019, art: "Jayda G", t: "Both of Us", n: "Disco house alegre de la canadiense, que también es bióloga de orcas." },
         { a: 2020, art: "Four Tet", t: "Baby", n: "Con Ellie Goulding: house delicado." },
@@ -61,7 +67,12 @@ HISTORIAS.push({
         { a: 2021, art: "Interplanetary Criminal", t: "Slow Burner", n: "El revival del UK garage en los clubs." },
         { a: 2021, art: "Overmono", t: "So U Kno", n: "Breakbeat británico emocional." },
         { a: 2022, art: "Fred again..", t: "La sesión de Londres", tipo: "hito", n: "Una de las sesiones más vistas de la historia de Boiler Room: el DJ convertido en ídolo pop." },
-        { a: 2022, art: "Mau P", t: "Drugs from Amsterdam", n: "Tech house que sonó en todas partes." }
+        { a: 2022, art: "Mau P", t: "Drugs from Amsterdam", n: "Tech house que sonó en todas partes." },
+        { a: 2022, art: "KH", t: "Looking at Your Pager", n: "Four Tet con otro nombre y un sample de R&B de los 2000." },
+        { a: 2022, art: "Fred again.. & Swedish House Mafia & Future", t: "Turn On The Lights again..", n: "Fred again.. junta a SHM y a Future: uno de los temas del año." },
+        { a: 2022, art: "Fred again..", t: "Jungle", n: "Un tema de jungle y house que Fred estrenaba en sus directos." },
+        { a: 2023, art: "Fred again.. & Baby Keem", t: "leavemealone", n: "Fred again.. se pone más duro, con Baby Keem." },
+        { a: 2023, art: "Fred again.. & Obongjayar", t: "adore u", n: "Fred again.. con la voz del nigeriano Obongjayar." }
       ]
     }
   ]

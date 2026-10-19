@@ -75,7 +75,8 @@ HISTORIAS.push({
         { a: 2012, art: "Zedd", t: "Clarity", n: "Con Foxes. El electro house se vuelve pop y gana un Grammy." },
         { a: 2012, art: "Dog Blood", t: "Middle Finger", n: "Skrillex y Boys Noize juntos en un proyecto de techno y electro muy duro." },
         { a: 2012, art: "deadmau5 & Chris James", t: "The Veldt", n: "Progressive house con voz, inspirado en un cuento de Ray Bradbury." },
-        { a: 2012, art: "deadmau5 & Gerard Way", t: "Professional Griefers", n: "El cantante de My Chemical Romance sobre la base de deadmau5." }
+        { a: 2012, art: "deadmau5 & Gerard Way", t: "Professional Griefers", n: "El cantante de My Chemical Romance sobre la base de deadmau5." },
+        { a: 2012, art: "Dada Life", t: "Kick Out the Epic Motherf**ker", n: "Los suecos Dada Life y su electro de plátanos y champán." }
       ]
     }
   ]

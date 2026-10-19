@@ -44,22 +44,25 @@ HISTORIAS.push({
     {
       titulo: "Tech house",
       corto: "Tech house",
-      periodo: "1999 – 2020",
+      periodo: "1999 – 2023",
       intro: "Groove del house con la dureza del techno: la música de las terrazas de Ibiza.",
       items: [
         { a: 1999, art: "Circoloco", t: "Empiezan las fiestas de DC-10 en Ibiza", tipo: "hito", n: "Los lunes por la mañana, al lado del aeropuerto: el templo del tech house." },
+        { a: 2005, art: "M.A.N.D.Y. & Booka Shade", t: "Body Language", n: "El himno del minimal alemán: sonó en todos los clubes durante años." },
         { a: 2017, art: "CamelPhat & Elderbrook", t: "Cola", n: "Un bajo hipnótico y una voz susurrada: nominada al Grammy." },
         { a: 2018, art: "FISHER", t: "Losing It", n: "Un australiano y un drop que medio mundo coreó." },
         { a: 2018, art: "Chris Lake", t: "Turn Off the Lights", n: "Con Alexis Roberts: tech house con voz." },
         { a: 2018, art: "Black Coffee feat. David Guetta", t: "Drive", n: "El afro house de Sudáfrica con Guetta." },
         { a: 2018, art: "CAMELPHAT & Jake Bugg", t: "Be Someone", n: "Tech house con el cantante de Nottingham." },
+        { a: 2018, art: "Dom Dolla", t: "Take It", n: "El australiano Dom Dolla y su tech house de radio." },
         { a: 2019, art: "Dom Dolla", t: "San Frandisco", n: "Los australianos dominan el tech house." },
         { a: 2019, art: "Fisher", t: "You Little Beauty", n: "Fisher, australiano, con tech house divertido y bailable." },
         { a: 2019, art: "Meduza feat. Goodboys", t: "Piece of Your Heart", n: "House italiano en todo el mundo." },
         { a: 2019, art: "Chris Lake & Fisher", t: "Losing My Mind", n: "Tech house de dos de los nombres más fuertes de la escena de Ibiza." },
         { a: 2019, art: "Eelke Kleijn", t: "Celebrate Life", n: "Progressive house melódico del holandés (año aproximado)." },
         { a: 2020, art: "John Summit", t: "Deep End", n: "El tech house de la nueva generación de EE. UU." },
-        { a: 2020, art: "Keinemusik", t: "Muyè", n: "El afro house del colectivo berlinés que luego llenaría el Coachella." }
+        { a: 2020, art: "Keinemusik", t: "Muyè", n: "El afro house del colectivo berlinés que luego llenaría el Coachella." },
+        { a: 2023, art: "Dom Dolla & Nelly Furtado", t: "Eat Your Man", n: "Dom Dolla recupera a Nelly Furtado para el tech house." }
       ]
     },
     {

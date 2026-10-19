@@ -85,6 +85,7 @@ HISTORIAS.push({
         { a: 2012, art: "Leovaz", t: "A Pou Brasileiro", n: "Un funk brasileño con el Pou (año aproximado)." },
         { a: 2013, art: "SX3", t: "Shin Chan Dance", n: "La sintonía catalana de Shin Chan remezclada (año aproximado)." },
         { a: 2015, art: "Forever Bound", t: "Stereo Madness", n: "La música del primer nivel de Geometry Dash (año aproximado)." },
+        { a: 2016, art: "Ummet Ozcan", t: "Om Telolet Om", n: "Del meme indonesio de las bocinas de autobús, que llegó a pinchar medio mundo." },
         { a: 2017, art: "Pink Guy", t: "STFU", n: "El personaje de Joji antes de ser cantante." },
         { a: 2018, art: "El Chombo", t: "Dame Tu Cosita", n: "Un alien verde bailando: uno de los vídeos más vistos de YouTube." },
         { a: 2018, art: "iLOVEFRiDAY", t: "Mia Khalifa", n: "«Hit or miss, I guess they never miss, huh?»: el primer gran meme de TikTok." },
@@ -105,6 +106,7 @@ HISTORIAS.push({
         { a: 2024, art: "Yuno Miles & Fantano", t: "Bobo's Chicken", n: "Con el crítico Anthony Fantano." },
         { a: 2024, art: "Girl On Couch & Billen Ted", t: "Man in Finance (G6 Trust Fund)", n: "El viral de TikTok sobre el hombre que trabaja «in finance»." },
         { a: 2025, art: "Gazzarino & Mandolino Pizzarino", t: "Brainrot Rap (brr brr)", n: "Una canción del «italian brainrot» (año aproximado)." },
+        { a: 2025, art: "W&W", t: "OIIA OIIA (Spinning Cat)", n: "El gato que da vueltas, convertido en tema de festival." },
         { a: 2026, art: "KITSCHKRIEG, Blumengarten & Shirin David", t: "Gut genug", q: "KITSCHKRIEG Gut Genug Blumengarten Shirin David", n: "Medio mundo canta «Doobie Scoot Canoe» sin saber que en alemán significa «eres suficiente»." }
       ]
     },
@@ -117,7 +119,8 @@ HISTORIAS.push({
         { a: 2025, art: "Tralalero Tralala", t: "El tiburón con zapatillas", tipo: "hito", n: "El primero de todos: un tiburón con Nike y una letra en italiano inventado." },
         { a: 2025, art: "Bombardiro Crocodilo", t: "El cocodrilo bombardero", tipo: "hito", n: "Un cocodrilo-avión: el personaje que hizo explotar la moda." },
         { a: 2025, art: "Tung Tung Tung Sahur", t: "El tronco con bate", tipo: "hito", n: "En realidad indonesio, pero adoptado por el universo brainrot." },
-        { a: 2025, art: "Ballerina Cappuccina", t: "La bailarina con cabeza de café", tipo: "hito", n: "Se convirtió en el personaje más popular entre los más pequeños." }
+        { a: 2025, art: "Ballerina Cappuccina", t: "La bailarina con cabeza de café", tipo: "hito", n: "Se convirtió en el personaje más popular entre los más pequeños." },
+        { a: 2025, art: "W&W", t: "Tung Tung Tung Sahur (Italian Brainrot)", n: "Los holandeses W&W convierten uno de los personajes del brainrot en big room." }
       ]
     }
   ]

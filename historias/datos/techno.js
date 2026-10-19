@@ -67,6 +67,7 @@ HISTORIAS.push({
         { a: 2018, art: "Adam Beyer & Bart Skils", t: "Your Mind", n: "El techno de Drumcode que llena los grandes escenarios." },
         { a: 2018, art: "Amelie Lens", t: "Hypnotized", n: "Amelie Lens, belga, la cara del techno duro de los festivales." },
         { a: 2022, art: "Charlotte de Witte", t: "Doppler", n: "La reina del techno belga." },
+        { a: 2023, art: "BENNETT", t: "Vois sur ton chemin - Techno Mix", n: "La canción de «Los chicos del coro» convertida en techno: viral en TikTok." },
         { a: 2024, art: "La cultura techno de Berlín", t: "Patrimonio cultural de Alemania", tipo: "hito", n: "Alemania la incluye en su inventario de patrimonio inmaterial." }
       ]
     }

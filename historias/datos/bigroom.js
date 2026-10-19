@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "bigroom",
   familia: "House, techno y EDM",
   titulo: "Época dorada del big room house",
-  periodo: "2011 – 2016",
+  periodo: "2011 – 2022",
   color: "#2b7de0",
   lema: "Bombo, silencio y lead chillón: la era Tomorrowland.",
   intro: "Crece a partir del dutch house y del progressive. Lleva un bombo enorme y sincopado, unos drops casi sin melodía y subidas con «¡manos arriba!». Fue el sonido de los mainstages de Tomorrowland y Ultra en plena fiebre EDM.",
@@ -22,6 +22,7 @@ HISTORIAS.push({
         { a: 2012, art: "Hardwell", t: "Apollo", n: "Con Amba Shepherd. Hardwell en su año de número uno en DJ Mag." },
         { a: 2012, art: "Tiësto & Showtek", t: "Hell Yeah!", n: "Tiësto en plena época big room, con los holandeses de Showtek." },
         { a: 2012, art: "Julian Jordan & Martin Garrix", t: "BFAM", n: "Dos adolescentes holandeses juntos: al año siguiente Garrix sacaría «Animals»." },
+        { a: 2012, art: "Hardwell & Dannic", t: "Kontiki", n: "Big room con aire tropical: Hardwell y su protegido Dannic." },
         { a: 2013, art: "DJ Mag", t: "Hardwell, DJ número uno del mundo con 25 años", tipo: "hito", n: "El big room en la cima de la encuesta más famosa." },
         { a: 2013, art: "Tomorrowland", t: "Entradas agotadas en segundos", tipo: "hito", n: "El festival belga se convierte en el más famoso del mundo." },
         { a: 2013, art: "Martin Garrix", t: "Animals", n: "Un chaval de 17 años y un drop de cinco notas. El himno definitivo del género." },
@@ -33,6 +34,10 @@ HISTORIAS.push({
         { a: 2013, art: "Nicky Romero & Krewella", t: "Legacy", n: "Big room con la voz de las hermanas de Krewella." },
         { a: 2013, art: "Firebeatz & Schella", t: "Dear New York", n: "Una carta de amor a Nueva York en forma de drop de festival." },
         { a: 2013, art: "Chris Lake & Tujamo & Steve Aoki", t: "Boneless", n: "Una de las canciones de festival más pinchadas de 2013 y 2014." },
+        { a: 2013, art: "Hardwell & Matthew Koma", t: "Dare You", n: "El tema con el que Hardwell se pasó a la canción con voz." },
+        { a: 2013, art: "Afrojack & Spree Wilson", t: "The Spark", n: "Afrojack en su versión más pop, con un estribillo de radio." },
+        { a: 2013, art: "Dimitri Vegas & Like Mike & DVBBS & Borgeous", t: "Stampede", n: "Big room de estampida con los belgas de Tomorrowland." },
+        { a: 2013, art: "Nicky Romero & NERVO", t: "Like Home", n: "Nicky Romero con las gemelas australianas de NERVO." },
         { a: 2014, art: "W&W", t: "Bigfoot", n: "Pisotones de gigante: el bombo como protagonista absoluto." },
         { a: 2014, art: "Martin Garrix & Firebeatz", t: "Helicopter", n: "Garrix intentando repetir «Animals»… y casi lo consigue." },
         { a: 2014, art: "Martin Garrix & Afrojack", t: "Turn Up the Speakers", n: "El dutch house de Afrojack se encuentra con el big room." },
@@ -44,12 +49,27 @@ HISTORIAS.push({
         { a: 2014, art: "Bassjackers", t: "Mush, Mush", n: "Electro festivo holandés con un canto de taberna irlandesa." },
         { a: 2014, art: "Afrojack feat. Wrabel", t: "Ten Feet Tall", n: "El big room de Afrojack con voz." },
         { a: 2014, art: "R3HAB & KSHMR", t: "Karate", n: "Big room con aire oriental: R3HAB y KSHMR en plena fiebre del EDM." },
+        { a: 2014, art: "Deorro", t: "Five Hours", n: "Un tema que sonaba en bucle en todos los festivales: luego tendría versión con Chris Brown." },
         { a: 2015, art: "Dimitri Vegas & Like Mike vs. Ummet Ozcan", t: "The Hum", n: "Melodía psytrance con un drop de big room. Fue de lo último grande del género." },
         { a: 2015, art: "Hardwell & W&W", t: "Jumper", n: "Su nombre lo dice todo: para saltar." },
         { a: 2015, art: "Hardwell", t: "Mad World", n: "Con Jake Reese. El lado más melódico de Hardwell." },
         { a: 2015, art: "Tiësto & KSHMR", t: "Secrets", n: "Melodías orientales y la voz de Vassy: Tiësto en plena etapa de big room." },
+        { a: 2015, art: "Dimitri Vegas & Like Mike & Ne-Yo", t: "Higher Place", n: "Los belgas con Ne-Yo: big room con voz de R&B." },
         { a: 2016, art: "Fin de una era", t: "El future bass y el tropical toman el relevo", tipo: "hito", n: "Hacia 2016, los mainstages se cansan de la fórmula: llegan el future house, el future bass y el pop electrónico." },
         { a: 2016, art: "Martin Garrix", t: "In the Name of Love", n: "Con Bebe Rexha. Garrix se pasa al pop: el final de la era big room." }
+      ]
+    },
+    {
+      titulo: "El big room después del boom",
+      corto: "Después del boom",
+      periodo: "2017 – 2022",
+      intro: "Tras 2016 el EDM pierde las radios, pero el big room sigue vivo en los festivales, más duro y más cerca del techno y el hardstyle.",
+      items: [
+        { a: 2017, art: "Hardwell & KSHMR", t: "Power", n: "Dos de los grandes del big room juntos en plena caída del género." },
+        { a: 2017, art: "Afrojack & David Guetta & Ester Dean", t: "Another Life", n: "Afrojack y Guetta en clave pop." },
+        { a: 2018, art: "Hardwell", t: "Se va de los escenarios", tipo: "hito", n: "Hardwell anuncia que deja de pinchar por agotamiento: muchos lo ven como el final de una época." },
+        { a: 2018, art: "Hardwell & Blasterjaxx & Mitch Crown", t: "Bigroom Never Dies", n: "El título lo dice todo: un grito de guerra del big room." },
+        { a: 2022, art: "Hardwell", t: "INTO THE UNKNOWN", n: "Su vuelta tras años sin pinchar, con un sonido más duro y cercano al techno." }
       ]
     }
   ]

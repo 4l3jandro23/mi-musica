@@ -176,6 +176,7 @@ HISTORIAS.push({
         { a: 2017, art: "Major Lazer & Travis Scott & Camila Cabello & Quavo", t: "Know No Better", n: "Major Lazer con trap y pop latino." },
         { a: 2017, art: "Martin Garrix & Dua Lipa", t: "Scared to Be Lonely", n: "Martin Garrix en su etapa pop, con Dua Lipa aún antes de ser estrella." },
         { a: 2017, art: "Martin Garrix & Troye Sivan", t: "There for You", n: "Garrix y Troye Sivan en una canción sobre estar ahí para alguien." },
+        { a: 2017, art: "Shouse", t: "Love Tonight", n: "Un tema de 2017 que se hizo viral en 2021 y acabó con remix de Guetta." },
         { a: 2018, art: "Calvin Harris & Dua Lipa", t: "One Kiss", n: "El house con voz que dominó el verano." },
         { a: 2018, art: "Marshmello & Bastille", t: "Happier", n: "El DJ del casco y una canción triste de pop." },
         { a: 2018, art: "FISHER", t: "Losing It", n: "El tech house del australiano en todos los festivales." },
@@ -208,10 +209,12 @@ HISTORIAS.push({
         { a: 2022, art: "Tiësto & Charli xcx", t: "Hot In It", n: "Tiësto en su etapa pop, con Charli xcx." },
         { a: 2022, art: "Tiësto & Tate McRae", t: "10:35", n: "Uno de los grandes éxitos de Tiësto en su vuelta a las listas." },
         { a: 2022, art: "Paul Woolford & Diplo & Kareen Lomax", t: "Looking for Me", n: "House británico de radio con Diplo, en las listas de 2023." },
+        { a: 2022, art: "James Hype & Miggy Dela Rosa", t: "Ferrari", n: "House de radio con un estribillo que se pegó en TikTok." },
         { a: 2023, art: "Peggy Gou", t: "(It Goes Like) Nanana", n: "La DJ surcoreana y el house noventero." },
         { a: 2023, art: "John Summit feat. Hayla", t: "Where You Are", n: "El tech house llega al gran público." },
         { a: 2023, art: "Fred again..", t: "Rumble", n: "Con Skrillex y Flowdan: bajo de UK garage y grime." },
         { a: 2023, art: "Ytram, Elderbrook & Martin Garrix", t: "Fire", n: "Con Martin Garrix (año aproximado)." },
+        { a: 2025, art: "Disco Lines & Tinashe", t: "No Broke Boys", n: "House con la voz de Tinashe, viral en 2025." },
         { a: 2026, art: "Bebe Rexha & David Guetta", t: "Sad Girls", n: "Progressive house de su disco «Dirty Blonde»; Guetta la tuvo dos años guardada en el disco duro." }
       ]
     }
