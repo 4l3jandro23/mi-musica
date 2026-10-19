@@ -64,7 +64,9 @@ HISTORIAS.push({
         { a: 1945, art: "Les Paul & Bing Crosby", t: "It's Been a Long, Long Time", q: "Bing Crosby It's Been a Long Long Time", n: "La canción del regreso de los soldados a casa." },
         { a: 1945, art: "Les Brown & Doris Day", t: "Sentimental Journey", n: "La canción de la vuelta a casa." },
         { a: 1945, art: "The Andrews Sisters", t: "Rum and Coca-Cola", n: "Los soldados en Trinidad." },
-        { a: 1946, art: "Partisanos italianos", t: "Bella ciao", q: "Bella Ciao partisan song", n: "La canción de los partisanos italianos, convertida en himno universal tras la guerra." }
+        { a: 1945, art: "Harry James & Kitty Kallen", t: "It's Been a Long, Long Time", n: "La canción de los soldados que vuelven a casa: número 1 al acabar la guerra." },
+        { a: 1946, art: "Partisanos italianos", t: "Bella ciao", q: "Bella Ciao partisan song", n: "La canción de los partisanos italianos, convertida en himno universal tras la guerra." },
+        { a: 1946, art: "Frank Sinatra", t: "Five Minutes More", n: "Sinatra ya en solitario, en la alegría de la posguerra." }
       ]
     }
   ]

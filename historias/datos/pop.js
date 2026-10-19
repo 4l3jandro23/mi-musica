@@ -18,6 +18,7 @@ HISTORIAS.push({
         { a: 1956, art: "Doris Day", t: "Whatever Will Be, Will Be (Que Sera, Sera)", n: "La canción de «El hombre que sabía demasiado» de Hitchcock." },
         { a: 1957, art: "Paul Anka", t: "Diana", n: "Un chaval de 15 años y uno de los singles más vendidos de su época." },
         { a: 1958, art: "The Chordettes", t: "Lollipop", n: "El chasquido de lengua que imitaba un caramelo." },
+        { a: 1959, art: "Paul Anka", t: "Put Your Head On My Shoulder", n: "Balada adolescente de Paul Anka con solo 18 años." },
         { a: 1961, art: "The Tokens", t: "The Lion Sleeps Tonight", n: "Viene de «Mbube», del sudafricano Solomon Linda, que murió casi sin cobrar." },
         { a: 1962, art: "Connie Francis", t: "Pretty Little Baby", n: "Otra de la cantante italoamericana." },
         { a: 1963, art: "The Ronettes", t: "Be My Baby", n: "El «muro de sonido» de Phil Spector: un redoble de batería legendario." },

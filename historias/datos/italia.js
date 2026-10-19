@@ -34,6 +34,7 @@ HISTORIAS.push({
         { a: 1959, art: "«Volare»", t: "Primer Grammy a la canción del año", tipo: "hito", n: "Una canción en italiano gana en la primera edición de los Grammy." },
         { a: 1959, art: "Mina", t: "Tintarella di luna", n: "La «tigre de Cremona»: la voz más grande de Italia." },
         { a: 1960, art: "Mina", t: "Il cielo in una stanza", n: "De Gino Paoli: los cantautores genoveses empiezan." },
+        { a: 1961, art: "Luciano Tajoli", t: "Al di là", n: "Ganadora de Sanremo en 1961, con la voz de tenor popular de Tajoli." },
         { a: 1963, art: "Rita Pavone", t: "Il ballo del mattone", n: "Yeyé a la italiana, muy famosa también en España." },
         { a: 1964, art: "Fabrizio De André", t: "La canzone di Marinella", n: "El poeta de los marginados. Mina la convirtió en éxito." },
         { a: 1965, art: "Jimmy Fontana", t: "Il mondo", n: "Una balada inmensa que se versionó en medio mundo." },

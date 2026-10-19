@@ -57,6 +57,7 @@ HISTORIAS.push({
         { a: 2011, art: "JDX feat. Sarah Maria", t: "Live the Moment", n: "Votado a veces como el mejor tema de hardstyle de la historia." },
         { a: 2011, art: "Coone", t: "Music Is Art", n: "El belga del hardstyle alegre de los 2010 (año aproximado)." },
         { a: 2011, art: "Headhunterz & Tatu", t: "Colors", n: "Hardstyle con voz pop (año aproximado)." },
+        { a: 2011, art: "Coone", t: "D.W.X.", n: "El himno de Dirty Workz, el sello belga de Coone." },
         { a: 2012, art: "Headhunterz", t: "Dragonborn", n: "Inspirado en el videojuego Skyrim: épica pura." },
         { a: 2012, art: "Headhunterz & Skytech", t: "Kundalini", n: "Hardstyle con referencias espirituales (año aproximado)." },
         { a: 2013, art: "Coone", t: "Words of Freedom", n: "Coone, belga, con su hardstyle eufórico para cerrar escenarios." },
@@ -78,9 +79,11 @@ HISTORIAS.push({
     {
       titulo: "El hardstyle de hoy",
       corto: "Hoy",
-      periodo: "2017 – 2024",
+      periodo: "2015 – 2024",
       intro: "Tras los años de EDM, el hardstyle vuelve a sus festivales y TikTok lo descubre acelerado: Headhunterz regresa, y llegan Sickmode o Gammer.",
       items: [
+        { a: 2015, art: "LNY TNZ & Boaz van de Beatz & Mr. Polska & Kalibwoy", t: "Ravelord", n: "Hardstyle mezclado con dancehall y rap: el sonido «hard trap» de LNY TNZ." },
+        { a: 2016, art: "Headhunterz & Mike Taylor", t: "Lift Me Up", n: "Hardstyle melódico de Headhunterz con la voz de Mike Taylor, hecho para cantarse en festival." },
         { a: 2017, art: "Headhunterz", t: "Vuelve al hardstyle", tipo: "hito", n: "Tras unos años haciendo EDM, el gran nombre del género anuncia su regreso a los escenarios de hardstyle (año aproximado)." },
         { a: 2017, art: "Headhunterz", t: "Destiny", n: "Uno de los temas de su regreso (año aproximado)." },
         { a: 2018, art: "Headhunterz", t: "From Within", n: "Su vuelta a la melodía épica del hardstyle (año aproximado)." },

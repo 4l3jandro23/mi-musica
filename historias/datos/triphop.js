@@ -30,6 +30,7 @@ HISTORIAS.push({
         { a: 1996, art: "Lamb", t: "Gorecki", n: "Desde Manchester, una canción de amor inspirada en Górecki." },
         { a: 1996, art: "Mono", t: "Life in Mono", n: "Trip hop británico con orquesta: luego sonó en «Grandes esperanzas»." },
         { a: 1996, art: "Olive", t: "You're Not Alone", n: "Número uno en Reino Unido en 1997." },
+        { a: 1996, art: "DJ Shadow", t: "Organ Donor", n: "De «Endtroducing.....», considerado el primer disco hecho entero con samples." },
         { a: 1997, art: "Portishead", t: "All Mine", n: "Portishead en su lado más cinematográfico, con aire de James Bond." },
         { a: 1997, art: "Björk", t: "Joga", n: "Björk junta cuerdas y ritmos electrónicos en «Homogenic»." },
         { a: 1997, art: "Portishead", t: "Only You", n: "Del segundo disco de Portishead." },

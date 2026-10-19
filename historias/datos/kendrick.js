@@ -124,6 +124,7 @@ HISTORIAS.push({
         { a: 2024, art: "Kendrick Lamar", t: "squabble up", n: "De «GNX», el disco sorpresa de noviembre de 2024." },
         { a: 2024, art: "Kendrick Lamar & Lefty Gunplay", t: "tv off", n: "El grito de «Mustaaard!» al productor que se hizo viral." },
         { a: 2024, art: "Kendrick Lamar & SZA", t: "luther", n: "Sobre un sample de Luther Vandross: número uno en EE. UU." },
+        { a: 2024, art: "Kendrick Lamar & Dody6", t: "hey now", n: "De «GNX», el disco sorpresa con el que celebró haber ganado la pelea con Drake." },
         { a: 2025, art: "Nueva Orleans", t: "Actúa en la Super Bowl", tipo: "hito", n: "Es el primer rapero en solitario que encabeza el descanso; canta «Not Like Us» con Serena Williams bailando en el escenario." }
       ]
     }

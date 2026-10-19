@@ -61,7 +61,8 @@ HISTORIAS.push({
         { a: 2007, art: "Daft Punk", t: "Harder, Better, Faster, Stronger / Around the World (Alive 2007)", q: "Daft Punk Harder Better Faster Stronger Around the World Alive 2007", n: "Gana el Grammy a la mejor grabación de dance." },
         { a: 2007, art: "Daft Punk", t: "Touch It / Technologic (Alive 2007)", q: "Daft Punk Touch It Technologic Alive 2007", n: "El mashup del directo de París." },
         { a: 2007, art: "Daft Punk", t: "One More Time / Aerodynamic (Alive 2007)", q: "Daft Punk One More Time Aerodynamic Alive 2007", n: "El cierre de la gira de la pirámide." },
-        { a: 2007, art: "Daft Punk", t: "Alive 2007", tipo: "disco", n: "El directo de Bercy en París: Grammy al mejor disco electrónico." }
+        { a: 2007, art: "Daft Punk", t: "Alive 2007", tipo: "disco", n: "El directo de Bercy en París: Grammy al mejor disco electrónico." },
+        { a: 2007, art: "Daft Punk", t: "Aerodynamic Beats / Gabrielle, Forget About the World", n: "Uno de los mashups de «Alive 2007», el directo de la pirámide de luces." }
       ]
     },
     {

@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "traplatino",
   familia: "Latino",
   titulo: "Historia del trap latino",
-  periodo: "2015 – 2024",
+  periodo: "2015 – 2025",
   color: "#9b3fd1",
   lema: "De SoundCloud en Puerto Rico a Argentina, México y el número uno mundial.",
   intro: "Hacia 2015, en Puerto Rico, una generación cansada del reguetón de discoteca adopta el sonido de Atlanta: 808, autotune y letras crudas. Lo suben a SoundCloud, las grandes discográficas lo descubren y en pocos años el trap latino lo cambia todo: de Bad Bunny al trap argentino y los corridos tumbados de México.",
@@ -67,7 +67,7 @@ HISTORIAS.push({
     {
       titulo: "CA7RIEL & Paco Amoroso y la nueva Argentina",
       corto: "Ca7riel y Paco",
-      periodo: "2022 – 2024",
+      periodo: "2022 – 2025",
       intro: "Después de Duki, la escena argentina se expande: chicas al frente, rap de autor, cumbia y el dúo más loco del Tiny Desk.",
       items: [
         { a: 2022, art: "Kaleb Di Masi & Omar Varela", t: "Hace Calor", n: "Cumbia-trap argentina que se hizo viral y tuvo remix con Sfera Ebbasta." },
@@ -84,7 +84,8 @@ HISTORIAS.push({
         { a: 2024, art: "LiL CaKe, Migrantes & Nico Valdi", t: "MERCHO", n: "Cumbia de fiesta argentina que fue el viral del verano austral (año aproximado)." },
         { a: 2024, art: "Duki & Bizarrap", t: "Malbec", n: "Duki y Bizarrap, los dos nombres que sacaron el trap argentino al mundo (año aproximado)." },
         { a: 2024, art: "Duki & JHAYCO", t: "RoCKSTAR 2.0", n: "Segunda parte de su clásico, ya con estadios llenos (año aproximado)." },
-        { a: 2024, art: "AgusFortnite2008, Stiffy & SwaggerBoyz", t: "BUSCANDO", n: "El dúo que conoció por Minecraft y lidera el underground argentino (año aproximado)." }
+        { a: 2024, art: "AgusFortnite2008, Stiffy & SwaggerBoyz", t: "BUSCANDO", n: "El dúo que conoció por Minecraft y lidera el underground argentino (año aproximado)." },
+        { a: 2025, art: "Fred again.. & CA7RIEL & Paco Amoroso", t: "Beto's Horns - fred remix", n: "Fred again.. remezcla a los argentinos tras su exitoso Tiny Desk de NPR." }
       ]
     }
   ]

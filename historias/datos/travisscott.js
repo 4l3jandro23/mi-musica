@@ -53,6 +53,7 @@ HISTORIAS.push({
         { a: 2018, art: "Travis Scott", t: "BUTTERFLY EFFECT", n: "Un single de 2017 que acabó en el disco." },
         { a: 2018, art: "Travis Scott", t: "HOUSTONFORNICATION", n: "Un homenaje a Houston, su ciudad, en «Astroworld»." },
         { a: 2018, art: "Travis Scott", t: "COFFEE BEAN", n: "Cierra el disco con una reflexión sobre su relación con Kylie Jenner." },
+        { a: 2019, art: "Travis Scott", t: "HIGHEST IN THE ROOM", n: "Su primera canción en debutar directamente en el número 1 de EE. UU." },
         { a: 2020, art: "Fortnite", t: "El concierto dentro del videojuego", tipo: "hito", n: "Más de doce millones de personas le ven a la vez en un concierto virtual dentro de «Fortnite»." },
         { a: 2020, art: "Travis Scott", t: "The Plan", n: "Para la película «Tenet» de Christopher Nolan." },
         { a: 2020, art: "Travis Scott, Young Thug & M.I.A.", t: "FRANCHISE", n: "Número uno en EE. UU. con M.I.A." }

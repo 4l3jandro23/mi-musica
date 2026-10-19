@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "liminal",
   familia: "Humor e internet",
   titulo: "Música de espacios liminales",
-  periodo: "1890 – 2019",
+  periodo: "1890 – 2022",
   color: "#c9b458",
   lema: "Crooners lejanos, centros comerciales vacíos, vaporwave y backrooms.",
   intro: "Los «espacios liminales» son lugares de paso fotografiados vacíos: pasillos de hotel, piscinas cubiertas, centros comerciales cerrados. Producen nostalgia e inquietud a la vez. Su música es la de un baile de los años 30 que suena en otra habitación, el hilo musical de un supermercado de los 90 o un sintetizador que se repite en la niebla.",
@@ -14,6 +14,8 @@ HISTORIAS.push({
       intro: "Canciones antiguas que hoy suenan como recuerdos ajenos.",
       items: [
         { a: 1890, art: "Erik Satie", t: "Gnossienne n.º 1", n: "Piano sin compases ni ritmo fijo: Satie inventó la palabra del título." },
+        { a: 1906, art: "American Quartet", t: "You're a Grand Old Flag", n: "Cuarteto de principios de siglo que suena como una radio olvidada en un videojuego postapocalíptico." },
+        { a: 1907, art: "Frank C. Stanley", t: "Auld Lang Syne", n: "Grabación de principios del siglo XX (año aproximado) de la canción de Año Nuevo, con crujidos de disco antiguo." },
         { a: 1931, art: "Al Bowlly", t: "Heartaches", n: "La canción que The Caretaker deformaría en «It's Just a Burning Memory»." },
         { a: 1939, art: "The Ink Spots", t: "If I Didn't Care", n: "Los Ink Spots, muy usados en videojuegos como Fallout: suena a un pasado que nunca viviste." },
         { a: 1939, art: "Glenn Miller", t: "Moonlight Serenade", n: "Una orquesta de los 40 que hoy suena como un hotel vacío." },
@@ -22,7 +24,9 @@ HISTORIAS.push({
         { a: 1941, art: "The Ink Spots", t: "I Don't Want to Set the World on Fire", n: "Sonando en un mundo arrasado en el videojuego Fallout 3." },
         { a: 1942, art: "The Mills Brothers", t: "Paper Doll", n: "Una muñeca de papel que no te engaña: número uno en EE. UU. durante la guerra." },
         { a: 1944, art: "Billie Holiday", t: "I'll Be Seeing You", n: "Te veré en todos los lugares conocidos: nostalgia pura." },
+        { a: 1948, art: "Dinah Shore", t: "Buttons and Bows", n: "Éxito de 1948 que hoy suena a anuncio en blanco y negro y a radio olvidada." },
         { a: 1950, art: "Patti Page", t: "Tennessee Waltz", n: "Una voz de los 50 que suena lejana y triste." },
+        { a: 1952, art: "The Four Freshmen", t: "It's A Blue World", n: "Armonías vocales de los 50 que hoy suenan a sueño lejano." },
         { a: 1958, art: "The Platters", t: "Smoke Gets in Your Eyes", n: "Un baile lento de otra década." }
       ]
     },
@@ -54,7 +58,7 @@ HISTORIAS.push({
     {
       titulo: "Backrooms y recuerdos borrosos",
       corto: "Backrooms",
-      periodo: "1994 – 2019",
+      periodo: "1994 – 2022",
       intro: "Recuerdos que no son tuyos: ambient, videojuegos y la leyenda de las oficinas infinitas.",
       items: [
         { a: 1994, art: "Aphex Twin", t: "#3", q: "Aphex Twin Selected Ambient Works Volume II #3", n: "Conocida como «Rhubarb»: un órgano infinito y suave." },
@@ -64,7 +68,8 @@ HISTORIAS.push({
         { a: 2011, art: "C418", t: "Wet Hands", n: "Minecraft: un mundo vacío y tranquilo." },
         { a: 2011, art: "The Caretaker", t: "All You Are Going to Want to Do Is Get Back There", n: "Discos de baile antiguos ralentizados, con crujidos de vinilo." },
         { a: 2016, art: "The Caretaker", t: "It's just a burning memory", n: "Un baile de los años 30 que se va olvidando: el sonido de los espacios liminales." },
-        { a: 2019, art: "The Backrooms", t: "Nace la leyenda en 4chan", tipo: "hito", n: "Una foto de unas oficinas amarillas infinitas: «si te sales de la realidad, acabas aquí»." }
+        { a: 2019, art: "The Backrooms", t: "Nace la leyenda en 4chan", tipo: "hito", n: "Una foto de unas oficinas amarillas infinitas: «si te sales de la realidad, acabas aquí»." },
+        { a: 2022, art: "Øneheart & reidenshi", t: "snowfall", n: "Ambient de piano lejano que se hizo viral en vídeos nostálgicos y de nieve." }
       ]
     }
   ]

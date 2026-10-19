@@ -17,6 +17,7 @@ HISTORIAS.push({
         { a: 1926, art: "Louis Armstrong & His Hot Five", t: "Heebie Jeebies", n: "Se le cayó la letra y empezó a cantar sílabas sin sentido: el scat." },
         { a: 1933, art: "Ethel Waters", t: "Stormy Weather", n: "Una de las grandes voces de los años 30." },
         { a: 1936, art: "Billie Holiday", t: "Summertime", n: "Lady Day canta a Gershwin." },
+        { a: 1937, art: "Billie Holiday", t: "Easy Living", n: "De su época con Teddy Wilson: swing ligero y una voz que no se parece a nadie." },
         { a: 1939, art: "Billie Holiday", t: "Strange Fruit", n: "La canción contra los linchamientos." },
         { a: 1941, art: "Billie Holiday", t: "God Bless the Child", n: "Escrita por ella misma tras una pelea con su madre por dinero." },
         { a: 1944, art: "Billie Holiday", t: "Lover Man", n: "Una balada de soledad, en plena guerra." },
@@ -39,12 +40,14 @@ HISTORIAS.push({
         { a: 1958, art: "Billie Holiday", t: "I'm a Fool to Want You", n: "De «Lady in Satin», con la voz cansada." },
         { a: 1959, art: "Lambert, Hendricks & Ross", t: "Twisted", n: "Letras sobre solos de saxo." },
         { a: 1959, art: "Abbey Lincoln", t: "Afro Blue", n: "Con Max Roach, que luego sería su marido: jazz con conciencia." },
+        { a: 1959, art: "Dinah Washington", t: "What A Diff'rence A Day Made", n: "La reina del blues se pasa a la balada con cuerdas y gana un Grammy." },
         { a: 1960, art: "Ella Fitzgerald", t: "Mack the Knife (Live in Berlin)", n: "Se le olvida la letra y improvisa: gana un Grammy." },
         { a: 1960, art: "Dinah Washington", t: "This Bitter Earth", n: "«La reina del blues»: luego la usó Scorsese en «Shutter Island»." },
         { a: 1960, art: "Ella Fitzgerald", t: "How High the Moon (Live in Berlin)", n: "Siete minutos de scat, en el mismo concierto en que se olvidó la letra de «Mack the Knife»." },
         { a: 1961, art: "Carmen McRae", t: "Take Five", n: "La letra de un clásico instrumental." },
         { a: 1964, art: "Satchmo contra los Beatles", t: "Un número uno a los 62 años", tipo: "hito", n: "«Hello, Dolly!» desbanca a los Beatles de lo más alto de la lista de Billboard." },
-        { a: 1964, art: "Louis Armstrong", t: "Hello, Dolly!", n: "Le quita el número uno a los Beatles." }
+        { a: 1964, art: "Louis Armstrong", t: "Hello, Dolly!", n: "Le quita el número uno a los Beatles." },
+        { a: 1964, art: "Nina Simone", t: "See-Line Woman", n: "Una canción de trabajo del sur convertida en hechizo con palmas y voz." }
       ]
     },
     {

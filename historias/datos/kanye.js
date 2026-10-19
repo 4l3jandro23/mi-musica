@@ -192,6 +192,7 @@ HISTORIAS.push({
         { a: 2024, art: "Ye & Travis Scott", t: "FATHER", n: "De «Vultures 1», su disco con Ty Dolla $ign (año aproximado)." },
         { a: 2024, art: "Ye", t: "PREACHER MAN", n: "De «Vultures 2» (año aproximado)." },
         { a: 2024, art: "Ye & YoungBoy Never Broke Again", t: "ALIVE", n: "Otra de su etapa de «Vultures» (año aproximado)." },
+        { a: 2024, art: "¥$ & Kanye West & Ty Dolla $ign", t: "KING", n: "El cierre de «Vultures 1», el disco de Kanye con Ty Dolla $ign." },
         { a: 2026, art: "Ye & Peso Pluma", t: "LAST BREATH", n: "Del disco «Bully»: Ye canta en español por primera vez, con referencias a la lucha libre mexicana." }
       ]
     }

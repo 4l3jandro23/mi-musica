@@ -17,6 +17,8 @@ HISTORIAS.push({
         { a: 1992, art: "Warp Records", t: "«Artificial Intelligence»", tipo: "hito", n: "Un recopilatorio con un robot en un sofá: música electrónica para escuchar tras la fiesta." },
         { a: 1992, art: "Aphex Twin", t: "Xtal", n: "El arranque de Selected Ambient Works 85-92, grabado en casa siendo adolescente." },
         { a: 1992, art: "Aphex Twin", t: "Digeridoo", n: "Un didgeridoo de sintetizador." },
+        { a: 1992, art: "Aphex Twin", t: "We Are the Music Makers", n: "Con una frase de «Willy Wonka»: uno de los temas más queridos de su primer disco de ambient." },
+        { a: 1992, art: "Aphex Twin", t: "Heliosphan", n: "Otra joya de «Selected Ambient Works 85-92», el disco que lo cambió todo." },
         { a: 1993, art: "La lista de correo IDM", t: "El nombre sale de internet", tipo: "hito", n: "Una lista de correo de fans bautiza el género, para disgusto de los artistas." },
         { a: 1993, art: "Autechre", t: "Bike", n: "Desde Rochdale: melancolía de máquinas." },
         { a: 1994, art: "Aphex Twin", t: "«Selected Ambient Works Volume II»", tipo: "hito", n: "Un disco doble sin títulos, compuesto, según él, a partir de sueños lúcidos." },

@@ -55,6 +55,7 @@ HISTORIAS.push({
         { a: 2015, art: "El riddim", t: "Nace en SoundCloud", tipo: "hito", n: "Productores británicos y americanos repiten un mismo bajo una y otra vez: más hipnótico que melódico." },
         { a: 2016, art: "Lost Lands", t: "El festival de Excision", tipo: "hito", n: "Un festival entero de bass music en Ohio, con dinosaurios gigantes." },
         { a: 2016, art: "Excision & Space Laces", t: "Throwin' Elbows", n: "Excision sigue en lo más alto con un dubstep de festival." },
+        { a: 2016, art: "Zomboy", t: "Like A Bitch", n: "Dubstep de festival de Zomboy, con graves que suenan a motosierra." },
         { a: 2017, art: "Tom Morello & Knife Party", t: "Battle Sirens", n: "El guitarrista de Rage Against the Machine con el dubstep de los australianos (año aproximado)." },
         { a: 2019, art: "GRiZ & Subtronics", t: "Griztronics", n: "La nueva generación del dubstep, de lo más escuchado del género." }
       ]

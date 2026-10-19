@@ -59,6 +59,7 @@ HISTORIAS.push({
         { a: 2008, art: "Angerfist", t: "Pennywise", n: "La máscara de Angerfist y el hardcore del siglo XXI." },
         { a: 2008, art: "Angerfist", t: "Riotstarter", n: "Otro de los temas que lo hicieron famoso." },
         { a: 2012, art: "Thunderdome Never Dies", t: "El regreso", tipo: "hito", n: "Thunderdome vuelve en 2012 con una fiesta gigante en Utrecht: el gabber es ya nostalgia." },
+        { a: 2014, art: "Angerfist & Nolz", t: "The Deadfaced Dimension", n: "Hardcore de Angerfist y su máscara de hockey: oscuro, rápido y teatral." },
         { a: 2015, art: "Dr. Peacock", t: "Trip to Ireland", n: "El frenchcore: violines irlandeses a 200 pulsaciones." },
         { a: 2016, art: "Sefa", t: "Le mystère", n: "Frenchcore melódico del holandés Sefa." },
         { a: 2016, art: "Partyraiser", t: "Sound Becomes One", q: "Partyraiser Sound Becomes One", n: "El hardcore duro que se suaviza en el medio." },
@@ -68,6 +69,8 @@ HISTORIAS.push({
         { a: 2019, art: "Angerfist", t: "Loser", n: "Otra de Angerfist, hardcore a 180 BPM (año aproximado)." },
         { a: 2020, art: "Uptempo", t: "Más rápido imposible", tipo: "hito", n: "El «uptempo» supera las 200 pulsaciones: el gabber sigue acelerando." },
         { a: 2020, art: "GPF & Mind Compressor", t: "Spaghetti Love", n: "Uptempo hardcore de la escena holandesa (año aproximado)." },
+        { a: 2020, art: "Lil Texas", t: "Hardcore Bassdrum", n: "Lil Texas, el tejano que sube el hardcore a 200 BPM con estética de rap." },
+        { a: 2020, art: "Lil Texas", t: "Description of Evil", n: "Otro de sus temas de hardcore rapidísimo con samples de terror." },
         { a: 2021, art: "N-Vitral, BOMBSQUAD & GPF", t: "Greazy Counter", n: "Hardcore uptempo de la nueva generación (año aproximado)." },
         { a: 2022, art: "Unicorn on K", t: "Gangrena", n: "Hard techno y hardcore con humor (año aproximado)." }
       ]

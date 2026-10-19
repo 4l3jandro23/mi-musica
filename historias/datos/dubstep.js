@@ -2,7 +2,7 @@ HISTORIAS.push({
   id: "dubstep",
   familia: "Jamaica y bass music",
   titulo: "Orígenes del dubstep",
-  periodo: "2001 – 2014",
+  periodo: "2001 – 2020",
   color: "#2f9e8f",
   lema: "Sur de Londres, sub-bajo y espacio: el dubstep antes del ruido.",
   intro: "Nace en Croydon y Brixton a partir del garage oscuro, el dub jamaicano y el drum & bass. Tenía 140 BPM y medio tempo, más silencio que notas y un sub-bajo pensado para sentirse en el pecho. Se movía en la tienda Big Apple Records, en la noche FWD>> y en la emisora Rinse FM.",
@@ -10,7 +10,7 @@ HISTORIAS.push({
     {
       titulo: "Del garage oscuro al dubstep",
       corto: "Croydon y Brixton",
-      periodo: "2001 – 2014",
+      periodo: "2001 – 2020",
       intro: "Del garage oscuro al sub-bajo: la escena del sur de Londres.",
       items: [
         { a: 2001, art: "FWD>>", t: "Club en el Plastic People", tipo: "hito", n: "La noche londinense donde el garage se vuelve oscuro y lento. Por allí pasaron todos los pioneros." },
@@ -36,6 +36,7 @@ HISTORIAS.push({
         { a: 2007, art: "Burial", t: "Ghost Hardware", n: "De «Untrue»: el Londres nocturno y lluvioso convertido en música." },
         { a: 2007, art: "Caspa & Rusko", t: "FabricLive.37", tipo: "disco", n: "Una sesión que llevó el dubstep a las masas." },
         { a: 2007, art: "Distance", t: "Night Vision", n: "El dubstep más pesado de Londres, con un aire de metal en los graves." },
+        { a: 2007, art: "Burial", t: "Near Dark", n: "De «Untrue»: voces cortadas que suenan a recuerdo de una noche en Londres." },
         { a: 2008, art: "El dubstep", t: "Hacia el brostep", tipo: "hito", n: "Algunos productores endurecen el sonido y llegan a EE. UU.: el dubstep original se separa del que vendrá después." },
         { a: 2008, art: "Benga", t: "Diary of an Afro Warrior", tipo: "disco", n: "Un álbum entero del joven prodigio de Croydon, que había empezado a los 15 años." },
         { a: 2008, art: "Joker", t: "Digidesign", n: "Desde Bristol, el «purple sound»: sintes violetas, melodía y ritmo lento." },
@@ -49,7 +50,8 @@ HISTORIAS.push({
         { a: 2012, art: "Burial", t: "Kindred", n: "Doce minutos de lluvia y voces." },
         { a: 2012, art: "Mala", t: "Mala in Cuba", tipo: "disco", n: "Dubstep con músicos cubanos." },
         { a: 2013, art: "James Blake", t: "Retrograde", n: "Gana el Mercury Prize con el disco «Overgrown»." },
-        { a: 2014, art: "Kahn & Neek", t: "Percy", n: "Dubstep de Bristol para sound system, oscuro y minimalista." }
+        { a: 2014, art: "Kahn & Neek", t: "Percy", n: "Dubstep de Bristol para sound system, oscuro y minimalista." },
+        { a: 2020, art: "Burial & Four Tet & Thom Yorke", t: "His Rope", n: "Burial, Four Tet y el cantante de Radiohead juntos otra vez, nueve años después de «Ego»." }
       ]
     }
   ]

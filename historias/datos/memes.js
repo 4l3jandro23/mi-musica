@@ -97,6 +97,7 @@ HISTORIAS.push({
         { a: 2021, art: "Big Beats", t: "Goofy Ahh Beat", n: "El sonido de los vídeos de TikTok (año aproximado)." },
         { a: 2022, art: "Polimá Westcoast & Pablito Pesadilla", t: "Baby Otaku", n: "Rap chileno sobre una chica otaku: viral en TikTok en septiembre de 2022." },
         { a: 2022, art: "Tito Silva Music", t: "Mi Bebito Fiu Fiu", n: "La canción peruana sobre un escándalo político que se hizo viral en todo el mundo." },
+        { a: 2022, art: "g3ox_em", t: "GigaChad Theme - Phonk House Version", n: "La música del meme del «GigaChad», el hombre de mandíbula perfecta, en versión phonk." },
         { a: 2023, art: "Skibidi Toilet", t: "Cabezas en inodoros", tipo: "hito", n: "Una serie de vídeos absurda con una canción pegadiza: el gran fenómeno de la generación Alfa." },
         { a: 2023, art: "Yuno Miles", t: "Indiana Jones", n: "El rapero de los versos absurdos." },
         { a: 2024, art: "Yuno Miles & Fantano", t: "Bobo's Chicken", n: "Con el crítico Anthony Fantano." },

@@ -72,6 +72,8 @@ HISTORIAS.push({
       items: [
         { a: 1942, art: "Bing Crosby", t: "«White Christmas» se convierte en el disco más vendido", tipo: "hito", n: "La canción de Irving Berlin para «Holiday Inn» empieza la tradición de los discos de Navidad." },
         { a: 1958, art: "Brenda Lee", t: "Rockin' Around the Christmas Tree", n: "Grabada con trece años; llegó al número uno sesenta y cinco años después." },
+        { a: 1959, art: "Dean Martin", t: "Let It Snow! Let It Snow! Let It Snow!", n: "Escrita en pleno verano de 1945 en California, pensando en el frío: Dean Martin la hizo suya." },
+        { a: 1963, art: "Andy Williams", t: "It's the Most Wonderful Time of the Year", n: "El especial navideño de la tele de Andy Williams la convirtió en un clásico." },
         { a: 1984, art: "Wham!", t: "Last Christmas", n: "La canción de Navidad de George Michael que vuelve cada diciembre." },
         { a: 1994, art: "Mariah Carey", t: "All I Want for Christmas Is You", n: "La canción de Navidad más escuchada de la historia." },
         { a: 1998, art: "Céline Dion", t: "Happy Xmas (War Is Over)", n: "Su versión del clásico de John Lennon y Yoko Ono." }

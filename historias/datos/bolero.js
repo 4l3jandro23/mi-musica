@@ -41,6 +41,8 @@ HISTORIAS.push({
         { a: 1956, art: "Olga Guillot", t: "Miénteme", n: "La «reina del bolero», dramática y teatral." },
         { a: 1958, art: "Los Panchos", t: "Historia de un amor", n: "Un bolero panameño de Carlos Eleta Almarán que se volvió universal." },
         { a: 1958, art: "Vicentico Valdés", t: "Los aretes de la luna", q: "Vicentico Valdes Los aretes de la luna", n: "La voz suave de la Sonora Matancera." },
+        { a: 1958, art: "Nat King Cole", t: "Quizás, quizás, quizás", n: "Del disco «Cole Español»: el bolero de Osvaldo Farrés cantado con acento de Alabama." },
+        { a: 1958, art: "Nat King Cole", t: "Ansiedad", n: "Otro bolero de «Cole Español», grabado en La Habana poco antes de la revolución." },
         { a: 1959, art: "Álvaro Carrillo", t: "Sabor a mí", n: "El compositor canta su bolero." },
         { a: 1960, art: "Lucho Gatica", t: "Bésame mucho", n: "Lucho Gatica, el «rey del bolero», en una de sus interpretaciones más conocidas." },
         { a: 1963, art: "Javier Solís", t: "Sombras", n: "El bolero ranchero mexicano." },

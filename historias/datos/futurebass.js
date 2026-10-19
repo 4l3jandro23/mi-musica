@@ -66,6 +66,7 @@ HISTORIAS.push({
         { a: 2018, art: "Vanic & Katy Tiz", t: "Samurai", n: "Future bass canadiense con aire japonés (año aproximado)." },
         { a: 2018, art: "Rain Man & Oly", t: "Bring Back the Summer", n: "El productor de Atlanta en clave de verano." },
         { a: 2018, art: "What So Not & Branchez", t: "High You Are (Branchez Remix)", n: "El remix de Branchez que se hizo más famoso que la original." },
+        { a: 2018, art: "ODESZA", t: "Loyal", n: "Percusión enorme y vientos: ODESZA en plan banda de festival." },
         { a: 2019, art: "ILLENIUM & Jon Bellion", t: "Good Things Fall Apart", n: "De «Ascend», su disco de 2019, con el que llena estadios en EE. UU." },
         { a: 2019, art: "ILLENIUM, Excision & I Prevail", t: "Feel Something", n: "Melodic bass, dubstep duro y una banda de metalcore." },
         { a: 2019, art: "Gryffin, SLANDER & Calle Lehmann", t: "All You Need to Know", n: "Dos nombres del melodic bass juntos." }

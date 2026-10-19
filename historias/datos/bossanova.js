@@ -30,6 +30,7 @@ HISTORIAS.push({
       items: [
         { a: 1962, art: "Carnegie Hall", t: "Concierto de bossa nova en Nueva York", tipo: "hito", n: "Jobim, João y otros presentan el estilo ante el público estadounidense." },
         { a: 1962, art: "Stan Getz & Charlie Byrd", t: "Desafinado", n: "Jazz Samba: la bossa entra en el jazz americano." },
+        { a: 1962, art: "Quincy Jones", t: "Soul Bossa Nova", n: "La bossa nova pasada por una big band: luego sería la música de «Austin Powers»." },
         { a: 1963, art: "Antônio Carlos Jobim", t: "Wave", n: "Jobim instrumental, con la orquesta de Claus Ogerman." },
         { a: 1963, art: "Vinicius de Moraes & Antônio Carlos Jobim", t: "Garota de Ipanema", q: "Garota de Ipanema", n: "La versión original en portugués de «The Girl from Ipanema»." },
         { a: 1963, art: "João Gilberto", t: "Corcovado", q: "João Gilberto Corcovado", n: "La versión de João, con su voz suave y su guitarra que marca el ritmo." },

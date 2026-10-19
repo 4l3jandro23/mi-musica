@@ -100,6 +100,27 @@ HISTORIAS.push({
         { a: 2023, art: "Grupo Menos É Mais", t: "Coração Partido (Corazón Partío) - Ao Vivo", n: "El pagode de Brasília versiona en portugués «Corazón partío» de Alejandro Sanz: un éxito enorme en Brasil." },
         { a: 2023, art: "Mari Froes", t: "Mais uma canção pra você", n: "MPB de la nueva generación (año aproximado)." }
       ]
+    },
+    {
+      titulo: "El funk carioca",
+      corto: "Funk carioca",
+      periodo: "2002 – 2023",
+      intro: "De los bailes de las favelas de Río y São Paulo a las listas de todo el mundo: graves, «tamborzão» y letras que no se cortan.",
+      items: [
+        { a: 2002, art: "DJ Marlboro & MC Marcinho", t: "Glamourosa", n: "MC Marcinho, el «príncipe del funk», y el funk melody romántico que se sabe todo Brasil." },
+        { a: 2015, art: "Mc João & DJ R7", t: "Baile de Favela", n: "Uno de los himnos de los bailes funk de São Paulo de 2015 y 2016." },
+        { a: 2016, art: "MC's Zaac & Jerry Smith", t: "Bumbum granada", n: "Número 1 en Spotify en Brasil y Portugal en 2016." },
+        { a: 2016, art: "MC Kevinho", t: "Olha a Explosão", n: "El funk paulista que llegó a cientos de millones de visitas en YouTube." },
+        { a: 2017, art: "KondZilla", t: "El canal de YouTube del funk", tipo: "hito", n: "Los vídeos de KondZilla convierten su canal en uno de los más vistos de Brasil y sacan el funk de la favela." },
+        { a: 2017, art: "MC Lan", t: "Rabetão", n: "La voz ronca de MC Lan, una de las más reconocibles del funk de São Paulo." },
+        { a: 2017, art: "ZAAC & MC Vigary & DJ Yuri Martins", t: "Vai Embrazando", n: "Uno de los grandes éxitos de baile de 2017 en Brasil." },
+        { a: 2017, art: "Anitta & MC Zaac & Maejor & Tropkillaz & DJ Yuri Martins", t: "Vai malandra", n: "Anitta lleva el funk de la favela de Vidigal a todo el mundo con un vídeo muy polémico." },
+        { a: 2018, art: "MC L da Vinte & MC Gury & DJ Swat", t: "Parado no Bailão", n: "El funk carioca más sencillo y pegadizo: uno de los éxitos de 2018." },
+        { a: 2019, art: "Tropkillaz & J Balvin & Anitta & ZAAC", t: "Bola Rebola", n: "Funk y reguetón juntos: Brasil y Colombia en la misma pista." },
+        { a: 2019, art: "MC Lan & Skrillex & TroyBoi & Ludmilla & Ty Dolla $ign", t: "Malokera", n: "Skrillex se pasa al funk brasileño con MC Lan y Ludmilla." },
+        { a: 2022, art: "Dj LK da Escócia & Tchakabum & MC Ryan SP", t: "Tubarão Te Amo", n: "Viral mundial en TikTok en 2022: el funk vuelve a dar la vuelta al mundo." },
+        { a: 2023, art: "DENNIS & MC Kevin o Chris", t: "Tá OK", n: "Funk de Río que acabó con remix de Karol G y Maluma." }
+      ]
     }
   ]
 });

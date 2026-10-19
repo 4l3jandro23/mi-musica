@@ -40,6 +40,7 @@ HISTORIAS.push({
         { a: 2017, art: "Steve Lacy", t: "Dark Red", n: "La grabó con un iPhone; años después se hizo viral en TikTok." },
         { a: 2017, art: "Phum Viphurit", t: "Lover Boy", n: "Un tailandés y un éxito viral en Asia." },
         { a: 2017, art: "The Marías", t: "Cariño", n: "Pop suave entre inglés y español." },
+        { a: 2017, art: "Instupendo", t: "Comfort Chain", n: "Bedroom pop instrumental y somnoliento que años después se hizo viral en TikTok." },
         { a: 2018, art: "girl in red", t: "we fell in love in october", n: "Una noruega y un himno del pop queer adolescente." },
         { a: 2018, art: "Dayglow", t: "Can I Call You Tonight?", n: "Grabada en su cuarto de Texas con 18 años." },
         { a: 2018, art: "Men I Trust", t: "Show Me How", n: "Pop suave e independiente desde Quebec." },
@@ -51,9 +52,10 @@ HISTORIAS.push({
     {
       titulo: "Del cuarto a los festivales",
       corto: "Después",
-      periodo: "2016 – 2023",
+      periodo: "2014 – 2023",
       intro: "La industria se fija.",
       items: [
+        { a: 2014, art: "TV Girl", t: "Lovers Rock", n: "TV Girl llevaba años sin hacer ruido hasta que TikTok la convirtió en himno de 2021." },
         { a: 2016, art: "Cuco", t: "Amor de siempre", n: "Una versión casera de un clásico romántico mexicano." },
         { a: 2019, art: "Spotify", t: "La lista «bedroom pop»", tipo: "hito", n: "Spotify crea una lista con ese nombre y la etiqueta se convierte en un género." },
         { a: 2019, art: "Clairo", t: "Bags", n: "Del primer disco de Clairo, «Immunity»." },

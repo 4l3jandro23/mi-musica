@@ -16,6 +16,7 @@ HISTORIAS.push({
         { a: 1941, art: "Sister Rosetta Tharpe & Lucky Millinder", t: "Rock Me", n: "Góspel con guitarra eléctrica en una orquesta de swing." },
         { a: 1944, art: "Sister Rosetta Tharpe", t: "Strange Things Happening Every Day", n: "La madrina del rock and roll: gospel con guitarra eléctrica." },
         { a: 1946, art: "Arthur Crudup", t: "That's All Right", n: "El blues que Elvis grabaría en su primer single." },
+        { a: 1946, art: "Louis Jordan", t: "Choo Choo Ch'Boogie", n: "Jump blues de Louis Jordan: millones de discos y uno de los padres del rock and roll." },
         { a: 1947, art: "Roy Brown", t: "Good Rockin' Tonight", n: "La canción que versionó Elvis en Sun Records." },
         { a: 1947, art: "Sister Rosetta Tharpe", t: "Up Above My Head I Hear Music in the Air", n: "Con Marie Knight: la madrina del rock and roll." },
         { a: 1948, art: "Wynonie Harris", t: "Good Rocking Tonight", n: "«Rock» ya aparece en el título, con sus dobles sentidos." },
