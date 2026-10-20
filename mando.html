@@ -1087,8 +1087,25 @@
   .tr-ct small { font-size: 11.5px; color: var(--fg-mute); font-weight: 600; }
   .tr-c button[data-du] { width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--line-firm); background: transparent; color: var(--fg-mute); display: grid; place-items: center; cursor: pointer; flex: none; }
   .tr-c button[data-du] svg { width: 15px; height: 15px; }
+  /* ---- Portadas ---- */
+  .po-prev { display: grid; place-items: center; margin: 4px 0 10px; }
+  .po-prev canvas { width: min(100%, 320px); aspect-ratio: 1; border-radius: 10px; box-shadow: var(--shadow-sm); }
+  .po-fila { display: flex; gap: 10px; align-items: center; }
+  .po-fila .check { flex: none; }
+  .po-fila .field { flex: 1; min-width: 0; }
+  .po-cols { display: flex; flex-wrap: wrap; gap: 8px; }
+  .po-cols button { width: 32px; height: 32px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
+  .po-cols button.on { border-color: var(--fg); transform: scale(1.08); }
+  .po-objs { display: grid; grid-template-columns: repeat(auto-fill, minmax(58px, 1fr)); gap: 8px; }
+  .po-objs button { padding: 0; border: 2px solid transparent; border-radius: 10px; overflow: hidden; cursor: pointer; background: none; aspect-ratio: 1; }
+  .po-objs button svg { width: 100%; height: 100%; display: block; }
+  .po-objs button.on { border-color: var(--fg); }
+  .po-lista { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+  .po-lista button { display: flex; gap: 12px; align-items: center; text-align: left; border: 0; background: var(--surface-2); border-radius: 12px; padding: 8px; cursor: pointer; color: inherit; }
+  .po-lista img, .po-sin { width: 48px; height: 48px; border-radius: 6px; object-fit: cover; flex: none; background: var(--surface-3, #ddd); }
+  .po-lista b { display: block; font-size: 14px; } .po-lista small { color: var(--fg-mute); font-size: 12px; }
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800&display=swap" rel="stylesheet">
 </head>
 <body>
 <header class="top">
@@ -1138,7 +1155,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-20a';
+const VERSION = '2026-10-20b';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2096,7 +2113,7 @@ const S = {
   selObj: new Set(), buscar: { q: '', tipo: 'track', res: null }, suena: null, soloSel: false, indice: null
 };
 const PREFS = Object.assign({ saltarRepes: true }, leer(K_PREFS, {}));
-const CFG_SYNC = ['criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido', 'distintas', 'likesFuera', 'plEpoca', 'epocaArt', 'edmNo', 'casaUri', 'casaArt', 'casaAlb', 'triaje'];
+const CFG_SYNC = ['criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido', 'distintas', 'likesFuera', 'plEpoca', 'epocaArt', 'edmNo', 'casaUri', 'casaArt', 'casaAlb', 'triaje', 'portadasA'];
 let _cfgSnap = null;
 const guardarPrefs = () => {
   escribir(K_PREFS, PREFS);
@@ -2170,6 +2187,7 @@ $('#bnav').onclick = e => {
   hoja('<h2>Más</h2><div class="opc">' + TABS.filter(t => PRINCIPALES.indexOf(t.id) < 0).map(t => '<button data-t="' + t.id + '">' + ic(t.ic) + '<span>' + t.txt + '</span></button>').join('') +
     '<div class="sec">Herramientas</div><button data-x="ira">' + ic('buscar') + '<span>Ir a…<span class="sub">busca cualquier playlist, disco, artista o herramienta</span></span></button>' +
     '<button data-x="sorpresa">' + ic('varita') + '<span>Ruleta de discos<span class="sub">un disco pendiente al azar</span></span></button>' +
+    '<button data-x="portadas">' + ic('imagen') + '<span>Portadas<span class="sub">un dibujo y un color para cada playlist, todas con el mismo estilo</span></span></button>' +
     '<button data-x="partir">' + ic('unir') + '<span>Partir Me gusta<span class="sub">en playlists de unas 1.000, por artista, para quitar ♥ desde el móvil</span></span></button>' +
     '<button data-x="triaje">' + ic('check') + '<span>¿Qué se queda?<span class="sub">cada canción a Me gusta, Archivo o Pendientes, por artista</span></span></button>' +
     '<button data-x="rulgen">' + ic('aleat') + '<span>Ruleta de géneros<span class="sub">pone en Spotify una de tus casas al azar</span></span></button>' +
@@ -2181,7 +2199,7 @@ $('#bnav').onclick = e => {
       h.querySelector('.opc').onclick = ev => {
         const x = ev.target.closest('[data-t],[data-x]'); if (!x) return;
         cerrarHoja(true);
-        if (x.dataset.t) irATab(x.dataset.t); else if (x.dataset.x === 'cupo') hojaCupo(); else if (x.dataset.x === 'ira') hojaIrA(); else if (x.dataset.x === 'sorpresa') sorprendeme(); else if (x.dataset.x === 'triaje') abrirTriaje(); else if (x.dataset.x === 'partir') partirMeGusta(); else if (x.dataset.x === 'rulgen') misCasasYMoods().then(C => ruletaCasas(C.casas)).catch(e => toast(explicarError(e))); else if (x.dataset.x === 'juego') hojaJuego(); else if (x.dataset.x === 'etq') etiquetarTodo(); else if (x.dataset.x === 'comparar') hojaComparar(); else if (x.dataset.x === 'imagen') hojaCompartir(); else hojaAjustes();
+        if (x.dataset.t) irATab(x.dataset.t); else if (x.dataset.x === 'cupo') hojaCupo(); else if (x.dataset.x === 'ira') hojaIrA(); else if (x.dataset.x === 'sorpresa') sorprendeme(); else if (x.dataset.x === 'triaje') abrirTriaje(); else if (x.dataset.x === 'partir') partirMeGusta(); else if (x.dataset.x === 'portadas') hojaPortadas(); else if (x.dataset.x === 'rulgen') misCasasYMoods().then(C => ruletaCasas(C.casas)).catch(e => toast(explicarError(e))); else if (x.dataset.x === 'juego') hojaJuego(); else if (x.dataset.x === 'etq') etiquetarTodo(); else if (x.dataset.x === 'comparar') hojaComparar(); else if (x.dataset.x === 'imagen') hojaCompartir(); else hojaAjustes();
       };
     });
 };
@@ -3638,6 +3656,214 @@ async function partirMeGusta() {
 }
 
 /* ============================================================
+   PORTADAS (estilo A): un objeto dibujado con luz y sombra sobre un
+   fondo de color, grano de papel y, si se quiere, el nombre abajo en
+   grande. Todas comparten formato. Se dibujan aquí (no gasta Spotify) y
+   se suben con una sola petición por portada.
+   ============================================================ */
+const PORT_PAL = {
+  mostaza: ['Mostaza', '#F7C65A', '#D9921C', '#24242A', '#7A4A08'],
+  naranja: ['Naranja', '#FF7A45', '#D9431C', '#22232A', '#6E1E08'],
+  coral: ['Coral', '#FF8F70', '#E0533C', '#2A0E08', '#7A2414'],
+  rojo: ['Rojo', '#E8564A', '#A8261E', '#FBE9DF', '#4A0E08'],
+  rosa: ['Rosa', '#FF9FBF', '#E0457B', '#3B0F22', '#7A1A40'],
+  morado: ['Morado', '#8E5BE0', '#4B2A9E', '#F3ECFF', '#1E0F4A'],
+  noche: ['Noche', '#2C2A78', '#0B0A2A', '#E9F6FF', '#000000'],
+  azul: ['Azul', '#5B8DEF', '#24489E', '#F2F6FF', '#0E2250'],
+  cielo: ['Cielo', '#BFE6FF', '#6FB6EA', '#0E2A44', '#2E5E86'],
+  turquesa: ['Turquesa', '#3FD1C4', '#0E8C83', '#06302C', '#064A44'],
+  verde: ['Verde', '#7ED69B', '#2F8F5B', '#0C2E1B', '#0C3A22'],
+  crema: ['Crema', '#FBF3E4', '#E6D6B8', '#2A221A', '#8A7350'],
+  gris: ['Gris', '#E3E6EC', '#9AA0AE', '#1E222B', '#5A606E'],
+  negro: ['Negro', '#3A3B42', '#121216', '#F3EBDD', '#000000']
+};
+/* § se cambia por un sufijo único para que varias portadas convivan en la página */
+const PORT_DEFS = '<filter id="gr§" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0 0 0 -0.1"/></filter>' +
+  '<radialGradient id="vg§" cx="50%" cy="45%" r="70%"><stop offset="60%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity="0.28"/></radialGradient>' +
+  '<filter id="so§" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="3"/></filter>' +
+  '<filter id="so2§" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="7"/></filter>' +
+  '<radialGradient id="cone§" cx="40%" cy="38%" r="65%"><stop offset="0" stop-color="#6E6E78"/><stop offset="1" stop-color="#121216"/></radialGradient>' +
+  '<linearGradient id="metal§" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0F1F5"/><stop offset="1" stop-color="#9A9CA6"/></linearGradient>' +
+  '<linearGradient id="chrome§" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8E909A"/><stop offset="0.45" stop-color="#F4F5F8"/><stop offset="1" stop-color="#7A7C86"/></linearGradient>' +
+  '<radialGradient id="dark§" cx="38%" cy="32%" r="75%"><stop offset="0" stop-color="#5A5C66"/><stop offset="1" stop-color="#16171B"/></radialGradient>' +
+  '<radialGradient id="glow§" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#FFFFFF"/><stop offset="0.35" stop-color="#C9F3FF" stop-opacity="0.8"/><stop offset="1" stop-color="#7FD8FF" stop-opacity="0"/></radialGradient>' +
+  '<linearGradient id="tail§" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.95"/><stop offset="1" stop-color="#9FE8FF" stop-opacity="0"/></linearGradient>' +
+  '<linearGradient id="gold§" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE9A8"/><stop offset="0.5" stop-color="#E0AE45"/><stop offset="1" stop-color="#8F6212"/></linearGradient>' +
+  '<linearGradient id="wood§" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C98A4B"/><stop offset="1" stop-color="#7A4522"/></linearGradient>' +
+  '<linearGradient id="woodL§" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F0C68C"/><stop offset="1" stop-color="#B9773A"/></linearGradient>' +
+  '<radialGradient id="red§" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#FF7A7A"/><stop offset="1" stop-color="#A80F1E"/></radialGradient>' +
+  '<linearGradient id="leaf§" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7EDB8A"/><stop offset="1" stop-color="#1E7A45"/></linearGradient>' +
+  '<linearGradient id="cloud§" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#C5D3EA"/></linearGradient>' +
+  '<linearGradient id="fire§" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#E8261C"/><stop offset="0.6" stop-color="#FF7A1F"/><stop offset="1" stop-color="#FFC23A"/></linearGradient>' +
+  '<linearGradient id="fire2§" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FFB238"/><stop offset="1" stop-color="#FFF3B0"/></linearGradient>' +
+  '<radialGradient id="yel§" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#FFF6C2"/><stop offset="1" stop-color="#F4A91F"/></radialGradient>' +
+  '<radialGradient id="moon§" cx="35%" cy="35%" r="75%"><stop offset="0" stop-color="#FFF8DE"/><stop offset="1" stop-color="#D9C27E"/></radialGradient>' +
+  '<radialGradient id="sunb§" cx="50%" cy="58%" r="60%"><stop offset="0" stop-color="#F7C24A"/><stop offset="0.6" stop-color="#C2501E"/><stop offset="1" stop-color="#3A140A"/></radialGradient>' +
+  '<linearGradient id="sea§" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7FE0FF"/><stop offset="1" stop-color="#0E5B8C"/></linearGradient>' +
+  '<linearGradient id="bone§" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBF7EC"/><stop offset="1" stop-color="#CFC6AE"/></linearGradient>' +
+  '<linearGradient id="autumn§" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFC04A"/><stop offset="1" stop-color="#B83A1C"/></linearGradient>' +
+  '<linearGradient id="glass§" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5E7DA8"/><stop offset="1" stop-color="#1C2A44"/></linearGradient>' +
+  '<linearGradient id="cream§" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E4DCCB"/></linearGradient>';
+const somb = (y, rx) => '<ellipse cx="100" cy="' + y + '" rx="' + rx + '" ry="7" fill="SOMBRA" opacity="0.38" filter="url(#so§)"/>';
+const estrellitas = '<g fill="#FFFFFF"><circle cx="34" cy="40" r="1"/><circle cx="162" cy="34" r="1.2"/><circle cx="172" cy="150" r="0.9"/><circle cx="42" cy="158" r="1"/><circle cx="92" cy="26" r="0.8"/><circle cx="22" cy="110" r="0.9"/><circle cx="184" cy="92" r="1"/><circle cx="128" cy="176" r="0.8"/></g>';
+function portDisco() {
+  let s = '<line x1="100" y1="16" x2="100" y2="46" stroke="#9A9CA6" stroke-width="2"/><clipPath id="dc§"><circle cx="100" cy="104" r="56"/></clipPath><g clip-path="url(#dc§)"><rect x="40" y="44" width="120" height="120" fill="#4A4C56"/>';
+  for (let y = 46; y < 164; y += 11) for (let x = 42; x < 162; x += 11) {
+    const d = Math.hypot(x + 5 - 82, y + 5 - 86), v = Math.max(40, 235 - d * 2.6 + ((x * 7 + y * 13) % 37) - 18) | 0;
+    s += '<rect x="' + x + '" y="' + y + '" width="10" height="10" fill="rgb(' + v + ',' + v + ',' + Math.min(255, v + 12) + ')"/>';
+  }
+  return s + '<circle cx="100" cy="104" r="56" fill="url(#vg§)"/></g><circle cx="100" cy="104" r="56" fill="none" stroke="#2A2B30" stroke-width="1.5"/>' +
+    '<g fill="#FFFFFF"><path d="M74 72 l3 9 9 3 -9 3 -3 9 -3 -9 -9 -3 9 -3z"/><path d="M128 120 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2z" opacity="0.8"/><path d="M148 52 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2z" opacity="0.7"/></g>';
+}
+function portConga(cx, top) {
+  return '<path d="M' + (cx - 20) + ' ' + top + ' C' + (cx - 29) + ' ' + (top + 40) + ' ' + (cx - 23) + ' ' + (top + 70) + ' ' + (cx - 16) + ' 160 H' + (cx + 16) + ' C' + (cx + 23) + ' ' + (top + 70) + ' ' + (cx + 29) + ' ' + (top + 40) + ' ' + (cx + 20) + ' ' + top + 'Z" fill="url(#wood§)"/>' +
+    '<path d="M' + (cx - 12) + ' ' + (top + 6) + ' C' + (cx - 18) + ' ' + (top + 40) + ' ' + (cx - 14) + ' ' + (top + 68) + ' ' + (cx - 10) + ' 158" stroke="#F0C68C" stroke-width="3" fill="none" opacity="0.45"/>' +
+    '<ellipse cx="' + cx + '" cy="' + top + '" rx="22" ry="6.5" fill="url(#cream§)" stroke="url(#metal§)" stroke-width="3"/>' +
+    [-14, 0, 14].map(dx => '<rect x="' + (cx + dx - 1.5) + '" y="' + (top + 4) + '" width="3" height="14" rx="1.5" fill="url(#metal§)"/>').join('') +
+    '<rect x="' + (cx - 17) + '" y="154" width="34" height="6" rx="2" fill="#3A2110"/>';
+}
+const PORT_OBJ = [
+  { id: 'radiocasete', n: 'Radiocasete', pal: 'mostaza', re: /\brap\b|hip ?hop|trap|drill|boom ?bap|old ?school|g-?funk/, s: () => somb(160, 66) + '<path d="M62 82 V66 a8 8 0 0 1 8 -8 H130 a8 8 0 0 1 8 8 V82" fill="none" stroke="#24242A" stroke-width="6" stroke-linecap="round"/><rect x="34" y="80" width="132" height="74" rx="10" fill="#24242A"/><rect x="34" y="80" width="132" height="10" rx="5" fill="#33333B"/><circle cx="66" cy="120" r="24" fill="#3A3A44"/><circle cx="66" cy="120" r="19" fill="url(#cone§)"/><circle cx="66" cy="120" r="5" fill="#8C8C96"/><circle cx="134" cy="120" r="24" fill="#3A3A44"/><circle cx="134" cy="120" r="19" fill="url(#cone§)"/><circle cx="134" cy="120" r="5" fill="#8C8C96"/><rect x="88" y="100" width="24" height="16" rx="2" fill="url(#metal§)"/><circle cx="95" cy="108" r="3" fill="#3A3A44"/><circle cx="105" cy="108" r="3" fill="#3A3A44"/><g fill="#E0AE45"><rect x="88" y="124" width="5" height="3" rx="1"/><rect x="95" y="124" width="5" height="3" rx="1"/><rect x="102" y="124" width="5" height="3" rx="1"/></g><rect x="44" y="84" width="22" height="3" rx="1.5" fill="#55555F"/><rect x="134" y="84" width="22" height="3" rx="1.5" fill="#55555F"/>' },
+  { id: 'pesa', n: 'Mancuerna', pal: 'naranja', re: /gym|gimnasio|entren|workout|fitness|nrg|pesas|cardio|correr|running/, s: () => somb(154, 70) + '<g transform="rotate(-14 100 110)"><rect x="56" y="104" width="88" height="10" rx="3" fill="url(#metal§)"/><path d="M84 105 V113 M88 105 V113 M92 105 V113 M96 105 V113 M100 105 V113 M104 105 V113 M108 105 V113 M112 105 V113 M116 105 V113" stroke="#8A8C96" stroke-width="0.8"/><rect x="40" y="80" width="18" height="58" rx="5" fill="#22232A"/><rect x="40" y="80" width="18" height="6" rx="3" fill="#3A3C46"/><rect x="28" y="88" width="14" height="42" rx="4" fill="#2C2D35"/><rect x="142" y="80" width="18" height="58" rx="5" fill="#22232A"/><rect x="142" y="80" width="18" height="6" rx="3" fill="#3A3C46"/><rect x="158" y="88" width="14" height="42" rx="4" fill="#2C2D35"/><rect x="58" y="100" width="6" height="18" rx="1.5" fill="#C9CBD3"/><rect x="136" y="100" width="6" height="18" rx="1.5" fill="#C9CBD3"/></g>' },
+  { id: 'estrella', n: 'Estrella fugaz', pal: 'noche', re: /goosebump|escalofr|piel de gallina|epic|épic|emoci|sueñ|dream/, s: () => estrellitas + '<path d="M54 156 L132 70" stroke="url(#tail§)" stroke-width="7" stroke-linecap="round" filter="url(#so§)"/><path d="M58 152 L132 70" stroke="url(#tail§)" stroke-width="2.2" stroke-linecap="round"/><circle cx="134" cy="68" r="26" fill="url(#glow§)"/><circle cx="134" cy="68" r="4.5" fill="#FFFFFF"/>' },
+  { id: 'guitarra', n: 'Guitarra eléctrica', pal: 'crema', re: /rock|grunge|punk|indie|garage|britpop|alternativ|blues|shoegaze/, s: () => somb(170, 46) + '<g transform="rotate(-18 100 110)"><rect x="96" y="26" width="8" height="86" rx="2" fill="url(#woodL§)"/><path d="M96 40 H104 M96 50 H104 M96 60 H104 M96 70 H104 M96 80 H104 M96 90 H104 M96 100 H104" stroke="#E8DCC4" stroke-width="0.8"/><path d="M94 12 H106 L108 30 H92Z" fill="url(#wood§)"/><g fill="url(#metal§)"><circle cx="90" cy="16" r="2.5"/><circle cx="90" cy="24" r="2.5"/><circle cx="110" cy="16" r="2.5"/><circle cx="110" cy="24" r="2.5"/></g><path d="M70 112 C58 96 76 88 88 100 C94 92 108 92 112 100 C124 86 146 96 132 114 C150 128 146 160 120 166 C104 170 92 170 80 166 C54 160 52 128 70 112Z" fill="url(#sunb§)"/><path d="M84 116 C80 106 92 104 98 110 L110 110 C118 104 128 110 124 122 C122 136 112 150 98 150 C86 150 80 134 84 116Z" fill="#F3EBDD"/><g fill="#2A2A2E"><rect x="91" y="116" width="18" height="4" rx="1"/><rect x="91" y="127" width="18" height="4" rx="1"/><rect x="91" y="138" width="18" height="4" rx="1"/></g><rect x="92" y="150" width="16" height="4" rx="1" fill="url(#metal§)"/><circle cx="118" cy="146" r="3" fill="#F3EBDD" stroke="#9A9CA6"/><circle cx="125" cy="138" r="3" fill="#F3EBDD" stroke="#9A9CA6"/><path d="M98 20 V152 M100 20 V152 M102 20 V152" stroke="#F4F5F8" stroke-width="0.4"/></g>' },
+  { id: 'palmera', n: 'Palmera', pal: 'turquesa', re: /tropic|verano|summer|playa|beach|caribe|reggae|dancehall|surf/, s: () => '<ellipse cx="100" cy="162" rx="46" ry="9" fill="#F3D28B"/><ellipse cx="100" cy="160" rx="34" ry="5" fill="#FBE3AE"/><path d="M104 160 C102 130 96 104 100 76" stroke="url(#woodL§)" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M98 150 l8 -2 M97 138 l8 -2 M96 126 l8 -2 M96 114 l8 -2 M97 102 l7 -2 M98 90 l6 -2" stroke="#8A5228" stroke-width="1.2"/><g fill="url(#leaf§)"><path d="M100 76 C80 58 52 60 34 76 C56 68 78 72 100 82Z"/><path d="M100 76 C120 56 150 58 166 74 C144 66 122 72 100 82Z"/><path d="M100 76 C92 52 70 40 52 42 C72 52 88 64 98 82Z"/><path d="M100 76 C110 50 132 38 150 40 C130 52 114 64 102 82Z"/><path d="M100 78 C86 70 66 86 60 106 C72 92 86 84 100 84Z"/><path d="M100 78 C114 70 134 86 140 106 C128 92 114 84 100 84Z"/></g><circle cx="95" cy="84" r="6" fill="#6B3E1F"/><circle cx="106" cy="86" r="6" fill="#5A3318"/><circle cx="93" cy="82" r="1.8" fill="#A86B3C"/>' },
+  { id: 'lluvia', n: 'Nube con lluvia', pal: 'azul', re: /trist|sad|llorar|lluvia|melancol|bajón|desamor|rain/, s: () => '<g fill="url(#cloud§)"><circle cx="76" cy="90" r="22"/><circle cx="104" cy="76" r="28"/><circle cx="132" cy="92" r="20"/><rect x="56" y="88" width="94" height="26" rx="13"/></g><path d="M58 108 C70 116 132 116 148 106 V112 a2 2 0 0 1 -2 2 H60 a2 2 0 0 1 -2 -2Z" fill="#AEBEDA"/><g fill="#9FD3FF">' + [[78, 128], [100, 140], [122, 126], [88, 158], [114, 160]].map(([x, y]) => '<path transform="translate(' + x + ' ' + y + ')" d="M0 0 C0 0 -5 8 -5 11 a5 5 0 0 0 10 0 C5 8 0 0 0 0Z"/>').join('') + '</g>' },
+  { id: 'auriculares', n: 'Auriculares', pal: 'verde', re: /chill|lo-?fi|relax|estudi|concentr|focus|tranquil/, s: () => somb(160, 52) + '<path d="M52 120 C52 62 148 62 148 120" stroke="url(#dark§)" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M58 112 C60 72 140 72 142 112" stroke="#5A5C66" stroke-width="2" fill="none" opacity="0.7"/><rect x="36" y="106" width="28" height="48" rx="13" fill="url(#dark§)"/><rect x="136" y="106" width="28" height="48" rx="13" fill="url(#dark§)"/><rect x="58" y="110" width="12" height="40" rx="6" fill="#3A3C46"/><rect x="130" y="110" width="12" height="40" rx="6" fill="#3A3C46"/><rect x="42" y="112" width="4" height="22" rx="2" fill="#8C8E98" opacity="0.6"/><rect x="142" y="112" width="4" height="22" rx="2" fill="#8C8E98" opacity="0.6"/>' },
+  { id: 'microfono', n: 'Micrófono', pal: 'rosa', re: /\bpop\b|cantar|karaoke|voces|divas|girl|whitegirl/, s: () => '<ellipse cx="100" cy="160" rx="32" ry="7" fill="url(#dark§)"/><rect x="97" y="120" width="6" height="40" fill="url(#metal§)"/><path d="M66 86 C66 132 134 132 134 86" stroke="url(#metal§)" stroke-width="5" fill="none"/><clipPath id="mc§"><rect x="76" y="34" width="48" height="82" rx="24"/></clipPath><rect x="76" y="34" width="48" height="82" rx="24" fill="url(#chrome§)"/><g clip-path="url(#mc§)" stroke="#6E7078" stroke-width="1.4">' + [40, 46, 52, 58, 64, 70, 88, 94, 100, 106, 112].map(y => '<path d="M70 ' + y + ' H130"/>').join('') + '</g><rect x="76" y="74" width="48" height="9" fill="#2A2B30"/><rect x="82" y="40" width="5" height="28" rx="2.5" fill="#FFFFFF" opacity="0.5"/>' },
+  { id: 'corazon', n: 'Corazón', pal: 'rosa', re: /amor|love|romant|enamor|crush|bolero/, s: () => somb(164, 44) + '<path d="M100 158 C40 116 30 84 48 64 C66 44 92 52 100 72 C108 52 134 44 152 64 C170 84 160 116 100 158Z" fill="url(#red§)"/><ellipse cx="70" cy="76" rx="11" ry="6" transform="rotate(-35 70 76)" fill="#FFFFFF" opacity="0.38"/>' },
+  { id: 'discoteca', n: 'Bola de discoteca', pal: 'morado', re: /house|techno|disco|electr|edm|dance|club|rave|trance|boiler/, s: () => portDisco() },
+  { id: 'trompeta', n: 'Trompeta', pal: 'noche', re: /jazz|swing|soul|funk|motown|big band|bossa/, s: () => somb(150, 60) + '<g transform="rotate(-10 100 104)"><rect x="40" y="98" width="92" height="8" rx="4" fill="url(#gold§)"/><path d="M60 106 H122 a10 10 0 0 1 0 20 H60" stroke="url(#gold§)" stroke-width="7" fill="none"/><g fill="url(#gold§)"><rect x="74" y="78" width="10" height="30" rx="3"/><rect x="88" y="78" width="10" height="30" rx="3"/><rect x="102" y="78" width="10" height="30" rx="3"/></g><g fill="#FFE9A8"><ellipse cx="79" cy="77" rx="6" ry="2.5"/><ellipse cx="93" cy="77" rx="6" ry="2.5"/><ellipse cx="107" cy="77" rx="6" ry="2.5"/></g><path d="M128 94 L168 74 C173 92 173 120 168 136 L128 116Z" fill="url(#gold§)"/><ellipse cx="168" cy="105" rx="5" ry="31" fill="#FFE9A8"/><ellipse cx="168" cy="105" rx="2.5" ry="24" fill="#8F6212" opacity="0.5"/><rect x="28" y="99" width="14" height="6" rx="3" fill="url(#chrome§)"/></g>' },
+  { id: 'congas', n: 'Congas', pal: 'coral', re: /salsa|latin|cumbia|bachata|merengue|son |tropical latino|caribe|timba/, s: () => somb(162, 54) + portConga(76, 62) + portConga(124, 78) },
+  { id: 'coche', n: 'Coche', pal: 'cielo', re: /coche|carretera|drive|road|viaje|car\b|ruta/, s: () => somb(156, 70) + '<path d="M30 132 C30 118 42 114 56 112 L72 92 C76 87 82 85 90 85 H124 C132 85 138 88 142 94 L154 112 C166 114 172 120 172 132 V140 H30Z" fill="url(#cream§)"/><path d="M76 110 L86 94 C88 91 90 90 94 90 H106 V110Z" fill="url(#glass§)"/><path d="M112 110 V90 H122 C128 90 132 92 134 96 L142 110Z" fill="url(#glass§)"/><rect x="28" y="130" width="146" height="6" rx="3" fill="url(#chrome§)"/><path d="M40 122 H60 M140 122 H162" stroke="#E0533C" stroke-width="3" stroke-linecap="round"/><circle cx="166" cy="122" r="4" fill="#FFE29A"/><g><circle cx="64" cy="140" r="15" fill="url(#dark§)"/><circle cx="64" cy="140" r="6" fill="url(#chrome§)"/><circle cx="140" cy="140" r="15" fill="url(#dark§)"/><circle cx="140" cy="140" r="6" fill="url(#chrome§)"/></g>' },
+  { id: 'luna', n: 'Luna', pal: 'noche', re: /noche|night|dormir|sleep|luna|madrugada|insomn/, s: () => estrellitas + '<mask id="lm§"><rect width="200" height="200" fill="#fff"/><circle cx="124" cy="84" r="46" fill="#000"/></mask><circle cx="100" cy="102" r="52" fill="#FFF3C4" opacity="0.25" filter="url(#so2§)" mask="url(#lm§)"/><g mask="url(#lm§)"><circle cx="100" cy="102" r="50" fill="url(#moon§)"/><circle cx="74" cy="118" r="6" fill="#C9B26E" opacity="0.5"/><circle cx="86" cy="140" r="4" fill="#C9B26E" opacity="0.5"/><circle cx="64" cy="96" r="3.5" fill="#C9B26E" opacity="0.5"/></g>' },
+  { id: 'sol', n: 'Sol', pal: 'cielo', re: /alegr|happy|feliz|buen rollo|mañan|sol\b|good vibes|positiv/, s: () => '<g fill="#FFD25A">' + Array.from({ length: 12 }, (_, i) => '<rect x="96" y="30" width="8" height="18" rx="4" transform="rotate(' + i * 30 + ' 100 102)"/>').join('') + '</g><circle cx="100" cy="102" r="48" fill="#FFE07A" opacity="0.35" filter="url(#so2§)"/><circle cx="100" cy="102" r="40" fill="url(#yel§)"/><ellipse cx="86" cy="86" rx="12" ry="7" transform="rotate(-30 86 86)" fill="#FFFFFF" opacity="0.4"/>' },
+  { id: 'cafe', n: 'Café', pal: 'coral', re: /caf[eé]|coffee|desayun|trabaj|oficina|domingo/, s: () => '<ellipse cx="100" cy="152" rx="56" ry="12" fill="url(#cream§)"/><ellipse cx="100" cy="150" rx="40" ry="7" fill="#D9CFBC"/><path d="M140 104 C164 100 164 132 136 130" stroke="url(#cream§)" stroke-width="8" fill="none"/><path d="M58 94 H142 C142 128 126 148 100 148 C74 148 58 128 58 94Z" fill="url(#cream§)"/><ellipse cx="100" cy="94" rx="42" ry="8" fill="#6B3E1F"/><ellipse cx="92" cy="93" rx="14" ry="2.5" fill="#A86B3C" opacity="0.6"/><g stroke="#FFFFFF" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.65"><path d="M84 80 C78 70 90 64 84 54"/><path d="M100 78 C94 66 106 60 100 46"/><path d="M116 80 C110 70 122 64 116 54"/></g>' },
+  { id: 'espanola', n: 'Guitarra española', pal: 'rojo', re: /flamenco|rumba|copla|andal|sevillan|españ/, s: () => somb(170, 44) + '<g transform="rotate(18 100 110)"><rect x="96" y="22" width="8" height="70" fill="#3A2110"/><path d="M96 36 H104 M96 46 H104 M96 56 H104 M96 66 H104 M96 76 H104" stroke="#C9B27E" stroke-width="0.8"/><rect x="93" y="8" width="14" height="18" rx="2" fill="#3A2110"/><g fill="url(#metal§)"><circle cx="90" cy="12" r="2"/><circle cx="90" cy="20" r="2"/><circle cx="110" cy="12" r="2"/><circle cx="110" cy="20" r="2"/></g><path d="M100 84 C122 84 128 96 120 106 C140 112 144 160 100 166 C56 160 60 112 80 106 C72 96 78 84 100 84Z" fill="url(#woodL§)"/><circle cx="100" cy="112" r="10" fill="#2A170C"/><circle cx="100" cy="112" r="13" fill="none" stroke="#8A5228" stroke-width="2"/><rect x="87" y="140" width="26" height="5" rx="2" fill="#3A2110"/><path d="M98 16 V142 M100 16 V142 M102 16 V142" stroke="#F4F5F8" stroke-width="0.4"/></g>' },
+  { id: 'metronomo', n: 'Metrónomo', pal: 'crema', re: /cl[aá]sic|piano|ópera|opera|orquest|barroc|sinfon|bandas? sonoras?|cine/, s: () => somb(164, 40) + '<path d="M72 160 L88 40 H112 L128 160Z" fill="url(#wood§)"/><path d="M84 150 L95 54 H105 L116 150Z" fill="#F3E6CF"/><path d="M90 140 H110 M91 128 H109 M92 116 H108 M93 104 H107 M94 92 H106 M95 80 H105" stroke="#B9773A" stroke-width="0.8"/><path d="M100 146 L116 56" stroke="url(#metal§)" stroke-width="3" stroke-linecap="round"/><rect x="106" y="80" width="10" height="8" rx="1.5" transform="rotate(10 111 84)" fill="url(#gold§)"/><rect x="66" y="156" width="68" height="8" rx="2" fill="#5A3318"/>' },
+  { id: 'casete', n: 'Casete', pal: 'rosa', re: /80s|ochenta|retro|synth|cassette|casete|90s|noventa|infancia|nostalg/, s: () => somb(160, 66) + '<rect x="34" y="64" width="132" height="88" rx="8" fill="url(#dark§)"/><rect x="44" y="72" width="112" height="46" rx="4" fill="#F3EBDD"/><rect x="44" y="72" width="112" height="10" rx="4" fill="#E4572E"/><rect x="44" y="80" width="112" height="3" fill="#F7B32B"/><rect x="66" y="92" width="68" height="20" rx="10" fill="#1A1A1E"/><g fill="#F3EBDD"><circle cx="80" cy="102" r="7"/><circle cx="120" cy="102" r="7"/></g><g fill="#1A1A1E"><circle cx="80" cy="102" r="2.5"/><circle cx="120" cy="102" r="2.5"/></g><path d="M58 152 L64 132 H136 L142 152Z" fill="#2E2F36"/><g fill="#16171B"><circle cx="78" cy="144" r="3"/><circle cx="122" cy="144" r="3"/></g>' },
+  { id: 'calavera', n: 'Calavera', pal: 'negro', re: /metal|aaa|hardcore|scream|gritos|terror|halloween|scaring|phonk/, s: () => somb(160, 40) + '<path d="M100 40 C64 40 46 66 48 96 C49 112 56 120 62 126 V144 C62 150 66 154 72 154 H128 C134 154 138 150 138 144 V126 C144 120 151 112 152 96 C154 66 136 40 100 40Z" fill="url(#bone§)"/><ellipse cx="80" cy="98" rx="14" ry="16" fill="#1A1A1E"/><ellipse cx="120" cy="98" rx="14" ry="16" fill="#1A1A1E"/><path d="M100 112 L93 126 H107Z" fill="#1A1A1E"/><path d="M82 140 V154 M91 140 V154 M100 140 V154 M109 140 V154 M118 140 V154" stroke="#8C8370" stroke-width="2"/><path d="M70 138 H130" stroke="#8C8370" stroke-width="2"/><ellipse cx="76" cy="62" rx="10" ry="6" transform="rotate(-30 76 62)" fill="#FFFFFF" opacity="0.45"/>' },
+  { id: 'rayo', n: 'Rayo', pal: 'morado', re: /hardstyle|energ|power|gabber|nrg|hype|fuerte|subid/, s: () => '<path d="M112 28 L62 112 H96 L84 172 L142 82 H106 L120 28Z" fill="#FFE07A" opacity="0.55" filter="url(#so2§)"/><path d="M112 28 L62 112 H96 L84 172 L142 82 H106 L120 28Z" fill="url(#yel§)"/><path d="M112 34 L72 106" stroke="#FFFFFF" stroke-width="3" opacity="0.5" stroke-linecap="round"/>' },
+  { id: 'ola', n: 'Ola', pal: 'cielo', re: /ola|mar\b|ocean|surf|costa|agua|sea/, s: () => '<path d="M24 152 C36 100 78 60 130 62 C162 64 178 88 170 110 C164 124 146 124 140 112 C134 100 142 90 154 94 C150 80 132 76 118 84 C92 98 84 134 94 152Z" fill="url(#sea§)"/><path d="M130 62 C162 64 178 88 170 110 C164 124 146 124 140 112" stroke="#FFFFFF" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.85"/><g fill="#FFFFFF" opacity="0.9"><circle cx="144" cy="118" r="3"/><circle cx="152" cy="122" r="2.5"/><circle cx="162" cy="118" r="2"/></g><path d="M16 152 C50 144 90 160 130 150 S180 148 188 152 V160 H16Z" fill="#0E5B8C"/>' },
+  { id: 'copo', n: 'Copo de nieve', pal: 'azul', re: /invierno|winter|navidad|christmas|nieve|frío|frio/, s: () => { const brazo = '<path d="M100 104 V40 M100 60 L88 50 M100 60 L112 50 M100 78 L86 68 M100 78 L114 68"/>'; const g = Array.from({ length: 6 }, (_, i) => '<g transform="rotate(' + i * 60 + ' 100 104)">' + brazo + '</g>').join(''); return '<g stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.25" filter="url(#so§)">' + g + '</g><g stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" fill="none">' + g + '</g><circle cx="100" cy="104" r="7" fill="#FFFFFF"/>'; } },
+  { id: 'hoja', n: 'Hoja de otoño', pal: 'crema', re: /otoño|otono|autumn|fall\b|septiembre|octubre/, s: () => somb(166, 30) + '<path d="M100 34 C142 58 152 112 104 160 C54 116 60 62 100 34Z" fill="url(#autumn§)"/><path d="M100 40 C104 80 104 120 104 168" stroke="#8C2A12" stroke-width="2.5" fill="none"/><path d="M102 70 L124 58 M103 92 L132 80 M104 114 L130 104 M102 82 L80 70 M103 104 L74 94 M104 126 L80 120" stroke="#8C2A12" stroke-width="1.5" fill="none" opacity="0.8"/>' },
+  { id: 'vinilo', n: 'Vinilo', pal: 'mostaza', re: /.*/, s: () => somb(168, 56) + '<circle cx="100" cy="104" r="62" fill="#141416"/>' + [56, 50, 44, 38, 32].map(r => '<circle cx="100" cy="104" r="' + r + '" fill="none" stroke="#2C2C32" stroke-width="0.8"/>').join('') + '<path d="M58 70 A54 54 0 0 1 120 52" stroke="#FFFFFF" stroke-width="6" fill="none" opacity="0.12" stroke-linecap="round"/><circle cx="100" cy="104" r="20" fill="#E4572E"/><circle cx="100" cy="104" r="20" fill="none" stroke="#F7B32B" stroke-width="3"/><circle cx="100" cy="104" r="3" fill="#141416"/>' },
+  { id: 'fuego', n: 'Fuego', pal: 'negro', re: /fiesta|party|perreo|reggaet|dembow|caliente|hot|fuego|baile/, s: () => '<path d="M100 30 C110 60 140 76 140 112 C140 140 122 162 100 162 C78 162 60 140 60 112 C60 88 76 78 82 58 C90 72 92 84 96 90 C100 70 96 52 100 30Z" fill="#FF7A1F" opacity="0.45" filter="url(#so2§)"/><path d="M100 30 C110 60 140 76 140 112 C140 140 122 162 100 162 C78 162 60 140 60 112 C60 88 76 78 82 58 C90 72 92 84 96 90 C100 70 96 52 100 30Z" fill="url(#fire§)"/><path d="M100 86 C106 104 122 112 122 132 C122 148 112 160 100 160 C88 160 78 148 78 132 C78 118 88 112 92 100 C96 108 98 112 100 114 C102 104 100 96 100 86Z" fill="url(#fire2§)"/>' },
+  { id: 'rosa', n: 'Rosa', pal: 'crema', re: /rosa|flor|primavera|spring|boda|san valent/, s: () => somb(168, 26) + '<path d="M100 104 C98 130 102 150 100 168" stroke="#2F7A40" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M100 140 C84 130 70 134 64 144 C78 146 90 146 100 140Z" fill="url(#leaf§)"/><path d="M101 128 C116 116 132 120 138 130 C124 134 112 134 101 128Z" fill="url(#leaf§)"/><circle cx="100" cy="80" r="30" fill="url(#red§)"/><path d="M76 70 C82 52 118 50 124 70 C116 62 84 62 76 70Z" fill="#7A0A16" opacity="0.6"/><path d="M84 84 C86 66 114 64 116 82 C112 72 90 72 84 84Z" fill="#FF8A8A" opacity="0.55"/><path d="M92 82 C96 70 108 72 106 84 C102 78 96 78 92 82Z" fill="#7A0A16" opacity="0.6"/><path d="M72 88 C72 104 88 112 100 112 C112 112 128 104 128 88 C120 104 80 104 72 88Z" fill="#8F0F1C"/>' }
+];
+const portObj = id => PORT_OBJ.find(o => o.id === id) || PORT_OBJ[PORT_OBJ.length - 1];
+function portSugerir(nombre) {
+  const f = fold(nombre || '');
+  const o = PORT_OBJ.find(x => x.id !== 'vinilo' && x.re.test(f)) || portObj('vinilo');
+  return { obj: o.id, pal: o.pal, texto: nombre || '', conTexto: true };
+}
+let _portN = 0;
+/* el SVG de la portada; el texto va aparte (en el canvas) para poder usar la letra de la web */
+function portSVG(st, px, simple) {
+  const o = portObj(st.obj), p = PORT_PAL[st.pal] || PORT_PAL.mostaza, suf = '_' + (++_portN);
+  const tr = st.conTexto && (st.texto || '').trim() ? 'translate(100 88) scale(0.9) translate(-100 -104)' : 'translate(100 100) scale(1.06) translate(-100 -102)';
+  const cuerpo = o.s().split('SOMBRA').join(p[4]);
+  return ('<svg xmlns="http://www.w3.org/2000/svg" width="' + px + '" height="' + px + '" viewBox="0 0 200 200"><defs>' + PORT_DEFS +
+    '<radialGradient id="bg§" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="' + p[1] + '"/><stop offset="1" stop-color="' + p[2] + '"/></radialGradient></defs>' +
+    '<rect width="200" height="200" fill="url(#bg§)"/><g transform="' + tr + '">' + cuerpo + '</g>' +
+    (simple ? '' : '<rect width="200" height="200" fill="url(#vg§)"/><rect width="200" height="200" filter="url(#gr§)"/>') + '</svg>').split('§').join(suf);
+}
+async function portCanvas(st, px) {
+  const img = new Image();
+  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(portSVG(st, px));
+  await img.decode();
+  const c = document.createElement('canvas'); c.width = c.height = px;
+  const x = c.getContext('2d');
+  x.drawImage(img, 0, 0, px, px);
+  const t = (st.texto || '').trim();
+  if (st.conTexto && t) {
+    try { await document.fonts.load('800 ' + Math.round(px * 0.12) + 'px Unbounded'); } catch (e) {}
+    const p = PORT_PAL[st.pal] || PORT_PAL.mostaza, max = px * 0.82, x0 = px * 0.09, base = px * 0.885;
+    x.fillStyle = p[3]; x.textBaseline = 'alphabetic';
+    const ancho = (s, tam) => { x.font = '800 ' + tam + 'px Unbounded, "Bricolage Grotesque", sans-serif'; return x.measureText(s).width; };
+    let tam = px * 0.12;
+    while (tam > px * 0.085 && ancho(t, tam) > max) tam -= px * 0.004;
+    let lineas = [t];
+    if (ancho(t, tam) > max) {
+      /* en dos líneas, partiendo por el espacio más centrado */
+      const pal = t.split(' '); let mejor = null;
+      for (let i = 1; i < pal.length; i++) { const a = pal.slice(0, i).join(' '), b = pal.slice(i).join(' '), m = Math.max(a.length, b.length); if (!mejor || m < mejor[2]) mejor = [a, b, m]; }
+      lineas = mejor ? [mejor[0], mejor[1]] : [t];
+      tam = px * 0.105;
+      while (tam > px * 0.045 && Math.max(...lineas.map(l => ancho(l, tam))) > max) tam -= px * 0.003;
+    }
+    ancho('', tam);
+    lineas.forEach((l, i) => x.fillText(l, x0, base - (lineas.length - 1 - i) * tam * 1.08, max));
+  }
+  return c;
+}
+async function portJpeg(st) {
+  for (const px of [640, 512]) {
+    const c = await portCanvas(st, px);
+    for (let q = 0.92; q >= 0.6; q -= 0.08) { const b64 = c.toDataURL('image/jpeg', q).split(',')[1]; if (b64.length <= 250000) return b64; }
+  }
+  throw new Error('La portada ha salido demasiado grande');
+}
+const portGuardadas = () => PREFS.portadasA || (PREFS.portadasA = {});
+async function hojaCrearPortada(p) {
+  const st = Object.assign(portSugerir(p.name), portGuardadas()[p.id] || {});
+  hoja('<h2>Portada de «' + esc(p.name) + '»</h2>' +
+    '<div class="po-prev"><canvas id="poC" width="640" height="640"></canvas></div>' +
+    '<div class="po-fila"><label class="check"><input type="checkbox" id="poTx"' + (st.conTexto ? ' checked' : '') + '> Con nombre</label><input class="field" id="poNom" maxlength="40" value="' + esc(st.texto) + '"></div>' +
+    '<label class="lbl">Color</label><div class="po-cols">' + Object.keys(PORT_PAL).map(k => '<button data-pal="' + k + '" title="' + PORT_PAL[k][0] + '" style="background:radial-gradient(circle at 50% 40%,' + PORT_PAL[k][1] + ',' + PORT_PAL[k][2] + ')"></button>').join('') + '</div>' +
+    '<label class="lbl">Dibujo</label><div class="po-objs" id="poObjs"></div>' +
+    '<div class="btnrow" style="margin-top:12px"><button class="btn" id="poBaja">' + ic('abajo') + 'Descargar</button><button class="btn pri" id="poSube" style="flex:1">' + ic('subir') + 'Poner en Spotify</button></div>', h => {
+      const C = h.querySelector('#poC');
+      let pinta = 0;
+      const repintar = async () => {
+        const n = ++pinta; const c = await portCanvas(st, 640); if (n !== pinta) return;
+        C.getContext('2d').clearRect(0, 0, 640, 640); C.getContext('2d').drawImage(c, 0, 0);
+        h.querySelectorAll('[data-pal]').forEach(b => b.classList.toggle('on', b.dataset.pal === st.pal));
+        h.querySelectorAll('[data-obj]').forEach(b => b.classList.toggle('on', b.dataset.obj === st.obj));
+      };
+      const objs = () => { h.querySelector('#poObjs').innerHTML = PORT_OBJ.map(o => '<button data-obj="' + o.id + '" title="' + esc(o.n) + '">' + portSVG({ obj: o.id, pal: st.pal, conTexto: false }, 64, true) + '</button>').join(''); };
+      objs(); repintar();
+      h.querySelector('.po-cols').onclick = e => { const b = e.target.closest('[data-pal]'); if (!b) return; st.pal = b.dataset.pal; objs(); repintar(); };
+      h.querySelector('#poObjs').onclick = e => { const b = e.target.closest('[data-obj]'); if (!b) return; st.obj = b.dataset.obj; if (!portGuardadas()[p.id] && !st._palTocada) st.pal = portObj(st.obj).pal; objs(); repintar(); };
+      h.querySelector('.po-cols').addEventListener('click', () => { st._palTocada = true; });
+      h.querySelector('#poTx').onchange = e => { st.conTexto = e.target.checked; repintar(); };
+      h.querySelector('#poNom').oninput = e => { st.texto = e.target.value; repintar(); };
+      const guardar = () => { portGuardadas()[p.id] = { obj: st.obj, pal: st.pal, texto: st.texto, conTexto: st.conTexto }; guardarPrefs(); };
+      h.querySelector('#poBaja').onclick = async () => {
+        guardar();
+        const b64 = await portJpeg(st), a = document.createElement('a');
+        a.href = 'data:image/jpeg;base64,' + b64; a.download = 'portada-' + fold(p.name).replace(/[^a-z0-9]+/g, '-') + '.jpg'; a.click();
+      };
+      h.querySelector('#poSube').onclick = async () => {
+        guardar(); cerrarHoja();
+        await trabajo(async () => {
+          const b64 = await portJpeg(st);
+          await sp('/playlists/' + p.id + '/images', { method: 'PUT', raw: true, tipo: 'image/jpeg', body: b64 });
+          p.imgG = p.img = 'data:image/jpeg;base64,' + b64; S.playlists = null;
+          toast('Portada puesta en «' + p.name + '» (Spotify tarda unos segundos en enseñarla)');
+          render();
+        }, 'Poniendo la portada');
+      };
+    });
+}
+/* lista de tus playlists para elegir a cuál hacerle portada */
+async function hojaPortadas() {
+  const pls = await trabajo(() => cargarPlaylists(), 'Cargando tus playlists');
+  if (!pls) return;
+  const mias = pls.filter(esMia), G = portGuardadas();
+  hoja('<h2>Portadas</h2><p class="soft">Elige una playlist: le propongo un dibujo y un color según su nombre, y lo cambias si quieres. Todas siguen el mismo estilo.</p>' +
+    '<input class="field" id="poQ" placeholder="Buscar playlist"><div class="po-lista" id="poL"></div>', h => {
+      const pintar = q => {
+        const w = fold(q || '').trim();
+        h.querySelector('#poL').innerHTML = mias.filter(p => !w || fold(p.name).indexOf(w) >= 0).map(p => '<button data-id="' + p.id + '">' + (p.img ? '<img src="' + esc(p.img) + '" alt="">' : '<span class="po-sin"></span>') + '<span><b>' + esc(p.name) + '</b><small>' + (G[p.id] ? 'Portada hecha: ' + esc(portObj(G[p.id].obj).n.toLowerCase()) : p.total + ' canciones') + '</small></span></button>').join('');
+      };
+      pintar('');
+      h.querySelector('#poQ').oninput = e => pintar(e.target.value);
+      h.querySelector('#poL').onclick = e => { const b = e.target.closest('[data-id]'); if (!b) return; const p = mias.find(x => x.id === b.dataset.id); if (p) hojaCrearPortada(p); };
+    });
+}
+
+/* ============================================================
    IR A… (Ctrl+K o desde «Más»): una caja para saltar a cualquier
    playlist, disco, artista, pestaña o herramienta escribiendo
    ============================================================ */
@@ -3647,6 +3873,7 @@ function hojaIrA() {
     ['Toda mi música', 'buscar', () => abrirTodaMiMusica()],
     ['¿Qué se queda? Me gusta, Archivo o Pendientes', 'check', () => abrirTriaje()],
     ['Partir Me gusta en playlists de 1.000 (para quitar ♥ desde el móvil)', 'unir', () => partirMeGusta()],
+    ['Portadas: crear la portada de una playlist', 'imagen', () => hojaPortadas()],
     ['Ruleta de géneros: que decida el azar', 'aleat', () => misCasasYMoods().then(C => ruletaCasas(C.casas)).catch(e => toast(explicarError(e)))],
     ['Viaje por el rock: de los 50 a hoy', 'reloj', () => { irATab('casas'); let n = 0; const t = setInterval(() => { const b = $('#tmRock'); if (b) { clearInterval(t); b.click(); } else if (++n > 40) clearInterval(t); }, 250); }],
     ['Jugar: ¿qué género es?', 'nota', () => hojaJuego('genero')],
@@ -8575,6 +8802,7 @@ function hojaFuente(f) {
     sec('Editar', [
       ed ? b('datos', 'lapiz', 'Nombre, descripción y privacidad') : '',
       ed && f.id !== plDiscosId() ? b('criterio', 'filtro', 'Qué va en ella', (PREFS.criterios || {})[f.id] ? '«' + esc(PREFS.criterios[f.id]) + '»' : 'una frase que la defina') : '',
+      ed ? b('crearPortada', 'varita', 'Crear portada', 'un dibujo y un color, con el estilo de las demás') : '',
       ed ? b('portada', 'imagen', 'Cambiar la portada', 'desde una foto') : '',
       ed ? b('ordenar', 'ordenar', 'Ordenar', 'título, artista, año, duración, repartir artistas…') : '',
       ed ? b('aleatorio', 'aleat', 'Aleatorio', 'baraja el orden de verdad') : '',
@@ -8615,7 +8843,7 @@ function hojaFuente(f) {
       h.querySelector('.opc').onclick = async e => {
         const x = e.target.closest('[data-o]'); if (!x) return;
         const o = x.dataset.o;
-        if (!f.pistas && ['datos', 'criterio', 'portada', 'portadaCD', 'borrar', 'dejar', 'guardarDisco'].indexOf(o) < 0) { toast('Espera a que termine de cargar'); return; }
+        if (!f.pistas && ['datos', 'criterio', 'portada', 'crearPortada', 'borrar', 'dejar', 'guardarDisco'].indexOf(o) < 0) { toast('Espera a que termine de cargar'); return; }
         cerrarHoja();
         const ps = f.pistas, uris = () => Array.from(new Set(ps.filter(p => !p.local).map(p => p.uri)));
         const artUris = () => Array.from(new Set([].concat.apply([], ps.map(p => p.artists.map(a => a.uri))).filter(Boolean)));
@@ -8627,6 +8855,7 @@ function hojaFuente(f) {
         else if (o === 'datos') hojaDatos(f);
         else if (o === 'criterio') hojaCriterios();
         else if (o === 'portada') elegirPortada(f);
+        else if (o === 'crearPortada') hojaCrearPortada(f.meta);
         else if (o === 'ordenar') hojaOrdenar(f);
         else if (o === 'aleatorio') aplicarOrden(barajar(ps.slice()), '«' + f.name + '» barajada');
         else if (o === 'repes') quitarRepetidas(f);
