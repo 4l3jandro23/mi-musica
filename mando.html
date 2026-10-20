@@ -1111,7 +1111,6 @@
 <div class="progreso" id="progreso" hidden></div>
 
 <script src="taxonomia.js"></script>
-<script src="cd.js"></script>
 <script>
 'use strict';
 /* ============================================================
@@ -1139,7 +1138,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-19a';
+const VERSION = '2026-10-20a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2149,7 +2148,6 @@ const TABS = [
   { id: 'escuchas', txt: 'Estadísticas', ic: 'grafica' },
   { id: 'historia', txt: 'Tu historia', ic: 'reloj' },
   { id: 'historias', txt: 'Historias de la música', ic: 'libro', url: 'historias.html' },
-  { id: 'portadas', txt: 'Portadas', ic: 'imagen' },
   { id: 'cambios', txt: 'Cambios', ic: 'deshacer' }
 ];
 /* En el movil: cuatro pestañas principales abajo y «Más» con el resto */
@@ -2218,7 +2216,8 @@ function render() {
   setTimeout(() => tintar(m), 0);
   if (!conectado()) { m.innerHTML = htmlSinConexion(); pintarAccion(); return; }
   if (S.vista) return S.vista.pintar(m);
-  const f = { playlists: vPlaylists, inicio: vInicio, casas: vCasas, likes: vLikes, misdiscos: vMisDiscos, discos: vDiscos, artistas: vArtistas, mis: vMis, buscar: vBuscar, escuchas: vEscuchas, historia: vHistoria, portadas: vPortadas, cambios: vCambios }[S.tab];
+  if (S.tab === 'portadas') S.tab = 'inicio';
+  const f = { playlists: vPlaylists, inicio: vInicio, casas: vCasas, likes: vLikes, misdiscos: vMisDiscos, discos: vDiscos, artistas: vArtistas, mis: vMis, buscar: vBuscar, escuchas: vEscuchas, historia: vHistoria, cambios: vCambios }[S.tab];
   f(m);
 }
 function htmlSinConexion() {
@@ -3090,7 +3089,6 @@ async function vInicio(m) {
   const at = [
     ['likes', 'corazon', 'Me gusta', likesN ? likesN.toLocaleString('es-ES') + ' canciones' : '', 'linear-gradient(135deg,#4a2fd0,#b8a7ff)'],
     ['misdiscos', 'disco', 'Mis discos', pend != null ? pend + ' pendientes' : 'tu lista de discos', 'linear-gradient(135deg,#c47a0a,#f4b13e)'],
-    ['portadas', 'imagen', 'Portadas', 'tus playlists como CD', 'linear-gradient(135deg,#128a64,#4fd1a1)'],
     ['casas', 'nota', 'Tu música', 'géneros, moods y ruleta', 'linear-gradient(135deg,#b03f30,#ffb03a)'],
     ['escuchas', 'grafica', 'Estadísticas', 'lo que más escuchas', 'linear-gradient(135deg,#d4568a,#ff9ec4)'],
     ['mis', 'estrella', 'Mis artistas', MIS ? MIS.artistas.length.toLocaleString('es-ES') + ' artistas' : 'tu lista', 'linear-gradient(135deg,#5a4a3a,#a08a70)'],
@@ -3663,7 +3661,6 @@ function hojaIrA() {
     ['Ideas de playlists', 'varita', () => abrirIdeas()],
     ['Etiquetar mis Me gusta (año y género de cada canción)', 'etiqueta', () => etiquetarTodo()],
     ['Qué va en cada playlist', 'lapiz', () => hojaCriterios()],
-    ['Portadas de CD', 'disco', () => irATab('portadas')],
     ['Imagen para compartir', 'imagen', () => hojaCompartir()],
     ['Nueva playlist', 'plus', () => hojaNuevaPlaylist()],
     ['Tu cupo de Spotify', 'grafica', () => hojaCupo()],
@@ -4173,241 +4170,8 @@ function aplicarAcento() {
 try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', aplicarAcento); } catch (e) {}
 
 
-/* ============================================================
-   PORTADAS DE CD (antes era otra web, portadas.html)
-   Cada playlist tuya puede tener su portada de CD: el disco suelto
-   con la cinta y el nombre a rotulador. Se guarda el diseño (no la
-   imagen) en `portadas_coleccion_v2`, la misma clave que usaba la
-   web antigua, así que todo lo que ya tenías sigue aquí. Dibujar no
-   gasta nada; solo «Poner en Spotify» hace una petición por portada.
-   ============================================================ */
-const K_COL = 'portadas_coleccion_v2';
-const PCD = { col: null, fotos: new Map(), cache: new Map(), cola: [], t: null, js: null };
-function colPortadas() {
-  if (!PCD.col) {
-    PCD.col = leer(K_COL, null) || { grupos: [{ id: 'mias', n: 'Mis playlists', cinta: 'orig', cintaOtro: '#7a4dd8' }], items: [] };
-    if (!PCD.col.grupos || !PCD.col.grupos.length) PCD.col.grupos = [{ id: 'mias', n: 'Mis playlists', cinta: 'orig' }];
-    PCD.col.items = PCD.col.items || [];
-  }
-  return PCD.col;
-}
-const guardarColP = () => { escribir(K_COL, PCD.col); if (ETQ) { (ETQ.cfg || (ETQ.cfg = {})).portadas = { v: PCD.col, ts: Date.now() }; const v = leer('fonoteca_cfg_ts_v1', {}); v.portadas = ETQ.cfg.portadas.ts; escribir('fonoteca_cfg_ts_v1', v); etqCambio(); } };
-const FORMATOS_CD = [
-  { id: 'negro', n: 'Fondo negro', encuadre: 'suelto', fondoSuelto: 'negro' },
-  { id: 'blanco', n: 'Fondo blanco', encuadre: 'suelto', fondoSuelto: 'blanco' },
-  { id: 'color', n: 'Del color del disco', encuadre: 'suelto', fondoSuelto: 'color' },
-  { id: 'caja', n: 'En su caja', encuadre: 'caja', fondoSuelto: 'negro' }
-];
-const TIPOS_CD = [['cd', 'CD'], ['oro', 'Oro'], ['metal', 'Metal'], ['vinilo', 'Vinilo'], ['puntos', 'Relieve'], ['pesas', 'Pesas'], ['foto', 'Tu foto']];
+/* nombre de playlist normalizado para comparar */
 const normP = t => fold(t || '').replace(/[^a-z0-9 ]/g, ' ').replace(/ +/g, ' ').trim();
-/* el diseño de una playlist: por su id de Spotify o, la primera vez, por el nombre */
-function itemDe(p, crear) {
-  const col = colPortadas();
-  let it = col.items.find(x => x.spotifyId === p.id);
-  if (!it) {
-    const n = normP(p.name);
-    it = col.items.find(x => !x.spotifyId && normP(x.texto) === n) || col.items.find(x => !x.spotifyId && n && (n.indexOf(normP(x.texto)) === 0 || normP(x.texto).indexOf(n) === 0));
-    if (it) { it.spotifyId = p.id; guardarColP(); }
-  }
-  if (!it && crear) {
-    const usados = new Set(col.items.map(x => x.disco));
-    const libres = CD.DISCOS.filter(d => d.id !== 'orig' && !usados.has(d.id));
-    let h = 0; for (const ch of p.id) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
-    const pool = libres.length ? libres : CD.DISCOS.filter(d => d.id !== 'orig');
-    it = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), texto: p.name, grupo: col.grupos[0].id, disco: pool[h % pool.length].id, discoOtro: '#ff7a00', spotifyId: p.id };
-    col.items.push(it); guardarColP();
-  }
-  return it;
-}
-/* diseño propuesto para una playlist que aún no tiene (no se guarda hasta que la tocas) */
-function itemVirtual(p) {
-  const col = colPortadas(), usados = new Set(col.items.map(x => x.disco));
-  const libres = CD.DISCOS.filter(d => d.id !== 'orig' && !usados.has(d.id)), pool = libres.length ? libres : CD.DISCOS.filter(d => d.id !== 'orig');
-  let h = 0; for (const ch of p.id) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
-  return { id: '_v' + p.id, texto: p.name, grupo: col.grupos[0].id, disco: pool[h % pool.length].id, virtual: true };
-}
-function ajustesCD(it) {
-  const col = colPortadas(), g = col.grupos.find(x => x.id === it.grupo) || col.grupos[0], f = FORMATOS_CD.find(x => x.id === col.formato) || FORMATOS_CD[0];
-  const foto = it.foto && PCD.fotos.get(it.id);
-  return Object.assign(CD.completo({}, it.texto), {
-    texto: it.texto || '', mayus: true, disco: it.disco || 'orig', discoOtro: it.discoOtro || '#ff7a00',
-    cinta: it.cinta || g.cinta || 'orig', cintaOtro: (it.cinta ? it.cintaOtro : g.cintaOtro) || '#7a4dd8',
-    encuadre: f.encuadre, fondoSuelto: f.fondoSuelto, sinCinta: !!col.sinCinta,
-    acabado: it.acabado === 'foto' && !foto ? 'cd' : (it.acabado || 'cd'), borde: it.borde || '', grande: it.grande || '', grandePos: 'izq', estilo: 'relieve'
-  }, foto ? { acabado: 'foto', fotoImg: foto, fotoVer: it.foto, fotoZoom: it.fotoZoom || 1, fotoX: it.fotoX || 0, fotoY: it.fotoY || 0 } : {});
-}
-const claveCD = st => JSON.stringify(Object.assign({}, st, { fotoImg: undefined }));
-async function cdListo() {
-  await CD.preparar();
-  if (!PCD._fotos) {
-    PCD._fotos = true;
-    for (const it of colPortadas().items) if (it.foto) { try { const u = localStorage.getItem('portadas_foto_item_' + it.id); if (u) PCD.fotos.set(it.id, await cargarImg(u)); } catch (e) {} }
-  }
-}
-/* miniaturas: de una en una para no congelar la pantalla, y guardadas por diseño */
-function pintarMiniCD(canvas, st) {
-  const k = claveCD(st), h = PCD.cache.get(k);
-  if (h) { canvas.getContext('2d').drawImage(h, 0, 0, canvas.width, canvas.height); canvas.classList.add('listo'); return; }
-  PCD.cola.push({ canvas, st, k });
-  if (!PCD.t) PCD.t = setTimeout(vaciarColaCD, 0);
-}
-function vaciarColaCD() {
-  PCD.t = null;
-  const t = PCD.cola.shift(); if (!t) return;
-  if (t.canvas.isConnected) {
-    const g = lienzoCD(); CD.dibujar(g.getContext('2d'), t.st);
-    const c = document.createElement('canvas'); c.width = c.height = 320; c.getContext('2d').drawImage(g, 0, 0, 320, 320);
-    PCD.cache.set(t.k, c);
-    t.canvas.getContext('2d').drawImage(c, 0, 0, t.canvas.width, t.canvas.height); t.canvas.classList.add('listo');
-  }
-  if (PCD.cola.length) PCD.t = setTimeout(vaciarColaCD, 0);
-}
-function lienzoCD() { if (!PCD.lz) { PCD.lz = document.createElement('canvas'); PCD.lz.width = PCD.lz.height = CD.W; } return PCD.lz; }
-const cambiadaCD = (it, p) => !it.virtual && it.subida !== claveCD(ajustesCD(it));
-
-async function vPortadas(m) {
-  m.innerHTML = '<div class="spin"></div>';
-  let pls;
-  try { [pls] = await Promise.all([cargarPlaylists(), cdListo()]); } catch (e) { return fallo(m, e); }
-  if (S.tab !== 'portadas' || S.vista) return;
-  const mias = pls.filter(esMia), col = colPortadas();
-  const items = mias.map(p => ({ p, it: itemDe(p) || itemVirtual(p) }));
-  const pend = items.filter(x => cambiadaCD(x.it, x.p));
-  m.innerHTML = '<div class="pcd-cab"><div><h1>Portadas de CD</h1><p class="soft">Toca una playlist para cambiar el color del disco, la cinta o el nombre. Dibujarlas no gasta nada de Spotify.</p></div></div>' +
-    (items.length ? '<div class="btnrow" style="margin-bottom:10px"><button class="btn sm pri" id="pcdGal">' + ic('imagen') + 'Ver todas juntas</button><button class="btn sm" id="pcdPal">' + ic('varita') + 'Colores para todas</button></div>' : '') +
-    '<div class="chips" id="pcdF" style="margin-bottom:12px">' + FORMATOS_CD.map(f => '<button class="chip' + ((col.formato || 'negro') === f.id ? ' on' : '') + '" data-f="' + f.id + '">' + f.n + '</button>').join('') + '</div>' +
-    (items.length ? '<div class="pcd-grid" id="pcdG">' + items.map((x, i) => '<button class="pcd" data-i="' + i + '"><canvas width="320" height="320"></canvas><span class="t1 nowrap">' + esc(x.p.name) + '</span><span class="t2">' + (x.it.virtual ? 'Sin portada de CD' : cambiadaCD(x.it, x.p) ? '<b>Sin poner en Spotify</b>' : '✓ En Spotify') + '</span></button>').join('') + '</div>'
-      : '<div class="vacio">No tienes playlists tuyas todavía.</div>') +
-    (pend.length ? '<div class="pcd-barra"><span>' + pend.length + (pend.length === 1 ? ' portada cambiada' : ' portadas cambiadas') + '</span><button class="btn pri" id="pcdTodas">' + ic('subir') + 'Poner en Spotify</button></div>' : '');
-  m.querySelectorAll('#pcdG canvas').forEach((c, i) => pintarMiniCD(c, ajustesCD(items[i].it)));
-  m.querySelector('#pcdF').onclick = e => { const c = e.target.closest('[data-f]'); if (!c) return; col.formato = c.dataset.f; guardarColP(); render(); };
-  const g = m.querySelector('#pcdG'); if (g) g.onclick = e => { const b = e.target.closest('[data-i]'); if (b) hojaPortadaCD(items[+b.dataset.i].p); };
-  const bt = m.querySelector('#pcdTodas'); if (bt) bt.onclick = () => subirVariasCD(pend.map(x => x.p));
-  const bg = m.querySelector('#pcdGal'); if (bg) bg.onclick = () => galeriaCD(items);
-  const bp = m.querySelector('#pcdPal'); if (bp) bp.onclick = () => hojaPaletaCD(mias);
-}
-async function subirPortadaCD(p, it) {
-  const st = ajustesCD(it), g = lienzoCD();
-  CD.dibujar(g.getContext('2d'), st);
-  const b64 = CD.jpegDe(g);
-  await sp('/playlists/' + p.id + '/images', { method: 'PUT', raw: true, tipo: 'image/jpeg', body: b64 });
-  it.subida = claveCD(st); guardarColP();
-  p.imgG = p.img = 'data:image/jpeg;base64,' + b64;
-}
-async function subirVariasCD(ps) {
-  if (!(await confirmar('¿Poner ' + ps.length + (ps.length === 1 ? ' portada' : ' portadas') + ' en Spotify?', 'Ponerlas', 'Es una petición por portada; se hacen con calma, una detrás de otra.'))) return;
-  await trabajo(async () => {
-    for (let i = 0; i < ps.length; i++) { progreso('Poniendo portadas', i, ps.length); await subirPortadaCD(ps[i], itemDe(ps[i], true)); }
-    toast(ps.length === 1 ? 'Portada puesta (Spotify tarda unos segundos en enseñarla)' : ps.length + ' portadas puestas');
-  }, 'Poniendo portadas');
-  render();
-}
-async function hojaPortadaCD(p) {
-  try { await cdListo(); } catch (e) { toast('No se ha podido cargar el dibujo del CD'); return; }
-  const it0 = itemDe(p) || itemVirtual(p);
-  let it = it0.virtual ? Object.assign({}, it0) : it0;
-  const asegurar = () => { if (it.virtual) { const real = itemDe(p, true); Object.assign(real, it, { id: real.id, virtual: undefined, spotifyId: p.id }); delete real.virtual; it = real; } guardarColP(); };
-  const sw = (lista, sel, k) => lista.map(c => '<button class="sw' + (sel === c.id ? ' on' : '') + '" data-' + k + '="' + c.id + '" title="' + esc(c.n) + '" style="background:' + (c.vista || c.c) + '"></button>').join('');
-  const g = colPortadas().grupos[0];
-  const pintaHoja = h => {
-    const cintaSel = it.cinta || g.cinta || 'orig', tipo = it.foto && PCD.fotos.get(it.id) ? 'foto' : (it.acabado || 'cd');
-    h.querySelector('#pcdCtl').innerHTML =
-      '<label class="lbl">Nombre en la cinta</label><input class="field" id="pcdT" value="' + esc(it.texto || '') + '" maxlength="40" autocomplete="off">' +
-      '<label class="lbl">Disco</label><div class="sws">' + sw(CD.DISCOS, it.disco, 'd') + '</div>' +
-      '<label class="lbl">Tipo</label><div class="chips">' + TIPOS_CD.map(([k, n]) => '<button class="chip' + (tipo === k ? ' on' : '') + '" data-tp="' + k + '">' + n + '</button>').join('') + '</div>' +
-      (tipo === 'foto' ? '<div class="pcd-foto"><label class="lbl">Tamaño de la foto</label><input type="range" id="pcdZ" min="1" max="3" step="0.05" value="' + (it.fotoZoom || 1) + '"><label class="lbl">Mover</label><input type="range" id="pcdX" min="-0.5" max="0.5" step="0.01" value="' + (it.fotoX || 0) + '"><input type="range" id="pcdY" min="-0.5" max="0.5" step="0.01" value="' + (it.fotoY || 0) + '"><button class="btn sm" id="pcdOtraF">Cambiar la foto</button></div>' : '') +
-      '<label class="lbl">Cinta</label><div class="sws">' + sw(CD.CINTAS, cintaSel, 'c') + '</div>';
-  };
-  let raf = 0;
-  const repintar = h => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { const c = h.querySelector('#pcdV'); CD.dibujar(c.getContext('2d'), ajustesCD(it)); }); };
-  const elegirFoto = h => {
-    const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*';
-    inp.onchange = async () => {
-      const f = inp.files[0]; if (!f) return;
-      try {
-        const img = await cargarImg(URL.createObjectURL(f)); if (!img) throw new Error('foto');
-        const k = Math.min(1, 900 / Math.max(img.width, img.height)), c = document.createElement('canvas');
-        c.width = Math.round(img.width * k); c.height = Math.round(img.height * k); c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-        const url = c.toDataURL('image/jpeg', 0.85);
-        asegurar();
-        localStorage.setItem('portadas_foto_item_' + it.id, url);
-        PCD.fotos.set(it.id, await cargarImg(url));
-        it.foto = Date.now(); it.acabado = 'foto'; it.fotoZoom = 1; it.fotoX = 0; it.fotoY = 0; guardarColP();
-        pintaHoja(h); repintar(h);
-      } catch (e) { toast('No se ha podido guardar la foto (¿demasiado grande?)'); }
-    };
-    inp.click();
-  };
-  hoja('<h2 class="nowrap" style="margin-bottom:8px">' + esc(p.name) + '</h2><div class="pcd-vista"><canvas id="pcdV" width="' + CD.W + '" height="' + CD.W + '"></canvas>' + (p.imgG ? '<div class="pcd-antes"><img src="' + esc(p.imgG) + '" alt=""><small>Ahora</small></div>' : '') + '</div>' +
-    '<div id="pcdCtl"></div>' +
-    '<div class="btnrow" style="margin-top:14px"><button class="btn" id="pcdBaj">' + ic('bajar') + 'Guardar imagen</button><button class="btn pri" id="pcdSub" style="flex:1">' + ic('subir') + 'Poner en Spotify</button></div>', h => {
-      pintaHoja(h); repintar(h);
-      h.addEventListener('input', e => {
-        const t = e.target;
-        if (t.id === 'pcdT') { asegurar(); it.texto = t.value; guardarColP(); repintar(h); }
-        else if (t.id === 'pcdZ' || t.id === 'pcdX' || t.id === 'pcdY') { it[{ pcdZ: 'fotoZoom', pcdX: 'fotoX', pcdY: 'fotoY' }[t.id]] = +t.value; guardarColP(); repintar(h); }
-      });
-      h.addEventListener('click', e => {
-        const d = e.target.closest('[data-d]'), c = e.target.closest('[data-c]'), tp = e.target.closest('[data-tp]');
-        if (d) { asegurar(); it.disco = d.dataset.d; }
-        else if (c) { asegurar(); it.cinta = c.dataset.c; }
-        else if (tp) {
-          if (tp.dataset.tp === 'foto') { if (it.foto && PCD.fotos.get(it.id)) { asegurar(); it.acabado = 'foto'; } else return elegirFoto(h); }
-          else { asegurar(); it.acabado = tp.dataset.tp; if (it.foto) { it.foto = 0; PCD.fotos.delete(it.id); try { localStorage.removeItem('portadas_foto_item_' + it.id); } catch (er) {} } }
-        }
-        else if (e.target.closest('#pcdOtraF')) return elegirFoto(h);
-        else if (e.target.closest('#pcdBaj')) { const v = h.querySelector('#pcdV'); CD.dibujar(v.getContext('2d'), ajustesCD(it)); v.toBlob(b => b && descargar(slugP(p.name) + '.png', b, 'image/png'), 'image/png'); return; }
-        else if (e.target.closest('#pcdSub')) {
-          asegurar();
-          const b = h.querySelector('#pcdSub'); b.disabled = true; b.textContent = 'Poniendo…';
-          subirPortadaCD(p, it).then(() => { toast('¡Puesta! Spotify tarda unos segundos en enseñarla'); cerrarHoja(); })
-            .catch(er => { apuntarFallo(er, 'portada'); toast(explicarError(er), null, 7000); b.disabled = false; b.innerHTML = ic('subir') + 'Poner en Spotify'; });
-          return;
-        }
-        else return;
-        guardarColP(); pintaHoja(h); repintar(h);
-      });
-    }, () => { if (S.tab === 'portadas' && !S.vista) { const y = scrollY; render(); setTimeout(() => scrollTo(0, y), 60); } });
-}
-/* todas juntas sobre negro, como se verán en tu biblioteca de Spotify */
-function galeriaCD(items) {
-  const el = document.createElement('div'); el.id = 'galcd';
-  el.innerHTML = '<div class="gal-top"><b>Tus portadas</b><button class="rb" aria-label="Cerrar">' + ic('abajoV') + '</button></div><div class="gal-grid">' +
-    items.map(x => '<div class="gal-it"><canvas width="320" height="320"></canvas><span class="nowrap">' + esc(x.p.name) + '</span></div>').join('') + '</div>' +
-    '<div class="gal-lista"><div class="tiny" style="opacity:.6;margin-bottom:8px">Así se ven en la lista de Spotify</div>' + items.map(x => '<div class="gal-fila"><canvas width="96" height="96"></canvas><div><b class="nowrap">' + esc(x.p.name) + '</b><small>Playlist · ' + (x.p.total || 0) + ' canciones</small></div></div>').join('') + '</div>';
-  document.body.append(el);
-  el.querySelectorAll('.gal-grid canvas').forEach((c, i) => pintarMiniCD(c, ajustesCD(items[i].it)));
-  el.querySelectorAll('.gal-fila canvas').forEach((c, i) => pintarMiniCD(c, ajustesCD(items[i].it)));
-  const cerrar = () => el.remove();
-  el.querySelector('.rb').onclick = cerrar;
-  addEventListener('keydown', function esc0(e) { if (e.key === 'Escape') { cerrar(); removeEventListener('keydown', esc0); } });
-}
-const PALETAS_CD = [
-  { n: 'Joyas', t: ['#23345c', '#1f6f6a', '#7e1a2b', '#5b2a6e', '#2f6b3a', '#b0761c', '#1e4f8f', '#8a2f4f'] },
-  { n: 'Pastel', t: ['#a7c7e7', '#f4b6c2', '#c3b1e1', '#b8e0c8', '#f7d6a0', '#9fd3d0', '#e6c3a5', '#d4d9e8'] },
-  { n: 'Tierra', t: ['#8c5a3c', '#6f7a3a', '#7e1a2b', '#a88b5a', '#4d5b4a', '#b5602a', '#5a4636', '#c69c6d'] },
-  { n: 'Arcoíris', t: null },
-  { n: 'Todas plata', t: ['plata'] },
-  { n: 'Todas grafito', t: ['negro'] }
-];
-function hojaPaletaCD(mias) {
-  hoja('<h2>Colores para todas</h2><p class="soft">Cambia el color del disco de todas tus portadas a la vez para que combinen. Los discos de oro, pesas, foto y el dorado original no se tocan. Luego puedes retocar cualquiera.</p>' +
-    '<div class="opc" id="palL">' + PALETAS_CD.map((p, i) => { const tonos = p.t ? p.t.map(c => c.charAt(0) === '#' ? c : (CD.DISCOS.find(d => d.id === c) || {}).c) : [0, 1, 2, 3, 4, 5].map(k => CD.hsl(210 + k * 50, 48, 42)); return '<button data-i="' + i + '"><span class="pal-mu">' + tonos.slice(0, 8).map(c => '<i style="background:' + c + '"></i>').join('') + '</span><span>' + p.n + '</span></button>'; }).join('') + '</div>', h => {
-      h.querySelector('#palL').onclick = e => {
-        const b = e.target.closest('[data-i]'); if (!b) return;
-        const pal = PALETAS_CD[+b.dataset.i];
-        const its = mias.map(p => itemDe(p, true)).filter(it => !['oro', 'pesas', 'foto'].includes(it.acabado) && !it.foto && it.disco !== 'orig');
-        its.forEach((it, i) => {
-          if (pal.t && pal.t[0].charAt(0) !== '#') { it.disco = pal.t[0]; return; }
-          it.disco = 'otro'; it.discoOtro = pal.t ? pal.t[i % pal.t.length] : CD.hsl(210 + (i / Math.max(1, its.length)) * 300, 48, 42);
-        });
-        guardarColP(); cerrarHoja(true); render();
-        toast('Colores «' + pal.n + '» puestos en ' + its.length + ' portadas. Si te gustan, «Poner en Spotify».');
-      };
-    });
-}
-const slugP = t => (fold(t || 'portada').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'portada');
-
 
 /* ============================================================
    TU BANDEJA — la forma de no volver a fracasar ordenando
@@ -8811,7 +8575,6 @@ function hojaFuente(f) {
     sec('Editar', [
       ed ? b('datos', 'lapiz', 'Nombre, descripción y privacidad') : '',
       ed && f.id !== plDiscosId() ? b('criterio', 'filtro', 'Qué va en ella', (PREFS.criterios || {})[f.id] ? '«' + esc(PREFS.criterios[f.id]) + '»' : 'una frase que la defina') : '',
-      ed ? b('portadaCD', 'disco', 'Portada de CD', 'el disco con su cinta y el nombre a rotulador') : '',
       ed ? b('portada', 'imagen', 'Cambiar la portada', 'desde una foto') : '',
       ed ? b('ordenar', 'ordenar', 'Ordenar', 'título, artista, año, duración, repartir artistas…') : '',
       ed ? b('aleatorio', 'aleat', 'Aleatorio', 'baraja el orden de verdad') : '',
@@ -8864,7 +8627,6 @@ function hojaFuente(f) {
         else if (o === 'datos') hojaDatos(f);
         else if (o === 'criterio') hojaCriterios();
         else if (o === 'portada') elegirPortada(f);
-        else if (o === 'portadaCD') hojaPortadaCD(f.meta);
         else if (o === 'ordenar') hojaOrdenar(f);
         else if (o === 'aleatorio') aplicarOrden(barajar(ps.slice()), '«' + f.name + '» barajada');
         else if (o === 'repes') quitarRepetidas(f);
