@@ -1100,6 +1100,11 @@
   .po-objs button { padding: 0; border: 2px solid transparent; border-radius: 10px; overflow: hidden; cursor: pointer; background: none; aspect-ratio: 1; }
   .po-objs button svg { width: 100%; height: 100%; display: block; }
   .po-objs button.on { border-color: var(--fg); }
+  .po-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
+  .po-grid button { display: flex; flex-direction: column; gap: 4px; text-align: left; border: 0; background: none; padding: 0; cursor: pointer; color: inherit; }
+  .po-grid img, .po-grid .po-sin { display: block; width: 100%; height: auto; aspect-ratio: 1; border-radius: 10px; object-fit: cover; box-shadow: var(--shadow-sm); transition: transform .15s; }
+  .po-grid button:hover img { transform: translateY(-2px); }
+  .po-grid b { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .po-grid small { color: var(--fg-mute); font-size: 12px; }
   .po-lista { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
   .po-lista button { display: flex; gap: 12px; align-items: center; text-align: left; border: 0; background: var(--surface-2); border-radius: 12px; padding: 8px; cursor: pointer; color: inherit; }
   .po-lista img, .po-sin { width: 48px; height: 48px; border-radius: 6px; object-fit: cover; flex: none; background: var(--surface-3, #ddd); }
@@ -1155,7 +1160,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-20b';
+const VERSION = '2026-10-20c';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2165,6 +2170,7 @@ const TABS = [
   { id: 'escuchas', txt: 'Estadísticas', ic: 'grafica' },
   { id: 'historia', txt: 'Tu historia', ic: 'reloj' },
   { id: 'historias', txt: 'Historias de la música', ic: 'libro', url: 'historias.html' },
+  { id: 'portadas', txt: 'Portadas', ic: 'imagen' },
   { id: 'cambios', txt: 'Cambios', ic: 'deshacer' }
 ];
 /* En el movil: cuatro pestañas principales abajo y «Más» con el resto */
@@ -2234,8 +2240,7 @@ function render() {
   setTimeout(() => tintar(m), 0);
   if (!conectado()) { m.innerHTML = htmlSinConexion(); pintarAccion(); return; }
   if (S.vista) return S.vista.pintar(m);
-  if (S.tab === 'portadas') S.tab = 'inicio';
-  const f = { playlists: vPlaylists, inicio: vInicio, casas: vCasas, likes: vLikes, misdiscos: vMisDiscos, discos: vDiscos, artistas: vArtistas, mis: vMis, buscar: vBuscar, escuchas: vEscuchas, historia: vHistoria, cambios: vCambios }[S.tab];
+  const f = { playlists: vPlaylists, inicio: vInicio, casas: vCasas, likes: vLikes, misdiscos: vMisDiscos, discos: vDiscos, artistas: vArtistas, mis: vMis, buscar: vBuscar, escuchas: vEscuchas, historia: vHistoria, portadas: vPortadas, cambios: vCambios }[S.tab];
   f(m);
 }
 function htmlSinConexion() {
@@ -3845,6 +3850,22 @@ async function hojaCrearPortada(p) {
         }, 'Poniendo la portada');
       };
     });
+}
+/* pestaña Portadas: tus playlists en rejilla; al tocar una, su portada */
+async function vPortadas(m) {
+  m.innerHTML = '<h1>Portadas</h1><p class="soft">Toca una playlist: te propongo un dibujo y un color según su nombre, lo cambias si quieres y la pones en Spotify. Todas siguen el mismo estilo.</p><div class="spin"></div>';
+  let pls; try { pls = await cargarPlaylists(); } catch (e) { m.querySelector('.spin').outerHTML = '<p class="soft">' + esc(explicarError(e)) + '</p>'; return; }
+  if (S.tab !== 'portadas' || S.vista) return;
+  const mias = pls.filter(esMia), G = portGuardadas();
+  m.innerHTML = '<h1>Portadas</h1><p class="soft">Toca una playlist: te propongo un dibujo y un color según su nombre, lo cambias si quieres y la pones en Spotify. Todas siguen el mismo estilo.</p>' +
+    '<input class="field" id="poQ" placeholder="Buscar playlist" style="max-width:360px;margin:6px 0 14px"><div class="po-grid" id="poG"></div>';
+  const pintar = q => {
+    const w = fold(q || '').trim();
+    m.querySelector('#poG').innerHTML = mias.filter(p => !w || fold(p.name).indexOf(w) >= 0).map(p => '<button data-id="' + p.id + '">' + (p.imgG || p.img ? '<img src="' + esc(p.imgG || p.img) + '" alt="" loading="lazy">' : '<span class="po-sin"></span>') + '<b>' + esc(p.name) + '</b><small>' + (G[p.id] ? 'Hecha: ' + esc(portObj(G[p.id].obj).n.toLowerCase()) : p.total + ' canciones') + '</small></button>').join('') || '<p class="soft">No hay playlists tuyas con ese nombre.</p>';
+  };
+  pintar('');
+  m.querySelector('#poQ').oninput = e => pintar(e.target.value);
+  m.querySelector('#poG').onclick = e => { const b = e.target.closest('[data-id]'); if (!b) return; const p = mias.find(x => x.id === b.dataset.id); if (p) hojaCrearPortada(p); };
 }
 /* lista de tus playlists para elegir a cuál hacerle portada */
 async function hojaPortadas() {
