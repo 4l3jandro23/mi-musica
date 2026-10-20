@@ -1166,7 +1166,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-20i';
+const VERSION = '2026-10-20j';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -1659,6 +1659,7 @@ async function cacheLeer(k) {
   return new Promise(ok => { try { const r = db.transaction('kv').objectStore('kv').get(k); r.onsuccess = () => ok(r.result || null); r.onerror = () => ok(null); } catch (e) { ok(null); } });
 }
 async function cachePoner(k, v) {
+  if (k === 'likes' && v && Array.isArray(v.pistas) && v.pistas.length) historialAnotar(v.pistas);
   const db = await idb(); if (!db) return;
   return new Promise(ok => { try { const t = db.transaction('kv', 'readwrite'); t.objectStore('kv').put(v, k); t.oncomplete = () => ok(); t.onerror = () => ok(); } catch (e) { ok(); } });
 }
@@ -3426,6 +3427,49 @@ async function pintarQuePongo(vivo) {
 /* Tu música de siempre: Me gusta + la copia de antes de vaciarlo.
    Para juegos, historia y recuerdos (nunca para cambiar Me gusta). */
 let _siempre = null;
+/* HISTORIAL DE ME GUSTA: todo lo que alguna vez ha estado en Me gusta, aunque luego le quites el ♥.
+   Se apunta cada vez que la Fonoteca lee tus Me gusta; nunca se borra. Si hay GitHub, se copia allí
+   (como mucho cada 6 h) para no perderlo aunque se borre el navegador. */
+const K_HIST_LK = 'likesHistorial';
+let _histTimer = null, _histPend = [];
+function historialAnotar(pistas) { _histPend = _histPend.concat(pistas); clearTimeout(_histTimer); _histTimer = setTimeout(() => historialGuardar().catch(() => {}), 1500); }
+async function historialGuardar() {
+  const nuevas = _histPend; _histPend = [];
+  if (!nuevas.length) return;
+  const h = (await cacheLeer(K_HIST_LK)) || { at: 0, pistas: [] };
+  const ya = new Set(h.pistas.map(p => p.uri)); let n = 0;
+  for (const p of nuevas) if (p && p.uri && !p.local && !ya.has(p.uri)) { ya.add(p.uri); const o = Object.assign({}, p); delete o.k; delete o.veces; h.pistas.push(o); n++; }
+  if (!n) return;
+  h.at = Date.now(); _siempreH = null;
+  const db = await idb(); if (db) await new Promise(ok => { try { const t = db.transaction('kv', 'readwrite'); t.objectStore('kv').put(h, K_HIST_LK); t.oncomplete = ok; t.onerror = ok; } catch (e) { ok(); } });
+  historialSubir(h).catch(e => apuntarFallo(e, 'historial Me gusta'));
+}
+async function historialSubir(h) {
+  if (!ghCfg() || Date.now() - (+leer('fonoteca_hist_gh', 0)) < 6 * 3600e3) return;
+  const l = h.pistas.map(p => [p.uri, p.added || 0, p.title || '', (p.artists || []).map(a => a.name).join(', '), p.album || '', p.year || '']);
+  const r = await ghLeer('historial-me-gusta.json');
+  const res = await ghFetch(r.api, { method: 'PUT', body: JSON.stringify({ message: 'historial de Me gusta: ' + l.length, content: b64enc(JSON.stringify({ at: h.at, l })), branch: 'main', sha: r.sha || undefined }) });
+  if (res.ok) escribir('fonoteca_hist_gh', Date.now());
+}
+let _siempreH = null;
+/* para Tu historia: tu música de siempre + lo que estuvo en Me gusta y ya no */
+async function musicaHistoria() {
+  if (_siempreH && Date.now() - _siempreH.at < 600000) return _siempreH.ps;
+  const m = new Map();
+  for (const p of await musicaSiempre()) m.set(p.uri, p);
+  let h = await cacheLeer(K_HIST_LK);
+  if (!h || !h.pistas || !h.pistas.length) {
+    /* aparato nuevo: se tira de la copia de GitHub */
+    try { const r = await fetch('historial-me-gusta.json', { cache: 'no-cache' }); if (r.ok) { const c = await r.json(); if (c && c.l) h = { pistas: c.l.map(x => ({ uri: x[0], id: String(x[0]).split(':')[2], tipo: 'track', added: x[1], title: x[2], artists: String(x[3] || '').split(', ').filter(Boolean).map(n => ({ name: n })), album: x[4], year: String(x[5] || ''), ms: 0 })) }; } } catch (e) {}
+  }
+  const enH = new Set(((h && h.pistas) || []).map(p => p.uri));
+  for (const p of (h && h.pistas) || []) if (!m.has(p.uri)) m.set(p.uri, p);
+  /* lo que salía de las copias antiguas también pasa al historial, para que no dependa de ellas */
+  const faltan = Array.from(m.values()).filter(p => !enH.has(p.uri));
+  if (faltan.length) historialAnotar(faltan);
+  _siempreH = { at: Date.now(), ps: Array.from(m.values()) };
+  return _siempreH.ps;
+}
 async function musicaSiempre() {
   if (_siempre && Date.now() - _siempre.at < 600000) return _siempre.ps;
   const m = new Map();
@@ -4142,7 +4186,7 @@ function barras(filas, max, attr) {
 async function vHistoria(m) {
   m.innerHTML = '<div class="spin"></div>';
   await etqAsegurar();
-  const todas = await musicaSiempre();
+  const todas = await musicaHistoria();
   if (S.tab !== 'historia' || S.vista) return;
   const ps = todas.filter(p => p.added);
   if (!ps.length) {
