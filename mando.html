@@ -1166,7 +1166,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-20f';
+const VERSION = '2026-10-20g';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -3761,6 +3761,7 @@ const PORT_OBJ = [
   { id: 'hoja', n: 'Hoja de otoño', pal: 'crema', re: /otoño|otono|autumn|fall\b|septiembre|octubre/, s: () => somb(166, 30) + '<path d="M100 34 C142 58 152 112 104 160 C54 116 60 62 100 34Z" fill="url(#autumn§)"/><path d="M100 40 C104 80 104 120 104 168" stroke="#8C2A12" stroke-width="2.5" fill="none"/><path d="M102 70 L124 58 M103 92 L132 80 M104 114 L130 104 M102 82 L80 70 M103 104 L74 94 M104 126 L80 120" stroke="#8C2A12" stroke-width="1.5" fill="none" opacity="0.8"/>' },
   { id: 'submarino', n: 'Submarino amarillo', pal: 'azul', re: /beatles|lennon|mccartney|harrison|ringo|submarin/, s: () => '<g fill="#FFFFFF" opacity="0.55"><circle cx="150" cy="70" r="4"/><circle cx="160" cy="54" r="2.5"/><circle cx="144" cy="44" r="3"/><circle cx="30" cy="150" r="2.5"/><circle cx="170" cy="150" r="2"/></g><path d="M112 66 V40 H130 V48" stroke="#E0A020" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="126" y="44" width="10" height="9" rx="2" fill="#2A3A55"/><path d="M80 92 V74 a7 7 0 0 1 7 -7 H119 a7 7 0 0 1 7 7 V92Z" fill="url(#yel§)"/><path d="M40 120 L22 104 V136Z" fill="#E59A12"/><ellipse cx="18" cy="120" rx="4" ry="14" fill="#C9831A"/><path d="M38 120 C38 98 62 90 100 90 C140 90 166 100 168 120 C166 140 140 150 100 150 C62 150 38 142 38 120Z" fill="url(#yel§)"/><path d="M44 130 C70 142 140 144 162 128" stroke="#D98A12" stroke-width="3" fill="none" opacity="0.7"/>' + [70, 100, 130].map(x => '<circle cx="' + x + '" cy="117" r="10" fill="url(#glass§)" stroke="#C98A1A" stroke-width="3.5"/><circle cx="' + (x - 3) + '" cy="113" r="2.5" fill="#FFFFFF" opacity="0.7"/>').join('') + '<ellipse cx="78" cy="100" rx="18" ry="4" fill="#FFFFFF" opacity="0.35"/>' },
   { id: 'manzana', n: 'Manzana verde', pal: 'crema', re: /manzana|apple records/, s: () => somb(164, 44) + '<path d="M100 72 C86 58 54 60 50 94 C46 126 70 158 88 160 C94 161 96 156 100 156 C104 156 106 161 112 160 C130 158 154 126 150 94 C146 60 114 58 100 72Z" fill="url(#apple§)"/><path d="M100 72 C100 60 104 50 112 42" stroke="#5A3318" stroke-width="4.5" fill="none" stroke-linecap="round"/><path d="M106 58 C114 40 136 38 146 44 C136 60 118 64 106 58Z" fill="url(#leaf§)"/><path d="M108 56 C118 50 130 46 142 45" stroke="#1E6A3A" stroke-width="1.2" fill="none"/><ellipse cx="72" cy="92" rx="10" ry="16" transform="rotate(20 72 92)" fill="#FFFFFF" opacity="0.32"/>' },
+  { id: 'shazam', n: 'Móvil que escucha', pal: 'azul', re: /shazam|reconoc|descubr/, s: () => somb(158, 40) + '<g stroke="#FFFFFF" fill="none" stroke-linecap="round"><path d="M142 78 a34 34 0 0 1 0 48" stroke-width="5" opacity="0.9"/><path d="M154 66 a52 52 0 0 1 0 72" stroke-width="5" opacity="0.55"/><path d="M58 78 a34 34 0 0 0 0 48" stroke-width="5" opacity="0.9"/><path d="M46 66 a52 52 0 0 0 0 72" stroke-width="5" opacity="0.55"/></g><rect x="72" y="40" width="56" height="112" rx="13" fill="url(#dark§)"/><rect x="77" y="50" width="46" height="92" rx="7" fill="url(#sea§)"/><rect x="92" y="44" width="16" height="3" rx="1.5" fill="#3A3C46"/><circle cx="97" cy="112" r="8" fill="#FFFFFF"/><rect x="102" y="76" width="4" height="36" rx="2" fill="#FFFFFF"/><path d="M106 76 C114 78 118 86 114 94 C113 88 110 84 106 84Z" fill="#FFFFFF"/><path d="M80 54 L96 54 L84 70Z" fill="#FFFFFF" opacity="0.18"/>' },
   { id: 'vinilo', n: 'Vinilo', pal: 'mostaza', re: /.*/, s: () => somb(168, 56) + '<circle cx="100" cy="104" r="62" fill="#141416"/>' + [56, 50, 44, 38, 32].map(r => '<circle cx="100" cy="104" r="' + r + '" fill="none" stroke="#2C2C32" stroke-width="0.8"/>').join('') + '<path d="M58 70 A54 54 0 0 1 120 52" stroke="#FFFFFF" stroke-width="6" fill="none" opacity="0.12" stroke-linecap="round"/><circle cx="100" cy="104" r="20" fill="#E4572E"/><circle cx="100" cy="104" r="20" fill="none" stroke="#F7B32B" stroke-width="3"/><circle cx="100" cy="104" r="3" fill="#141416"/>' },
   { id: 'fuego', n: 'Fuego', pal: 'negro', re: /fiesta|party|perreo|reggaet|dembow|caliente|hot|fuego|baile/, s: () => '<path d="M100 30 C110 60 140 76 140 112 C140 140 122 162 100 162 C78 162 60 140 60 112 C60 88 76 78 82 58 C90 72 92 84 96 90 C100 70 96 52 100 30Z" fill="#FF7A1F" opacity="0.45" filter="url(#so2§)"/><path d="M100 30 C110 60 140 76 140 112 C140 140 122 162 100 162 C78 162 60 140 60 112 C60 88 76 78 82 58 C90 72 92 84 96 90 C100 70 96 52 100 30Z" fill="url(#fire§)"/><path d="M100 86 C106 104 122 112 122 132 C122 148 112 160 100 160 C88 160 78 148 78 132 C78 118 88 112 92 100 C96 108 98 112 100 114 C102 104 100 96 100 86Z" fill="url(#fire2§)"/>' },
   { id: 'rosa', n: 'Rosa', pal: 'crema', re: /rosa|flor|primavera|spring|boda|san valent/, s: () => somb(168, 26) + '<path d="M100 104 C98 130 102 150 100 168" stroke="#2F7A40" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M100 140 C84 130 70 134 64 144 C78 146 90 146 100 140Z" fill="url(#leaf§)"/><path d="M101 128 C116 116 132 120 138 130 C124 134 112 134 101 128Z" fill="url(#leaf§)"/><circle cx="100" cy="80" r="30" fill="url(#red§)"/><path d="M76 70 C82 52 118 50 124 70 C116 62 84 62 76 70Z" fill="#7A0A16" opacity="0.6"/><path d="M84 84 C86 66 114 64 116 82 C112 72 90 72 84 84Z" fill="#FF8A8A" opacity="0.55"/><path d="M92 82 C96 70 108 72 106 84 C102 78 96 78 92 82Z" fill="#7A0A16" opacity="0.6"/><path d="M72 88 C72 104 88 112 100 112 C112 112 128 104 128 88 C120 104 80 104 72 88Z" fill="#8F0F1C"/>' }
@@ -3836,15 +3837,15 @@ async function portCanvas(st, px) {
     const p = PORT_PAL[st.pal] || PORT_PAL.mostaza, max = px * 0.82, x0 = px * 0.09, base = px * 0.885;
     x.fillStyle = foto ? '#FFFFFF' : p[3]; x.textBaseline = 'alphabetic';
     const ancho = (s, tam) => { x.font = '800 ' + tam + 'px Unbounded, "Bricolage Grotesque", sans-serif'; return x.measureText(s).width; };
-    let tam = px * 0.12;
-    while (tam > px * 0.085 && ancho(t, tam) > max) tam -= px * 0.004;
+    let tam = px * 0.088;
+    while (tam > px * 0.07 && ancho(t, tam) > max) tam -= px * 0.003;
     let lineas = [t];
     if (ancho(t, tam) > max) {
       /* en dos líneas, partiendo por el espacio más centrado */
       const pal = t.split(' '); let mejor = null;
       for (let i = 1; i < pal.length; i++) { const a = pal.slice(0, i).join(' '), b = pal.slice(i).join(' '), m = Math.max(a.length, b.length); if (!mejor || m < mejor[2]) mejor = [a, b, m]; }
       lineas = mejor ? [mejor[0], mejor[1]] : [t];
-      tam = px * 0.105;
+      tam = px * 0.082;
       while (tam > px * 0.045 && Math.max(...lineas.map(l => ancho(l, tam))) > max) tam -= px * 0.003;
     }
     ancho('', tam);
