@@ -1160,7 +1160,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-20d';
+const VERSION = '2026-10-20e';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -3763,8 +3763,9 @@ const portObj = id => PORT_OBJ.find(o => o.id === id) || PORT_OBJ[PORT_OBJ.lengt
 function portSugerir(nombre) {
   const f = fold(nombre || '');
   const o = PORT_OBJ.find(x => x.id !== 'vinilo' && x.re.test(f)) || portObj('vinilo');
-  return { obj: o.id, pal: o.pal, texto: nombre || '', conTexto: true };
+  return { obj: o.id, pal: o.pal, texto: nombre || '', conTexto: true, logo: true };
 }
+const SPOTIFY_ICO = 'M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z';
 let _portN = 0;
 /* el SVG de la portada; el texto va aparte (en el canvas) para poder usar la letra de la web */
 function portSVG(st, px, simple) {
@@ -3783,6 +3784,14 @@ async function portCanvas(st, px) {
   const c = document.createElement('canvas'); c.width = c.height = px;
   const x = c.getContext('2d');
   x.drawImage(img, 0, 0, px, px);
+  if (st.logo !== false) {
+    /* el icono de Spotify arriba a la izquierda: círculo verde y las tres ondas en negro */
+    const lado = px * 0.085, m = px * 0.06, k = lado / 24;
+    x.save(); x.translate(m, m); x.scale(k, k);
+    x.fillStyle = '#000'; x.beginPath(); x.arc(12, 12, 11.6, 0, Math.PI * 2); x.fill();
+    x.fillStyle = '#1ED760'; x.fill(new Path2D(SPOTIFY_ICO));
+    x.restore();
+  }
   const t = (st.texto || '').trim();
   if (st.conTexto && t) {
     try { await document.fonts.load('800 ' + Math.round(px * 0.12) + 'px Unbounded'); } catch (e) {}
@@ -3817,7 +3826,7 @@ async function hojaCrearPortada(p) {
   const st = Object.assign(portSugerir(p.name), portGuardadas()[p.id] || {});
   hoja('<h2>Portada de «' + esc(p.name) + '»</h2>' +
     '<div class="po-prev"><canvas id="poC" width="640" height="640"></canvas></div>' +
-    '<div class="po-fila"><label class="check"><input type="checkbox" id="poTx"' + (st.conTexto ? ' checked' : '') + '> Con nombre</label><input class="field" id="poNom" maxlength="40" value="' + esc(st.texto) + '"></div>' +
+    '<div class="po-fila"><label class="check"><input type="checkbox" id="poLg"' + (st.logo !== false ? ' checked' : '') + '> Logo</label><label class="check"><input type="checkbox" id="poTx"' + (st.conTexto ? ' checked' : '') + '> Nombre</label><input class="field" id="poNom" maxlength="40" value="' + esc(st.texto) + '"></div>' +
     '<label class="lbl">Color</label><div class="po-cols">' + Object.keys(PORT_PAL).map(k => '<button data-pal="' + k + '" title="' + PORT_PAL[k][0] + '" style="background:radial-gradient(circle at 50% 40%,' + PORT_PAL[k][1] + ',' + PORT_PAL[k][2] + ')"></button>').join('') + '</div>' +
     '<label class="lbl">Dibujo</label><div class="po-objs" id="poObjs"></div>' +
     '<div class="btnrow" style="margin-top:12px"><button class="btn" id="poBaja">' + ic('abajo') + 'Descargar</button><button class="btn pri" id="poSube" style="flex:1">' + ic('subir') + 'Poner en Spotify</button></div>', h => {
@@ -3835,8 +3844,9 @@ async function hojaCrearPortada(p) {
       h.querySelector('#poObjs').onclick = e => { const b = e.target.closest('[data-obj]'); if (!b) return; st.obj = b.dataset.obj; if (!portGuardadas()[p.id] && !st._palTocada) st.pal = portObj(st.obj).pal; objs(); repintar(); };
       h.querySelector('.po-cols').addEventListener('click', () => { st._palTocada = true; });
       h.querySelector('#poTx').onchange = e => { st.conTexto = e.target.checked; repintar(); };
+      h.querySelector('#poLg').onchange = e => { st.logo = e.target.checked; repintar(); };
       h.querySelector('#poNom').oninput = e => { st.texto = e.target.value; repintar(); };
-      const guardar = () => { portGuardadas()[p.id] = { obj: st.obj, pal: st.pal, texto: st.texto, conTexto: st.conTexto }; guardarPrefs(); };
+      const guardar = () => { portGuardadas()[p.id] = { obj: st.obj, pal: st.pal, texto: st.texto, conTexto: st.conTexto, logo: st.logo !== false }; guardarPrefs(); };
       h.querySelector('#poBaja').onclick = async () => {
         guardar();
         const b64 = await portJpeg(st), a = document.createElement('a');
