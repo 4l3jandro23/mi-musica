@@ -1166,7 +1166,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-20h';
+const VERSION = '2026-10-20i';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -9035,9 +9035,73 @@ function hojaFuente(f) {
 }
 
 /* ---------------- exportar ---------------- */
+/* ---- Excel (.xlsx) sin librerías: zip sin compresión + hoja con inlineStr ---- */
+async function xlsxConstruir(cab, filas, anchos, nombreHoja) {
+  const enc = new TextEncoder();
+  const esc = s => String(s).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const col = i => { let s = ''; for (i++; i > 0; i = Math.floor((i - 1) / 26)) s = String.fromCharCode(65 + (i - 1) % 26) + s; return s; };
+  const celda = (v, c, r, st) => {
+    if (v == null || v === '') return '';
+    const ref = col(c) + r, s = st ? ' s="' + st + '"' : '';
+    return typeof v === 'number' && isFinite(v)
+      ? '<c r="' + ref + '"' + s + '><v>' + v + '</v></c>'
+      : '<c r="' + ref + '"' + s + ' t="inlineStr"><is><t xml:space="preserve">' + esc(v) + '</t></is></c>';
+  };
+  const parts = ['<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">',
+    '<sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>',
+    '<cols>' + anchos.map((w, i) => '<col min="' + (i + 1) + '" max="' + (i + 1) + '" width="' + w + '" customWidth="1"/>').join('') + '</cols><sheetData>'];
+  parts.push('<row r="1">' + cab.map((h, c) => celda(h, c, 1, 1)).join('') + '</row>');
+  for (let i = 0; i < filas.length; i++) {
+    const f = filas[i], r = i + 2; let x = '<row r="' + r + '">';
+    for (let c = 0; c < f.length; c++) x += celda(f[c], c, r, 0);
+    parts.push(x + '</row>');
+  }
+  parts.push('</sheetData><autoFilter ref="A1:' + col(cab.length - 1) + (filas.length + 1) + '"/></worksheet>');
+  const hoja = parts.join('');
+  const ficheros = [
+    ['[Content_Types].xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>'],
+    ['_rels/.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'],
+    ['xl/workbook.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="' + esc(nombreHoja) + '" sheetId="1" r:id="rId1"/></sheets></workbook>'],
+    ['xl/_rels/workbook.xml.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>'],
+    ['xl/styles.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF1DB954"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>'],
+    ['xl/worksheets/sheet1.xml', hoja]
+  ];
+  const tabla = new Uint32Array(256);
+  for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; tabla[n] = c >>> 0; }
+  const crc = b => { let c = 0xFFFFFFFF; for (let i = 0; i < b.length; i++) c = tabla[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+  const trozos = [], central = []; let pos = 0;
+  for (const [nom, txt] of ficheros) {
+    const n = enc.encode(nom), d0 = enc.encode(txt), k = crc(d0);
+    let d = d0, met = 0;
+    if (typeof CompressionStream === 'function') { try { d = new Uint8Array(await new Response(new Blob([d0]).stream().pipeThrough(new CompressionStream('deflate-raw'))).arrayBuffer()); met = 8; } catch (e) { d = d0; met = 0; } }
+    const lh = new DataView(new ArrayBuffer(30));
+    lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true); lh.setUint16(8, met, true);
+    lh.setUint32(14, k, true); lh.setUint32(18, d.length, true); lh.setUint32(22, d0.length, true); lh.setUint16(26, n.length, true);
+    trozos.push(new Uint8Array(lh.buffer), n, d);
+    const ch = new DataView(new ArrayBuffer(46));
+    ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint16(8, 0x0800, true); ch.setUint16(10, met, true);
+    ch.setUint32(16, k, true); ch.setUint32(20, d.length, true); ch.setUint32(24, d0.length, true); ch.setUint16(28, n.length, true); ch.setUint32(42, pos, true);
+    central.push(new Uint8Array(ch.buffer), n);
+    pos += 30 + n.length + d.length;
+  }
+  let tc = 0; for (const t of central) tc += t.length;
+  const fin = new DataView(new ArrayBuffer(22));
+  fin.setUint32(0, 0x06054b50, true); fin.setUint16(8, ficheros.length, true); fin.setUint16(10, ficheros.length, true); fin.setUint32(12, tc, true); fin.setUint32(16, pos, true);
+  return new Blob([...trozos, ...central, new Uint8Array(fin.buffer)], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+}
+async function excelDe(nombre, ps) {
+  const dur = ms => ms ? Math.floor(ms / 60000) + ':' + String(Math.round(ms / 1000) % 60).padStart(2, '0') : null;
+  const fecha = t => t ? new Date(t).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : null;
+  const filas = ps.map((p, i) => [i + 1, p.title, nombresArtistas(p), p.album || null, +p.year || null, fecha(p.added), dur(p.ms), p.local ? null : 'https://open.spotify.com/track/' + p.id]);
+  const blob = await xlsxConstruir(['#', 'Canción', 'Artistas', 'Álbum', 'Año', 'Añadida', 'Duración', 'Enlace'], filas, [6, 38, 30, 34, 7, 12, 9, 52], String(nombre).replace(/[\/?*\[\]:]/g, ' ').slice(0, 31) || 'Canciones');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = String(nombre).replace(/[\/:*?"<>|]+/g, ' ').trim() + '.xlsx';
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 20000);
+}
 function hojaExportar(nombre, ps) {
   hoja('<h2>Exportar «' + esc(nombre) + '»</h2><div class="opc">' +
-    '<button data-o="csv">' + ic('bajar') + '<span>Hoja de cálculo (.csv)<span class="sub">se abre en Excel o Numbers</span></span></button>' +
+    '<button data-o="xlsx">' + ic('bajar') + '<span>Excel (.xlsx)<span class="sub">con cabecera, filtros y enlace a cada canción</span></span></button>' +
+    '<button data-o="csv">' + ic('bajar') + '<span>Hoja de cálculo (.csv)<span class="sub">texto simple, para cualquier programa</span></span></button>' +
     '<button data-o="txt">' + ic('bajar') + '<span>Texto (.txt)<span class="sub">«1. Artista - Canción», como Skiley</span></span></button>' +
     '<button data-o="copiar">' + ic('copia') + '<span>Copiar la lista como texto</span></button>' +
     '<button data-o="json">' + ic('bajar') + '<span>Copia para recuperar (.json)</span></button></div>', h => {
@@ -9045,7 +9109,8 @@ function hojaExportar(nombre, ps) {
         const b = e.target.closest('[data-o]'); if (!b) return;
         const o = b.dataset.o; cerrarHoja();
         const txt = ps.map((p, i) => (i + 1) + '. ' + nombresArtistas(p) + ' - ' + p.title).join('\n');
-        if (o === 'csv') descargar(nombre + '.csv', csvDe(ps), 'text/csv');
+        if (o === 'xlsx') excelDe(nombre, ps).then(() => toast('Excel descargado: ' + n$(ps.length) + ' canciones'), e => toast(explicarError(e)));
+        else if (o === 'csv') descargar(nombre + '.csv', csvDe(ps), 'text/csv');
         else if (o === 'txt') descargar(nombre + '.txt', txt, 'text/plain');
         else if (o === 'copiar') navigator.clipboard.writeText(txt).then(() => toast('Copiada'), () => toast('No se ha podido copiar'));
         else descargar(nombre + '.json', JSON.stringify({ nombre, canciones: ps.map(p => ({ uri: p.uri, t: p.title, a: nombresArtistas(p), al: p.album, y: p.year })) }));
