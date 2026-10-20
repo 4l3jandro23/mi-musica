@@ -1105,6 +1105,12 @@
   .po-grid img, .po-grid .po-sin { display: block; width: 100%; height: auto; aspect-ratio: 1; border-radius: 10px; object-fit: cover; box-shadow: var(--shadow-sm); transition: transform .15s; }
   .po-grid button:hover img { transform: translateY(-2px); }
   .po-grid b { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .po-grid small { color: var(--fg-mute); font-size: 12px; }
+  .po-modo { margin: 2px 0 10px; }
+  .po-arts { display: flex; gap: 10px; overflow-x: auto; padding: 8px 0 4px; scrollbar-width: thin; }
+  .po-arts button { flex: none; width: 74px; display: flex; flex-direction: column; align-items: center; gap: 4px; border: 0; background: none; cursor: pointer; color: inherit; padding: 0; }
+  .po-arts img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 3px solid transparent; }
+  .po-arts button.on img { border-color: var(--fg); }
+  .po-arts small { font-size: 11px; max-width: 74px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--fg-soft); }
   .po-lista { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
   .po-lista button { display: flex; gap: 12px; align-items: center; text-align: left; border: 0; background: var(--surface-2); border-radius: 12px; padding: 8px; cursor: pointer; color: inherit; }
   .po-lista img, .po-sin { width: 48px; height: 48px; border-radius: 6px; object-fit: cover; flex: none; background: var(--surface-3, #ddd); }
@@ -1160,7 +1166,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-20e';
+const VERSION = '2026-10-20f';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -3777,26 +3783,58 @@ function portSVG(st, px, simple) {
     '<rect width="200" height="200" fill="url(#bg§)"/><g transform="' + tr + '">' + cuerpo + '</g>' +
     (simple ? '' : '<rect width="200" height="200" fill="url(#vg§)"/><rect width="200" height="200" filter="url(#gr§)"/>') + '</svg>').split('§').join(suf);
 }
+const _portFotos = new Map();
+function portCargarFoto(url) {
+  if (!_portFotos.has(url)) _portFotos.set(url, new Promise((ok, ko) => { const i = new Image(); i.crossOrigin = 'anonymous'; i.onload = () => ok(i); i.onerror = () => { _portFotos.delete(url); ko(new Error('No se ha podido cargar la foto')); }; i.src = url; }));
+  return _portFotos.get(url);
+}
+/* modo foto: la foto recortada al cuadrado (las caras suelen estar arriba), teñida si se quiere,
+   oscurecida abajo para que se lea el nombre, y el mismo grano y viñeta que los dibujos */
+async function portFondoFoto(x, st, px) {
+  const f = await portCargarFoto(st.foto.url), p = PORT_PAL[st.pal] || PORT_PAL.mostaza;
+  const w = f.naturalWidth, h = f.naturalHeight, k = Math.max(px / w, px / h), dw = w * k, dh = h * k;
+  const dx = (px - dw) / 2, dy = dh > px ? -(dh - px) * 0.3 : (px - dh) / 2;
+  if (st.tinte) {
+    x.filter = 'grayscale(1) contrast(1.15) brightness(1.05)'; x.drawImage(f, dx, dy, dw, dh); x.filter = 'none';
+    x.globalCompositeOperation = 'multiply'; x.fillStyle = p[1]; x.fillRect(0, 0, px, px);
+    x.globalCompositeOperation = 'lighten'; x.fillStyle = p[2]; x.globalAlpha = 0.35; x.fillRect(0, 0, px, px);
+    x.globalAlpha = 1; x.globalCompositeOperation = 'source-over';
+  } else x.drawImage(f, dx, dy, dw, dh);
+  if (st.conTexto && (st.texto || '').trim()) {
+    const g = x.createLinearGradient(0, px * 0.5, 0, px);
+    g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0.62)');
+    x.fillStyle = g; x.fillRect(0, 0, px, px);
+  }
+  const g2 = x.createLinearGradient(0, 0, 0, px * 0.25);
+  g2.addColorStop(0, 'rgba(0,0,0,0.28)'); g2.addColorStop(1, 'rgba(0,0,0,0)');
+  x.fillStyle = g2; x.fillRect(0, 0, px, px);
+  const suf = '_' + (++_portN), capa = new Image();
+  capa.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(('<svg xmlns="http://www.w3.org/2000/svg" width="' + px + '" height="' + px + '" viewBox="0 0 200 200"><defs>' + PORT_DEFS + '</defs><rect width="200" height="200" fill="url(#vg§)"/><rect width="200" height="200" filter="url(#gr§)"/></svg>').split('§').join(suf));
+  await capa.decode();
+  x.drawImage(capa, 0, 0, px, px);
+}
 async function portCanvas(st, px) {
-  const img = new Image();
-  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(portSVG(st, px));
-  await img.decode();
   const c = document.createElement('canvas'); c.width = c.height = px;
-  const x = c.getContext('2d');
-  x.drawImage(img, 0, 0, px, px);
+  const x = c.getContext('2d'), foto = st.modo === 'foto' && st.foto && st.foto.url;
+  if (foto) await portFondoFoto(x, st, px);
+  else {
+    const img = new Image();
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(portSVG(st, px));
+    await img.decode();
+    x.drawImage(img, 0, 0, px, px);
+  }
   if (st.logo !== false) {
-    /* el icono de Spotify arriba a la izquierda: círculo verde y las tres ondas en negro */
-    const lado = px * 0.085, m = px * 0.06, k = lado / 24;
+    /* el icono de Spotify como en sus playlists: pequeño, pegado a la esquina y del mismo color que el título */
+    const lado = px * 0.072, m = px * 0.042, k = lado / 24;
     x.save(); x.translate(m, m); x.scale(k, k);
-    x.fillStyle = '#000'; x.beginPath(); x.arc(12, 12, 11.6, 0, Math.PI * 2); x.fill();
-    x.fillStyle = '#1ED760'; x.fill(new Path2D(SPOTIFY_ICO));
+    x.fillStyle = foto ? '#FFFFFF' : (PORT_PAL[st.pal] || PORT_PAL.mostaza)[3]; x.fill(new Path2D(SPOTIFY_ICO));
     x.restore();
   }
   const t = (st.texto || '').trim();
   if (st.conTexto && t) {
     try { await document.fonts.load('800 ' + Math.round(px * 0.12) + 'px Unbounded'); } catch (e) {}
     const p = PORT_PAL[st.pal] || PORT_PAL.mostaza, max = px * 0.82, x0 = px * 0.09, base = px * 0.885;
-    x.fillStyle = p[3]; x.textBaseline = 'alphabetic';
+    x.fillStyle = foto ? '#FFFFFF' : p[3]; x.textBaseline = 'alphabetic';
     const ancho = (s, tam) => { x.font = '800 ' + tam + 'px Unbounded, "Bricolage Grotesque", sans-serif'; return x.measureText(s).width; };
     let tam = px * 0.12;
     while (tam > px * 0.085 && ancho(t, tam) > max) tam -= px * 0.004;
@@ -3823,37 +3861,77 @@ async function portJpeg(st) {
 }
 const portGuardadas = () => PREFS.portadasA || (PREFS.portadasA = {});
 async function hojaCrearPortada(p) {
-  const st = Object.assign(portSugerir(p.name), portGuardadas()[p.id] || {});
+  const st = Object.assign(portSugerir(p.name), { modo: 'dibujo', tinte: false }, portGuardadas()[p.id] || {});
+  if (st.modo === 'foto' && !(st.foto && st.foto.url)) st.modo = 'dibujo';
   hoja('<h2>Portada de «' + esc(p.name) + '»</h2>' +
     '<div class="po-prev"><canvas id="poC" width="640" height="640"></canvas></div>' +
+    '<div class="chips po-modo"><button class="chip" data-modo="dibujo">Dibujo</button><button class="chip" data-modo="foto">Foto</button></div>' +
     '<div class="po-fila"><label class="check"><input type="checkbox" id="poLg"' + (st.logo !== false ? ' checked' : '') + '> Logo</label><label class="check"><input type="checkbox" id="poTx"' + (st.conTexto ? ' checked' : '') + '> Nombre</label><input class="field" id="poNom" maxlength="40" value="' + esc(st.texto) + '"></div>' +
-    '<label class="lbl">Color</label><div class="po-cols">' + Object.keys(PORT_PAL).map(k => '<button data-pal="' + k + '" title="' + PORT_PAL[k][0] + '" style="background:radial-gradient(circle at 50% 40%,' + PORT_PAL[k][1] + ',' + PORT_PAL[k][2] + ')"></button>').join('') + '</div>' +
-    '<label class="lbl">Dibujo</label><div class="po-objs" id="poObjs"></div>' +
+    '<div id="poFoto"><label class="lbl">Foto</label><div class="po-fila"><input class="field" id="poBus" placeholder="Busca un artista" value="' + esc(st.foto && st.foto.q || p.name) + '"><button class="btn" id="poBusB">' + ic('buscar') + '</button><button class="btn" id="poMia">' + ic('subir') + 'Tuya</button></div><div class="po-arts" id="poArts"></div>' +
+    '<label class="check"><input type="checkbox" id="poTin"' + (st.tinte ? ' checked' : '') + '> Teñir con el color</label></div>' +
+    '<label class="lbl" id="poColL">Color</label><div class="po-cols">' + Object.keys(PORT_PAL).map(k => '<button data-pal="' + k + '" title="' + PORT_PAL[k][0] + '" style="background:radial-gradient(circle at 50% 40%,' + PORT_PAL[k][1] + ',' + PORT_PAL[k][2] + ')"></button>').join('') + '</div>' +
+    '<div id="poDib"><label class="lbl">Dibujo</label><div class="po-objs" id="poObjs"></div></div>' +
     '<div class="btnrow" style="margin-top:12px"><button class="btn" id="poBaja">' + ic('abajo') + 'Descargar</button><button class="btn pri" id="poSube" style="flex:1">' + ic('subir') + 'Poner en Spotify</button></div>', h => {
       const C = h.querySelector('#poC');
       let pinta = 0;
       const repintar = async () => {
-        const n = ++pinta; const c = await portCanvas(st, 640); if (n !== pinta) return;
-        C.getContext('2d').clearRect(0, 0, 640, 640); C.getContext('2d').drawImage(c, 0, 0);
+        const n = ++pinta;
+        h.querySelectorAll('[data-modo]').forEach(b => b.classList.toggle('on', b.dataset.modo === st.modo));
+        h.querySelector('#poFoto').hidden = st.modo !== 'foto'; h.querySelector('#poDib').hidden = st.modo === 'foto';
         h.querySelectorAll('[data-pal]').forEach(b => b.classList.toggle('on', b.dataset.pal === st.pal));
         h.querySelectorAll('[data-obj]').forEach(b => b.classList.toggle('on', b.dataset.obj === st.obj));
+        h.querySelectorAll('[data-foto]').forEach(b => b.classList.toggle('on', !!st.foto && b.dataset.foto === st.foto.url));
+        let c;
+        try { c = await portCanvas(st.modo === 'foto' && !(st.foto && st.foto.url) ? Object.assign({}, st, { modo: 'dibujo' }) : st, 640); }
+        catch (e) { toast(explicarError(e)); return; }
+        if (n !== pinta) return;
+        C.getContext('2d').clearRect(0, 0, 640, 640); C.getContext('2d').drawImage(c, 0, 0);
       };
       const objs = () => { h.querySelector('#poObjs').innerHTML = PORT_OBJ.map(o => '<button data-obj="' + o.id + '" title="' + esc(o.n) + '">' + portSVG({ obj: o.id, pal: st.pal, conTexto: false }, 64, true) + '</button>').join(''); };
+      let buscados = false;
+      const buscar = async () => {
+        const q = h.querySelector('#poBus').value.trim(); if (!q) return;
+        buscados = true;
+        const L = h.querySelector('#poArts'); L.innerHTML = '<div class="spin"></div>';
+        try {
+          const d = await sp('/search?type=artist&limit=8&q=' + encodeURIComponent(q));
+          const arts = ((d && d.artists && d.artists.items) || []).filter(a => a.images && a.images.length);
+          L.innerHTML = arts.map(a => '<button data-foto="' + esc(a.images[0].url) + '" data-n="' + esc(a.name) + '"><img src="' + esc(imgDe(a.images, 160)) + '" alt=""><small>' + esc(a.name) + '</small></button>').join('') || '<p class="soft tiny">No encuentro artistas con ese nombre.</p>';
+          if (st.modo === 'foto' && !(st.foto && st.foto.url) && arts[0]) { st.foto = { url: arts[0].images[0].url, n: arts[0].name, q: q }; repintar(); }
+          else repintar();
+        } catch (e) { L.innerHTML = '<p class="soft tiny">' + esc(explicarError(e)) + '</p>'; }
+      };
       objs(); repintar();
-      h.querySelector('.po-cols').onclick = e => { const b = e.target.closest('[data-pal]'); if (!b) return; st.pal = b.dataset.pal; objs(); repintar(); };
+      if (st.modo === 'foto') buscar();
+      h.querySelector('.po-modo').onclick = e => { const b = e.target.closest('[data-modo]'); if (!b) return; st.modo = b.dataset.modo; if (st.modo === 'foto' && !buscados) buscar(); repintar(); };
+      h.querySelector('#poBusB').onclick = buscar;
+      h.querySelector('#poBus').onkeydown = e => { if (e.key === 'Enter') buscar(); };
+      h.querySelector('#poArts').onclick = e => { const b = e.target.closest('[data-foto]'); if (!b) return; st.foto = { url: b.dataset.foto, n: b.dataset.n, q: h.querySelector('#poBus').value.trim() }; repintar(); };
+      h.querySelector('#poMia').onclick = () => {
+        const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*';
+        inp.onchange = () => { const f = inp.files[0]; if (!f) return; st.foto = { url: URL.createObjectURL(f), n: 'tuya', propia: true }; st.modo = 'foto'; repintar(); };
+        inp.click();
+      };
+      h.querySelector('#poTin').onchange = e => { st.tinte = e.target.checked; repintar(); };
+      h.querySelector('.po-cols').onclick = e => { const b = e.target.closest('[data-pal]'); if (!b) return; st.pal = b.dataset.pal; st._palTocada = true; objs(); repintar(); };
       h.querySelector('#poObjs').onclick = e => { const b = e.target.closest('[data-obj]'); if (!b) return; st.obj = b.dataset.obj; if (!portGuardadas()[p.id] && !st._palTocada) st.pal = portObj(st.obj).pal; objs(); repintar(); };
-      h.querySelector('.po-cols').addEventListener('click', () => { st._palTocada = true; });
       h.querySelector('#poTx').onchange = e => { st.conTexto = e.target.checked; repintar(); };
       h.querySelector('#poLg').onchange = e => { st.logo = e.target.checked; repintar(); };
       h.querySelector('#poNom').oninput = e => { st.texto = e.target.value; repintar(); };
-      const guardar = () => { portGuardadas()[p.id] = { obj: st.obj, pal: st.pal, texto: st.texto, conTexto: st.conTexto, logo: st.logo !== false }; guardarPrefs(); };
+      const guardar = () => {
+        /* una foto subida del móvil no se guarda (solo vale en este momento); la de un artista sí */
+        const foto = st.foto && !st.foto.propia ? st.foto : null;
+        portGuardadas()[p.id] = { obj: st.obj, pal: st.pal, texto: st.texto, conTexto: st.conTexto, logo: st.logo !== false, modo: st.modo === 'foto' && (foto || st.foto) ? (foto ? 'foto' : 'dibujo') : 'dibujo', foto: foto, tinte: !!st.tinte };
+        guardarPrefs();
+      };
+      const listo = () => { if (st.modo === 'foto' && !(st.foto && st.foto.url)) { toast('Elige antes una foto'); return false; } return true; };
       h.querySelector('#poBaja').onclick = async () => {
-        guardar();
+        if (!listo()) return; guardar();
         const b64 = await portJpeg(st), a = document.createElement('a');
         a.href = 'data:image/jpeg;base64,' + b64; a.download = 'portada-' + fold(p.name).replace(/[^a-z0-9]+/g, '-') + '.jpg'; a.click();
       };
       h.querySelector('#poSube').onclick = async () => {
-        guardar(); cerrarHoja();
+        if (!listo()) return; guardar(); cerrarHoja();
         await trabajo(async () => {
           const b64 = await portJpeg(st);
           await sp('/playlists/' + p.id + '/images', { method: 'PUT', raw: true, tipo: 'image/jpeg', body: b64 });
@@ -3874,7 +3952,7 @@ async function vPortadas(m) {
     '<input class="field" id="poQ" placeholder="Buscar playlist" style="max-width:360px;margin:6px 0 14px"><div class="po-grid" id="poG"></div>';
   const pintar = q => {
     const w = fold(q || '').trim();
-    m.querySelector('#poG').innerHTML = mias.filter(p => !w || fold(p.name).indexOf(w) >= 0).map(p => '<button data-id="' + p.id + '">' + (p.imgG || p.img ? '<img src="' + esc(p.imgG || p.img) + '" alt="" loading="lazy">' : '<span class="po-sin"></span>') + '<b>' + esc(p.name) + '</b><small>' + (G[p.id] ? 'Hecha: ' + esc(portObj(G[p.id].obj).n.toLowerCase()) : p.total + ' canciones') + '</small></button>').join('') || '<p class="soft">No hay playlists tuyas con ese nombre.</p>';
+    m.querySelector('#poG').innerHTML = mias.filter(p => !w || fold(p.name).indexOf(w) >= 0).map(p => '<button data-id="' + p.id + '">' + (p.imgG || p.img ? '<img src="' + esc(p.imgG || p.img) + '" alt="" loading="lazy">' : '<span class="po-sin"></span>') + '<b>' + esc(p.name) + '</b><small>' + (G[p.id] ? 'Hecha: ' + esc(G[p.id].modo === 'foto' && G[p.id].foto ? 'foto de ' + G[p.id].foto.n : portObj(G[p.id].obj).n.toLowerCase()) : p.total + ' canciones') + '</small></button>').join('') || '<p class="soft">No hay playlists tuyas con ese nombre.</p>';
   };
   pintar('');
   m.querySelector('#poQ').oninput = e => pintar(e.target.value);
