@@ -1298,7 +1298,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-22j';
+const VERSION = '2026-10-22k';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -8898,10 +8898,25 @@ function fundirMis(a, b) {
     artistas: artistas.sort((x, y) => (y.added || 0) - (x.added || 0)), tags: Array.from(tags.values()),
     tumbas: Array.from(tumbas, ([id, at]) => ({ id, at })).filter(t => t.at > lim) };
 }
+/* Mis artistas va en IndexedDB: localStorage son 5 MB que comparten TODAS las apps de
+   4l3jandro23.github.io (Mi Espacio, Rumbo, Estilo…) y se llenaba */
 function misGuardarLocal() {
   _misIdx = null;
-  if (!escribir(K_MIS, MIS)) toast('No cabe en la memoria de este aparato');
+  idb().then(db => {
+    if (db) cachePoner('misArtistas', MIS).then(() => { try { localStorage.removeItem(K_MIS); } catch (e) {} });
+    else if (!escribir(K_MIS, MIS)) toast('La memoria del navegador está llena (la comparten todas tus apps de github.io)');
+  });
 }
+/* restos del antiguo MusicVault (1 MB que nadie usa): se guardan aparte en IndexedDB y dejan sitio */
+(async () => {
+  try {
+    for (const k of ['musicvault_tomb_v1']) {
+      const v = localStorage.getItem(k); if (v == null) continue;
+      if (!(await idb())) return;
+      await cachePoner('archivo:' + k, v); localStorage.removeItem(k);
+    }
+  } catch (e) {}
+})();
 function misCambiado() {
   MIS.updatedAt = Date.now();
   misGuardarLocal();
@@ -8911,7 +8926,7 @@ function misCambiado() {
 
 async function misAsegurar() {
   if (MIS) return MIS;
-  MIS = leer(K_MIS, null);
+  MIS = leer(K_MIS, null) || await cacheLeer('misArtistas');
   if (!MIS) {
     /* primera vez en este aparato: se baja la lista del repo */
     let r = null;
