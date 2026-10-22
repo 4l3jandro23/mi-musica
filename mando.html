@@ -1203,7 +1203,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-22f';
+const VERSION = '2026-10-22g';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -3834,7 +3834,8 @@ const PORT_OBJ = [
   { id: 'auriculares', n: 'Auriculares', pal: 'verde', re: /chill|lo-?fi|relax|estudi|concentr|focus|tranquil/, s: () => somb(160, 52) + '<path d="M52 120 C52 62 148 62 148 120" stroke="url(#dark§)" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M58 112 C60 72 140 72 142 112" stroke="#5A5C66" stroke-width="2" fill="none" opacity="0.7"/><rect x="36" y="106" width="28" height="48" rx="13" fill="url(#dark§)"/><rect x="136" y="106" width="28" height="48" rx="13" fill="url(#dark§)"/><rect x="58" y="110" width="12" height="40" rx="6" fill="#3A3C46"/><rect x="130" y="110" width="12" height="40" rx="6" fill="#3A3C46"/><rect x="42" y="112" width="4" height="22" rx="2" fill="#8C8E98" opacity="0.6"/><rect x="142" y="112" width="4" height="22" rx="2" fill="#8C8E98" opacity="0.6"/>' },
   { id: 'microfono', n: 'Micrófono', pal: 'rosa', re: /\bpop\b|cantar|karaoke|voces|divas|girl|whitegirl/, s: () => '<ellipse cx="100" cy="160" rx="32" ry="7" fill="url(#dark§)"/><rect x="97" y="120" width="6" height="40" fill="url(#metal§)"/><path d="M66 86 C66 132 134 132 134 86" stroke="url(#metal§)" stroke-width="5" fill="none"/><clipPath id="mc§"><rect x="76" y="34" width="48" height="82" rx="24"/></clipPath><rect x="76" y="34" width="48" height="82" rx="24" fill="url(#chrome§)"/><g clip-path="url(#mc§)" stroke="#6E7078" stroke-width="1.4">' + [40, 46, 52, 58, 64, 70, 88, 94, 100, 106, 112].map(y => '<path d="M70 ' + y + ' H130"/>').join('') + '</g><rect x="76" y="74" width="48" height="9" fill="#2A2B30"/><rect x="82" y="40" width="5" height="28" rx="2.5" fill="#FFFFFF" opacity="0.5"/>' },
   { id: 'corazon', n: 'Corazón', pal: 'rosa', re: /amor|love|romant|enamor|crush|bolero/, s: () => somb(164, 44) + '<path d="M100 158 C40 116 30 84 48 64 C66 44 92 52 100 72 C108 52 134 44 152 64 C170 84 160 116 100 158Z" fill="url(#red§)"/><ellipse cx="70" cy="76" rx="11" ry="6" transform="rotate(-35 70 76)" fill="#FFFFFF" opacity="0.38"/>' },
-  { id: 'ecualizador', n: 'Ecualizador de neón', pal: 'noche', re: /electr|edm|dance|techno|rave|club|trance|boiler|dubstep|drum|big room|progressive/, s: () => portEq() },
+  { id: 'festival', n: 'Festival: láseres y público', pal: 'noche', full: true, re: /electr|edm|dance|techno|rave|club|trance|boiler|dubstep|drum|big room|progressive|festival/, s: () => portFestival() },
+  { id: 'ecualizador', n: 'Ecualizador de neón', pal: 'noche', re: /ecualiz|bass|sub/, s: () => portEq() },
   { id: 'platos', n: 'Plato de DJ', pal: 'morado', re: /\bdj\b|mezcl|mix|tornamesa|platos/, s: () => portPlatos() },
   { id: 'discoteca', n: 'Bola de discoteca', pal: 'morado', re: /house|disco|funk|boogie|nu-?disco/, s: () => portDisco() },
   { id: 'trompeta', n: 'Trompeta', pal: 'noche', re: /jazz|swing|soul|funk|motown|big band|bossa/, s: () => somb(150, 60) + '<g transform="rotate(-10 100 104)"><rect x="40" y="98" width="92" height="8" rx="4" fill="url(#gold§)"/><path d="M60 106 H122 a10 10 0 0 1 0 20 H60" stroke="url(#gold§)" stroke-width="7" fill="none"/><g fill="url(#gold§)"><rect x="74" y="78" width="10" height="30" rx="3"/><rect x="88" y="78" width="10" height="30" rx="3"/><rect x="102" y="78" width="10" height="30" rx="3"/></g><g fill="#FFE9A8"><ellipse cx="79" cy="77" rx="6" ry="2.5"/><ellipse cx="93" cy="77" rx="6" ry="2.5"/><ellipse cx="107" cy="77" rx="6" ry="2.5"/></g><path d="M128 94 L168 74 C173 92 173 120 168 136 L128 116Z" fill="url(#gold§)"/><ellipse cx="168" cy="105" rx="5" ry="31" fill="#FFE9A8"/><ellipse cx="168" cy="105" rx="2.5" ry="24" fill="#8F6212" opacity="0.5"/><rect x="28" y="99" width="14" height="6" rx="3" fill="url(#chrome§)"/></g>' },
@@ -3874,6 +3875,36 @@ function portEq() {
   const g = segs.join('');
   return PORT_NEON + '<g fill="url(#neon§)" filter="url(#so2§)" opacity="0.85">' + g + '</g><g fill="url(#neon§)">' + g + '</g>';
 }
+/* festival: láseres de neón desde el techo y el público con las manos arriba.
+   Ocupa toda la portada (full); el nombre queda sobre el público, que es oscuro */
+function portFestival(sem) {
+  let sd = sem || 11; const rnd = () => (sd = (sd * 9301 + 49297) % 233280) / 233280;
+  const C = ['#00E5FF', '#FF3DF2', '#9B7BFF'], f = n => n.toFixed(1);
+  const fan = (ox, oy, xs, ye, w, off) => xs.map((x, i) => '<polygon points="' + (ox - 0.5) + ',' + oy + ' ' + (ox + 0.5) + ',' + oy + ' ' + (x + w) + ',' + ye + ' ' + (x - w) + ',' + ye + '" fill="' + C[(i + off) % 3] + '"/>').join('');
+  const rayos = fan(100, 14, Array.from({ length: 11 }, (_, i) => -40 + i * 28), 160, 3, 0) + fan(-6, 30, [60, 110, 160, 210, 260], 150, 2, 1) + fan(206, 30, [-60, -10, 40, 90, 140], 150, 2, 2);
+  const persona = (x, y, r, brazos) => {
+    const w = r * 2.05, sy = y + r * 1.6;
+    let s = '<circle cx="' + f(x) + '" cy="' + f(y) + '" r="' + f(r) + '"/>' +
+      '<path d="M' + f(x - w) + ' 215 V' + f(sy + r * 1.1) + ' C' + f(x - w) + ' ' + f(sy + r * 0.15) + ' ' + f(x - w * 0.7) + ' ' + f(sy) + ' ' + f(x - r * 0.95) + ' ' + f(sy) + ' L' + f(x - r * 0.42) + ' ' + f(y + r * 0.8) + ' H' + f(x + r * 0.42) + ' L' + f(x + r * 0.95) + ' ' + f(sy) + ' C' + f(x + w * 0.7) + ' ' + f(sy) + ' ' + f(x + w) + ' ' + f(sy + r * 0.15) + ' ' + f(x + w) + ' ' + f(sy + r * 1.1) + ' V215Z"/>';
+    brazos.forEach(sg => {
+      const shx = x + sg * (w - r * 0.45), shy = sy + r * 0.45;
+      const ex = x + sg * (w + r * (0.3 + rnd() * 0.8)), ey = y - r * (0.2 + rnd() * 0.6);
+      const hx = x + sg * (w * (0.55 + rnd() * 0.7)), hy = y - r * (2.6 + rnd() * 1.3);
+      s += '<path d="M' + f(shx) + ' ' + f(shy) + ' L' + f(ex) + ' ' + f(ey) + '" stroke-width="' + f(r * 0.82) + '"/><path d="M' + f(ex) + ' ' + f(ey) + ' L' + f(hx) + ' ' + f(hy) + '" stroke-width="' + f(r * 0.62) + '"/><ellipse cx="' + f(hx) + '" cy="' + f(hy - r * 0.15) + '" rx="' + f(r * 0.38) + '" ry="' + f(r * 0.5) + '"/>';
+    });
+    return s;
+  };
+  const fila = (n, y0, r0, pb) => Array.from({ length: n }, (_, i) => -8 + (i + 0.2 + rnd() * 0.6) * (216 / n)).map(x => { const u = rnd(); return persona(x, y0 + rnd() * r0 * 0.9, r0 * (0.88 + rnd() * 0.24), u < pb * 0.3 ? [-1, 1] : u < pb ? [rnd() < 0.5 ? -1 : 1] : []); }).join('');
+  let moviles = '';
+  for (let i = 0; i < 3; i++) { const x = 30 + rnd() * 140, y = 100 + rnd() * 10; moviles += '<circle cx="' + f(x + 1.7) + '" cy="' + f(y + 3) + '" r="7" fill="#BFE9FF" opacity="0.4" filter="url(#so§)"/><rect x="' + f(x) + '" y="' + f(y) + '" width="3.4" height="6" rx="0.8" fill="#F2FAFF"/>'; }
+  const grupo = (col, extra) => '<g fill="' + col + '" stroke="' + col + '" stroke-linecap="round" stroke-linejoin="round"' + (extra || '') + '>';
+  return '<radialGradient id="hz§" cx="50%" cy="6%" r="65%"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.85"/><stop offset="0.14" stop-color="#FF7BF5" stop-opacity="0.45"/><stop offset="1" stop-color="#3B1D8F" stop-opacity="0"/></radialGradient>' +
+    '<linearGradient id="fl§" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF3DF2" stop-opacity="0"/><stop offset="0.55" stop-color="#C04BFF" stop-opacity="0.45"/><stop offset="1" stop-color="#00E5FF" stop-opacity="0"/></linearGradient>' +
+    '<rect width="200" height="200" fill="url(#hz§)"/><g opacity="0.5" filter="url(#so2§)">' + rayos + '</g><g opacity="0.8">' + rayos + '</g>' +
+    '<circle cx="100" cy="14" r="4.5" fill="#FFFFFF"/><circle cx="100" cy="14" r="16" fill="#FFFFFF" opacity="0.55" filter="url(#so2§)"/>' +
+    '<rect x="0" y="96" width="200" height="46" fill="url(#fl§)"/>' +
+    grupo('#140B26', ' opacity="0.92"') + fila(15, 120, 4.4, 0.5) + '</g>' + moviles + grupo('#050409') + fila(10, 138, 7, 0.6) + '</g><rect x="0" y="170" width="200" height="40" fill="#050409"/>';
+}
 function portPlatos() {
   return PORT_NEON.replace('y1="150" x2="0" y2="30"', 'y1="154" x2="0" y2="38"') + '<ellipse cx="100" cy="160" rx="62" ry="8" fill="#000" opacity="0.3" filter="url(#so§)"/><circle cx="96" cy="96" r="62" fill="url(#neon§)" opacity="0.55" filter="url(#so2§)"/><circle cx="96" cy="96" r="58" fill="#121216"/>' +
     [50, 44, 38, 32].map(r => '<circle cx="96" cy="96" r="' + r + '" fill="none" stroke="#2C2C34" stroke-width="1.2"/>').join('') +
@@ -3890,7 +3921,7 @@ let _portN = 0;
 /* el SVG de la portada; el texto va aparte (en el canvas) para poder usar la letra de la web */
 function portSVG(st, px, simple) {
   const o = portObj(st.obj), p = PORT_PAL[st.pal] || PORT_PAL.mostaza, suf = '_' + (++_portN);
-  const tr = st.conTexto && (st.texto || '').trim() ? 'translate(100 88) scale(0.9) translate(-100 -104)' : 'translate(100 100) scale(1.06) translate(-100 -102)';
+  const tr = o.full ? '' : st.conTexto && (st.texto || '').trim() ? 'translate(100 88) scale(0.9) translate(-100 -104)' : 'translate(100 100) scale(1.06) translate(-100 -102)';
   const cuerpo = o.s().split('SOMBRA').join(p[4]);
   return ('<svg xmlns="http://www.w3.org/2000/svg" width="' + px + '" height="' + px + '" viewBox="0 0 200 200"><defs>' + PORT_DEFS +
     '<radialGradient id="bg§" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="' + p[1] + '"/><stop offset="1" stop-color="' + p[2] + '"/></radialGradient></defs>' +
