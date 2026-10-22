@@ -1155,6 +1155,25 @@
   .po-lista button { display: flex; gap: 12px; align-items: center; text-align: left; border: 0; background: var(--surface-2); border-radius: 12px; padding: 8px; cursor: pointer; color: inherit; }
   .po-lista img, .po-sin { width: 48px; height: 48px; border-radius: 6px; object-fit: cover; flex: none; background: var(--surface-3, #ddd); }
   .po-lista b { display: block; font-size: 14px; } .po-lista small { color: var(--fg-mute); font-size: 12px; }
+  /* mejoras 2026-10-22i */
+  .fila-sec { flex-wrap: wrap; row-gap: 2px; }
+  @media (max-width: 640px) { .fila-sec h3 { flex: 1 1 auto; } }
+  .rec b em { font-style: normal; font-family: var(--f-text, inherit); font-size: 13px; font-weight: 650; color: var(--fg-soft); letter-spacing: 0; }
+  #bRec { margin-bottom: 14px; }
+  #bRec .chip { display: inline-flex; align-items: center; gap: 6px; }
+  #bRec .chip svg { width: 14px; height: 14px; opacity: .6; }
+  @media (max-width: 640px) {
+    .hero-in { flex-direction: row; align-items: center; text-align: left; gap: 14px; }
+    .hero-in > img, .hero-in > .ph { width: 112px; height: 112px; border-radius: 12px; box-shadow: 0 12px 28px rgba(0,0,0,.28); }
+    .hero h2 { font-size: 25px; -webkit-line-clamp: 2; margin: 2px 0 4px; }
+    .hero .btnrow { justify-content: flex-start; margin-top: 10px !important; }
+    .hero .bplay { width: 46px; height: 46px; }
+    .rec b { font-size: 19px; }
+    .barra { grid-template-columns: minmax(96px, 46%) 1fr auto; }
+    #mdF2, #mdF3, #mdF4 { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-left: -16px; margin-right: -16px; padding: 0 16px; }
+    #mdF2::-webkit-scrollbar, #mdF3::-webkit-scrollbar, #mdF4::-webkit-scrollbar { display: none; }
+    #mdF2 .chip, #mdF3 .chip, #mdF4 .chip { white-space: nowrap; flex: none; }
+  }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800&display=swap" rel="stylesheet">
 </head>
@@ -1206,7 +1225,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-22h';
+const VERSION = '2026-10-22i';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -3128,7 +3147,11 @@ function tarjetaMini(img, t1, t2, attrs, red) {
 }
 async function vInicio(m) {
   const h = new Date().getHours(), sal = h < 6 ? 'Buenas noches' : h < 13 ? 'Buenos días' : h < 21 ? 'Buenas tardes' : 'Buenas noches';
-  const nom = () => S.me && S.me.display_name ? ', ' + esc(S.me.display_name.split(' ')[0]) : '';
+  const nom = () => {
+    let n = PREFS.nombre || (S.me && S.me.display_name ? S.me.display_name.split(' ')[0].replace(/\d+$/, '') : '');
+    if (/\d/.test(n)) n = n.replace(/4/g, 'a').replace(/3/g, 'e').replace(/1/g, 'i').replace(/0/g, 'o');
+    return n ? ', ' + esc(n.charAt(0).toUpperCase() + n.slice(1)) : '';
+  };
   m.innerHTML = '<div class="saludo" id="inSal">' + sal + nom() + '</div><div id="inAhora"></div><div id="inTri"></div><div id="inPongo"></div><div id="inBj"></div><div id="inIdeas"></div><div id="inDia"></div><div class="atajos" id="inAtajos"></div><div id="inDiscos"></div><div id="inNuevas"></div><div id="inRec"></div><div id="inHoy"></div><div id="inCaps"></div><div id="inPls"></div><div id="inEtq"></div>';
   const vivo = () => S.tab === 'inicio' && !S.vista && $('#inAtajos');
   if (!S.me) yo().then(() => { const x = $('#inSal'); if (x) x.innerHTML = sal + nom(); }).catch(() => {});
@@ -3166,11 +3189,11 @@ async function vInicio(m) {
   const pend = md ? md.discos.filter(d => !estadoDisco(d.id) || estadoDisco(d.id) === 'Pendiente').length : null;
   const at = [
     ['likes', 'corazon', 'Me gusta', likesN ? likesN.toLocaleString('es-ES') + ' canciones' : '', 'linear-gradient(135deg,#4a2fd0,#b8a7ff)'],
-    ['decidir', 'check', 'Por decidir', 'tus playlists temporales', 'linear-gradient(135deg,#1f8a5b,#6fd6a4)'],
-    ['historia', 'reloj', 'Tu historia', 'todo lo que te ha gustado', 'linear-gradient(135deg,#7a2fd0,#ff7ab8)'],
-    ['portadas', 'imagen', 'Portadas', 'un dibujo o una foto por playlist', 'linear-gradient(135deg,#d0442f,#ffb36b)'],
-    ['misdiscos', 'disco', 'Mis discos', pend != null ? pend + ' pendientes' : 'tu lista de discos', 'linear-gradient(135deg,#c47a0a,#f4b13e)'],
-    ['escuchas', 'grafica', 'Estadísticas', 'lo que más escuchas', 'linear-gradient(135deg,#d4568a,#ff9ec4)']
+    ['decidir', 'check', 'Por decidir', (() => { const T = new Set(PREFS.temporales || []); const q = (S.playlists || []).filter(p => T.has(p.id)).reduce((a, p) => a + p.total, 0); return q ? 'quedan ' + n$(q) : 'temporales'; })(), 'linear-gradient(135deg,#1f8a5b,#6fd6a4)'],
+    ['historia', 'reloj', 'Tu historia', 'tus Me gusta', 'linear-gradient(135deg,#7a2fd0,#ff7ab8)'],
+    ['portadas', 'imagen', 'Portadas', 'dibujo o foto', 'linear-gradient(135deg,#d0442f,#ffb36b)'],
+    ['misdiscos', 'disco', 'Mis discos', pend != null ? n$(pend) + ' pendientes' : 'tu lista', 'linear-gradient(135deg,#c47a0a,#f4b13e)'],
+    ['escuchas', 'grafica', 'Estadísticas', 'tu top', 'linear-gradient(135deg,#d4568a,#ff9ec4)']
   ];
   $('#inAtajos').innerHTML = at.map(([id, ico, t, sub, bg]) => '<button class="atajo" data-a="' + id + '"><span class="ic" style="background:' + bg + '">' + ic(ico) + '</span><span><b>' + t + '</b><small>' + esc(sub) + '</small></span></button>').join('');
   $('#inAtajos').onclick = e => {
@@ -4326,7 +4349,11 @@ async function likesGuardados() {
 const artPpal = p => (p.artists[0] || {}).name || '';
 
 /* ---------------- TU HISTORIA ---------------- */
+const MUDANZA = 400;
 function historiaDe(ps) {
+  const porDia = new Map(); for (const p of ps) { const k = claveDia(p.added); porDia.set(k, (porDia.get(k) || 0) + 1); }
+  const mudanza = new Set(Array.from(porDia).filter(([, n]) => n >= MUDANZA).map(([k]) => k));
+  const meses0 = new Map(), horas0 = new Array(24).fill(0), sem0 = new Array(7).fill(0);
   const dias = new Map(), anyos = new Map(), meses = new Map(), arts = new Map(), decs = new Map();
   const horas = new Array(24).fill(0), sem = new Array(7).fill(0);
   let ms = 0, primero = Infinity;
@@ -4338,6 +4365,7 @@ function historiaDe(ps) {
     const a = artPpal(p); if (a) (arts.get(a) || arts.set(a, []).get(a)).push(p);
     const r = anyo(p); if (r > 1900) { const dc = Math.floor(r / 10) * 10; (decs.get(dc) || decs.set(dc, []).get(dc)).push(p); }
     horas[d.getHours()]++; sem[(d.getDay() + 6) % 7]++;
+    if (!mudanza.has(k)) { (meses0.get(mk) || meses0.set(mk, []).get(mk)).push(p); horas0[d.getHours()]++; sem0[(d.getDay() + 6) % 7]++; }
     ms += p.ms || 0; if (p.added < primero) primero = p.added;
   }
   /* racha: dias seguidos dando Me gusta */
@@ -4349,10 +4377,13 @@ function historiaDe(ps) {
     cur.hasta = ks[i];
     if (cur.n > racha.n) racha = Object.assign({}, cur);
   }
-  let diaTop = null; for (const [k, l] of dias) if (!diaTop || l.length > diaTop[1].length) diaTop = [k, l];
-  let mesTop = null; for (const [k, l] of meses) if (!mesTop || l.length > mesTop[1].length) mesTop = [k, l];
+  const hay = horas0.some(Boolean);
+  let diaTop = null; for (const [k, l] of dias) if ((!hay || !mudanza.has(k)) && (!diaTop || l.length > diaTop[1].length)) diaTop = [k, l];
+  let mesTop = null; for (const [k, l] of (hay ? meses0 : meses)) if (!mesTop || l.length > mesTop[1].length) mesTop = [k, l];
+  const mudN = Array.from(mudanza).reduce((a, k) => a + porDia.get(k), 0);
+  if (hay) { for (let i = 0; i < 24; i++) horas[i] = horas0[i]; for (let i = 0; i < 7; i++) sem[i] = sem0[i]; }
   const porArt = Array.from(arts.entries()).sort((a, b) => b[1].length - a[1].length);
-  return { ps, dias, anyos, meses, porArt, decs, horas, sem, ms, primero, racha, diaTop, mesTop };
+  return { ps, dias, anyos, meses, porArt, decs, horas, sem, ms, primero, racha, diaTop, mesTop, mudanza: hay ? mudanza : new Set(), mudN: hay ? mudN : 0 };
 }
 const HI = { heat: '' };
 function htmlCalor(H, anyoSel) {
@@ -4405,11 +4436,12 @@ async function vHistoria(m) {
     '<p>Desde ' + MESES_ES[desde.getMonth()] + ' de ' + desde.getFullYear() + ' · ' + n$(H.porArt.length) + ' artistas · ' + n$(horasMus) + ' horas de música' + (horasMus >= 48 ? ' (' + n$(Math.round(horasMus / 24)) + ' días sin parar)' : '') + '</p>' +
     '<div class="btnrow"><button class="btn sm pri" id="hiImg">' + ic('imagen') + 'Imagen para compartir</button><button class="btn sm" id="hiJuego">' + ic('varita') + 'Jugar con tu música</button></div></div>' +
     '<div class="records">' +
-    '<button class="rec" data-rec="racha"><small>Racha más larga</small><b>' + H.racha.n + (H.racha.n === 1 ? ' día' : ' días seguidos') + '</b><span>' + (H.racha.desde ? fechaLarga(Date.parse(H.racha.desde + 'T12:00:00')) : '') + '</span></button>' +
-    '<button class="rec" data-rec="dia"><small>Tu día récord</small><b>' + H.diaTop[1].length + (H.diaTop[1].length === 1 ? ' canción' : ' canciones') + '</b><span>' + fechaLarga(Date.parse(H.diaTop[0] + 'T12:00:00')) + '</span></button>' +
-    '<button class="rec" data-rec="mes"><small>Tu mes récord</small><b>' + H.mesTop[1].length + (H.mesTop[1].length === 1 ? ' canción' : ' canciones') + '</b><span>' + MESES_ES[+H.mesTop[0].slice(5) - 1] + ' de ' + H.mesTop[0].slice(0, 4) + '</span></button>' +
+    '<button class="rec" data-rec="racha"><small>Racha más larga</small><b>' + n$(H.racha.n) + '<em>' + (H.racha.n === 1 ? ' día' : ' días seguidos') + '</em></b><span>' + (H.racha.desde ? fechaLarga(Date.parse(H.racha.desde + 'T12:00:00')) : '') + '</span></button>' +
+    '<button class="rec" data-rec="dia"><small>Tu día récord</small><b>' + n$(H.diaTop[1].length) + '<em>' + (H.diaTop[1].length === 1 ? ' canción' : ' canciones') + '</em></b><span>' + fechaLarga(Date.parse(H.diaTop[0] + 'T12:00:00')) + '</span></button>' +
+    '<button class="rec" data-rec="mes"><small>Tu mes récord</small><b>' + n$(H.mesTop[1].length) + '<em>' + (H.mesTop[1].length === 1 ? ' canción' : ' canciones') + '</em></b><span>' + MESES_ES[+H.mesTop[0].slice(5) - 1] + ' de ' + H.mesTop[0].slice(0, 4) + '</span></button>' +
     '<button class="rec" data-rec="hora"><small>Eres ' + tipo + '</small><b>' + String(hTop).padStart(2, '0') + ':00</b><span>tu hora favorita · los ' + DIAS_ES[sTop] + ' más</span></button>' +
     '</div>' +
+    (H.mudN ? '<p class="tiny mute" style="margin:-4px 2px 12px">Los récords y tus horas no cuentan ' + (H.mudanza.size === 1 ? 'el día' : 'los ' + H.mudanza.size + ' días') + ' en que pasaste canciones de golpe (' + n$(H.mudN) + ' en total).</p>' : '') +
     '<div class="card"><div class="fila-sec"><h3>Cuándo das Me gusta</h3><span class="tiny mute" id="hiTot">' + n$(cal.total) + ' en ' + (HI.heat || 'los últimos 12 meses') + '</span></div>' +
     '<div class="chips" id="hiHeatY" style="margin-bottom:10px"><button class="chip' + (!HI.heat ? ' on' : '') + '" data-y="">Último año</button>' + anyosL.map(y => '<button class="chip' + (+HI.heat === y ? ' on' : '') + '" data-y="' + y + '">' + y + '</button>').join('') + '</div>' +
     '<div id="hiCal">' + cal.html + '</div><div class="calor-ley tiny mute">Menos <i class="l0"></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i> Más · toca un día para ver qué te gustó</div>' +
@@ -4432,7 +4464,7 @@ async function vHistoria(m) {
     if (q === 'dia') verDia(H.diaTop[0]);
     else if (q === 'mes') abrirLista('Tu mes récord: ' + MESES_ES[+H.mesTop[0].slice(5) - 1] + ' de ' + H.mesTop[0].slice(0, 4), H.mesTop[1].slice().sort((a, b) => a.added - b.added));
     else if (q === 'racha' && H.racha.desde) { const a = H.racha.desde, b = H.racha.hasta; abrirLista('Tu racha de ' + H.racha.n + ' días', ps.filter(p => { const k = claveDia(p.added); return k >= a && k <= b; }).sort((x, y) => x.added - y.added)); }
-    else if (q === 'hora') abrirLista('Te gustaron a las ' + hTop + ' h', ps.filter(p => new Date(p.added).getHours() === hTop).sort((a, b) => b.added - a.added));
+    else if (q === 'hora') abrirLista('Te gustaron a las ' + hTop + ' h', ps.filter(p => new Date(p.added).getHours() === hTop && !H.mudanza.has(claveDia(p.added))).sort((a, b) => b.added - a.added));
   };
   m.onclick = e => {
     const y = e.target.closest('.barra[data-y]'), d = e.target.closest('[data-dec]'), a = e.target.closest('[data-art]');
@@ -4804,7 +4836,7 @@ function htmlBandeja(E) {
   const n = E.pend.length, min = Math.max(1, Math.round(Math.min(n, BJ_TANDA) * 12 / 60));
   if (!n) return '<div class="bj bj-ok"><div class="bj-ic">' + ic('check') + '</div><div style="flex:1;min-width:0"><b>Bandeja al día</b><div class="tiny">' +
     (E.nuevas ? n$(E.nuevas) + ' canciones nuevas ya decididas' : 'Cuando le des al corazón a algo, aparecerá aquí') + (E.racha > 1 ? ' · 🔥 ' + E.racha + ' semanas seguidas' : '') + '</div></div><button class="btn sm ghost" id="bjMas">' + ic('mas') + '</button></div>';
-  return '<div class="bj"><div class="bj-eti">Tu bandeja' + (E.racha > 1 ? ' · 🔥 ' + E.racha + ' semanas' : '') + '</div><div class="bj-fila"><div class="bj-n">' + n$(n) + '</div><div style="flex:1;min-width:0"><b>' + (n === 1 ? 'canción nueva por decidir' : 'canciones nuevas por decidir') + '</b><div class="tiny">Lo de antes (' + n$(E.archivo) + ') es tu archivo: de ahí salen las ideas de playlists, sin tener que repasarlo.</div></div></div>' +
+  return '<div class="bj"><div class="bj-eti">Nuevas en Me gusta' + (E.racha > 1 ? ' · 🔥 ' + E.racha + ' semanas' : '') + '</div><div class="bj-fila"><div class="bj-n">' + n$(n) + '</div><div style="flex:1;min-width:0"><b>' + (n === 1 ? 'canción nueva sin ordenar' : 'canciones nuevas sin ordenar') + '</b><div class="tiny">' + (E.archivo ? 'Las ' + n$(E.archivo) + ' de antes son tu archivo y se quedan como están.' : 'Ordénalas en tandas cortas, sin agobios.') + '</div></div></div>' +
     '<div class="btnrow" style="margin-top:12px"><button class="btn pri" id="bjGo">' + ic('play') + 'Ordenar ' + Math.min(n, BJ_TANDA) + ' · ~' + min + ' min</button><button class="btn sm ghost" id="bjMas">' + ic('mas') + '</button></div></div>';
 }
 async function pintarBandeja(vivo) {
@@ -8248,9 +8280,15 @@ function vBuscar(m) {
     '<div id="bL" class="locales"></div><div id="bR"></div>';
   $('#bQ').oninput = () => { clearTimeout(B._t); B._t = setTimeout(() => buscarLocal($('#bQ').value), 140); };
   if (B.q) buscarLocal(B.q);
-  $('#bF').onsubmit = e => { e.preventDefault(); B.q = $('#bQ').value.trim(); B.res = null; lanzarBusqueda(); };
+  const recordar = q => { if (!q) return; PREFS.busRec = [q].concat((PREFS.busRec || []).filter(x => fold(x) !== fold(q))).slice(0, 8); guardarPrefs(); };
+  $('#bF').onsubmit = e => { e.preventDefault(); B.q = $('#bQ').value.trim(); B.res = null; recordar(B.q); lanzarBusqueda(); };
   $('#bT').onclick = e => { const c = e.target.closest('[data-t]'); if (!c) return; B.tipo = c.dataset.t; B.res = null; render(); if (B.q) lanzarBusqueda(); };
-  if (B.res) pintarResultados(); else if (!B.q) $('#bR').innerHTML = '<div class="vacio">Truco: <b>artist:"Nombre"</b> busca solo de ese artista; <b>year:1990-1999</b> por años; <b>genre:salsa</b> por género.</div>';
+  const rec = PREFS.busRec || [];
+  if (B.res) pintarResultados(); else if (!B.q) $('#bR').innerHTML = (rec.length ? '<div class="fila-sec"><h3>Buscaste hace poco</h3><button id="bRecX">Borrar</button></div><div class="chips" id="bRec">' + rec.map((q, i) => '<button class="chip" data-r="' + i + '">' + ic('reloj') + esc(q) + '</button>').join('') + '</div>' : '') + '<div class="vacio">Truco: <b>artist:"Nombre"</b> busca solo de ese artista; <b>year:1990-1999</b> por años; <b>genre:salsa</b> por género.</div>';
+  if (rec.length && !B.q && !B.res) {
+    $('#bRec').onclick = e => { const c = e.target.closest('[data-r]'); if (!c) return; B.q = rec[+c.dataset.r]; $('#bQ').value = B.q; B.res = null; recordar(B.q); buscarLocal(B.q); lanzarBusqueda(); };
+    $('#bRecX').onclick = () => { PREFS.busRec = []; guardarPrefs(); render(); };
+  }
   if (!B.q) setTimeout(() => { const q = $('#bQ'); if (q) q.focus(); }, 50);
 }
 let _libLocal = null;
