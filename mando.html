@@ -86,6 +86,29 @@
     -webkit-tap-highlight-color: transparent;
   }
   .tab.on { background: var(--fg); color: var(--bg); }
+  .ftool { gap: 8px; }
+  .fbusca { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; background: var(--surface); border-radius: 999px; padding: 0 14px; height: 42px; box-shadow: var(--shadow-sm); color: var(--fg-mute); }
+  .fbusca svg { width: 18px; height: 18px; flex: none; }
+  .fbusca input { flex: 1; min-width: 0; border: 0; background: none; outline: none; font: inherit; font-size: 15px; color: var(--fg); height: 100%; }
+  .fbusca:focus-within { box-shadow: 0 0 0 2px var(--amber); }
+  .forden { flex: none; position: relative; display: flex; align-items: center; gap: 6px; background: var(--surface); border-radius: 999px; padding: 0 12px; height: 42px; box-shadow: var(--shadow-sm); color: var(--fg-soft); max-width: 46%; }
+  .forden svg { width: 17px; height: 17px; flex: none; }
+  .forden select { border: 0; background: none; font: inherit; font-weight: 650; font-size: 14px; color: var(--fg); outline: none; cursor: pointer; min-width: 0; appearance: none; -webkit-appearance: none; padding-right: 2px; }
+  .selbar { gap: 8px; }
+  .selbar .chip { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px; border-radius: 999px; background: var(--surface); color: var(--fg); box-shadow: var(--shadow-sm); font-weight: 650; font-size: 14px; }
+  .selbar .chip svg { width: 16px; height: 16px; }
+  .selbar .chip.fuerte { background: var(--amber); color: var(--on-amber); }
+  .selbar .chip.on { background: var(--fg); color: var(--bg); }
+  .selbar .chip.sisel { background: var(--surface-2); box-shadow: none; }
+  .selbar:not(.consel) .sisel { display: none; }
+  .ayuda { font-size: 12.5px; color: var(--fg-soft); padding: 8px 12px; box-shadow: none !important; background: var(--surface-2) !important; }
+  .chip .n { font-size: 11px; font-weight: 700; margin-left: 6px; padding: 1px 7px; border-radius: 999px; background: color-mix(in srgb, currentColor 12%, transparent); opacity: .85; }
+  .elchips .chip b.n { margin-left: 6px; opacity: .85; }
+  .elsec, #fzC .lbl { font-size: 11.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--fg-mute); margin: 18px 0 8px; padding-top: 14px; border-top: 1px solid var(--line); }
+  #fzC > .lbl:first-child { border-top: 0; padding-top: 0; margin-top: 6px; }
+  #fzC .chips, .elchips { max-height: 168px; overflow-y: auto; gap: 7px; padding: 2px; }
+  #fzC .herr .field { border-radius: 999px; }
+  .btnrow:has(#fzCrear) { flex-wrap: nowrap; } #fzQuitar { flex: none; padding-left: 12px; padding-right: 12px; } #fzCrear, #fzSel { white-space: nowrap; }
   .tabsep { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--fg-mute); padding: 16px 12px 4px; }
   .tab.tmas { font-size: 13.5px; padding-top: 7px; padding-bottom: 7px; }
   .dc-res .dc-num { font-size: 16px; margin-bottom: 8px; } .dc-res .dc-num b { font-size: 28px; font-weight: 800; }
@@ -1180,7 +1203,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-22d';
+const VERSION = '2026-10-22e';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -6922,9 +6945,9 @@ async function pintarFuente(m, f, cargar) {
     if (S.fuente !== f) return;
   }
   m.innerHTML = cabFuente(f) +
-    '<div class="herr"><input class="field" id="fQ" type="search" placeholder="Filtrar ' + f.pistas.length + ' canciones" value="' + esc(S.filtro) + '">' +
-    '<select class="field" id="fO">' + [['', f.kind === 'playlist' || f.kind === 'album' ? 'Su orden' : 'Recientes'], ['title', 'Título'], ['artist', 'Artista'], ['album', 'Disco'], ['year', 'Año ↓'], ['yearA', 'Año ↑'], ['ms', 'Duración'], ['added', 'Añadida ↓'], ['addedA', 'Añadida ↑']]
-      .filter(o => f.kind !== 'album' || o[0].indexOf('added') < 0).map(o => '<option value="' + o[0] + '"' + (S.orden === o[0] ? ' selected' : '') + '>' + o[1] + '</option>').join('') + '</select></div>' +
+    '<div class="herr ftool"><label class="fbusca">' + ic('buscar') + '<input id="fQ" type="search" placeholder="Buscar" value="' + esc(S.filtro) + '"></label>' +
+    '<label class="forden">' + ic('ordenar') + '<select id="fO" aria-label="Ordenar">' + [['', f.kind === 'playlist' || f.kind === 'album' ? 'Su orden' : 'Recientes'], ['title', 'Título'], ['artist', 'Artista'], ['album', 'Disco'], ['year', 'Año ↓'], ['yearA', 'Año ↑'], ['ms', 'Duración'], ['added', 'Añadida ↓'], ['addedA', 'Añadida ↑']]
+      .filter(o => f.kind !== 'album' || o[0].indexOf('added') < 0).map(o => '<option value="' + o[0] + '"' + (S.orden === o[0] ? ' selected' : '') + '>' + o[1] + '</option>').join('') + '</select></label></div>' +
     '<div class="selbar" id="selbar"></div><div class="vlist" id="vlist"></div>';
   enganchaCab(m, f); tintar(m);
   $('#fQ').oninput = e => { S.filtro = e.target.value; recalcular(); };
@@ -7169,14 +7192,13 @@ const seleccionadas = () => S.fuente && S.fuente.pistas ? S.fuente.pistas.filter
 function pintarSelbar() {
   const el = $('#selbar'); if (!el) return;
   const f = S.fuente;
-  const b = [['elegir', ic('filtro') + ' Elegir por…', 'fuerte'], ['repasar', ic('play') + ' Repasar una a una', 'fuerte'], ['todo', 'Todas' + (S.filtro ? ' las filtradas' : '')], ['nada', 'Ninguna'], ['inv', 'Invertir'], ['solo', S.soloSel ? '✓ Solo marcadas' : 'Ver solo marcadas', S.soloSel ? 'on' : ''], ['rep', 'Repetidas']];
-  if (f.pistas.some(p => p.added)) b.push(['viejas', 'De hace +6 meses']);
-  if (f.kind !== 'likes') b.push(['nolike', 'Sin ♥']);
-  if (f.kind !== 'playlist') b.push(['sinpl', 'Sin playlist']);
+  const b = [['repasar', ic('play') + 'Repasar', 'fuerte'], ['elegir', ic('filtro') + 'Elegir'], ['rep', ic('repes') + 'Repetidas'], ['marcar', ic('check') + 'Marcar'],
+    ['solo', S.soloSel ? '✓ Solo marcadas' : 'Ver marcadas', 'sisel' + (S.soloSel ? ' on' : '')], ['nada', '✕ Desmarcar', 'sisel']];
   el.innerHTML = b.map(x => '<button class="chip' + (x[2] ? ' ' + x[2] : '') + '" data-s="' + x[0] + '">' + x[1] + '</button>').join('');
+  el.classList.toggle('consel', S.sel.size > 0 || !!S.soloSel);
   const ay = $('#ayudaSel');
   if (!PREFS.ayudaSel && !ay) {
-    el.insertAdjacentHTML('beforebegin', '<div class="ayuda" id="ayudaSel"><span>👆 <b>Para marcar muchas:</b> desliza el dedo hacia abajo por los círculos de la izquierda. O toca una y <b>mantén pulsada</b> otra: se marcan todas las de en medio. «Elegir por…» marca por artista, disco, año, ♥… <b>Desliza una canción</b> → para añadirla a tu playlist de siempre, ← para quitarla.</span><button aria-label="Cerrar">✕</button></div>');
+    el.insertAdjacentHTML('beforebegin', '<div class="ayuda" id="ayudaSel"><span>Desliza el dedo por los círculos para marcar muchas. Una canción hacia → la añade a tu playlist de siempre; hacia ← la quita.</span><button aria-label="Cerrar">✕</button></div>');
     $('#ayudaSel button').onclick = () => { PREFS.ayudaSel = 1; guardarPrefs(); $('#ayudaSel').remove(); };
   }
   el.onclick = async e => {
@@ -7184,6 +7206,22 @@ function pintarSelbar() {
     const s = c.dataset.s;
     if (s === 'elegir') return hojaElegirPor(f);
     if (s === 'repasar') return repasar(f);
+    if (s === 'rep' && (f.kind === 'likes' || (f.kind === 'playlist' && f.editable))) return quitarRepetidas(f);
+    if (s === 'marcar') {
+      const ops = [['todo', 'Todas' + (S.filtro ? ' las de la búsqueda' : ''), 'check'], ['inv', 'Invertir lo marcado', 'aleat']];
+      if (f.pistas.some(p => p.added)) ops.push(['viejas', 'Añadidas hace más de 6 meses', 'reloj']);
+      if (f.kind !== 'likes') ops.push(['nolike', 'Las que no están en Me gusta', 'corazonRoto']);
+      if (f.kind !== 'playlist') ops.push(['sinpl', 'Las que no están en ninguna playlist', 'lista']);
+      if (!(f.kind === 'likes' || (f.kind === 'playlist' && f.editable))) ops.push(['rep', 'Repetidas (se queda la primera)', 'repes']);
+      hoja('<h2>Marcar</h2><div class="opc">' + ops.map(o => '<button data-m="' + o[0] + '">' + ic(o[2]) + '<span>' + o[1] + '</span></button>').join('') + '</div>', h => {
+        h.querySelector('.opc').onclick = ev => {
+          const x = ev.target.closest('[data-m]'); if (!x) return;
+          cerrarHoja(true);
+          const t = document.createElement('button'); t.dataset.s = x.dataset.m; t.hidden = true; el.appendChild(t); t.click(); t.remove();
+        };
+      });
+      return;
+    }
     if (s === 'solo') { S.soloSel = !S.soloSel; pintarSelbar(); recalcular(); pintarAccion(); scrollTo(0, Math.min(scrollY, ($('#vlist').offsetTop || 0) - 150)); return; }
     if (s === 'sinpl') {
       const ix = await trabajo(() => indice(), 'Mirando tus playlists');
@@ -7219,7 +7257,7 @@ function pintarSelbar() {
    todas las canciones que cumplen algo. El contador de abajo va en directo. */
 function hojaElegirPor(f) {
   const vs = S.visibles.slice();
-  const chips = (g, pares, nom) => pares.map(([k, n]) => '<button class="chip" data-g="' + g + '" data-v="' + esc(k) + '">' + esc(nom ? nom(k) : k) + '<b>' + n + '</b></button>').join('');
+  const chips = (g, pares, nom) => pares.map(([k, n]) => '<button class="chip" data-g="' + g + '" data-v="' + esc(k) + '">' + esc(nom ? nom(k) : k) + '<b class="n">' + n + '</b></button>').join('');
   const arts = contar(vs, p => p.artists.map(a => a.name));
   const discos = contar(vs, p => p.album || null);
   const decs = contar(vs, p => decadaDe(p) == null ? 'x' : String(decadaDe(p))).sort((a, b) => a[0].localeCompare(b[0]));
@@ -7334,6 +7372,7 @@ function marcadorRepes() {
 
 /* ---------------- barra de acciones ---------------- */
 function pintarAccion() {
+  const sb = $('#selbar'); if (sb) sb.classList.toggle('consel', S.sel.size > 0 || !!S.soloSel);
   const el = $('#accion');
   if (S.fuente && S.sel.size && (S.vista || S.tab === 'likes')) {
     const f = S.fuente;
@@ -7840,8 +7879,12 @@ function gruposRepetidas(ps) {
 async function hojaRepesLikes(f) {
   let ps = f && f.pistas ? f.pistas : (S.likes && S.likes.length ? S.likes : await likesGuardados());
   if (!ps || !ps.length) { toast('Primero abre Me gusta para que se carguen'); irATab('likes'); return; }
+  /* también sirve para una playlist tuya: la misma canción dos veces exacta
+     se quita sin preguntar; las versiones distintas las eliges tú */
+  const esPl = !!(f && f.kind === 'playlist'), donde = esPl ? 'de la playlist' : 'de Me gusta';
+  const vistos = new Set(), exactas = esPl ? ps.filter(p => !p.local && (vistos.has(p.uri) || !vistos.add(p.uri))) : [];
   const G = gruposRepetidas(ps);
-  if (!G.length) { toast('No tienes canciones repetidas en Me gusta'); return; }
+  if (!G.length && !exactas.length) { toast(esPl ? 'No hay repetidas en «' + f.name + '»' : 'No tienes canciones repetidas en Me gusta'); return; }
   /* cada canción se marca por separado: puedes quedarte una, varias o todas */
   const queda = G.map(g => new Set([g[0].uri]));
   const tipoTxt = p => p.albumType === 'compilation' ? 'recopilatorio' : p.albumType === 'single' ? 'single' : 'disco';
@@ -7853,12 +7896,14 @@ async function hojaRepesLikes(f) {
     caja.querySelectorAll('.rep-i').forEach(x => { const si = queda[i].has(x.dataset.u); x.className = 'rep-i ' + (si ? 'si' : 'no'); x.querySelector('.est').textContent = si ? 'Se queda' : 'Fuera'; });
     const t = caja.querySelector('[data-todas]'); if (t) t.textContent = queda[i].size === G[i].length ? '✓ Me quedo todas' : 'Son versiones distintas: quedarme todas';
   };
-  const botonOk = h => { const n = contarFuera(); const b = h.querySelector('#repOk'); b.textContent = n ? 'Quitar ' + n + ' de Me gusta' : 'Listo, no quitar nada'; };
-  hoja('<h2>Repetidas en Me gusta</h2><p class="soft"><b>' + G.length + '</b>' + (G.length === 1 ? ' canción parece estar' : ' canciones parecen estar') + ' dos veces o más (otra edición, el single y el disco, un recopilatorio…). <b>Toca cada una</b> para cambiar entre «Se queda» y «Fuera»: puedes quedarte varias o todas.</p>' +
+  const botonOk = h => { const n = contarFuera() + exactas.length; const b = h.querySelector('#repOk'); b.textContent = n ? 'Quitar ' + n + ' ' + donde : 'Listo, no quitar nada'; };
+  hoja('<h2>Repetidas en ' + (esPl ? '«' + esc(f.name) + '»' : 'Me gusta') + '</h2>' +
+    (exactas.length ? '<div class="aviso" style="margin-bottom:10px"><b>' + exactas.length + (exactas.length === 1 ? ' canción está' : ' canciones están') + ' dos veces exactamente igual</b>De esas se deja una sola, sin preguntar.</div>' : '') +
+    (G.length ? '<p class="soft"><b>' + G.length + '</b>' + (G.length === 1 ? ' canción parece estar' : ' canciones parecen estar') + ' dos veces o más (otra edición, el single y el disco, un recopilatorio…). <b>Toca cada una</b> para cambiar entre «Se queda» y «Fuera»: puedes quedarte varias o todas. Con ▶ la escuchas.</p>' : '') +
     (ps._parcial ? '<div class="aviso" style="margin-bottom:10px"><b>Aún se están cargando tus Me gusta</b>Puede que falten algunas repetidas; vuelve a mirar cuando termine.</div>' : '') +
     '<div id="repL">' + G.map((g, i) => '<div class="rep-g" data-gi="' + i + '"><h4>' + esc(artPpal(g[0])) + ' — ' + esc(g[0].title) + '</h4>' + g.map(p => fila(p, i)).join('') + '<button class="btn sm ghost rep-dist" data-todas="' + i + '">Son versiones distintas: quedarme todas</button></div>').join('') + '</div>' +
     '<button class="btn pri wide" id="repOk" style="position:sticky;bottom:0;margin-top:8px">Quitar</button>' +
-    '<p class="tiny mute" style="text-align:center">Solo se quitan de Me gusta las marcadas como «Fuera». Las que te quedes todas no te las volveré a enseñar. Se puede deshacer en Cambios.</p>', h => {
+    '<p class="tiny mute" style="text-align:center">Solo se quitan ' + donde + ' las marcadas como «Fuera». Las que te quedes todas no te las volveré a enseñar. Se puede deshacer en Cambios.</p>', h => {
       botonOk(h);
       h.querySelector('#repL').onclick = e => {
         const pb = e.target.closest('[data-play]'); if (pb) { e.stopPropagation(); reproducir({ uris: [pb.dataset.play] }); return; }
@@ -7880,6 +7925,13 @@ async function hojaRepesLikes(f) {
         if (nuevas) { if (D.length > 3000) D.splice(0, D.length - 3000); guardarPrefs(); }
         const fuera = []; G.forEach((g, i) => g.forEach(p => { if (!queda[i].has(p.uri)) fuera.push(p.uri); }));
         cerrarHoja(true);
+        if (esPl) {
+          if (S.fuente !== f) { toast('Vuelve a abrir la playlist y repite'); return; }
+          const fu = new Set(fuera), ex = new Set(exactas), l = exactas.concat(ps.filter(p => fu.has(p.uri) && !ex.has(p)));
+          if (!l.length) { toast(nuevas ? 'Apuntado: esas no te las volveré a enseñar como repetidas' : 'No se ha quitado nada'); return; }
+          await quitarDeFuente(l, true, l.length + ' repetidas quitadas de «' + f.name + '»');
+          return;
+        }
         if (!fuera.length) { toast(nuevas ? 'Apuntado: esas no te las volveré a enseñar como repetidas' : 'No se ha quitado nada'); return; }
         const ok = await trabajo(async () => { await libQuitar(fuera, 'Quitando repetidas de Me gusta'); apuntar(fuera.length + ' repetidas quitadas de Me gusta', { t: 'libPoner', uris: fuera }); return true; }, 'Quitando repetidas');
         if (!ok) return;
@@ -7893,7 +7945,7 @@ async function hojaRepesLikes(f) {
     });
 }
 async function quitarRepetidas(f) {
-  if (f && f.kind === 'likes') return hojaRepesLikes(f);
+  if (f && (f.kind === 'likes' || (f.kind === 'playlist' && f.editable))) return hojaRepesLikes(f);
   const esRep = marcadorRepes(), fuera = f.pistas.filter(esRep);
   if (!fuera.length) { toast('No hay repetidas'); return; }
   S.sel = new Set(fuera.map(p => p.k)); recalcular(); pintarAccion();
@@ -9067,7 +9119,7 @@ function hojaFuente(f) {
       ed ? b('crearPortada', 'varita', 'Crear portada', 'dibujo o foto, con el estilo de las demás') : '',
       b('exportar', 'bajar', 'Exportar a Excel', 'o a texto, con el enlace de cada canción'),
       ed ? b('ordenar', 'ordenar', 'Ordenar', 'título, artista, año, duración…') : '',
-      ed ? b('repes', 'repes', 'Quitar repetidas', 'también otras ediciones de la misma canción') : lk ? b('repes', 'repes', 'Revisar repetidas', 'la misma canción dos veces') : ''
+      ed ? b('repes', 'repes', 'Quitar repetidas', 'eliges qué versión se queda y cuál se va') : lk ? b('repes', 'repes', 'Revisar repetidas', 'la misma canción dos veces') : ''
     ]) +
     '<details class="masopc"><summary>Más opciones</summary>' +
     sec('Crear', [
@@ -9360,7 +9412,7 @@ async function hojaFiltrar(f) {
     return true;
   };
   const pinta = h => {
-    const chips = (grupo, pares, nombre) => pares.map(([k, n]) => '<button class="chip' + (F[grupo].has(String(k)) ? ' on' : '') + '" data-g="' + grupo + '" data-k="' + esc(String(k)) + '">' + esc(nombre ? nombre(k) : k) + ' <span style="opacity:.6;font-weight:400">' + n + '</span></button>').join('');
+    const chips = (grupo, pares, nombre) => pares.map(([k, n]) => '<button class="chip' + (F[grupo].has(String(k)) ? ' on' : '') + '" data-g="' + grupo + '" data-k="' + esc(String(k)) + '">' + esc(nombre ? nombre(k) : k) + '<b class="n">' + n + '</b></button>').join('');
     const base = g => ps.filter(p => cumple(p, g));
     const decs = contar(base('dec'), p => String(decadaDe(p))).sort((a, b) => a[0] < b[0] ? -1 : 1);
     const falt = faltanGeneros(ps).length;
@@ -9379,7 +9431,7 @@ async function hojaFiltrar(f) {
         const pares = contar(base('eq:' + gg), p => Array.from(etiquetasCancion(p)[gg] || [])).slice(0, gg === 'sub' ? 40 : 50);
         if (!pares.length) return '';
         const on = F.eq[gg] || new Set();
-        return '<label class="lbl">' + esc(t) + '</label><div class="chips">' + pares.map(([k, n]) => '<button class="chip' + (on.has(k) ? ' on' : '') + '" data-g="eq" data-gg="' + gg + '" data-k="' + esc(k) + '">' + esc(k) + ' <span style="opacity:.6;font-weight:400">' + n + '</span></button>').join('') + '</div>';
+        return '<label class="lbl">' + esc(t) + '</label><div class="chips">' + pares.map(([k, n]) => '<button class="chip' + (on.has(k) ? ' on' : '') + '" data-g="eq" data-gg="' + gg + '" data-k="' + esc(k) + '">' + esc(k) + '<b class="n">' + n + '</b></button>').join('') + '</div>';
       }).join('') +
       '<label class="lbl">Artista</label><div class="chips">' + chips('art', arts) + '</div>' +
       '<label class="lbl">Duración (minutos)</label><div class="herr" style="margin:0"><input class="field" data-c="min" inputmode="decimal" placeholder="más de" value="' + F.min + '"><input class="field" data-c="max" inputmode="decimal" placeholder="menos de" value="' + F.max + '"></div>' +
