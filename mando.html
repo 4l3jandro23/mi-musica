@@ -1166,7 +1166,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-22b';
+const VERSION = '2026-10-22c';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -5575,12 +5575,14 @@ let RP = null;
 /* botones del repaso: tus playlists menos las que ocultes, y ♥ Me gusta si no repasas Me gusta */
 const ME_GUSTA_DEST = { id: '__megusta', name: '♥ Me gusta', total: 0 };
 function destRepaso(f, pls) {
-  if (!Array.isArray(PREFS.repasoNo)) {
+  if (PREFS.repasoNoV !== 2 && pls.length) {
+    /* la primera vez se hizo con la lista de playlists vacía por un fallo de Spotify: se repite */
     const no = /^(albums|the beatles|mis pistas de shazam|goosebumps|work from home)/i;
-    PREFS.repasoNo = pls.filter(p => esMia(p) && no.test(p.name)).map(p => p.id); guardarPrefs();
+    PREFS.repasoNo = Array.from(new Set((PREFS.repasoNo || []).concat(pls.filter(p => esMia(p) && no.test(p.name)).map(p => p.id)))); PREFS.repasoNoV = 2; guardarPrefs();
   }
+  const temp = new Set(PREFS.temporales || []);
   const rec = PREFS.recientes || [], pos = id => { const i = rec.indexOf(id); return i < 0 ? 99 : i; }, crit = PREFS.criterios || {}, ocultas = new Set(PREFS.repasoNo);
-  const l = pls.filter(p => esMia(p) && !ocultas.has(p.id) && !(f.kind === 'playlist' && p.id === f.id) && !(f.kind === 'likes' && (p.id === PREFS.plOlvido || p.id === PREFS.plEpoca))).sort((a, b) => (!!crit[b.id] - !!crit[a.id]) || pos(a.id) - pos(b.id) || b.total - a.total).slice(0, 6);
+  const l = pls.filter(p => esMia(p) && !ocultas.has(p.id) && !temp.has(p.id) && !(f.kind === 'playlist' && p.id === f.id) && !(f.kind === 'likes' && (p.id === PREFS.plOlvido || p.id === PREFS.plEpoca))).sort((a, b) => (!!crit[b.id] - !!crit[a.id]) || pos(a.id) - pos(b.id) || b.total - a.total).slice(0, 6);
   return f.kind === 'likes' ? l : [ME_GUSTA_DEST].concat(l);
 }
 async function hojaBotonesRepaso() {
@@ -6701,6 +6703,7 @@ function pintarRepaso(m) {
     (!RP.moods ? '<button class="btn sm ghost" id="rpBot" style="margin:0 auto 6px;display:flex">' + ic('ajustes') + 'Elegir botones</button>' : '') +
     (RP.bandeja && !Object.keys(CR).length ? '<button class="btn sm ghost" id="rpCrit" style="margin:0 auto 6px;display:flex">' + ic('lapiz') + 'Escribe qué va en cada playlist</button>' : '') +
     '<div class="nav"><button class="btn" id="rpAnt"' + (RP.i ? '' : ' disabled') + '>← Anterior</button><button class="btn" id="rpPlay">' + ic('play') + 'Escuchar</button><button class="btn pri" id="rpSig">Siguiente →</button></div>' +
+    (RP.f.kind === 'playlist' && RP.f.editable && !RP.moods ? '<label class="check tiny" style="justify-content:center"><input type="checkbox" id="rpTemp"' + ((PREFS.temporales || []).indexOf(RP.f.id) >= 0 ? ' checked' : '') + '> Playlist temporal: lo que mandes a Me gusta u otra playlist sale de aquí</label>' : '') +
     '<label class="check tiny" style="justify-content:center"><input type="checkbox" id="rpAuto"' + (PREFS.rpAuto ? ' checked' : '') + '> Que suene cada canción al pasar</label>' +
     (!S.indice ? '<button class="btn sm ghost" id="rpIx" style="margin-top:6px">' + ic('lista') + '¿En qué playlists está cada una?</button>' : '') +
     '<div class="pie"><button class="btn pri wide" id="rpAp"' + (cambiosRepaso() ? '' : ' disabled') + '>' + ic('check') + 'Aplicar ' + cambiosRepaso() + ' cambios en Spotify</button></div></div>';
@@ -6713,6 +6716,7 @@ function pintarRepaso(m) {
   const ix = $('#rpIx'); if (ix) ix.onclick = async () => { if (await trabajo(() => indice(), 'Mirando tus playlists')) render(); };
   const rc = $('#rpCrit'); if (rc) rc.onclick = hojaCriterios;
   const rb = $('#rpBot'); if (rb) rb.onclick = hojaBotonesRepaso;
+  const rt = $('#rpTemp'); if (rt) rt.onchange = e => { const t = new Set(PREFS.temporales || []); e.target.checked ? t.add(RP.f.id) : t.delete(RP.f.id); PREFS.temporales = Array.from(t); guardarPrefs(); };
   m.querySelector('.dest').onclick = e => {
     const b = e.target.closest('button'); if (!b) return;
     const dd = decDe(p);
@@ -6744,6 +6748,7 @@ async function aplicarRepaso() {
     for (const id of d.pl) { if (!porPl.has(id)) porPl.set(id, []); porPl.get(id).push(p.uri); }
     for (const id of (d.sacar || [])) { if (!porSacar.has(id)) porSacar.set(id, []); porSacar.get(id).push(p.uri); }
     if (d.fuera) fuera.push(p);
+    else if (d.pl.size && f.kind === 'playlist' && f.editable && (PREFS.temporales || []).indexOf(f.id) >= 0) fuera.push(p);
     else if (d.olvido && f.kind === 'likes') olvido.push(p);
   }
   const hechos = [];
