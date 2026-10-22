@@ -86,6 +86,20 @@
     -webkit-tap-highlight-color: transparent;
   }
   .tab.on { background: var(--fg); color: var(--bg); }
+  .tabsep { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--fg-mute); padding: 16px 12px 4px; }
+  .tab.tmas { font-size: 13.5px; padding-top: 7px; padding-bottom: 7px; }
+  .dc-res .dc-num { font-size: 16px; margin-bottom: 8px; } .dc-res .dc-num b { font-size: 28px; font-weight: 800; }
+  .dc-res .btnrow { margin-top: 12px; flex-wrap: wrap; }
+  .dc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 18px 14px; margin-top: 16px; }
+  .dc-pl { display: flex; flex-direction: column; gap: 4px; text-align: left; border: 0; background: none; padding: 0; cursor: pointer; color: inherit; font: inherit; min-width: 0; }
+  .dc-pl img, .dc-pl .dc-sin { display: grid; place-items: center; width: 100%; height: auto; aspect-ratio: 1; border-radius: 10px; object-fit: cover; box-shadow: var(--shadow-sm); background: var(--surface-2); color: var(--fg-mute); }
+  .dc-pl .dc-sin svg { width: 36%; height: 36%; }
+  .dc-pl b { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 4px; } .dc-pl small { color: var(--fg-mute); font-size: 12px; }
+  .dc-pl .tr-barra { height: 5px; margin: 2px 0 0; }
+  .dc-lista label.check { display: flex; padding: 9px 4px; gap: 10px; align-items: center; }
+  details.masopc > summary { cursor: pointer; font-weight: 700; color: var(--fg-soft); padding: 14px 4px 6px; list-style: none; }
+  details.masopc > summary::-webkit-details-marker { display: none; }
+  details.masopc > summary::before { content: '▸ '; } details.masopc[open] > summary::before { content: '▾ '; }
   .tab:active { transform: scale(0.97); }
 
   main { max-width: 900px; margin: 0 auto; padding: 12px 14px; }
@@ -1166,7 +1180,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-22c';
+const VERSION = '2026-10-22d';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2168,26 +2182,29 @@ function aplicarCfg() {
   }).catch(() => {});
 }
 
+/* delante lo que usas ahora; lo demás bajo «Más» (2026-10-22). «Tu música» (casas)
+   sigue existiendo, pero ya no está en el menú. */
 const TABS = [
   { id: 'inicio', txt: 'Inicio', ic: 'casa' },
-  { id: 'casas', txt: 'Tu música', ic: 'nota' },
-  { id: 'playlists', txt: 'Playlists', ic: 'lista' },
+  { id: 'decidir', txt: 'Por decidir', ic: 'check' },
   { id: 'likes', txt: 'Me gusta', ic: 'corazon' },
-  { id: 'misdiscos', txt: 'Mis discos', ic: 'disco' },
-  { id: 'discos', txt: 'Discos guardados', ic: 'disco' },
-  { id: 'artistas', txt: 'Seguidos', ic: 'persona' },
-  { id: 'mis', txt: 'Mis artistas', ic: 'estrella' },
-  { id: 'buscar', txt: 'Buscar', ic: 'buscar' },
-  { id: 'escuchas', txt: 'Estadísticas', ic: 'grafica' },
+  { id: 'playlists', txt: 'Playlists', ic: 'lista' },
   { id: 'historia', txt: 'Tu historia', ic: 'reloj' },
   { id: 'historias', txt: 'Historias de la música', ic: 'libro', url: 'historias.html' },
   { id: 'portadas', txt: 'Portadas', ic: 'imagen' },
-  { id: 'cambios', txt: 'Cambios', ic: 'deshacer' }
+  { id: 'buscar', txt: 'Buscar', ic: 'buscar' },
+  { id: 'misdiscos', txt: 'Mis discos', ic: 'disco', mas: true },
+  { id: 'discos', txt: 'Discos guardados', ic: 'disco', mas: true },
+  { id: 'artistas', txt: 'Seguidos', ic: 'persona', mas: true },
+  { id: 'mis', txt: 'Mis artistas', ic: 'estrella', mas: true },
+  { id: 'escuchas', txt: 'Estadísticas', ic: 'grafica', mas: true },
+  { id: 'cambios', txt: 'Cambios', ic: 'deshacer', mas: true }
 ];
 /* En el movil: cuatro pestañas principales abajo y «Más» con el resto */
-const PRINCIPALES = ['inicio', 'casas', 'playlists', 'misdiscos'];
+const PRINCIPALES = ['inicio', 'decidir', 'likes', 'playlists'];
 function pintarTabs() {
-  $('#tabs').innerHTML = TABS.map(t => '<button class="tab' + (S.tab === t.id ? ' on' : '') + '" data-t="' + t.id + '">' + ic(t.ic) + t.txt + '</button>').join('');
+  const tb = t => '<button class="tab' + (t.mas ? ' tmas' : '') + (S.tab === t.id ? ' on' : '') + '" data-t="' + t.id + '">' + ic(t.ic) + t.txt + '</button>';
+  $('#tabs').innerHTML = TABS.filter(t => !t.mas).map(tb).join('') + '<div class="tabsep">Más</div>' + TABS.filter(t => t.mas).map(tb).join('');
   const otra = PRINCIPALES.indexOf(S.tab) < 0;
   $('#bnav').innerHTML = PRINCIPALES.map(id => { const t = TABS.find(x => x.id === id); return '<button class="' + (S.tab === id ? 'on' : '') + '" data-t="' + id + '">' + ic(t.ic) + '<span>' + (id === 'misdiscos' ? 'Discos' : t.txt) + '</span></button>'; }).join('') +
     '<button class="' + (otra ? 'on' : '') + '" data-t="_mas">' + ic(otra ? (TABS.find(x => x.id === S.tab) || {}).ic || 'mas' : 'mas') + '<span>' + (otra ? (TABS.find(x => x.id === S.tab) || {}).txt || 'Más' : 'Más') + '</span></button>';
@@ -2203,15 +2220,7 @@ $('#bnav').onclick = e => {
   if (b.dataset.t !== '_mas') return irATab(b.dataset.t);
   hoja('<h2>Más</h2><div class="opc">' + TABS.filter(t => PRINCIPALES.indexOf(t.id) < 0).map(t => '<button data-t="' + t.id + '">' + ic(t.ic) + '<span>' + t.txt + '</span></button>').join('') +
     '<div class="sec">Herramientas</div><button data-x="ira">' + ic('buscar') + '<span>Ir a…<span class="sub">busca cualquier playlist, disco, artista o herramienta</span></span></button>' +
-    '<button data-x="sorpresa">' + ic('varita') + '<span>Ruleta de discos<span class="sub">un disco pendiente al azar</span></span></button>' +
-    '<button data-x="portadas">' + ic('imagen') + '<span>Portadas<span class="sub">un dibujo y un color para cada playlist, todas con el mismo estilo</span></span></button>' +
-    '<button data-x="partir">' + ic('unir') + '<span>Partir Me gusta<span class="sub">en playlists de unas 1.000, por artista, para quitar ♥ desde el móvil</span></span></button>' +
-    '<button data-x="triaje">' + ic('check') + '<span>¿Qué se queda?<span class="sub">cada canción a Me gusta, Archivo o Pendientes, por artista</span></span></button>' +
-    '<button data-x="rulgen">' + ic('aleat') + '<span>Ruleta de géneros<span class="sub">pone en Spotify una de tus casas al azar</span></span></button>' +
-    '<button data-x="etq">' + ic('etiqueta') + '<span>Etiquetar mis Me gusta<span class="sub">año real y género de cada canción (mejor en el PC, una noche)</span></span></button>' +
-    '<button data-x="juego">' + ic('estrella') + '<span>Juega con tu música<span class="sub">¿de qué año es?, ¿quién canta?…</span></span></button>' +
     '<button data-x="comparar">' + ic('unir') + '<span>Comparar dos listas<span class="sub">qué comparten y qué no</span></span></button>' +
-    '<button data-x="imagen">' + ic('imagen') + '<span>Imagen para compartir<span class="sub">tus discos favoritos en un collage</span></span></button>' +
     '<div class="sec">Ajustes</div><button data-x="cupo">' + ic('grafica') + 'Tu cupo de Spotify</button><button data-x="aj">' + ic('ajustes') + 'Conexión, copias y tema</button></div>', h => {
       h.querySelector('.opc').onclick = ev => {
         const x = ev.target.closest('[data-t],[data-x]'); if (!x) return;
@@ -2251,7 +2260,7 @@ function render() {
   setTimeout(() => tintar(m), 0);
   if (!conectado()) { m.innerHTML = htmlSinConexion(); pintarAccion(); return; }
   if (S.vista) return S.vista.pintar(m);
-  const f = { playlists: vPlaylists, inicio: vInicio, casas: vCasas, likes: vLikes, misdiscos: vMisDiscos, discos: vDiscos, artistas: vArtistas, mis: vMis, buscar: vBuscar, escuchas: vEscuchas, historia: vHistoria, portadas: vPortadas, cambios: vCambios }[S.tab];
+  const f = { playlists: vPlaylists, inicio: vInicio, casas: vCasas, likes: vLikes, misdiscos: vMisDiscos, discos: vDiscos, artistas: vArtistas, mis: vMis, buscar: vBuscar, escuchas: vEscuchas, historia: vHistoria, portadas: vPortadas, decidir: vDecidir, cambios: vCambios }[S.tab];
   f(m);
 }
 function htmlSinConexion() {
@@ -3099,8 +3108,17 @@ async function vInicio(m) {
   if (!S.me) yo().then(() => { const x = $('#inSal'); if (x) x.innerHTML = sal + nom(); }).catch(() => {});
   pintarAhoraInicio();
   pintarBandeja(vivo).catch(() => {});
-  pintarQuePongo(vivo).catch(() => {});
   (async () => {
+    /* lo primero: lo que te queda por decidir en las temporales */
+    const el = $('#inTri'); if (!el) return;
+    const T = new Set(PREFS.temporales || []); if (!T.size) return;
+    const l = (await cargarPlaylists()).filter(p => esMia(p) && T.has(p.id)); if (!vivo()) return;
+    const q = l.reduce((a, p) => a + p.total, 0);
+    el.innerHTML = '<button class="idea-ent"><span class="ic">' + ic('check') + '</span><span><b>Por decidir</b><small>' + (q ? 'Te quedan ' + n$(q) + ' canciones en ' + l.filter(p => p.total).length + ' playlists temporales' : '¡Has decidido todas tus temporales!') + '</small></span>' + ic('abajoV', ' style="transform:rotate(-90deg)"') + '</button>';
+    el.querySelector('button').onclick = () => irATab('decidir');
+  })().catch(() => {});
+  /* ¿Qué se queda?, Qué pongo e Ideas: ya no se enseñan (2026-10-22) */
+  if (0) (async () => {
     const el = $('#inTri'); if (!el) return;
     const ps = (await musicaSiempre()).filter(p => !p.local); if (!ps.length || !vivo()) return;
     const T = triaje(); let no = 0; for (const p of ps) if (!destDe(p, T)) no++;
@@ -3108,7 +3126,7 @@ async function vInicio(m) {
     el.innerHTML = '<button class="idea-ent"><span class="ic">' + ic('check') + '</span><span><b>¿Qué se queda?</b><small>' + n$(no) + ' de ' + n$(ps.length) + ' canciones sin decidir: Me gusta, Archivo o Pendientes, por artista.</small></span>' + ic('abajoV', ' style="transform:rotate(-90deg)"') + '</button>';
     el.querySelector('button').onclick = abrirTriaje;
   })().catch(() => {});
-  (async () => {
+  if (0) (async () => {
     const el = $('#inIdeas'); if (!el) return;
     const n = ((await cacheLeer('likes')) || { pistas: [] }).pistas.length; if (!n || !vivo()) return;
     const mias = (S.playlists || ((await cacheLeer('pls')) || {}).lista || []).filter(esMia).length;
@@ -3122,12 +3140,11 @@ async function vInicio(m) {
   const pend = md ? md.discos.filter(d => !estadoDisco(d.id) || estadoDisco(d.id) === 'Pendiente').length : null;
   const at = [
     ['likes', 'corazon', 'Me gusta', likesN ? likesN.toLocaleString('es-ES') + ' canciones' : '', 'linear-gradient(135deg,#4a2fd0,#b8a7ff)'],
+    ['decidir', 'check', 'Por decidir', 'tus playlists temporales', 'linear-gradient(135deg,#1f8a5b,#6fd6a4)'],
+    ['historia', 'reloj', 'Tu historia', 'todo lo que te ha gustado', 'linear-gradient(135deg,#7a2fd0,#ff7ab8)'],
+    ['portadas', 'imagen', 'Portadas', 'un dibujo o una foto por playlist', 'linear-gradient(135deg,#d0442f,#ffb36b)'],
     ['misdiscos', 'disco', 'Mis discos', pend != null ? pend + ' pendientes' : 'tu lista de discos', 'linear-gradient(135deg,#c47a0a,#f4b13e)'],
-    ['casas', 'nota', 'Tu música', 'géneros, moods y ruleta', 'linear-gradient(135deg,#b03f30,#ffb03a)'],
-    ['escuchas', 'grafica', 'Estadísticas', 'lo que más escuchas', 'linear-gradient(135deg,#d4568a,#ff9ec4)'],
-    ['mis', 'estrella', 'Mis artistas', MIS ? MIS.artistas.length.toLocaleString('es-ES') + ' artistas' : 'tu lista', 'linear-gradient(135deg,#5a4a3a,#a08a70)'],
-    ['historia', 'reloj', 'Tu historia', 'rachas, récords y años', 'linear-gradient(135deg,#7a2fd0,#ff7ab8)'],
-    ['_juego', 'varita', 'Juega', '¿de qué año es?', 'linear-gradient(135deg,#d0442f,#ffb36b)']
+    ['escuchas', 'grafica', 'Estadísticas', 'lo que más escuchas', 'linear-gradient(135deg,#d4568a,#ff9ec4)']
   ];
   $('#inAtajos').innerHTML = at.map(([id, ico, t, sub, bg]) => '<button class="atajo" data-a="' + id + '"><span class="ic" style="background:' + bg + '">' + ic(ico) + '</span><span><b>' + t + '</b><small>' + esc(sub) + '</small></span></button>').join('');
   $('#inAtajos').onclick = e => {
@@ -3996,6 +4013,60 @@ async function hojaCrearPortada(p) {
       };
     });
 }
+/* ============================================================
+   POR DECIDIR: tus playlists temporales. Repasas cada canción y la mandas
+   a Me gusta, a otra playlist o fuera; lo decidido sale de la temporal.
+   ============================================================ */
+function repasarPlaylist(p) {
+  abrirPlaylist(p);
+  let n = 0;
+  const t = setInterval(() => {
+    const f = S.fuente;
+    if (f && f.id === p.id && f.pistas) {
+      clearInterval(t);
+      const ps = f.pistas.filter(x => !x.local);
+      if (!ps.length) toast('Ya está vacía: ¡decidida entera!'); else repasar(f, ps);
+    } else if (++n > 240 || !f || f.id !== p.id) clearInterval(t);
+  }, 250);
+}
+async function hojaTemporales() {
+  const mias = (await cargarPlaylists()).filter(esMia), T = new Set(PREFS.temporales || []);
+  hoja('<h2>Tus playlists temporales</h2><p class="soft">Las marcadas salen en «Por decidir», no aparecen como destino al repasar y lo que mandas a otro sitio sale de ellas.</p><div class="opc dc-lista">' +
+    mias.map(p => '<label class="check"><input type="checkbox" data-id="' + p.id + '"' + (T.has(p.id) ? ' checked' : '') + '> ' + esc(p.name) + ' <span class="mute tiny">' + n$(p.total) + '</span></label>').join('') + '</div>', h => {
+      h.querySelector('.dc-lista').onchange = e => {
+        const id = e.target.dataset.id; if (!id) return;
+        const t = new Set(PREFS.temporales || []); e.target.checked ? t.add(id) : t.delete(id);
+        PREFS.temporales = Array.from(t); guardarPrefs();
+      };
+    }, () => { if (S.tab === 'decidir' && !S.vista) render(); });
+}
+async function vDecidir(m) {
+  const cab = '<h1>Por decidir</h1><p class="soft">Tus playlists temporales. Repasa cada canción y mándala a Me gusta, a otra playlist o fuera: lo que decides sale de aquí.</p>';
+  m.innerHTML = cab + '<div class="spin"></div>';
+  let pls; try { pls = await cargarPlaylists(); } catch (e) { m.innerHTML = cab + '<p class="soft">' + esc(explicarError(e)) + '</p>'; return; }
+  if (S.tab !== 'decidir' || S.vista) return;
+  const T = new Set(PREFS.temporales || []), ini = PREFS.temporalesIni || (PREFS.temporalesIni = {});
+  const l = pls.filter(p => esMia(p) && T.has(p.id)).sort((a, b) => (b.total > 0) - (a.total > 0) || a.total - b.total);
+  let cambio = false;
+  for (const p of l) if (ini[p.id] == null || p.total > ini[p.id]) { ini[p.id] = p.total; cambio = true; }
+  if (cambio) guardarPrefs();
+  if (!l.length) {
+    m.innerHTML = cab + '<div class="card"><p>Aún no has marcado ninguna playlist como temporal.</p><button class="btn pri" id="dcEl">' + ic('check') + 'Elegir mis temporales</button></div>';
+    m.querySelector('#dcEl').onclick = hojaTemporales; return;
+  }
+  const quedan = l.reduce((a, p) => a + p.total, 0), total = l.reduce((a, p) => a + (ini[p.id] || p.total), 0), hechas = total - quedan;
+  const sig = l.find(p => p.total > 0);
+  m.innerHTML = cab + '<div class="card dc-res"><div class="dc-num"><b>' + n$(quedan) + '</b> canciones por decidir' + (hechas ? ' · <span class="mute">' + n$(hechas) + ' ya decididas</span>' : '') + '</div>' +
+    '<div class="tr-barra"><i class="me" style="width:' + (total ? Math.round(100 * hechas / total) : 0) + '%"></i></div>' +
+    '<div class="btnrow">' + (sig ? '<button class="btn pri" id="dcSig">' + ic('play') + 'Seguir con «' + esc(sig.name) + '»</button>' : '<b>¡Todo decidido!</b>') + '<button class="btn" id="dcEl">' + ic('ajustes') + 'Elegir temporales</button></div></div>' +
+    '<div class="dc-grid">' + l.map(p => {
+      const i0 = ini[p.id] || p.total, pc = i0 ? Math.round(100 * (i0 - p.total) / i0) : 100;
+      return '<button class="dc-pl" data-id="' + p.id + '">' + (p.imgG ? '<img src="' + esc(p.imgG) + '" alt="" loading="lazy">' : '<span class="dc-sin">' + ic('nota') + '</span>') + '<b>' + esc(p.name) + '</b><small>' + (p.total ? 'Quedan ' + n$(p.total) + (i0 > p.total ? ' de ' + n$(i0) : '') : '✓ Decidida entera') + '</small><span class="tr-barra"><i class="me" style="width:' + pc + '%"></i></span></button>';
+    }).join('') + '</div>';
+  if (sig) m.querySelector('#dcSig').onclick = () => repasarPlaylist(sig);
+  m.querySelector('#dcEl').onclick = hojaTemporales;
+  m.querySelector('.dc-grid').onclick = e => { const b = e.target.closest('[data-id]'); if (!b) return; const p = l.find(x => x.id === b.dataset.id); if (p) repasarPlaylist(p); };
+}
 /* pestaña Portadas: tus playlists en rejilla; al tocar una, su portada */
 async function vPortadas(m) {
   m.innerHTML = '<h1>Portadas</h1><p class="soft">Toca una playlist: te propongo un dibujo y un color según su nombre, lo cambias si quieres y la pones en Spotify. Todas siguen el mismo estilo.</p><div class="spin"></div>';
@@ -4061,6 +4132,8 @@ function hojaIrA() {
     ['Ajustes y copias', 'ajustes', () => hojaAjustes()],
     ['Cambiar a tema ' + (document.documentElement.dataset.theme === 'dark' || (!PREFS.tema && matchMedia('(prefers-color-scheme: dark)').matches) ? 'claro' : 'oscuro'), 'imagen', () => { const osc = document.documentElement.dataset.theme === 'dark' || (!PREFS.tema && matchMedia('(prefers-color-scheme: dark)').matches); PREFS.tema = osc ? 'light' : 'dark'; guardarPrefs(); aplicarTema(); }]
   ];
+  for (let i = acciones.length - 1; i >= 0; i--) if (/^(¿Qué se queda|Partir Me gusta|Ruleta de géneros|Viaje por el rock|Jugar|Ideas de playlists|Etiquetar mis|Qué va en cada)/.test(acciones[i][0])) acciones.splice(i, 1);
+  acciones.unshift(['Por decidir: repasar las playlists temporales', 'check', () => irATab('decidir')]);
   let sel = 0, items = [];
   const buscar = q => {
     const w = fold(q).trim().split(/\s+/).filter(Boolean), ok = t => w.every(x => fold(t).indexOf(x) >= 0);
@@ -8989,6 +9062,14 @@ function hojaFuente(f) {
   const b = (o, icono, txt, sub, cls) => '<button data-o="' + o + '"' + (cls ? ' class="' + cls + '"' : '') + '>' + ic(icono) + '<span>' + txt + (sub ? '<span class="sub">' + sub + '</span>' : '') + '</span></button>';
   const sec = (tit, items) => items.filter(Boolean).length ? '<div class="sec">' + tit + '</div>' + items.filter(Boolean).join('') : '';
   hoja('<h2>' + esc(f.name) + '</h2><div class="opc">' +
+    sec('Lo de siempre', [
+      b('repasar', 'play', 'Repasar una a una', 'suena cada canción y decides: ♥ Me gusta, otra playlist o fuera'),
+      ed ? b('crearPortada', 'varita', 'Crear portada', 'dibujo o foto, con el estilo de las demás') : '',
+      b('exportar', 'bajar', 'Exportar a Excel', 'o a texto, con el enlace de cada canción'),
+      ed ? b('ordenar', 'ordenar', 'Ordenar', 'título, artista, año, duración…') : '',
+      ed ? b('repes', 'repes', 'Quitar repetidas', 'también otras ediciones de la misma canción') : lk ? b('repes', 'repes', 'Revisar repetidas', 'la misma canción dos veces') : ''
+    ]) +
+    '<details class="masopc"><summary>Más opciones</summary>' +
     sec('Crear', [
       ed ? b('rellenar', 'varita', 'Rellenar con mis Me gusta', 'busca canciones que pegan aquí: de sus artistas y de su estilo') : '',
       b('filtrar', 'filtro', 'Filtrar y crear', 'por mood, género, idioma, tipología, década o año REAL, épocas, hitos, artista…'),
@@ -9036,7 +9117,7 @@ function hojaFuente(f) {
       f.kind === 'album' ? b('guardarDisco', 'disco', 'Guardar o quitar el disco de tu biblioteca') : '',
       f.kind === 'album' ? b('aMisDiscos', 'disco', 'Añadir a Mis discos', 'tu playlist de discos, como Pendiente') : ''
     ]) +
-    '</div>', h => {
+    '</details></div>', h => {
       h.querySelector('.opc').onclick = async e => {
         const x = e.target.closest('[data-o]'); if (!x) return;
         const o = x.dataset.o;
