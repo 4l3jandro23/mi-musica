@@ -109,6 +109,9 @@
   #fzC .chips, .elchips { max-height: 168px; overflow-y: auto; gap: 7px; padding: 2px; }
   #fzC .herr .field { border-radius: 999px; }
   .btnrow:has(#fzCrear) { flex-wrap: nowrap; } #fzQuitar { flex: none; padding-left: 12px; padding-right: 12px; } #fzCrear, #fzSel { white-space: nowrap; }
+  .po-fuentes { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 4px; }
+  .po-fuentes .chip { display: inline-flex; align-items: center; gap: 6px; }
+  .po-fuentes .chip svg { width: 15px; height: 15px; }
   .tabsep { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--fg-mute); padding: 16px 12px 4px; }
   .tab.tmas { font-size: 13.5px; padding-top: 7px; padding-bottom: 7px; }
   .dc-res .dc-num { font-size: 16px; margin-bottom: 8px; } .dc-res .dc-num b { font-size: 28px; font-weight: 800; }
@@ -1203,7 +1206,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-22g';
+const VERSION = '2026-10-22h';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -3935,6 +3938,14 @@ function portCargarFoto(url) {
 }
 /* modo foto: la foto recortada al cuadrado (las caras suelen estar arriba), teñida si se quiere,
    oscurecida abajo para que se lea el nombre, y el mismo grano y viñeta que los dibujos */
+async function portFotoWeb(url) {
+  url = url.trim();
+  if (!/^https?:\/\//i.test(url)) throw new Error('Eso no parece un enlace a una imagen (tiene que empezar por http)');
+  try { await portCargarFoto(url); return url; } catch (e) {}
+  const prox = 'https://wsrv.nl/?url=' + encodeURIComponent(url.replace(/^https?:\/\//i, '')) + '&w=1000&output=jpg';
+  try { await portCargarFoto(prox); return prox; } catch (e) {}
+  throw new Error('No he podido abrir esa imagen. Prueba con «Copiar imagen» en el navegador y luego «Pegar».');
+}
 async function portFondoFoto(x, st, px) {
   const f = await portCargarFoto(st.foto.url), p = PORT_PAL[st.pal] || PORT_PAL.mostaza;
   const w = f.naturalWidth, h = f.naturalHeight, k = Math.max(px / w, px / h), dw = w * k, dh = h * k;
@@ -4012,7 +4023,10 @@ async function hojaCrearPortada(p) {
     '<div class="po-prev"><canvas id="poC" width="640" height="640"></canvas></div>' +
     '<div class="chips po-modo"><button class="chip" data-modo="dibujo">Dibujo</button><button class="chip" data-modo="foto">Foto</button></div>' +
     '<div class="po-fila"><label class="check"><input type="checkbox" id="poLg"' + (st.logo !== false ? ' checked' : '') + '> Logo</label><label class="check"><input type="checkbox" id="poTx"' + (st.conTexto ? ' checked' : '') + '> Nombre</label><input class="field" id="poNom" maxlength="40" value="' + esc(st.texto) + '"></div>' +
-    '<div id="poFoto"><label class="lbl">Foto</label><div class="po-fila"><input class="field" id="poBus" placeholder="Busca un artista" value="' + esc(st.foto && st.foto.q || p.name) + '"><button class="btn" id="poBusB">' + ic('buscar') + '</button><button class="btn" id="poMia">' + ic('subir') + 'Tuya</button></div><div class="po-arts" id="poArts"></div>' +
+    '<div id="poFoto"><label class="lbl">Foto</label><div class="po-fila"><input class="field" id="poBus" placeholder="Busca un artista" value="' + esc(st.foto && st.foto.q || p.name) + '"><button class="btn" id="poBusB">' + ic('buscar') + '</button></div><div class="po-arts" id="poArts"></div>' +
+    '<div class="po-fuentes"><button class="chip" id="poMia">' + ic('subir') + 'Del móvil u ordenador</button><button class="chip" id="poPeg">' + ic('copia') + 'Pegar imagen</button><button class="chip" id="poWeb">' + ic('enlace') + 'Enlace de internet</button></div>' +
+    '<div class="po-fila" id="poWebF" hidden><input class="field" id="poUrl" type="url" placeholder="Pega aquí el enlace de la imagen"><button class="btn pri" id="poUrlOk">Usar</button></div>' +
+    '<p class="tiny mute" style="margin:4px 0 8px">En el navegador: mantén pulsada la foto (o clic derecho) → «Copiar imagen» y aquí «Pegar imagen». O «Copiar dirección de imagen» y «Enlace de internet».</p>' +
     '<label class="check"><input type="checkbox" id="poTin"' + (st.tinte ? ' checked' : '') + '> Teñir con el color</label></div>' +
     '<label class="lbl" id="poColL">Color</label><div class="po-cols">' + Object.keys(PORT_PAL).map(k => '<button data-pal="' + k + '" title="' + PORT_PAL[k][0] + '" style="background:radial-gradient(circle at 50% 40%,' + PORT_PAL[k][1] + ',' + PORT_PAL[k][2] + ')"></button>').join('') + '</div>' +
     '<div id="poDib"><label class="lbl">Dibujo</label><div class="po-objs" id="poObjs"></div></div>' +
@@ -4057,6 +4071,33 @@ async function hojaCrearPortada(p) {
         inp.onchange = () => { const f = inp.files[0]; if (!f) return; st.foto = { url: URL.createObjectURL(f), n: 'tuya', propia: true }; st.modo = 'foto'; repintar(); };
         inp.click();
       };
+      /* foto de internet: por enlace o pegada desde el portapapeles */
+      const usarEnlace = async url => {
+        try { const u = await trabajo(() => portFotoWeb(url), 'Abriendo la imagen'); if (!u) return; st.foto = { url: u, n: 'internet', web: true }; st.modo = 'foto'; h.querySelector('#poWebF').hidden = true; repintar(); }
+        catch (e) { toast(e.message); }
+      };
+      const usarBlob = b => { st.foto = { url: URL.createObjectURL(b), n: 'pegada', propia: true }; st.modo = 'foto'; repintar(); };
+      h.querySelector('#poWeb').onclick = () => { const f = h.querySelector('#poWebF'); f.hidden = !f.hidden; if (!f.hidden) h.querySelector('#poUrl').focus(); };
+      h.querySelector('#poUrlOk').onclick = () => { const v = h.querySelector('#poUrl').value; if (v.trim()) usarEnlace(v); };
+      h.querySelector('#poUrl').onkeydown = e => { if (e.key === 'Enter') h.querySelector('#poUrlOk').click(); };
+      h.querySelector('#poPeg').onclick = async () => {
+        try {
+          if (navigator.clipboard && navigator.clipboard.read) {
+            for (const it of await navigator.clipboard.read()) {
+              const t = it.types.find(x => x.indexOf('image/') === 0);
+              if (t) { usarBlob(await it.getType(t)); return; }
+              if (it.types.indexOf('text/plain') >= 0) { const tx = await (await it.getType('text/plain')).text(); if (/^https?:\/\//i.test(tx.trim())) { usarEnlace(tx); return; } }
+            }
+          } else if (navigator.clipboard && navigator.clipboard.readText) { const tx = await navigator.clipboard.readText(); if (/^https?:\/\//i.test(tx.trim())) { usarEnlace(tx); return; } }
+          toast('No hay ninguna imagen copiada. Copia una foto (o su dirección) y vuelve a tocar «Pegar imagen».');
+        } catch (e) { toast('El navegador no me deja leer lo copiado: pulsa Ctrl+V (o mantén pulsado y «Pegar») aquí mismo'); }
+      };
+      h.addEventListener('paste', e => {
+        const d = e.clipboardData; if (!d) return;
+        const f = Array.from(d.files || []).find(x => x.type.indexOf('image/') === 0);
+        if (f) { e.preventDefault(); usarBlob(f); return; }
+        const tx = d.getData('text/plain'); if (/^https?:\/\//i.test((tx || '').trim()) && e.target.id !== 'poUrl') { e.preventDefault(); usarEnlace(tx); }
+      });
       h.querySelector('#poTin').onchange = e => { st.tinte = e.target.checked; repintar(); };
       h.querySelector('.po-cols').onclick = e => { const b = e.target.closest('[data-pal]'); if (!b) return; st.pal = b.dataset.pal; st._palTocada = true; objs(); repintar(); };
       h.querySelector('#poObjs').onclick = e => { const b = e.target.closest('[data-obj]'); if (!b) return; st.obj = b.dataset.obj; if (!portGuardadas()[p.id] && !st._palTocada) st.pal = portObj(st.obj).pal; objs(); repintar(); };
