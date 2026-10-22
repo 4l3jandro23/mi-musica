@@ -1166,7 +1166,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-22a';
+const VERSION = '2026-10-22b';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -1687,12 +1687,16 @@ async function cargarPlaylists0(forzar) {
   if (_cplFrio && !forzar) {
     _cplFrio = false;
     const c = await cacheLeer('pls');
-    if (c && c.lista && Date.now() - c.at < 600000) { S.playlists = c.lista; return S.playlists; }
+    if (c && c.lista && c.lista.length && Date.now() - c.at < 600000) { S.playlists = c.lista; return S.playlists; }
   }
   _cplFrio = false;
   S.indice = null;
   let it;
-  try { it = await paginar('/me/playlists', { limite: 50 }); }
+  try {
+    it = await paginar('/me/playlists', { limite: 50 });
+    /* a veces Spotify responde una lista vacía por un fallo suyo: se vuelve a pedir una vez antes de creérselo */
+    if (!it.filter(Boolean).length) { await new Promise(r => setTimeout(r, 1500)); it = await paginar('/me/playlists', { limite: 50 }); }
+  }
   catch (e) {
     const c = esCaida(e) && await cacheLeer('pls');
     if (!c) throw e;
@@ -1706,7 +1710,7 @@ async function cargarPlaylists0(forzar) {
     total: ((p.items || p.tracks) || {}).total || 0, img: imgDe(p.images, 60), imgG: imgDe(p.images, 300),
     snap: p.snapshot_id
   }));
-  cachePoner('pls', { at: Date.now(), lista: S.playlists });
+  if (S.playlists.length) cachePoner('pls', { at: Date.now(), lista: S.playlists });
   if (S.guardado) { S.guardado = null; pintarFreno(); }
   return S.playlists;
 }
