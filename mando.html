@@ -1203,7 +1203,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-22e';
+const VERSION = '2026-10-22f';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -3834,7 +3834,9 @@ const PORT_OBJ = [
   { id: 'auriculares', n: 'Auriculares', pal: 'verde', re: /chill|lo-?fi|relax|estudi|concentr|focus|tranquil/, s: () => somb(160, 52) + '<path d="M52 120 C52 62 148 62 148 120" stroke="url(#dark§)" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M58 112 C60 72 140 72 142 112" stroke="#5A5C66" stroke-width="2" fill="none" opacity="0.7"/><rect x="36" y="106" width="28" height="48" rx="13" fill="url(#dark§)"/><rect x="136" y="106" width="28" height="48" rx="13" fill="url(#dark§)"/><rect x="58" y="110" width="12" height="40" rx="6" fill="#3A3C46"/><rect x="130" y="110" width="12" height="40" rx="6" fill="#3A3C46"/><rect x="42" y="112" width="4" height="22" rx="2" fill="#8C8E98" opacity="0.6"/><rect x="142" y="112" width="4" height="22" rx="2" fill="#8C8E98" opacity="0.6"/>' },
   { id: 'microfono', n: 'Micrófono', pal: 'rosa', re: /\bpop\b|cantar|karaoke|voces|divas|girl|whitegirl/, s: () => '<ellipse cx="100" cy="160" rx="32" ry="7" fill="url(#dark§)"/><rect x="97" y="120" width="6" height="40" fill="url(#metal§)"/><path d="M66 86 C66 132 134 132 134 86" stroke="url(#metal§)" stroke-width="5" fill="none"/><clipPath id="mc§"><rect x="76" y="34" width="48" height="82" rx="24"/></clipPath><rect x="76" y="34" width="48" height="82" rx="24" fill="url(#chrome§)"/><g clip-path="url(#mc§)" stroke="#6E7078" stroke-width="1.4">' + [40, 46, 52, 58, 64, 70, 88, 94, 100, 106, 112].map(y => '<path d="M70 ' + y + ' H130"/>').join('') + '</g><rect x="76" y="74" width="48" height="9" fill="#2A2B30"/><rect x="82" y="40" width="5" height="28" rx="2.5" fill="#FFFFFF" opacity="0.5"/>' },
   { id: 'corazon', n: 'Corazón', pal: 'rosa', re: /amor|love|romant|enamor|crush|bolero/, s: () => somb(164, 44) + '<path d="M100 158 C40 116 30 84 48 64 C66 44 92 52 100 72 C108 52 134 44 152 64 C170 84 160 116 100 158Z" fill="url(#red§)"/><ellipse cx="70" cy="76" rx="11" ry="6" transform="rotate(-35 70 76)" fill="#FFFFFF" opacity="0.38"/>' },
-  { id: 'discoteca', n: 'Bola de discoteca', pal: 'morado', re: /house|techno|disco|electr|edm|dance|club|rave|trance|boiler/, s: () => portDisco() },
+  { id: 'ecualizador', n: 'Ecualizador de neón', pal: 'noche', re: /electr|edm|dance|techno|rave|club|trance|boiler|dubstep|drum|big room|progressive/, s: () => portEq() },
+  { id: 'platos', n: 'Plato de DJ', pal: 'morado', re: /\bdj\b|mezcl|mix|tornamesa|platos/, s: () => portPlatos() },
+  { id: 'discoteca', n: 'Bola de discoteca', pal: 'morado', re: /house|disco|funk|boogie|nu-?disco/, s: () => portDisco() },
   { id: 'trompeta', n: 'Trompeta', pal: 'noche', re: /jazz|swing|soul|funk|motown|big band|bossa/, s: () => somb(150, 60) + '<g transform="rotate(-10 100 104)"><rect x="40" y="98" width="92" height="8" rx="4" fill="url(#gold§)"/><path d="M60 106 H122 a10 10 0 0 1 0 20 H60" stroke="url(#gold§)" stroke-width="7" fill="none"/><g fill="url(#gold§)"><rect x="74" y="78" width="10" height="30" rx="3"/><rect x="88" y="78" width="10" height="30" rx="3"/><rect x="102" y="78" width="10" height="30" rx="3"/></g><g fill="#FFE9A8"><ellipse cx="79" cy="77" rx="6" ry="2.5"/><ellipse cx="93" cy="77" rx="6" ry="2.5"/><ellipse cx="107" cy="77" rx="6" ry="2.5"/></g><path d="M128 94 L168 74 C173 92 173 120 168 136 L128 116Z" fill="url(#gold§)"/><ellipse cx="168" cy="105" rx="5" ry="31" fill="#FFE9A8"/><ellipse cx="168" cy="105" rx="2.5" ry="24" fill="#8F6212" opacity="0.5"/><rect x="28" y="99" width="14" height="6" rx="3" fill="url(#chrome§)"/></g>' },
   { id: 'congas', n: 'Congas', pal: 'coral', re: /salsa|latin|cumbia|bachata|merengue|son |tropical latino|caribe|timba/, s: () => somb(162, 54) + portConga(76, 62) + portConga(124, 78) },
   { id: 'coche', n: 'Coche', pal: 'cielo', re: /coche|carretera|drive|road|viaje|car\b|ruta/, s: () => somb(156, 70) + '<path d="M30 132 C30 118 42 114 56 112 L72 92 C76 87 82 85 90 85 H124 C132 85 138 88 142 94 L154 112 C166 114 172 120 172 132 V140 H30Z" fill="url(#cream§)"/><path d="M76 110 L86 94 C88 91 90 90 94 90 H106 V110Z" fill="url(#glass§)"/><path d="M112 110 V90 H122 C128 90 132 92 134 96 L142 110Z" fill="url(#glass§)"/><rect x="28" y="130" width="146" height="6" rx="3" fill="url(#chrome§)"/><path d="M40 122 H60 M140 122 H162" stroke="#E0533C" stroke-width="3" stroke-linecap="round"/><circle cx="166" cy="122" r="4" fill="#FFE29A"/><g><circle cx="64" cy="140" r="15" fill="url(#dark§)"/><circle cx="64" cy="140" r="6" fill="url(#chrome§)"/><circle cx="140" cy="140" r="15" fill="url(#dark§)"/><circle cx="140" cy="140" r="6" fill="url(#chrome§)"/></g>' },
@@ -3860,6 +3862,24 @@ const PORT_OBJ = [
   { id: 'rosa', n: 'Rosa', pal: 'crema', re: /rosa|flor|primavera|spring|boda|san valent/, s: () => somb(168, 26) + '<path d="M100 104 C98 130 102 150 100 168" stroke="#2F7A40" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M100 140 C84 130 70 134 64 144 C78 146 90 146 100 140Z" fill="url(#leaf§)"/><path d="M101 128 C116 116 132 120 138 130 C124 134 112 134 101 128Z" fill="url(#leaf§)"/><circle cx="100" cy="80" r="30" fill="url(#red§)"/><path d="M76 70 C82 52 118 50 124 70 C116 62 84 62 76 70Z" fill="#7A0A16" opacity="0.6"/><path d="M84 84 C86 66 114 64 116 82 C112 72 90 72 84 84Z" fill="#FF8A8A" opacity="0.55"/><path d="M92 82 C96 70 108 72 106 84 C102 78 96 78 92 82Z" fill="#7A0A16" opacity="0.6"/><path d="M72 88 C72 104 88 112 100 112 C112 112 128 104 128 88 C120 104 80 104 72 88Z" fill="#8F0F1C"/>' }
 ];
 const portObj = id => PORT_OBJ.find(o => o.id === id) || PORT_OBJ[PORT_OBJ.length - 1];
+/* música electrónica: barras de ecualizador y plato de DJ con luz de neón */
+const PORT_NEON = '<linearGradient id="neon§" gradientUnits="userSpaceOnUse" x1="0" y1="150" x2="0" y2="30"><stop offset="0" stop-color="#00E5FF"/><stop offset="0.55" stop-color="#7B5CFF"/><stop offset="1" stop-color="#FF3DF2"/></linearGradient>';
+function portEq() {
+  const hs = [34, 60, 88, 116, 78, 102, 66, 44, 26], segs = [];
+  hs.forEach((h, i) => {
+    const x = 36 + i * 14.4;
+    for (let y = 143; y >= 150 - h; y -= 9) segs.push('<rect x="' + x + '" y="' + y + '" width="10.5" height="6.5" rx="1.6"/>');
+    segs.push('<rect x="' + x + '" y="' + (138 - h) + '" width="10.5" height="3" rx="1.5" fill="#FFFFFF" opacity="0.9"/>');
+  });
+  const g = segs.join('');
+  return PORT_NEON + '<g fill="url(#neon§)" filter="url(#so2§)" opacity="0.85">' + g + '</g><g fill="url(#neon§)">' + g + '</g>';
+}
+function portPlatos() {
+  return PORT_NEON.replace('y1="150" x2="0" y2="30"', 'y1="154" x2="0" y2="38"') + '<ellipse cx="100" cy="160" rx="62" ry="8" fill="#000" opacity="0.3" filter="url(#so§)"/><circle cx="96" cy="96" r="62" fill="url(#neon§)" opacity="0.55" filter="url(#so2§)"/><circle cx="96" cy="96" r="58" fill="#121216"/>' +
+    [50, 44, 38, 32].map(r => '<circle cx="96" cy="96" r="' + r + '" fill="none" stroke="#2C2C34" stroke-width="1.2"/>').join('') +
+    '<path d="M60 64 A48 48 0 0 1 128 60" stroke="#FFFFFF" stroke-width="3" fill="none" opacity="0.18" stroke-linecap="round"/><circle cx="96" cy="96" r="20" fill="url(#neon§)"/><circle cx="96" cy="96" r="3.5" fill="url(#chrome§)"/>' +
+    '<circle cx="160" cy="42" r="9" fill="url(#chrome§)"/><path d="M160 42 L158 104 L132 126" stroke="url(#chrome§)" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="122" y="120" width="16" height="10" rx="2" transform="rotate(40 130 125)" fill="#1A1A1E"/>';
+}
 function portSugerir(nombre) {
   const f = fold(nombre || '');
   const o = PORT_OBJ.find(x => x.id !== 'vinilo' && x.re.test(f)) || portObj('vinilo');
