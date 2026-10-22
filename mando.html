@@ -1174,6 +1174,79 @@
     #mdF2::-webkit-scrollbar, #mdF3::-webkit-scrollbar, #mdF4::-webkit-scrollbar { display: none; }
     #mdF2 .chip, #mdF3 .chip, #mdF4 .chip { white-space: nowrap; flex: none; }
   }
+
+  /* ---------- pulido 2026-10-22j: más bonito y cómodo en el iPhone ---------- */
+  html { -webkit-text-size-adjust: 100%; }
+  button, a, .row, .tarj, .obj, .chip, summary { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .hoja { max-height: 90vh; max-height: 90dvh; }
+  .hoja .asa { width: 42px; height: 5px; margin: 4px auto 14px; opacity: .8; }
+  /* en el móvil no hay ratón: nada de «hover» que se queda pegado al tocar */
+  @media (hover: none) {
+    .row:hover { background: transparent; } .row.sel:hover { background: var(--amber-soft); }
+    .obj:hover, .opc button:hover, .opc a:hover { background: transparent; }
+    .btn:hover { background: var(--surface); } .btn.pri:hover { background: var(--amber); } .btn.ghost:hover { background: transparent; }
+    .tarj:hover { transform: none; }
+    .row:active, .obj:active, .opc button:active, .opc a:active { background: var(--surface-2); }
+  }
+  /* iPhone: con letra de menos de 16px Safari hace zoom al escribir */
+  @media (max-width: 640px) {
+    input, textarea, select, .fbusca input, .field { font-size: 16px !important; }
+  }
+
+  /* menús de opciones: icono en su pastilla y el texto siempre a su lado */
+  .opc { gap: 0; }
+  .opc button, .opc a { padding: 9px 8px; gap: 14px; border-radius: 14px; }
+  .opc button > svg:first-child, .opc a > svg:first-child { box-sizing: content-box; width: 19px; height: 19px; padding: 9px; border-radius: 12px; background: color-mix(in srgb, var(--amber) 13%, transparent); color: var(--amber); flex: none; }
+  .opc button.danger > svg:first-child { background: color-mix(in srgb, var(--rust) 12%, transparent); color: var(--rust); }
+  .opc button > svg + span:not(.sub), .opc a > svg + span:not(.sub) { flex: 1 1 0; min-width: 0; }
+  .opc > button > .sub, .opc > a > .sub { flex-basis: calc(100% - 52px); margin: -8px 0 0 51px; }
+  .opc .sub { margin-top: 1px; line-height: 1.35; }
+  .opc .sec { padding: 18px 8px 6px; }
+  details.masopc { margin-top: 10px; }
+  details.masopc > summary { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 12px; border-radius: 14px; background: var(--surface); box-shadow: var(--shadow-sm); color: var(--fg); font-size: 14.5px; }
+  details.masopc > summary::before { content: none !important; }
+  details.masopc > summary::after { content: ''; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translateY(-2px); transition: transform .2s var(--ease-out); }
+  details.masopc[open] > summary::after { transform: rotate(-135deg) translateY(-2px); }
+  details.masopc[open] > summary { margin-bottom: 4px; }
+
+  /* títulos de sección con la letra de la marca */
+  .fila-sec h3 { font-family: 'Bricolage Grotesque', var(--f-disp, system-ui); font-size: 20px; font-weight: 750; letter-spacing: -0.02em; }
+  .fila-sec button { padding: 6px 10px; border-radius: 999px; background: var(--surface-2); color: var(--fg-soft); font-size: 12.5px; }
+
+  /* tarjetas de portada: más limpias */
+  .tarj img, .tarj .ph { border-radius: 14px; box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 10px 24px -8px rgba(26,20,14,.28); }
+  .tarj.red img, .tarj.red .ph { border-radius: 50%; }
+  .tarj .t { padding: 9px 2px 4px; }
+  .tarj .t1 { font-weight: 700; letter-spacing: -0.01em; }
+  .tarj .t2 { font-size: 12.5px; color: var(--fg-mute); }
+  .carrusel { scroll-snap-type: x mandatory; scroll-padding-left: 16px; }
+  .carrusel > * { scroll-snap-align: start; }
+
+  /* filas de canciones */
+  .row img, .row .ph { border-radius: 9px; }
+  .row .t1 { font-weight: 640; }
+  .row .t2 { color: var(--fg-mute); }
+  .row.sel { box-shadow: none; }
+
+  /* barra de abajo: el apartado activo en una pastilla, como en iOS */
+  .bnav button { gap: 4px; padding-top: 4px; }
+  .bnav button svg { box-sizing: content-box; padding: 4px 16px; border-radius: 999px; transition: background .2s var(--ease-out), transform .2s var(--ease-out); }
+  .bnav button.on svg { background: color-mix(in srgb, var(--amber) 18%, transparent); transform: none; }
+  .bnav button.on { font-weight: 750; }
+
+  /* calendario de Me gusta a todo lo ancho */
+  .calor-m, .calor { width: 100%; min-width: max-content; }
+  .calor-m span { width: 0; overflow: visible; white-space: nowrap; }
+  .calor { grid-template-rows: repeat(7, auto); grid-auto-columns: minmax(11px, 1fr); }
+  .calor i { width: auto; height: auto; aspect-ratio: 1; border-radius: 4px; }
+  .calor-sc { direction: rtl; }
+  @media (min-width: 760px) { .calor { gap: 4px; } .calor-m { gap: 4px; } }
+  .calor-ley { margin-top: 10px; }
+
+  /* tarjetas en general, un pelín más suaves */
+  .card { border-radius: 20px; border-color: transparent; padding: 18px; }
+  .rec { border-radius: 18px; padding: 14px 16px; }
+  @media (max-width: 640px) { .card { padding: 16px 14px; } }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800&display=swap" rel="stylesheet">
 </head>
@@ -1225,7 +1298,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-22i';
+const VERSION = '2026-10-22j';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -3142,6 +3215,11 @@ async function anadirAMisDiscos(discos) {
    (casi todo sale de lo guardado en el aparato)
    ============================================================ */
 let _recientes = null;
+function sinRafagas(ps) {
+  const seg = p => Math.floor((typeof p.added === 'number' ? p.added : Date.parse(p.added)) / 1000);
+  const n = new Map(); for (const p of ps) { const k = seg(p); n.set(k, (n.get(k) || 0) + 1); }
+  return ps.filter((p, i) => n.get(seg(p)) < 2 && !(i && ps[i - 1].uri === p.uri));
+}
 function tarjetaMini(img, t1, t2, attrs, red) {
   return '<div class="tarj' + (red ? ' red' : '') + '" ' + attrs + '>' + (img ? '<img loading="lazy" src="' + esc(img) + '" alt="">' : ph(red ? 'persona' : 'disco')) + '<div class="t"><div class="t1 nowrap">' + esc(t1) + '</div><div class="t2 nowrap">' + esc(t2 || '') + '</div></div></div>';
 }
@@ -3227,7 +3305,7 @@ async function vInicio(m) {
       catch (e) { return; }
     }
     const el = $('#inRec'); if (!el || !vivo()) return;
-    const vistos = new Set(), l = _recientes.ps.filter(p => !vistos.has(p.uri) && vistos.add(p.uri)).slice(0, 16);
+    const vistos = new Set(), l = sinRafagas(_recientes.ps).filter(p => !vistos.has(p.uri) && vistos.add(p.uri)).slice(0, 16);
     if (!l.length) return;
     el.innerHTML = '<div class="fila-sec"><h3>Escuchado hace poco</h3><button data-ir="1">Ver como lista</button></div><div class="carrusel">' + l.map((p, i) => tarjetaMini(p.coverG || p.cover, p.title, nombresArtistas(p), 'data-i="' + i + '"')).join('') + '</div>';
     const abrir = i => { const f = { kind: 'lista', id: 'recientes', name: 'Escuchado hace poco', editable: false, meta: null, pistas: null }; abrirFuente(f, async () => conK(l)); if (i != null) setTimeout(() => { const p = S.fuente && S.fuente.pistas && S.fuente.pistas[i]; if (p) hojaPista(p); }, 120); };
@@ -4404,7 +4482,7 @@ function htmlCalor(H, anyoSel) {
     celdas.push('<i class="l' + (dentro ? lv : 'x') + '" data-d="' + k + '" title="' + k + ': ' + n + '"></i>');
     if ((d.getDay() + 6) % 7 === 0) { if (d.getDate() <= 7) meses.push('<span style="grid-column:' + (semana + 1) + '">' + MESES_ES[d.getMonth()].slice(0, 3) + '</span>'); semana++; }
   }
-  return { html: '<div class="calor-sc"><div class="calor-m" style="grid-template-columns:repeat(' + semana + ',13px)">' + meses.join('') + '</div><div class="calor">' + celdas.join('') + '</div></div>', total };
+  return { html: '<div class="calor-sc"><div class="calor-m" style="grid-template-columns:repeat(' + semana + ',minmax(11px,1fr))">' + meses.join('') + '</div><div class="calor">' + celdas.join('') + '</div></div>', total };
 }
 function barras(filas, max, attr) {
   return '<div class="barras">' + filas.map(f => '<button class="barra" ' + attr + '="' + esc(f.k) + '"><span class="bl">' + f.t + '</span><span class="bb"><i style="width:' + Math.max(2, Math.round(100 * f.n / max)) + '%"></i></span><span class="bn">' + n$(f.n) + '</span>' + (f.sub ? '<small class="bs nowrap">' + f.sub + '</small>' : '') + '</button>').join('') + '</div>';
@@ -9777,7 +9855,7 @@ async function vEscuchas(m) {
     try {
       if (r === 'reciente') {
         const x = await sp('/me/player/recently-played?limit=50');
-        const tr = ((x && x.items) || []).map(i => pista(i.track, { added: i.played_at })).filter(Boolean);
+        const tr = sinRafagas(((x && x.items) || []).map(i => pista(i.track, { added: i.played_at })).filter(Boolean));
         const artC = contar(tr, p => p.artists.slice(0, 1).map(a => a.id));
         const arts = [];
         for (const [id, n] of artC.slice(0, 12)) { try { const a = await artistaLigero(id); arts.push(Object.assign(artistaDe(a), { veces: n })); } catch (e) { if (esCaida(e) || e.status === 429) break; } }
@@ -9830,7 +9908,7 @@ async function vEscuchas(m) {
     const x = e.target.closest('[data-x]'); if (!x) return;
     if (x.dataset.x === 'novedades') abrirNovedades();
     else if (x.dataset.x === 'cola') abrirFuente({ kind: 'queue', name: 'Tu cola', editable: false, pistas: null }, async () => { const q = await sp('/me/player/queue'); return [(q && q.currently_playing)].concat((q && q.queue) || []).map(t => pista(t)).filter(Boolean); });
-    else abrirFuente({ kind: 'recent', name: 'Lo último que has escuchado', editable: false, pistas: null }, async () => { const q = await sp('/me/player/recently-played?limit=50'); return ((q && q.items) || []).map(i => pista(i.track, { added: i.played_at })).filter(Boolean); });
+    else abrirFuente({ kind: 'recent', name: 'Lo último que has escuchado', editable: false, pistas: null }, async () => { const q = await sp('/me/player/recently-played?limit=50'); return sinRafagas(((q && q.items) || []).map(i => pista(i.track, { added: i.played_at })).filter(Boolean)); });
   };
 }
 
@@ -9897,6 +9975,19 @@ function hoja(html, alMontar, alCerrar) {
   document.body.append(velo, h);
   _hoja = { velo, h, alCerrar };
   velo.onclick = () => cerrarHoja();
+  let y0 = null, dy = 0;
+  h.addEventListener('touchstart', e => { y0 = h.scrollTop <= 0 && !e.target.closest('input, textarea, select, .chips, .carrusel, .po-arts, .elchips') ? e.touches[0].clientY : null; dy = 0; }, { passive: true });
+  h.addEventListener('touchmove', e => {
+    if (y0 == null) return;
+    dy = e.touches[0].clientY - y0;
+    if (dy > 0 && h.scrollTop <= 0) { h.style.transition = 'none'; h.style.transform = 'translate(-50%, ' + dy + 'px)'; velo.style.opacity = Math.max(0.2, 1 - dy / 400); }
+    else if (dy < 0) { y0 = null; h.style.transition = ''; h.style.transform = ''; velo.style.opacity = ''; }
+  }, { passive: true });
+  h.addEventListener('touchend', () => {
+    if (y0 == null) return; y0 = null;
+    h.style.transition = ''; velo.style.opacity = '';
+    if (dy > 110) { h.style.transform = 'translate(-50%, 100%)'; cerrarHoja(); } else h.style.transform = '';
+  });
   requestAnimationFrame(() => { velo.classList.add('on'); h.classList.add('on'); });
   if (alMontar) alMontar(h);
   return h;
