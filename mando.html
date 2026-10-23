@@ -1247,6 +1247,19 @@
   .card { border-radius: 20px; border-color: transparent; padding: 18px; }
   .rec { border-radius: 18px; padding: 14px 16px; }
   @media (max-width: 640px) { .card { padding: 16px 14px; } }
+
+  /* ---------- 2026-10-23a ---------- */
+  .btn.redondo { width: 42px; height: 42px; padding: 0; border-radius: 50%; display: grid; place-items: center; background: var(--surface); box-shadow: var(--shadow-sm); border-color: transparent; flex: none; }
+  .plbtns .btn { border-radius: 999px; }
+  @media (max-width: 640px) {
+    .plbtns { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-left: -16px; margin-right: -16px; padding: 2px 16px 4px; }
+    .plbtns::-webkit-scrollbar { display: none; }
+    .plbtns .btn { flex: none; white-space: nowrap; }
+    /* Me gusta y Por decidir ya están en la barra de abajo */
+    .atajo[data-a="likes"], .atajo[data-a="decidir"] { display: none; }
+    .row .r { font-size: 12px; min-width: 0; }
+  }
+  .toast { background: var(--fg); text-align: center; justify-content: center; line-height: 1.35; }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800&display=swap" rel="stylesheet">
 </head>
@@ -1298,7 +1311,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-22k';
+const VERSION = '2026-10-23a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -7224,7 +7237,7 @@ function pintarFilas(forzar) {
 function filaHtml(i) {
     const f = S.fuente, suena = S.suena && S.suena.uri;
     const p = S.visibles[i];
-    const der = f.kind === 'album' ? dur(p.ms) : (p.added ? fecha(p.added) : dur(p.ms));
+    const der = f.kind === 'album' ? dur(p.ms) : (p.added ? fecha(p.added).replace(/^hace /, '') : dur(p.ms));
     const enPl = S.indice && f.kind !== 'playlist' ? (S.indice.m.get(p.uri) || []).length : -1;
     return '<div class="row' + (S.sel.has(p.k) ? ' sel' : '') + (p.uri === suena ? ' suena' : '') + '" style="top:' + (i * ROW) + 'px" data-k="' + p.k + '">' +
       '<div class="ckz"><div class="ck">' + ic('check') + '</div></div>' +
@@ -9282,15 +9295,15 @@ async function vPlaylists(m) {
   const bloque = l => '<div class="' + (rejilla ? 'rejilla' : 'lista-obj') + '">' + l.map(item).join('') + '</div>';
   const likes = rejilla ? '<div class="tarj" data-id="_likes"><div class="ph grande" style="background:linear-gradient(135deg,#5b3fd1,#b8a7ff);color:#fff">' + ic('corazon') + '</div><div class="t"><div class="t1">Me gusta</div><div class="t2">Tus canciones guardadas</div></div></div>' : '';
   m.innerHTML = htmlPermisos() +
-    '<div class="herr" style="margin-top:0"><input class="field" id="plQ" type="search" placeholder="Buscar entre ' + lista.length + ' playlists">' +
-    '<button class="btn" id="bVistaPl" title="Cambiar vista">' + ic(rejilla ? 'lista' : 'imagen') + '</button></div>' +
-    '<div class="btnrow" style="margin-bottom:10px">' +
+    '<div class="herr ftool" style="margin-top:0"><label class="fbusca">' + ic('buscar') + '<input id="plQ" type="search" placeholder="Buscar entre ' + lista.length + ' playlists" autocomplete="off"></label>' +
+    '<button class="btn redondo" id="bVistaPl" title="Cambiar vista">' + ic(rejilla ? 'lista' : 'imagen') + '</button></div>' +
+    '<div class="btnrow plbtns" style="margin-bottom:12px">' +
     '<button class="btn pri" id="bIdeas">' + ic('varita') + 'Ideas</button>' +
     '<button class="btn" id="bNueva">' + ic('plus') + 'Nueva</button>' +
     '<button class="btn" id="bUnir">' + ic('unir') + 'Unir</button>' +
     '<button class="btn" id="bSelPl">' + ic('check') + (modoSelPl ? 'Terminar' : 'Elegir varias') + '</button>' +
     '<button class="btn" id="bTodo">' + ic('buscar') + 'Toda mi música</button></div>' +
-    (!modoSelPl ? '<p class="tiny mute" style="margin:-4px 0 10px">Mantén pulsada una playlist para elegir varias.</p>' : '') + '<div id="plRev"></div>' +
+    '<div id="plRev"></div>' +
     '<h3>Tuyas · ' + mias.length + '</h3>' + (rejilla ? '<div class="rejilla">' + likes + mias.map(item).join('') + '</div>' : bloque(mias)) +
     (otras.length ? '<h3 id="plOtras">Que sigues · ' + otras.length + '</h3>' + bloque(otras) : '') +
     (!lista.length ? '<div class="vacio">No tienes playlists todavía.</div>' : '');
@@ -9306,7 +9319,7 @@ async function vPlaylists(m) {
   $('#bSelPl').onclick = () => { modoSelPl = !modoSelPl; S.selObj.clear(); render(); };
   $('#bTodo').onclick = abrirTodaMiMusica;
   $('#bVistaPl').onclick = () => { PREFS.vistaPl = rejilla ? 'lista' : 'rejilla'; guardarPrefs(); render(); };
-  $('#plQ').oninput = e => { const q = fold(e.target.value); m.querySelectorAll('[data-id]').forEach(el => { const p = lista.find(x => x.id === el.dataset.id); el.hidden = q && p && fold(p.name).indexOf(q) < 0; }); };
+  $('#plQ').oninput = e => { const q = fold(e.target.value); m.querySelectorAll('[data-id]').forEach(el => { const p = lista.find(x => x.id === el.dataset.id); el.hidden = !!q && (p ? fold(p.name).indexOf(q) < 0 : el.dataset.id === '_likes' && 'me gusta'.indexOf(q) < 0); }); };
   m.querySelectorAll('.tarj[data-id], .obj[data-id]').forEach(el => {
     let lp = null, saltar = false;
     el.onpointerdown = e => { saltar = false; const x = e.clientX, y = e.clientY; lp = { x, y, t: setTimeout(() => {
