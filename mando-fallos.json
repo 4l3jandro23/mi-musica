@@ -1,12 +1,19 @@
 {
- "version": "2026-10-12c",
- "at": "2026-10-12T10:32:21.099Z",
- "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+ "version": "2026-10-23a",
+ "at": "2026-10-23T13:18:11.631Z",
+ "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
  "pantalla": "1368x673",
- "pausaSeg": 1785,
- "cola": 1,
+ "pausaSeg": 0,
+ "cola": 0,
  "permisosQueFaltan": [],
  "fallos": [
+  {
+   "at": 1792760231297,
+   "donde": "historial Me gusta",
+   "msg": "Failed to fetch",
+   "st": 0,
+   "ruta": ""
+  },
   {
    "at": 1791801125740,
    "donde": "freno",
@@ -209,13 +216,6 @@
    "msg": "Spotify ha pedido parar un rato. El Mando vuelve a intentarlo solo dentro de 51 segundos (si insistiera antes, Spotify alargaría el castigo). Mientras, lo guardado funciona y los cambios van a la cola.",
    "st": 429,
    "ruta": ""
-  },
-  {
-   "at": 1791103376444,
-   "donde": "freno",
-   "msg": "Spotify ha frenado: pausa de 1 min (nivel 1)",
-   "st": 429,
-   "ruta": "GET /me/player/recently-played"
   }
  ],
  "diagnostico": null
