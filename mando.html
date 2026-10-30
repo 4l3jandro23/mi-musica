@@ -1466,6 +1466,13 @@
 
   /* atajos en el ordenador: 6 en 3 columnas, sin hueco */
   @media (min-width: 1000px) { .atajos { grid-template-columns: repeat(3, 1fr); } }
+
+  /* 2026-10-31b: zonas táctiles de 44px como mínimo (WCAG 2.5.5) sin cambiar cómo se ven */
+  .top .btn.ico, .top .cupo, .fila-sec button, .mini .btn, .back, .ayuda button, #np .rb, .bnav button { position: relative; }
+  .top .btn.ico::after, .top .cupo::after, .fila-sec button::after, .mini .btn::after, .back::after, .ayuda button::after, #np .rb::after {
+    content: ''; position: absolute; left: 50%; top: 50%; width: max(100%, 44px); height: max(100%, 44px); transform: translate(-50%, -50%);
+  }
+  .ayuda button { color: var(--fg-soft); }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800&display=swap" rel="stylesheet">
 </head>
@@ -1517,7 +1524,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-31a';
+const VERSION = '2026-10-31b';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -3524,10 +3531,10 @@ async function vInicio(m) {
   const at = [
     ['likes', 'corazon', 'Me gusta', likesN ? likesN.toLocaleString('es-ES') + ' canciones' : '', 'linear-gradient(135deg,#4a2fd0,#b8a7ff)'],
     ['decidir', 'check', 'Por decidir', (() => { const T = new Set(PREFS.temporales || []); const q = (S.playlists || []).filter(p => T.has(p.id)).reduce((a, p) => a + p.total, 0); return q ? 'quedan ' + n$(q) : 'temporales'; })(), 'linear-gradient(135deg,#1f8a5b,#6fd6a4)'],
-    ['historia', 'reloj', 'Tu historia', 'tus Me gusta', 'linear-gradient(135deg,#7a2fd0,#ff7ab8)'],
+    ['historia', 'reloj', 'Tu historia', 'año a año', 'linear-gradient(135deg,#7a2fd0,#ff7ab8)'],
     ['novedades', 'estrella', 'Novedades', novN ? n$(novN) + ' esta semana' : 'de tus artistas', ''],
     ['artistas', 'persona', 'Seguidos', (S.artistas || S.segCache) ? n$((S.artistas || S.segCache).length) + ' artistas' : 'tus artistas', 'linear-gradient(135deg,#c47a0a,#f4b13e)'],
-    ['escuchas', 'grafica', 'Estadísticas', 'tu top', 'linear-gradient(135deg,#d4568a,#ff9ec4)']
+    ['escuchas', 'grafica', 'Estadísticas', 'lo que más suena', 'linear-gradient(135deg,#d4568a,#ff9ec4)']
   ];
   $('#inAtajos').innerHTML = at.map(([id, ico, t, sub, bg]) => '<button class="atajo" data-a="' + id + '"><span class="ic">' + ic(ico) + '</span><span><b>' + t + '</b><small>' + esc(sub) + '</small></span></button>').join('');
   $('#inAtajos').onclick = e => {
@@ -5128,6 +5135,15 @@ function aplicarAcento() {
   r.setProperty('--on-amber', osc ? '#12100e' : '#ffffff');
 }
 try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', aplicarAcento); } catch (e) {}
+const NOMBRE_P = { ant: 'Anterior', sig: 'Siguiente', pp: 'Reproducir o pausar', shuffle: 'Aleatorio', repeat: 'Repetir' };
+function nombrarBotones() {
+  document.querySelectorAll('button[data-p]').forEach(b => {
+    const t = NOMBRE_P[b.dataset.p]; if (!t || b.textContent.trim()) return;
+    if (b.getAttribute('aria-label') !== t) b.setAttribute('aria-label', t);
+    if (b.dataset.p === 'shuffle' || b.dataset.p === 'repeat') { const on = String(b.classList.contains('on')); if (b.getAttribute('aria-pressed') !== on) b.setAttribute('aria-pressed', on); }
+  });
+}
+try { new MutationObserver(nombrarBotones).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
 
 
 /* nombre de playlist normalizado para comparar */
@@ -5174,7 +5190,7 @@ async function estadoBandeja() {
   return { config: true, total: todas.length, archivo: todas.length - nuevas.length, nuevas: nuevas.length, pend, racha, desde: b.desde };
 }
 function htmlBandeja(E) {
-  if (!E.total) return '<div class="bj"><div class="bj-eti">Tu bandeja</div><p>Para ordenar sin agobios, la Fonoteca necesita leer tus Me gusta <b>una vez</b> en este aparato (luego solo pide lo nuevo).</p><button class="btn pri" id="bjLeer">' + ic('corazon') + 'Leer mis Me gusta</button></div>';
+  if (!E.total) return '<div class="bj"><div class="bj-eti">Tu bandeja</div><p>Lee tus Me gusta <b>una vez</b> en este aparato. Después solo trae los nuevos.</p><button class="btn pri" id="bjLeer">' + ic('corazon') + 'Leer mis Me gusta</button></div>';
   if (!E.config) return '<div class="bj bj-nueva"><div class="bj-eti">Empieza aquí</div><h3>Tu bandeja: ordenar sin agobiarte</h3>' +
     '<p>Tienes <b>' + n$(E.total) + '</b> canciones en Me gusta. No hace falta repasarlas una a una: son tu archivo, siguen en Me gusta y de ahí la Fonoteca te propondrá playlists. Aquí solo decides lo <b>nuevo</b>, poco a poco.</p>' +
     '<p class="tiny" style="opacity:.8;margin-top:-4px">¿Desde cuándo cuenta como nuevo?</p><div class="chips" id="bjDesde">' +
