@@ -16,7 +16,7 @@
 <title>Fonoteca</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
 <style>
   :root {
     color-scheme: light;
@@ -1412,6 +1412,60 @@
   .opc.fp button.fp-no { opacity: .5; }
   .opc.fp button.fp-no > svg:last-child { opacity: 0; }
   .fp-pie { position: sticky; bottom: calc(-24px - env(safe-area-inset-bottom)); padding: 12px 0 calc(12px + env(safe-area-inset-bottom)); margin-top: 6px; background: var(--bg-2); }
+
+  /* =========== 2026-10-31: repaso con tasteskill (reglas de pantallas de app) ===========
+     Una sola letra (Archivo; la ensanchada solo en títulos y cifras grandes). Etiquetas en frase
+     normal y gris, nada de mono en mayúsculas. Iconos sueltos, sin cuadradito de color. Superficies
+     con un filo de 1px y sin sombra. El color va en los datos y en un solo control: el de poner
+     música. Lo demás, en tinta. */
+  :root, :root[data-theme="dark"] { --shadow-sm: none; --f-mono: "Archivo", system-ui, sans-serif; }
+  @media (prefers-color-scheme: dark) { :root:where(:not([data-theme="light"])) { --shadow-sm: none; } }
+  .num, .accion .cuantas, .bj-n, .rec b, .tiempos, .row .du { font-variant-numeric: tabular-nums; }
+
+  /* etiquetas */
+  .eti, .bj-eti, .ahora .eti, .hero .eti, .opc .sec, .tabsep, .atajo small, .accion .cuantas, .calor-ley {
+    font-family: "Archivo", system-ui, sans-serif; letter-spacing: 0; text-transform: none;
+  }
+  .eti, .ahora .eti, .hero .eti, .bj-eti { font-size: 12.5px; font-weight: 600; color: var(--fg-mute); }
+  .opc .sec, .tabsep { font-size: 13px; font-weight: 600; color: var(--fg-mute); }
+  .atajo small { font-size: 12.5px; font-weight: 500; color: var(--fg-mute); }
+  .accion .cuantas { font-weight: 700; }
+
+  /* títulos de app, no de portada */
+  h1.saludo { margin: 10px 0 18px; }
+  @media (min-width: 1000px) { .saludo, main[data-titulo]::before { font-size: 32px; } }
+  .hero h2 { font-size: clamp(24px, 4.2vw, 32px); }
+
+  /* superficies: un filo, sin sombra */
+  .card, .seccion, .kpi, .rango, .bj, .idea-ent, .atajo, .rec, .ahora { box-shadow: none; border: 1px solid var(--line); }
+  .fila-sec button { box-shadow: none; border: 1px solid var(--line-firm); }
+  .tab.on { box-shadow: none; }
+
+  /* iconos sueltos, en el gris del texto */
+  .atajo { gap: 12px; }
+  .atajo .ic { width: auto; height: auto; margin-left: 14px; border-radius: 0; background: none !important; color: var(--fg-soft); }
+  .atajo .ic svg { width: 20px; height: 20px; stroke-width: 1.7; }
+  .idea-ent .ic { width: 24px; height: 24px; background: none; color: var(--fg-soft); }
+  .opc button, .opc a { gap: 14px; padding: 12px 8px; }
+  .opc button > svg:first-child, .opc a > svg:first-child { width: 20px; height: 20px; padding: 0; border-radius: 0; background: none !important; color: var(--fg-soft); }
+  .opc button.danger > svg:first-child { color: var(--rust); }
+  .opc > button > .sub, .opc > a > .sub { flex-basis: calc(100% - 34px); margin: -8px 0 0 34px; }
+  .opc.fp button > img { margin: -8px 0; }
+
+  /* el color, en los datos y en el play; los demás botones, en tinta */
+  .btn.pri { background: var(--fg); color: var(--bg); }
+  .btn.pri:hover { background: color-mix(in srgb, var(--fg) 86%, var(--bg)); }
+  .chip.fuerte { background: var(--fg); color: var(--bg); }
+  .hero .bplay, .ahora .bplay { background: var(--amber); color: var(--on-amber); }
+  .bnav button.on, .bnav button.on svg, .tab.on svg { color: var(--fg); }
+  .tab.on { background: var(--surface-2); }
+  .mini .t2, .mini .soft, .mini .mute, .ahora .eti { color: var(--fg-soft); }
+
+  /* cabecera en el iPhone: el cupo se queda en su punto y el nombre entero */
+  @media (max-width: 430px) { .top .cupo span { display: none; } .top .cupo { padding: 0; width: 34px; height: 34px; justify-content: center; } }
+
+  /* atajos en el ordenador: 6 en 3 columnas, sin hueco */
+  @media (min-width: 1000px) { .atajos { grid-template-columns: repeat(3, 1fr); } }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800&display=swap" rel="stylesheet">
 </head>
@@ -1463,7 +1517,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-30d';
+const VERSION = '2026-10-31a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -3430,7 +3484,7 @@ async function vInicio(m) {
     if (/\d/.test(n)) n = n.replace(/4/g, 'a').replace(/3/g, 'e').replace(/1/g, 'i').replace(/0/g, 'o');
     return n ? ', ' + esc(n.charAt(0).toUpperCase() + n.slice(1)) : '';
   };
-  m.innerHTML = '<div class="saludo" id="inSal">' + sal + nom() + '</div><div id="inAhora"></div><div id="inTri"></div><div id="inPongo"></div><div id="inBj"></div><div id="inIdeas"></div><div id="inDia"></div><div class="atajos" id="inAtajos"></div><div id="inNov"></div><div id="inDiscos"></div><div id="inNuevas"></div><div id="inRec"></div><div id="inHoy"></div><div id="inCaps"></div><div id="inPls"></div><div id="inEtq"></div>';
+  m.innerHTML = '<h1 class="saludo" id="inSal">' + sal + nom() + '</h1><div id="inAhora"></div><div id="inTri"></div><div id="inPongo"></div><div id="inBj"></div><div id="inIdeas"></div><div id="inDia"></div><div class="atajos" id="inAtajos"></div><div id="inNov"></div><div id="inDiscos"></div><div id="inNuevas"></div><div id="inRec"></div><div id="inHoy"></div><div id="inCaps"></div><div id="inPls"></div><div id="inEtq"></div>';
   const vivo = () => S.tab === 'inicio' && !S.vista && $('#inAtajos');
   if (!S.me) yo().then(() => { const x = $('#inSal'); if (x) x.innerHTML = sal + nom(); }).catch(() => {});
   pintarAhoraInicio();
