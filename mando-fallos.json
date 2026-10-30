@@ -1,12 +1,19 @@
 {
- "version": "2026-10-23a",
- "at": "2026-10-23T13:18:11.631Z",
+ "version": "2026-10-30a",
+ "at": "2026-10-30T16:48:54.631Z",
  "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
  "pantalla": "1368x673",
  "pausaSeg": 0,
  "cola": 0,
  "permisosQueFaltan": [],
  "fallos": [
+  {
+   "at": 1793378919593,
+   "donde": "Añadiendo a Mis discos",
+   "msg": "No encuentro tu playlist de discos entre tus playlists. Elige cuál es con «Cambiar de playlist».",
+   "st": 0,
+   "ruta": ""
+  },
   {
    "at": 1792760231297,
    "donde": "historial Me gusta",
@@ -207,13 +214,6 @@
    "at": 1791103388128,
    "donde": "cargar",
    "msg": "Spotify ha pedido parar un rato. El Mando vuelve a intentarlo solo dentro de 49 segundos (si insistiera antes, Spotify alargaría el castigo). Mientras, lo guardado funciona y los cambios van a la cola.",
-   "st": 429,
-   "ruta": ""
-  },
-  {
-   "at": 1791103385812,
-   "donde": "cargar",
-   "msg": "Spotify ha pedido parar un rato. El Mando vuelve a intentarlo solo dentro de 51 segundos (si insistiera antes, Spotify alargaría el castigo). Mientras, lo guardado funciona y los cambios van a la cola.",
    "st": 429,
    "ruta": ""
   }
