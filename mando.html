@@ -8,15 +8,15 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Fonoteca">
-<meta name="theme-color" content="#0e0c0b" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#f6f2ec" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c0d10" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#edece7" media="(prefers-color-scheme: light)">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="manifest" href="mando.webmanifest">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
 <title>Fonoteca</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Inter:wght@400..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     color-scheme: light;
@@ -1026,7 +1026,7 @@
   .nota10 .nn button:active { transform: scale(.9); }
   .resena { width: 100%; resize: vertical; min-height: 54px; font: inherit; margin-bottom: 4px; }
   .tarj .imgw .nt { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,.72); color: #fff; font-weight: 800; font-size: 12px; border-radius: 999px; padding: 3px 8px; }
-  .tarj .imgw .nt::before { content: "★ "; color: #f4b13e; }
+  .tarj .imgw .nt::before { content: "★ "; color: var(--amber); }
   #mdL .tarj .imgw .nt { font-size: 12.5px; }
   .diadisco { display: flex; gap: 14px; align-items: center; padding: 12px; border-radius: 20px; margin-bottom: 12px; background: var(--surface); box-shadow: var(--shadow-sm); cursor: pointer; position: relative; overflow: hidden; }
   .diadisco > img, .diadisco > .ph { width: 104px; height: 104px; border-radius: 12px; object-fit: cover; flex: none; box-shadow: 0 10px 26px rgba(0,0,0,.28); }
@@ -1273,6 +1273,129 @@
   #oL.circ .oMas, #oL.circ .vacio { grid-column: 1 / -1; }
   .oMas { height: 1px; }
   @media (min-width: 760px) { #oL.circ { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); } }
+
+  /* =========== rediseño 2026-10-30: «fonoteca» ===========
+     Ultramar sobre carbón (u hueso de día). Títulos en Archivo ensanchada, como
+     los lomos y portadas de discos; cifras y etiquetas en mono, como las fichas
+     de una fonoteca. Carátulas casi cuadradas, como las de verdad. Sin degradados. */
+  :root {
+    --bg:#edece7; --bg-2:#e6e4de; --surface:#fbfaf7; --surface-2:#e3e1db; --surface-3:#d8d6cf;
+    --line:rgba(20,21,26,0.08); --line-firm:rgba(20,21,26,0.16);
+    --fg:#14151a; --fg-soft:#44454c; --fg-mute:#6b6a71;
+    --amber:#2b3fd1; --amber-soft:#dde2fb; --on-amber:#ffffff;
+    --jade:#11845f; --jade-soft:#d4ece2; --rust:#c23b2c;
+    --glass:rgba(246,245,241,0.82);
+    --shadow-sm:0 1px 0 rgba(20,21,26,.04), 0 1px 3px rgba(20,21,26,.06);
+    --shadow-md:0 2px 6px rgba(20,21,26,.06), 0 12px 32px rgba(20,21,26,.10);
+    --shadow-lg:0 24px 64px rgba(20,21,26,.22);
+    --r:16px; --r-sm:10px; --r-cd:5px;
+    --f-disp:"Archivo", system-ui, sans-serif;
+    --f-mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      --bg:#0c0d10; --bg-2:#111216; --surface:#17181d; --surface-2:#202127; --surface-3:#2a2b33;
+      --line:rgba(226,229,255,0.07); --line-firm:rgba(226,229,255,0.14);
+      --fg:#eeede8; --fg-soft:#b5b4af; --fg-mute:#86858d;
+      --amber:#8c9cff; --amber-soft:rgba(140,156,255,0.14); --on-amber:#0c0d10;
+      --jade:#5fd3a0; --jade-soft:rgba(95,211,160,0.13); --rust:#ff7d6b;
+      --glass:rgba(17,18,22,0.80);
+      --shadow-sm:0 0 0 1px rgba(226,229,255,.05);
+      --shadow-md:0 0 0 1px rgba(226,229,255,.06), 0 16px 40px rgba(0,0,0,.5);
+      --shadow-lg:0 24px 70px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:#0c0d10; --bg-2:#111216; --surface:#17181d; --surface-2:#202127; --surface-3:#2a2b33;
+    --line:rgba(226,229,255,0.07); --line-firm:rgba(226,229,255,0.14);
+    --fg:#eeede8; --fg-soft:#b5b4af; --fg-mute:#86858d;
+    --amber:#8c9cff; --amber-soft:rgba(140,156,255,0.14); --on-amber:#0c0d10;
+    --jade:#5fd3a0; --jade-soft:rgba(95,211,160,0.13); --rust:#ff7d6b;
+    --glass:rgba(17,18,22,0.80);
+    --shadow-sm:0 0 0 1px rgba(226,229,255,.05);
+    --shadow-md:0 0 0 1px rgba(226,229,255,.06), 0 16px 40px rgba(0,0,0,.5);
+    --shadow-lg:0 24px 70px rgba(0,0,0,.7);
+  }
+  body { background: var(--bg); font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif; font-feature-settings: normal; letter-spacing: 0; font-stretch: 100%; }
+  :focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+  /* títulos: Archivo ensanchada y prieta */
+  h2, h3, .saludo, main[data-titulo]::before, .logo, .hero h2, .hist-hero h1, .ahora b, .fila-sec h3, .bj h3, .bj-n, .rec b, .ru-tit, .ep-res b, .tabs::before {
+    font-family: var(--f-disp); font-stretch: 116%; font-weight: 800; letter-spacing: -0.035em;
+  }
+  .saludo { font-size: 27px; line-height: 1.08; margin: 10px 0 18px; text-wrap: balance; }
+  main[data-titulo]::before { font-size: 28px; }
+  .fila-sec h3 { font-size: 18px; letter-spacing: -0.03em; }
+  .hero h2 { letter-spacing: -0.04em; }
+  @media (min-width: 1000px) { .saludo, main[data-titulo]::before { font-size: 38px; } }
+
+  /* etiquetas y cifras: la ficha de catálogo */
+  .eti, .bj-eti, .ahora .eti, .hero .eti, .opc .sec, .tabsep, .atajo small, .accion .cuantas, .calor-ley {
+    font-family: var(--f-mono); font-stretch: 100%;
+  }
+  .eti, .bj-eti, .ahora .eti, .hero .eti, .opc .sec, .tabsep { font-size: 10.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+  .bj-eti { color: var(--amber); }
+  .atajo small { font-size: 11px; font-weight: 500; letter-spacing: -0.01em; }
+  .accion .cuantas { font-weight: 600; letter-spacing: -0.02em; }
+
+  /* cabecera y marca */
+  .top { background: color-mix(in srgb, var(--bg) 84%, transparent); }
+  .logo { font-size: 20px; gap: 10px; }
+  .logo .marca { width: 28px; height: 28px; border-radius: 7px; background: none; box-shadow: none; overflow: hidden; }
+  .logo .marca svg { width: 100%; height: 100%; stroke: none; display: block; }
+
+  /* superficies: planas, con su filo; nada de brillos */
+  .card, .seccion, .kpi, .rango, .bj, .idea-ent, .atajo, .rec { box-shadow: var(--shadow-sm); }
+  .card, .seccion, .kpi, .rango { border-radius: var(--r); }
+  .ahora { background: color-mix(in srgb, var(--tinte, var(--surface-3)) 22%, var(--surface)); border-radius: var(--r); box-shadow: var(--shadow-sm); }
+  .ahora img, .ahora .ph { border-radius: var(--r-cd); box-shadow: 0 6px 18px rgba(0,0,0,.28); }
+  .ahora b { font-size: 18px; }
+  .bj { background: var(--surface); border-radius: var(--r); }
+  .bj-n { color: var(--fg); font-stretch: 125%; }
+  .idea-ent { border-radius: var(--r); }
+  .idea-ent .ic { background: var(--amber-soft); color: var(--amber); border-radius: 10px; }
+  .mini { background: color-mix(in srgb, var(--tinte, var(--surface-2)) 18%, var(--surface)); border-radius: 14px; box-shadow: var(--shadow-md); }
+  .mini img, .mini .ph { border-radius: var(--r-cd); }
+  .mini .prog { height: 2px; }
+  .mini .prog i { background: var(--amber); }
+
+  /* atajos: ficha con su icono, sin colorines */
+  .atajos { gap: 8px; }
+  .atajo { border-radius: 12px; padding: 0 10px 0 0; min-height: 58px; gap: 11px; background: var(--surface); }
+  .atajo .ic { width: 36px; height: 36px; margin-left: 11px; align-self: center; border-radius: 9px; background: var(--amber-soft) !important; color: var(--amber); }
+  .atajo .ic svg { width: 19px; height: 19px; stroke-width: 2; }
+  .atajo b { font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
+
+  /* botones */
+  .btn { font-weight: 650; }
+  .btn.pri { box-shadow: none; }
+  .btn.pri:hover { background: color-mix(in srgb, var(--amber) 86%, var(--fg)); }
+  .fila-sec button { background: transparent; box-shadow: inset 0 0 0 1px var(--line-firm); color: var(--fg-soft); font-weight: 650; }
+
+  /* carátulas casi cuadradas, como las de un disco */
+  .tarj img, .tarj .ph { border-radius: var(--r-cd); box-shadow: 0 1px 0 var(--line), 0 10px 22px -10px rgba(0,0,0,.45); }
+  .tarj.red img, .tarj.red .ph { border-radius: 50%; }
+  .tarj .t1 { font-weight: 650; }
+  .row img, .row .ph { border-radius: 4px; }
+  .obj img, .obj .ph { border-radius: var(--r-cd); }
+  #oL.circ .obj img, #oL.circ .obj .ph { border-radius: 50%; }
+  .hero-in > img, .hero-in > .ph { border-radius: 6px; }
+  .rp .port { border-radius: 8px; }
+  .row .t1 { font-weight: 600; }
+
+  /* barra de abajo: el apartado activo en su color, sin pastilla */
+  .bnav button { font-weight: 600; font-size: 10.5px; }
+  .bnav button svg { padding: 4px 0 !important; background: none !important; }
+  .bnav button.on { color: var(--amber); font-weight: 700; }
+  .bnav button.on svg { color: var(--amber); }
+  .tab.on svg { color: var(--amber); }
+  @media (min-width: 1000px) { .tabs::before { font-size: 22px; } }
+
+  /* hojas y menús */
+  .hoja { background: var(--bg-2); border-radius: 22px 22px 0 0; }
+  .opc button > svg:first-child, .opc a > svg:first-child { border-radius: 9px; }
+  .toast { background: var(--fg); color: var(--bg); border-radius: 12px; }
+  .accion { border-radius: 16px; }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800&display=swap" rel="stylesheet">
 </head>
@@ -1324,7 +1447,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-28a';
+const VERSION = '2026-10-30a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -3298,7 +3421,7 @@ async function vInicio(m) {
     ['artistas', 'persona', 'Seguidos', (S.artistas || S.segCache) ? n$((S.artistas || S.segCache).length) + ' artistas' : 'tus artistas', 'linear-gradient(135deg,#c47a0a,#f4b13e)'],
     ['escuchas', 'grafica', 'Estadísticas', 'tu top', 'linear-gradient(135deg,#d4568a,#ff9ec4)']
   ];
-  $('#inAtajos').innerHTML = at.map(([id, ico, t, sub, bg]) => '<button class="atajo" data-a="' + id + '"><span class="ic" style="background:' + bg + '">' + ic(ico) + '</span><span><b>' + t + '</b><small>' + esc(sub) + '</small></span></button>').join('');
+  $('#inAtajos').innerHTML = at.map(([id, ico, t, sub, bg]) => '<button class="atajo" data-a="' + id + '"><span class="ic">' + ic(ico) + '</span><span><b>' + t + '</b><small>' + esc(sub) + '</small></span></button>').join('');
   $('#inAtajos').onclick = e => {
     const b = e.target.closest('[data-a]'); if (!b) return;
     const a = b.dataset.a;
@@ -4873,7 +4996,7 @@ async function dibujarImagen(d) {
 }
 
 /* ---------------- COLOR DE ACENTO ---------------- */
-const ACENTOS = [['', 'Ámbar', '#f4b13e', '#c47a0a'], ['verde', 'Verde', '#3fd98a', '#138a4e'], ['violeta', 'Violeta', '#a592ff', '#6a4fe0'], ['rosa', 'Rosa', '#ff78ae', '#c2336f'], ['azul', 'Azul', '#6aa6ff', '#2563d9'], ['coral', 'Coral', '#ff8a66', '#c8431f']];
+const ACENTOS = [['', 'Ultramar', '#8c9cff', '#2b3fd1'], ['ambar', 'Ámbar', '#f4b13e', '#c47a0a'], ['verde', 'Verde', '#3fd98a', '#138a4e'], ['violeta', 'Violeta', '#a592ff', '#6a4fe0'], ['rosa', 'Rosa', '#ff78ae', '#c2336f'], ['azul', 'Azul', '#6aa6ff', '#2563d9'], ['coral', 'Coral', '#ff8a66', '#c8431f']];
 function temaOscuro() { const t = document.documentElement.dataset.theme; return t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches); }
 function aplicarAcento() {
   const r = document.documentElement.style, a = ACENTOS.find(x => x[0] === (PREFS.acento || ''));
@@ -7191,7 +7314,7 @@ function cabFuente(f) {
   const eti = { playlist: 'Playlist', album: 'Disco', likes: 'Tu biblioteca', todo: 'Tu biblioteca' }[f.kind] || 'Lista';
   return '<div class="hero"' + (img ? ' data-tinte="' + esc(img) + '"' : ' style="--tinte:' + (f.kind === 'likes' ? '#6a4fd8' : 'var(--surface-3)') + '"') + '>' +
     '<button class="btn ghost sm back" id="bAtras">' + ic('atras') + 'Atrás</button>' +
-    '<div class="hero-in">' + (img ? '<img src="' + esc(img) + '" alt="">' : (f.kind === 'likes' ? '<div class="ph" style="background:linear-gradient(135deg,#4a2fd0,#b8a7ff);color:#fff">' + ic('corazon') + '</div>' : ph('lista'))) +
+    '<div class="hero-in">' + (img ? '<img src="' + esc(img) + '" alt="">' : (f.kind === 'likes' ? '<div class="ph" style="background:#263acc;color:#efece4">' + ic('corazon') + '</div>' : ph('lista'))) +
     '<div class="txt"><div class="eti">' + eti + '</div><h2>' + esc(f.name) + '</h2><div class="soft tiny">' + sub + '</div>' +
     (f.meta && f.meta.desc ? '<div class="mute tiny nowrap" style="margin-top:2px">' + esc(f.meta.desc.replace(/<[^>]+>/g, '')) + '</div>' : '') +
     '<div class="btnrow">' +
@@ -9317,7 +9440,7 @@ async function vPlaylists(m) {
     : '<div class="obj' + (S.selObj.has(p.id) ? ' sel' : '') + '" data-id="' + p.id + '">' + ck(p) + imgOph(p.img, 'lista') +
       '<div class="t"><div class="t1 nowrap">' + esc(p.name) + '</div><div class="t2 nowrap">' + sub(p) + '</div></div></div>';
   const bloque = l => '<div class="' + (rejilla ? 'rejilla' : 'lista-obj') + '">' + l.map(item).join('') + '</div>';
-  const likes = rejilla ? '<div class="tarj" data-id="_likes"><div class="ph grande" style="background:linear-gradient(135deg,#5b3fd1,#b8a7ff);color:#fff">' + ic('corazon') + '</div><div class="t"><div class="t1">Me gusta</div><div class="t2">Tus canciones guardadas</div></div></div>' : '';
+  const likes = rejilla ? '<div class="tarj" data-id="_likes"><div class="ph grande" style="background:#263acc;color:#efece4">' + ic('corazon') + '</div><div class="t"><div class="t1">Me gusta</div><div class="t2">Tus canciones guardadas</div></div></div>' : '';
   m.innerHTML = htmlPermisos() +
     '<div class="herr ftool" style="margin-top:0"><label class="fbusca">' + ic('buscar') + '<input id="plQ" type="search" placeholder="Buscar entre ' + lista.length + ' playlists" autocomplete="off"></label>' +
     '<button class="btn redondo" id="bVistaPl" title="Cambiar vista">' + ic(rejilla ? 'lista' : 'imagen') + '</button></div>' +
@@ -10195,7 +10318,7 @@ function revisarHistoria(h, res) {
 $('#bRecargar').innerHTML = ic('recargar');
 $('#bBuscar').innerHTML = ic('buscar');
 $('#bBuscar').onclick = () => irATab('buscar');
-document.querySelector('.logo .marca').innerHTML = ic('play');
+document.querySelector('.logo .marca').innerHTML = '<svg viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" fill="#263acc"/><circle cx="300" cy="196" r="150" fill="#121318"/><circle cx="300" cy="196" r="58" fill="#96a6ff"/><rect x="78" y="212" width="272" height="272" rx="14" fill="#efece4"/></svg>';
 $('#bAjustes').innerHTML = ic('ajustes');
 $('#bRecargar').onclick = () => {
   invalidar();
