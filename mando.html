@@ -1452,7 +1452,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-30b';
+const VERSION = '2026-10-30c';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2501,14 +2501,13 @@ const TABS = [
   { id: 'artistas', txt: 'Seguidos', ic: 'persona' },
   { id: 'buscar', txt: 'Buscar', ic: 'buscar' },
   { id: 'discos', txt: 'Discos guardados', ic: 'disco', mas: true },
-  { id: 'mis', txt: 'Mis artistas', ic: 'estrella', mas: true },
   { id: 'escuchas', txt: 'Estadísticas', ic: 'grafica', mas: true },
   { id: 'cambios', txt: 'Cambios', ic: 'deshacer', mas: true }
 ];
 /* En el movil: cuatro pestañas principales abajo y «Más» con el resto */
 const PRINCIPALES = ['inicio', 'decidir', 'likes', 'playlists'];
 const SUB_TAB = { historia: 'lo que te ha gustado, año a año', historias: 'los géneros y su historia', portadas: 'la imagen de cada playlist', artistas: 'los que sigues en Spotify',
-  buscar: 'canciones, discos y artistas', discos: 'los que guardas en Spotify', mis: 'tu lista propia, con notas y etiquetas', escuchas: 'lo que más escuchas', cambios: 'deshacer lo que has hecho' };
+  buscar: 'canciones, discos y artistas', discos: 'los que guardas en Spotify', escuchas: 'lo que más escuchas', cambios: 'deshacer lo que has hecho' };
 function pintarTabs() {
   const tb = t => '<button class="tab' + (t.mas ? ' tmas' : '') + (S.tab === t.id ? ' on' : '') + '" data-t="' + t.id + '">' + ic(t.ic) + t.txt + '</button>';
   $('#tabs').innerHTML = TABS.filter(t => !t.mas).map(tb).join('') + '<div class="tabsep">Más</div>' + TABS.filter(t => t.mas).map(tb).join('');
@@ -3049,7 +3048,7 @@ function hojaAnalizar(f) {
       '<div class="opc" style="margin-top:10px">' +
       '<button data-o="sosp">' + ic('varita') + '<span>Rápido: géneros + año real de las sospechosas<span class="sub">' + sosp + ' canciones de discos remasterizados, recopilatorios, deluxe… · unos ' + t(sosp, 1.1) + (artSin.size && lfCfg() ? ' + ' + t(artSin.size, 0.3) + ' de géneros' : '') + '</span></span></button>' +
       '<button data-o="todas">' + ic('reloj') + '<span>Completo: año real y género de CADA canción<span class="sub">' + sinG + ' canciones · unos ' + t(sinG, 1.1) + '. MusicBrainz solo deja 1 por segundo: mejor en el ordenador, con la Fonoteca abierta (puede ser toda una noche). Se sincroniza con el móvil.</span></span></button>' +
-      '</div><p class="tiny mute">El año real y el género de cada canción salen de MusicBrainz (así sabe que «BAILE INoLVIDABLE» de Bad Bunny es salsa aunque Bad Bunny sea reguetón). Si una canción no tiene etiquetas allí, se usa el género de su artista (Last.fm y tus Mis artistas). El mood sale de los géneros y de tus etiquetas; el idioma, del título y del origen del artista.</p>', h => {
+      '</div><p class="tiny mute">El año real y el género de cada canción salen de MusicBrainz (así sabe que «BAILE INoLVIDABLE» de Bad Bunny es salsa aunque Bad Bunny sea reguetón). Si una canción no tiene etiquetas allí, se usa el género de su artista (Last.fm y los géneros guardados de tus artistas). El mood sale de los géneros y de tus etiquetas; el idioma, del título y del origen del artista.</p>', h => {
         h.querySelector('.opc').onclick = e => {
           const b = e.target.closest('[data-o]'); if (!b) return;
           const k = h.querySelector('#anLf'); if (k && k.value.trim()) escribir(K_LF, { apiKey: k.value.trim() });
@@ -4554,7 +4553,6 @@ function hojaIrA() {
     if (w.length) {
       (S.playlists || []).filter(p => ok(p.name)).slice(0, 8).forEach(p => out.push({ img: p.img, t: p.name, sub: 'Playlist · ' + p.total + ' canciones', fn: () => abrirPlaylist(p) }));
       if (S.md) S.md.discos.filter(d => ok(d.name + ' ' + d.artistas)).slice(0, 8).forEach((d, i, l) => out.push({ img: d.img, t: d.name, sub: 'Mis discos · ' + d.artistas + (estadoDisco(d.id) ? ' · ' + estadoDisco(d.id) : ''), fn: () => hojaDisco([d], 0) }));
-      if (MIS) MIS.artistas.filter(a => ok(a.name)).slice(0, 8).forEach(a => out.push({ img: a.img, red: true, t: a.name, sub: 'Mis artistas', fn: () => abrirArtista(a.id) }));
     }
     return out.slice(0, 40);
   };
@@ -7797,7 +7795,6 @@ function pintarAccion() {
   } else if (!S.vista && (S.tab === 'discos' || S.tab === 'artistas') && S.selObj.size) {
     el.innerHTML = '<span class="cuantas">' + S.selObj.size + '</span>' +
       '<button data-a="objQuitar">' + ic('papelera') + (S.tab === 'discos' ? 'Quitar de la biblioteca' : 'Dejar de seguir') + '</button>' +
-      (S.tab === 'artistas' ? '<button data-a="aMis">' + ic('estrella') + 'A Mis artistas</button>' : '') +
       '<button data-a="objNada">' + ic('check') + 'Ninguno</button>';
     el.hidden = false;
   } else el.hidden = true;
@@ -8008,7 +8005,6 @@ function hojaMasSeleccion(ps) {
     '<button data-o="nueva">' + ic('plus') + 'Crear playlist con ellas</button>' +
     '<button data-o="discos">' + ic('disco') + 'Guardar sus discos<span class="sub">en tu biblioteca</span></button>' +
     '<button data-o="artistas">' + ic('persona') + 'Seguir a sus artistas</button>' +
-    '<button data-o="aMis">' + ic('estrella') + 'Añadir sus artistas a Mis artistas</button>' +
     (S.fuente.kind !== 'likes' ? '<button data-o="nolike">' + ic('corazon') + 'Quitarlas de Me gusta</button>' : '') +
     '</div>', h => {
       h.querySelector('.opc').onclick = async e => {
@@ -8562,7 +8558,7 @@ function abrirArtista(id) {
     $('#bAtras').onclick = atras;
     $('#bPlayA').onclick = () => reproducir({ context_uri: a.uri });
     const bmd = $('#bMasDiscos'); if (bmd) bmd.onclick = () => { S._masDiscos = id; render(); };
-    pintarBloqueMis(a); tintar(m);
+    tintar(m);
     const bs = $('#bSeguir'); if (bs) bs.onclick = async () => { await alternarBiblio(a.uri, 'artista'); render(); };
     $('#bCanc').onclick = () => { S.tab = 'buscar'; S.vista = null; S.pila = []; S.buscar = { q: 'artist:"' + a.name + '"', tipo: 'track', res: null }; render(); lanzarBusqueda(); };
     m.querySelectorAll('.obj[data-id]').forEach(el => el.onclick = () => abrirDisco(el.dataset.id, discos.find(d => d.id === el.dataset.id)));
@@ -8608,7 +8604,7 @@ async function buscarLocal(q) {
   const lib = await bibliotecaLocal();
   const ms = lib.filter(p => ws.every(w => p._f.indexOf(w) >= 0));
   await misAsegurar();
-  const arts = MIS ? MIS.artistas.filter(a => ws.every(w => fold(a.name).indexOf(w) >= 0)).slice(0, 8) : [];
+  const arts = [];
   const md = S.md ? S.md.discos.filter(d => ws.every(w => fold(d.name + ' ' + d.artistas).indexOf(w) >= 0)).slice(0, 8) : [];
   if (!$('#bL')) return;
   if (!ms.length && !arts.length && !md.length) { el.innerHTML = '<p class="tiny mute" style="margin:0 0 10px">Nada en tu biblioteca con «' + esc(q) + '». Pulsa buscar para mirar en todo Spotify.</p>'; return; }
@@ -8851,7 +8847,7 @@ function hojaAjustes() {
     '<a class="btn ' + (f.length || !conectado() ? 'pri ' : '') + 'wide" href="' + CONECTAR + '">' + (conectado() ? 'Volver a conectar' : 'Conectar con Spotify') + '</a>' +
     '<h3>Copia de seguridad</h3><p class="soft tiny">Descarga un archivo con todas tus playlists (con sus canciones), tus Me gusta, tus discos y los artistas que sigues. Si algún día se borra algo, desde aquí se puede recrear.</p>' +
     '<div class="btnrow"><button class="btn" id="aCopia">' + ic('bajar') + 'Descargar copia de todo</button><button class="btn" id="aRest">' + ic('subir') + 'Recuperar desde una copia</button></div>' +
-    '<h3>Mis artistas en todos tus aparatos</h3><p class="soft tiny">Se guardan en <b>mis-artistas.json</b> de tu repo de GitHub. Es el mismo token que usaba MusicVault; si este aparato ya lo tenía, no hay que tocar nada.</p>' +
+    '<h3>Copia en GitHub</h3><p class="soft tiny">Tus etiquetas y los géneros de tus artistas se guardan en tu repo de GitHub, para tenerlos igual en todos tus aparatos. Si este aparato ya tenía el token, no hay que tocar nada.</p>' +
     '<label class="lbl">Repo</label><input class="field" id="gRepo" placeholder="4l3jandro23/mi-musica" value="' + esc((leer(K_GH, {}) || {}).repo || '4l3jandro23/mi-musica') + '">' +
     '<label class="lbl">Token de GitHub</label><input class="field" id="gTok" type="password" placeholder="' + (ghCfg() ? 'guardado (déjalo vacío para no cambiarlo)' : 'github_pat_…') + '">' +
     '<div class="btnrow" style="margin-top:8px"><button class="btn" id="gOk">Guardar y sincronizar</button></div>' +
@@ -9610,7 +9606,6 @@ function hojaFuente(f) {
       ed ? b('quitarNoLikes', 'filtro', 'Quitar de aquí las que no te gustan') : '',
       b('seguirTodos', 'personaMas', 'Seguir a todos sus artistas'),
       b('dejarTodos', 'personaMenos', 'Dejar de seguir a todos sus artistas'),
-      b('aMis', 'estrella', 'Añadir sus artistas a Mis artistas'),
       f.kind === 'album' ? b('guardarDisco', 'disco', 'Guardar o quitar el disco de tu biblioteca') : ''
     ]) +
     '</details></div>', h => {
@@ -10003,7 +9998,7 @@ function hojaParecida(f) {
   const arts = contar(f.pistas, p => p.artists.slice(0, 1).map(a => a.name));
   hoja('<h2>Crear una parecida a «' + esc(f.name) + '»</h2><p class="soft tiny">Busca más canciones de sus ' + Math.min(15, arts.length) + ' artistas principales que no estén ya en la lista.</p>' +
     '<label class="lbl">Cuántas canciones</label><input class="field" id="pcN" type="number" value="' + Math.min(50, Math.max(20, f.pistas.length)) + '">' +
-    '<label class="check"><input type="checkbox" id="pcMis"> Sumar también a Mis artistas con las mismas etiquetas</label>' +
+    '<input type="checkbox" id="pcMis" hidden>' +
     '<button class="btn pri wide" id="pcOk" style="margin-top:10px">' + ic('varita') + 'Crearla</button>', h => {
       h.querySelector('#pcOk').onclick = async () => {
         const n = Math.max(5, Math.min(500, +h.querySelector('#pcN').value || 50));
@@ -10108,7 +10103,7 @@ async function vEscuchas(m) {
   if (S.tab !== 'escuchas' || S.vista || (PREFS.rango || 'short_term') !== r) return;
   await misAsegurar();
   const nomR = RANGOS.find(x => x[0] === r)[1];
-  const tarjA = (a, i) => '<div class="tarj red" data-a="' + a.id + '"><span class="n">#' + (i + 1) + '</span>' + (a.imgG ? '<img loading="lazy" src="' + esc(a.imgG) + '" alt="">' : ph('persona')) + '<div class="t"><div class="t1 nowrap">' + esc(a.name) + '</div>' + (misPorId(a.id) ? '<div class="t2">en Mis artistas</div>' : '') + '</div></div>';
+  const tarjA = (a, i) => '<div class="tarj red" data-a="' + a.id + '"><span class="n">#' + (i + 1) + '</span>' + (a.imgG ? '<img loading="lazy" src="' + esc(a.imgG) + '" alt="">' : ph('persona')) + '<div class="t"><div class="t1 nowrap">' + esc(a.name) + '</div>' + '' + '</div></div>';
   const tarjC = (p, i) => '<div class="tarj" data-p="' + i + '"><span class="n">#' + (i + 1) + '</span>' + (p.coverG ? '<img loading="lazy" src="' + esc(p.coverG) + '" alt="">' : ph('disco')) + '<div class="t"><div class="t1 nowrap">' + esc(p.title) + '</div><div class="t2 nowrap">' + esc(nombresArtistas(p)) + (p.veces > 1 ? ' · ' + p.veces + ' veces' : '') + '</div></div></div>';
   /* generos: los de Spotify de tus artistas top y, aparte, tus etiquetas */
   const gens = contar(d.arts, a => (a.generos || generosArtista(a.id) || []).map(g => String(g).toLowerCase()));
@@ -10116,7 +10111,7 @@ async function vEscuchas(m) {
   const discos = contar(d.tracks, p => p.albumId ? p.albumId : null).slice(0, 6).map(([id, n]) => { const p = d.tracks.find(x => x.albumId === id); return { id, n, p }; });
   const barras = (pares, nom) => pares.length ? pares.map(([k, n]) => '<div class="barra"><span class="nowrap" style="width:42%">' + esc(nom ? nom(k) : k) + '</span><i style="width:' + Math.max(3, 55 * n / pares[0][1]) + '%"></i><span class="mute">' + n + '</span></div>').join('') : '<p class="tiny mute">Sin datos</p>';
   $('#stC').innerHTML =
-    '<div class="seccion"><div class="sechead"><h3>' + ic('persona') + 'Tus artistas top</h3><button class="btn sm" id="stExpA">' + ic('bajar') + 'TXT</button><button class="btn sm" id="stMisA">' + ic('estrella') + 'A Mis artistas</button></div>' +
+    '<div class="seccion"><div class="sechead"><h3>' + ic('persona') + 'Tus artistas top</h3><button class="btn sm" id="stExpA">' + ic('bajar') + 'TXT</button></div>' +
     '<div class="rejilla">' + d.arts.slice(0, ST.verArt).map(tarjA).join('') + '</div>' +
     (d.arts.length > ST.verArt ? '<div style="text-align:center;margin-top:10px"><button class="btn" id="stMasA">Mostrar más</button></div>' : '') + '</div>' +
     '<div class="seccion"><div class="sechead"><h3>' + ic('lista') + 'Tus canciones top</h3><button class="btn sm" id="stExpC">' + ic('bajar') + 'TXT</button><button class="btn sm" id="stListaC">' + ic('check') + 'Editar</button><button class="btn sm pri" id="stCrearC">' + ic('plus') + 'Playlist</button></div>' +
@@ -10131,7 +10126,7 @@ async function vEscuchas(m) {
   const txt = (l, fn) => l.map((x, i) => (i + 1) + '. ' + fn(x)).join('\n');
   $('#stExpA').onclick = () => descargar('artistas top - ' + nomR + '.txt', txt(d.arts, a => a.name), 'text/plain');
   $('#stExpC').onclick = () => descargar('canciones top - ' + nomR + '.txt', txt(d.tracks, p => nombresArtistas(p) + ' - ' + p.title), 'text/plain');
-  $('#stMisA').onclick = async () => { const n = misAnadir(d.arts.map(a => ({ id: a.id, name: a.name, img: a.imgG, genres: a.generos }))); toast(n ? n + ' añadidos a Mis artistas' : 'Ya estaban todos'); render(); };
+  if ($('#stMisA')) $('#stMisA').onclick = async () => { const n = misAnadir(d.arts.map(a => ({ id: a.id, name: a.name, img: a.imgG, genres: a.generos }))); toast(n ? n + ' añadidos a Mis artistas' : 'Ya estaban todos'); render(); };
   const comoLista = () => abrirFuente({ kind: 'top', name: 'Canciones top · ' + nomR, editable: false, pistas: d.tracks.slice() }, async () => d.tracks);
   $('#stListaC').onclick = comoLista;
   $('#stCrearC').onclick = () => hojaNuevaPlaylist(d.tracks.map(p => p.uri), 'Mi top · ' + nomR + ' · ' + new Date().toLocaleDateString('es-ES', { month: 'short', year: 'numeric' }));
