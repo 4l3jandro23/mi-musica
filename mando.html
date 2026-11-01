@@ -1524,7 +1524,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-10-31b';
+const VERSION = '2026-11-01a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -10537,7 +10537,8 @@ async function crearDesdeHistoria(id) {
   try { h = await cargarHistoria(id); } catch (e) { toast(e.message); return; }
   // Las canciones quitadas en Historias (misma clave que allí: id|artista|título) no se buscan
   let quitadas; try { quitadas = new Set(JSON.parse(localStorage.getItem('historias_quitadas_v1') || '[]')); } catch (e) { quitadas = new Set(); }
-  const piezas = h.capitulos.flatMap(cp => cp.items).filter(i => i.tipo !== 'hito' && !quitadas.has(h.id + '|' + i.art + '|' + i.t));
+  const piezas = h.capitulos.flatMap(cp => cp.items).filter(i => i.tipo !== 'hito' && !quitadas.has(h.id + '|' + i.art + '|' + i.t))
+    .map((i, n) => [i, n]).sort((a, b) => a[0].a - b[0].a || a[1] - b[1]).map(x => x[0]); // por año, como la web
   const cache = leer(K_HISTORIAS, {});
   const faltan = piezas.filter(i => cache[(i.tipo === 'disco' ? 'd|' : 't|') + normH(i.art) + '|' + normH(i.t)] === undefined).length;
   hoja('<h2>' + esc(h.titulo) + '</h2><p class="soft">' + piezas.length + ' piezas en orden cronológico. ' +

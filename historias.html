@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#100e16" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#f3f2f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c0d10" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#edece7" media="(prefers-color-scheme: light)">
 <link rel="icon" href="historias/icono-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="historias/icono-180.png">
 <link rel="manifest" href="historias.webmanifest">
@@ -14,707 +14,599 @@
 <title>Historias de la música</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500..800&family=Instrument+Sans:wght@400..700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
 <style>
   /* ============================================================
-     DISEÑO 5 (2026-10-17) · «La discoteca»
-     Cada historia es una funda con su vinilo; los capítulos, caras.
-     Unbounded para títulos, Instrument Sans para leer, DM Mono para años.
+     DISEÑO 6 (2026-11-01) · Hermana de la Fonoteca
+     Todo va por año: la portada es una línea del tiempo por épocas, con una foto
+     de archivo en blanco y negro para cada una. Una sola letra (Archivo; ancha en
+     los títulos), el ultramar de la Fonoteca para la acción y el progreso, y el
+     color de cada historia solo en su funda. Plano: sin degradados ni sombras.
      ============================================================ */
   :root {
     color-scheme: light;
-    --bg:#f3f2f7; --bg-2:#e9e7f0; --surface:#ffffff; --surface-2:#e8e6ef; --surface-3:#dcd9e6;
-    --line:rgba(22,18,40,.08); --line-firm:rgba(22,18,40,.16);
-    --fg:#15121f; --fg-soft:#48435a; --fg-mute:#7d778f;
-    --acc:#5b3fe0; --acc-soft:rgba(91,63,224,.12);
-    --sp:#1db954; --yt:#ff0033;
-    --shadow-sm:0 1px 2px rgba(22,18,40,.06), 0 4px 14px rgba(22,18,40,.07);
-    --shadow-md:0 12px 32px rgba(22,18,40,.14);
-    --ease:cubic-bezier(.23,1,.32,1);
-    --f-disp:"Unbounded", "Instrument Sans", system-ui, sans-serif;
-    --f-body:"Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    --f-mono:"DM Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
-    --side:0px; --top:58px; --tabs:0px;
+    --bg: #edece7; --bg2: #e6e4de; --sur: #fbfaf7; --sur2: #e2e0d9; --sur3: #d6d4cc;
+    --ink: #14151a; --soft: #3f4047; --mute: #64636a;
+    --acc: #2b3fd1; --acc-soft: #dde2fb; --on-acc: #ffffff;
+    --ok: #0b6b4c; --bad: #b8382a;
+    --f: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --r: 16px; --r-sm: 10px; --r-cd: 4px;
+    --side: 0px; --tabs-h: 0px; --top-h: 60px; --pad: 16px;
+    --ease: cubic-bezier(0.23, 1, 0.32, 1);
   }
   @media (prefers-color-scheme: dark) {
     :root:where(:not([data-theme="light"])) {
       color-scheme: dark;
-      --bg:#100e16; --bg-2:#15121d; --surface:#1c1926; --surface-2:#262233; --surface-3:#322d42;
-      --line:rgba(235,228,255,.07); --line-firm:rgba(235,228,255,.15);
-      --fg:#f4f1fb; --fg-soft:#c4bed6; --fg-mute:#8c869e;
-      --acc:#a593ff; --acc-soft:rgba(165,147,255,.14);
-      --shadow-sm:0 1px 2px rgba(0,0,0,.4), 0 4px 14px rgba(0,0,0,.3);
-      --shadow-md:0 14px 34px rgba(0,0,0,.5);
+      --bg: #0c0d10; --bg2: #111216; --sur: #17181d; --sur2: #202127; --sur3: #2c2d35;
+      --ink: #eeede8; --soft: #c2c1bc; --mute: #94939b;
+      --acc: #8c9cff; --acc-soft: rgba(140, 156, 255, 0.15); --on-acc: #0c0d10;
+      --ok: #5fd3a0; --bad: #ff8a7a;
     }
   }
   :root[data-theme="dark"] {
     color-scheme: dark;
-    --bg:#100e16; --bg-2:#15121d; --surface:#1c1926; --surface-2:#262233; --surface-3:#322d42;
-    --line:rgba(235,228,255,.07); --line-firm:rgba(235,228,255,.15);
-    --fg:#f4f1fb; --fg-soft:#c4bed6; --fg-mute:#8c869e;
-    --acc:#a593ff; --acc-soft:rgba(165,147,255,.14);
-    --shadow-sm:0 1px 2px rgba(0,0,0,.4), 0 4px 14px rgba(0,0,0,.3);
-    --shadow-md:0 14px 34px rgba(0,0,0,.5);
+    --bg: #0c0d10; --bg2: #111216; --sur: #17181d; --sur2: #202127; --sur3: #2c2d35;
+    --ink: #eeede8; --soft: #c2c1bc; --mute: #94939b;
+    --acc: #8c9cff; --acc-soft: rgba(140, 156, 255, 0.15); --on-acc: #0c0d10;
+    --ok: #5fd3a0; --bad: #ff8a7a;
   }
+  @media (min-width: 700px) { :root { --pad: 32px; } }
+  @media (min-width: 1000px) { :root { --pad: 48px; } }
+  @media (max-width: 999px) { :root { --tabs-h: calc(64px + env(safe-area-inset-bottom)); } }
 
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-  body {
-    margin: 0; background: var(--bg); color: var(--fg); font-family: var(--f-body);
-    font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased;
-    padding-left: var(--side); padding-bottom: calc(var(--tabs) + 40px + env(safe-area-inset-bottom));
-  }
-  a { color: inherit; text-decoration: none; }
-  button, input { font: inherit; color: inherit; }
-  ::selection { background: var(--acc-soft); }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--top-h) + 64px); }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f); font-size: 16px; line-height: 1.5;
+    padding-left: var(--side); padding-bottom: calc(var(--tabs-h) + 24px); }
+  a { color: inherit; }
+  button { font: inherit; color: inherit; }
+  img { max-width: 100%; display: block; }
+  .i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
   :focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; border-radius: 6px; }
-  svg.i { width: 1.15em; height: 1.15em; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.2em; }
-  h1, h2 { font-family: var(--f-disp); font-weight: 700; letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
-  .eti { display: inline-flex; align-items: center; gap: 6px; font-family: var(--f-mono); font-size: 12px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: var(--fg-mute); }
-  .eti svg { width: 14px; height: 14px; }
-  .pto { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--c); flex: none; }
-  mark { background: color-mix(in srgb, var(--acc) 30%, transparent); color: inherit; border-radius: 3px; padding: 0 1px; }
+  ::selection { background: var(--acc-soft); }
+  .oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  mark { background: var(--acc-soft); color: inherit; border-radius: 3px; padding: 0 2px; }
+  h1, h2, h3 { font-stretch: 112%; font-weight: 800; letter-spacing: -0.035em; line-height: 1.05; margin: 0; text-wrap: balance; }
+  h1 { font-size: clamp(34px, 5.4vw, 56px); }
+  h2 { font-size: clamp(24px, 3vw, 30px); }
+  .lead { font-size: 18px; color: var(--soft); max-width: 62ch; margin: 14px 0 0; }
 
-  /* ---------- cabecera ---------- */
-  .top { position: sticky; top: 0; z-index: 40; padding-top: env(safe-area-inset-top);
-    background: color-mix(in srgb, var(--bg) 82%, transparent); box-shadow: 0 1px 0 var(--line);
-    backdrop-filter: saturate(1.5) blur(16px); -webkit-backdrop-filter: saturate(1.5) blur(16px); }
-  .bar { display: flex; align-items: center; gap: 10px; height: var(--top); padding: 0 16px; max-width: 1240px; margin: 0 auto; }
-  .logo { display: flex; align-items: center; gap: 9px; font-family: var(--f-disp); font-weight: 700; font-size: 17px; letter-spacing: -0.03em; white-space: nowrap; }
-  .marca { width: 32px; height: 32px; border-radius: 50%; flex: none; display: grid; place-items: center; color: #fff;
-    background: radial-gradient(circle, var(--acc) 0 30%, #17141f 31%); box-shadow: var(--shadow-sm); }
-  .marca svg { width: 18px; height: 18px; opacity: .55; }
-  .busca { flex: 1; min-width: 0; position: relative; display: flex; align-items: center; }
-  .busca svg { position: absolute; left: 13px; width: 17px; height: 17px; color: var(--fg-mute); pointer-events: none; }
-  .field { width: 100%; border: 0; border-radius: 999px; background: var(--surface-2); padding: 10px 14px 10px 38px; outline: none; font-size: 15px;
-    transition: background .15s, box-shadow .15s; }
-  .field::placeholder { color: var(--fg-mute); }
-  .field:focus { background: var(--surface); box-shadow: 0 0 0 2px var(--acc); }
-  @media (max-width: 560px) { .logo span { display: none; } #aFono span { display: none; } body.buscando .logo { display: none; } }
+  /* ---------- cabecera con el buscador ---------- */
+  .top { position: sticky; top: 0; z-index: 40; background: var(--bg); }
+  .bar { height: var(--top-h); display: flex; align-items: center; gap: 12px; padding: 0 var(--pad); max-width: calc(1180px + 2 * var(--pad)); margin: 0 auto; }
+  .logo { font-stretch: 116%; font-weight: 800; font-size: 22px; margin-right: 8px; letter-spacing: -0.03em; text-decoration: none; flex: none; }
+  .busca { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 14px; border-radius: 999px; background: var(--sur); color: var(--mute); cursor: text; }
+  .busca:focus-within { box-shadow: inset 0 0 0 2px var(--acc); }
+  .busca i { display: flex; }
+  .busca input { flex: 1; min-width: 0; border: 0; background: transparent; font: inherit; font-size: 16px; color: var(--ink); outline: none; }
+  .busca input::placeholder { color: var(--mute); }
+  #aFono { display: inline-flex; align-items: center; gap: 6px; height: 44px; padding: 0 12px; border-radius: 999px; text-decoration: none; font-weight: 650; color: var(--soft); flex: none; }
+  #aFono:hover { background: var(--sur2); color: var(--ink); }
+  @media (max-width: 999px) { #aFono span { display: none; } #aFono { width: 44px; justify-content: center; padding: 0; } }
 
-  /* ---------- botones y pastillas (nunca enlaces subrayados) ---------- */
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; border: 1px solid var(--line-firm); background: var(--surface); color: var(--fg);
-    border-radius: 999px; padding: 8px 16px; font-size: 14.5px; font-weight: 600; cursor: pointer; white-space: nowrap; user-select: none;
-    transition: transform .12s var(--ease), background .15s, border-color .15s; -webkit-tap-highlight-color: transparent; }
-  .btn:hover { background: var(--surface-2); }
-  .btn:active { transform: scale(.97); }
-  .btn.sm { min-height: 34px; padding: 6px 13px; font-size: 13.5px; }
-  .btn.ghost { background: transparent; border-color: transparent; }
-  .btn.pri { background: var(--tinte, var(--acc)); border-color: transparent; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.25);
-    box-shadow: 0 8px 22px color-mix(in srgb, var(--tinte, var(--acc)) 38%, transparent); }
-  .btn.pri:hover { background: color-mix(in srgb, var(--tinte, var(--acc)) 86%, #000); }
-  .btn.vidrio { background: color-mix(in srgb, var(--bg) 45%, transparent); border-color: var(--line); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-  .btnrow { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-  .chip { display: inline-flex; align-items: center; gap: 7px; flex: none; border: 0; background: var(--surface-2); color: var(--fg-soft); border-radius: 999px; min-height: 36px;
-    padding: 6px 14px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background .15s, color .15s, transform .12s var(--ease); -webkit-tap-highlight-color: transparent; }
-  .chip:hover { background: var(--surface-3); color: var(--fg); }
-  .chip:active { transform: scale(.96); }
-  .chip.on { background: var(--fg); color: var(--bg); }
-  .chip.on .pto { box-shadow: 0 0 0 2px var(--bg); }
-  .chip em { font-style: normal; font-family: var(--f-mono); font-size: 12px; color: var(--fg-mute); }
-
-  main { max-width: 1240px; margin: 0 auto; padding: 18px 16px 0; }
-  main.entra { animation: entra .3s var(--ease); }
-  @keyframes entra { from { opacity: 0; transform: translateY(8px); } }
-
-  /* ---------- lateral (ordenador) y pestañas (móvil) ---------- */
-  .lado { display: none; }
-  .tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 45; display: grid; grid-template-columns: repeat(4, 1fr);
-    padding: 6px 8px calc(6px + env(safe-area-inset-bottom)); background: color-mix(in srgb, var(--bg) 86%, transparent);
-    backdrop-filter: saturate(1.5) blur(16px); -webkit-backdrop-filter: saturate(1.5) blur(16px); box-shadow: 0 -1px 0 var(--line); }
-  .tabs a { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 2px; border-radius: 14px; font-size: 11.5px; font-weight: 600; color: var(--fg-mute);
-    -webkit-tap-highlight-color: transparent; }
-  .tabs a svg { width: 22px; height: 22px; padding: 0; transition: transform .15s var(--ease); }
-  .tabs a.on { color: var(--fg); }
-  .tabs a.on svg { color: var(--acc); }
-  .tabs a:active svg { transform: scale(.9); }
-  :root { --tabs: 64px; }
+  /* ---------- apartados: en la barra de arriba (ordenador) y en pestañas (móvil) ---------- */
+  .secc { display: none; }
   @media (min-width: 1000px) {
-    :root { --side: 248px; --tabs: 0px; }
-    .tabs { display: none; }
-    .logo { display: none; }
-    .lado { display: flex; flex-direction: column; gap: 2px; position: fixed; left: 0; top: 0; bottom: 0; width: var(--side); z-index: 41;
-      padding: 16px 12px 24px; overflow-y: auto; background: var(--bg-2); box-shadow: 1px 0 0 var(--line); scrollbar-width: thin; }
-    .lado .tit { display: flex; align-items: center; gap: 10px; font-family: var(--f-disp); font-weight: 700; font-size: 20px; letter-spacing: -0.03em; padding: 6px 10px 14px; }
-    .lado .sec { font-family: var(--f-mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--fg-mute); padding: 18px 12px 6px; }
-    .lado > a:not(.tit) { display: flex; align-items: center; gap: 11px; padding: 9px 12px; border-radius: 12px; font-size: 15px; font-weight: 600; color: var(--fg-soft); }
-    .lado > a:not(.tit):hover { background: var(--surface-2); color: var(--fg); }
-    .lado > a.on { background: var(--surface); color: var(--fg); box-shadow: var(--shadow-sm); }
-    .lado > a.on svg { color: var(--acc); }
-    .lado .volver { margin-bottom: 6px; color: var(--fg-mute) !important; font-size: 14px !important; }
-    .lado summary { list-style: none; display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 12px; cursor: pointer; font-size: 14.5px; font-weight: 600;
-      color: var(--fg-soft); user-select: none; }
-    .lado summary::-webkit-details-marker { display: none; }
-    .lado summary:hover { background: var(--surface-2); color: var(--fg); }
-    .lado summary span { margin-left: auto; font-family: var(--f-mono); font-size: 12px; color: var(--fg-mute); }
-    .lado summary::after { content: ""; width: 6px; height: 6px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-45deg);
-      transition: transform .2s var(--ease); opacity: .5; }
-    .lado details[open] > summary::after { transform: rotate(45deg); }
-    .lado details a { display: flex; align-items: center; gap: 10px; padding: 7px 12px 7px 26px; border-radius: 10px; font-size: 13.5px; font-weight: 500; color: var(--fg-soft); line-height: 1.3; }
-    .lado details a .pto { width: 7px; height: 7px; }
-    .lado details a:hover { background: var(--surface-2); color: var(--fg); }
-    .lado details a.on { background: var(--surface); color: var(--fg); font-weight: 650; box-shadow: var(--shadow-sm); }
+    .secc { display: flex; gap: 4px; }
+    .secc a { display: flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; text-decoration: none; font-weight: 650; color: var(--soft); }
+    .secc a:hover { background: var(--sur2); color: var(--ink); }
+    .secc a.on { background: var(--sur); color: var(--ink); }
+  }
+  .pto { width: 9px; height: 9px; border-radius: 50%; background: var(--c, var(--mute)); flex: none; display: inline-block; }
+  .tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; display: flex; background: var(--bg2); padding: 6px 4px calc(6px + env(safe-area-inset-bottom)); }
+  .tabs a { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 50px; justify-content: center; text-decoration: none; font-size: 13px; font-weight: 600; color: var(--mute); border-radius: 12px; }
+  .tabs a .i { width: 23px; height: 23px; }
+  .tabs a.on { color: var(--ink); }
+  .tabs a.on .i { stroke-width: 2.3; }
+  @media (min-width: 1000px) { .tabs { display: none; } }
+
+  /* ---------- lienzo ---------- */
+  main { max-width: calc(1180px + 2 * var(--pad)); margin: 0 auto; padding: 20px var(--pad) 40px; }
+  main.lectura { max-width: calc(1040px + 2 * var(--pad)); }
+  .anyo-top { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 28px; }
+  .anyo-top .selector { margin-top: 0; }
+  @media (min-width: 900px) { .anyo-top { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: start; } }
+  main.entra { animation: entra .32s var(--ease); }
+  @keyframes entra { from { opacity: 0; transform: translateY(10px); } }
+  .revela { opacity: 0; transform: translateY(22px); transition: opacity .5s var(--ease) var(--d, 0ms), transform .6s var(--ease) var(--d, 0ms); }
+  .revela.dentro { opacity: 1; transform: none; }
+
+  .btnrow { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 0; background: var(--sur2); color: var(--ink);
+    font-weight: 650; font-size: 16px; text-decoration: none; cursor: pointer; transition: background .15s, transform .15s var(--ease); }
+  .btn:hover { background: var(--sur3); }
+  .btn:active { transform: scale(0.97); }
+  .btn.pri { background: var(--acc); color: var(--on-acc); }
+  .btn.pri:hover { background: color-mix(in srgb, var(--acc) 86%, var(--ink)); }
+  .btn.sm { min-height: 36px; padding: 0 14px; font-size: 14px; }
+  .btn.peligro { color: var(--bad); }
+  .btn.redondo { width: 52px; height: 52px; padding: 0; }
+  .btn:disabled { opacity: .35; cursor: default; }
+  .chip { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 15px; border-radius: 999px; border: 0; background: var(--sur); color: var(--soft);
+    font-weight: 600; font-size: 14px; text-decoration: none; white-space: nowrap; cursor: pointer; flex: none; transition: background .15s, color .15s; }
+  .chip:hover { background: var(--sur2); color: var(--ink); }
+  .chip.on { background: var(--ink); color: var(--bg); }
+  .chip.on .pto { box-shadow: 0 0 0 2px var(--bg); }
+
+  /* filas de pastillas: en el móvil se deslizan; en el ordenador, en varias líneas */
+  .fams, .filtros, .atajos-anyo { display: flex; gap: 8px; flex-wrap: wrap; margin: 28px 0 0; }
+  .indice { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; position: sticky; top: var(--top-h); z-index: 30; background: var(--bg);
+    margin: 0 calc(-1 * var(--pad)); padding: 10px var(--pad); }
+  .saltos { display: flex; gap: 8px; flex-wrap: wrap; }
+  .saltos::-webkit-scrollbar, .indice::-webkit-scrollbar, .fams::-webkit-scrollbar { display: none; }
+  .indice .chip b { color: var(--mute); font-weight: 800; }
+  .indice .chip.on b { color: inherit; }
+  @media (max-width: 699px) {
+    .fams { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-left: calc(-1 * var(--pad)); margin-right: calc(-1 * var(--pad)); padding: 0 var(--pad); }
   }
 
-  /* ============================================================
-     LA FUNDA Y EL VINILO (la firma de la página)
-     ============================================================ */
-  .disco { position: relative; display: block; width: 100%; aspect-ratio: 1.17 / 1; isolation: isolate; container-type: inline-size; }
-  .funda { position: absolute; left: 0; top: 0; width: 85.5%; aspect-ratio: 1; z-index: 2; border-radius: 6px; overflow: hidden;
-    display: flex; flex-direction: column; justify-content: space-between; padding: 7.7cqi 7.7cqi 6.84cqi; color: #fff;
-    background:
-      linear-gradient(180deg, transparent 40%, rgba(0,0,0,.42)),
-      var(--dib, none),
-      linear-gradient(155deg, color-mix(in srgb, var(--c) 82%, #fff), color-mix(in srgb, var(--c) 72%, #000));
-    box-shadow: 0 1px 0 rgba(255,255,255,.18) inset, 0 10px 24px rgba(0,0,0,.22), 0 2px 4px rgba(0,0,0,.15); }
-  /* un dibujo por familia */
-  .funda[data-p="0"] { --dib: repeating-radial-gradient(circle at 100% 100%, rgba(255,255,255,.16) 0 2px, transparent 2px 7.7cqi); }
-  .funda[data-p="1"] { --dib: repeating-linear-gradient(135deg, rgba(255,255,255,.13) 0 4.28cqi, transparent 4.28cqi 9.4cqi); }
-  .funda[data-p="2"] { --dib: radial-gradient(rgba(255,255,255,.28) 18%, transparent 21%) 0 0 / 6.84cqi 6.84cqi; }
-  .funda[data-p="3"] { --dib: radial-gradient(circle at 72% 30%, rgba(255,255,255,.26) 0 30%, transparent 30.5%), radial-gradient(circle at 72% 30%, transparent 0 38%, rgba(255,255,255,.14) 38.5% 40%, transparent 40.5%); }
-  .funda[data-p="4"] { --dib: repeating-linear-gradient(0deg, rgba(0,0,0,.14) 0 2.56cqi, transparent 2.56cqi 6.84cqi); }
-  .funda[data-p="5"] { --dib: conic-gradient(from 200deg at 0% 100%, rgba(255,255,255,.22) 0 12deg, transparent 12deg 24deg, rgba(255,255,255,.14) 24deg 36deg, transparent 36deg 50deg, rgba(255,255,255,.18) 50deg 62deg, transparent 62deg); }
-  .f-anyo { font-family: var(--f-mono); font-size: 7.27cqi; font-weight: 500; line-height: 1; letter-spacing: -.02em; text-shadow: 0 1px 2px rgba(0,0,0,.25); }
-  .f-anyo em { font-style: normal; opacity: .72; }
-  .f-anyo em::before { content: " → "; }
-  .f-tit { font-family: var(--f-disp); font-weight: 800; font-size: 10.69cqi; line-height: .98; letter-spacing: -.035em; text-wrap: balance; hyphens: auto; -webkit-hyphens: auto;
-    text-shadow: 0 2px 10px rgba(0,0,0,.25); overflow-wrap: anywhere; margin-top: auto; }
-  .f-fam { font-family: var(--f-mono); font-size: 5.13cqi; letter-spacing: .06em; text-transform: uppercase; opacity: .8; margin-top: 2.56cqi; }
-  .vinilo { position: absolute; z-index: 1; top: 4%; right: 0; width: 78%; aspect-ratio: 1; border-radius: 50%;
-    background:
-      conic-gradient(from 20deg, transparent 0 8%, rgba(255,255,255,.13) 13%, transparent 19% 56%, rgba(255,255,255,.09) 61%, transparent 67%),
-      repeating-radial-gradient(circle, #101010 0 1.2px, #1c1c1f 1.6px 2.8px);
-    box-shadow: 0 6px 18px rgba(0,0,0,.35); transition: transform .5s var(--ease); }
-  .vinilo i { position: absolute; inset: 33%; border-radius: 50%; background: radial-gradient(circle, var(--bg) 0 8%, color-mix(in srgb, var(--c) 90%, #fff) 9% 100%);
-    box-shadow: 0 0 0 1px rgba(0,0,0,.4); }
-  .vinilo i::after { content: ""; position: absolute; inset: 22%; border-radius: 50%; border: 1px solid rgba(0,0,0,.18); }
-  a:hover > .disco .vinilo, a:focus-visible > .disco .vinilo { transform: translateX(9%) rotate(70deg); }
-  /* en la cabecera de una historia, el disco gira */
-  .disco.grande .vinilo { animation: gira 7s linear infinite; }
-  @keyframes gira { to { transform: rotate(360deg); } }
+  /* ---------- la funda con su vinilo ---------- */
+  .disco { position: relative; display: block; aspect-ratio: 1 / 0.88; }
+  .funda { position: absolute; left: 0; top: 0; width: 88%; height: 100%; display: block; }
+  .vinilo { position: absolute; top: 4%; bottom: 4%; right: 0; aspect-ratio: 1; border-radius: 50%; background: #1d1e23; transition: transform .45s var(--ease); }
+  :root[data-theme="dark"] .vinilo { background: #2a2b31; }
+  @media (prefers-color-scheme: dark) { :root:where(:not([data-theme="light"])) .vinilo { background: #2a2b31; } }
+  .vinilo i { position: absolute; inset: 34%; border-radius: 50%; background: var(--c); }
+  .vinilo i::after { content: ''; position: absolute; inset: 42%; border-radius: 50%; background: #111214; }
+  .f-tit { font-family: var(--f); font-stretch: 116%; font-weight: 800; letter-spacing: -0.04em; }
+  .f-pie { font-family: var(--f); font-weight: 650; font-variant-numeric: tabular-nums; }
+  a:hover > .disco .vinilo, .hoy:hover .vinilo { transform: translateX(-9%) rotate(25deg); }
 
-  /* tarjeta = funda + datos */
-  .tarj { position: relative; display: flex; flex-direction: column; gap: 4px; min-width: 0; -webkit-tap-highlight-color: transparent; }
-  .tarj .disco { margin-bottom: 8px; transition: transform .25s var(--ease); }
-  .tarj:active .disco { transform: scale(.97); }
-  .t-tit { font-weight: 700; font-size: 15px; line-height: 1.25; letter-spacing: -.01em; }
-  .t-lema { font-size: 13.5px; color: var(--fg-soft); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .t-meta { font-family: var(--f-mono); font-size: 12px; color: var(--fg-mute); margin-top: 2px; }
-  .tarj .nueva { position: absolute; top: 8px; right: calc(14.5% + 8px); z-index: 3; font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .05em; text-transform: uppercase;
-    padding: 3px 8px; border-radius: 999px; background: #fff; color: #15121f; box-shadow: 0 2px 6px rgba(0,0,0,.2); }
-  .tarj .mini { height: 4px; border-radius: 999px; background: var(--surface-3); overflow: hidden; margin-top: 4px; max-width: 85%; }
-  .tarj .mini i { display: block; height: 100%; background: var(--c); }
+  /* ---------- tarjetas ---------- */
+  .rejilla { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 16px; }
+  @media (min-width: 700px) { .rejilla { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px 24px; } }
+  @media (min-width: 1200px) { .rejilla { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .tarj { display: flex; flex-direction: column; gap: 6px; text-decoration: none; min-width: 0; }
+  .tarj .disco { margin-bottom: 8px; }
+  .t-tit { font-weight: 750; font-size: 18px; line-height: 1.25; letter-spacing: -0.01em; }
+  .t-lema { font-size: 16px; color: var(--soft); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .t-meta { font-size: 14px; color: var(--mute); font-variant-numeric: tabular-nums; }
+  .nueva { display: inline-block; vertical-align: 2px; font-size: 13px; font-weight: 700; padding: 1px 8px; border-radius: 999px; background: var(--acc-soft); color: var(--acc); letter-spacing: 0; }
+  .barrita { display: block; height: 4px; border-radius: 4px; background: var(--sur2); overflow: hidden; margin-top: 2px; }
+  .barrita i { display: block; height: 100%; background: var(--acc); }
 
-  /* ---------- portada ---------- */
-  .p-hero { display: grid; gap: 28px; align-items: center; padding: 12px 0 8px; }
-  .p-txt h1 { font-size: clamp(38px, 9vw, 76px); font-weight: 800; line-height: .94; letter-spacing: -.045em; margin: 12px 0 16px; }
-  .p-txt p { margin: 0 0 12px; max-width: 52ch; color: var(--fg-soft); font-size: 17px; }
-  .p-txt .cuenta-total { font-family: var(--f-mono); font-size: 13px; color: var(--fg-mute); margin-bottom: 18px; }
-  .p-hoy { display: flex; flex-direction: column; gap: 14px; max-width: 420px; padding: 18px; border-radius: 24px;
-    background: linear-gradient(160deg, color-mix(in srgb, var(--c) 26%, var(--surface)), var(--surface) 70%); box-shadow: var(--shadow-sm); }
-  .p-hoy .disco { width: 92%; }
-  .hoy-pie { display: flex; flex-direction: column; gap: 3px; }
-  .hoy-pie b { font-family: var(--f-disp); font-size: 19px; font-weight: 700; letter-spacing: -.02em; line-height: 1.2; }
-  .hoy-pie span:last-child { font-size: 14px; color: var(--fg-soft); }
-  @media (max-width: 759px) { .p-hoy { flex-direction: row; align-items: center; max-width: none; padding: 14px; } .p-hoy .disco { width: 46%; flex: none; } .hoy-pie b { font-size: 16px; } .hoy-pie span:last-child { font-size: 13px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; } }
-  @media (min-width: 760px) { .p-hero { grid-template-columns: 1.25fr .75fr; padding-top: 28px; } .p-hoy { justify-self: end; width: 100%; } }
+  /* ---------- inicio ---------- */
+  .ini-cab { padding: 28px 0 8px; }
+  .ini-cab h1 { font-size: clamp(42px, 8.2vw, 120px); letter-spacing: -0.045em; line-height: .95; }
+  .mini-h { font-size: 16px; font-stretch: 100%; letter-spacing: 0; font-weight: 700; color: var(--soft); margin: 36px 0 0; }
+  .mini-h + .fams, .mini-h + .saltos { margin-top: 12px; }
+  .era-foto figcaption { margin-bottom: 0; }
+  .ini-cab { display: grid; grid-template-columns: 1fr; gap: 28px; }
+  .ini-cab h1 { grid-column: 1 / -1; }
+  @media (min-width: 900px) { .ini-cab:not(.filtrada) { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 32px 48px; align-items: start; } }
+  .ini-txt .lead { margin-top: 0; }
+  .hoy { display: grid; grid-template-columns: minmax(110px, 170px) 1fr; gap: 16px 22px; align-items: center; padding: 20px; border-radius: var(--r); background: var(--sur); text-decoration: none; }
+  .hoy .disco { width: 100%; }
+  .hoy-txt { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .hoy-txt h2 { font-size: clamp(22px, 2.4vw, 28px); }
+  .hoy .lema { color: var(--soft); }
+  .meta { font-size: 14px; color: var(--mute); font-variant-numeric: tabular-nums; }
+  @media (max-width: 559px) { .hoy { grid-template-columns: 1fr; padding: 18px; } .hoy .disco { width: 170px; } }
+  .era { padding-top: 112px; }
+  @media (min-width: 1000px) { .era { padding-top: 160px; } }
+  .era-cab { display: grid; grid-template-columns: 1fr; gap: 18px; margin-bottom: 28px; }
+  @media (min-width: 760px) { .era-cab { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 40px; align-items: end; } }
+  .era-txt h2 { font-size: clamp(30px, 4.2vw, 46px); }
+  .era-txt p { margin: 12px 0 0; font-size: 18px; color: var(--soft); max-width: 46ch; }
+  .era-txt .meta { font-size: 14px; color: var(--mute); }
+  .era-foto { margin: 0; }
+  .era-foto img { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--r-cd); background: var(--sur2); }
+  .era-foto figcaption { font-size: 14px; color: var(--mute); margin-top: 8px; }
+  .pie { margin-top: 80px; padding-top: 28px; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+  .pie p { font-size: 14px; color: var(--mute); max-width: 70ch; margin: 0; }
 
-  .fams { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 26px -16px 0; padding: 4px 16px; }
-  .fams::-webkit-scrollbar { display: none; }
-  @media (min-width: 1000px) { .fams { flex-wrap: wrap; overflow: visible; } }
-
-  .sabias { display: flex; gap: 18px; align-items: stretch; margin: 26px 0 6px; padding: 18px 20px; border-radius: 20px; background: var(--surface); box-shadow: var(--shadow-sm);
-    transition: transform .2s var(--ease); }
-  .sabias:hover { transform: translateY(-2px); }
-  .s-anyo { flex: none; font-family: var(--f-mono); font-size: clamp(26px, 6vw, 40px); line-height: 1; color: var(--c); letter-spacing: -.04em; padding-right: 18px; border-right: 2px solid color-mix(in srgb, var(--c) 40%, transparent); }
-  .s-txt { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
-  .s-txt b { font-size: 18px; line-height: 1.3; }
-  .s-txt .nota { font-size: 15px; color: var(--fg-soft); }
-  .s-txt .de { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 600; color: var(--fg-mute); }
-  @media (max-width: 560px) { .sabias { flex-direction: column; gap: 10px; } .s-anyo { border-right: 0; padding: 0; } }
-
-  .fila-discos { margin-top: 38px; }
-  .fd-cab { display: flex; align-items: flex-end; gap: 10px; margin-bottom: 14px; }
-  .fd-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-  .fd-txt h2 { font-size: clamp(20px, 3.4vw, 26px); }
-  .fd-txt h2::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--c); margin-right: 10px; vertical-align: .18em; }
-  .fd-txt span { font-size: 14px; color: var(--fg-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .flecha { display: none; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line-firm); background: var(--surface); place-items: center; cursor: pointer; flex: none; }
-  .flecha:hover { background: var(--surface-2); }
-  .flecha svg { width: 18px; height: 18px; }
-  @media (hover: hover) and (min-width: 700px) { .flecha { display: grid; } }
-  .pista { display: grid; grid-auto-flow: column; grid-auto-columns: clamp(150px, 42vw, 210px); gap: 18px; overflow-x: auto; overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory; scroll-padding: 0 16px; margin: 0 -16px; padding: 4px 16px 10px; scrollbar-width: none; }
-  .pista::-webkit-scrollbar { display: none; }
-  .pista > .tarj { scroll-snap-align: start; }
-  .rejilla { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 26px 18px; }
-  @media (min-width: 700px) { .rejilla { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); } }
-
-  /* ---------- cabeceras de sección (explorar, cronología, juego, buscar) ---------- */
-  .cab { margin: 8px 0 14px; }
-  .cab .eti { color: color-mix(in srgb, var(--c) 75%, var(--fg)); }
-  .cab h1 { font-size: clamp(30px, 6vw, 52px); font-weight: 800; letter-spacing: -.04em; line-height: 1; margin: 10px 0 10px; }
-  .cab p { margin: 0; max-width: 62ch; color: var(--fg-soft); }
-  .filtros { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 16px -16px 0; padding: 10px 16px;
-    position: sticky; top: calc(var(--top) + env(safe-area-inset-top)); z-index: 30; background: color-mix(in srgb, var(--bg) 88%, transparent);
-    backdrop-filter: saturate(1.5) blur(14px); -webkit-backdrop-filter: saturate(1.5) blur(14px); }
-  .filtros::-webkit-scrollbar { display: none; }
-  .filtros.quieto { position: static; background: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
-  .orden { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin: 6px 0 22px; }
-  .orden span { font-family: var(--f-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--fg-mute); margin-right: 4px; }
-  .orden .chip { min-height: 32px; font-size: 13px; padding: 5px 12px; }
-  .aviso { font-family: var(--f-mono); font-size: 13px; color: var(--fg-mute); }
+  /* ---------- cabeceras de sección (años, lo tuyo, juego, búsqueda) ---------- */
+  .cab { padding: 28px 0 8px; }
+  .cab h1 { font-size: clamp(32px, 3.8vw, 46px); }
+  .bloque { margin-top: 56px; }
+  .bloque h2 { margin-bottom: 20px; }
+  .bloque .sub { color: var(--soft); margin: -8px 0 22px; max-width: 64ch; }
+  .volver-fam { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; margin-bottom: 14px; color: var(--soft); font-weight: 650; text-decoration: none; }
+  .volver-fam:hover { color: var(--ink); }
+  .volver-fam .i { width: 18px; height: 18px; }
 
   /* ---------- una historia ---------- */
-  .hero { position: relative; margin: -18px -16px 0; padding: 14px 16px 26px; isolation: isolate; overflow: hidden;
-    background: linear-gradient(180deg, color-mix(in srgb, var(--c) 46%, var(--bg)) 0%, color-mix(in srgb, var(--c) 14%, var(--bg)) 65%, var(--bg) 100%); }
-  .migas { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
-  .hero-in { display: grid; gap: 22px; align-items: end; }
-  .hero-in > .disco { width: min(68vw, 300px); justify-self: center; }
-  .hero-txt h1 { font-size: clamp(28px, 6vw, 56px); font-weight: 800; letter-spacing: -.04em; line-height: 1; margin: 8px 0 12px; }
-  .hero .eti { color: var(--fg-soft); }
-  .lema-h { margin: 0 0 8px; font-size: 18px; font-weight: 600; line-height: 1.35; max-width: 50ch; }
-  .datos { margin: 0 0 12px; font-family: var(--f-mono); font-size: 13px; color: var(--fg-soft); }
-  .intro { margin: 22px 0 0; max-width: 68ch; font-size: 16.5px; line-height: 1.6; color: var(--fg-soft); }
-  @media (min-width: 760px) {
-    .hero { padding: 18px 28px 34px; margin: -18px -16px 0; }
-    .hero-in { grid-template-columns: auto 1fr; gap: 34px; }
-    .hero-in > .disco { width: 280px; }
-    .intro { margin-top: 28px; }
-  }
-  .progreso { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; font-size: 13.5px; font-weight: 600; color: var(--fg-soft); }
-  .progreso .barra { width: 120px; height: 6px; border-radius: 999px; background: color-mix(in srgb, var(--fg) 12%, transparent); overflow: hidden; flex: none; }
-  .progreso .barra i { display: block; height: 100%; background: var(--tinte); transition: width .3s var(--ease); }
+  .hero { padding: 20px 0 8px; }
+  .hero-in { display: grid; grid-template-columns: 1fr; gap: 24px; }
+  .hero-in .disco { width: min(72vw, 340px); }
+  @media (min-width: 760px) { .hero-in { grid-template-columns: 340px 1fr; gap: 48px; align-items: center; } .hero-in .disco { width: 100%; } }
+  .hero-txt h1 { font-size: clamp(30px, 4.4vw, 54px); }
+  .lema-h { font-size: 19px; color: var(--soft); margin: 14px 0 0; max-width: 52ch; }
+  .datos { font-size: 14px; color: var(--mute); margin: 12px 0 0; font-variant-numeric: tabular-nums; }
+  .progreso { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: var(--soft); max-width: 420px; }
+  .barra { height: 6px; border-radius: 6px; background: var(--sur2); overflow: hidden; }
+  .barra i { display: block; height: 100%; background: var(--acc); transition: width .4s var(--ease); }
+  .intro { font-size: 18px; line-height: 1.6; max-width: 68ch; margin: 40px 0 0; }
+  .crono-h { display: flex; flex-direction: column; gap: 2px; margin: 40px 0 0; }
+  .crono-h a { display: grid; grid-template-columns: minmax(0, 190px) minmax(0, 1fr) 92px; gap: 14px; align-items: center; min-height: 40px; padding: 0 10px; border-radius: var(--r-sm); text-decoration: none; }
+  .crono-h a:hover { background: var(--sur); }
+  .ch-nom { font-weight: 650; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ch-nom b { color: var(--mute); margin-right: 8px; }
+  .ch-pista { position: relative; height: 10px; border-radius: 6px; background: var(--sur2); }
+  .ch-pista i { position: absolute; top: 0; bottom: 0; min-width: 8px; border-radius: 6px; background: var(--acc); }
+  .ch-anyos { font-size: 14px; color: var(--mute); text-align: right; font-variant-numeric: tabular-nums; }
+  @media (max-width: 599px) { .crono-h a { grid-template-columns: minmax(0, 1fr) 84px; } .ch-pista { grid-column: 1 / -1; grid-row: 2; margin-bottom: 8px; } }
+  .indice { margin-top: 28px; }
 
-  /* índice de caras, fijo bajo la cabecera */
-  .indice { position: sticky; top: calc(var(--top) + env(safe-area-inset-top)); z-index: 30; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
-    margin: 0 -16px; padding: 10px 16px; background: color-mix(in srgb, var(--bg) 86%, transparent);
-    backdrop-filter: saturate(1.5) blur(14px); -webkit-backdrop-filter: saturate(1.5) blur(14px); box-shadow: 0 1px 0 var(--line); }
-  .indice::-webkit-scrollbar { display: none; }
-  .indice .chip b { font-family: var(--f-mono); font-weight: 500; color: var(--tinte); }
-  .indice .chip.on { background: var(--tinte); color: #fff; }
-  .indice .chip.on b { color: #fff; opacity: .8; }
+  .capitulo { margin-top: 56px; }
+  .cap-cab { display: flex; gap: 18px; align-items: flex-start; margin-bottom: 18px; }
+  .letra { font-stretch: 125%; font-weight: 800; font-size: 56px; line-height: .85; color: var(--sur3); flex: none; min-width: 48px; }
+  .cap-txt { flex: 1; min-width: 0; }
+  .cap-txt p { margin: 10px 0 0; color: var(--soft); max-width: 70ch; }
+  .cap-txt .periodo { margin-top: 8px; font-size: 14px; color: var(--mute); font-variant-numeric: tabular-nums; }
+  .editar-cap { width: 44px; height: 44px; border: 0; border-radius: 50%; background: transparent; color: var(--mute); display: grid; place-items: center; cursor: pointer; flex: none; }
+  .editar-cap:hover { background: var(--sur2); color: var(--ink); }
+  .editor-cap { margin: -6px 0 18px; padding: 18px; border-radius: var(--r); background: var(--sur); }
+  .editor-cap label { display: flex; flex-direction: column; gap: 8px; font-weight: 650; }
+  .editor-cap input { font: inherit; font-size: 16px; padding: 12px 14px; border-radius: var(--r-sm); border: 0; background: var(--bg); color: var(--ink); }
+  .editor-cap .btnrow { margin-top: 14px; }
+  .editor-cap p { color: var(--soft); margin: 12px 0 0; }
 
-  /* caras */
-  .capitulo { margin-top: 38px; scroll-margin-top: calc(var(--top) + 64px); }
-  .cap-cab { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 14px; }
-  .letra { flex: none; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-disp); font-weight: 800; font-size: 22px; color: #fff;
-    background: radial-gradient(circle, color-mix(in srgb, var(--tinte) 85%, #fff) 0 46%, #17141f 47% 100%); box-shadow: var(--shadow-sm); text-shadow: 0 1px 2px rgba(0,0,0,.3); }
-  .cap-cab .eti { color: color-mix(in srgb, var(--tinte) 70%, var(--fg)); }
-  .cap-cab h2 { font-size: clamp(21px, 3.6vw, 28px); line-height: 1.12; margin: 4px 0 6px; }
-  .cap-cab p { margin: 0; color: var(--fg-soft); max-width: 64ch; }
-
-  /* piezas */
-  .lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
-  .row { display: grid; grid-template-columns: 62px 1fr; gap: 4px 14px; align-items: start; padding: 12px 10px 12px 6px; border-radius: 14px; transition: background .15s; }
-  .row:hover { background: color-mix(in srgb, var(--tinte) 7%, var(--surface-2)); }
-  .row + .row { box-shadow: 0 -1px 0 var(--line); }
-  .row:hover, .row:hover + .row { box-shadow: none; }
-  .anyo { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding-top: 1px; font-family: var(--f-mono); font-size: 16px; font-weight: 500; letter-spacing: -.03em;
-    color: color-mix(in srgb, var(--tinte) 65%, var(--fg)); font-variant-numeric: tabular-nums; line-height: 1.2; }
-  .anyo small { font-size: 10.5px; opacity: .75; letter-spacing: 0; }
-  .anyo em.pos { font-style: normal; font-family: var(--f-disp); font-weight: 800; font-size: 21px; letter-spacing: -.04em; color: color-mix(in srgb, var(--tinte) 80%, var(--fg)); line-height: 1; margin-bottom: 2px; }
-  .anyo b { font-weight: 400; font-size: 11.5px; color: var(--fg-mute); letter-spacing: .02em; }
-  .txt { min-width: 0; }
-  .t1 { font-size: 16.5px; font-weight: 650; line-height: 1.3; letter-spacing: -.01em; }
-  .t2 { font-size: 14.5px; color: var(--fg-soft); margin-top: 2px; }
-  .nota { font-size: 14.5px; color: var(--fg-mute); margin: 6px 0 0; line-height: 1.5; max-width: 72ch; }
-  .tipo, .tuya, .veredicto { display: inline-block; vertical-align: 2px; margin-left: 7px; font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase;
-    padding: 2px 7px; border-radius: 999px; }
-  .tipo { background: color-mix(in srgb, var(--tinte) 16%, transparent); color: color-mix(in srgb, var(--tinte) 70%, var(--fg)); }
-  .tuya { margin-left: 4px; background: color-mix(in srgb, var(--sp) 16%, transparent); color: color-mix(in srgb, var(--sp) 65%, var(--fg)); }
-  .veredicto { --vc: #8a8a96; background: color-mix(in srgb, var(--vc) 18%, transparent); color: color-mix(in srgb, var(--vc) 80%, var(--fg)); }
-  .veredicto.falso { --vc: #e0484d; } .veredicto.cierto { --vc: #1fa45a; } .veredicto.medias { --vc: #d99a12; }
-  .row.oida-on .t1 { color: var(--fg-soft); }
-  .row.oida-on .anyo { opacity: .6; }
-
-  /* acciones: escuchada, Spotify y YouTube */
-  .acc { grid-column: 2; display: flex; gap: 6px; align-items: center; margin-top: 8px; }
-  .oir { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 5px 12px 5px 9px; border-radius: 999px; font-size: 13px; font-weight: 600;
-    background: var(--surface-2); color: var(--fg-soft); transition: background .15s, color .15s, transform .12s var(--ease); -webkit-tap-highlight-color: transparent; }
-  .oir svg { width: 17px; height: 17px; }
-  .oir.sp svg { color: var(--sp); } .oir.yt svg { color: var(--yt); }
-  .oir.sp:hover { background: var(--sp); color: #fff; } .oir.yt:hover { background: var(--yt); color: #fff; }
-  .oir:hover svg { color: #fff; }
-  .oir:active { transform: scale(.95); }
-  .oir.btn { min-height: 40px; padding: 8px 16px; font-size: 14.5px; border: 1px solid var(--line-firm); background: var(--surface); }
-  .oida { flex: none; width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid var(--line-firm); background: transparent; color: var(--fg-mute);
-    display: grid; place-items: center; cursor: pointer; transition: background .15s, color .15s, transform .12s var(--ease); -webkit-tap-highlight-color: transparent; }
-  .oida svg { width: 16px; height: 16px; stroke-width: 2.6; opacity: .45; }
-  .oida:hover { color: var(--fg); border-color: var(--fg-mute); }
-  .oida:active { transform: scale(.9); }
-  .oida.on { background: var(--tinte); border-color: transparent; color: #fff; }
-  .oida.on svg { opacity: 1; }
-  /* Quitar una canción: discreto hasta que pasas por encima */
-  .quitar { flex: none; width: 30px; height: 30px; margin-left: auto; border-radius: 50%; border: 0; background: transparent; color: var(--fg-mute);
-    display: grid; place-items: center; cursor: pointer; opacity: .55; transition: .15s var(--ease); }
-  .quitar svg { width: 15px; height: 15px; stroke-width: 2.4; }
-  .quitar:hover, .quitar:focus-visible { opacity: 1; color: #e0484d; background: color-mix(in srgb, #e0484d 12%, transparent); }
-  .quitar:active { transform: scale(.9); }
-  .editar-cap { margin-top: 6px; }
-  .editar-cap:hover, .editar-cap:focus-visible { color: var(--fg); background: var(--surface-2); }
-  .editor-cap { margin: -4px 0 16px; padding: 14px 16px; border-radius: 18px; border: 1px solid var(--line); background: color-mix(in srgb, var(--tinte) 8%, transparent); display: grid; gap: 12px; }
-  .editor-cap label { display: grid; gap: 6px; font-size: 13.5px; font-weight: 600; color: var(--fg-soft); }
-  .editor-cap input { font: inherit; font-size: 16px; font-weight: 500; color: var(--fg); background: var(--surface); border: 1px solid var(--line-firm); border-radius: 12px; padding: 9px 12px; min-width: 0; }
-  .editor-cap input:focus { outline: 2px solid var(--tinte); outline-offset: 1px; }
-  .editor-cap p { margin: 0; font-size: 13.5px; color: var(--fg-soft); }
-  .btn.peligro { color: #d23c41; border-color: color-mix(in srgb, #e0484d 40%, transparent); }
-  .btn.peligro:hover { background: color-mix(in srgb, #e0484d 12%, transparent); }
-  .row.saliendo { opacity: 0; transform: translateX(16px); transition: .22s var(--ease); }
-  .quitadas { margin: 28px 0 8px; padding: 14px 18px; border-radius: 18px; background: color-mix(in srgb, var(--tinte) 8%, transparent); border: 1px solid var(--line); }
-  .quitadas summary { cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; list-style: none; }
-  .quitadas summary::-webkit-details-marker { display: none; }
-  .quitadas summary svg { width: 16px; height: 16px; color: var(--fg-mute); }
-  .quitadas p { margin: 10px 0; font-size: 14px; color: var(--fg-soft); }
-  .quitadas ul { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 6px; }
-  .quitadas li { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 14px; color: var(--fg-soft); }
-  .quitadas li b { color: var(--fg); }
-  @media (min-width: 760px) {
-    .row { grid-template-columns: 70px 1fr auto; padding: 14px 12px 14px 8px; }
-    .acc { grid-column: 3; grid-row: 1; margin-top: 0; }
+  /* ---------- filas de canciones ---------- */
+  .lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+  .row { display: grid; grid-template-columns: 58px minmax(0, 1fr) auto; gap: 4px 14px; align-items: start; padding: 14px 10px 14px 12px; border-radius: var(--r-sm); transition: background .15s, opacity .22s, transform .22s; }
+  .row:hover { background: var(--sur); }
+  .row.saliendo { opacity: 0; transform: translateX(20px); }
+  .anyo { font-weight: 800; font-size: 16px; font-variant-numeric: tabular-nums; padding-top: 1px; display: flex; flex-direction: column; gap: 2px; }
+  .anyo small { font-size: 13px; font-weight: 600; color: var(--mute); }
+  .anyo b { font-size: 13px; font-weight: 600; color: var(--mute); }
+  .anyo .puesto { color: var(--acc); font-weight: 700; }
+  .t1 { font-weight: 700; font-size: 16px; line-height: 1.35; }
+  .t1 .i { width: 16px; height: 16px; vertical-align: -2px; margin-right: 6px; color: var(--acc); }
+  .t2 { color: var(--soft); font-size: 16px; margin-top: 2px; }
+  .nota { margin: 8px 0 0; color: var(--soft); font-size: 16px; line-height: 1.55; max-width: 70ch; }
+  .tipo, .veredicto, .tuya { display: inline-block; font-size: 13px; font-weight: 700; padding: 1px 8px; border-radius: 999px; background: var(--sur2); color: var(--soft); vertical-align: 1px; white-space: nowrap; }
+  .tuya { background: var(--acc-soft); color: var(--acc); }
+  .veredicto.falso { color: var(--bad); } .veredicto.cierto { color: var(--ok); }
+  .row.hito .anyo { color: var(--acc); }
+  .row.hito .t1 { font-weight: 750; }
+  .row.oida-on .t1, .row.oida-on .t2 { color: var(--mute); }
+  .de-h { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 6px; }
+  .de-h a { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: var(--soft); text-decoration: none; }
+  .de-h a:hover { color: var(--ink); text-decoration: underline; }
+  .acc { display: flex; gap: 2px; align-items: center; }
+  .acc button, .acc a { width: 40px; height: 40px; display: grid; place-items: center; border: 0; border-radius: 50%; background: transparent; color: var(--mute); cursor: pointer; text-decoration: none; position: relative; }
+  .acc button::after, .acc a::after { content: ''; position: absolute; inset: -2px; }
+  .acc span { display: none; }
+  .acc button:hover, .acc a:hover { background: var(--sur2); color: var(--ink); }
+  .acc .oida.on { background: var(--acc); color: var(--on-acc); }
+  @media (max-width: 599px) {
+    .row { grid-template-columns: 48px minmax(0, 1fr); padding: 14px 6px; }
+    .acc { grid-column: 2; margin: 6px 0 0 -8px; }
+    .anyo { font-size: 15px; }
   }
 
-  /* momentos clave: una nota al margen, no una canción */
-  .row.hito { background: color-mix(in srgb, var(--tinte) 5%, transparent); box-shadow: none; margin: 6px 0; border-left: 3px solid var(--tinte); border-radius: 4px 14px 14px 4px; }
-  .row.hito + .row { box-shadow: none; }
-  .row.hito .anyo { color: var(--fg-mute); }
-  .h-eti { display: inline-flex; align-items: center; gap: 5px; font-family: var(--f-mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase;
-    color: color-mix(in srgb, var(--tinte) 70%, var(--fg)); margin-bottom: 3px; }
-  .h-eti svg { width: 13px; height: 13px; }
-  .row.hito .t1 { font-weight: 600; }
+  .cambios { margin-top: 48px; padding: 18px 20px; border-radius: var(--r); background: var(--sur); }
+  .cambios summary { display: flex; align-items: center; gap: 10px; font-weight: 700; cursor: pointer; min-height: 44px; }
+  .cambios p { color: var(--soft); }
+  .cambios ul { list-style: none; padding: 0; margin: 0 0 16px; display: flex; flex-direction: column; gap: 8px; }
+  .cambios li { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .nav-fin { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 64px; }
+  @media (min-width: 700px) { .nav-fin { grid-template-columns: 1fr 1fr; } }
+  .siguiente { display: flex; align-items: center; gap: 14px; padding: 20px 22px; border-radius: var(--r); background: var(--sur); text-decoration: none; transition: background .15s; }
+  .siguiente:hover { background: var(--sur2); }
+  .siguiente:not(.ant) { justify-content: flex-end; text-align: right; }
+  .siguiente > span { display: flex; flex-direction: column; gap: 4px; }
+  .siguiente .de { font-size: 14px; color: var(--mute); }
+  .siguiente b { font-size: 18px; letter-spacing: -0.01em; }
 
-  .nav-fin { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin: 48px 0 10px; }
-  .siguiente { display: flex; align-items: center; gap: 14px; padding: 18px 20px; border-radius: 18px; box-shadow: var(--shadow-sm);
-    background: linear-gradient(120deg, color-mix(in srgb, var(--c) 34%, var(--surface)), var(--surface)); transition: transform .2s var(--ease); }
-  .siguiente:hover { transform: translateY(-2px); }
-  .siguiente > span { flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-  .siguiente b { font-family: var(--f-disp); font-size: 18px; font-weight: 700; letter-spacing: -.02em; line-height: 1.2; }
-  .siguiente svg { width: 22px; height: 22px; }
-  .siguiente.ant { background: linear-gradient(240deg, color-mix(in srgb, var(--c) 26%, var(--surface)), var(--surface)); }
+  /* ---------- año a año ---------- */
+  .selector { margin-top: 28px; padding: 24px; border-radius: var(--r); background: var(--sur); }
+  .sel-anyo { display: flex; align-items: center; justify-content: center; gap: 24px; }
+  .sel-anyo output { font-stretch: 125%; font-weight: 800; font-size: clamp(64px, 12vw, 120px); line-height: .9; letter-spacing: -0.05em; font-variant-numeric: tabular-nums; min-width: 4.2ch; text-align: center; }
+  .barras { display: flex; align-items: flex-end; gap: 1px; height: 120px; margin-top: 26px; border-radius: 6px; touch-action: pan-y; cursor: ew-resize; }
+  .barras button { flex: 1; min-width: 0; height: var(--h); padding: 0; border: 0; border-radius: 2px 2px 0 0; background: var(--sur3); cursor: inherit; position: relative; pointer-events: none; }
+  .barras button::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 120px; }
+  .barras button.dec { background: color-mix(in srgb, var(--acc) 35%, var(--sur3)); }
+  .barras button.on { background: var(--acc); }
+  .ejes { display: flex; justify-content: space-between; margin-top: 8px; font-size: 13px; color: var(--mute); font-variant-numeric: tabular-nums; }
+  .atajos-anyo { margin-top: 20px; }
+  .selector .chip { background: var(--bg); }
+  .selector .chip.on { background: var(--ink); }
+  .vacio, .aviso { color: var(--soft); padding: 18px 0; }
 
-  /* ---------- búsqueda ---------- */
-  .grupo { margin-top: 26px; }
-  .grupo-cab { display: flex; align-items: center; gap: 10px; padding: 10px 6px; position: sticky; top: calc(var(--top) + env(safe-area-inset-top)); z-index: 5;
-    background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-  .grupo-cab b { font-family: var(--f-disp); font-size: 17px; font-weight: 700; letter-spacing: -.02em; flex: 1; }
-  .grupo-cab span { font-family: var(--f-mono); font-size: 12.5px; color: var(--fg-mute); }
-
-  /* ---------- cronología ---------- */
-  .saltos { --tinte: var(--acc); margin-top: 4px; }
-  .crono-sec .cap-cab h2 { font-family: var(--f-mono); font-weight: 500; letter-spacing: -.04em; font-size: clamp(26px, 5vw, 36px); }
-  .de-h { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; padding: 3px 10px 3px 8px; border-radius: 999px; font-size: 12.5px; font-weight: 600;
-    color: var(--fg-soft); background: color-mix(in srgb, var(--c) 14%, var(--surface-2)); }
-  .de-h:hover { background: color-mix(in srgb, var(--c) 28%, var(--surface-2)); color: var(--fg); }
+  /* ---------- lo tuyo ---------- */
+  .lista-cambios { list-style: none; padding: 0; margin: 0 0 20px; display: flex; flex-direction: column; gap: 4px; }
+  .lista-cambios li { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 48px; padding: 0 14px; border-radius: var(--r-sm); background: var(--sur); }
+  .lista-cambios a { display: flex; align-items: center; gap: 10px; font-weight: 650; text-decoration: none; }
+  .lista-cambios span { color: var(--mute); font-size: 14px; }
 
   /* ---------- juego ---------- */
-  .marcador { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
-  .marcador span { padding: 7px 14px; border-radius: 999px; background: var(--surface); box-shadow: var(--shadow-sm); font-size: 13.5px; font-weight: 600; color: var(--fg-mute); }
-  .marcador b { color: var(--fg); font-family: var(--f-mono); font-size: 16px; font-weight: 500; }
-  .jcarta { max-width: 700px; margin: 22px 0 30px; padding: 26px 22px 22px; border-radius: 24px; position: relative; overflow: hidden;
-    background: linear-gradient(150deg, color-mix(in srgb, var(--c) 24%, var(--surface)), var(--surface) 70%); box-shadow: var(--shadow-sm);
-    border: 1.5px solid transparent; transition: border-color .25s, box-shadow .25s; display: flex; flex-direction: column; gap: 8px; }
-  .jcarta.ok { border-color: #1fa45a; box-shadow: 0 10px 30px color-mix(in srgb, #1fa45a 22%, transparent); }
-  .jcarta.mal { border-color: #e0484d; box-shadow: 0 10px 30px color-mix(in srgb, #e0484d 18%, transparent); }
-  .jcarta .eti { color: color-mix(in srgb, var(--c) 70%, var(--fg)); }
-  .jcarta .pregunta { font-family: var(--f-disp); font-size: clamp(21px, 4.6vw, 30px); font-weight: 700; letter-spacing: -.025em; line-height: 1.2; }
-  .jcarta .sub { font-size: 15px; font-weight: 600; color: var(--fg-soft); }
-  .jops { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 14px; }
-  .jop { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 56px; padding: 10px 14px; border-radius: 16px; cursor: pointer;
-    border: 1.5px solid var(--line-firm); background: var(--surface); color: var(--fg); font-family: var(--f-mono); font-size: 19px; font-weight: 500;
-    transition: transform .12s var(--ease), background .15s, border-color .15s, opacity .2s; -webkit-tap-highlight-color: transparent; }
-  .jop:hover:not([disabled]) { border-color: var(--c); background: color-mix(in srgb, var(--c) 10%, var(--surface)); transform: translateY(-2px); }
-  .jop:active:not([disabled]) { transform: scale(.96); }
-  .jop kbd { font: 500 11px var(--f-mono); color: var(--fg-mute); border: 1px solid var(--line-firm); border-radius: 6px; padding: 1px 6px; }
-  @media (hover: none) { .jop kbd { display: none; } }
-  .jop.bien { background: #1fa45a; border-color: #1fa45a; color: #fff; }
-  .jop.fallo { background: #e0484d; border-color: #e0484d; color: #fff; }
-  .jop.bien kbd, .jop.fallo kbd { color: #fff; border-color: rgba(255,255,255,.5); }
+  .marcador { margin: 18px 0 0; color: var(--soft); font-variant-numeric: tabular-nums; }
+  .marcador b { color: var(--ink); }
+  .jcarta { margin-top: 28px; padding: 28px; border-radius: var(--r); background: var(--sur); border-left: 6px solid var(--c); max-width: 760px; }
+  .jcarta .que { margin: 0; color: var(--mute); font-weight: 600; }
+  .jcarta .pregunta { margin: 8px 0 0; font-stretch: 112%; font-weight: 800; font-size: clamp(22px, 3.4vw, 34px); line-height: 1.1; letter-spacing: -0.03em; }
+  .jcarta .sub { margin: 10px 0 0; color: var(--soft); font-size: 17px; }
+  .jops { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 24px; }
+  .jop { display: flex; align-items: center; gap: 12px; min-height: 60px; padding: 0 18px; border: 0; border-radius: var(--r-sm); background: var(--bg); font-weight: 800; font-size: 20px; cursor: pointer; font-variant-numeric: tabular-nums; transition: background .15s, transform .15s var(--ease); }
+  .jop:hover:not(:disabled) { background: var(--sur2); }
+  .jop:active:not(:disabled) { transform: scale(0.98); }
+  .jop kbd { font: inherit; font-size: 13px; font-weight: 700; color: var(--mute); }
+  .jop.bien { background: var(--ok); color: #fff; } .jop.bien kbd { color: inherit; }
+  .jop.fallo { background: var(--bad); color: #fff; } .jop.fallo kbd { color: inherit; }
   .jop.apagada { opacity: .45; }
-  .jop[disabled] { cursor: default; }
-  .jsol { margin-top: 10px; padding-top: 14px; border-top: 1px solid var(--line); animation: entra .3s var(--ease); }
-  .jsol > b { font-family: var(--f-disp); font-size: 20px; }
-  .jcarta.ok .jsol > b { color: #1fa45a; }
-  .jcarta.mal .jsol > b { color: #e0484d; }
-  .jsol p { margin: 6px 0 14px; font-size: 15px; color: var(--fg-soft); }
+  .jsol { margin-top: 22px; }
+  .jsol .veredicto-j { font-weight: 800; font-size: 22px; margin: 0; }
+  .jsol p { color: var(--soft); }
 
-  /* ---------- avisos flotantes ---------- */
-  .toast { position: fixed; left: 50%; bottom: calc(var(--tabs) + 22px + env(safe-area-inset-bottom)); transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
-    background: var(--fg); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-weight: 600; font-size: 14px; transition: .25s var(--ease); z-index: 60; }
-  .toast.ver { opacity: 1; transform: translate(-50%, 0); }
-  .toast.con-acc { display: flex; align-items: center; gap: 12px; padding: 6px 6px 6px 18px; }
-  .toast.con-acc.ver { pointer-events: auto; }
-  .toast button { display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 999px; padding: 7px 14px; font: inherit; font-size: 13px; cursor: pointer;
-    background: color-mix(in srgb, var(--bg) 18%, transparent); color: var(--bg); }
-  .toast button svg { width: 14px; height: 14px; }
-  @media (min-width: 1000px) { .toast { margin-left: calc(var(--side) / 2); } }
-  .arriba { position: fixed; right: 16px; bottom: calc(var(--tabs) + 16px + env(safe-area-inset-bottom)); z-index: 44; width: 46px; height: 46px; border-radius: 50%; border: 0;
-    background: var(--fg); color: var(--bg); display: grid; place-items: center; box-shadow: var(--shadow-md); cursor: pointer;
-    opacity: 0; transform: translateY(14px) scale(.9); pointer-events: none; transition: opacity .25s, transform .25s var(--ease); }
-  .arriba.ver { opacity: 1; transform: none; pointer-events: auto; }
-  .arriba svg { width: 20px; height: 20px; stroke-width: 2.4; }
+  /* ---------- búsqueda ---------- */
+  .grupo { margin-top: 36px; }
+  .grupo-cab { display: flex; align-items: center; gap: 10px; min-height: 48px; text-decoration: none; font-size: 19px; }
+  .grupo-cab span { color: var(--mute); font-size: 15px; font-variant-numeric: tabular-nums; }
+  .grupo-cab .i { margin-left: auto; color: var(--mute); }
+
+  /* ---------- avisos y volver arriba ---------- */
+  .toast { position: fixed; left: 50%; bottom: calc(var(--tabs-h) + 18px); transform: translate(-50%, 20px); opacity: 0; pointer-events: none; z-index: 60;
+    background: var(--ink); color: var(--bg); padding: 12px 18px; border-radius: 12px; font-weight: 650; display: flex; align-items: center; gap: 14px; transition: opacity .2s, transform .25s var(--ease); max-width: calc(100vw - 32px); }
+  .toast.ver { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+  .toast button { display: inline-flex; align-items: center; gap: 6px; border: 0; background: transparent; color: inherit; font-weight: 800; cursor: pointer; min-height: 36px; text-decoration: underline; }
+  .arriba { position: fixed; right: 18px; bottom: calc(var(--tabs-h) + 18px); width: 48px; height: 48px; border-radius: 50%; border: 0; background: var(--ink); color: var(--bg); display: grid; place-items: center;
+    cursor: pointer; opacity: 0; pointer-events: none; transform: translateY(10px); transition: opacity .2s, transform .25s var(--ease); z-index: 45; }
+  .arriba.ver { opacity: 1; pointer-events: auto; transform: none; }
 
   @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
     *, *::before, *::after { animation: none !important; transition: none !important; }
+    .revela { opacity: 1; transform: none; }
   }
 </style>
 </head>
 <body>
 <header class="top">
   <div class="bar">
-    <a class="logo" href="#"><i class="marca"></i><span>Historias</span></a>
-    <label class="busca"><i id="icoBusca"></i><input class="field" id="buscar" type="search" placeholder="Busca artista, canción, año o «80s»" aria-label="Buscar" autocomplete="off"></label>
-    <a class="btn ghost sm" href="mando.html" id="aFono" title="Volver a la Fonoteca"></a>
+    <a class="logo" href="#">Historias</a>
+    <nav class="secc" id="secc" aria-label="Secciones"></nav>
+    <label class="busca"><i id="icoBusca"></i><input id="buscar" type="search" placeholder="Buscar" aria-label="Buscar artista, canción o año" autocomplete="off"></label>
+    <a href="mando.html" id="aFono" aria-label="Volver a la Fonoteca"></a>
   </div>
 </header>
-<nav class="lado" id="lado"></nav>
 <main id="main"></main>
 <nav class="tabs" id="tabs" aria-label="Secciones"></nav>
 <div class="toast" id="toast" role="status"></div>
 
 <script>window.HISTORIAS = [];</script>
 <!-- Una línea por historia. El archivo se llama igual que su id (lo usa la Fonoteca para crear la playlist) -->
-<script src="historias/datos/top500albumes.js?v=13"></script>
-<script src="historias/datos/top500canciones.js?v=13"></script>
-<script src="historias/datos/top500espanol.js?v=13"></script>
-<script src="historias/datos/primavera.js?v=13"></script>
-<script src="historias/datos/verano.js?v=13"></script>
-<script src="historias/datos/otono.js?v=13"></script>
-<script src="historias/datos/invierno.js?v=13"></script>
-<script src="historias/datos/alegre.js?v=13"></script>
-<script src="historias/datos/triste.js?v=13"></script>
-<script src="historias/datos/levitar.js?v=13"></script>
-<script src="historias/datos/coche.js?v=13"></script>
-<script src="historias/datos/gimnasio.js?v=13"></script>
-<script src="historias/datos/beatles.js?v=13"></script>
-<script src="historias/datos/queen.js?v=13"></script>
-<script src="historias/datos/bowie.js?v=13"></script>
-<script src="historias/datos/abba.js?v=13"></script>
-<script src="historias/datos/luismiguel.js?v=13"></script>
-<script src="historias/datos/colon.js?v=13"></script>
-<script src="historias/datos/radiohead.js?v=13"></script>
-<script src="historias/datos/daftpunk.js?v=13"></script>
-<script src="historias/datos/moby.js?v=13"></script>
-<script src="historias/datos/kanye.js?v=13"></script>
-<script src="historias/datos/weeknd.js?v=13"></script>
-<script src="historias/datos/badbunny.js?v=13"></script>
-<script src="historias/datos/jbalvin.js?v=13"></script>
-<script src="historias/datos/rauw.js?v=13"></script>
-<script src="historias/datos/rosalia.js?v=13"></script>
-<script src="historias/datos/bizarrap.js?v=13"></script>
-<script src="historias/datos/kendrick.js?v=13"></script>
-<script src="historias/datos/drake.js?v=13"></script>
-<script src="historias/datos/travisscott.js?v=13"></script>
-<script src="historias/datos/postmalone.js?v=13"></script>
-<script src="historias/datos/xxxtentacion.js?v=13"></script>
-<script src="historias/datos/tyler.js?v=13"></script>
-<script src="historias/datos/blackeyedpeas.js?v=13"></script>
-<script src="historias/datos/charlixcx.js?v=13"></script>
-<script src="historias/datos/pinkpantheress.js?v=13"></script>
-<script src="historias/datos/bjork.js?v=13"></script>
-<script src="historias/datos/califato.js?v=13"></script>
-<script src="historias/datos/cantautores.js?v=13"></script>
-<script src="historias/datos/eurovision.js?v=13"></script>
-<script src="historias/datos/pop.js?v=13"></script>
-<script src="historias/datos/artpop.js?v=13"></script>
-<script src="historias/datos/baladas.js?v=13"></script>
-<script src="historias/datos/synthpop.js?v=13"></script>
-<script src="historias/datos/whitegirlpop.js?v=13"></script>
-<script src="historias/datos/bedroompop.js?v=13"></script>
-<script src="historias/datos/hyperpop.js?v=13"></script>
-<script src="historias/datos/rockandroll.js?v=13"></script>
-<script src="historias/datos/hippie.js?v=13"></script>
-<script src="historias/datos/psicodelia.js?v=13"></script>
-<script src="historias/datos/punk.js?v=13"></script>
-<script src="historias/datos/rockclasico.js?v=13"></script>
-<script src="historias/datos/metal.js?v=13"></script>
-<script src="historias/datos/progresivo.js?v=13"></script>
-<script src="historias/datos/softrock.js?v=13"></script>
-<script src="historias/datos/glamrock.js?v=13"></script>
-<script src="historias/datos/hardrock.js?v=13"></script>
-<script src="historias/datos/noise.js?v=13"></script>
-<script src="historias/datos/yachtrock.js?v=13"></script>
-<script src="historias/datos/newwave.js?v=13"></script>
-<script src="historias/datos/nowave.js?v=13"></script>
-<script src="historias/datos/postpunk.js?v=13"></script>
-<script src="historias/datos/rockespanol.js?v=13"></script>
-<script src="historias/datos/alternativa.js?v=13"></script>
-<script src="historias/datos/shoegaze.js?v=13"></script>
-<script src="historias/datos/grunge.js?v=13"></script>
-<script src="historias/datos/britpop.js?v=13"></script>
-<script src="historias/datos/indie.js?v=13"></script>
-<script src="historias/datos/emo.js?v=13"></script>
-<script src="historias/datos/hiphop.js?v=13"></script>
-<script src="historias/datos/gfunk.js?v=13"></script>
-<script src="historias/datos/jazzrap.js?v=13"></script>
-<script src="historias/datos/poprap.js?v=13"></script>
-<script src="historias/datos/industrialrap.js?v=13"></script>
-<script src="historias/datos/rapdorado.js?v=13"></script>
-<script src="historias/datos/altrap.js?v=13"></script>
-<script src="historias/datos/phonk.js?v=13"></script>
-<script src="historias/datos/grime.js?v=13"></script>
-<script src="historias/datos/trap.js?v=13"></script>
-<script src="historias/datos/cloudrap.js?v=13"></script>
-<script src="historias/datos/drill.js?v=13"></script>
-<script src="historias/datos/mumblerap.js?v=13"></script>
-<script src="historias/datos/emorap.js?v=13"></script>
-<script src="historias/datos/rage.js?v=13"></script>
-<script src="historias/datos/gospel.js?v=13"></script>
-<script src="historias/datos/soul.js?v=13"></script>
-<script src="historias/datos/funk.js?v=13"></script>
-<script src="historias/datos/disco.js?v=13"></script>
-<script src="historias/datos/rnb.js?v=13"></script>
-<script src="historias/datos/neosoul.js?v=13"></script>
-<script src="historias/datos/electronica.js?v=13"></script>
-<script src="historias/datos/concreta.js?v=13"></script>
-<script src="historias/datos/ambient.js?v=13"></script>
-<script src="historias/datos/electro.js?v=13"></script>
-<script src="historias/datos/eurobeat.js?v=13"></script>
-<script src="historias/datos/eurodance.js?v=13"></script>
-<script src="historias/datos/gabber.js?v=13"></script>
-<script src="historias/datos/idm.js?v=13"></script>
-<script src="historias/datos/trance.js?v=13"></script>
-<script src="historias/datos/triphop.js?v=13"></script>
-<script src="historias/datos/hardstyle.js?v=13"></script>
-<script src="historias/datos/psytrance.js?v=13"></script>
-<script src="historias/datos/bigbeat.js?v=13"></script>
-<script src="historias/datos/house.js?v=13"></script>
-<script src="historias/datos/techno.js?v=13"></script>
-<script src="historias/datos/berghain.js?v=13"></script>
-<script src="historias/datos/boilerroom.js?v=13"></script>
-<script src="historias/datos/frenchhouse.js?v=13"></script>
-<script src="historias/datos/electrohouse.js?v=13"></script>
-<script src="historias/datos/nudisco.js?v=13"></script>
-<script src="historias/datos/dutchhouse.js?v=13"></script>
-<script src="historias/datos/housemoderno.js?v=13"></script>
-<script src="historias/datos/edm.js?v=13"></script>
-<script src="historias/datos/bigroom.js?v=13"></script>
-<script src="historias/datos/futurebass.js?v=13"></script>
-<script src="historias/datos/trapedm.js?v=13"></script>
-<script src="historias/datos/hybridtrap.js?v=13"></script>
-<script src="historias/datos/tropicalhouse.js?v=13"></script>
-<script src="historias/datos/ska.js?v=13"></script>
-<script src="historias/datos/reggae.js?v=13"></script>
-<script src="historias/datos/dub.js?v=13"></script>
-<script src="historias/datos/drumandbass.js?v=13"></script>
-<script src="historias/datos/jungle.js?v=13"></script>
-<script src="historias/datos/ukgarage.js?v=13"></script>
-<script src="historias/datos/dubstep.js?v=13"></script>
-<script src="historias/datos/ukf.js?v=13"></script>
-<script src="historias/datos/brostep.js?v=13"></script>
-<script src="historias/datos/tango.js?v=13"></script>
-<script src="historias/datos/plena.js?v=13"></script>
-<script src="historias/datos/cuba.js?v=13"></script>
-<script src="historias/datos/bolero.js?v=13"></script>
-<script src="historias/datos/mexico.js?v=13"></script>
-<script src="historias/datos/rancheras.js?v=13"></script>
-<script src="historias/datos/puertorico.js?v=13"></script>
-<script src="historias/datos/latina.js?v=13"></script>
-<script src="historias/datos/salsa.js?v=13"></script>
-<script src="historias/datos/caribe.js?v=13"></script>
-<script src="historias/datos/cumbia.js?v=13"></script>
-<script src="historias/datos/merengue.js?v=13"></script>
-<script src="historias/datos/corridos.js?v=13"></script>
-<script src="historias/datos/bachata.js?v=13"></script>
-<script src="historias/datos/popenespanol.js?v=13"></script>
-<script src="historias/datos/dembow.js?v=13"></script>
-<script src="historias/datos/perreo.js?v=13"></script>
-<script src="historias/datos/reggaeton.js?v=13"></script>
-<script src="historias/datos/rapespanol.js?v=13"></script>
-<script src="historias/datos/traplatino.js?v=13"></script>
-<script src="historias/datos/reggaetonstreaming.js?v=13"></script>
-<script src="historias/datos/espana.js?v=13"></script>
-<script src="historias/datos/flamenco.js?v=13"></script>
-<script src="historias/datos/copla.js?v=13"></script>
-<script src="historias/datos/abuelos.js?v=13"></script>
-<script src="historias/datos/franquismo.js?v=13"></script>
-<script src="historias/datos/yeye.js?v=13"></script>
-<script src="historias/datos/catalan.js?v=13"></script>
-<script src="historias/datos/cantautoresesp.js?v=13"></script>
-<script src="historias/datos/rumba.js?v=13"></script>
-<script src="historias/datos/popespanol.js?v=13"></script>
-<script src="historias/datos/movida.js?v=13"></script>
-<script src="historias/datos/makina.js?v=13"></script>
-<script src="historias/datos/ibizamix95.js?v=13"></script>
-<script src="historias/datos/rapespana.js?v=13"></script>
-<script src="historias/datos/infancia.js?v=13"></script>
-<script src="historias/datos/discobcn.js?v=13"></script>
-<script src="historias/datos/trapespana.js?v=13"></script>
-<script src="historias/datos/nuevopop.js?v=13"></script>
-<script src="historias/datos/urss.js?v=13"></script>
-<script src="historias/datos/brasil.js?v=13"></script>
-<script src="historias/datos/folclore.js?v=13"></script>
-<script src="historias/datos/china.js?v=13"></script>
-<script src="historias/datos/francia.js?v=13"></script>
-<script src="historias/datos/japon.js?v=13"></script>
-<script src="historias/datos/alemania.js?v=13"></script>
-<script src="historias/datos/bossanova.js?v=13"></script>
-<script src="historias/datos/italia.js?v=13"></script>
-<script src="historias/datos/africa.js?v=13"></script>
-<script src="historias/datos/india.js?v=13"></script>
-<script src="historias/datos/worldmusic.js?v=13"></script>
-<script src="historias/datos/corea.js?v=13"></script>
-<script src="historias/datos/afrobeat.js?v=13"></script>
-<script src="historias/datos/jazz.js?v=13"></script>
-<script src="historias/datos/standards.js?v=13"></script>
-<script src="historias/datos/swing.js?v=13"></script>
-<script src="historias/datos/vocesjazz.js?v=13"></script>
-<script src="historias/datos/bebop.js?v=13"></script>
-<script src="historias/datos/jazzlatino.js?v=13"></script>
-<script src="historias/datos/cooljazz.js?v=13"></script>
-<script src="historias/datos/hardbop.js?v=13"></script>
-<script src="historias/datos/freejazz.js?v=13"></script>
-<script src="historias/datos/fusion.js?v=13"></script>
-<script src="historias/datos/eeuu.js?v=13"></script>
-<script src="historias/datos/blues.js?v=13"></script>
-<script src="historias/datos/country.js?v=13"></script>
-<script src="historias/datos/folk.js?v=13"></script>
-<script src="historias/datos/clasica.js?v=13"></script>
-<script src="historias/datos/opera.js?v=13"></script>
-<script src="historias/datos/disney.js?v=13"></script>
-<script src="historias/datos/musicales.js?v=13"></script>
-<script src="historias/datos/bandassonoras.js?v=13"></script>
-<script src="historias/datos/anime.js?v=13"></script>
-<script src="historias/datos/gta.js?v=13"></script>
-<script src="historias/datos/videojuegos.js?v=13"></script>
-<script src="historias/datos/fifa.js?v=13"></script>
-<script src="historias/datos/instrumentos.js?v=13"></script>
-<script src="historias/datos/mitos.js?v=13"></script>
-<script src="historias/datos/innovadores.js?v=13"></script>
-<script src="historias/datos/polemicas.js?v=13"></script>
-<script src="historias/datos/videoclips.js?v=13"></script>
-<script src="historias/datos/sampling.js?v=13"></script>
-<script src="historias/datos/fracasos.js?v=13"></script>
-<script src="historias/datos/autotune.js?v=13"></script>
-<script src="historias/datos/musicaia.js?v=13"></script>
-<script src="historias/datos/apple.js?v=13"></script>
-<script src="historias/datos/spotify.js?v=13"></script>
-<script src="historias/datos/tiktok.js?v=13"></script>
-<script src="historias/datos/origenes.js?v=13"></script>
-<script src="historias/datos/himnos.js?v=13"></script>
-<script src="historias/datos/ww2.js?v=13"></script>
-<script src="historias/datos/covid.js?v=13"></script>
-<script src="historias/datos/liminal.js?v=13"></script>
-<script src="historias/datos/absurda.js?v=13"></script>
-<script src="historias/datos/outsider.js?v=13"></script>
-<script src="historias/datos/peores.js?v=13"></script>
-<script src="historias/datos/extrana.js?v=13"></script>
-<script src="historias/datos/graciosas.js?v=13"></script>
-<script src="historias/datos/memes.js?v=13"></script>
-<script src="historias/datos/decadas.js?v=13"></script>
-<script src="historias/datos/femmefatale.js?v=13"></script>
-<script src="historias/datos/instrumental.js?v=13"></script>
-<script src="historias/datos/sensual.js?v=13"></script>
-<script src="historias/datos/explicita.js?v=13"></script>
-<script src="historias/datos/preliminares.js?v=13"></script>
-<script src="historias/datos/adolescencia.js?v=13"></script>
-<script src="historias/datos/sony.js?v=13"></script>
-<script src="historias/datos/atlantic.js?v=13"></script>
-<script src="historias/datos/motown.js?v=13"></script>
-<script src="historias/datos/warner.js?v=13"></script>
-<script src="historias/datos/universal.js?v=13"></script>
-<script src="historias/datos/defjam.js?v=13"></script>
-<script src="historias/datos/spinnin.js?v=13"></script>
-<script src="historias/motor.js?v=27"></script>
+<script src="historias/datos/top500albumes.js?v=14"></script>
+<script src="historias/datos/top500canciones.js?v=14"></script>
+<script src="historias/datos/top500espanol.js?v=14"></script>
+<script src="historias/datos/primavera.js?v=14"></script>
+<script src="historias/datos/verano.js?v=14"></script>
+<script src="historias/datos/otono.js?v=14"></script>
+<script src="historias/datos/invierno.js?v=14"></script>
+<script src="historias/datos/alegre.js?v=14"></script>
+<script src="historias/datos/triste.js?v=14"></script>
+<script src="historias/datos/levitar.js?v=14"></script>
+<script src="historias/datos/coche.js?v=14"></script>
+<script src="historias/datos/gimnasio.js?v=14"></script>
+<script src="historias/datos/beatles.js?v=14"></script>
+<script src="historias/datos/queen.js?v=14"></script>
+<script src="historias/datos/bowie.js?v=14"></script>
+<script src="historias/datos/abba.js?v=14"></script>
+<script src="historias/datos/luismiguel.js?v=14"></script>
+<script src="historias/datos/colon.js?v=14"></script>
+<script src="historias/datos/radiohead.js?v=14"></script>
+<script src="historias/datos/daftpunk.js?v=14"></script>
+<script src="historias/datos/moby.js?v=14"></script>
+<script src="historias/datos/kanye.js?v=14"></script>
+<script src="historias/datos/weeknd.js?v=14"></script>
+<script src="historias/datos/badbunny.js?v=14"></script>
+<script src="historias/datos/jbalvin.js?v=14"></script>
+<script src="historias/datos/rauw.js?v=14"></script>
+<script src="historias/datos/rosalia.js?v=14"></script>
+<script src="historias/datos/bizarrap.js?v=14"></script>
+<script src="historias/datos/kendrick.js?v=14"></script>
+<script src="historias/datos/drake.js?v=14"></script>
+<script src="historias/datos/travisscott.js?v=14"></script>
+<script src="historias/datos/postmalone.js?v=14"></script>
+<script src="historias/datos/xxxtentacion.js?v=14"></script>
+<script src="historias/datos/tyler.js?v=14"></script>
+<script src="historias/datos/blackeyedpeas.js?v=14"></script>
+<script src="historias/datos/charlixcx.js?v=14"></script>
+<script src="historias/datos/pinkpantheress.js?v=14"></script>
+<script src="historias/datos/bjork.js?v=14"></script>
+<script src="historias/datos/califato.js?v=14"></script>
+<script src="historias/datos/cantautores.js?v=14"></script>
+<script src="historias/datos/eurovision.js?v=14"></script>
+<script src="historias/datos/pop.js?v=14"></script>
+<script src="historias/datos/artpop.js?v=14"></script>
+<script src="historias/datos/baladas.js?v=14"></script>
+<script src="historias/datos/synthpop.js?v=14"></script>
+<script src="historias/datos/whitegirlpop.js?v=14"></script>
+<script src="historias/datos/bedroompop.js?v=14"></script>
+<script src="historias/datos/hyperpop.js?v=14"></script>
+<script src="historias/datos/rockandroll.js?v=14"></script>
+<script src="historias/datos/hippie.js?v=14"></script>
+<script src="historias/datos/psicodelia.js?v=14"></script>
+<script src="historias/datos/punk.js?v=14"></script>
+<script src="historias/datos/rockclasico.js?v=14"></script>
+<script src="historias/datos/metal.js?v=14"></script>
+<script src="historias/datos/progresivo.js?v=14"></script>
+<script src="historias/datos/softrock.js?v=14"></script>
+<script src="historias/datos/glamrock.js?v=14"></script>
+<script src="historias/datos/hardrock.js?v=14"></script>
+<script src="historias/datos/noise.js?v=14"></script>
+<script src="historias/datos/yachtrock.js?v=14"></script>
+<script src="historias/datos/newwave.js?v=14"></script>
+<script src="historias/datos/nowave.js?v=14"></script>
+<script src="historias/datos/postpunk.js?v=14"></script>
+<script src="historias/datos/rockespanol.js?v=14"></script>
+<script src="historias/datos/alternativa.js?v=14"></script>
+<script src="historias/datos/shoegaze.js?v=14"></script>
+<script src="historias/datos/grunge.js?v=14"></script>
+<script src="historias/datos/britpop.js?v=14"></script>
+<script src="historias/datos/indie.js?v=14"></script>
+<script src="historias/datos/emo.js?v=14"></script>
+<script src="historias/datos/hiphop.js?v=14"></script>
+<script src="historias/datos/gfunk.js?v=14"></script>
+<script src="historias/datos/jazzrap.js?v=14"></script>
+<script src="historias/datos/poprap.js?v=14"></script>
+<script src="historias/datos/industrialrap.js?v=14"></script>
+<script src="historias/datos/rapdorado.js?v=14"></script>
+<script src="historias/datos/altrap.js?v=14"></script>
+<script src="historias/datos/phonk.js?v=14"></script>
+<script src="historias/datos/grime.js?v=14"></script>
+<script src="historias/datos/trap.js?v=14"></script>
+<script src="historias/datos/cloudrap.js?v=14"></script>
+<script src="historias/datos/drill.js?v=14"></script>
+<script src="historias/datos/mumblerap.js?v=14"></script>
+<script src="historias/datos/emorap.js?v=14"></script>
+<script src="historias/datos/rage.js?v=14"></script>
+<script src="historias/datos/gospel.js?v=14"></script>
+<script src="historias/datos/soul.js?v=14"></script>
+<script src="historias/datos/funk.js?v=14"></script>
+<script src="historias/datos/disco.js?v=14"></script>
+<script src="historias/datos/rnb.js?v=14"></script>
+<script src="historias/datos/neosoul.js?v=14"></script>
+<script src="historias/datos/electronica.js?v=14"></script>
+<script src="historias/datos/concreta.js?v=14"></script>
+<script src="historias/datos/ambient.js?v=14"></script>
+<script src="historias/datos/electro.js?v=14"></script>
+<script src="historias/datos/eurobeat.js?v=14"></script>
+<script src="historias/datos/eurodance.js?v=14"></script>
+<script src="historias/datos/gabber.js?v=14"></script>
+<script src="historias/datos/idm.js?v=14"></script>
+<script src="historias/datos/trance.js?v=14"></script>
+<script src="historias/datos/triphop.js?v=14"></script>
+<script src="historias/datos/hardstyle.js?v=14"></script>
+<script src="historias/datos/psytrance.js?v=14"></script>
+<script src="historias/datos/bigbeat.js?v=14"></script>
+<script src="historias/datos/house.js?v=14"></script>
+<script src="historias/datos/techno.js?v=14"></script>
+<script src="historias/datos/berghain.js?v=14"></script>
+<script src="historias/datos/boilerroom.js?v=14"></script>
+<script src="historias/datos/frenchhouse.js?v=14"></script>
+<script src="historias/datos/electrohouse.js?v=14"></script>
+<script src="historias/datos/nudisco.js?v=14"></script>
+<script src="historias/datos/dutchhouse.js?v=14"></script>
+<script src="historias/datos/housemoderno.js?v=14"></script>
+<script src="historias/datos/edm.js?v=14"></script>
+<script src="historias/datos/bigroom.js?v=14"></script>
+<script src="historias/datos/futurebass.js?v=14"></script>
+<script src="historias/datos/trapedm.js?v=14"></script>
+<script src="historias/datos/hybridtrap.js?v=14"></script>
+<script src="historias/datos/tropicalhouse.js?v=14"></script>
+<script src="historias/datos/ska.js?v=14"></script>
+<script src="historias/datos/reggae.js?v=14"></script>
+<script src="historias/datos/dub.js?v=14"></script>
+<script src="historias/datos/drumandbass.js?v=14"></script>
+<script src="historias/datos/jungle.js?v=14"></script>
+<script src="historias/datos/ukgarage.js?v=14"></script>
+<script src="historias/datos/dubstep.js?v=14"></script>
+<script src="historias/datos/ukf.js?v=14"></script>
+<script src="historias/datos/brostep.js?v=14"></script>
+<script src="historias/datos/tango.js?v=14"></script>
+<script src="historias/datos/plena.js?v=14"></script>
+<script src="historias/datos/cuba.js?v=14"></script>
+<script src="historias/datos/bolero.js?v=14"></script>
+<script src="historias/datos/mexico.js?v=14"></script>
+<script src="historias/datos/rancheras.js?v=14"></script>
+<script src="historias/datos/puertorico.js?v=14"></script>
+<script src="historias/datos/latina.js?v=14"></script>
+<script src="historias/datos/salsa.js?v=14"></script>
+<script src="historias/datos/caribe.js?v=14"></script>
+<script src="historias/datos/cumbia.js?v=14"></script>
+<script src="historias/datos/merengue.js?v=14"></script>
+<script src="historias/datos/corridos.js?v=14"></script>
+<script src="historias/datos/bachata.js?v=14"></script>
+<script src="historias/datos/popenespanol.js?v=14"></script>
+<script src="historias/datos/dembow.js?v=14"></script>
+<script src="historias/datos/perreo.js?v=14"></script>
+<script src="historias/datos/reggaeton.js?v=14"></script>
+<script src="historias/datos/rapespanol.js?v=14"></script>
+<script src="historias/datos/traplatino.js?v=14"></script>
+<script src="historias/datos/reggaetonstreaming.js?v=14"></script>
+<script src="historias/datos/espana.js?v=14"></script>
+<script src="historias/datos/flamenco.js?v=14"></script>
+<script src="historias/datos/copla.js?v=14"></script>
+<script src="historias/datos/abuelos.js?v=14"></script>
+<script src="historias/datos/franquismo.js?v=14"></script>
+<script src="historias/datos/yeye.js?v=14"></script>
+<script src="historias/datos/catalan.js?v=14"></script>
+<script src="historias/datos/cantautoresesp.js?v=14"></script>
+<script src="historias/datos/rumba.js?v=14"></script>
+<script src="historias/datos/popespanol.js?v=14"></script>
+<script src="historias/datos/movida.js?v=14"></script>
+<script src="historias/datos/makina.js?v=14"></script>
+<script src="historias/datos/ibizamix95.js?v=14"></script>
+<script src="historias/datos/rapespana.js?v=14"></script>
+<script src="historias/datos/infancia.js?v=14"></script>
+<script src="historias/datos/discobcn.js?v=14"></script>
+<script src="historias/datos/trapespana.js?v=14"></script>
+<script src="historias/datos/nuevopop.js?v=14"></script>
+<script src="historias/datos/urss.js?v=14"></script>
+<script src="historias/datos/brasil.js?v=14"></script>
+<script src="historias/datos/folclore.js?v=14"></script>
+<script src="historias/datos/china.js?v=14"></script>
+<script src="historias/datos/francia.js?v=14"></script>
+<script src="historias/datos/japon.js?v=14"></script>
+<script src="historias/datos/alemania.js?v=14"></script>
+<script src="historias/datos/bossanova.js?v=14"></script>
+<script src="historias/datos/italia.js?v=14"></script>
+<script src="historias/datos/africa.js?v=14"></script>
+<script src="historias/datos/india.js?v=14"></script>
+<script src="historias/datos/worldmusic.js?v=14"></script>
+<script src="historias/datos/corea.js?v=14"></script>
+<script src="historias/datos/afrobeat.js?v=14"></script>
+<script src="historias/datos/jazz.js?v=14"></script>
+<script src="historias/datos/standards.js?v=14"></script>
+<script src="historias/datos/swing.js?v=14"></script>
+<script src="historias/datos/vocesjazz.js?v=14"></script>
+<script src="historias/datos/bebop.js?v=14"></script>
+<script src="historias/datos/jazzlatino.js?v=14"></script>
+<script src="historias/datos/cooljazz.js?v=14"></script>
+<script src="historias/datos/hardbop.js?v=14"></script>
+<script src="historias/datos/freejazz.js?v=14"></script>
+<script src="historias/datos/fusion.js?v=14"></script>
+<script src="historias/datos/eeuu.js?v=14"></script>
+<script src="historias/datos/blues.js?v=14"></script>
+<script src="historias/datos/country.js?v=14"></script>
+<script src="historias/datos/folk.js?v=14"></script>
+<script src="historias/datos/clasica.js?v=14"></script>
+<script src="historias/datos/opera.js?v=14"></script>
+<script src="historias/datos/disney.js?v=14"></script>
+<script src="historias/datos/musicales.js?v=14"></script>
+<script src="historias/datos/bandassonoras.js?v=14"></script>
+<script src="historias/datos/anime.js?v=14"></script>
+<script src="historias/datos/gta.js?v=14"></script>
+<script src="historias/datos/videojuegos.js?v=14"></script>
+<script src="historias/datos/fifa.js?v=14"></script>
+<script src="historias/datos/instrumentos.js?v=14"></script>
+<script src="historias/datos/mitos.js?v=14"></script>
+<script src="historias/datos/innovadores.js?v=14"></script>
+<script src="historias/datos/polemicas.js?v=14"></script>
+<script src="historias/datos/videoclips.js?v=14"></script>
+<script src="historias/datos/sampling.js?v=14"></script>
+<script src="historias/datos/fracasos.js?v=14"></script>
+<script src="historias/datos/autotune.js?v=14"></script>
+<script src="historias/datos/musicaia.js?v=14"></script>
+<script src="historias/datos/apple.js?v=14"></script>
+<script src="historias/datos/spotify.js?v=14"></script>
+<script src="historias/datos/tiktok.js?v=14"></script>
+<script src="historias/datos/origenes.js?v=14"></script>
+<script src="historias/datos/himnos.js?v=14"></script>
+<script src="historias/datos/ww2.js?v=14"></script>
+<script src="historias/datos/covid.js?v=14"></script>
+<script src="historias/datos/liminal.js?v=14"></script>
+<script src="historias/datos/absurda.js?v=14"></script>
+<script src="historias/datos/outsider.js?v=14"></script>
+<script src="historias/datos/peores.js?v=14"></script>
+<script src="historias/datos/extrana.js?v=14"></script>
+<script src="historias/datos/graciosas.js?v=14"></script>
+<script src="historias/datos/memes.js?v=14"></script>
+<script src="historias/datos/decadas.js?v=14"></script>
+<script src="historias/datos/femmefatale.js?v=14"></script>
+<script src="historias/datos/instrumental.js?v=14"></script>
+<script src="historias/datos/sensual.js?v=14"></script>
+<script src="historias/datos/explicita.js?v=14"></script>
+<script src="historias/datos/preliminares.js?v=14"></script>
+<script src="historias/datos/adolescencia.js?v=14"></script>
+<script src="historias/datos/sony.js?v=14"></script>
+<script src="historias/datos/atlantic.js?v=14"></script>
+<script src="historias/datos/motown.js?v=14"></script>
+<script src="historias/datos/warner.js?v=14"></script>
+<script src="historias/datos/universal.js?v=14"></script>
+<script src="historias/datos/defjam.js?v=14"></script>
+<script src="historias/datos/spinnin.js?v=14"></script>
+<script src="historias/motor.js?v=28"></script>
 </body>
 </html>
