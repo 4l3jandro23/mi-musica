@@ -1512,6 +1512,26 @@
   .np-hist p { margin: 0; font-size: 13px; opacity: .7; }
   .ahora-hist { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; max-width: 100%; font-size: 13px; font-weight: 600; color: var(--fg-soft); text-decoration: none; }
   .ahora-hist svg { width: 14px; height: 14px; flex: none; }
+
+  /* 2026-11-04: títulos de verdad, cabeceras planas, nada por debajo de 11px */
+  main[data-titulo]::before { content: none !important; display: none !important; }
+  .tit-pant { max-width: 1100px; margin: 0; padding: 18px 16px 0; font-family: var(--f-disp); font-stretch: 116%; font-weight: 800; letter-spacing: -0.035em; line-height: 1.1; font-size: 28px; }
+  @media (min-width: 1000px) { .tit-pant { font-size: 32px; padding-top: 24px; } }
+  .tit-pant + main { padding-top: 10px; }
+  .hero h1 { font-family: var(--f-disp); font-stretch: 116%; font-weight: 800; letter-spacing: -0.04em; font-size: clamp(24px, 4.2vw, 32px); line-height: 1.04; margin: 4px 0 8px;
+    white-space: normal; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  @media (max-width: 640px) { .hero h1 { font-size: 25px; -webkit-line-clamp: 2; margin: 2px 0 4px; } }
+  /* cabecera de playlist: un tono plano del color de la portada, sin degradado */
+  .hero { background: color-mix(in srgb, var(--tinte, var(--surface-3)) 24%, var(--bg)); }
+  .hero .back { backdrop-filter: none; -webkit-backdrop-filter: none; background: color-mix(in srgb, var(--bg) 55%, transparent); }
+  /* tu historia: plana, sin brillos ni sombra */
+  .hist-hero { background: var(--surface); color: var(--fg); box-shadow: none; border: 1px solid var(--line); }
+  .hist-hero p { color: var(--fg-soft); opacity: 1; }
+  .hist-hero .btn:not(.pri) { background: var(--surface-2); color: var(--fg); }
+  .hist-hero h1 { margin-top: 0; }
+  .calor-m { font-size: 11px; }
+  .hero .eti { color: var(--fg-soft); }
+  .cerrar svg, .ayuda button svg { width: 16px; height: 16px; }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800&display=swap" rel="stylesheet">
 </head>
@@ -1526,6 +1546,7 @@
   </div>
 </header>
 <nav class="tabs" id="tabs"></nav>
+<h1 class="tit-pant" id="titPant" hidden></h1>
 <main id="main"></main>
 <nav class="bnav" id="bnav"></nav>
 <div class="abajo" id="abajo">
@@ -1563,11 +1584,12 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-11-03b';
+const VERSION = '2026-11-04a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
 const ICO = {
+  equis: '<path d="M18 6 6 18M6 6l12 12"/>',
   check: '<path d="M20 6 9 17l-5-5"/>',
   mas: '<circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="19" r="1.4"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
@@ -2673,6 +2695,7 @@ function render() {
   m.onclick = null;
   const titulos = { playlists: 'Tus playlists', discos: 'Discos guardados', artistas: 'Artistas que sigues', falta: 'Lo que te falta', mis: 'Mis artistas', buscar: 'Buscar', escuchas: 'Estadísticas', cambios: 'Cambios' };
   if (!S.vista && titulos[S.tab] && conectado()) m.dataset.titulo = titulos[S.tab]; else delete m.dataset.titulo;
+  { const tp = $('#titPant'); tp.textContent = m.dataset.titulo || ''; tp.hidden = !m.dataset.titulo; }
   const clave = S.tab + '|' + S.pila.length + '|' + (S.vista ? 'v' : '');
   if (clave !== _pantalla) { _pantalla = clave; m.classList.remove('entra'); void m.offsetWidth; m.classList.add('entra'); }
   setTimeout(() => tintar(m), 0);
@@ -4840,7 +4863,7 @@ async function vHistoria(m) {
   const dMax = Math.max(1, ...decL.map(d => H.decs.get(d).length));
   const top = H.porArt.slice(0, 15);
   m.innerHTML =
-    '<div class="hist-hero"><div class="eti">Tu historia en Spotify</div><h1>' + n$(ps.length) + ' canciones que te han gustado</h1>' +
+    '<div class="hist-hero"><h1>' + n$(ps.length) + ' canciones que te han gustado</h1>' +
     '<p>Desde ' + MESES_ES[desde.getMonth()] + ' de ' + desde.getFullYear() + ' · ' + n$(H.porArt.length) + ' artistas · ' + n$(horasMus) + ' horas de música' + (horasMus >= 48 ? ' (' + n$(Math.round(horasMus / 24)) + ' días sin parar)' : '') + '</p>' +
     '<div class="btnrow"><button class="btn sm pri" id="hiImg">' + ic('imagen') + 'Imagen para compartir</button><button class="btn sm" id="hiJuego">' + ic('varita') + 'Jugar con tu música</button></div></div>' +
     '<div class="records">' +
@@ -7516,7 +7539,7 @@ function cabFuente(f) {
   return '<div class="hero"' + (img ? ' data-tinte="' + esc(img) + '"' : ' style="--tinte:' + (f.kind === 'likes' ? '#6a4fd8' : 'var(--surface-3)') + '"') + '>' +
     '<button class="btn ghost sm back" id="bAtras">' + ic('atras') + 'Atrás</button>' +
     '<div class="hero-in">' + (img ? '<img src="' + esc(img) + '" alt="">' : (f.kind === 'likes' ? '<div class="ph" style="background:#263acc;color:#efece4">' + ic('corazon') + '</div>' : ph('lista'))) +
-    '<div class="txt"><div class="eti">' + eti + '</div><h2>' + esc(f.name) + '</h2><div class="soft tiny">' + sub + '</div>' +
+    '<div class="txt"><div class="eti">' + eti + '</div><h1>' + esc(f.name) + '</h1><div class="soft tiny">' + sub + '</div>' +
     (f.meta && f.meta.desc ? '<div class="mute tiny nowrap" style="margin-top:2px">' + esc(f.meta.desc.replace(/<[^>]+>/g, '')) + '</div>' : '') +
     '<div class="btnrow">' +
     (f.kind === 'playlist' || f.kind === 'album' ? '<button class="btn pri bplay" id="bPlay" aria-label="Reproducir">' + ic('play') + '</button>' : '') +
@@ -7744,12 +7767,12 @@ function pintarSelbar() {
   const el = $('#selbar'); if (!el) return;
   const f = S.fuente;
   const b = [['repasar', ic('play') + 'Repasar', 'fuerte'], ['elegir', ic('filtro') + 'Elegir'], ['rep', ic('repes') + 'Repetidas'], ['marcar', ic('check') + 'Marcar'],
-    ['solo', S.soloSel ? '✓ Solo marcadas' : 'Ver marcadas', 'sisel' + (S.soloSel ? ' on' : '')], ['nada', '✕ Desmarcar', 'sisel']];
+    ['solo', S.soloSel ? '✓ Solo marcadas' : 'Ver marcadas', 'sisel' + (S.soloSel ? ' on' : '')], ['nada', 'Desmarcar', 'sisel']];
   el.innerHTML = b.map(x => '<button class="chip' + (x[2] ? ' ' + x[2] : '') + '" data-s="' + x[0] + '">' + x[1] + '</button>').join('');
   el.classList.toggle('consel', S.sel.size > 0 || !!S.soloSel);
   const ay = $('#ayudaSel');
   if (!PREFS.ayudaSel && !ay) {
-    el.insertAdjacentHTML('beforebegin', '<div class="ayuda" id="ayudaSel"><span>Desliza el dedo por los círculos para marcar muchas. Una canción hacia → la añade a tu playlist de siempre; hacia ← la quita.</span><button aria-label="Cerrar">✕</button></div>');
+    el.insertAdjacentHTML('beforebegin', '<div class="ayuda" id="ayudaSel"><span>Desliza el dedo por los círculos para marcar muchas. Una canción hacia → la añade a tu playlist de siempre; hacia ← la quita.</span><button aria-label="Cerrar">' + ic('equis') + '</button></div>');
     $('#ayudaSel button').onclick = () => { PREFS.ayudaSel = 1; guardarPrefs(); $('#ayudaSel').remove(); };
   }
   el.onclick = async e => {
@@ -7934,10 +7957,10 @@ function pintarAccion() {
     if (f.kind === 'playlist' && f.editable) b.push(['arriba', 'subir', 'Arriba'], ['abajo', 'bajar', 'Abajo']);
     destinosRapidos(f.kind === 'playlist' ? f.id : null).slice(0, 2).forEach(p => b.push(['rapido:' + p.id, 'plus', p.name.length > 12 ? p.name.slice(0, 11) + '…' : p.name]));
     b.push(['etiquetar', 'etiqueta', 'Etiquetar'], ['repasar', 'play', 'Repasar'], ['play', 'play', 'Sonar'], ['cola', 'cola', 'A la cola'], ['mas', 'mas', 'Más']);
-    el.innerHTML = '<button data-a="soltar" class="cerrar" aria-label="Desmarcar">✕</button><span class="cuantas">' + S.sel.size + '</span>' + b.map(x => '<button data-a="' + x[0] + '">' + ic(x[1]) + x[2] + '</button>').join('');
+    el.innerHTML = '<button data-a="soltar" class="cerrar" aria-label="Desmarcar">' + ic('equis') + '</button><span class="cuantas">' + S.sel.size + '</span>' + b.map(x => '<button data-a="' + x[0] + '">' + ic(x[1]) + x[2] + '</button>').join('');
     el.hidden = false;
   } else if (!S.vista && S.tab === 'playlists' && modoSelPl) {
-    el.innerHTML = '<button data-a="soltar" class="cerrar" aria-label="Desmarcar">✕</button><span class="cuantas">' + S.selObj.size + '</span>' +
+    el.innerHTML = '<button data-a="soltar" class="cerrar" aria-label="Desmarcar">' + ic('equis') + '</button><span class="cuantas">' + S.selObj.size + '</span>' +
       '<button data-a="plTodas">' + ic('check') + 'Todas</button><button data-a="plVacias">' + ic('check') + 'Vacías</button>' +
       (S.selObj.size ? '<button data-a="plUnir">' + ic('unir') + 'Combinar</button><button data-a="plRepes">' + ic('tijera') + 'Quitar repetidas</button>' +
       '<button data-a="plPriv">' + ic('candado') + 'Privadas</button><button data-a="plPub">' + ic('enlace') + 'Públicas</button>' +
@@ -8933,7 +8956,7 @@ function abrirArtista(id) {
     const grupo = t => discos.filter(d => d.tipo === t);
     const sec = (t, nom) => grupo(t).length ? '<h3>' + nom + ' · ' + grupo(t).length + '</h3><div class="lista-obj">' + grupo(t).map(d => '<div class="obj" data-id="' + d.id + '">' + imgOph(d.img, 'disco') + '<div class="t"><div class="t1 nowrap">' + esc(d.name) + '</div><div class="t2">' + d.year + ' · ' + d.total + ' canciones</div></div></div>').join('') + '</div>' : '';
     m.innerHTML = '<button class="btn ghost sm back" id="bAtras">' + ic('atras') + 'Atrás</button>' +
-      '<div class="hero red"' + (x.imgG ? ' data-tinte="' + esc(x.imgG) + '"' : '') + '><div class="hero-in">' + (x.imgG ? '<img src="' + esc(x.imgG) + '" alt="">' : ph('persona', true)) + '<div class="txt"><div class="eti">Artista</div><h2>' + esc(x.name) + '</h2><div class="soft tiny">' + esc(x.sub) + '</div>' +
+      '<div class="hero red"' + (x.imgG ? ' data-tinte="' + esc(x.imgG) + '"' : '') + '><div class="hero-in">' + (x.imgG ? '<img src="' + esc(x.imgG) + '" alt="">' : ph('persona', true)) + '<div class="txt"><div class="eti">Artista</div><h1>' + esc(x.name) + '</h1><div class="soft tiny">' + esc(x.sub) + '</div>' +
       '<div class="btnrow"><button class="btn pri bplay" id="bPlayA" aria-label="Reproducir">' + ic('play') + '</button>' +
       (sigo != null ? '<button class="btn" id="bSeguir">' + (sigo ? 'Siguiendo' : 'Seguir') + '</button>' : '') +
       '<button class="btn" id="bCanc">' + ic('buscar') + 'Sus canciones</button></div></div></div></div>' +
@@ -10811,9 +10834,11 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.se
 window.addEventListener('unhandledrejection', e => apuntarFallo(e.reason, 'sin capturar'));
 (async () => {
   if (await alVolverDeSpotify()) return;
-  const pideHistoria = new URLSearchParams(location.search).get('historia');
-  if (pideHistoria) history.replaceState({}, '', location.pathname);
+  const qsA = new URLSearchParams(location.search), pideHistoria = qsA.get('historia'), pideTab = qsA.get('ir');
+  if (pideHistoria || pideTab) history.replaceState({}, '', location.pathname);
   pintarFreno();
+  // enlace directo a un apartado: mando.html?ir=playlists
+  if (pideTab && TABS.some(t => t.id === pideTab && !t.url)) S.tab = pideTab;
   render();
   if (pideHistoria) setTimeout(() => crearDesdeHistoria(pideHistoria), 400);
   if (esperaPendiente() === 0) leerReproductor();
