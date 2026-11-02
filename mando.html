@@ -1473,6 +1473,29 @@
     content: ''; position: absolute; left: 50%; top: 50%; width: max(100%, 44px); height: max(100%, 44px); transform: translate(-50%, -50%);
   }
   .ayuda button { color: var(--fg-soft); }
+
+  /* 2026-11-02: lo que te falta */
+  .ft-rejilla { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+  @media (max-width: 640px) { .ft-rejilla { grid-template-columns: 1fr; } }
+  .card.ft { display: flex; flex-direction: column; gap: 10px; padding: 16px; }
+  .ft-cab { display: flex; align-items: center; gap: 10px; }
+  .ft-cab .pto { width: 12px; height: 12px; border-radius: 50%; flex: none; }
+  .ft-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .ft-txt b { font-size: 16px; line-height: 1.25; }
+  .ft-pct { font-stretch: 116%; font-weight: 800; font-size: 22px; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .ft-barra { display: block; height: 6px; border-radius: 6px; background: var(--surface-2); overflow: hidden; }
+  .ft-barra i { display: block; height: 100%; background: var(--amber); }
+  .ft-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+  .ft-lista li { display: flex; gap: 10px; min-width: 0; }
+  .ft-rejilla > *, .ft-lista li > span:last-child { min-width: 0; }
+  .ft-lista li > span:last-child { overflow: hidden; text-overflow: ellipsis; }
+  .ft-a { flex: none; width: 40px; color: var(--fg-mute); font-variant-numeric: tabular-nums; }
+  .ft-mas { color: var(--fg-mute); padding-left: 50px; }
+  .card.ft .btnrow { margin-top: auto; padding-top: 4px; }
+  .ft-mini { display: flex; flex-direction: column; gap: 6px; }
+  .ft-mini button { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; grid-template-rows: auto auto; gap: 6px 10px; align-items: center; text-align: left; border: 1px solid var(--line); background: var(--surface); color: inherit; border-radius: 12px; padding: 12px 14px; cursor: pointer; }
+  .ft-mini .pto { width: 10px; height: 10px; border-radius: 50%; }
+  .ft-mini .ft-barra { grid-column: 1 / -1; height: 4px; }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800&display=swap" rel="stylesheet">
 </head>
@@ -1524,7 +1547,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-11-01a';
+const VERSION = '2026-11-02a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2571,7 +2594,7 @@ const TABS = [
   { id: 'historias', txt: 'Historias de la música', ic: 'libro', url: 'historias.html' },
   { id: 'portadas', txt: 'Portadas', ic: 'imagen' },
   { id: 'artistas', txt: 'Seguidos', ic: 'persona' },
-  { id: 'novedades', txt: 'Novedades', ic: 'estrella' },
+  { id: 'falta', txt: 'Te falta', ic: 'estrella' },
   { id: 'buscar', txt: 'Buscar', ic: 'buscar' },
   { id: 'discos', txt: 'Discos guardados', ic: 'disco', mas: true },
   { id: 'escuchas', txt: 'Estadísticas', ic: 'grafica', mas: true },
@@ -2579,7 +2602,7 @@ const TABS = [
 ];
 /* En el movil: cuatro pestañas principales abajo y «Más» con el resto */
 const PRINCIPALES = ['inicio', 'decidir', 'likes', 'playlists'];
-const SUB_TAB = { historia: 'lo que te ha gustado, año a año', historias: 'los géneros y su historia', portadas: 'la imagen de cada playlist', artistas: 'los que sigues en Spotify', novedades: 'lo que acaban de sacar tus artistas',
+const SUB_TAB = { historia: 'lo que te ha gustado, año a año', historias: 'los géneros y su historia', portadas: 'la imagen de cada playlist', artistas: 'los que sigues en Spotify', falta: 'las canciones clave de tus historias que aún no tienes',
   buscar: 'canciones, discos y artistas', discos: 'los que guardas en Spotify', escuchas: 'lo que más escuchas', cambios: 'deshacer lo que has hecho' };
 function pintarTabs() {
   const tb = t => '<button class="tab' + (t.mas ? ' tmas' : '') + (S.tab === t.id ? ' on' : '') + '" data-t="' + t.id + '">' + ic(t.ic) + t.txt + '</button>';
@@ -2632,14 +2655,14 @@ function render() {
   pintarTabs();
   const m = $('#main');
   m.onclick = null;
-  const titulos = { playlists: 'Tus playlists', discos: 'Discos guardados', artistas: 'Artistas que sigues', novedades: 'Novedades', mis: 'Mis artistas', buscar: 'Buscar', escuchas: 'Estadísticas', cambios: 'Cambios' };
+  const titulos = { playlists: 'Tus playlists', discos: 'Discos guardados', artistas: 'Artistas que sigues', falta: 'Lo que te falta', mis: 'Mis artistas', buscar: 'Buscar', escuchas: 'Estadísticas', cambios: 'Cambios' };
   if (!S.vista && titulos[S.tab] && conectado()) m.dataset.titulo = titulos[S.tab]; else delete m.dataset.titulo;
   const clave = S.tab + '|' + S.pila.length + '|' + (S.vista ? 'v' : '');
   if (clave !== _pantalla) { _pantalla = clave; m.classList.remove('entra'); void m.offsetWidth; m.classList.add('entra'); }
   setTimeout(() => tintar(m), 0);
   if (!conectado()) { m.innerHTML = htmlSinConexion(); pintarAccion(); return; }
   if (S.vista) return S.vista.pintar(m);
-  const f = { playlists: vPlaylists, inicio: vInicio, casas: vCasas, likes: vLikes, misdiscos: vMisDiscos, discos: vDiscos, artistas: vArtistas, novedades: vNovedades, mis: vMis, buscar: vBuscar, escuchas: vEscuchas, historia: vHistoria, portadas: vPortadas, decidir: vDecidir, cambios: vCambios }[S.tab];
+  const f = { playlists: vPlaylists, inicio: vInicio, casas: vCasas, likes: vLikes, misdiscos: vMisDiscos, discos: vDiscos, artistas: vArtistas, falta: vFalta, mis: vMis, buscar: vBuscar, escuchas: vEscuchas, historia: vHistoria, portadas: vPortadas, decidir: vDecidir, cambios: vCambios }[S.tab];
   f(m);
 }
 function htmlSinConexion() {
@@ -3525,14 +3548,14 @@ async function vInicio(m) {
   const likesN = S.likes ? S.likes.length : ((await cacheLeer('likes')) || { pistas: [] }).pistas.length;
   if (!vivo()) return;
   const md = S.md;
-  const novN = (await novLista()).filter(x => x.f <= Date.now() && Date.now() - x.f < 7 * 864e5).length;
+  const faltaR = await cacheLeer('faltaRes');
   if (!vivo()) return;
   const pend = md ? md.discos.filter(d => !estadoDisco(d.id) || estadoDisco(d.id) === 'Pendiente').length : null;
   const at = [
     ['likes', 'corazon', 'Me gusta', likesN ? likesN.toLocaleString('es-ES') + ' canciones' : '', 'linear-gradient(135deg,#4a2fd0,#b8a7ff)'],
     ['decidir', 'check', 'Por decidir', (() => { const T = new Set(PREFS.temporales || []); const q = (S.playlists || []).filter(p => T.has(p.id)).reduce((a, p) => a + p.total, 0); return q ? 'quedan ' + n$(q) : 'temporales'; })(), 'linear-gradient(135deg,#1f8a5b,#6fd6a4)'],
     ['historia', 'reloj', 'Tu historia', 'año a año', 'linear-gradient(135deg,#7a2fd0,#ff7ab8)'],
-    ['novedades', 'estrella', 'Novedades', novN ? n$(novN) + ' esta semana' : 'de tus artistas', ''],
+    ['falta', 'estrella', 'Lo que te falta', faltaR && faltaR.total ? 'en ' + n$(faltaR.total) + ' historias' : 'de tus historias', ''],
     ['artistas', 'persona', 'Seguidos', (S.artistas || S.segCache) ? n$((S.artistas || S.segCache).length) + ' artistas' : 'tus artistas', 'linear-gradient(135deg,#c47a0a,#f4b13e)'],
     ['escuchas', 'grafica', 'Estadísticas', 'lo que más suena', 'linear-gradient(135deg,#d4568a,#ff9ec4)']
   ];
@@ -3549,13 +3572,13 @@ async function vInicio(m) {
     }
     irATab(a);
   };
-  /* novedades de tus artistas (de lo ya mirado: no gasta nada) */
-  novLista().then(l => {
+  /* lo que te falta (de lo calculado la última vez: no gasta nada) */
+  (faltaR && faltaR.l && faltaR.l.length ? Promise.resolve(faltaR) : Promise.reject()).then(c => {
     const el = $('#inNov'); if (!el || !vivo()) return;
-    const r = l.filter(x => Date.now() - x.f < 45 * 864e5).slice(0, 20); if (!r.length) return;
-    el.innerHTML = '<div class="fila-sec"><h3>Novedades de tus artistas</h3><button data-ir="1">Ver todas</button></div><div class="carrusel">' +
-      r.map((x, i) => tarjetaMini(x.imgG || x.img, x.name, x.artistas + ' · ' + novCuando(x.f), 'data-i="' + i + '"')).join('') + '</div>';
-    el.onclick = e => { if (e.target.closest('[data-ir]')) return irATab('novedades'); const t = e.target.closest('[data-i]'); if (t) abrirDisco(r[+t.dataset.i].id); };
+    el.innerHTML = '<div class="fila-sec"><h3>Lo que te falta</h3><button data-ir="1">Ver todas</button></div><div class="ft-mini">' +
+      c.l.slice(0, 3).map(x => '<button data-ir="1"><i class="pto" style="background:' + esc(x.color) + '"></i><span class="nowrap"><b>' + esc(x.titulo) + '</b></span>' +
+        '<span class="tiny mute">tienes ' + x.si + ' de ' + x.n + '</span><span class="ft-barra"><i style="width:' + Math.round(100 * x.si / x.n) + '%"></i></span></button>').join('') + '</div>';
+    el.onclick = e => { if (e.target.closest('[data-ir]')) irATab('falta'); };
   }).catch(() => {});
   /* tus artistas de hoy: unos cuantos de los que sigues, distintos cada día (sin gastar nada) */
   (async () => {
@@ -8658,7 +8681,7 @@ async function novPaso() {
     if (a && !esCaida(e) && !/429|cupo|frena/i.test(String(e && e.message))) { const D = await novDatos(); D.arts[a.id] = { at: Date.now(), r: [] }; }
   } finally { NOV.corre = false; }
 }
-setInterval(() => { novPaso().catch(() => {}); }, 6000);
+try { cachePoner('novedades', null); } catch (e) {}
 async function novLista() {
   const D = await novDatos(), m = new Map();
   for (const k in D.arts) for (const r of D.arts[k].r) if (!m.has(r.id)) m.set(r.id, r);
@@ -8722,6 +8745,82 @@ function hojaFaltan(l) {
         if (S.tab === 'artistas' && !S.vista) render();
       };
     });
+}
+
+/* ============================================================
+   LO QUE TE FALTA
+   Cruza tus Me gusta con las Historias de la música (la web hermana,
+   hecha a mano): en las historias que ya te gustan, las canciones clave
+   que aún no tienes, por año. Spotify recomienda por algoritmo; esto sale
+   de listas elegidas una a una. No gasta cupo hasta crear la playlist.
+   ============================================================ */
+const normF = t => fold(String(t || '').replace(/\s[-–]\s.*$/, '').replace(/[([].*?[)\]]/g, ''))
+  .replace(/[^a-z0-9\u0400-\u04ff\u1100-\u11ff\u3040-\u30ff\u3130-\u318f\u4e00-\u9fff\uac00-\ud7af ]+/g, ' ').replace(/\s+/g, ' ').trim();
+const clavesArtF = i => String(i.art).split(/\s*(?:&|,|\by\b|\band\b|\bvs\.?|\bfeat\.?|\bcon\b)\s*/i).concat(i.alias || [])
+  .map(normF).filter(Boolean).map(p => p.split(' ').filter(w => w.length > 1).pop() || p);
+// Todas las historias, en corto. Se guardan y solo se vuelven a leer cuando cambian en la web
+async function todasHistorias() {
+  const html = await (await fetch('historias.html', { cache: 'no-cache' })).text();
+  const srcs = [...html.matchAll(/<script src="(historias\/datos\/[^"]+)"/g)].map(x => x[1]);
+  if (!srcs.length) throw new Error('No encuentro las Historias de la música');
+  const v = srcs.length + '|' + (srcs[0].split('?v=')[1] || '');
+  const c = await cacheLeer('historiasTodas');
+  if (c && c.v === v) return c.H;
+  const H = [];
+  for (let i = 0; i < srcs.length; i += 24) {
+    progreso('Leyendo las Historias de la música', i, srcs.length);
+    const txts = await Promise.all(srcs.slice(i, i + 24).map(u => fetch(u).then(r => r.ok ? r.text() : '').catch(() => '')));
+    for (const t of txts) { if (!t) continue; const w = { HISTORIAS: [] }; try { new Function('window', 'HISTORIAS', t)(w, w.HISTORIAS); H.push(...w.HISTORIAS); } catch (e) {} }
+  }
+  progreso(null);
+  const corto = H.map(h => ({ id: h.id, titulo: h.titulo, familia: h.familia, color: h.color,
+    items: h.capitulos.flatMap(cp => cp.items).filter(i => i.tipo !== 'hito').map(i => ({ a: i.a, art: i.art, t: i.t, tipo: i.tipo || '', alias: i.alias || null })) }));
+  cachePoner('historiasTodas', { v, H: corto });
+  return corto;
+}
+const FT = { n: 15, orden: 'descubrir' };
+async function vFalta(m) {
+  cargando(m);
+  let HS, ps;
+  try { [HS, ps] = await Promise.all([todasHistorias(), musicaSiempre()]); } catch (e) { progreso(null); return fallo(m, e); }
+  if (S.tab !== 'falta' || S.vista) return;
+  if (!ps.length) { m.innerHTML = '<div class="vacio">Para saber qué te falta tengo que leer tus Me gusta una vez en este aparato.<br><br><button class="btn pri" id="ftIni">Ir a Inicio a leerlos</button></div>'; $('#ftIni').onclick = () => irATab('inicio'); return; }
+  const tit = new Map(), alb = new Map();
+  const meter = (mp, k, a) => { if (!k) return; (mp.get(k) || mp.set(k, []).get(k)).push(a); };
+  for (const p of ps) { const a = normF((p.artists || []).map(x => x.name).join(' ')); meter(tit, normF(p.title), a); meter(alb, normF(p.album), a); }
+  const tiene = i => { const arts = (i.tipo === 'disco' ? alb : tit).get(normF(i.t)); if (!arts) return false; const ks = clavesArtF(i); return arts.some(a => ks.some(k => (' ' + a + ' ').indexOf(' ' + k + ' ') >= 0)); };
+  let quit; try { quit = new Set(JSON.parse(localStorage.getItem('historias_quitadas_v1') || '[]')); } catch (e) { quit = new Set(); }
+  const res = [];
+  for (const h of HS) {
+    const l = h.items.filter(i => !quit.has(h.id + '|' + i.art + '|' + i.t)).map((i, n) => [i, n]).sort((a, b) => a[0].a - b[0].a || a[1] - b[1]).map(x => x[0]);
+    const no = l.filter(i => !tiene(i)), si = l.length - no.length;
+    if (si >= 3 && no.length) res.push({ h, si, n: l.length, no });
+  }
+  // «para descubrir»: géneros que te gustan (muchas tuyas) y con mucho por conocer
+  const orden = { descubrir: (a, b) => Math.sqrt(b.si) * b.no.length / b.n - Math.sqrt(a.si) * a.no.length / a.n, avance: (a, b) => b.si / b.n - a.si / a.n || b.si - a.si, mas: (a, b) => b.si - a.si || b.si / b.n - a.si / a.n, pocas: (a, b) => a.no.length - b.no.length || b.si - a.si };
+  res.sort(orden.descubrir);
+  cachePoner('faltaRes', { at: Date.now(), total: res.length, l: res.slice(0, 6).map(x => ({ id: x.h.id, titulo: x.h.titulo, color: x.h.color, si: x.si, n: x.n })) });
+  if (FT.orden !== 'descubrir') res.sort(orden[FT.orden]);
+  const fa = a => a < 0 ? -a + ' a. C.' : String(a);
+  const card = x => { const pct = Math.round(100 * x.si / x.n);
+    return '<div class="card ft"><div class="ft-cab"><i class="pto" style="background:' + esc(x.h.color) + '"></i><div class="ft-txt"><b>' + esc(x.h.titulo) + '</b>' +
+      '<span class="tiny soft">Tienes ' + n$(x.si) + ' de ' + n$(x.n) + ' · te ' + (x.no.length === 1 ? 'falta 1' : 'faltan ' + n$(x.no.length)) + '</span></div><span class="ft-pct">' + pct + '%</span></div>' +
+      '<span class="ft-barra"><i style="width:' + pct + '%"></i></span>' +
+      '<ol class="ft-lista">' + x.no.slice(0, 4).map(i => '<li><span class="ft-a">' + esc(fa(i.a)) + '</span><span class="nowrap"><b>' + esc(i.t) + '</b> · ' + esc(i.art) + (i.tipo === 'disco' ? ' (disco)' : '') + '</span></li>').join('') +
+      (x.no.length > 4 ? '<li class="ft-mas">y ' + n$(x.no.length - 4) + ' más</li>' : '') + '</ol>' +
+      '<div class="btnrow"><button class="btn pri sm" data-crear="' + esc(x.h.id) + '">' + ic('plus') + (x.no.length === 1 ? 'Añadirla a una playlist' : 'Playlist con las ' + n$(x.no.length)) + '</button>' +
+      '<a class="btn sm" href="historias.html#h/' + encodeURIComponent(x.h.id) + '">Ver la historia</a></div></div>'; };
+  m.innerHTML = '<p class="soft" style="margin:-6px 0 14px;max-width:62ch">Cruzo tus ' + n$(ps.length) + ' Me gusta con las ' + HS.length + ' historias de tu web. Salen las ' + n$(res.length) + ' en las que ya tienes canciones, con las clave que aún te faltan, en orden de año. Primero, géneros que te gustan con mucho por descubrir.</p>' +
+    '<div class="chips" id="ftO" style="margin-bottom:14px">' + [['descubrir', 'Para descubrir'], ['avance', 'Casi completas'], ['mas', 'Donde más tienes']].map(o => '<button class="chip' + (FT.orden === o[0] ? ' on' : '') + '" data-o="' + o[0] + '">' + o[1] + '</button>').join('') + '</div>' +
+    (res.length ? '<div class="ft-rejilla">' + res.slice(0, FT.n).map(card).join('') + '</div>' + (res.length > FT.n ? '<div style="text-align:center;margin-top:14px"><button class="btn" id="ftMas">Ver más</button></div>' : '')
+      : '<div class="vacio">Aún no tienes canciones de ninguna historia, o ya las tienes todas.</div>');
+  m.onclick = e => {
+    const o = e.target.closest('#ftO [data-o]'); if (o) { FT.orden = o.dataset.o; FT.n = 15; render(); return; }
+    if (e.target.closest('#ftMas')) { FT.n += 15; const y = scrollY; render(); setTimeout(() => scrollTo(0, y), 60); return; }
+    const b = e.target.closest('[data-crear]'); if (!b) return;
+    const x = res.find(r => r.h.id === b.dataset.crear); if (!x) return;
+    crearDesdeHistoria(x.h.id, { solo: new Set(x.no.map(i => i.art + '|' + i.t)), titulo: 'Lo que me falta · ' + x.h.titulo });
+  };
 }
 
 async function vArtistas(m) {
@@ -10345,7 +10444,6 @@ async function vEscuchas(m) {
     '<div class="seccion dos"><div><h3>' + ic('etiqueta') + 'Tus géneros</h3>' + (tagsTop.length ? barras(tagsTop.slice(0, 8), t => tagPorId(t).name) : barras(gens.slice(0, 8))) + '</div>' +
     '<div><h3>' + ic('disco') + 'Tus discos</h3><div class="lista-obj">' + discos.map(x => '<div class="obj" data-d="' + x.id + '">' + imgOph(x.p.cover, 'disco') + '<div class="t"><div class="t1 nowrap">' + esc(x.p.album) + '</div><div class="t2 nowrap">' + esc(nombresArtistas(x.p)) + ' · ' + x.n + ' canciones</div></div></div>').join('') + '</div></div></div>' +
     '<div class="seccion"><h3>' + ic('mas') + 'Más</h3><div class="opc">' +
-    '<button data-x="novedades">' + ic('estrella') + '<span>Novedades de tus artistas<span class="sub">lo que han sacado los que sigues en los últimos 2 meses</span></span></button>' +
     '<button data-x="cola">' + ic('cola') + '<span>Tu cola ahora mismo</span></button>' +
     '<button data-x="reciente">' + ic('reloj') + '<span>Lo último que has escuchado, como lista</span></button></div></div>';
   const txt = (l, fn) => l.map((x, i) => (i + 1) + '. ' + fn(x)).join('\n');
@@ -10362,8 +10460,7 @@ async function vEscuchas(m) {
     const p = e.target.closest('[data-p]'); if (p) { comoLista(); const q = S.fuente.pistas[+p.dataset.p]; if (q) setTimeout(() => hojaPista(q), 80); return; }
     const di = e.target.closest('[data-d]'); if (di) return abrirDisco(di.dataset.d);
     const x = e.target.closest('[data-x]'); if (!x) return;
-    if (x.dataset.x === 'novedades') abrirNovedades();
-    else if (x.dataset.x === 'cola') abrirFuente({ kind: 'queue', name: 'Tu cola', editable: false, pistas: null }, async () => { const q = await sp('/me/player/queue'); return [(q && q.currently_playing)].concat((q && q.queue) || []).map(t => pista(t)).filter(Boolean); });
+    if (x.dataset.x === 'cola') abrirFuente({ kind: 'queue', name: 'Tu cola', editable: false, pistas: null }, async () => { const q = await sp('/me/player/queue'); return [(q && q.currently_playing)].concat((q && q.queue) || []).map(t => pista(t)).filter(Boolean); });
     else abrirFuente({ kind: 'recent', name: 'Lo último que has escuchado', editable: false, pistas: null }, async () => { const q = await sp('/me/player/recently-played?limit=50'); return sinRafagas(((q && q.items) || []).map(i => pista(i.track, { added: i.played_at })).filter(Boolean)); });
   };
 }
@@ -10530,14 +10627,15 @@ async function buscarPiezaH(i, cache) {
   escribir(K_HISTORIAS, cache);
   return r;
 }
-async function crearDesdeHistoria(id) {
+async function crearDesdeHistoria(id, op) {
   const c = cred();
   if (!c || !c.refreshToken) { toast('Conecta primero la Fonoteca con Spotify y vuelve a darle al botón en Historias', null, 7000); return; }
   let h;
   try { h = await cargarHistoria(id); } catch (e) { toast(e.message); return; }
+  if (op && op.titulo) h = Object.assign({}, h, { titulo: op.titulo });
   // Las canciones quitadas en Historias (misma clave que allí: id|artista|título) no se buscan
   let quitadas; try { quitadas = new Set(JSON.parse(localStorage.getItem('historias_quitadas_v1') || '[]')); } catch (e) { quitadas = new Set(); }
-  const piezas = h.capitulos.flatMap(cp => cp.items).filter(i => i.tipo !== 'hito' && !quitadas.has(h.id + '|' + i.art + '|' + i.t))
+  const piezas = h.capitulos.flatMap(cp => cp.items).filter(i => i.tipo !== 'hito' && !quitadas.has(h.id + '|' + i.art + '|' + i.t) && (!op || !op.solo || op.solo.has(i.art + '|' + i.t)))
     .map((i, n) => [i, n]).sort((a, b) => a[0].a - b[0].a || a[1] - b[1]).map(x => x[0]); // por año, como la web
   const cache = leer(K_HISTORIAS, {});
   const faltan = piezas.filter(i => cache[(i.tipo === 'disco' ? 'd|' : 't|') + normH(i.art) + '|' + normH(i.t)] === undefined).length;
