@@ -1496,6 +1496,22 @@
   .ft-mini button { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; grid-template-rows: auto auto; gap: 6px 10px; align-items: center; text-align: left; border: 1px solid var(--line); background: var(--surface); color: inherit; border-radius: 12px; padding: 12px 14px; cursor: pointer; }
   .ft-mini .pto { width: 10px; height: 10px; border-radius: 50%; }
   .ft-mini .ft-barra { grid-column: 1 / -1; height: 4px; }
+
+  /* 2026-11-02b: vincular aparatos y la historia de lo que suena */
+  .vinc { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .vinc .field { flex: 1 1 220px; min-width: 0; }
+  .pasos-v { margin: 8px 0 14px; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; color: var(--fg-soft); }
+  .qr-v { display: grid; place-items: center; padding: 16px; background: #fff; border-radius: 14px; width: fit-content; margin: 0 auto 12px; }
+  .qr-v img, .qr-v canvas { display: block; }
+  .np-hist { margin-top: 14px; padding: 14px; border-radius: 14px; background: rgba(255,255,255,.08); display: flex; flex-direction: column; gap: 10px; text-align: left; }
+  .np-hist .nh-eti { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; opacity: .8; }
+  .np-hist .nh-eti svg { width: 16px; height: 16px; }
+  .np-hist a { display: flex; flex-direction: column; gap: 3px; color: inherit; text-decoration: none; }
+  .np-hist a b { font-size: 14px; }
+  .np-hist a span { font-size: 14px; line-height: 1.45; opacity: .85; }
+  .np-hist p { margin: 0; font-size: 13px; opacity: .7; }
+  .ahora-hist { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; max-width: 100%; font-size: 13px; font-weight: 600; color: var(--fg-soft); text-decoration: none; }
+  .ahora-hist svg { width: 14px; height: 14px; flex: none; }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800&display=swap" rel="stylesheet">
 </head>
@@ -1547,7 +1563,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-11-02a';
+const VERSION = '2026-11-02c';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2544,7 +2560,7 @@ const S = {
   selObj: new Set(), buscar: { q: '', tipo: 'track', res: null }, suena: null, soloSel: false, indice: null
 };
 const PREFS = Object.assign({ saltarRepes: true }, leer(K_PREFS, {}));
-const CFG_SYNC = ['criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido', 'distintas', 'likesFuera', 'plEpoca', 'epocaArt', 'edmNo', 'casaUri', 'casaArt', 'casaAlb', 'triaje', 'portadasA'];
+const CFG_SYNC = ['temporales', 'temporalesIni', 'noSeguir', 'nombre', 'repasoNo', 'repasoNoV', 'casaMov', 'criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido', 'distintas', 'likesFuera', 'plEpoca', 'epocaArt', 'edmNo', 'casaUri', 'casaArt', 'casaAlb', 'triaje', 'portadasA'];
 let _cfgSnap = null;
 const guardarPrefs = () => {
   escribir(K_PREFS, PREFS);
@@ -2820,7 +2836,7 @@ async function etqAsegurar() {
   aplicarCfg();
   /* la primera vez en este aparato, sus ajustes actuales pasan a sincronizarse */
   if (!_cfgSnap) {
-    /* lo de este aparato se ofrece con fecha muy antigua: si otro aparato ya tenía algo, gana el otro */
+    /* lo de este aparato se ofrece con fecha muy antigua (1): si el otro aparato también la tiene, las listas se suman */
     _cfgSnap = {}; const C = ETQ.cfg || (ETQ.cfg = {}); let n = 0;
     for (const k of CFG_SYNC) { const v = PREFS[k] === undefined ? null : PREFS[k]; _cfgSnap[k] = JSON.stringify(v); if (!C[k] && v !== null) { C[k] = { v: v, ts: 1 }; n++; } }
     const col = leer('portadas_coleccion_v2', null); if (!C.portadas && col) { C.portadas = { v: col, ts: 1 }; n++; }
@@ -3237,7 +3253,16 @@ function fundirEtq(a, b) {
   if (!b) return a;
   const o = ETQ0();
   o.cfg = Object.assign({}, b.cfg || {});
-  for (const [k, v] of Object.entries(a.cfg || {})) if (!o.cfg[k] || (v.ts || 0) >= (o.cfg[k].ts || 0)) o.cfg[k] = v;
+  for (const [k, v] of Object.entries(a.cfg || {})) {
+    const r = o.cfg[k];
+    // la primera vez que se juntan dos aparatos (los dos con fecha 1), las listas se suman en vez de pisarse
+    if (r && (v.ts || 0) <= 1 && (r.ts || 0) <= 1 && Array.isArray(v.v) && Array.isArray(r.v)) {
+      const u = Array.from(new Set(r.v.concat(v.v)));
+      o.cfg[k] = { v: u, ts: u.length === r.v.length && u.length === v.v.length ? 1 : Date.now() };
+      continue;
+    }
+    if (!r || (v.ts || 0) >= (r.ts || 0)) o.cfg[k] = v;
+  }
   for (const k of ['y', 'lfa']) { o[k] = Object.assign({}, b[k] || {}); for (const [c, v] of Object.entries(a[k] || {})) if (!o[k][c] || (v.at || 0) >= (o[k][c].at || 0)) o[k][c] = v; }
   for (const k of ['man', 'alb']) { o[k] = Object.assign({}, b[k] || {}); for (const [c, v] of Object.entries(a[k] || {})) if (!o[k][c] || (v.ts || 0) >= (o[k][c].ts || 0)) o[k][c] = v; }
   return o;
@@ -3518,6 +3543,7 @@ async function vInicio(m) {
   const vivo = () => S.tab === 'inicio' && !S.vista && $('#inAtajos');
   if (!S.me) yo().then(() => { const x = $('#inSal'); if (x) x.innerHTML = sal + nom(); }).catch(() => {});
   pintarAhoraInicio();
+  if (!ghCfg()) { const el = $('#inTri'); if (el) { el.insertAdjacentHTML('beforebegin', '<button class="idea-ent" id="inSync"><span class="ic">' + ic('movil') + '</span><span><b>Este aparato no se sincroniza</b><small>Lo que cambies aquí no llega a tus otros aparatos. Vincúlalo en un minuto.</small></span></button>'); $('#inSync').onclick = () => hojaAjustes(); } }
   pintarBandeja(vivo).catch(() => {});
   (async () => {
     /* lo primero: lo que te queda por decidir en las temporales */
@@ -3663,7 +3689,12 @@ function pintarAhoraInicio() {
     '<div style="min-width:0;flex:1"><div class="eti">' + (s.playing ? 'Sonando ahora' : 'En pausa') + (s.disp ? ' · ' + esc(s.disp.name) : '') + '</div><b class="nowrap">' + esc(s.p.title) + '</b><div class="soft tiny nowrap">' + esc(nombresArtistas(s.p)) + '</div></div>' +
     '<button class="btn pri bplay" style="width:46px;height:46px;padding:0;border-radius:50%" aria-label="Pausa">' + ic(s.playing ? 'pausa' : 'play') + '</button></div>';
   tintar(el);
-  el.querySelector('.ahora').onclick = e => { if (e.target.closest('.bplay')) { e.stopPropagation(); accionPlayer('pp').then(pintarAhoraInicio); return; } abrirAhora(); };
+  historiasDe(s.p).then(l => {
+    const a = el.querySelector('.ahora'); if (!l.length || !a || S.suena !== s) return;
+    const t = a.querySelector('div[style*="min-width:0"]'); if (t) t.insertAdjacentHTML('beforeend', '<a class="ahora-hist" href="' + enlaceHist(l[0]) + '">' + ic('libro') + '<span class="nowrap">En «' + esc(l[0].h.titulo) + '»</span></a>');
+  }).catch(() => {});
+  el.querySelector('.ahora').onclick = e => {
+    if (e.target.closest('.ahora-hist')) { e.stopPropagation(); return; } if (e.target.closest('.bplay')) { e.stopPropagation(); accionPlayer('pp').then(pintarAhoraInicio); return; } abrirAhora(); };
 }
 
 
@@ -6073,6 +6104,7 @@ function pintarNP(todo) {
     '<div class="ctl"><button data-p="shuffle" class="' + (s.shuffle ? 'on' : '') + '">' + ic('aleat') + '</button><button data-p="ant">' + ic('ant') + '</button><button data-p="pp" class="pp">' + ic(s.playing ? 'pausa' : 'play') + '</button><button data-p="sig">' + ic('sig') + '</button><button data-p="repeat" class="' + (s.repeat && s.repeat !== 'off' ? 'on' : '') + '">' + ic('repetir') + '</button></div>' +
     '<div class="acc"><button data-a="letra"' + (NPL.on ? ' class="on"' : '') + '>' + ic('lista') + 'Letra</button><button data-a="anadir">' + ic('plus') + 'Playlist</button><button data-a="etq">' + ic('etiqueta') + 'Etiquetar</button>' + (artDe(s.p) ? '<button data-a="seguir"' + (sigoA(artDe(s.p).id) ? ' class="on"' : '') + '>' + ic('persona') + (sigoA(artDe(s.p).id) ? 'Siguiendo' : 'Seguir') + '</button>' : '') + '<button data-a="disp">' + ic('movil') + 'Aparatos</button></div>' +
     (s.vol != null ? '<div class="vol">' + ic('altavoz') + '<input type="range" id="npVol" min="0" max="100" value="' + s.vol + '"></div>' : '') + '</div>';
+  pintarHistNP(el, s);
   el.querySelector('#npX').onclick = cerrarAhora;
   if (NPL.on) { engancharLetra(); marcarLetra(true); }
   el.querySelector('#npMas').onclick = () => { const f0 = S.fuente; S.fuente = S.fuente || { kind: 'suelta', name: '', pistas: [s.p] }; hojaPista(s.p); if (!f0) S.fuente = null; };
@@ -6097,6 +6129,15 @@ function pintarNP(todo) {
   };
 }
 setInterval(() => { if ($('#np') && document.visibilityState === 'visible') pintarNP(false); }, 1000);
+function pintarHistNP(el, s) {
+  historiasDe(s.p).then(l => {
+    if (el._uri !== s.uri || !l.length) return;
+    const x = el.querySelector('.in'); if (!x || x.querySelector('.np-hist')) return;
+    x.insertAdjacentHTML('beforeend', '<div class="np-hist"><div class="nh-eti">' + ic('libro') + 'La historia de esta canción</div>' +
+      l.slice(0, 2).map(y => '<a href="' + enlaceHist(y) + '"><b>' + esc(y.h.titulo) + ' · ' + esc(y.i.a) + '</b>' + (y.i.n ? '<span>' + esc(y.i.n) + '</span>' : '') + '</a>').join('') +
+      (l.length > 2 ? '<p>Sale en ' + l.length + ' historias.</p>' : '') + '</div>');
+  }).catch(() => {});
+}
 /* ---- Letras (lrclib.net: gratis, sin clave y sin gastar nada de Spotify) ----
    Se guardan en el aparato: una cancion solo se pide una vez. */
 const NPL = { on: !!PREFS.letraOn, uri: '', d: null, act: -1, toca: 0 };
@@ -8759,26 +8800,45 @@ const normF = t => fold(String(t || '').replace(/\s[-–]\s.*$/, '').replace(/[(
 const clavesArtF = i => String(i.art).split(/\s*(?:&|,|\by\b|\band\b|\bvs\.?|\bfeat\.?|\bcon\b)\s*/i).concat(i.alias || [])
   .map(normF).filter(Boolean).map(p => p.split(' ').filter(w => w.length > 1).pop() || p);
 // Todas las historias, en corto. Se guardan y solo se vuelven a leer cuando cambian en la web
-async function todasHistorias() {
+async function todasHistorias(callado) {
   const html = await (await fetch('historias.html', { cache: 'no-cache' })).text();
   const srcs = [...html.matchAll(/<script src="(historias\/datos\/[^"]+)"/g)].map(x => x[1]);
   if (!srcs.length) throw new Error('No encuentro las Historias de la música');
-  const v = srcs.length + '|' + (srcs[0].split('?v=')[1] || '');
+  const v = 'v2|' + srcs.length + '|' + (srcs[0].split('?v=')[1] || '');
   const c = await cacheLeer('historiasTodas');
   if (c && c.v === v) return c.H;
   const H = [];
   for (let i = 0; i < srcs.length; i += 24) {
-    progreso('Leyendo las Historias de la música', i, srcs.length);
+    if (!callado) progreso('Leyendo las Historias de la música', i, srcs.length);
     const txts = await Promise.all(srcs.slice(i, i + 24).map(u => fetch(u).then(r => r.ok ? r.text() : '').catch(() => '')));
     for (const t of txts) { if (!t) continue; const w = { HISTORIAS: [] }; try { new Function('window', 'HISTORIAS', t)(w, w.HISTORIAS); H.push(...w.HISTORIAS); } catch (e) {} }
   }
-  progreso(null);
-  const corto = H.map(h => ({ id: h.id, titulo: h.titulo, familia: h.familia, color: h.color,
-    items: h.capitulos.flatMap(cp => cp.items).filter(i => i.tipo !== 'hito').map(i => ({ a: i.a, art: i.art, t: i.t, tipo: i.tipo || '', alias: i.alias || null })) }));
+  if (!callado) progreso(null);
+  // la cara de cada pieza, con las caras ordenadas por año como en la web (para enlazar a #h/id/cara)
+  const corto = H.map(h => {
+    const caps = h.capitulos.map((cp, n) => [cp, n]).sort((a, b) => Math.min(...a[0].items.map(i => i.a)) - Math.min(...b[0].items.map(i => i.a)) || a[1] - b[1]).map(x => x[0]);
+    return { id: h.id, titulo: h.titulo, familia: h.familia, color: h.color, ranking: !!h.ranking,
+      items: caps.flatMap((cp, k) => cp.items.filter(i => i.tipo !== 'hito').map(i => ({ a: i.a, art: i.art, t: i.t, tipo: i.tipo || '', alias: i.alias || null, n: i.n || '', k: h.ranking ? 0 : k + 1 }))) };
+  });
   cachePoner('historiasTodas', { v, H: corto });
   return corto;
 }
 const FT = { n: 15, orden: 'descubrir' };
+/* en qué historias sale una canción (para el reproductor y el inicio) */
+let _ixHist = null;
+async function historiasDe(p) {
+  if (!p || !p.title) return [];
+  if (!_ixHist) {
+    _ixHist = (async () => { const m = new Map(); for (const h of await todasHistorias(true)) for (const i of h.items) { const k = normF(i.t); (m.get(k) || m.set(k, []).get(k)).push({ h, i }); } return m; })();
+    _ixHist.catch(() => { _ixHist = null; });
+  }
+  const m = await _ixHist, l = m.get(normF(p.title)) || [];
+  const a = ' ' + normF((p.artists || []).map(x => x.name).join(' ')) + ' ';
+  const vistas = new Set();
+  return l.filter(x => clavesArtF(x.i).some(k => a.indexOf(' ' + k + ' ') >= 0)).filter(x => !vistas.has(x.h.id) && vistas.add(x.h.id))
+    .sort((x, y) => (x.h.ranking ? 1 : 0) - (y.h.ranking ? 1 : 0) || (y.i.n || '').length - (x.i.n || '').length);
+}
+const enlaceHist = x => 'historias.html#h/' + encodeURIComponent(x.h.id) + (x.i.k ? '/' + x.i.k : '');
 async function vFalta(m) {
   cargando(m);
   let HS, ps;
@@ -9171,6 +9231,9 @@ function hojaAjustes() {
     '<a class="btn ' + (f.length || !conectado() ? 'pri ' : '') + 'wide" href="' + CONECTAR + '">' + (conectado() ? 'Volver a conectar' : 'Conectar con Spotify') + '</a>' +
     '<h3>Copia de seguridad</h3><p class="soft tiny">Descarga un archivo con todas tus playlists (con sus canciones), tus Me gusta, tus discos y los artistas que sigues. Si algún día se borra algo, desde aquí se puede recrear.</p>' +
     '<div class="btnrow"><button class="btn" id="aCopia">' + ic('bajar') + 'Descargar copia de todo</button><button class="btn" id="aRest">' + ic('subir') + 'Recuperar desde una copia</button></div>' +
+    '<h3>Tus aparatos</h3>' + (ghCfg() ? '<p class="soft tiny">Este aparato se sincroniza con los demás: tus etiquetas, Por decidir y tus ajustes.</p><div class="btnrow"><button class="btn" id="gPasar">' + ic('movil') + 'Vincular el móvil (código QR)</button></div>'
+      : '<p class="soft tiny"><b>Este aparato no se sincroniza.</b> Lo que cambies aquí no llega al ordenador. En la Fonoteca del ordenador ve a Ajustes › Vincular el móvil y pega aquí el código.</p>') +
+    '<div class="vinc"><input class="field" id="gCod" placeholder="Pega aquí el código de vinculación" autocomplete="off"><button class="btn pri" id="gVinc">Vincular este aparato</button></div>' +
     '<h3>Copia en GitHub</h3><p class="soft tiny">Tus etiquetas y los géneros de tus artistas se guardan en tu repo de GitHub, para tenerlos igual en todos tus aparatos. Si este aparato ya tenía el token, no hay que tocar nada.</p>' +
     '<label class="lbl">Repo</label><input class="field" id="gRepo" placeholder="4l3jandro23/mi-musica" value="' + esc((leer(K_GH, {}) || {}).repo || '4l3jandro23/mi-musica') + '">' +
     '<label class="lbl">Token de GitHub</label><input class="field" id="gTok" type="password" placeholder="' + (ghCfg() ? 'guardado (déjalo vacío para no cambiarlo)' : 'github_pat_…') + '">' +
@@ -9186,6 +9249,8 @@ function hojaAjustes() {
     '<p class="mute tiny" style="margin-top:16px"><a href="index.html" style="color:inherit">Volver a Mi Música</a> · versión ' + VERSION + '</p>', h => {
       h.querySelector('#aCopia').onclick = () => { cerrarHoja(); copiaDeTodo(); };
       h.querySelector('#aRest').onclick = () => { cerrarHoja(); restaurarCopia(); };
+      const gp = h.querySelector('#gPasar'); if (gp) gp.onclick = () => { cerrarHoja(true); hojaPasarConexion(); };
+      h.querySelector('#gVinc').onclick = async () => { if (await vincular(h.querySelector('#gCod').value)) cerrarHoja(); };
       h.querySelector('#gOk').onclick = async () => {
         const repo = h.querySelector('#gRepo').value.trim(), tok = h.querySelector('#gTok').value.trim();
         const prev = leer(K_GH, {}) || {};
@@ -9421,6 +9486,37 @@ let MIS = null;
 let _misIdx = null;
 const misSync = { at: 0, msg: '', err: false, corriendo: false, t: 0 };
 const ghCfg = () => { const g = leer(K_GH, null); return g && g.token && g.repo ? g : null; };
+/* Código de vinculación: el repo y el token, juntos, para pegarlo en el otro aparato.
+   Vale también pegar el token suelto (ghp_… o github_pat_…). */
+const codigoVinculo = g => 'FONO1:' + btoa(unescape(encodeURIComponent(JSON.stringify({ r: g.repo, t: g.token }))));
+function leerVinculo(txt) {
+  txt = String(txt || '').trim();
+  if (/^(ghp_|github_pat_)\w+$/.test(txt)) return { repo: (leer(K_GH, {}) || {}).repo || '4l3jandro23/mi-musica', token: txt };
+  const m = txt.match(/FONO1:([A-Za-z0-9+/=]+)/); if (!m) return null;
+  try { const o = JSON.parse(decodeURIComponent(escape(atob(m[1])))); return o && o.r && o.t ? { repo: o.r, token: o.t } : null; } catch (e) { return null; }
+}
+async function vincular(txt) {
+  const g = leerVinculo(txt);
+  if (!g) { toast('Ese código no vale. Cópialo entero desde Ajustes del otro aparato.'); return false; }
+  escribir(K_GH, Object.assign({}, leer(K_GH, {}) || {}, g));
+  toast('Vinculado: este aparato ya se sincroniza con los demás');
+  try { await misAsegurar(); await sincronizarMis(); await sincronizarEtq(); render(); } catch (e) {}
+  return true;
+}
+function cargarQR() {
+  return window.QRCode ? Promise.resolve() : new Promise((ok, ko) => { const sc = document.createElement('script'); sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js'; sc.integrity = 'sha384-3zSEDfvllQohrq0PHL1fOXJuC/jSOO34H46t6UQfobFOmxE5BpjjaIJY5F2/bMnU'; sc.crossOrigin = 'anonymous'; sc.onload = ok; sc.onerror = ko; document.head.append(sc); });
+}
+function hojaPasarConexion() {
+  const g = ghCfg(); if (!g) return;
+  const cod = codigoVinculo(g);
+  hoja('<h2>Vincular el móvil</h2><ol class="pasos-v"><li>Abre la cámara del iPhone y apunta a este código.</li><li>Toca el texto que aparece y pulsa <b>Copiar</b> (no «Buscar»: el código no debe salir de tu móvil).</li><li>En la Fonoteca del móvil: <b>Ajustes › Vincular este aparato</b>, pega y listo.</li></ol>' +
+    '<div class="qr-v" id="qrV"></div><p class="tiny soft">Lleva tu token de GitHub: no lo enseñes a nadie. Si algún día se cuela, bórralo en GitHub y crea otro.</p>' +
+    '<div class="btnrow"><button class="btn" id="qrCop">' + ic('copia') + 'Copiar el código</button></div>', h => {
+      cargarQR().then(() => { new QRCode(h.querySelector('#qrV'), { text: cod, width: 232, height: 232, colorDark: '#14151a', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M }); })
+        .catch(() => { h.querySelector('#qrV').innerHTML = '<p class="tiny soft">No se pudo dibujar el QR: copia el código y mándatelo.</p>'; });
+      h.querySelector('#qrCop').onclick = () => navigator.clipboard.writeText(cod).then(() => toast('Código copiado'), () => toast('No se pudo copiar'));
+    });
+}
 const misPorId = id => { if (!_misIdx) { _misIdx = new Map(); for (const a of MIS.artistas) _misIdx.set(a.id, a); } return _misIdx.get(id); };
 const tagPorId = id => MIS.tags.find(t => t.id === id);
 
@@ -10727,8 +10823,12 @@ window.addEventListener('unhandledrejection', e => apuntarFallo(e.reason, 'sin c
   pintarCupo();
   if (ghCfg()) misAsegurar().then(() => sincronizarMis()).then(() => sincronizarEtq());
 })();
+let _ultTraer = Date.now();
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState !== 'hidden') return;
+  if (document.visibilityState === 'visible') {
+    if (ghCfg() && Date.now() - _ultTraer > 60000) { _ultTraer = Date.now(); sincronizarEtq().then(() => { if (S.tab === 'inicio' && !S.vista) render(); }).catch(() => {}); }
+    return;
+  }
   if (misSync.t && MIS) { clearTimeout(misSync.t); sincronizarMis(); }
   if (_tEtqGh) { clearTimeout(_tEtqGh); _tEtqGh = 0; sincronizarEtq(); }
 });

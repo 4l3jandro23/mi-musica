@@ -203,6 +203,7 @@
   };
   function quitar(k, fuera) {
     fuera ? QUITADAS.add(k) : QUITADAS.delete(k);
+    marcarTs('q|' + k);
     guardar(K_QUITADAS, [...QUITADAS]);
     aplicarQuitadas();
     ruta(true);
@@ -210,11 +211,113 @@
   // v: { fuera: true }, { nombre }, o null para dejarlo como venía
   function editarCap(k, v) {
     if (v) CAPS[k] = v; else delete CAPS[k];
+    marcarTs('c|' + k);
     guardar(K_CAPS, CAPS);
     aplicarQuitadas();
     ruta(true);
   }
   aplicarQuitadas();
+
+  /* ---------- sincronizar con tus otros aparatos ----------
+     Usa el mismo GitHub que la Fonoteca (mismo token, guardado en este navegador). En el archivo
+     historias-sync.json van las escuchadas, las quitadas, los apartados cambiados y tu récord del
+     juego. Cada cambio lleva su hora: si tocas lo mismo en dos aparatos, gana el último. */
+  const K_GH = 'musicvault_github_v1', GH_SYNC = 'historias-sync.json', K_TS = 'historias_sync_ts_v1', K_SYNC_AT = 'historias_sync_at_v1';
+  const ghCfg = () => { const g = leer(K_GH, null); return g && g.token && g.repo ? g : null; };
+  const TS = leer(K_TS, {}); // 'o|clave' → hora, 'q|clave' → hora, 'c|claveCap' → hora
+  let _tSync = 0;
+  const programarSync = () => { clearTimeout(_tSync); _tSync = setTimeout(sincronizar, 15000); };
+  const marcarTs = (k) => { TS[k] = Date.now(); guardar(K_TS, TS); programarSync(); };
+  function docLocal() {
+    const o = {}, q = {}, c = {};
+    for (const k of OIDAS) o[k] = [1, TS['o|' + k] || 1];
+    for (const k of QUITADAS) q[k] = [1, TS['q|' + k] || 1];
+    for (const k in CAPS) c[k] = [CAPS[k], TS['c|' + k] || 1];
+    for (const t in TS) {
+      const [g, ...r] = t.split('|'), k = r.join('|');
+      if (g === 'o' && !o[k]) o[k] = [0, TS[t]];
+      if (g === 'q' && !q[k]) q[k] = [0, TS[t]];
+      if (g === 'c' && !c[k]) c[k] = [null, TS[t]];
+    }
+    return { o, q, c, j: leer('historias_juego_v1', { anyo: 0, mito: 0 }) };
+  }
+  // Junta lo de fuera con lo de aquí; devuelve true si aquí ha cambiado algo
+  function fundir(r) {
+    if (!r) return false;
+    let cambio = false;
+    const una = (g, rem, set) => {
+      for (const k in (rem || {})) {
+        const [v, t] = rem[k], tiene = set.has(k);
+        if ((TS[g + '|' + k] || (tiene ? 1 : 0)) >= t) continue;
+        TS[g + '|' + k] = t;
+        if (v && !tiene) { set.add(k); cambio = true; } else if (!v && tiene) { set.delete(k); cambio = true; }
+      }
+    };
+    una('o', r.o, OIDAS); una('q', r.q, QUITADAS);
+    for (const k in (r.c || {})) {
+      const [v, t] = r.c[k]; if ((TS['c|' + k] || (CAPS[k] ? 1 : 0)) >= t) continue;
+      TS['c|' + k] = t;
+      if (JSON.stringify(CAPS[k] || null) !== JSON.stringify(v)) { if (v) CAPS[k] = v; else delete CAPS[k]; cambio = true; }
+    }
+    if (r.j) { const j = leer('historias_juego_v1', { anyo: 0, mito: 0 }); const n = { anyo: Math.max(j.anyo || 0, r.j.anyo || 0), mito: Math.max(j.mito || 0, r.j.mito || 0) }; if (n.anyo !== j.anyo || n.mito !== j.mito) guardar('historias_juego_v1', n); }
+    guardar(K_TS, TS);
+    if (cambio) { guardar(K_OIDAS, [...OIDAS]); guardar(K_QUITADAS, [...QUITADAS]); guardar(K_CAPS, CAPS); }
+    return cambio;
+  }
+  const b64 = (t) => btoa(unescape(encodeURIComponent(t)));
+  const ordenado = (d) => { const o = {}; for (const g of ['o', 'q', 'c']) { o[g] = {}; for (const k of Object.keys((d && d[g]) || {}).sort()) o[g][k] = d[g][k]; } o.j = (d && d.j) || {}; return o; };
+  let _sincronizando = false;
+  // devuelve true si quedó al día
+  async function sincronizar() {
+    if (_sincronizando) return false; _sincronizando = true;
+    clearTimeout(_tSync); _tSync = 0;
+    let ok = false;
+    try {
+      const g = ghCfg();
+      if (!g) {
+        // sin token, al menos se trae lo de los otros aparatos (solo lectura)
+        const res = await fetch(GH_SYNC + '?t=' + Date.now(), { cache: 'no-store' });
+        if (res.ok && fundir(await res.json())) { aplicarQuitadas(); ruta(true); }
+        return res.ok;
+      }
+      const api = 'https://api.github.com/repos/' + g.repo + '/contents/' + GH_SYNC;
+      const cab = { Authorization: 'Bearer ' + g.token, Accept: 'application/vnd.github+json' };
+      for (let n = 0; n < 3; n++) {
+        const r = await fetch(api + '?ref=main&t=' + Date.now(), { headers: cab });
+        let sha = null, rem = null;
+        if (r.ok) { const d = await r.json(); sha = d.sha; rem = JSON.parse(decodeURIComponent(escape(atob(String(d.content).replace(/\s/g, ''))))); }
+        else if (r.status !== 404) throw new Error('GitHub ' + r.status);
+        if (fundir(rem)) { aplicarQuitadas(); ruta(true); }
+        const cuerpo = JSON.stringify(ordenado(docLocal()));
+        if (rem && JSON.stringify(ordenado(rem)) === cuerpo) { ok = true; break; }
+        const p = await fetch(api, { method: 'PUT', headers: cab, body: JSON.stringify({ message: 'historias: escuchadas y cambios', content: b64(cuerpo), branch: 'main', sha: sha || undefined }) });
+        if (p.status === 409 || p.status === 422) continue; // otro aparato escribió a la vez: se vuelve a juntar
+        if (!p.ok) throw new Error('GitHub ' + p.status);
+        ok = true; break;
+      }
+      if (ok) guardar(K_SYNC_AT, Date.now());
+    } catch (e) { /* sin conexión: se reintenta en el siguiente cambio o al volver */ }
+    finally { _sincronizando = false; }
+    return ok;
+  }
+  // Código de vinculación de la Fonoteca (Ajustes › Vincular el móvil) o el token suelto
+  function vincular(txt) {
+    txt = String(txt || '').trim();
+    let g = null;
+    if (/^(ghp_|github_pat_)\w+$/.test(txt)) g = { repo: (leer(K_GH, {}) || {}).repo || '4l3jandro23/mi-musica', token: txt };
+    const mm = txt.match(/FONO1:([A-Za-z0-9+/=]+)/);
+    if (mm) { try { const o = JSON.parse(decodeURIComponent(escape(atob(mm[1])))); if (o.r && o.t) g = { repo: o.r, token: o.t }; } catch (e) {} }
+    if (!g) { toast('Ese código no vale: cópialo entero desde la Fonoteca del ordenador'); return false; }
+    guardar(K_GH, Object.assign({}, leer(K_GH, {}) || {}, g));
+    toast('Vinculado: este aparato ya se sincroniza');
+    sincronizar().then(() => ruta(true));
+    return true;
+  }
+  let _oculta = 0;
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') { _oculta = Date.now(); if (_tSync) sincronizar(); }
+    else if (Date.now() - _oculta > 30000) sincronizar();
+  });
 
   /* ---------- «la tienes»: lo que la Fonoteca guardó en este aparato ---------- */
   const normT = (s) => norm(String(s || '').replace(/\s[-–]\s.*$/, '').replace(/[([].*?[)\]]/g, ''))
@@ -629,13 +732,20 @@
     if (aMedias.length) html += '<section class="bloque"><h2>A medias</h2><div class="rejilla">' + aMedias.map(tarjeta).join('') + '</div></section>';
     if (hechas.length) html += '<section class="bloque"><h2>Terminadas</h2><div class="rejilla">' + hechas.map(tarjeta).join('') + '</div></section>';
     if (tienes.length) html += '<section class="bloque"><h2>Ya tienes muchas de estas</h2><p class="sub">Historias que no has empezado y en las que ya tienes canciones en tu Fonoteca.</p><div class="rejilla">' + tienes.map((x) => tarjeta(x[0])).join('') + '</div></section>';
+    const g = ghCfg(), at = leer(K_SYNC_AT, 0);
+    html += '<section class="bloque"><h2>Tus aparatos</h2>' + (g
+      ? '<p class="sub">Lo que marcas aquí se guarda también en tu GitHub y llega a tus otros aparatos.' + (at ? ' Última vez: ' + new Date(at).toLocaleString('es-ES', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) + '.' : '') + '</p><button class="btn" id="syncYa">' + ic('reloj') + 'Sincronizar ahora</button>'
+      : '<p class="sub"><b>Este aparato no se sincroniza:</b> lo que marques aquí no llega a los demás. En la Fonoteca del ordenador ve a Ajustes › Vincular el móvil y pega aquí el código.</p>' +
+        '<form class="vinc" id="vincF"><input id="vincC" placeholder="Pega el código de vinculación" autocomplete="off" aria-label="Código de vinculación"><button class="btn pri">Vincular</button></form>') + '</section>';
     html += '<section class="bloque"><h2>Tus cambios</h2>' + (conCambios.length ?
-      '<p class="sub">Canciones y apartados que has quitado o renombrado en ' + conCambios.length + (conCambios.length === 1 ? ' historia' : ' historias') + '. Solo se ven así en este aparato: copia la lista y pásamela para que sea para siempre.</p>' +
+      '<p class="sub">Canciones y apartados que has quitado o renombrado en ' + conCambios.length + (conCambios.length === 1 ? ' historia' : ' historias') + '. Llegan a tus otros aparatos si están vinculados, pero no cambian la web para todos: copia la lista y pásamela para que sea para siempre.</p>' +
       '<ul class="lista-cambios">' + conCambios.map((h) => '<li><a href="#h/' + h.id + '"><i class="pto" style="--c:' + h.color + '"></i>' + esc(h.titulo) + '</a><span>' + ((n) => n + (n === 1 ? ' cambio' : ' cambios'))(textoCambios(h).split('\n').length - 1) + '</span></li>').join('') + '</ul>' +
       '<button class="btn pri" id="copiarTodo">' + ic('copia') + 'Copiar todos los cambios</button>'
       : '<p class="sub">No has quitado ni renombrado nada. Si en una historia sobra una canción, quítala con la equis de su fila; el lápiz de cada apartado sirve para renombrarlo o quitarlo.</p>') + '</section>';
     main.innerHTML = html;
     const ct = $('#copiarTodo'); if (ct) ct.onclick = () => copiar(conCambios.map(textoCambios).join('\n\n'));
+    const sy = $('#syncYa'); if (sy) sy.onclick = () => { toast('Sincronizando…'); sincronizar().then((ok) => { toast(ok ? 'Al día' : 'No se pudo sincronizar: mira la conexión y prueba otra vez'); ruta(true); }); };
+    const vf = $('#vincF'); if (vf) vf.onsubmit = (e) => { e.preventDefault(); if (vincular($('#vincC').value)) ruta(true); };
   }
 
   /* ---------- juego: ¿de qué año es? y ¿mito o verdad? ---------- */
@@ -710,7 +820,7 @@
     if (JG.resp === bien) {
       JG.ac++; JG.racha++;
       const st = leer(K_JUEGO, { anyo: 0, mito: 0 });
-      if (JG.racha > (st[JG.modo] || 0)) { st[JG.modo] = JG.racha; guardar(K_JUEGO, st); if (JG.racha > 2) toast('¡Nueva mejor racha: ' + JG.racha + '!'); }
+      if (JG.racha > (st[JG.modo] || 0)) { st[JG.modo] = JG.racha; guardar(K_JUEGO, st); programarSync(); if (JG.racha > 2) toast('¡Nueva mejor racha: ' + JG.racha + '!'); }
     } else JG.racha = 0;
     juego(id);
   }
@@ -799,7 +909,7 @@
     const b = e.target.closest('.oida'); if (!b) return;
     const k = b.dataset.k, on = !OIDAS.has(k);
     on ? OIDAS.add(k) : OIDAS.delete(k);
-    guardar(K_OIDAS, [...OIDAS]);
+    guardar(K_OIDAS, [...OIDAS]); marcarTs('o|' + k);
     b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); b.title = on ? 'Escuchada' : 'Marcar como escuchada';
     b.closest('.row').classList.toggle('oida-on', on);
     const h = H.find((x) => x.id === k.split('|')[0]), p = $('#prog');
@@ -904,4 +1014,5 @@
 
   ruta();
   leerFonoteca().then((t) => { if (t) { TUYAS = t; ruta(true); } });
+  sincronizar();
 })();
