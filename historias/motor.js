@@ -44,6 +44,7 @@
     mando: '<rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="16" cy="11.5" r="1"/><circle cx="18" cy="14" r="1"/>',
     casa: '<path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/>',
     persona: '<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>',
+    lista: '<path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/>',
     disco: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/>',
     spotify: '<circle cx="12" cy="12" r="10"/><path d="M7 9.5c3.5-1 7.5-.6 10.5 1M7.6 12.8c2.9-.8 6-.4 8.4 1M8.3 15.9c2.2-.5 4.4-.3 6.3.8"/>',
     youtube: '<rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3z" fill="currentColor"/>'
@@ -454,7 +455,7 @@
 
   /* ---------- navegación: barra de arriba en el ordenador y pestañas abajo en el móvil ---------- */
   const hashFam = (f) => '#explorar/' + encodeURIComponent(f);
-  const SECCIONES = [['inicio', '#', 'casa', 'Inicio'], ['anyos', '#anyos', 'reloj', 'Años'], ['tuyo', '#tuyo', 'persona', 'Lo tuyo'], ['juego', '#juego', 'mando', 'Juego']];
+  const SECCIONES = [['inicio', '#', 'casa', 'Inicio'], ['indice', '#indice', 'lista', 'Índice'], ['anyos', '#anyos', 'reloj', 'Años'], ['tuyo', '#tuyo', 'persona', 'Lo tuyo'], ['juego', '#juego', 'mando', 'Juego']];
   function lado(sec) {
     $('#secc').innerHTML = SECCIONES.map(([id, href, i, txt]) => '<a href="' + href + '"' + (sec === id ? ' class="on" aria-current="page"' : '') + '>' + txt + '</a>').join('');
     $('#tabs').innerHTML = SECCIONES.map(([id, href, i, txt]) => '<a href="' + href + '"' + (sec === id ? ' class="on" aria-current="page"' : '') + '>' + ic(i) + '<span>' + txt + '</span></a>').join('');
@@ -494,7 +495,8 @@
       (filtro ? '<h1>' + esc(filtro) + '</h1><div class="ini-txt"><p class="lead">' + esc(lineaFam(filtro)) + '. ' + lista.length + ' historias y ' + fmt(total) + ' canciones, de la más antigua a la más reciente.</p>'
         : '<h1>Historias de la música</h1><div class="ini-txt"><p class="lead">' + H.length + ' historias contadas canción a canción y ordenadas por año. ' + fmt(total) + ' canciones elegidas a mano, sin algoritmos.</p>') +
       '<div class="btnrow">' + (ultima && !filtro ? '<a class="btn pri" href="#h/' + ultima.id + '">' + ic('play') + 'Sigue con «' + esc(nombreFunda(ultima.titulo)) + '»</a>' : '') +
-      '<button class="btn" id="azar">' + ic('dado') + 'Una al azar</button>' + (filtro ? '<a class="btn" href="#">Todas las familias</a>' : '') + '</div></div>';
+      '<a class="btn" href="#indice">' + ic('lista') + 'Índice de historias</a><button class="btn" id="azar">' + ic('dado') + 'Una al azar</button>' + (filtro ? '<a class="btn" href="#">Todas las familias</a>' : '') + '</div>' +
+      (ghCfg() ? '' : '<p class="aviso-v">Este aparato no está vinculado: lo que marques aquí no llega a tus otros aparatos. <a href="#tuyo">Vincularlo</a></p>') + '</div>';
     if (!filtro) html += '<a class="hoy" href="#h/' + hoy.id + '">' + funda(hoy, true) +
       '<span class="hoy-txt"><h2>' + esc(hoy.titulo) + '</h2><span class="lema">' + esc(hoy.lema) + '</span>' +
       '<span class="meta">La historia de hoy · ' + esc(rango(inicio(hoy), fin(hoy))) + ' · ' + fmt(escuchables(hoy).length) + ' canciones</span></span></a>';
@@ -711,6 +713,51 @@
       if (f) { cronoFam = f.dataset.cf; cambiar(cronologia); scrollTo(0, 0); return; }
       const s = e.target.closest('[data-s]');
       if (s) { const el = document.getElementById('ct-' + s.dataset.s); if (el) el.scrollIntoView({ behavior: MOV ? 'smooth' : 'auto' }); }
+    };
+  }
+
+  /* ---------- índice: todas las historias por familia, con todos sus apartados ---------- */
+  function indice(fam) {
+    main.onclick = null;
+    main.classList.add('lectura');
+    lado('indice');
+    const fams = familias();
+    main.innerHTML = '<section class="cab"><h1>Índice</h1><p class="lead">Las ' + H.length + ' historias por familia, cada una con sus apartados. Escribe para encontrar una historia o un apartado.</p></section>' +
+      '<label class="ix-busca">' + ic('lupa') + '<input id="ixQ" type="search" placeholder="Filtra: house, carioca, Beatles, 80s…" aria-label="Filtrar historias y apartados" autocomplete="off"></label>' +
+      '<nav class="ix-fams" aria-label="Saltar a una familia">' + fams.map((f) => '<a class="chip" href="#indice/' + encodeURIComponent(f) + '" data-f="' + esc(f) + '"><i class="pto" style="--c:' + colorFam(f) + '"></i>' + esc(f) + '</a>').join('') + '</nav>' +
+      '<p class="ix-nada" hidden>Nada con eso. Prueba con otra palabra o búscalo arriba entre las canciones.</p>' +
+      fams.map((f) => {
+        const hs = porInicio(H.filter((x) => x.familia === f));
+        return '<section class="ix-fam" id="ixf-' + encodeURIComponent(f) + '"><h2><i class="pto" style="--c:' + colorFam(f) + '"></i>' + esc(f) + ' <span class="ix-n">' + hs.length + '</span></h2><p class="ix-linea">' + esc(lineaFam(f)) + '</p><ul class="ix-lista">' +
+          hs.map((x) => '<li class="ix-h" data-t="' + esc(norm(x.titulo + ' ' + x.lema + ' ' + f)) + '"><a class="ix-tit" href="#h/' + x.id + '"><b>' + esc(x.titulo) + '</b><span>' + esc(rango(inicio(x), fin(x))) + ' · ' + fmt(escuchables(x).length) + '</span></a>' +
+            (x.capitulos.length > 1 ? '<div class="ix-caps">' + x.capitulos.map((c, k) => '<a href="#h/' + x.id + '/' + (k + 1) + '" data-t="' + esc(norm(c.titulo + ' ' + (c.corto || '') + ' ' + c.periodo)) + '">' + (x.ranking ? '' : '<b>' + cara(k) + '</b>') + esc(c.corto || c.titulo) + '</a>').join('') + '</div>' : '') + '</li>').join('') +
+          '</ul></section>';
+      }).join('');
+    const q = $('#ixQ'), nada = main.querySelector('.ix-nada');
+    const filtrar = () => {
+      const ws = norm(q.value).trim().split(/\s+/).filter(Boolean);
+      let hay = 0;
+      main.querySelectorAll('.ix-fam').forEach((sec) => {
+        let enFam = 0;
+        sec.querySelectorAll('.ix-h').forEach((li) => {
+          const tit = li.dataset.t, caps = [...li.querySelectorAll('.ix-caps a')];
+          const okTit = ws.every((w) => tit.indexOf(w) >= 0);
+          let okCap = 0;
+          caps.forEach((a) => { const ok = !ws.length || okTit || ws.every((w) => (tit + ' ' + a.dataset.t).indexOf(w) >= 0); a.hidden = !ok; a.classList.toggle('dio', !!ws.length && ws.every((w) => a.dataset.t.indexOf(w) >= 0)); if (ok) okCap++; });
+          const ver = !ws.length || okTit || okCap > 0;
+          li.hidden = !ver; if (ver) enFam++;
+        });
+        sec.hidden = !enFam; hay += enFam;
+      });
+      nada.hidden = hay > 0;
+      main.querySelector('.ix-fams').hidden = ws.length > 0;
+    };
+    q.addEventListener('input', filtrar);
+    if (fam) { const s = document.getElementById('ixf-' + encodeURIComponent(fam)); if (s) setTimeout(() => s.scrollIntoView({ behavior: 'auto' }), 0); }
+    else if (matchMedia('(min-width: 700px)').matches) q.focus();
+    main.onclick = (e) => {
+      const c = e.target.closest('.ix-fams [data-f]'); if (!c) return;
+      e.preventDefault(); const s = document.getElementById('ixf-' + encodeURIComponent(c.dataset.f)); if (s) s.scrollIntoView({ behavior: MOV ? 'smooth' : 'auto' });
     };
   }
 
@@ -976,6 +1023,8 @@
     const an = hs.match(/^#anyos(?:\/(-?\d+))?/);
     if (an) { anyos(an[1]); return fijar('Año a año · Historias'); }
     if (hs === '#tuyo') { tuyo(); return fijar('Lo tuyo · Historias'); }
+    const ix = hs.match(/^#indice(?:\/(.+))?/);
+    if (ix) { let f = ''; try { f = decodeURIComponent(ix[1] || ''); } catch (e) {} indice(f); document.title = 'Índice · Historias'; if (!f) scrollTo(0, mantenerScroll ? y : 0); return; }
     const j = hs.match(/^#juego(?:\/([^/]+))?/);
     if (j) { juego(j[1]); return fijar('Juego · Historias'); }
     const x = hs.match(/^#explorar(?:\/(.+))?/);
