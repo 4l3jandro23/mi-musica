@@ -5,7 +5,7 @@ HISTORIAS.push({
   periodo: "1928 – 2025",
   color: "#c9a227",
   lema: "Del «Revolver» de los Beatles a Bad Bunny: quinientos discos para escuchar enteros.",
-  intro: "Esta lista es nuestra: sale de cruzar las grandes clasificaciones de la crítica (Rolling Stone, NME, Pitchfork, Acclaimed Music y otras) y de añadir lo que suelen olvidar, como la música latina, la española, el jazz o la de África y Brasil. El orden se puede discutir, como todas las listas; lo importante es que todos merecen una escucha de principio a fin. Cada disco abre la búsqueda del álbum completo en Spotify o YouTube.",
+  intro: "Esta lista es nuestra: sale de cruzar las grandes clasificaciones de la crítica (Rolling Stone, NME, Pitchfork, Acclaimed Music y otras) y de añadir lo que suelen olvidar, como la música latina, la española, el jazz o la de África y Brasil. Van por fecha, no de mejor a peor: lo importante es que todos merecen una escucha de principio a fin. Cada disco abre la búsqueda del álbum completo en Spotify o YouTube.",
   ranking: true,
   capitulos: [
     {

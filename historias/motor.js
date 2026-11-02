@@ -11,7 +11,7 @@
    «La tienes» sale de lo que la Fonoteca ya guardó en este aparato (IndexedDB «mando»):
    solo se lee, nunca se escribe. «Escuchada» se apunta en este aparato.
    Diseño 6 (2026-11-01): todo va por año. Las caras de cada historia y sus canciones se ordenan
-   por año al cargar, y las listas de «Las 500» se agrupan por décadas con su puesto al lado. */
+   por año al cargar, y las listas de «Las 500» se agrupan por décadas (sin puestos: no van de mejor a peor). */
 (function () {
   const $ = (s) => document.querySelector(s);
   const H = window.HISTORIAS;
@@ -66,7 +66,7 @@
   /* ---------- todo por año ----------
      Las caras se ordenan por el año en que empiezan y, dentro, las canciones por año (si empatan,
      se quedan como venían). Las listas de puestos («Las 500») se agrupan por décadas y cada pieza
-     guarda su puesto. Se hace al cargar, así vale también para lo que se añada más adelante. */
+     ya no lleva puesto. Se hace al cargar, así vale también para lo que se añada más adelante. */
   const desde = (c) => Math.min(...c.items.map((i) => i.a));
   const hasta = (c) => Math.max(...c.items.map((i) => i.a));
   const porAnyo = (l) => l.map((x, n) => [x, n]).sort((p, q) => p[0].a - q[0].a || p[1] - q[1]).map((p) => p[0]);
@@ -74,14 +74,14 @@
   H.forEach((h) => {
     if (h.ranking) {
       let rk = 0;
-      const todas = h.capitulos.flatMap((c) => c.items).map((i) => i.tipo === 'hito' ? i : Object.assign({}, i, { puesto: ++rk }));
+      const todas = h.capitulos.flatMap((c) => c.items);
       const grupos = new Map();
       for (const i of todas) { const d = decadaRk(i.a); (grupos.get(d) || grupos.set(d, []).get(d)).push(i); }
       h.capitulos = [...grupos.keys()].sort((a, b) => a - b).map((d) => {
         const items = porAnyo(grupos.get(d)), n = items.filter((i) => i.tipo !== 'hito').length;
         return { titulo: d === 1940 ? 'Antes de 1950' : 'Los años ' + (d < 2000 ? String(d).slice(2) : d), corto: d === 1940 ? 'Antes de 1950' : (d < 2000 ? String(d).slice(2) : d) + 's', items,
-          intro: h.id === 'top500albumes' ? n + (n === 1 ? ' de los 500 es' : ' de los 500 son') + ' de estos años. Al lado de cada uno, su puesto en la lista.'
-            : n + (n === 1 ? ' de las 500 es' : ' de las 500 son') + ' de estos años. Al lado de cada una, su puesto en la lista.' };
+          intro: h.id === 'top500albumes' ? n + (n === 1 ? ' de los 500 es' : ' de los 500 son') + ' de estos años, en orden de fecha.'
+            : n + (n === 1 ? ' de las 500 es' : ' de las 500 son') + ' de estos años, en orden de fecha.' };
       });
     } else {
       h.capitulos = h.capitulos.map((c, n) => [Object.assign({}, c, { items: porAnyo(c.items) }), n])
@@ -139,7 +139,7 @@
     return s.charAt(0).toUpperCase() + s.slice(1);
   };
   // Historias añadidas hace poco (llevan la etiqueta «Nueva»)
-  const NUEVAS = ['blackeyedpeas', 'charlixcx', 'pinkpantheress', 'bjork', 'califato'];
+  const NUEVAS = ['top500importantes'];
   const leer = (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } };
   const guardar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
   // Texto claro u oscuro según lo claro que sea el color de la funda
@@ -431,7 +431,7 @@
     const etiqueta = (i.tipo === 'disco' ? ' <span class="tipo">disco entero</span>' : '') +
       (VER[i.v] ? ' <span class="veredicto ' + i.v + '">' + VER[i.v] + '</span>' : '');
     const anyo = '<span class="anyo">' + (i.a < 0 ? (i.a <= -10000 ? fmt(-i.a) : -i.a) + '<small>a. C.</small>' : esc(i.a)) +
-      (i.puesto ? '<b class="puesto">nº ' + i.puesto + '</b>' : cod ? '<b>' + cod + '</b>' : '') + '</span>';
+      (cod ? '<b>' + cod + '</b>' : '') + '</span>';
     if (hito) {
       return '<li class="row hito">' + anyo +
         '<div class="txt"><div class="t1" title="Momento clave">' + ic('hito') + '<span class="oculto">Momento clave: </span>' + marcar(i.t, terms) + etiqueta + '</div>' +
