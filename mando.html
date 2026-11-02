@@ -1563,7 +1563,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-11-03a';
+const VERSION = '2026-11-03b';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -9508,11 +9508,12 @@ function cargarQR() {
 }
 function hojaPasarConexion() {
   const g = ghCfg(); if (!g) return;
-  const cod = codigoVinculo(g), enlace = location.origin + location.pathname.replace(/[^/]*$/, '') + 'mando.html#vincular=' + cod;
+  // enlace corto y solo con letras y números (el token ya lo es): QR menos denso, más fácil para la cámara
+  const cod = codigoVinculo(g), enlace = 'https://4l3jandro23.github.io/mi-musica/mando.html#v=' + g.token + (g.repo !== '4l3jandro23/mi-musica' ? '&r=' + encodeURIComponent(g.repo) : '');
   hoja('<h2>Vincular el móvil</h2><ol class="pasos-v"><li>Abre la cámara del iPhone y apunta a este código.</li><li>Toca el aviso que aparece: se abre la Fonoteca en Safari y queda vinculada.</li><li>Si usas la Fonoteca desde la pantalla de inicio, pulsa allí <b>Copiar el código</b> y pégalo en la app: <b>Ajustes › Vincular este aparato</b>.</li></ol>' +
-    '<div class="qr-v" id="qrV"></div><p class="tiny soft">Lleva tu token de GitHub: no lo enseñes a nadie. Si algún día se cuela, bórralo en GitHub y crea otro.</p>' +
+    '<div class="qr-v" id="qrV"></div><p class="tiny soft" style="text-align:center">Versión ' + VERSION + '. Si la cámara no lo coge, acerca o aleja un poco el móvil.</p><p class="tiny soft">Lleva tu token de GitHub: no lo enseñes a nadie. Si algún día se cuela, bórralo en GitHub y crea otro.</p>' +
     '<div class="btnrow"><button class="btn" id="qrCop">' + ic('copia') + 'Copiar el código</button></div>', h => {
-      cargarQR().then(() => { new QRCode(h.querySelector('#qrV'), { text: enlace, width: 232, height: 232, colorDark: '#14151a', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M }); })
+      cargarQR().then(() => { new QRCode(h.querySelector('#qrV'), { text: enlace, width: 288, height: 288, colorDark: '#000000', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.L }); })
         .catch(() => { h.querySelector('#qrV').innerHTML = '<p class="tiny soft">No se pudo dibujar el QR: copia el código y mándatelo.</p>'; });
       h.querySelector('#qrCop').onclick = () => navigator.clipboard.writeText(cod).then(() => toast('Código copiado'), () => toast('No se pudo copiar'));
     });
@@ -10823,8 +10824,9 @@ window.addEventListener('unhandledrejection', e => apuntarFallo(e.reason, 'sin c
   pintarCupo();
   if (ghCfg()) misAsegurar().then(() => sincronizarMis()).then(() => sincronizarEtq());
 })();
-if (/^#vincular=/.test(location.hash)) {
-  const cod = decodeURIComponent(location.hash.slice(10));
+if (/^#(vincular|v)=/.test(location.hash)) {
+  const hp = new URLSearchParams(location.hash.slice(1));
+  const cod = /^#vincular=/.test(location.hash) ? decodeURIComponent(location.hash.slice(10)) : (hp.get('v') ? codigoVinculo({ repo: hp.get('r') || '4l3jandro23/mi-musica', token: hp.get('v') }) : '');
   history.replaceState(null, '', location.pathname + location.search);
   vincular(cod).then(ok => {
     if (!ok) return;
