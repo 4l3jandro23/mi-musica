@@ -1533,6 +1533,27 @@
   .hero .eti { color: var(--fg-soft); }
   .cerrar svg, .ayuda button svg { width: 16px; height: 16px; }
 
+
+  /* 2026-11-05b: lo que te falta, rehecho */
+  .ft-top { display: flex; gap: 16px; align-items: center; margin: -4px 0 16px; }
+  .ft-big { font-family: var(--f-disp); font-stretch: 116%; font-weight: 800; font-size: 52px; letter-spacing: -0.05em; line-height: 1; color: var(--amber); font-variant-numeric: tabular-nums; flex: none; }
+  .ft-top b { display: block; font-size: 16px; }
+  .ft-top span { display: block; font-size: 13px; line-height: 1.45; color: var(--fg-soft); margin-top: 2px; max-width: 60ch; }
+  .ft-q { width: 100%; margin-bottom: 10px; }
+  .ft-ch { flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px 10px; padding: 0 16px; scrollbar-width: none; }
+  .ft-ch::-webkit-scrollbar { display: none; }
+  .ft-ch .chip { flex: none; }
+  #ftO { margin-bottom: 16px; }
+  .ft-lista { gap: 0; }
+  .ft-lista li.ft-i { display: block; border-top: 1px solid var(--line); }
+  .ft-lista li.ft-i:first-child { border-top: 0; }
+  .ft-ib { display: flex; gap: 10px; width: 100%; min-width: 0; min-height: 40px; align-items: center; padding: 6px 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+  .ft-tt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ft-i.abierta .ft-tt { white-space: normal; }
+  .ft-det { padding: 0 0 12px 50px; }
+  .ft-det p { margin: 0 0 10px; font-size: 14px; line-height: 1.5; color: var(--fg-soft); }
+  .ft-ver { align-self: flex-start; }
+  @media (max-width: 430px) { .ft-big { font-size: 42px; } .ft-det { padding-left: 0; } }
   /* 2026-11-05: la canción de hoy, máquina del tiempo, portadas con nombre, inicio */
   .ph.gen { background: var(--g); color: rgba(255,255,255,.94); place-items: end start; padding: 10px 11px; text-align: left; }
   .ph.gen span { font-family: var(--f-disp); font-stretch: 116%; font-weight: 800; letter-spacing: -0.03em; font-size: inherit; line-height: 1.02;
@@ -1635,7 +1656,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-11-05a';
+const VERSION = '2026-11-05b';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2634,7 +2655,7 @@ const S = {
   selObj: new Set(), buscar: { q: '', tipo: 'track', res: null }, suena: null, soloSel: false, indice: null
 };
 const PREFS = Object.assign({ saltarRepes: true }, leer(K_PREFS, {}));
-const CFG_SYNC = ['temporales', 'temporalesIni', 'noSeguir', 'nombre', 'repasoNo', 'repasoNoV', 'casaMov', 'criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido', 'distintas', 'likesFuera', 'plEpoca', 'epocaArt', 'edmNo', 'casaUri', 'casaArt', 'casaAlb', 'triaje', 'portadasA'];
+const CFG_SYNC = ['faltaNo', 'temporales', 'temporalesIni', 'noSeguir', 'nombre', 'repasoNo', 'repasoNoV', 'casaMov', 'criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido', 'distintas', 'likesFuera', 'plEpoca', 'epocaArt', 'edmNo', 'casaUri', 'casaArt', 'casaAlb', 'triaje', 'portadasA'];
 let _cfgSnap = null;
 const guardarPrefs = () => {
   escribir(K_PREFS, PREFS);
@@ -4006,10 +4027,16 @@ async function historialGuardar() {
   const db = await idb(); if (db) await new Promise(ok => { try { const t = db.transaction('kv', 'readwrite'); t.objectStore('kv').put(h, K_HIST_LK); t.oncomplete = ok; t.onerror = ok; } catch (e) { ok(); } });
   historialSubir(h).catch(e => apuntarFallo(e, 'historial Me gusta'));
 }
+/* fila de la copia de GitHub ↔ canción (los artistas van en lista; las copias viejas los llevaban separados por comas) */
+const histFila = p => [p.uri, p.added || 0, p.title || '', (p.artists || []).map(a => a.name), p.album || '', p.year || ''];
+const histDeFila = x => ({ uri: x[0], id: String(x[0]).split(':')[2], tipo: 'track', added: x[1], title: x[2], artists: (Array.isArray(x[3]) ? x[3] : String(x[3] || '').split(', ')).filter(Boolean).map(n => ({ name: n })), album: x[4], year: String(x[5] || ''), ms: 0 });
 async function historialSubir(h) {
   if (!ghCfg() || Date.now() - (+leer('fonoteca_hist_gh', 0)) < 6 * 3600e3) return;
-  const l = h.pistas.map(p => [p.uri, p.added || 0, p.title || '', (p.artists || []).map(a => a.name).join(', '), p.album || '', p.year || '']);
   const r = await ghLeer('historial-me-gusta.json');
+  /* se suma a lo que ya hay en GitHub: lo de otros aparatos nunca se pierde */
+  const l = h.pistas.map(histFila), ya = new Set(l.map(x => x[0])), deFuera = [];
+  for (const x of (r.datos && r.datos.l) || []) if (x && x[0] && !ya.has(x[0])) { ya.add(x[0]); l.push(x); deFuera.push(histDeFila(x)); }
+  if (deFuera.length) historialAnotar(deFuera);
   const res = await ghFetch(r.api, { method: 'PUT', body: JSON.stringify({ message: 'historial de Me gusta: ' + l.length, content: b64enc(JSON.stringify({ at: h.at, l })), branch: 'main', sha: r.sha || undefined }) });
   if (res.ok) escribir('fonoteca_hist_gh', Date.now());
 }
@@ -4020,12 +4047,15 @@ async function musicaHistoria() {
   const m = new Map();
   for (const p of await musicaSiempre()) m.set(p.uri, p);
   let h = await cacheLeer(K_HIST_LK);
-  if (!h || !h.pistas || !h.pistas.length) {
-    /* aparato nuevo: se tira de la copia de GitHub */
-    try { const r = await fetch('historial-me-gusta.json', { cache: 'no-cache' }); if (r.ok) { const c = await r.json(); if (c && c.l) h = { pistas: c.l.map(x => ({ uri: x[0], id: String(x[0]).split(':')[2], tipo: 'track', added: x[1], title: x[2], artists: String(x[3] || '').split(', ').filter(Boolean).map(n => ({ name: n })), album: x[4], year: String(x[5] || ''), ms: 0 })) }; } } catch (e) {}
-  }
   const enH = new Set(((h && h.pistas) || []).map(p => p.uri));
   for (const p of (h && h.pistas) || []) if (!m.has(p.uri)) m.set(p.uri, p);
+  /* una vez al día (y siempre en un aparato nuevo) se suma la copia de GitHub: lo que tuviste en otro aparato, o antes de borrar este */
+  if (!enH.size || Date.now() - (+leer('fonoteca_hist_web', 0)) > 864e5) {
+    try {
+      const r = await fetch('historial-me-gusta.json', { cache: 'no-cache' });
+      if (r.ok) { const c = await r.json(); for (const x of (c && c.l) || []) if (x && x[0] && !m.has(x[0])) m.set(x[0], histDeFila(x)); escribir('fonoteca_hist_web', Date.now()); }
+    } catch (e) {}
+  }
   /* lo que salía de las copias antiguas también pasa al historial, para que no dependa de ellas */
   const faltan = Array.from(m.values()).filter(p => !enH.has(p.uri));
   if (faltan.length) historialAnotar(faltan);
@@ -8907,7 +8937,7 @@ async function todasHistorias(callado) {
   cachePoner('historiasTodas', { v, H: corto });
   return corto;
 }
-const FT = { n: 15, orden: 'descubrir' };
+const FT = { n: 15, orden: 'descubrir', fam: '', q: '', abiertas: new Set(), toda: '' };
 /* en qué historias sale una canción (para el reproductor y el inicio) */
 let _ixHist = null;
 async function historiasDe(p) {
@@ -8926,44 +8956,79 @@ const enlaceHist = x => 'historias.html#h/' + encodeURIComponent(x.h.id) + (x.i.
 async function vFalta(m) {
   cargando(m);
   let HS, ps;
-  try { [HS, ps] = await Promise.all([todasHistorias(), musicaSiempre()]); } catch (e) { progreso(null); return fallo(m, e); }
-  if (S.tab !== 'falta' || S.vista) return;
+  try { [HS, ps] = await Promise.all([todasHistorias(), musicaHistoria()]); } catch (e) { progreso(null); return fallo(m, e); }
+  const vivo = () => S.tab === 'falta' && !S.vista;
+  if (!vivo()) return;
   if (!ps.length) { m.innerHTML = '<div class="vacio">Para saber qué te falta tengo que leer tus Me gusta una vez en este aparato.<br><br><button class="btn pri" id="ftIni">Ir a Inicio a leerlos</button></div>'; $('#ftIni').onclick = () => irATab('inicio'); return; }
-  const tiene = tienesDe(ps);
+  const tiene = tienesDe(ps), kI = i => i.art + '|' + i.t;
   let quit; try { quit = new Set(JSON.parse(localStorage.getItem('historias_quitadas_v1') || '[]')); } catch (e) { quit = new Set(); }
   const res = [];
   for (const h of HS) {
-    const l = h.items.filter(i => !quit.has(h.id + '|' + i.art + '|' + i.t)).map((i, n) => [i, n]).sort((a, b) => a[0].a - b[0].a || a[1] - b[1]).map(x => x[0]);
+    const l = h.items.filter(i => !quit.has(h.id + '|' + i.art + '|' + i.t)).map((i, n) => [i, n]).sort((x, y) => x[0].a - y[0].a || x[1] - y[1]).map(x => x[0]);
     const no = l.filter(i => !tiene(i)), si = l.length - no.length;
     if (si >= 3 && no.length) res.push({ h, si, n: l.length, no });
   }
+  const NO = () => new Set(PREFS.faltaNo || []);
+  const vis = (x, no) => x.no.filter(i => !no.has(kI(i)));
   // «para descubrir»: géneros que te gustan (muchas tuyas) y con mucho por conocer
-  const orden = { descubrir: (a, b) => Math.sqrt(b.si) * b.no.length / b.n - Math.sqrt(a.si) * a.no.length / a.n, avance: (a, b) => b.si / b.n - a.si / a.n || b.si - a.si, mas: (a, b) => b.si - a.si || b.si / b.n - a.si / a.n, pocas: (a, b) => a.no.length - b.no.length || b.si - a.si };
+  const orden = { descubrir: (x, y) => Math.sqrt(y.si) * y.no.length / y.n - Math.sqrt(x.si) * x.no.length / x.n, avance: (x, y) => y.si / y.n - x.si / x.n || y.si - x.si, mas: (x, y) => y.si - x.si || y.si / y.n - x.si / x.n };
   res.sort(orden.descubrir);
-  cachePoner('faltaRes', { at: Date.now(), total: res.length, l: res.slice(0, 6).map(x => ({ id: x.h.id, titulo: x.h.titulo, color: x.h.color, si: x.si, n: x.n })) });
-  if (FT.orden !== 'descubrir') res.sort(orden[FT.orden]);
-  const fa = a => a < 0 ? -a + ' a. C.' : String(a);
-  const card = x => { const pct = Math.round(100 * x.si / x.n);
-    return '<div class="card ft"><div class="ft-cab"><i class="pto" style="background:' + esc(x.h.color) + '"></i><div class="ft-txt"><b>' + esc(x.h.titulo) + '</b>' +
-      '<span class="tiny soft">Tienes ' + n$(x.si) + ' de ' + n$(x.n) + ' · te ' + (x.no.length === 1 ? 'falta 1' : 'faltan ' + n$(x.no.length)) + '</span></div><span class="ft-pct">' + pct + '%</span></div>' +
-      '<span class="ft-barra"><i style="width:' + pct + '%"></i></span>' +
-      '<ol class="ft-lista">' + x.no.slice(0, 4).map(i => '<li><span class="ft-a">' + esc(fa(i.a)) + '</span><span class="nowrap"><b>' + esc(i.t) + '</b> · ' + esc(i.art) + (i.tipo === 'disco' ? ' (disco)' : '') + '</span></li>').join('') +
-      (x.no.length > 4 ? '<li class="ft-mas">y ' + n$(x.no.length - 4) + ' más</li>' : '') + '</ol>' +
-      '<div class="btnrow"><button class="btn pri sm" data-crear="' + esc(x.h.id) + '">' + ic('plus') + (x.no.length === 1 ? 'Añadirla a una playlist' : 'Playlist con las ' + n$(x.no.length)) + '</button>' +
-      '<a class="btn sm" href="historias.html#h/' + encodeURIComponent(x.h.id) + '">Ver la historia</a></div></div>'; };
-  m.innerHTML = '<p class="soft" style="margin:-6px 0 14px;max-width:62ch">Cruzo tus ' + n$(ps.length) + ' Me gusta con las ' + HS.length + ' historias de tu web. Salen las ' + n$(res.length) + ' en las que ya tienes canciones, con las clave que aún te faltan, en orden de año. Primero, géneros que te gustan con mucho por descubrir.</p>' +
-    '<div class="chips" id="ftO" style="margin-bottom:14px">' + [['descubrir', 'Para descubrir'], ['avance', 'Casi completas'], ['mas', 'Donde más tienes']].map(o => '<button class="chip' + (FT.orden === o[0] ? ' on' : '') + '" data-o="' + o[0] + '">' + o[1] + '</button>').join('') + '</div>' +
-    (res.length ? '<div class="ft-rejilla">' + res.slice(0, FT.n).map(card).join('') + '</div>' + (res.length > FT.n ? '<div style="text-align:center;margin-top:14px"><button class="btn" id="ftMas">Ver más</button></div>' : '')
-      : '<div class="vacio">Aún no tienes canciones de ninguna historia, o ya las tienes todas.</div>');
+  { const no = NO(), r2 = res.filter(x => vis(x, no).length); cachePoner('faltaRes', { at: Date.now(), total: r2.length, l: r2.slice(0, 6).map(x => ({ id: x.h.id, titulo: x.h.titulo, color: x.h.color, si: x.si, n: x.n })) }); }
+  const fams = []; { const c = new Map(); for (const x of res) if (x.h.familia) c.set(x.h.familia, (c.get(x.h.familia) || 0) + 1); fams.push(...[...c.entries()].sort((x, y) => y[1] - x[1]).map(x => x[0])); }
+  if (FT.fam && fams.indexOf(FT.fam) < 0) FT.fam = '';
+  m.innerHTML = '<div class="ft-top" id="ftTop"></div>' +
+    '<input class="field ft-q" id="ftQ" type="search" placeholder="Busca una historia, una canción o un artista" value="' + esc(FT.q) + '" autocomplete="off">' +
+    '<div class="chips ft-ch" id="ftF"><button class="chip" data-f="">Todas</button>' + fams.map(f => '<button class="chip" data-f="' + esc(f) + '">' + esc(f) + '</button>').join('') + '</div>' +
+    '<div class="chips ft-ch" id="ftO">' + [['descubrir', 'Para descubrir'], ['avance', 'Casi completas'], ['mas', 'Donde más tienes']].map(o => '<button class="chip" data-o="' + o[0] + '">' + o[1] + '</button>').join('') + '</div>' +
+    '<div id="ftL"></div><div id="ftPie"></div>';
+  const IT = new Map(), VISTAS = new Map();
+  const fila = (x, i) => {
+    const k = x.h.id + '|' + kI(i), abierta = FT.toda === k; IT.set(k, { x, i });
+    return '<li class="ft-i' + (abierta ? ' abierta' : '') + '"><button class="ft-ib" data-it="' + esc(k) + '" aria-expanded="' + abierta + '"><span class="ft-a">' + esc(anyoTxt(i.a)) + '</span><span class="ft-tt"><b>' + esc(i.t) + '</b> · ' + esc(i.art) + (i.tipo === 'disco' ? ' (disco)' : '') + '</span></button>' +
+      (abierta ? '<div class="ft-det">' + (i.n ? '<p>' + esc(i.n) + '</p>' : '') + '<div class="btnrow"><a class="btn pri sm" target="_blank" rel="noopener" href="https://open.spotify.com/search/' + encodeURIComponent(i.t + ' ' + i.art) + '">' + ic('play') + 'Escuchar en Spotify</a>' +
+        '<button class="btn sm" data-no="' + esc(kI(i)) + '">' + ic('equis') + 'No me interesa</button></div></div>' : '') + '</li>';
+  };
+  const pintarLista = () => {
+    IT.clear(); VISTAS.clear();
+    const no = NO(), q = fold(FT.q.trim());
+    let l = res.map(x => ({ x, items: vis(x, no) })).filter(o => o.items.length && (!FT.fam || o.x.h.familia === FT.fam));
+    if (q) l = l.map(o => fold(o.x.h.titulo).indexOf(q) >= 0 ? o : { x: o.x, items: o.items.filter(i => fold(i.t + ' ' + i.art).indexOf(q) >= 0), busca: true }).filter(o => o.items.length);
+    if (FT.orden !== 'descubrir') l.sort((p, r) => orden[FT.orden](p.x, r.x));
+    const unicas = new Set(); for (const o of l) for (const i of o.items) unicas.add(normF(i.t) + '|' + normF(i.art));
+    const total = unicas.size;
+    $('#ftTop').innerHTML = '<div class="ft-big">' + n$(total) + '</div><div><b>' + (total === 1 ? 'canción clave que aún no tienes' : 'canciones clave que aún no tienes') + '</b><span>en ' + n$(l.length) + (l.length === 1 ? ' historia' : ' historias') + '. Cuentan como tuyas las ' + n$(ps.length) + ' que has tenido alguna vez en Me gusta.</span></div>';
+    m.querySelectorAll('#ftF [data-f]').forEach(c => c.classList.toggle('on', c.dataset.f === FT.fam));
+    m.querySelectorAll('#ftO [data-o]').forEach(c => c.classList.toggle('on', c.dataset.o === FT.orden));
+    const card = o => {
+      VISTAS.set(o.x.h.id, o.items);
+      const x = o.x, pct = Math.round(100 * x.si / x.n), todas = FT.abiertas.has(x.h.id) || o.busca, its = todas ? o.items : o.items.slice(0, 5);
+      return '<div class="card ft"><div class="ft-cab"><i class="pto" style="background:' + esc(x.h.color || 'var(--fg-mute)') + '"></i><div class="ft-txt"><b>' + esc(x.h.titulo) + '</b>' +
+        '<span class="tiny soft">Tienes ' + n$(x.si) + ' de ' + n$(x.n) + ' · te ' + (o.items.length === 1 ? 'falta 1' : 'faltan ' + n$(o.items.length)) + '</span></div><span class="ft-pct">' + pct + '%</span></div>' +
+        '<span class="ft-barra"><i style="width:' + pct + '%"></i></span>' +
+        '<ol class="ft-lista">' + its.map(i => fila(x, i)).join('') + '</ol>' +
+        (o.items.length > 5 && !o.busca ? '<button class="btn sm ft-ver" data-ver="' + esc(x.h.id) + '">' + (todas ? 'Ver menos' : 'Ver las ' + n$(o.items.length)) + '</button>' : '') +
+        '<div class="btnrow"><button class="btn pri sm" data-crear="' + esc(x.h.id) + '">' + ic('plus') + (o.items.length === 1 ? 'Añadirla a una playlist' : 'Playlist con las ' + n$(o.items.length)) + '</button>' +
+        '<a class="btn sm" href="historias.html#h/' + encodeURIComponent(x.h.id) + '">Ver la historia</a></div></div>';
+    };
+    $('#ftL').innerHTML = l.length ? '<div class="ft-rejilla">' + l.slice(0, FT.n).map(card).join('') + '</div>' + (l.length > FT.n ? '<div style="text-align:center;margin-top:14px"><button class="btn" id="ftMas">Ver más historias</button></div>' : '')
+      : '<div class="vacio">' + (q || FT.fam ? 'Nada con ese filtro.' : 'Ya tienes todas las canciones clave de tus historias.') + '</div>';
+    $('#ftPie').innerHTML = no.size ? '<div class="ayuda tm-sin"><span>' + (no.size === 1 ? 'Una canción descartada' : n$(no.size) + ' canciones descartadas') + ' con «No me interesa». ' + (no.size === 1 ? 'No vuelve a salir.</span><button class="btn sm" id="ftRec">Recuperarla</button>' : 'No vuelven a salir.</span><button class="btn sm" id="ftRec">Recuperarlas</button>') + '</div>' : '';
+  };
+  $('#ftQ').oninput = () => { clearTimeout(FT._t); FT._t = setTimeout(() => { if (!vivo() || !$('#ftQ')) return; FT.q = $('#ftQ').value; FT.n = 15; pintarLista(); }, 160); };
   m.onclick = e => {
-    const o = e.target.closest('#ftO [data-o]'); if (o) { FT.orden = o.dataset.o; FT.n = 15; render(); return; }
-    if (e.target.closest('#ftMas')) { FT.n += 15; const y = scrollY; render(); setTimeout(() => scrollTo(0, y), 60); return; }
+    const f = e.target.closest('#ftF [data-f]'); if (f) { FT.fam = f.dataset.f; FT.n = 15; return pintarLista(); }
+    const o = e.target.closest('#ftO [data-o]'); if (o) { FT.orden = o.dataset.o; FT.n = 15; return pintarLista(); }
+    if (e.target.closest('#ftMas')) { FT.n += 15; return pintarLista(); }
+    if (e.target.closest('#ftRec')) { PREFS.faltaNo = []; guardarPrefs(); toast('Recuperadas'); return pintarLista(); }
+    const it = e.target.closest('[data-it]'); if (it) { FT.toda = FT.toda === it.dataset.it ? '' : it.dataset.it; return pintarLista(); }
+    const nx = e.target.closest('[data-no]'); if (nx) { PREFS.faltaNo = Array.from(new Set((PREFS.faltaNo || []).concat(nx.dataset.no))).slice(-3000); guardarPrefs(); FT.toda = ''; toast('No volverá a salir'); return pintarLista(); }
+    const v = e.target.closest('[data-ver]'); if (v) { const id = v.dataset.ver; if (FT.abiertas.has(id)) FT.abiertas.delete(id); else FT.abiertas.add(id); return pintarLista(); }
     const b = e.target.closest('[data-crear]'); if (!b) return;
     const x = res.find(r => r.h.id === b.dataset.crear); if (!x) return;
-    crearDesdeHistoria(x.h.id, { solo: new Set(x.no.map(i => i.art + '|' + i.t)), titulo: 'Lo que me falta · ' + x.h.titulo });
+    crearDesdeHistoria(x.h.id, { solo: new Set((VISTAS.get(x.h.id) || vis(x, NO())).map(kI)), titulo: 'Lo que me falta · ' + x.h.titulo });
   };
+  pintarLista();
 }
-
 
 /* ¿tienes esta pieza de una historia? (por título o disco y artista) */
 function tienesDe(ps) {
@@ -8981,14 +9046,14 @@ const anyoTxt = a => a < 0 ? -a + ' a. C.' : a < 1000 ? 'año ' + a : String(a);
    ============================================================ */
 async function pintarCancionDia(vivo) {
   const el = $('#inCdia'); if (!el) return;
-  const [HS, ps] = await Promise.all([todasHistorias(true), musicaSiempre()]);
+  const [HS, ps] = await Promise.all([todasHistorias(true), musicaHistoria()]);
   if (!ps.length || !vivo()) return;
-  const tiene = tienesDe(ps), cand = [], vistos = new Set();
+  const no0 = new Set(PREFS.faltaNo || []), tiene = tienesDe(ps), cand = [], vistos = new Set();
   for (const h of HS) {
     let si = 0; const no = [];
     for (const i of h.items) { if (i.tipo === 'disco') continue; if (tiene(i)) si++; else if ((i.n || '').length > 40) no.push(i); }
     if (si < 3) continue;
-    for (const i of no) { const k = normF(i.t) + '|' + normF(i.art); if (!vistos.has(k)) { vistos.add(k); cand.push({ h, i }); } }
+    for (const i of no) { const k = normF(i.t) + '|' + normF(i.art); if (!vistos.has(k) && !no0.has(i.art + '|' + i.t)) { vistos.add(k); cand.push({ h, i }); } }
   }
   if (!cand.length || !vivo()) return;
   cand.sort((a, b) => (a.h.id + '|' + a.i.t) < (b.h.id + '|' + b.i.t) ? -1 : 1);
@@ -9016,7 +9081,7 @@ const TM = { y: 0, n: 12 };
 async function vTiempo(m) {
   cargando(m);
   let ps, HS;
-  try { await etqAsegurar(); [ps, HS] = await Promise.all([musicaSiempre(), todasHistorias(true).catch(() => [])]); } catch (e) { return fallo(m, e); }
+  try { await etqAsegurar(); [ps, HS] = await Promise.all([musicaHistoria(), todasHistorias(true).catch(() => [])]); } catch (e) { return fallo(m, e); }
   const vivo = () => S.tab === 'tiempo' && !S.vista;
   if (!vivo()) return;
   if (!ps.length) { m.innerHTML = '<div class="vacio">Para viajar por tus años tengo que leer tus Me gusta una vez en este aparato.<br><br><button class="btn pri" id="tmIni">Ir a Inicio a leerlos</button></div>'; $('#tmIni').onclick = () => irATab('inicio'); return; }
@@ -9050,7 +9115,7 @@ async function vTiempo(m) {
     tira += '<button class="tm-b" data-y="' + a + '" aria-label="' + a + ': ' + n + ' canciones"><i style="height:' + (n ? Math.max(5, Math.round(100 * Math.sqrt(n / max))) : 0) + '%"></i>' + (a % 10 === 0 ? '<span>' + a + '</span>' : '') + '</button>';
   }
   const decs = []; for (let d = y0; d <= hoy; d += 10) decs.push(d);
-  m.innerHTML = '<p class="soft" style="margin:-6px 0 12px;max-width:62ch">Tus canciones por el año en que salieron, y lo que pasaba ese año en tus Historias de la música. Toca una barra o una década.</p>' +
+  m.innerHTML = '<p class="soft" style="margin:-6px 0 12px;max-width:62ch">Todo lo que has tenido en Me gusta, por el año en que salió, y lo que pasaba ese año en tus Historias de la música. Toca una barra o una década.</p>' +
     '<div class="chips tm-dec" id="tmD">' + decs.map(d => '<button class="chip" data-d="' + d + '">' + (d < 2000 ? 'Años ' + String(d).slice(2) : 'Años ' + d) + '</button>').join('') + '</div>' +
     '<div class="tm-tira" id="tmT">' + tira + '</div><div id="tmA"></div>' +
     (dud.length ? '<div class="ayuda tm-sin"><span>' + (dud.length === 1 ? 'Una canción' : n$(dud.length) + ' canciones') + ' sin año fiable (reediciones, recopilatorios…). Las miro en MusicBrainz sin gastar cupo de Spotify.</span><button class="btn sm" id="tmAn">Averiguarlo</button></div>' : '');
