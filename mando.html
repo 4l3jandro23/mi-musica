@@ -1534,6 +1534,14 @@
   .cerrar svg, .ayuda button svg { width: 16px; height: 16px; }
 
 
+  /* 2026-11-07b: limpiar seguidos */
+  .ls-sec { padding: 12px 0; border-top: 1px solid var(--line); }
+  .ls-sec:first-child { border-top: 0; }
+  .ls-cab { display: flex; align-items: center; gap: 10px; }
+  .ls-tit { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; border: 0; background: none; padding: 6px 0; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+  .ls-tit b { font-size: 16px; }
+  .ls-tit span { font-size: 13px; color: var(--fg-soft); }
+  .ls-sec > p { margin: 2px 0 8px; }
   /* 2026-11-07: registro de artistas */
   .rg-ch { flex-wrap: nowrap; overflow-x: auto; margin: 10px 0; scrollbar-width: none; }
   .rg-ch::-webkit-scrollbar { display: none; }
@@ -1660,7 +1668,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-11-07a';
+const VERSION = '2026-11-07b';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2392,6 +2400,7 @@ async function likesFondo0(av) {
     if ((esCaida(e) || e.message === 'DETENIDO') && ps.length) {
       modoGuardado();
       setTimeout(() => toast('Spotify ha pedido parar: tienes ' + n$(ps.length) + ' de ' + n$(total || 0) + '. Seguirá solo, despacio, cuando deje.', null, 7000), 300);
+      ps._parcial = { n: crudos, total };
       return ps;
     }
     throw e;
@@ -2556,8 +2565,9 @@ async function seguirArtista(a) {
     }
   }, 'Guardando');
 }
-const libPoner = (uris, et) => (olvidarSeguidos(uris, true), trozos(uris, 40, u => sp('/me/library?uris=' + encodeURIComponent(u.join(',')), { method: 'PUT' }), et));
-const libQuitar = (uris, et) => (olvidarSeguidos(uris, false), trozos(uris, 40, u => sp('/me/library?uris=' + encodeURIComponent(u.join(',')), { method: 'DELETE' }), et));
+const _mgSesion = new Map();
+const libPoner = (uris, et) => (olvidarSeguidos(uris, true), uris.forEach(u => String(u).indexOf(':track:') > 0 && _mgSesion.set(u, true)), trozos(uris, 40, u => sp('/me/library?uris=' + encodeURIComponent(u.join(',')), { method: 'PUT' }), et));
+const libQuitar = (uris, et) => (olvidarSeguidos(uris, false), uris.forEach(u => String(u).indexOf(':track:') > 0 && _mgSesion.set(u, false)), trozos(uris, 40, u => sp('/me/library?uris=' + encodeURIComponent(u.join(',')), { method: 'DELETE' }), et));
 async function libTiene(uris) {
   try { return await libTieneSp(uris); }
   catch (e) {
@@ -3646,7 +3656,7 @@ async function vInicio(m) {
     if (/\d/.test(n)) n = n.replace(/4/g, 'a').replace(/3/g, 'e').replace(/1/g, 'i').replace(/0/g, 'o');
     return n ? ', ' + esc(n.charAt(0).toUpperCase() + n.slice(1)) : '';
   };
-  m.innerHTML = '<h1 class="saludo" id="inSal">' + sal + nom() + '</h1><div id="inAhora"></div><div id="inTri"></div><div id="inPongo"></div><div id="inBj"></div><div id="inIdeas"></div><div id="inCdia"></div><div id="inDia"></div><div class="atajos" id="inAtajos"></div><div id="inNov"></div><div id="inDiscos"></div><div id="inNuevas"></div><div id="inRec"></div><div id="inHoy"></div><div id="inCaps"></div><div id="inPls"></div><div id="inEtq"></div>';
+  m.innerHTML = '<h1 class="saludo" id="inSal">' + sal + nom() + '</h1><div id="inAhora"></div><div id="inTri"></div><div id="inQuit"></div><div id="inPongo"></div><div id="inBj"></div><div id="inIdeas"></div><div id="inCdia"></div><div id="inDia"></div><div class="atajos" id="inAtajos"></div><div id="inNov"></div><div id="inDiscos"></div><div id="inNuevas"></div><div id="inRec"></div><div id="inHoy"></div><div id="inCaps"></div><div id="inPls"></div><div id="inEtq"></div>';
   const vivo = () => S.tab === 'inicio' && !S.vista && $('#inAtajos');
   if (!S.me) yo().then(() => { const x = $('#inSal'); if (x) x.innerHTML = sal + nom(); }).catch(() => {});
   pintarAhoraInicio();
@@ -3662,6 +3672,7 @@ async function vInicio(m) {
     el.innerHTML = '<button class="idea-ent"><span class="ic">' + ic('check') + '</span><span><b>Por decidir</b><small>' + (q ? 'Te quedan ' + n$(q) + ' canciones en ' + l.filter(p => p.total).length + ' playlists temporales' : '¡Has decidido todas tus temporales!') + '</small></span>' + ic('abajoV', ' style="transform:rotate(-90deg)"') + '</button>';
     el.querySelector('button').onclick = () => irATab('decidir');
   })().catch(() => {});
+  pintarQuitadasInicio(vivo).catch(() => {});
   /* ¿Qué se queda?, Qué pongo e Ideas: ya no se enseñan (2026-10-22) */
   if (0) (async () => {
     const el = $('#inTri'); if (!el) return;
@@ -4785,6 +4796,8 @@ function hojaIrA() {
     ['Jugar: ¿cuándo te gustó?', 'corazon', () => hojaJuego('cuando')],
     ['Jugar: ¿cuál es más antigua?', 'ordenar', () => hojaJuego('orden')],
     ['Tus años: tus canciones de cada año', 'tiempo', () => irATab('tiempo')],
+    ['Lo que quitaste de Me gusta: repasar y recuperar', 'corazon', () => abrirQuitadas()],
+    ['Limpiar a quién sigues en Spotify', 'personaMenos', () => hojaLimpiarSeguidos()],
     ['Comparar dos listas', 'unir', () => hojaComparar()],
     ['Ordenar la bandeja (lo nuevo)', 'play', () => ordenarBandeja()],
     ['Ideas de playlists', 'varita', () => abrirIdeas()],
@@ -9307,6 +9320,130 @@ async function hojaRegistro() {
     });
 }
 
+
+/* ============================================================
+   LO QUE QUITASTE DE ME GUSTA: todo lo que tuvo ♥ y ya no lo tiene,
+   para repasarlo con calma y recuperar lo que eches de menos.
+   Sale de tu historial: no gasta cupo hasta que das ♥.
+   ============================================================ */
+/* tus Me gusta solo si están enteros (una lectura cortada o una caché vacía darían «quitadas» falsas) */
+async function likesFiables() {
+  const c = await cacheLeer('likes');
+  const ok = l => l && l.length && !l._parcial && !(c && c.total && l.length < 0.97 * c.total);
+  if (ok(S.likes)) return S.likes;
+  return c && ok(c.pistas) ? c.pistas : null;
+}
+let _quit = null;
+async function cancionesQuitadas() {
+  const lk = await likesFiables(); if (!lk) return null;
+  const hist = await musicaHistoria(), clave = (_siempreH && _siempreH.at) + '|' + lk.length + '|' + hist.length;
+  if (!_quit || _quit.clave !== clave) {
+    const ya = new Set(lk.map(p => p.uri)), vistas = new Set(lk.map(p => fold(p.title) + '|' + fold(artPpal(p))));
+    const l = hist.filter(p => p.uri && !p.local && !ya.has(p.uri) && !vistas.has(fold(p.title) + '|' + fold(artPpal(p))))
+      .map(p => [typeof p.added === 'number' ? p.added : Date.parse(p.added) || 0, p]).sort((a, b) => b[0] - a[0]).map(x => x[1]);
+    _quit = { clave, l };
+  }
+  return _quit.l.filter(p => _mgSesion.get(p.uri) !== true);
+}
+async function abrirQuitadas() {
+  const l = await cancionesQuitadas();
+  if (!l) { toast('Primero tengo que leer tus Me gusta enteros en este aparato'); return irATab('likes'); }
+  if (!l.length) { toast('No has quitado nada de Me gusta'); return; }
+  abrirFuente({ kind: 'lista', id: 'quitadas', name: 'Lo que quitaste de Me gusta', editable: false, meta: null, pistas: null }, async () => conK(l));
+}
+async function pintarQuitadasInicio(vivo) {
+  const el = $('#inQuit'); if (!el) return;
+  const l = await cancionesQuitadas(); if (!l || !l.length || !vivo()) return;
+  el.innerHTML = '<button class="idea-ent"><span class="ic">' + ic('corazon') + '</span><span><b>Lo que quitaste de Me gusta</b><small>' + n$(l.length) + ' canciones guardadas en tu historial. Repásalas cuando quieras y dale ♥ a las que eches de menos.</small></span>' + ic('abajoV', ' style="transform:rotate(-90deg)"') + '</button>';
+  el.querySelector('button').onclick = abrirQuitadas;
+}
+
+/* ============================================================
+   LIMPIAR A QUIÉN SIGUES: propone grupos (tu época EDM, los que
+   sigues por una o dos canciones, dudosos, pendientes) cruzando lo
+   que escuchas ahora, tu Me gusta y tu historial. Nada se aplica
+   solo: marcas, confirmas y queda en Cambios para deshacer.
+   Al abrir gasta como mucho 3 peticiones (lo que más escuchas,
+   guardado 1 día).
+   ============================================================ */
+async function topArtistasIds() {
+  const c = await cacheLeer('topArtIds'); if (c && Date.now() - c.at < 864e5) return new Set(c.ids);
+  const ids = [];
+  for (const r of ['short_term', 'medium_term', 'long_term']) { const x = await sp('/me/top/artists?limit=50&time_range=' + r); if (!x || !x.items) throw new Error('Spotify no ha dado lo que más escuchas'); for (const a of x.items) ids.push(a.id); }
+  cachePoner('topArtIds', { at: Date.now(), ids }); return new Set(ids);
+}
+const RX_EDM_ART = /\bedm\b|house|techno|trance|dubstep|brostep|electro house|big room|hardstyle|drum and bass|drum'?n'?bass|\bdnb\b|moombah|future bass|bass music/;
+async function hojaLimpiarSeguidos() {
+  const segs = S.artistas || S.segCache || await cacheLeer('seguidos');
+  if (!segs || !segs.length) { toast('Abre Seguidos primero para traer a quién sigues'); return irATab('artistas'); }
+  const datos = await trabajo(async () => {
+    await etqAsegurar();
+    const lk = await likesFiables(); if (!lk) return { sinLikes: true };
+    const [top, ps, rc] = await Promise.all([topArtistasIds(), musicaHistoria(), cacheLeer('recientes')]);
+    const cnt = l => { const m = new Map(); for (const p of l || []) for (const a of p.artists || []) { const k = fold(a.name); m.set(k, (m.get(k) || 0) + 1); } return m; };
+    return { top, cH: cnt(ps), cL: cnt(lk), cR: cnt(rc && rc.ps) };
+  }, 'Mirando a quién escuchas');
+  if (!datos) return;
+  if (datos.sinLikes) { toast('Primero tengo que leer tus Me gusta enteros: así no te propongo a nadie que tengas ahí'); return irATab('likes'); }
+  const gen = a => { const l = ((ETQ.lfa || {})[fold(a.name)] || {}).g; if (l && l.length) return l; const m = MIS && MIS.artistas && MIS.artistas[a.id]; return m ? (m.genres || []).concat(m.tags || []) : []; };
+  const G = { edm: [], uno: [], dud: [], pend: [] };
+  for (const a of segs) {
+    const k = fold(a.name), h = datos.cH.get(k) || 0;
+    if (datos.top.has(a.id) || datos.cL.get(k) || datos.cR.get(k)) continue;
+    const x = { a, h };
+    if (h >= 20 && RX_EDM_ART.test(gen(a).join(' ').toLowerCase())) G.edm.push(x);
+    else if (!h) G.pend.push(x); else if (h <= 2) G.uno.push(x); else if (h <= 9) G.dud.push(x);
+  }
+  G.edm.sort((x, y) => y.h - x.h); for (const g of ['uno', 'dud', 'pend']) G[g].sort((x, y) => x.a.name.localeCompare(y.a.name, 'es'));
+  const SEC = [['edm', 'Tu época EDM', 'Tienes 20 canciones o más de cada uno, pero ya no los escuchas. Sacan mucha música: son lo que más llena tu Radar de Novedades.', true],
+    ['uno', 'Los sigues por una o dos canciones', 'Nada suyo en tu Me gusta de ahora ni en lo que escuchas.', true],
+    ['dud', 'Dudosos', 'De 3 a 9 canciones tuyas, pero nada ahora. Míralos con calma.', false],
+    ['pend', 'Pendientes por descubrir', 'Ninguna canción tuya. Quédate solo con los que vayas a escuchar pronto.', false]];
+  const sel = new Set(); for (const [g, , , m] of SEC) if (m) for (const x of G[g]) sel.add(x.a.uri);
+  const abiertas = new Set(SEC.filter(x => x[3]).map(x => x[0]));
+  const total = SEC.reduce((t, [g]) => t + G[g].length, 0);
+  if (!total) { toast('Sigues solo a gente que escuchas. Nada que limpiar.'); return; }
+  const abrir = () => hoja('<h2>Limpiar a quién sigues</h2><p class="soft tiny">Sigues a ' + n$(segs.length) + '. Los que escuchas ahora o tienes en Me gusta no salen aquí. Marca a quién dejar de seguir: seguirán en tu registro y se puede deshacer desde Cambios.</p><div id="lsS"></div>' +
+    '<div class="fp-pie"><button class="btn pri wide" id="lsOk"></button></div>', h => {
+      const pintar = () => {
+        h.querySelector('#lsS').innerHTML = SEC.filter(([g]) => G[g].length).map(([g, t, d]) => {
+          const n = G[g].filter(x => sel.has(x.a.uri)).length, ab = abiertas.has(g);
+          return '<section class="ls-sec"><div class="ls-cab"><button class="ls-tit" data-ab="' + g + '" aria-expanded="' + ab + '"><b>' + t + '</b><span>' + n$(n) + ' de ' + n$(G[g].length) + ' marcados</span></button>' +
+            '<button class="btn sm" data-todos="' + g + '">' + (n === G[g].length ? 'Desmarcar' : 'Marcar todos') + '</button></div><p class="tiny mute">' + d + '</p>' +
+            (ab ? '<div class="opc fp">' + G[g].map(x => '<button data-u="' + esc(x.a.uri) + '"' + (sel.has(x.a.uri) ? '' : ' class="fp-no"') + '>' + (x.a.img ? '<img src="' + esc(x.a.img) + '" alt="">' : ic('persona')) + '<span>' + esc(x.a.name) + '<span class="sub">' + (x.h ? n$(x.h) + (x.h === 1 ? ' canción' : ' canciones') + ' en tu historial' : 'ninguna canción tuya') + '</span></span>' + ic('check') + '</button>').join('') + '</div>' : '') + '</section>';
+        }).join('');
+        const ok = h.querySelector('#lsOk'); ok.textContent = sel.size ? 'Dejar de seguir a ' + n$(sel.size) : 'Marca a alguien'; ok.disabled = !sel.size;
+      };
+      h.querySelector('#lsS').onclick = e => {
+        const ab = e.target.closest('[data-ab]'); if (ab) { const g = ab.dataset.ab; abiertas.has(g) ? abiertas.delete(g) : abiertas.add(g); return pintar(); }
+        const td = e.target.closest('[data-todos]'); if (td) { const l = G[td.dataset.todos], todos = l.every(x => sel.has(x.a.uri)); for (const x of l) todos ? sel.delete(x.a.uri) : sel.add(x.a.uri); return pintar(); }
+        const b = e.target.closest('[data-u]'); if (!b) return;
+        const u = b.dataset.u; sel.has(u) ? sel.delete(u) : sel.add(u); b.classList.toggle('fp-no', !sel.has(u));
+        pintar();
+      };
+      h.querySelector('#lsOk').onclick = async () => {
+        const uris = Array.from(sel); if (!uris.length) return;
+        if (!(await confirmar('¿Dejar de seguir a ' + n$(uris.length) + ' artistas?', 'Dejar de seguir', 'Siguen en tu registro de artistas. Se puede deshacer desde Cambios.'))) return abrir();
+        cerrarHoja();
+        /* 5. se apunta antes: si falla a medias, también se puede deshacer */
+        apuntar(uris.length + ' artistas dejados de seguir', { t: 'libPoner', uris });
+        const ok = await trabajo(async () => { await libQuitar(uris, 'Dejando de seguir'); return true; }, 'Dejando de seguir');
+        if (!ok) return;
+        regBajas(uris).catch(() => {});
+        const fuera = new Set(uris); if (S.artistas) S.artistas = S.artistas.filter(a => !fuera.has(a.uri));
+        toast('Ya no sigues a ' + n$(uris.length), { txt: 'Deshacer', fn: () => deshacerUltimo(HIST[0].id) });
+        if (S.tab === 'artistas' && !S.vista) render();
+      };
+      pintar();
+    });
+  abrir();
+}
+/* bajas confirmadas por Spotify: se apuntan ya en el registro */
+async function regBajas(uris) {
+  const R = await regLeer(), ahora = Date.now(); let cambio = false;
+  for (const u of uris) { const r = R.m['id:' + String(u).split(':').pop()]; if (r && r.seg) { r.seg = 0; r.cam = ahora; cambio = true; } }
+  if (cambio) regGuardar();
+}
 async function vArtistas(m) {
   if (!S.artistas) { const c = S.segCache || await cacheLeer('seguidos'); if (c && c.length) S.artistas = S.segCache = c; }
   if (S.artistas && !S._segAlDia && Date.now() - ((await cacheLeer('seguidosAt')) || 0) > 6 * 36e5) {
@@ -9333,6 +9470,8 @@ async function vArtistas(m) {
     let si = 0, ya = 0, hi = 0; for (const k in R.m) { const r = R.m[k]; if (r.seg) si++; else if (r.cam) ya++; else hi++; }
     acc.insertAdjacentHTML('afterend', '<button class="idea-ent" id="rgE"><span class="ic">' + ic('libro') + '</span><span><b>Tu registro: ' + n$(si + ya + hi) + ' artistas</b><small>' + n$(si) + ' sigues · ' + n$(ya) + ' ya no · ' + n$(hi) + ' de tu historial. ' + (ghCfg() ? 'Guardado también en GitHub: aunque dejes de seguir a alguien, aquí se queda.' : 'Solo en este aparato: vincúlalo para tener copia.') + '</small></span>' + ic('abajoV', ' style="transform:rotate(-90deg)"') + '</button>');
     $('#rgE').onclick = hojaRegistro;
+    $('#rgE').insertAdjacentHTML('afterend', '<button class="idea-ent" id="lsE"><span class="ic">' + ic('personaMenos') + '</span><span><b>Limpiar a quién sigues</b><small>Te propongo a quién dejar de seguir: tu época EDM, los que sigues por una o dos canciones… Tú marcas y decides. Siguen en tu registro.</small></span>' + ic('abajoV', ' style="transform:rotate(-90deg)"') + '</button>');
+    $('#lsE').onclick = hojaLimpiarSeguidos;
   }).catch(() => {});
   faltanPorSeguir().then(l => {
     const acc = m.querySelector('.obj-acc'); if (!l.length || !acc || S.tab !== 'artistas' || S.vista) return;
