@@ -1668,7 +1668,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-11-07d';
+const VERSION = '2026-11-08a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -9293,16 +9293,16 @@ async function regHistDiario(forzar) {
 }
 async function hojaRegistro() {
   const R = await regLeer();
-  const l = Object.values(R.m).sort((a, b) => (b.seg - a.seg) || (b.n || 0) - (a.n || 0) || (fold(a.nom) < fold(b.nom) ? -1 : 1));
+  const l = Object.values(R.m).sort((a, b) => a.nom.localeCompare(b.nom, 'es', { sensitivity: 'base' }));
   const est = r => r.seg ? 'si' : r.cam ? 'ya' : 'hi', cuenta = { si: 0, ya: 0, hi: 0 }; for (const r of l) cuenta[est(r)]++;
-  const st = { f: '', q: '' };
-  hoja('<h2>Tu registro de artistas</h2><p class="soft tiny">Todos los que has seguido alguna vez y los de tu historial de Me gusta. Se guarda en este aparato' + (ghCfg() ? ' y en GitHub' : '') + '. Aunque dejes de seguir a alguien en Spotify, aquí se queda.</p>' +
+  const st = { f: 'alguna', q: '' };
+  hoja('<h2>Artistas que has seguido</h2><p class="soft tiny">Todos los que has seguido alguna vez en Spotify, en orden alfabético. Aunque dejes de seguir a alguien, aquí se queda para siempre (en este aparato' + (ghCfg() ? ' y en GitHub' : '') + ').</p>' +
     '<input class="field" id="rgQ" type="search" placeholder="Buscar artista" autocomplete="off">' +
-    '<div class="chips rg-ch" id="rgF">' + [['', 'Todos', l.length], ['si', 'Los sigues', cuenta.si], ['ya', 'Ya no los sigues', cuenta.ya], ['hi', 'Solo en tu historial', cuenta.hi]].map(([k, t, n]) => '<button class="chip' + (k === '' ? ' on' : '') + '" data-f="' + k + '">' + t + ' <span class="n">' + n$(n) + '</span></button>').join('') + '</div>' +
+    '<div class="chips rg-ch" id="rgF">' + [['alguna', 'Todos los que has seguido', cuenta.si + cuenta.ya], ['si', 'Los sigues ahora', cuenta.si], ['ya', 'Ya no los sigues', cuenta.ya], ['hi', 'Nunca seguidos, pero en tu historial', cuenta.hi]].map(([k, t, n]) => '<button class="chip' + (k === 'alguna' ? ' on' : '') + '" data-f="' + k + '">' + t + ' <span class="n">' + n$(n) + '</span></button>').join('') + '</div>' +
     '<div class="opc fp" id="rgL"></div>', h => {
       const vis = new Map();
       const pintar = () => {
-        const q = fold(st.q.trim()), v = l.filter(r => (!st.f || est(r) === st.f) && (!q || fold(r.nom).indexOf(q) >= 0));
+        const q = fold(st.q.trim()), v = l.filter(r => (st.f === 'alguna' ? est(r) !== 'hi' : est(r) === st.f) && (!q || fold(r.nom).indexOf(q) >= 0));
         vis.clear(); v.slice(0, 200).forEach((r, i) => vis.set(String(i), r));
         h.querySelector('#rgL').innerHTML = v.length ? v.slice(0, 200).map((r, i) => '<button data-i="' + i + '">' + (r.img ? '<img src="' + esc(r.img) + '" alt="">' : ic('persona')) + '<span>' + esc(r.nom) +
           '<span class="sub">' + (r.seg ? 'Lo sigues' : r.cam ? 'Ya no lo sigues · desde el ' + fecha(r.cam) : 'En tu historial') + (r.n ? ' · ' + n$(r.n) + (r.n === 1 ? ' canción' : ' canciones') : '') + '</span></span></button>').join('') +
@@ -9470,7 +9470,7 @@ async function vArtistas(m) {
   regHistDiario().catch(() => {}).then(regLeer).then(R => {
     const acc = m.querySelector('.obj-acc'); if (!acc || S.tab !== 'artistas' || S.vista || $('#rgE')) return;
     let si = 0, ya = 0, hi = 0; for (const k in R.m) { const r = R.m[k]; if (r.seg) si++; else if (r.cam) ya++; else hi++; }
-    acc.insertAdjacentHTML('afterend', '<button class="idea-ent" id="rgE"><span class="ic">' + ic('libro') + '</span><span><b>Tu registro: ' + n$(si + ya + hi) + ' artistas</b><small>' + n$(si) + ' sigues · ' + n$(ya) + ' ya no · ' + n$(hi) + ' de tu historial. ' + (ghCfg() ? 'Guardado también en GitHub: aunque dejes de seguir a alguien, aquí se queda.' : 'Solo en este aparato: vincúlalo para tener copia.') + '</small></span>' + ic('abajoV', ' style="transform:rotate(-90deg)"') + '</button>');
+    acc.insertAdjacentHTML('afterend', '<button class="idea-ent" id="rgE"><span class="ic">' + ic('libro') + '</span><span><b>Artistas que has seguido: ' + n$(si + ya) + '</b><small>' + n$(si) + ' los sigues ahora' + (ya ? ' · ' + n$(ya) + ' ya no' : '') + '. ' + (ghCfg() ? 'Se guardan para siempre, también en GitHub: aunque dejes de seguir a alguien, aquí se queda.' : 'Solo en este aparato: vincúlalo para tener copia.') + '</small></span>' + ic('abajoV', ' style="transform:rotate(-90deg)"') + '</button>');
     $('#rgE').onclick = hojaRegistro;
     $('#rgE').insertAdjacentHTML('afterend', '<button class="idea-ent" id="lsE"><span class="ic">' + ic('personaMenos') + '</span><span><b>Limpiar a quién sigues</b><small>Te propongo a quién dejar de seguir: tu época EDM, los que sigues por una o dos canciones… Tú marcas y decides. Siguen en tu registro.</small></span>' + ic('abajoV', ' style="transform:rotate(-90deg)"') + '</button>');
     $('#lsE').onclick = hojaLimpiarSeguidos;
