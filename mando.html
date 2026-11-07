@@ -1668,7 +1668,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-11-07c';
+const VERSION = '2026-11-07d';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2669,7 +2669,7 @@ const S = {
   selObj: new Set(), buscar: { q: '', tipo: 'track', res: null }, suena: null, soloSel: false, indice: null
 };
 const PREFS = Object.assign({ saltarRepes: true }, leer(K_PREFS, {}));
-const CFG_SYNC = ['faltaNo', 'temporales', 'temporalesIni', 'noSeguir', 'nombre', 'repasoNo', 'repasoNoV', 'casaMov', 'criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido', 'distintas', 'likesFuera', 'plEpoca', 'epocaArt', 'edmNo', 'casaUri', 'casaArt', 'casaAlb', 'triaje', 'portadasA'];
+const CFG_SYNC = ['quitadasNo', 'faltaNo', 'temporales', 'temporalesIni', 'noSeguir', 'nombre', 'repasoNo', 'repasoNoV', 'casaMov', 'criterios', 'bandeja', 'ideas', 'metaDiscos', 'plDiscos', 'acento', 'plOlvido', 'distintas', 'likesFuera', 'plEpoca', 'epocaArt', 'edmNo', 'casaUri', 'casaArt', 'casaAlb', 'triaje', 'portadasA'];
 let _cfgSnap = null;
 const guardarPrefs = () => {
   escribir(K_PREFS, PREFS);
@@ -6383,7 +6383,7 @@ async function repasar(f, ps) {
   const rec = PREFS.recientes || [], pos = id => { const i = rec.indexOf(id); return i < 0 ? 99 : i; };
   const crit = PREFS.criterios || {};
   const dest = destRepaso(f, pls);
-  const quitar = f.kind === 'likes' ? 'Quitar ♥' : (f.kind === 'playlist' && f.editable ? 'Quitar de aquí' : '');
+  const quitar = f.kind === 'likes' ? 'Quitar ♥' : (f.kind === 'playlist' && f.editable ? 'Quitar de aquí' : f.id === 'quitadas' ? 'No la quiero' : '');
   RP = { f: f, lista: lista, i: 0, dec: new Map(), dest: dest, quitar: quitar };
   limpiarSel();
   abrirVista({ repaso: true, pintar: pintarRepaso });
@@ -7547,6 +7547,7 @@ async function aplicarRepaso() {
       const u = Array.from(new Set(fuera.map(p => p.uri)));
       if (f.kind === 'likes') { await libQuitar(u, 'Quitando de Me gusta'); lista.push({ t: 'libPoner', uris: u }); hechos.push(u.length + ' quitadas de Me gusta'); }
       else if (f.kind === 'playlist' && f.editable) { await plQuitar(f.id, u, 'Quitando de «' + f.name + '»'); lista.push({ t: 'plAnadir', pid: f.id, uris: u }); hechos.push(u.length + ' quitadas de «' + f.name + '»'); }
+      else if (f.id === 'quitadas') { PREFS.quitadasNo = Array.from(new Set((PREFS.quitadasNo || []).concat(u.map(x => String(x).split(':').pop())))).slice(-5000); guardarPrefs(); hechos.push(u.length + ' que no quieres (no vuelven a salir)'); }
     }
     if (olvido.length) { lista.push.apply(lista, await mandarAOlvido(olvido.map(p => p.uri), R.archivo && R.archivo.dest)); hechos.push(olvido.length + ' a «' + (R.archivo ? R.archivo.nombre : NOMBRE_OLVIDO) + '»'); }
     if (lista.length) apuntar('Repaso: ' + hechos.join(', '), { t: 'varios', lista: lista });
@@ -9343,7 +9344,8 @@ async function cancionesQuitadas() {
       .map(p => [typeof p.added === 'number' ? p.added : Date.parse(p.added) || 0, p]).sort((a, b) => b[0] - a[0]).map(x => x[1]);
     _quit = { clave, l };
   }
-  return _quit.l.filter(p => _mgSesion.get(p.uri) !== true);
+  const no = new Set(PREFS.quitadasNo || []);
+  return _quit.l.filter(p => _mgSesion.get(p.uri) !== true && !no.has(String(p.uri).split(':').pop()));
 }
 async function abrirQuitadas() {
   const l = await cancionesQuitadas();
