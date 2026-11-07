@@ -1668,7 +1668,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-11-07b';
+const VERSION = '2026-11-07c';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -9552,25 +9552,38 @@ async function bibliotecaLocal() {
   _libLocal = { at: Date.now(), l: Array.from(v.values()) };
   return _libLocal.l;
 }
+/* tu historial, preparado para buscar (se rehace solo cuando cambia) */
+let _histBus = null;
+async function historiaBuscable() {
+  const l = await musicaHistoria(), clave = (_siempreH && _siempreH.at) + '|' + l.length;
+  if (!_histBus || _histBus.clave !== clave) _histBus = { clave, l: l.filter(p => p.uri && !p.local).map(p => ({ p, f: p._f || fold((p.title || '') + ' ' + (p.artists || []).map(a => a.name).join(' ') + ' ' + (p.album || '')) })) };
+  return _histBus.l;
+}
 async function buscarLocal(q) {
   const el = $('#bL'); if (!el) return;
   const ws = fold(q).trim().split(/\s+/).filter(w => (w.length > 1 || /\d/.test(w)) && !/:/.test(w));
   if (!ws.length) { el.innerHTML = ''; return; }
   const lib = await bibliotecaLocal();
   const ms = lib.filter(p => ws.every(w => p._f.indexOf(w) >= 0));
+  const libU = new Set(lib.map(p => p.uri));
+  const viejas = (await historiaBuscable().catch(() => [])).filter(x => !libU.has(x.p.uri) && ws.every(w => x.f.indexOf(w) >= 0)).map(x => x.p);
   await misAsegurar();
   const arts = [];
   const md = S.md ? S.md.discos.filter(d => ws.every(w => fold(d.name + ' ' + d.artistas).indexOf(w) >= 0)).slice(0, 8) : [];
   if (!$('#bL')) return;
-  if (!ms.length && !arts.length && !md.length) { el.innerHTML = '<p class="tiny mute" style="margin:0 0 10px">Nada en tu biblioteca con «' + esc(q) + '». Pulsa buscar para mirar en todo Spotify.</p>'; return; }
+  if (!ms.length && !viejas.length && !arts.length && !md.length) { el.innerHTML = '<p class="tiny mute" style="margin:0 0 10px">Nada en tu biblioteca con «' + esc(q) + '». Pulsa buscar para mirar en todo Spotify.</p>'; return; }
   el.innerHTML = (ms.length ? '<div class="fila-sec"><h3>En tu biblioteca · ' + ms.length + '</h3>' + (ms.length > 6 ? '<button id="blTodas">Ver todas</button>' : '') + '</div><div class="lista-obj">' +
       ms.slice(0, 6).map((p, i) => '<div class="obj" data-li="' + i + '">' + imgOph(p.cover, 'disco') + '<div class="t"><div class="t1 nowrap">' + esc(p.title) + '</div><div class="t2 nowrap">' + esc(nombresArtistas(p)) + ' · ' + esc(p.album) + '</div></div></div>').join('') + '</div>' : '') +
+    (viejas.length ? '<div class="fila-sec"><h3>Estuvieron en tu Me gusta · ' + n$(viejas.length) + '</h3><button id="blViejas">Ver todas</button></div><div class="lista-obj">' +
+      viejas.slice(0, 4).map((p, i) => '<div class="obj" data-vi="' + i + '">' + imgOph(p.cover, 'disco') + '<div class="t"><div class="t1 nowrap">' + esc(p.title) + '</div><div class="t2 nowrap">' + esc(nombresArtistas(p)) + (p.album ? ' · ' + esc(p.album) : '') + '</div></div></div>').join('') + '</div>' : '') +
     (md.length ? '<div class="fila-sec"><h3>En Mis discos</h3></div><div class="carrusel">' + md.map((d, i) => tarjetaMini(d.img, d.name, d.artistas, 'data-di="' + i + '"')).join('') + '</div>' : '') +
     (arts.length ? '<div class="fila-sec"><h3>En Mis artistas</h3></div><div class="carrusel">' + arts.map(a => tarjetaMini(a.img, a.name, '', 'data-ai="' + a.id + '"', true)).join('') + '</div>' : '') +
     '<div class="fila-sec"><h3>En todo Spotify</h3></div>';
   const abrir = i => { const f = { kind: 'lista', id: 'blocal', name: '«' + q + '» en tu biblioteca', editable: false, meta: null, pistas: null }; abrirFuente(f, async () => ms); if (i != null) setTimeout(() => { const p = S.fuente && S.fuente.pistas && S.fuente.pistas[i]; if (p) hojaPista(p); }, 120); };
   el.onclick = e => {
     if (e.target.closest('#blTodas')) return abrir(null);
+    const vj = e.target.closest('#blViejas,[data-vi]');
+    if (vj) { const f = { kind: 'lista', id: 'bviejas', name: '«' + q + '» que estuvo en tu Me gusta', editable: false, meta: null, pistas: null }; const i = vj.dataset.vi; abrirFuente(f, async () => conK(viejas)); if (i != null) setTimeout(() => { const p = S.fuente && S.fuente.pistas && S.fuente.pistas[+i]; if (p) hojaPista(p); }, 120); return; }
     const a = e.target.closest('[data-li]'); if (a) return abrir(+a.dataset.li);
     const d = e.target.closest('[data-di]'); if (d) return hojaDisco(md, +d.dataset.di);
     const r = e.target.closest('[data-ai]'); if (r) abrirArtista(r.dataset.ai);
