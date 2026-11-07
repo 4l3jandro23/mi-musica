@@ -1534,6 +1534,10 @@
   .cerrar svg, .ayuda button svg { width: 16px; height: 16px; }
 
 
+  /* 2026-11-07: registro de artistas */
+  .rg-ch { flex-wrap: nowrap; overflow-x: auto; margin: 10px 0; scrollbar-width: none; }
+  .rg-ch::-webkit-scrollbar { display: none; }
+  .rg-ch .chip { flex: none; }
   /* 2026-11-05b: lo que te falta, rehecho */
   .ft-top { display: flex; gap: 16px; align-items: center; margin: -4px 0 16px; }
   .ft-big { font-family: var(--f-disp); font-stretch: 116%; font-weight: 800; font-size: 52px; letter-spacing: -0.05em; line-height: 1; color: var(--amber); font-variant-numeric: tabular-nums; flex: none; }
@@ -1656,7 +1660,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-11-05b';
+const VERSION = '2026-11-07a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -9157,25 +9161,179 @@ async function vTiempo(m) {
   pintar(true);
 }
 
+
+/* ============================================================
+   REGISTRO DE ARTISTAS: todos los que has seguido alguna vez y los
+   de tu historial de Me gusta, en este aparato y en GitHub
+   (artistas-registro.json). Nunca se borra a nadie: si dejas de
+   seguir a alguien, queda como «ya no lo sigues».
+   Cada uno: nom, id, img, seg (1 = lo sigues), pri (cuándo entró),
+   cam (último cambio de seguir/dejar), n (canciones en tu historial).
+   ============================================================ */
+const K_REG = 'regArtistas';
+let _reg = null, _regT = null, _regSub = null;
+/* clave: el id de Spotify si se sabe; si no (canciones viejas del historial), el nombre */
+const regClave = r => r.id ? 'id:' + r.id : 'n:' + fold(r.nom);
+const regFila = r => [r.nom, r.id || '', r.img || '', r.seg ? 1 : 0, r.pri || 0, r.cam || 0, r.n || 0];
+const regDeFila = x => ({ nom: x[0], id: x[1] || '', img: x[2] || '', seg: x[3] ? 1 : 0, pri: x[4] || 0, cam: x[5] || 0, n: x[6] || 0 });
+const regLista = m => Object.keys(m).sort().map(k => regFila(m[k]));
+const regDeLista = l => { const m = {}; for (const x of l || []) if (x && x[0]) { const r = regDeFila(x); m[regClave(r)] = r; } return m; };
+async function regLeer() {
+  if (_reg) return _reg;
+  let R = await cacheLeer(K_REG);
+  if (!R || !R.m) R = { at: 0, m: {} };
+  if (!_reg) _reg = R;
+  return _reg;
+}
+function regGuardar() {
+  _reg.at = Date.now(); cachePoner(K_REG, _reg);
+  clearTimeout(_regT); _regT = setTimeout(() => regSubir().catch(e => apuntarFallo(e, 'registro de artistas')), 4000);
+}
+/* una entrada por nombre sin id se junta con la que tiene id (mismo artista visto en el historial viejo) */
+function regJuntarNombres(m) {
+  const conId = new Map(); for (const k in m) if (m[k].id) { const f = fold(m[k].nom); (conId.get(f) || conId.set(f, []).get(f)).push(k); }
+  for (const k in m) {
+    if (m[k].id) continue; const ids = conId.get(fold(m[k].nom)); if (!ids || ids.length !== 1) continue;
+    const y = m[ids[0]], x = m[k]; y.n = Math.max(y.n || 0, x.n || 0); if (x.pri && (!y.pri || x.pri < y.pri)) y.pri = x.pri; delete m[k];
+  }
+  return m;
+}
+/* junta b dentro de a: nadie se pierde; en seguir o no, manda el último cambio */
+function regFundir(a, b) {
+  for (const k in b) {
+    const x = b[k], y = a[k]; if (!x) continue;
+    if (!y) { a[k] = Object.assign({}, x); continue; }
+    if ((x.cam || 0) > (y.cam || 0)) { y.seg = x.seg; y.cam = x.cam; }
+    if (x.pri && (!y.pri || x.pri < y.pri)) y.pri = x.pri;
+    y.n = Math.max(y.n || 0, x.n || 0); y.img = y.img || x.img || ''; y.nom = y.nom || x.nom;
+  }
+  return regJuntarNombres(a);
+}
+/* sube a GitHub juntando con lo que ya haya (de otros aparatos). Una subida a la vez */
+async function regSubir() {
+  if (!ghCfg() || !_reg) return;
+  if (_regSub) { clearTimeout(_regT); _regT = setTimeout(() => regSubir().catch(e => apuntarFallo(e, 'registro de artistas')), 5000); return; }
+  _regSub = (async () => {
+    for (let i = 0; i < 4; i++) {
+      const r = await ghLeer('artistas-registro.json');
+      regFundir(_reg.m, regDeLista(r.datos && r.datos.l));
+      cachePoner(K_REG, _reg);
+      const l = regLista(_reg.m);
+      if (r.datos && JSON.stringify(r.datos.l) === JSON.stringify(l)) { escribir('fonoteca_reg_sync', Date.now()); return; }
+      const put = await ghFetch(r.api, { method: 'PUT', body: JSON.stringify({ message: 'registro de artistas: ' + l.length, content: b64enc(JSON.stringify({ at: Date.now(), l })), branch: 'main', sha: r.sha || undefined }) });
+      if (put.ok) { escribir('fonoteca_reg_sync', Date.now()); return; }
+      if (put.status !== 409 && put.status !== 422) throw new Error('GitHub respondió ' + put.status + ' al guardar el registro de artistas');
+      await dormir(1500 + Math.random() * 2000);
+    }
+    throw new Error('GitHub no deja guardar el registro de artistas (conflicto); se reintenta luego');
+  })();
+  try { await _regSub; } catch (e) { _regT = setTimeout(() => regSubir().catch(() => {}), 120000); throw e; } finally { _regSub = null; }
+}
+/* una vez al día, aunque no cambie nada aquí: trae lo de los otros aparatos */
+async function regSincronizar() {
+  if (Date.now() - (+leer('fonoteca_reg_sync', 0)) < 864e5) return;
+  await regLeer();
+  if (ghCfg()) return regSubir();
+  try { const r = await fetch('artistas-registro.json', { cache: 'no-cache' }); if (r.ok) { const c = await r.json(); regFundir(_reg.m, regDeLista(c && c.l)); cachePoner(K_REG, _reg); escribir('fonoteca_reg_sync', Date.now()); } } catch (e) {}
+}
+/* tFresca = cuándo se pidió la lista ENTERA a Spotify. Sin ella (lista guardada) solo se añaden los que no estaban */
+async function regSeguidos(l, tFresca) {
+  if (!Array.isArray(l) || !l.length) return;
+  const R = await regLeer(), ahora = Date.now(), si = new Set(); let cambio = false;
+  for (const a of l) {
+    if (!a || !a.name) continue;
+    const k = regClave({ id: a.id, nom: a.name }); si.add(k);
+    const r = R.m[k];
+    if (!r) { R.m[k] = { nom: a.name, id: a.id || '', img: a.img || '', seg: 1, pri: ahora, cam: tFresca || 0, n: 0 }; cambio = true; continue; }
+    if (tFresca && !r.seg && tFresca > (r.cam || 0)) { r.seg = 1; r.cam = tFresca; cambio = true; }
+    if (a.name !== r.nom) { r.nom = a.name; cambio = true; }
+    if (a.img && r.img !== a.img) { r.img = a.img; cambio = true; }
+  }
+  if (tFresca) {
+    const bajas = Object.keys(R.m).filter(k => { const r = R.m[k]; return r.seg && r.id && !si.has(k) && tFresca > (r.cam || 0); });
+    let fiable = true;
+    /* muchas bajas de golpe: antes de apuntarlas, se comprueba con Spotify que la lista estaba entera (1 petición) */
+    if (bajas.length > 50) { try { const x = await sp('/me/following?type=artist&limit=1'); fiable = !!(x && x.artists && x.artists.total === l.length); } catch (e) { fiable = false; } }
+    if (fiable) for (const k of bajas) { R.m[k].seg = 0; R.m[k].cam = tFresca; cambio = true; }
+    else apuntarFallo(new Error('Lista de seguidos incompleta: no apunto ' + bajas.length + ' bajas'), 'registro de artistas');
+  }
+  if (regJuntarNombres(R.m) && cambio) regGuardar();
+}
+/* una vez al día: los artistas de todo lo que has tenido en Me gusta */
+async function regHistDiario(forzar) {
+  if (!forzar && Date.now() - (+leer('fonoteca_reg_hist', 0)) < 864e5) return;
+  const ps = await musicaHistoria(); if (!ps.length) return;
+  const R = await regLeer(), cnt = new Map(), ahora = Date.now(); let cambio = false;
+  for (const p of ps) for (const a of p.artists || []) { if (!a || !a.name) continue; const k = regClave({ id: a.id, nom: a.name }), c = cnt.get(k) || cnt.set(k, { a, n: 0 }).get(k); c.n++; }
+  /* sin id: si ya hay uno con ese nombre (con id), cuenta para él */
+  const porNom = new Map(); for (const k in R.m) if (R.m[k].id) { const f = fold(R.m[k].nom); porNom.set(f, porNom.has(f) ? null : k); }
+  const sum = new Map(); for (const [k, c] of cnt) { const k2 = k.startsWith('n:') && porNom.get(k.slice(2)) || k; const o = sum.get(k2) || sum.set(k2, { a: c.a, n: 0 }).get(k2); o.n += c.n; }
+  for (const [k, c] of sum) {
+    const r = R.m[k];
+    if (!r) { R.m[k] = { nom: c.a.name, id: c.a.id || '', img: '', seg: 0, pri: ahora, cam: 0, n: c.n }; cambio = true; }
+    else if (c.n > (r.n || 0)) { r.n = c.n; cambio = true; }
+  }
+  regJuntarNombres(R.m);
+  escribir('fonoteca_reg_hist', ahora);
+  if (cambio) regGuardar();
+}
+async function hojaRegistro() {
+  const R = await regLeer();
+  const l = Object.values(R.m).sort((a, b) => (b.seg - a.seg) || (b.n || 0) - (a.n || 0) || (fold(a.nom) < fold(b.nom) ? -1 : 1));
+  const est = r => r.seg ? 'si' : r.cam ? 'ya' : 'hi', cuenta = { si: 0, ya: 0, hi: 0 }; for (const r of l) cuenta[est(r)]++;
+  const st = { f: '', q: '' };
+  hoja('<h2>Tu registro de artistas</h2><p class="soft tiny">Todos los que has seguido alguna vez y los de tu historial de Me gusta. Se guarda en este aparato' + (ghCfg() ? ' y en GitHub' : '') + '. Aunque dejes de seguir a alguien en Spotify, aquí se queda.</p>' +
+    '<input class="field" id="rgQ" type="search" placeholder="Buscar artista" autocomplete="off">' +
+    '<div class="chips rg-ch" id="rgF">' + [['', 'Todos', l.length], ['si', 'Los sigues', cuenta.si], ['ya', 'Ya no los sigues', cuenta.ya], ['hi', 'Solo en tu historial', cuenta.hi]].map(([k, t, n]) => '<button class="chip' + (k === '' ? ' on' : '') + '" data-f="' + k + '">' + t + ' <span class="n">' + n$(n) + '</span></button>').join('') + '</div>' +
+    '<div class="opc fp" id="rgL"></div>', h => {
+      const vis = new Map();
+      const pintar = () => {
+        const q = fold(st.q.trim()), v = l.filter(r => (!st.f || est(r) === st.f) && (!q || fold(r.nom).indexOf(q) >= 0));
+        vis.clear(); v.slice(0, 200).forEach((r, i) => vis.set(String(i), r));
+        h.querySelector('#rgL').innerHTML = v.length ? v.slice(0, 200).map((r, i) => '<button data-i="' + i + '">' + (r.img ? '<img src="' + esc(r.img) + '" alt="">' : ic('persona')) + '<span>' + esc(r.nom) +
+          '<span class="sub">' + (r.seg ? 'Lo sigues' : r.cam ? 'Ya no lo sigues · desde el ' + fecha(r.cam) : 'En tu historial') + (r.n ? ' · ' + n$(r.n) + (r.n === 1 ? ' canción' : ' canciones') : '') + '</span></span></button>').join('') +
+          (v.length > 200 ? '<p class="tiny mute" style="padding:8px">Y ' + n$(v.length - 200) + ' más. Escribe para encontrarlos.</p>' : '') : '<p class="tiny mute" style="padding:8px">Nadie con ese filtro.</p>';
+        h.querySelectorAll('#rgF [data-f]').forEach(c => c.classList.toggle('on', c.dataset.f === st.f));
+      };
+      h.querySelector('#rgQ').oninput = e => { st.q = e.target.value; pintar(); };
+      h.querySelector('#rgF').onclick = e => { const c = e.target.closest('[data-f]'); if (c) { st.f = c.dataset.f; pintar(); } };
+      h.querySelector('#rgL').onclick = e => {
+        const b = e.target.closest('[data-i]'); if (!b) return; const r = vis.get(b.dataset.i); if (!r) return;
+        cerrarHoja(true);
+        if (r.id) return abrirArtista(r.id);
+        S.tab = 'buscar'; S.vista = null; S.pila = []; S.buscar = { q: r.nom, tipo: 'artist', res: null }; render(); lanzarBusqueda();
+      };
+      pintar();
+    });
+}
+
 async function vArtistas(m) {
   if (!S.artistas) { const c = S.segCache || await cacheLeer('seguidos'); if (c && c.length) S.artistas = S.segCache = c; }
   if (S.artistas && !S._segAlDia && Date.now() - ((await cacheLeer('seguidosAt')) || 0) > 6 * 36e5) {
     S._segAlDia = true;
+    const tF = Date.now();
     paginar('/me/following?type=artist', { limite: 50, clave: 'artists' }).then(l => {
       const n = l.map(artistaDe), antes = (S.artistas || []).map(a => a.id).sort().join();
-      S.artistas = S.segCache = n; cachePoner('seguidos', n); cachePoner('seguidosAt', Date.now());
+      S.artistas = S.segCache = n; cachePoner('seguidos', n); cachePoner('seguidosAt', Date.now()); regSeguidos(n, tF).catch(e => apuntarFallo(e, 'registro de artistas'));
       if (antes !== n.map(a => a.id).sort().join() && S.tab === 'artistas' && !S.vista && !S.filtro) render();
     }).catch(() => { S._segAlDia = false; });
   }
   if (!S.artistas) {
     cargando(m); m.insertAdjacentHTML('afterbegin', '<p class="tiny mute" style="margin:0 0 12px">Trayendo de Spotify los artistas que sigues, de 50 en 50. Solo tarda la primera vez.</p>');
-    try { S.artistas = (await paginar('/me/following?type=artist', { limite: 50, clave: 'artists' })).map(artistaDe); cachePoner('seguidos', S.artistas); cachePoner('seguidosAt', Date.now()); S.segCache = S.artistas; S._segAlDia = true; }
+    try { const tF = Date.now(); S.artistas = (await paginar('/me/following?type=artist', { limite: 50, clave: 'artists' })).map(artistaDe); regSeguidos(S.artistas, tF).catch(e => apuntarFallo(e, 'registro de artistas')); cachePoner('seguidos', S.artistas); cachePoner('seguidosAt', Date.now()); S.segCache = S.artistas; S._segAlDia = true; }
     catch (e) { const c = esCaida(e) && await cacheLeer('seguidos'); if (!c) return fallo(m, e); S.artistas = c; modoGuardado(); }
     if (S.tab !== 'artistas' || S.vista) return;
   }
   try { await mgPorArtista(); } catch (e) {}
   if (S.tab !== 'artistas' || S.vista) return;
+  regSeguidos(S.artistas).catch(() => {}); regSincronizar().catch(e => apuntarFallo(e, 'registro de artistas'));
   pintarObjetos(m, S.artistas, 'artista', a => abrirArtista(a.id), 'artistas que sigues');
+  regHistDiario().catch(() => {}).then(regLeer).then(R => {
+    const acc = m.querySelector('.obj-acc'); if (!acc || S.tab !== 'artistas' || S.vista || $('#rgE')) return;
+    let si = 0, ya = 0, hi = 0; for (const k in R.m) { const r = R.m[k]; if (r.seg) si++; else if (r.cam) ya++; else hi++; }
+    acc.insertAdjacentHTML('afterend', '<button class="idea-ent" id="rgE"><span class="ic">' + ic('libro') + '</span><span><b>Tu registro: ' + n$(si + ya + hi) + ' artistas</b><small>' + n$(si) + ' sigues · ' + n$(ya) + ' ya no · ' + n$(hi) + ' de tu historial. ' + (ghCfg() ? 'Guardado también en GitHub: aunque dejes de seguir a alguien, aquí se queda.' : 'Solo en este aparato: vincúlalo para tener copia.') + '</small></span>' + ic('abajoV', ' style="transform:rotate(-90deg)"') + '</button>');
+    $('#rgE').onclick = hojaRegistro;
+  }).catch(() => {});
   faltanPorSeguir().then(l => {
     const acc = m.querySelector('.obj-acc'); if (!l.length || !acc || S.tab !== 'artistas' || S.vista) return;
     acc.insertAdjacentHTML('afterend', '<button class="idea-ent" id="fpE"><span class="ic">' + ic('personaMas') + '</span><span><b>Te faltan por seguir</b><small>' + (l.length === 1 ? 'Un artista' : n$(l.length) + ' artistas') + ' con 4 o más canciones en tus Me gusta: ' + esc(l.slice(0, 3).map(x => x.name).join(', ')) + (l.length > 3 ? '…' : '') + '</small></span>' + ic('chev') + '</button>');
