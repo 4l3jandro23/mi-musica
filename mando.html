@@ -1542,6 +1542,7 @@
   .ls-tit b { font-size: 16px; }
   .ls-tit span { font-size: 13px; color: var(--fg-soft); }
   .ls-sec > p { margin: 2px 0 8px; }
+  .rg-est { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 2px 0 10px; }
   /* 2026-11-07: registro de artistas */
   .rg-ch { flex-wrap: nowrap; overflow-x: auto; margin: 10px 0; scrollbar-width: none; }
   .rg-ch::-webkit-scrollbar { display: none; }
@@ -1668,7 +1669,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-11-08a';
+const VERSION = '2026-11-08b';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2566,8 +2567,14 @@ async function seguirArtista(a) {
   }, 'Guardando');
 }
 const _mgSesion = new Map();
-const libPoner = (uris, et) => (olvidarSeguidos(uris, true), uris.forEach(u => String(u).indexOf(':track:') > 0 && _mgSesion.set(u, true)), trozos(uris, 40, u => sp('/me/library?uris=' + encodeURIComponent(u.join(',')), { method: 'PUT' }), et));
-const libQuitar = (uris, et) => (olvidarSeguidos(uris, false), uris.forEach(u => String(u).indexOf(':track:') > 0 && _mgSesion.set(u, false)), trozos(uris, 40, u => sp('/me/library?uris=' + encodeURIComponent(u.join(',')), { method: 'DELETE' }), et));
+const _segCamb = new Map();
+function libEnviar(uris, metodo, et, seg) {
+  const t = Date.now(), cola0 = _encolados;
+  for (const u of uris) if (String(u).indexOf(':artist:') > 0) _segCamb.set(String(u).split(':').pop(), { seg, t });
+  return trozos(uris, 40, u => sp('/me/library?uris=' + encodeURIComponent(u.join(',')), { method: metodo }), et).then(r => { if (_encolados === cola0) regMarcar(uris, seg).catch(() => {}); return r; });
+}
+const libPoner = (uris, et) => (olvidarSeguidos(uris, true), uris.forEach(u => String(u).indexOf(':track:') > 0 && _mgSesion.set(u, true)), libEnviar(uris, 'PUT', et, 1));
+const libQuitar = (uris, et) => (olvidarSeguidos(uris, false), uris.forEach(u => String(u).indexOf(':track:') > 0 && _mgSesion.set(u, false)), libEnviar(uris, 'DELETE', et, 0));
 async function libTiene(uris) {
   try { return await libTieneSp(uris); }
   catch (e) {
@@ -9251,7 +9258,7 @@ async function regSincronizar() {
   try { const r = await fetch('artistas-registro.json', { cache: 'no-cache' }); if (r.ok) { const c = await r.json(); regFundir(_reg.m, regDeLista(c && c.l)); cachePoner(K_REG, _reg); escribir('fonoteca_reg_sync', Date.now()); } } catch (e) {}
 }
 /* tFresca = cuándo se pidió la lista ENTERA a Spotify. Sin ella (lista guardada) solo se añaden los que no estaban */
-async function regSeguidos(l, tFresca) {
+async function regSeguidos(l, tFresca, sinBajas) {
   if (!Array.isArray(l) || !l.length) return;
   const R = await regLeer(), ahora = Date.now(), si = new Set(); let cambio = false;
   for (const a of l) {
@@ -9263,14 +9270,7 @@ async function regSeguidos(l, tFresca) {
     if (a.name !== r.nom) { r.nom = a.name; cambio = true; }
     if (a.img && r.img !== a.img) { r.img = a.img; cambio = true; }
   }
-  if (tFresca) {
-    const bajas = Object.keys(R.m).filter(k => { const r = R.m[k]; return r.seg && r.id && !si.has(k) && tFresca > (r.cam || 0); });
-    let fiable = true;
-    /* muchas bajas de golpe: antes de apuntarlas, se comprueba con Spotify que la lista estaba entera (1 petición) */
-    if (bajas.length > 50) { try { const x = await sp('/me/following?type=artist&limit=1'); fiable = !!(x && x.artists && x.artists.total === l.length); } catch (e) { fiable = false; } }
-    if (fiable) for (const k of bajas) { R.m[k].seg = 0; R.m[k].cam = tFresca; cambio = true; }
-    else apuntarFallo(new Error('Lista de seguidos incompleta: no apunto ' + bajas.length + ' bajas'), 'registro de artistas');
-  }
+  if (tFresca && !sinBajas) for (const k in R.m) { const r = R.m[k]; if (r.seg && r.id && !si.has(k) && tFresca > (r.cam || 0)) { r.seg = 0; r.cam = tFresca; cambio = true; } }
   if (regJuntarNombres(R.m) && cambio) regGuardar();
 }
 /* una vez al día: los artistas de todo lo que has tenido en Me gusta */
@@ -9293,10 +9293,13 @@ async function regHistDiario(forzar) {
 }
 async function hojaRegistro() {
   const R = await regLeer();
-  const l = Object.values(R.m).sort((a, b) => a.nom.localeCompare(b.nom, 'es', { sensitivity: 'base' }));
-  const est = r => r.seg ? 'si' : r.cam ? 'ya' : 'hi', cuenta = { si: 0, ya: 0, hi: 0 }; for (const r of l) cuenta[est(r)]++;
+  const est = r => r.seg ? 'si' : r.cam ? 'ya' : 'hi';
+  let l = [], cuenta = {};
+  const calcular = () => { l = Object.values(R.m).sort((a, b) => a.nom.localeCompare(b.nom, 'es', { sensitivity: 'base' })); cuenta = { si: 0, ya: 0, hi: 0 }; for (const r of l) cuenta[est(r)]++; };
+  calcular();
   const st = { f: 'alguna', q: '' };
   hoja('<h2>Artistas que has seguido</h2><p class="soft tiny">Todos los que has seguido alguna vez en Spotify, en orden alfabético. Aunque dejes de seguir a alguien, aquí se queda para siempre (en este aparato' + (ghCfg() ? ' y en GitHub' : '') + ').</p>' +
+    '<div class="rg-est"><span id="rgEst" class="tiny soft">Comprobando con Spotify…</span><button class="btn sm" id="rgAct" disabled>' + ic('recargar') + 'Actualizar</button></div>' +
     '<input class="field" id="rgQ" type="search" placeholder="Buscar artista" autocomplete="off">' +
     '<div class="chips rg-ch" id="rgF">' + [['alguna', 'Todos los que has seguido', cuenta.si + cuenta.ya], ['si', 'Los sigues ahora', cuenta.si], ['ya', 'Ya no los sigues', cuenta.ya], ['hi', 'Nunca seguidos, pero en tu historial', cuenta.hi]].map(([k, t, n]) => '<button class="chip' + (k === 'alguna' ? ' on' : '') + '" data-f="' + k + '">' + t + ' <span class="n">' + n$(n) + '</span></button>').join('') + '</div>' +
     '<div class="opc fp" id="rgL"></div>', h => {
@@ -9305,10 +9308,23 @@ async function hojaRegistro() {
         const q = fold(st.q.trim()), v = l.filter(r => (st.f === 'alguna' ? est(r) !== 'hi' : est(r) === st.f) && (!q || fold(r.nom).indexOf(q) >= 0));
         vis.clear(); v.slice(0, 200).forEach((r, i) => vis.set(String(i), r));
         h.querySelector('#rgL').innerHTML = v.length ? v.slice(0, 200).map((r, i) => '<button data-i="' + i + '">' + (r.img ? '<img src="' + esc(r.img) + '" alt="">' : ic('persona')) + '<span>' + esc(r.nom) +
-          '<span class="sub">' + (r.seg ? 'Lo sigues' : r.cam ? 'Ya no lo sigues · desde el ' + fecha(r.cam) : 'En tu historial') + (r.n ? ' · ' + n$(r.n) + (r.n === 1 ? ' canción' : ' canciones') : '') + '</span></span></button>').join('') +
+          '<span class="sub">' + (r.seg ? 'Lo sigues' : r.cam ? 'Ya no lo sigues · desde ' + fecha(r.cam) : 'En tu historial') + (r.n ? ' · ' + n$(r.n) + (r.n === 1 ? ' canción' : ' canciones') : '') + '</span></span></button>').join('') +
           (v.length > 200 ? '<p class="tiny mute" style="padding:8px">Y ' + n$(v.length - 200) + ' más. Escribe para encontrarlos.</p>' : '') : '<p class="tiny mute" style="padding:8px">Nadie con ese filtro.</p>';
-        h.querySelectorAll('#rgF [data-f]').forEach(c => c.classList.toggle('on', c.dataset.f === st.f));
+        h.querySelectorAll('#rgF [data-f]').forEach(c => { c.classList.toggle('on', c.dataset.f === st.f); const n = c.querySelector('.n'); if (n) n.textContent = n$(c.dataset.f === 'alguna' ? cuenta.si + cuenta.ya : cuenta[c.dataset.f]); });
       };
+      /* quien dejes de seguir en la app de Spotify se nota aquí al abrir */
+      const comprobar = async forzar => {
+        const e = h.querySelector('#rgEst'), b = h.querySelector('#rgAct'); e.textContent = forzar ? 'Trayendo tu lista de Spotify…' : 'Comprobando con Spotify…'; b.disabled = true;
+        try {
+          const c = await seguidosAlDia(forzar ? 'forzar' : 'hoja');
+          if (!h.isConnected || !h.querySelector('#rgEst')) return;
+          e.textContent = c === null ? 'Ahora no he podido comprobarlo: Spotify está en pausa' : 'Al día con Spotify';
+          calcular(); pintar();
+        } catch (err) { if (h.querySelector('#rgEst')) e.textContent = 'No he podido comprobarlo: ' + explicarError(err); }
+        if (h.querySelector('#rgAct')) b.disabled = false;
+      };
+      h.querySelector('#rgAct').onclick = () => comprobar(true);
+      comprobar(false);
       h.querySelector('#rgQ').oninput = e => { st.q = e.target.value; pintar(); };
       h.querySelector('#rgF').onclick = e => { const c = e.target.closest('[data-f]'); if (c) { st.f = c.dataset.f; pintar(); } };
       h.querySelector('#rgL').onclick = e => {
@@ -9431,7 +9447,6 @@ async function hojaLimpiarSeguidos() {
         apuntar(uris.length + ' artistas dejados de seguir', { t: 'libPoner', uris });
         const ok = await trabajo(async () => { await libQuitar(uris, 'Dejando de seguir'); return true; }, 'Dejando de seguir');
         if (!ok) return;
-        regBajas(uris).catch(() => {});
         const fuera = new Set(uris); if (S.artistas) S.artistas = S.artistas.filter(a => !fuera.has(a.uri));
         toast('Ya no sigues a ' + n$(uris.length), { txt: 'Deshacer', fn: () => deshacerUltimo(HIST[0].id) });
         if (S.tab === 'artistas' && !S.vista) render();
@@ -9440,26 +9455,66 @@ async function hojaLimpiarSeguidos() {
     });
   abrir();
 }
-/* bajas confirmadas por Spotify: se apuntan ya en el registro */
-async function regBajas(uris) {
+/* seguir o dejar de seguir confirmado por Spotify: se apunta ya en el registro */
+async function regMarcar(uris, seg) {
+  const ids = uris.filter(u => String(u).indexOf(':artist:') > 0).map(u => String(u).split(':').pop()); if (!ids.length) return;
   const R = await regLeer(), ahora = Date.now(); let cambio = false;
-  for (const u of uris) { const r = R.m['id:' + String(u).split(':').pop()]; if (r && r.seg) { r.seg = 0; r.cam = ahora; cambio = true; } }
+  for (const id of ids) { const r = R.m['id:' + id]; if (r && r.seg !== seg) { r.seg = seg; r.cam = ahora; cambio = true; } }
   if (cambio) regGuardar();
 }
+/* la lista entera de Spotify (una sola petición en marcha aunque la pidan varios) */
+let _segFr = null, _segChk = 0, _segFallo = 0;
+function traerSeguidos() {
+  if (_segFr) return _segFr;
+  const tF = Date.now();
+  _segFr = (async () => {
+    const l = await paginar('/me/following?type=artist', { limite: 50, clave: 'artists' });
+    let total = null; try { const x = await sp('/me/following?type=artist&limit=1'); if (x && x.artists && typeof x.artists.total === 'number') total = x.artists.total; } catch (e) {}
+    /* una lectura cortada acaba justo en una página entera y le faltan bastantes: no se guarda nada */
+    if (total != null && total - l.length > 5 && l.length % 10 === 0) throw new Error('Spotify ha dado la lista a medias (' + n$(l.length) + ' de ' + n$(total) + '). Prueba otra vez en un rato.');
+    const n = l.map(artistaDe), previa = S.artistas || S.segCache || [];
+    /* lo que hayas cambiado mientras se leía manda sobre la lista leída */
+    for (const [id, c] of _segCamb) {
+      if (c.t < tF) continue;
+      const i = n.findIndex(z => z.id === id);
+      if (!c.seg && i >= 0) n.splice(i, 1);
+      else if (c.seg && i < 0) { const z = previa.find(y => y.id === id); if (z) n.unshift(z); }
+    }
+    S.artistas = S.segCache = n; cachePoner('seguidos', n); cachePoner('seguidosAt', Date.now()); cachePoner('seguidosDesf', total != null ? total - l.length : 0);
+    await regSeguidos(n, tF, total == null && n.length % 10 === 0);
+    return n;
+  })().finally(() => { _segFr = null; });
+  return _segFr;
+}
+/* ¿ha cambiado a quién sigues, también desde la app de Spotify? Una petición basta para saberlo; solo si
+   el número no cuadra (o han pasado 6 h) se relee la lista. modo: 'forzar' (botón), 'hoja' (al abrir el registro).
+   Devuelve true/false (cambió o no) y null si ahora no se ha podido mirar */
+async function seguidosAlDia(modo) {
+  if (_segFr) { await _segFr; return true; }
+  if (modo !== 'forzar') {
+    if (esperaPendiente() > 0 || Date.now() < _segFallo) return null;
+    if (modo !== 'hoja' && Date.now() - _segChk < 120000) return null;
+  }
+  _segChk = Date.now();
+  try {
+    const lista = S.artistas || S.segCache || await cacheLeer('seguidos');
+    if (modo !== 'forzar') {
+      const x = await sp('/me/following?type=artist&limit=1'), total = x && x.artists && typeof x.artists.total === 'number' ? x.artists.total : null;
+      const at = (await cacheLeer('seguidosAt')) || 0, desf = (await cacheLeer('seguidosDesf')) || 0;
+      if (lista && Date.now() - at < 6 * 36e5 && (total == null || total === lista.length + desf)) return false;
+    }
+    const antes = (lista || []).map(z => z.id).sort().join();
+    const n = await traerSeguidos();
+    return antes !== n.map(z => z.id).sort().join();
+  } catch (e) { _segFallo = Date.now() + 15 * 6e4; throw e; }
+}
+
 async function vArtistas(m) {
   if (!S.artistas) { const c = S.segCache || await cacheLeer('seguidos'); if (c && c.length) S.artistas = S.segCache = c; }
-  if (S.artistas && !S._segAlDia && Date.now() - ((await cacheLeer('seguidosAt')) || 0) > 6 * 36e5) {
-    S._segAlDia = true;
-    const tF = Date.now();
-    paginar('/me/following?type=artist', { limite: 50, clave: 'artists' }).then(l => {
-      const n = l.map(artistaDe), antes = (S.artistas || []).map(a => a.id).sort().join();
-      S.artistas = S.segCache = n; cachePoner('seguidos', n); cachePoner('seguidosAt', Date.now()); regSeguidos(n, tF).catch(e => apuntarFallo(e, 'registro de artistas'));
-      if (antes !== n.map(a => a.id).sort().join() && S.tab === 'artistas' && !S.vista && !S.filtro) render();
-    }).catch(() => { S._segAlDia = false; });
-  }
+  if (S.artistas) seguidosAlDia().then(c => { if (c && S.tab === 'artistas' && !S.vista && !S.filtro) render(); }).catch(() => {});
   if (!S.artistas) {
     cargando(m); m.insertAdjacentHTML('afterbegin', '<p class="tiny mute" style="margin:0 0 12px">Trayendo de Spotify los artistas que sigues, de 50 en 50. Solo tarda la primera vez.</p>');
-    try { const tF = Date.now(); S.artistas = (await paginar('/me/following?type=artist', { limite: 50, clave: 'artists' })).map(artistaDe); regSeguidos(S.artistas, tF).catch(e => apuntarFallo(e, 'registro de artistas')); cachePoner('seguidos', S.artistas); cachePoner('seguidosAt', Date.now()); S.segCache = S.artistas; S._segAlDia = true; }
+    try { await traerSeguidos(); }
     catch (e) { const c = esCaida(e) && await cacheLeer('seguidos'); if (!c) return fallo(m, e); S.artistas = c; modoGuardado(); }
     if (S.tab !== 'artistas' || S.vista) return;
   }
