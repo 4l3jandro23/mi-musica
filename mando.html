@@ -17,6 +17,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=sentient@300,400,500&display=swap" rel="stylesheet">
 <style>
   :root {
     color-scheme: light;
@@ -1617,6 +1619,88 @@
   .ahora img, .ahora .ph { width: 88px; height: 88px; }
   .ahora b { font-size: 20px; }
   @media (max-width: 430px) { .ahora img, .ahora .ph { width: 72px; height: 72px; } .ahora b { font-size: 18px; } }
+
+  /* ============================================================
+     2026-11-09 LA SALA. Un cuarto oscuro donde lo único con luz son
+     las carátulas; las paredes toman el color de lo que suena.
+     Títulos en Sentient (serif ligera); el resto, Archivo normal.
+     ============================================================ */
+  @property --amb { syntax: '<color>'; inherits: true; initial-value: #2a3a5c; }
+  :root { --amb: #2a3a5c; --f-disp: "Sentient", Georgia, "Times New Roman", serif; --r: 6px; --r-sm: 6px; --r-cd: 3px; transition: --amb 1.2s ease;
+    --bg: color-mix(in srgb, var(--amb) 8%, #f3f1ec); --bg-2: color-mix(in srgb, var(--amb) 9%, #ece9e2); --surface: color-mix(in srgb, var(--amb) 5%, #fbfaf7); --surface-2: color-mix(in srgb, var(--amb) 10%, #e9e6df); --surface-3: color-mix(in srgb, var(--amb) 12%, #dfdbd2);
+    --line: rgba(10,13,20,.08); --line-firm: rgba(10,13,20,.16); --amber: #17479a; --on-amber: #fff; --fg: #12151c; --fg-soft: #414753; --fg-mute: #4a505c; }
+  @media (prefers-color-scheme: dark) { :root:where(:not([data-theme="light"])) {
+    --bg: color-mix(in srgb, var(--amb) 26%, #08090d); --bg-2: color-mix(in srgb, var(--amb) 28%, #0c0e13); --surface: color-mix(in srgb, var(--amb) 32%, #11131a); --surface-2: color-mix(in srgb, var(--amb) 36%, #1a1d26); --surface-3: color-mix(in srgb, var(--amb) 40%, #252934);
+    --line: rgba(255,255,255,.09); --line-firm: rgba(255,255,255,.18); --amber: #7fb2ff; --amber-soft: rgba(127,178,255,.16); --on-amber: #0a0d14; --fg: #f0f2f6; --fg-soft: #cdd2db; --fg-mute: #a7aebb; } }
+  :root[data-theme="dark"] {
+    --bg: color-mix(in srgb, var(--amb) 26%, #08090d); --bg-2: color-mix(in srgb, var(--amb) 28%, #0c0e13); --surface: color-mix(in srgb, var(--amb) 32%, #11131a); --surface-2: color-mix(in srgb, var(--amb) 36%, #1a1d26); --surface-3: color-mix(in srgb, var(--amb) 40%, #252934);
+    --line: rgba(255,255,255,.09); --line-firm: rgba(255,255,255,.18); --amber: #7fb2ff; --amber-soft: rgba(127,178,255,.16); --on-amber: #0a0d14; --fg: #f0f2f6; --fg-soft: #cdd2db; --fg-mute: #a7aebb; }
+  @media (prefers-reduced-motion: reduce) { :root { transition: none; } }
+  :root:has(#prG) { transition: none; }
+  body { background: var(--bg); }
+  .top, .bnav { background: var(--bg); border: 0; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+  #np .top { background: none; }
+  #np .letra p, .jg-dos .jg-y, .tabs::before { font-weight: 500; font-stretch: 100%; }
+  /* títulos: serif ligera y grande */
+  h2, h3, .logo, .saludo, .tit-pant, .hero h1, .fila-sec h3, .hist-hero h1, .cdia h2, .cdia-a, .tm-y, .ft-big, .ft-pct, .ahora b, .ph.gen span, .rec b, .bj h3, .bj-n, .vc b, .jg-q, .jg-nota, .ru-tit, .ru-res b, .ep-res b, .pcd-cab h1, .id-cab h1, .id-nom, .diadisco b {
+    font-family: var(--f-disp); font-stretch: 100%; font-weight: 400; letter-spacing: -0.015em; }
+  .saludo { font-weight: 300; font-size: 42px; line-height: 1.02; margin: 12px 0 18px; }
+  .tit-pant { font-weight: 300; font-size: 42px; line-height: 1.02; padding-top: 16px; }
+  .fila-sec { margin: 34px 0 12px; align-items: baseline; }
+  .fila-sec h3 { font-size: 27px; line-height: 1.1; letter-spacing: -0.015em; }
+  .fila-sec button { box-shadow: none; border: 0; background: var(--surface-2); color: var(--fg); padding: 7px 13px; }
+  .logo { font-size: 23px; }
+  .hero h1 { font-weight: 300; font-size: clamp(34px, 5vw, 60px); line-height: 1.02; letter-spacing: -0.02em; }
+  .hoja h2 { font-size: 30px; font-weight: 300; line-height: 1.08; }
+  @media (min-width: 1000px) { .saludo, .tit-pant { font-size: 58px; } .fila-sec h3 { font-size: 32px; } }
+  @media (max-width: 640px) { .hero h1 { font-size: 34px; } }
+  /* nada de cajas con borde: un escalón de tono y las carátulas haciendo el trabajo */
+  .card, .seccion, .kpi, .rango, .bj, .idea-ent, .atajo, .rec, .ahora, .cdia, .ft-mini button, .hist-hero, .card.ft { border: 0; box-shadow: none; border-radius: 6px; }
+  .idea-ent b { font-size: 16px; }
+  .tarj img, .tarj .ph, .tarj .imgw, .row img, .row .ph, .obj img, .obj .ph, .ahora img, .ahora .ph, .mini img, .mini .ph, .hero img, .cab img, .cab .ph, .dcab img, .dcab .ph { border-radius: 3px; box-shadow: none; }
+  .tarj.red img, .tarj.red .ph, .obj.red img, .obj.red .ph { border-radius: 50%; }
+  .tarj:hover { transform: none; }
+  .carrusel { gap: 14px; }
+  .carrusel .tarj { width: 164px; }
+  .tarj .t1 { font-size: 15px; font-weight: 600; }
+  .tarj .t2 { font-size: 13px; color: var(--fg-soft); }
+  @media (min-width: 1000px) { .carrusel .tarj { width: 208px; } }
+  .ph.gen span { font-size: inherit; font-weight: 400; }
+  .row img, .row .ph { width: 52px; height: 52px; }
+  .obj img, .obj .ph { width: 60px; height: 60px; }
+  /* lo que suena: un cartel */
+  .ahora { background: var(--surface-2); padding: 14px; gap: 16px; }
+  .ahora img, .ahora .ph { width: 112px; height: 112px; }
+  .ahora b { font-size: 26px; line-height: 1.08; white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .ahora .eti { font-size: 13px; font-weight: 500; letter-spacing: 0; text-transform: none; }
+  @media (max-width: 430px) { .ahora img, .ahora .ph { width: 96px; height: 96px; } .ahora b { font-size: 23px; } }
+  .mini { background: var(--surface-3); border-radius: 6px; }
+  .hero { border-radius: 0; }
+  /* atajos con carátula */
+  .atajos { gap: 8px; }
+  .atajo { background: var(--surface); padding: 0; gap: 12px; min-height: 64px; overflow: hidden; }
+  .atajo .ic { margin: 0; width: 64px; height: 64px; flex: none; display: block; }
+  .atajo .ic img { display: block; width: 64px; height: 64px; object-fit: cover; }
+  .atajo .ic svg { width: 22px; height: 22px; margin: 21px; }
+  .atajo b { font-family: var(--f-disp); font-weight: 400; font-size: 18px; letter-spacing: -0.01em; line-height: 1.1; }
+  .atajo small { font-size: 13px; color: var(--fg-soft); }
+  /* la pared del día */
+  .pini { container-type: inline-size; margin: 0 -16px; }
+  .pini-g { display: grid; gap: 2px; grid-template-columns: repeat(6, 1fr); grid-auto-rows: calc((100cqw - 10px) / 6); }
+  .pt { border: 0; padding: 0; margin: 0; background: var(--surface-2); cursor: pointer; display: block; min-width: 0; overflow: hidden; }
+  .pt img { display: block; width: 100%; height: 100%; object-fit: cover; aspect-ratio: 1; transition: transform .35s var(--ease-out, ease-out); }
+  .pt2 { display: none; }
+  @media (hover: hover) { .pt:hover img { transform: scale(1.05); } }
+  .pt:active { opacity: .75; }
+  .pt:focus-visible { outline: 2px solid var(--fg); outline-offset: -2px; }
+  .pini-pie { margin: 12px 0 18px; }
+  @media (min-width: 1000px) { .pini { margin: 0; } .pini-g { grid-template-columns: repeat(12, 1fr); grid-auto-rows: calc((100cqw - 22px) / 12); } .pt2 { display: block; } }
+  /* tu pared entera */
+  .pr-txt { margin: -4px 0 12px; max-width: 62ch; }
+  .pr-g { display: grid; gap: 2px; grid-template-columns: repeat(5, 1fr); margin: 0 -16px; }
+  .pr-g .pt { aspect-ratio: 1; content-visibility: auto; }
+  @media (min-width: 640px) { .pr-g { grid-template-columns: repeat(8, 1fr); } }
+  @media (min-width: 1000px) { .pr-g { grid-template-columns: repeat(12, 1fr); margin: 0; } }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800&display=swap" rel="stylesheet">
 </head>
@@ -1669,7 +1753,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-11-08b';
+const VERSION = '2026-11-09a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -1727,7 +1811,8 @@ const ICO = {
   movil: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
   repes: '<rect x="3" y="3" width="12" height="12" rx="2"/><rect x="9" y="9" width="12" height="12" rx="2"/>',
   libro: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5V21h16"/>',
-  tiempo: '<path d="M6 3h12M6 21h12M7 3c0 5 5 6 5 9s-5 4-5 9M17 3c0 5-5 6-5 9s5 4 5 9"/>'
+  tiempo: '<path d="M6 3h12M6 21h12M7 3c0 5 5 6 5 9s-5 4-5 9M17 3c0 5-5 6-5 9s5 4 5 9"/>',
+  pared: '<rect x="3" y="3" width="11" height="11"/><rect x="17" y="3" width="4" height="4"/><rect x="17" y="10" width="4" height="4"/><rect x="3" y="17" width="4" height="4"/><rect x="10" y="17" width="4" height="4"/><rect x="17" y="17" width="4" height="4"/>'
 };
 const ic = (n, extra) => '<svg class="i" viewBox="0 0 24 24"' + (extra || '') + '>' + (ICO[n] || '') + '</svg>';
 
@@ -2724,6 +2809,7 @@ const TABS = [
   { id: 'playlists', txt: 'Playlists', ic: 'lista' },
   { id: 'historia', txt: 'Tu historia', ic: 'reloj' },
   { id: 'tiempo', txt: 'Tus años', ic: 'tiempo' },
+  { id: 'pared', txt: 'Tu pared', ic: 'pared' },
   { id: 'historias', txt: 'Historias de la música', ic: 'libro', url: 'historias.html' },
   { id: 'portadas', txt: 'Portadas', ic: 'imagen' },
   { id: 'artistas', txt: 'Seguidos', ic: 'persona' },
@@ -2735,7 +2821,7 @@ const TABS = [
 ];
 /* En el movil: cuatro pestañas principales abajo y «Más» con el resto */
 const PRINCIPALES = ['inicio', 'decidir', 'likes', 'playlists'];
-const SUB_TAB = { tiempo: 'tus canciones de cada año y lo que pasaba entonces', historia: 'lo que te ha gustado, año a año', historias: 'los géneros y su historia', portadas: 'la imagen de cada playlist', artistas: 'los que sigues en Spotify', falta: 'las canciones clave de tus historias que aún no tienes',
+const SUB_TAB = { pared: 'todas tus carátulas, ordenadas por color', tiempo: 'tus canciones de cada año y lo que pasaba entonces', historia: 'lo que te ha gustado, año a año', historias: 'los géneros y su historia', portadas: 'la imagen de cada playlist', artistas: 'los que sigues en Spotify', falta: 'las canciones clave de tus historias que aún no tienes',
   buscar: 'canciones, discos y artistas', discos: 'los que guardas en Spotify', escuchas: 'lo que más escuchas', cambios: 'deshacer lo que has hecho' };
 function pintarTabs() {
   const tb = t => '<button class="tab' + (t.mas ? ' tmas' : '') + (S.tab === t.id ? ' on' : '') + '" data-t="' + t.id + '">' + ic(t.ic) + t.txt + '</button>';
@@ -2788,7 +2874,7 @@ function render() {
   pintarTabs();
   const m = $('#main');
   m.onclick = null; m.onkeydown = null;
-  const titulos = { playlists: 'Tus playlists', discos: 'Discos guardados', artistas: 'Artistas que sigues', falta: 'Lo que te falta', tiempo: 'Tus años', mis: 'Mis artistas', buscar: 'Buscar', escuchas: 'Estadísticas', cambios: 'Cambios' };
+  const titulos = { playlists: 'Tus playlists', discos: 'Discos guardados', artistas: 'Artistas que sigues', falta: 'Lo que te falta', tiempo: 'Tus años', pared: 'Tu pared', mis: 'Mis artistas', buscar: 'Buscar', escuchas: 'Estadísticas', cambios: 'Cambios' };
   if (!S.vista && titulos[S.tab] && conectado()) m.dataset.titulo = titulos[S.tab]; else delete m.dataset.titulo;
   { const tp = $('#titPant'); tp.textContent = m.dataset.titulo || ''; tp.hidden = !m.dataset.titulo; }
   const clave = S.tab + '|' + S.pila.length + '|' + (S.vista ? 'v' : '');
@@ -2796,7 +2882,7 @@ function render() {
   setTimeout(() => tintar(m), 0);
   if (!conectado()) { m.innerHTML = htmlSinConexion(); pintarAccion(); return; }
   if (S.vista) return S.vista.pintar(m);
-  const f = { playlists: vPlaylists, inicio: vInicio, casas: vCasas, likes: vLikes, misdiscos: vMisDiscos, discos: vDiscos, artistas: vArtistas, falta: vFalta, tiempo: vTiempo, mis: vMis, buscar: vBuscar, escuchas: vEscuchas, historia: vHistoria, portadas: vPortadas, decidir: vDecidir, cambios: vCambios }[S.tab];
+  const f = { playlists: vPlaylists, inicio: vInicio, casas: vCasas, likes: vLikes, misdiscos: vMisDiscos, discos: vDiscos, artistas: vArtistas, falta: vFalta, tiempo: vTiempo, pared: vPared, mis: vMis, buscar: vBuscar, escuchas: vEscuchas, historia: vHistoria, portadas: vPortadas, decidir: vDecidir, cambios: vCambios }[S.tab];
   f(m);
 }
 function htmlSinConexion() {
@@ -3663,7 +3749,7 @@ async function vInicio(m) {
     if (/\d/.test(n)) n = n.replace(/4/g, 'a').replace(/3/g, 'e').replace(/1/g, 'i').replace(/0/g, 'o');
     return n ? ', ' + esc(n.charAt(0).toUpperCase() + n.slice(1)) : '';
   };
-  m.innerHTML = '<h1 class="saludo" id="inSal">' + sal + nom() + '</h1><div id="inAhora"></div><div id="inTri"></div><div id="inQuit"></div><div id="inPongo"></div><div id="inBj"></div><div id="inIdeas"></div><div id="inCdia"></div><div id="inDia"></div><div class="atajos" id="inAtajos"></div><div id="inNov"></div><div id="inDiscos"></div><div id="inNuevas"></div><div id="inRec"></div><div id="inHoy"></div><div id="inCaps"></div><div id="inPls"></div><div id="inEtq"></div>';
+  m.innerHTML = '<h1 class="saludo" id="inSal">' + sal + nom() + '</h1><div id="inPared"></div><div id="inAhora"></div><div id="inTri"></div><div id="inQuit"></div><div id="inPongo"></div><div id="inBj"></div><div id="inIdeas"></div><div id="inCdia"></div><div id="inDia"></div><div class="atajos" id="inAtajos"></div><div id="inNov"></div><div id="inDiscos"></div><div id="inNuevas"></div><div id="inVuelve"></div><div id="inRec"></div><div id="inHoy"></div><div id="inCaps"></div><div id="inPls"></div><div id="inEtq"></div>';
   const vivo = () => S.tab === 'inicio' && !S.vista && $('#inAtajos');
   if (!S.me) yo().then(() => { const x = $('#inSal'); if (x) x.innerHTML = sal + nom(); }).catch(() => {});
   pintarAhoraInicio();
@@ -3724,6 +3810,8 @@ async function vInicio(m) {
     }
     irATab(a);
   };
+  pintarParedInicio(vivo).catch(() => {});
+  pintarVuelve(vivo).catch(() => {});
   /* lo que te falta (de lo calculado la última vez: no gasta nada) */
   (faltaR && faltaR.l && faltaR.l.length ? Promise.resolve(faltaR) : Promise.reject()).then(c => {
     const el = $('#inNov'); if (!el || !vivo()) return;
@@ -4064,7 +4152,9 @@ async function historialSubir(h) {
 }
 let _siempreH = null;
 /* para Tu historia: tu música de siempre + lo que estuvo en Me gusta y ya no */
-async function musicaHistoria() {
+let _mhP = null;
+function musicaHistoria() { if (!_mhP) _mhP = musicaHistoria0().finally(() => { _mhP = null; }); return _mhP; }
+async function musicaHistoria0() {
   if (_siempreH && Date.now() - _siempreH.at < 600000) return _siempreH.ps;
   const m = new Map();
   for (const p of await musicaSiempre()) m.set(p.uri, p);
@@ -4803,6 +4893,7 @@ function hojaIrA() {
     ['Jugar: ¿cuándo te gustó?', 'corazon', () => hojaJuego('cuando')],
     ['Jugar: ¿cuál es más antigua?', 'ordenar', () => hojaJuego('orden')],
     ['Tus años: tus canciones de cada año', 'tiempo', () => irATab('tiempo')],
+    ['Tu pared: todas tus carátulas por color', 'pared', () => irATab('pared')],
     ['Lo que quitaste de Me gusta: repasar y recuperar', 'corazon', () => abrirQuitadas()],
     ['Limpiar a quién sigues en Spotify', 'personaMenos', () => hojaLimpiarSeguidos()],
     ['Comparar dos listas', 'unir', () => hojaComparar()],
@@ -9509,6 +9600,158 @@ async function seguidosAlDia(modo) {
   } catch (e) { _segFallo = Date.now() + 15 * 6e4; throw e; }
 }
 
+
+/* ============================================================
+   LA SALA: el fondo de toda la app toma el color de la carátula
+   que suena; si no suena nada, el de la carátula grande del día.
+   ============================================================ */
+function ponerAmbiente(c) {
+  if (!c) return;
+  const v0 = (String(c).match(/\d+/g) || []).slice(0, 3).map(x => x / 255); if (v0.length < 3) return;
+  /* el tono de la carátula, siempre con cuerpo: una portada apagada no deja la sala color barro */
+  const M = Math.max(...v0), m = Math.min(...v0), D = M - m;
+  let h = 0; if (D) h = M === v0[0] ? ((v0[1] - v0[2]) / D + 6) % 6 : M === v0[1] ? (v0[2] - v0[0]) / D + 2 : (v0[0] - v0[1]) / D + 4;
+  const sat = D < 0.06 ? 0 : Math.max(0.62, D / (1 - Math.abs(M + m - 1))), l = 0.42, C = (1 - Math.abs(2 * l - 1)) * sat, X = C * (1 - Math.abs(h % 2 - 1)), o = l - C / 2;
+  let v = (h < 1 ? [C, X, 0] : h < 2 ? [X, C, 0] : h < 3 ? [0, C, X] : h < 4 ? [0, X, C] : h < 5 ? [X, 0, C] : [C, 0, X]).map(x => x + o);
+  const Y = 0.2126 * v[0] ** 2.2 + 0.7152 * v[1] ** 2.2 + 0.0722 * v[2] ** 2.2; if (Y > 0.12) { const k = (0.12 / Y) ** (1 / 2.2); v = v.map(x => x * k); }
+  v = v.map(x => Math.round(x * 255));
+  document.documentElement.style.setProperty('--amb', 'rgb(' + v.join(',') + ')');
+  const fondo = [8, 9, 13].map((b, i) => Math.round(v[i] * 0.26 + b * 0.74));
+  const me = document.querySelector('meta[name="theme-color"][media*="dark"]'); if (me) me.content = 'rgb(' + fondo.join(',') + ')';
+}
+/* el mismo orden todo el día, otro mañana */
+function barajarDia(l, extra) {
+  let sem = 0; for (const ch of claveDia(Date.now()) + (extra || '')) sem = (sem * 31 + ch.charCodeAt(0)) >>> 0;
+  const o = l.slice(); for (let i = o.length - 1; i > 0; i--) { sem = (Math.imul(sem, 1103515245) + 12345) >>> 0; const j = sem % (i + 1); const t = o[i]; o[i] = o[j]; o[j] = t; }
+  return o;
+}
+const coverDe = p => p.coverG || p.cover || '';
+const claveDisco = p => p.albumId || fold((p.album || p.title) + '|' + artPpal(p));
+/* un disco, una baldosa */
+function discosDe(ps) { const v = new Map(); for (const p of ps) { if (p.local || !coverDe(p)) continue; const k = claveDisco(p); if (!v.has(k)) v.set(k, p); } return Array.from(v.values()); }
+function abrirDiscoDe(p, todas) {
+  if (p.albumId) return abrirDisco(p.albumId);
+  const k = claveDisco(p);
+  abrirFuente({ kind: 'lista', id: 'pared' + k, name: p.album || p.title, editable: false, meta: null, pistas: null }, async () => conK((todas || [p]).filter(x => claveDisco(x) === k)));
+}
+/* huecos de la pared del día: [fila, columna, alto, ancho], en 6 columnas por 4 filas */
+const PARED_MOLDE = [[1, 1, 3, 3], [1, 4, 2, 2], [1, 6, 1, 1], [2, 6, 1, 1], [3, 4, 1, 1], [3, 5, 1, 1], [3, 6, 1, 1], [4, 1, 1, 1], [4, 2, 1, 1], [4, 3, 1, 1], [4, 4, 1, 1], [4, 5, 1, 1], [4, 6, 1, 1]];
+async function pintarParedInicio(vivo) {
+  const el = $('#inPared'); if (!el) return;
+  const ps = await musicaHistoria(); if (!vivo()) return;
+  const lk = await likesGuardados(), ya = lk.length >= 26 ? discosDe(lk) : [];
+  const dia = barajarDia(ya.length >= 26 ? ya : discosDe(ps)); if (dia.length < 13) return;
+  /* en el ordenador caben dos moldes, el segundo a partir de la columna 7 */
+  const huecos = PARED_MOLDE.map(h => h.concat(0)).concat(PARED_MOLDE.map(h => [h[0], h[1] + 6, h[2], h[3], 1]));
+  el.innerHTML = '<div class="pini"><div class="pini-g">' + huecos.slice(0, Math.min(huecos.length, dia.length)).map((h, i) => '<button class="pt' + (h[4] ? ' pt2' : '') + '" data-i="' + i + '" style="grid-area:' + h[0] + '/' + h[1] + '/span ' + h[2] + '/span ' + h[3] + '" aria-label="' + esc((dia[i].album || dia[i].title) + ' · ' + artPpal(dia[i])) + '"><img' + (h[4] ? ' loading="lazy"' : '') + ' decoding="async" src="' + esc(coverDe(dia[i])) + '" alt=""></button>').join('') + '</div></div>' +
+    '<div class="fila-sec pini-pie"><h3>Tu pared de hoy</h3><button data-ir="1">' + ic('pared') + ' Verla entera</button></div>';
+  el.onclick = e => { if (e.target.closest('[data-ir]')) return irATab('pared'); const b = e.target.closest('[data-i]'); if (b) abrirDiscoDe(dia[+b.dataset.i], ps); };
+  if (!S.suena) colorDe(coverDe(dia[0])).then(c => { if (!S.suena) ponerAmbiente(c); });
+  /* los atajos llevan una carátula tuya en vez de un icono */
+  document.querySelectorAll('#inAtajos .atajo .ic').forEach((n, i) => { const p = dia[(i + 13) % dia.length]; n.innerHTML = '<img src="' + esc(coverDe(p)) + '" alt="">'; });
+}
+/* unas cuantas de las que quitaste, distintas cada día */
+async function pintarVuelve(vivo) {
+  const el = $('#inVuelve'); if (!el) return;
+  const q = await cancionesQuitadas(); if (!q || !vivo()) return;
+  const l = barajarDia(q.filter(coverDe), 'v').slice(0, 14); if (l.length < 4) return;
+  const ps = conK(l);
+  el.innerHTML = '<div class="fila-sec"><h3>Vuelve a escucharlas</h3><button data-ir="1">Ver las ' + n$(q.length) + '</button></div><div class="carrusel">' + ps.map((p, i) => tarjetaMini(coverDe(p), p.title, nombresArtistas(p), 'data-i="' + i + '"')).join('') + '</div>';
+  el.onclick = e => {
+    if (e.target.closest('[data-ir]')) return abrirQuitadas();
+    const t = e.target.closest('[data-i]'); if (!t) return;
+    const i = +t.dataset.i; abrirFuente({ kind: 'lista', id: 'quitadas', name: 'Lo que quitaste de Me gusta', editable: false, meta: null, pistas: null }, async () => ps);
+    setTimeout(() => { const p = S.fuente && S.fuente.pistas && S.fuente.pistas[i]; if (p) hojaPista(p); }, 120);
+  };
+}
+
+/* ============================================================
+   TU PARED: una baldosa por disco de todo lo que has tenido en
+   Me gusta. Por color (se calcula una vez y se guarda), por año o
+   al azar. Las carátulas vienen de la web de imágenes de Spotify:
+   no gasta cupo de la API.
+   ============================================================ */
+const PR = { orden: 'color', n: 240, gen: 0, vuelta: null };
+const K_COLCOV = 'coloresCover';
+let _colCov = null;
+async function colCovLeer() { if (!_colCov) _colCov = (await cacheLeer(K_COLCOV)) || {}; return _colCov; }
+/* tono, saturación y luz de una carátula (en miniatura) */
+function hslCover(url) {
+  return new Promise(ok => {
+    const im = new Image(); im.crossOrigin = 'anonymous';
+    im.onload = () => {
+      try {
+        const c = document.createElement('canvas'); c.width = c.height = 10;
+        const x = c.getContext('2d', { willReadFrequently: true }); x.drawImage(im, 0, 0, 10, 10);
+        const d = x.getImageData(0, 0, 10, 10).data; let r = 0, g = 0, b = 0, n = 0;
+        for (let i = 0; i < d.length; i += 4) { const sat = (Math.max(d[i], d[i + 1], d[i + 2]) - Math.min(d[i], d[i + 1], d[i + 2])) / 255, w = 0.1 + sat * sat * 3; r += d[i] * w; g += d[i + 1] * w; b += d[i + 2] * w; n += w; }
+        r /= n * 255; g /= n * 255; b /= n * 255;
+        const M = Math.max(r, g, b), m = Math.min(r, g, b), l = (M + m) / 2, D = M - m;
+        let h = 0; if (D) h = M === r ? ((g - b) / D + 6) % 6 : M === g ? (b - r) / D + 2 : (r - g) / D + 4;
+        ok([Math.round(h * 60), Math.round(100 * (D ? D / (1 - Math.abs(2 * l - 1)) : 0)), Math.round(l * 100)]);
+      } catch (e) { ok(null); }
+    };
+    im.onerror = () => ok(null);
+    im.src = url;
+  });
+}
+function ordenPared(l, col) {
+  if (PR.orden === 'azar') return barajarDia(l, 'p');
+  if (PR.orden === 'anyo') return l.slice().sort((a, b) => (anyo(a) || 9999) - (anyo(b) || 9999));
+  const cl = p => { const c = col[p.cover || p.coverG]; if (!c) return [2, 0, 0]; if (c[1] < 16 || c[2] < 9 || c[2] > 92) return [1, -c[2], 0]; return [0, Math.floor(((c[0] + 15) % 360) / 20), -c[2]]; };
+  const con = l.map(p => [cl(p), p]);
+  con.sort((a, b) => a[0][0] - b[0][0] || a[0][1] - b[0][1] || a[0][2] - b[0][2]);
+  return con.map(x => x[1]);
+}
+async function vPared(m) {
+  cargando(m);
+  let ps; try { ps = await musicaHistoria(); await etqAsegurar(); } catch (e) { return fallo(m, e); }
+  const gen = ++PR.gen, vivo = () => S.tab === 'pared' && !S.vista && PR.gen === gen;
+  if (!vivo()) return;
+  const discos = discosDe(ps);
+  if (!discos.length) { m.innerHTML = '<div class="vacio">Tu pared se llena con las carátulas de tus Me gusta. Léelos una vez en este aparato.<br><br><button class="btn pri" id="prIni">Ir a Inicio a leerlos</button></div>'; $('#prIni').onclick = () => irATab('inicio'); return; }
+  const col = await colCovLeer(); if (!vivo()) return;
+  m.innerHTML = '<p class="soft pr-txt" id="prTxt"></p><div class="chips ft-ch" id="prO">' + [['color', 'Por color'], ['anyo', 'Por año'], ['azar', 'Al azar']].map(o => '<button class="chip" data-o="' + o[0] + '">' + o[1] + '</button>').join('') + '</div><div class="pr-g" id="prG"></div><div id="prFin" style="height:1px"></div>';
+  let lista = [], pintadas = 0;
+  const G = $('#prG');
+  const tanda = (cuantas) => {
+    const f = lista.slice(pintadas, pintadas + (cuantas || PR.n)); pintadas += f.length;
+    G.insertAdjacentHTML('beforeend', f.map((p, i) => '<button class="pt" data-i="' + (pintadas - f.length + i) + '" aria-label="' + esc((p.album || p.title) + ' · ' + artPpal(p)) + '"><img loading="lazy" decoding="async" src="' + esc(coverDe(p)) + '" alt=""></button>').join(''));
+  };
+  const pintar = () => { lista = ordenPared(discos, col); pintadas = 0; G.innerHTML = ''; tanda(); m.querySelectorAll('#prO [data-o]').forEach(c => c.classList.toggle('on', c.dataset.o === PR.orden)); };
+  const texto = t => { const e = $('#prTxt'); if (e) e.textContent = n$(discos.length) + (discos.length === 1 ? ' disco' : ' discos') + ' de todo lo que has tenido en Me gusta.' + (t ? ' ' + t : ''); };
+  const v = PR.vuelta; PR.vuelta = null;
+  if (v && Date.now() - v.t < 18e5) {
+    lista = v.lista; tanda(v.pintadas);
+    m.querySelectorAll('#prO [data-o]').forEach(c => c.classList.toggle('on', c.dataset.o === PR.orden));
+    setTimeout(() => scrollTo(0, v.y), 0);
+  } else pintar();
+  texto();
+  const io = new IntersectionObserver(en => { if (!vivo()) return io.disconnect(); if (en.some(x => x.isIntersecting) && pintadas < lista.length) tanda(); }, { rootMargin: '900px' });
+  io.observe($('#prFin'));
+  m.onclick = e => {
+    const o = e.target.closest('#prO [data-o]'); if (o) { PR.orden = o.dataset.o; pintar(); scrollTo(0, 0); return; }
+    const b = e.target.closest('.pt[data-i]'); if (b && lista[+b.dataset.i]) { PR.vuelta = { lista, pintadas, y: scrollY, t: Date.now() }; abrirDiscoDe(lista[+b.dataset.i], ps); }
+  };
+  /* los colores que falten, poco a poco y solo mientras estés aquí */
+  const faltan = discos.filter(p => !(p.cover || p.coverG) ? false : !col[p.cover || p.coverG]);
+  if (!faltan.length) return;
+  let hechas = 0, desdeG = 0, sig = 0, fallos = 0;
+  const trabajador = async () => {
+    while (sig < faltan.length && vivo()) {
+      const p = faltan[sig++], u = p.cover || p.coverG, c = await hslCover(u);
+      if (c) { col[u] = c; fallos = 0; } else if (++fallos >= 20) { sig = faltan.length; break; }
+      hechas++; desdeG++;
+      if (desdeG >= 150) { desdeG = 0; cachePoner(K_COLCOV, col); }
+      if ((hechas === 300 || hechas === 1500) && PR.orden === 'color' && scrollY < 200 && vivo()) pintar();
+      if (vivo()) texto('Ordenando por color: ' + n$(hechas) + ' de ' + n$(faltan.length) + '.');
+    }
+  };
+  await Promise.all(Array.from({ length: 4 }, trabajador));
+  cachePoner(K_COLCOV, col);
+  if (vivo()) { texto(); if (PR.orden === 'color' && scrollY < 200) pintar(); }
+}
+
 async function vArtistas(m) {
   if (!S.artistas) { const c = S.segCache || await cacheLeer('seguidos'); if (c && c.length) S.artistas = S.segCache = c; }
   if (S.artistas) seguidosAlDia().then(c => { if (c && S.tab === 'artistas' && !S.vista && !S.filtro) render(); }).catch(() => {});
@@ -9805,7 +10048,7 @@ function pintarMini() {
   if (!s) { el.hidden = true; return; }
   el.hidden = false;
   const prog = Math.min(1, (s.prog + (s.playing ? Date.now() - s.at : 0)) / (s.dur || 1));
-  if (el._tinteDe !== s.p.cover) { el._tinteDe = s.p.cover; colorDe(s.p.coverG || s.p.cover).then(c => { if (c) el.style.setProperty('--tinte', c); else el.style.removeProperty('--tinte'); }); }
+  if (el._tinteDe !== s.p.cover) { el._tinteDe = s.p.cover; colorDe(s.p.coverG || s.p.cover).then(c => { if (c) { el.style.setProperty('--tinte', c); ponerAmbiente(c); } else el.style.removeProperty('--tinte'); }); }
   el.innerHTML = imgOph(s.p.cover, 'disco') + '<div class="t"><div class="t1 nowrap">' + esc(s.p.title) + '</div><div class="t2 nowrap">' + esc(nombresArtistas(s.p)) + (s.disp ? ' · ' + esc(s.disp.name) : '') + '</div><div class="prog"><i style="width:' + (prog * 100).toFixed(1) + '%"></i></div></div>' +
     '<button class="btn ico" data-p="ant">' + ic('ant') + '</button><button class="btn ico" data-p="pp">' + ic(s.playing ? 'pausa' : 'play') + '</button><button class="btn ico" data-p="sig">' + ic('sig') + '</button>';
 }
