@@ -10233,7 +10233,7 @@ function hojaAjustes() {
       '</div><div class="btnrow" style="margin-top:6px"><button class="btn sm" id="aErrC">Copiar</button><button class="btn sm ghost" id="aErrB">Vaciar</button></div>' : '<p class="tiny mute">Ninguno. 🎉</p>'); })() +
     '<h3>Tema</h3><div class="chips" id="aTema">' + [['', 'Oscuro'], ['light', 'Claro']].map(t => '<button class="chip' + ((PREFS.tema || '') === t[0] ? ' on' : '') + '" data-t="' + t[0] + '">' + t[1] + '</button>').join('') + '</div>' +
     '<h3>Color</h3><div class="acentos" id="aAc">' + ACENTOS.map(a => '<button class="' + ((PREFS.acento || '') === a[0] ? 'on' : '') + '" data-a="' + a[0] + '" title="' + a[1] + '" aria-label="' + a[1] + '" style="background:' + (temaOscuro() ? a[2] : a[3]) + '"></button>').join('') + '</div>' +
-    '<p class="mute tiny" style="margin-top:16px"><a href="index.html" style="color:inherit">Volver a Mi Música</a> · versión ' + VERSION + '</p>', h => {
+    '<p class="mute tiny" style="margin-top:16px">Versión ' + VERSION + '</p>', h => {
       h.querySelector('#aCopia').onclick = () => { cerrarHoja(); copiaDeTodo(); };
       h.querySelector('#aRest').onclick = () => { cerrarHoja(); restaurarCopia(); };
       const gp = h.querySelector('#gPasar'); if (gp) gp.onclick = () => { cerrarHoja(true); hojaPasarConexion(); };
