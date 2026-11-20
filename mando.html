@@ -6932,8 +6932,9 @@ function partirLlenas(ps, out) {
       /* no partir un año por la mitad */
       let j = fin; while (j < ord.length && j > i && (+ord[j].year || 0) === (+ord[j - 1].year || 0) && j - i < CASA_MAX) j++;
       const tr = ord.slice(i, j); if (!tr.length) continue;
-      const y0 = +tr[0].year || 0, y1 = +tr[tr.length - 1].year || 0;
-      const nom = c + (t === 0 ? ' (hasta ' + y1 + ')' : t === k - 1 ? ' (' + y0 + '-hoy)' : ' (' + y0 + '-' + y1 + ')');
+      /* las que no tienen año van al principio: sin año conocido en todo el trozo, «(sin año)» */
+      const y0 = +(tr.find(p => +p.year) || {}).year || 0, y1 = +tr[tr.length - 1].year || 0;
+      const nom = c + (!y1 ? ' (sin año)' : t === 0 ? ' (hasta ' + y1 + ')' : t === k - 1 ? ' (' + y0 + '-hoy)' : ' (' + y0 + '-' + y1 + ')');
       for (const p of tr) out.set(p.uri, nom);
       i = j;
     }
@@ -7164,7 +7165,7 @@ function semillasMoods(ps, asig, ctx) {
 }
 
 /* nombre sin el trozo de años que se añade al partir («… (hasta 2016)») */
-const casaBase = n => String(n || '').replace(/ \((hasta \d{4}|\d{4}-hoy|\d{4}-\d{4})\)$/, '');
+const casaBase = n => String(n || '').replace(/ \((hasta \d{4}|\d{4}-hoy|\d{4}-\d{4}|sin año)\)$/, '');
 const esCasa = n => CASA_NOMBRES.indexOf(casaBase(n)) >= 0;
 const claveArtCasa = p => fold(esEDM(p) ? artistaEpoca(p) : ((p.artists[0] || {}).name || ''));
 const nombreArtCasa = p => esEDM(p) ? artistaEpoca(p) : ((p.artists[0] || {}).name || '');
@@ -7230,8 +7231,8 @@ async function hojaCasas(D) {
   if (!D) {
     const ps0 = await likesGuardados(), R0 = leer(K_CASAS, {});
     if ((!ps0 || !ps0.length) && R0.vaciado) {
-      hoja('<h2>Una casa para cada canción</h2><div class="aviso"><b>Hecho</b>Me gusta se vació el ' + fechaLarga(R0.vaciado) + '. Todo está en sus playlists casa.</div>' +
-        '<div class="btnrow"><button class="btn ghost" id="caRest">' + ic('deshacer') + 'Volver a llenar Me gusta</button></div>', h => { h.querySelector('#caRest').onclick = () => restaurarMeGusta(); });
+      hoja('<h2>Una casa para cada canción</h2><div class="aviso"><b>Me gusta está vacío</b>Se vació el ' + fechaLarga(R0.vaciado) + '. Lo que tenías está en sus playlists casa.</div>' +
+        '<div class="btnrow"><button class="btn pri" id="caArch">' + ic('casa') + 'Archivo: meter todo el historial en sus casas</button><button class="btn ghost" id="caRest">' + ic('deshacer') + 'Volver a llenar Me gusta</button></div>', h => { h.querySelector('#caRest').onclick = () => restaurarMeGusta(); h.querySelector('#caArch').onclick = () => hojaArchivo(); });
       return;
     }
     if (!ps0 || !ps0.length) { toast('Primero abre Me gusta para que se carguen'); irATab('likes'); return; }
@@ -7303,9 +7304,8 @@ async function hojaCasas(D) {
   };
   const paso = () => {
     const nC = new Set(D.asig.values()).size, faltan = Array.from(new Set(D.asig.values())).filter(n => !D.plDe.has(n)).length;
-    if (R.vaciado) return '<div class="aviso"><b>Hecho</b>Me gusta se vació el ' + fechaLarga(R.vaciado) + '. Todo está en sus casas. Ahora Me gusta es tuyo para volver a llenarlo con lo que escuches estos días.</div>';
-    if (R.creado && !faltan) return '<div class="aviso"><b>Paso 2 de 2</b>Las playlists están creadas. Comprueba que todo cuadra y, cuando quieras, vacía Me gusta.</div>';
-    return '<div class="aviso"><b>Paso 1 de 2</b>' + n$(D.ps.length) + ' canciones → ' + nC + (nC === 1 ? ' playlist' : ' playlists') + ', ninguna de más de ' + n$(CASA_MAX) + '. Mira cada casa y mueve lo que no cuadre (un artista entero o una canción). Lo que muevas se recuerda. Nada cambia en Spotify hasta que pulses «Crear».</div>';
+    if (R.creado && !faltan) return '<div class="aviso"><b>Todo en su casa</b>Las playlists están creadas. Me gusta se queda como está: es lo que te gusta ahora.</div>';
+    return '<div class="aviso"><b>Antes de crear</b>' + n$(D.ps.length) + ' canciones → ' + nC + (nC === 1 ? ' playlist' : ' playlists') + ', ninguna de más de ' + n$(CASA_MAX) + '. Mira cada casa y mueve lo que no cuadre (un artista entero o una canción). Lo que muevas se recuerda. Nada cambia en Spotify hasta que pulses «Crear».</div>';
   };
   hoja('<h2>Una casa para cada canción</h2>' +
     '<p class="soft">Cada canción de Me gusta va a <b>una sola</b> playlist. Luego ya decidirás cuáles van además en otras. No se tocan The Beatles, Shazam, Goosebumps, Albums ni Canciones favoritas.</p>' +
@@ -7313,8 +7313,8 @@ async function hojaCasas(D) {
     '<div class="ep-bar"><input class="field" id="caQ" placeholder="Buscar canción o artista" autocomplete="off"></div>' +
     '<div id="caLista"></div>' +
     '<div class="btnrow ca-pie">' +
-    (R.vaciado ? '' : '<button class="btn pri" id="caCrear">' + ic('check') + (R.creado ? 'Crear lo que falte' : 'Crear las playlists') + '</button>') +
-    (R.creado && !R.vaciado ? '<button class="btn" id="caVaciar">' + ic('corazonRoto') + 'Vaciar Me gusta</button>' : '') +
+    '<button class="btn pri" id="caCrear">' + ic('check') + (R.creado ? 'Crear lo que falte' : 'Crear las playlists') + '</button>' +
+    '<button class="btn" id="caArch">' + ic('casa') + 'Archivo: meter todo el historial en sus casas</button>' +
     (D.rockViejo && D.rockViejo.length ? '<button class="btn pri" id="caRock">' + ic('tijera') + 'Pasar el rock a géneros</button>' : '') +
     (R.creado ? '<button class="btn" id="caRep">' + ic('repes') + 'Quitar repetidas</button>' : '') +
     (R.creado ? '<button class="btn" id="caMoods">' + ic('lista') + (R.moods ? 'Añadir lo que falte a los moods' : 'Crear los moods') + '</button>' : '') +
@@ -7356,7 +7356,7 @@ async function hojaCasas(D) {
         recalc(h, (s.dataset.alb ? 'Disco movido' : 'Movido') + ' a «' + val + '»');
       });
       const bC = h.querySelector('#caCrear'); if (bC) bC.onclick = () => crearCasas(D);
-      const bV = h.querySelector('#caVaciar'); if (bV) bV.onclick = () => vaciarMeGusta(D);
+      const bA = h.querySelector('#caArch'); if (bA) bA.onclick = () => hojaArchivo();
       const bR = h.querySelector('#caRest'); if (bR) bR.onclick = () => restaurarMeGusta();
       const bM = h.querySelector('#caMoods'); if (bM) bM.onclick = () => crearMoods(D);
       const bRp = h.querySelector('#caRep'); if (bRp) bRp.onclick = () => repararCasas(D);
@@ -7390,7 +7390,7 @@ async function dentroFresco(pl) {
 async function crearCasas(D) {
   const M = new Map(); for (const p of D.ps) { const c = D.asig.get(p.uri); (M.get(c) || M.set(c, []).get(c)).push(p.uri); }
   const nuevas = Array.from(M.keys()).filter(n => !D.plDe.has(n));
-  if (!(await confirmar('¿Crear las playlists?', 'Crear', (nuevas.length ? 'Se crean ' + nuevas.length + ' playlists privadas' : 'Ya existen todas') + ' y se meten ' + n$(D.ps.length) + ' canciones, cada una en su casa. Me gusta no se toca todavía. Spotify irá con pausas: deja la Fonoteca abierta.'))) { hojaCasas(D); return; }
+  if (!(await confirmar('¿Crear las playlists?', 'Crear', (nuevas.length ? 'Se crean ' + nuevas.length + ' playlists privadas' : 'Ya existen todas') + ' y se meten ' + n$(D.ps.length) + ' canciones, cada una en su casa. Me gusta no se toca. Spotify irá con pausas: deja la Fonoteca abierta.'))) { hojaCasas(D); return; }
   const r = await trabajo(() => conSpotifyFresco(async mias => {
     const R = leer(K_CASAS, {}); R.ids = R.ids || {};
     let i = 0, mete = 0, saca = 0;
@@ -7488,40 +7488,236 @@ async function migrarRock(D) {
   if (r) toast('Rock repartido: ' + n$(r.n) + ' canciones en ' + r.g + ' géneros', null, 8000);
   hojaCasas();
 }
-/* ¿está cada canción en su casa? (por recuento: no gasta casi nada) */
-async function comprobarCasas(D) {
-  if (COLA.length) return { ok: false, txt: 'Aún quedan ' + n$(COLA.length) + ' cambios en cola para Spotify. Cuando se hagan, vuelve a probar.' };
-  const pls = await cargarPlaylists(true), M = new Map();
-  for (const p of D.ps) { const c = D.asig.get(p.uri); M.set(c, (M.get(c) || 0) + 1); }
-  const mal = [];
-  for (const [n, k] of M) { const pl = pls.find(x => esMia(x) && x.name === n); if (!pl || pl.total < k) mal.push(n + (pl ? ' (' + pl.total + ' de ' + k + ')' : ' (no existe)')); }
-  return mal.length ? { ok: false, txt: 'No cuadran: ' + mal.slice(0, 6).join(', ') + (mal.length > 6 ? '…' : '') + '. Pulsa «Crear lo que falte».' } : { ok: true };
+/* ---- Archivo: todo el historial de Me gusta, cada canción en su casa ----
+   Junta el historial (historial-me-gusta.json y lo de este aparato) con Me gusta
+   de ahora, completa en Spotify lo que solo trae el nombre (lotes de 50, con el
+   cupo y las pausas de siempre) y reparte con la misma lógica que las casas.
+   Lo que ya vive en una casa se queda donde está y no se repite.
+   Me gusta NO se toca nunca: aquí no se quita ni se añade nada a Me gusta.
+   Primero se calcula (prueba: no escribe nada) y se enseña; solo al confirmar
+   se crean y llenan las playlists. Si se corta, al volver sigue donde iba. */
+const K_ARCH_P = 'archivoPistas', K_ARCH_PLAN = 'archivoPlan';
+const ARCH_VIDA = 24 * 3600e3;
+const pistaCompleta = p => !!(p && p.uri && p.albumUri && p.artists && p.artists.length && p.artists[0].id);
+/* historial + Me gusta, sin repetidas ni locales (si una viene dos veces, gana la que trae más datos) */
+async function archivoFuentes() {
+  const m = new Map();
+  const meter = p => {
+    if (!p || !p.uri || p.local || !/^spotify:track:/.test(p.uri)) return;
+    const v = m.get(p.uri);
+    if (!v) m.set(p.uri, p);
+    else if (!pistaCompleta(v) && pistaCompleta(p)) m.set(p.uri, Object.assign({}, p, { added: v.added || p.added }));
+  };
+  for (const p of await likesGuardados()) meter(p);
+  const h = await cacheLeer(K_HIST_LK); for (const p of (h && h.pistas) || []) meter(p);
+  let filas = null;
+  if (ghCfg()) { try { progreso('Leyendo el historial en GitHub'); const r = await ghLeer('historial-me-gusta.json'); filas = r.datos && r.datos.l; } catch (e) { apuntarFallo(e, 'historial (GitHub)'); } }
+  if (!filas) { try { const r = await fetch('historial-me-gusta.json', { cache: 'no-cache' }); if (r.ok) filas = ((await r.json()) || {}).l; } catch (e) {} }
+  if (!filas && !(h && h.pistas && h.pistas.length)) throw new Error('No encuentro el historial de Me gusta (historial-me-gusta.json)');
+  for (const x of filas || []) if (x && x[0]) meter(histDeFila(x));
+  return Array.from(m.values());
 }
-/* Paso 2: con todo en su casa, Me gusta se vacía (antes se guarda una copia) */
-async function vaciarMeGusta(D) {
-  const ch = await trabajo(() => comprobarCasas(D), 'Comprobando las playlists');
-  if (!ch) return;
-  if (!ch.ok) { toast(ch.txt, null, 8000); return; }
-  if (!(await confirmar('¿Vaciar Me gusta?', 'Vaciar', 'Las ' + n$(D.ps.length) + ' canciones están en sus casas. Se quitan todas de Me gusta y guardo una copia por si quieres volver atrás.'))) { hojaCasas(D); return; }
-  const uris = D.ps.map(p => p.uri);
-  const ok = await trabajo(async () => {
-    const copia = { at: Date.now(), l: D.ps.map(p => [p.uri, p.added, D.asig.get(p.uri), p.title, nombreArtCasa(p)]) };
-    await cachePoner('copiaLikes', copia);
-    if (ghCfg()) {
-      progreso('Guardando la copia en GitHub');
-      try { const r = await ghLeer('copia-me-gusta.json'); await ghFetch(r.api, { method: 'PUT', body: JSON.stringify({ message: 'copia de Me gusta: ' + uris.length, content: b64enc(JSON.stringify(copia)), branch: 'main', sha: r.sha || undefined }) }); }
-      catch (e) { apuntarFallo(e, 'copia Me gusta'); }
+/* lo que hay ahora en cada casa (leído de Spotify; si la playlist no ha cambiado, de lo guardado) */
+async function archivoCasasDentro() {
+  const pls = (await cargarPlaylists()).filter(esMia), casasPl = pls.filter(pl => esCasa(pl.name));
+  const fijas = new Map(), plDe = new Map(), cuenta = new Map(), pistas = new Map();
+  for (let i = 0; i < casasPl.length; i++) {
+    const pl = casasPl[i];
+    progreso('Mirando lo que ya está en sus casas: ' + pl.name, i, casasPl.length);
+    let dentro = [];
+    if (pl.total) { try { dentro = await pistasDePlaylist(pl.id); } catch (e) { if (e.status === 404) continue; throw e; } }
+    plDe.set(pl.name, pl); cuenta.set(pl.name, (cuenta.get(pl.name) || 0) + dentro.length);
+    for (const p of dentro) if (p && p.uri) { if (!fijas.has(p.uri)) fijas.set(p.uri, pl.name); if (!pistas.has(p.uri)) pistas.set(p.uri, p); }
+  }
+  progreso(null);
+  return { fijas, plDe, cuenta, pistas };
+}
+/* datos que faltan (disco, año, artistas con id): de lo que ya se sabe y, si no, de Spotify en lotes de 50 */
+async function archivoCompletar(ps, enCasas) {
+  const C = (await cacheLeer(K_ARCH_P)) || { pistas: {}, sin: {} };
+  const cp = await cacheLeer('copiaLikesPistas'), sabidas = new Map(enCasas);
+  for (const p of (cp && cp.pistas) || []) if (p && p.uri && !sabidas.has(p.uri)) sabidas.set(p.uri, p);
+  const deSabida = p => { const q = C.pistas[p.uri] || sabidas.get(p.uri); return pistaCompleta(q) ? Object.assign({}, q, { added: p.added || q.added || 0 }) : null; };
+  const pedir = ps.filter(p => !pistaCompleta(p) && p.id && !C.sin[p.uri] && !deSabida(p));
+  let cerrado = false;
+  for (let i = 0; i < pedir.length; i += 50) {
+    const lote = pedir.slice(i, i + 50);
+    progreso('Completando en Spotify las que solo traen el nombre: ' + n$(i) + ' de ' + n$(pedir.length), i, pedir.length);
+    let d;
+    try { d = await sp('/tracks?ids=' + lote.map(p => p.id).join(',')); }
+    catch (e) {
+      /* si Spotify no deja pedirlas en lote a esta app, se reparten con lo que hay (nombre y artista) */
+      if (e.status === 403 || e.status === 404 || e.status === 410) { cerrado = true; apuntarFallo(e, 'archivo: canciones en lote'); break; }
+      throw e;
     }
-    const R = leer(K_CASAS, {}); R.copia = copia.at; escribir(K_CASAS, R);
-    await libQuitar(uris, 'Vaciando Me gusta');
-    R.vaciado = Date.now(); escribir(K_CASAS, R);
-    return true;
-  }, 'Vaciando Me gusta');
-  if (!ok) return;
-  await cachePoner('likes', { total: 0, pistas: [] }); await cachePoner('likesParcial', null);
-  S.likes = null; if (S.fuente && S.fuente.kind === 'likes') S.fuente = null;
-  toast(_encolados > 0 ? 'Guardado: Spotify va con pausas y lo terminará sola la Fonoteca. Déjala abierta.' : 'Me gusta está vacío. Todo sigue en sus casas.', null, 8000);
-  render();
+    const ts = (d && d.tracks) || [];
+    lote.forEach((p, j) => {
+      const t = pista(ts[j]);
+      if (t && !t.local) { delete t.k; delete t._f; delete t.coverG; t.uri = p.uri; t.id = p.id; t.added = p.added || 0; C.pistas[p.uri] = t; }
+      else C.sin[p.uri] = 1;
+    });
+    /* guardado tras cada lote: si se corta, no se vuelve a pedir lo ya pedido */
+    await cachePoner(K_ARCH_P, C);
+  }
+  progreso(null);
+  let sinDatos = 0;
+  const out = ps.map(p => {
+    if (pistaCompleta(p)) return p;
+    const q = deSabida(p); if (q) return q;
+    sinDatos++;
+    const o = Object.assign({}, p);
+    if (!+o.year) { const y = anyoReal(o); if (y) o.year = String(y); }
+    o._sinDatos = true;
+    return o;
+  });
+  return { ps: out, sinDatos, cerrado };
+}
+/* el reparto: la misma lógica que las casas; lo que ya vive en una casa se queda allí,
+   y lo nuevo va a la playlist de su estilo que ya exista (la de sus años, si se partió), si cabe */
+function archivoReparto(ps, cs, ahora) {
+  const { fijas, plDe, cuenta } = cs;
+  const asig = asignarCasas(ps, { fijas, ahora });
+  let ya = 0;
+  for (const p of ps) if (fijas.has(p.uri)) { asig.set(p.uri, fijas.get(p.uri)); ya++; }
+  const RXT = /\((?:hasta (\d{4})|(\d{4})-hoy|(\d{4})-(\d{4})|(sin año))\)$/, trozos = new Map();
+  for (const n of plDe.keys()) {
+    const m = RXT.exec(n), b = casaBase(n);
+    (trozos.get(b) || trozos.set(b, []).get(b)).push(m && m[5] ? { n, y0: 0, y1: 0 } : { n, y0: m ? +(m[2] || m[3] || 0) : 0, y1: m ? +(m[1] || m[4] || 9999) : 9999 });
+  }
+  const lleva = new Map(cuenta), sobran = new Map();
+  const nuevas = ps.filter(p => !fijas.has(p.uri)).sort((a, b) => (+a.year || 0) - (+b.year || 0));
+  for (const p of nuevas) {
+    const b = casaBase(asig.get(p.uri)), ts = trozos.get(b);
+    if (!ts) continue;
+    const y = +p.year || 0, fija = CASA_FIJAS.indexOf(b) >= 0;
+    const t = ts.find(t => y >= t.y0 && y <= t.y1 && (fija || (lleva.get(t.n) || 0) < CASA_MAX));
+    if (t) { asig.set(p.uri, t.n); lleva.set(t.n, (lleva.get(t.n) || 0) + 1); }
+    else (sobran.get(b) || sobran.set(b, []).get(b)).push(p);
+  }
+  /* lo que no cabe en las que hay: otra playlist del mismo estilo, con sus años en el nombre */
+  for (const [b, l] of sobran) for (let i = 0; i < l.length; i += CASA_MAX) {
+    const tr = l.slice(i, i + CASA_MAX), y0 = +tr[0].year || 0, y1 = +tr[tr.length - 1].year || new Date().getFullYear();
+    const n = b + (y0 ? ' (' + y0 + '-' + y1 + ')' : ' (hasta ' + y1 + ')');
+    for (const p of tr) asig.set(p.uri, n);
+  }
+  const por = {}, inf = {};
+  for (const p of nuevas) {
+    const c = asig.get(p.uri); if (!c) continue;
+    (por[c] || (por[c] = [])).push(p.uri);
+    inf[p.uri] = [p.title || '', (p.artists || []).map(a => a.name).join(', '), +p.year || 0, p._sinDatos ? 1 : 0];
+  }
+  return { ya, por, inf };
+}
+/* modo prueba: calcula y guarda el plan; no escribe nada en Spotify */
+async function archivoCalcular() {
+  const P = await trabajo(async () => {
+    await etqAsegurar();
+    progreso('Juntando el historial y Me gusta');
+    const ps0 = await archivoFuentes();
+    const cs = await archivoCasasDentro();
+    const C = await archivoCompletar(ps0, cs.pistas);
+    let ahora = null; try { ahora = await escuchasAhora(); } catch (e) { if (e.message === 'DETENIDO') throw e; }
+    progreso('Repartiendo ' + n$(C.ps.length) + ' canciones');
+    const r = archivoReparto(C.ps, cs, ahora);
+    const plan = { at: Date.now(), total: C.ps.length, ya: r.ya, sinDatos: C.sinDatos, cerrado: C.cerrado, por: r.por, inf: r.inf,
+      dentro: Object.fromEntries(cs.cuenta), nuevasPl: Object.keys(r.por).filter(n => !cs.plDe.has(n)), hechas: {} };
+    await cachePoner(K_ARCH_PLAN, plan);
+    return plan;
+  }, 'Calculando el reparto (prueba)');
+  if (P) hojaArchivo(P);
+}
+/* de verdad: crea las que falten y mete en cada una lo suyo (solo lo que no esté ya).
+   Cada playlist terminada se apunta: si se corta, al volver sigue por la siguiente. */
+let _archCorre = false;
+async function archivoLlenar(auto) {
+  if (_archCorre) return;
+  const P = await cacheLeer(K_ARCH_PLAN);
+  if (!P || !P.por || P.fin) { if (!auto) hojaArchivo(); return; }
+  const nombres = Object.keys(P.por), quedan = nombres.filter(n => !P.hechas[n]);
+  if (!P.empezado) {
+    if (Date.now() - P.at > ARCH_VIDA) { toast('El cálculo es de hace más de un día: vuelve a calcularlo antes'); hojaArchivo(); return; }
+    const n = nombres.reduce((a, k) => a + P.por[k].length, 0);
+    if (!(await confirmar('¿Meter el historial en sus casas?', 'Hacer el reparto', 'Se añaden ' + n$(n) + ' canciones a ' + nombres.length + ' playlists' + (P.nuevasPl.length ? ' (' + P.nuevasPl.length + ' nuevas, privadas)' : '') + '. Las ' + n$(P.ya) + ' que ya están en una casa no se tocan. Me gusta no se toca. Spotify irá con pausas: deja la Fonoteca abierta; si la cierras, al volver sigue donde iba.'))) { hojaArchivo(P); return; }
+    P.empezado = Date.now(); await cachePoner(K_ARCH_PLAN, P);
+  }
+  _archCorre = true;
+  try {
+    const r = await trabajo(() => conSpotifyFresco(async mias => {
+      const R = leer(K_CASAS, {}); R.ids = R.ids || {};
+      let i = nombres.length - quedan.length, mete = 0;
+      for (const n of quedan) {
+        progreso('Archivo · playlist ' + (++i) + ' de ' + nombres.length + ': ' + n, i, nombres.length);
+        let pl = (R.ids[n] && mias.find(x => x.id === R.ids[n])) || mias.find(x => x.name === n);
+        if (!pl) { const d = await crearPlaylist(n, CASA_DESC[casaBase(n)] || 'Casa de la Fonoteca: cada canción vive en una sola playlist.', false); pl = { id: d.id, name: n, total: 0, nueva: true }; mias.push(pl); }
+        R.ids[n] = pl.id; escribir(K_CASAS, R);
+        const ya = pl.nueva ? new Set() : new Set((await dentroFresco(pl)).map(x => x.uri));
+        const nu = P.por[n].filter(u => !ya.has(u));
+        if (ya.size + nu.length > 10000) throw new Error('«' + n + '» pasaría de 10.000 canciones');
+        if (nu.length) { await plAnadir(pl.id, nu, null, 'Llenando «' + n + '»'); mete += nu.length; }
+        P.hechas[n] = Date.now(); await cachePoner(K_ARCH_PLAN, P);
+      }
+      P.fin = Date.now(); await cachePoner(K_ARCH_PLAN, P);
+      return { mete };
+    }), 'Metiendo el historial en sus casas');
+    S.playlists = null; S.indice = null; _ixCasas = null;
+    if (r) toast('Hecho: ' + n$(r.mete) + ' canciones del historial en sus casas. Me gusta sigue igual.', null, 8000);
+    else if (auto) toast('El archivo del historial sigue a medias', { txt: 'Seguir', fn: () => archivoLlenar() }, 12000);
+  } finally { _archCorre = false; }
+  if (!auto) hojaArchivo();
+}
+/* al abrir la app: si se quedó a medias, sigue solo (ya lo confirmaste) */
+async function archivoAlAbrir() {
+  const P = await cacheLeer(K_ARCH_PLAN);
+  if (!P || !P.empezado || P.fin) return;
+  if (COLA.length || esperaPendiente() > 0) { toast('El archivo del historial se quedó a medias', { txt: 'Seguir', fn: () => archivoLlenar() }, 12000); return; }
+  toast('Sigo metiendo el historial en sus casas, donde lo dejé');
+  archivoLlenar(true);
+}
+async function hojaArchivo(P) {
+  if (P === undefined) P = await cacheLeer(K_ARCH_PLAN);
+  const intro = '<h2>Archivo: todo el historial en sus casas</h2><p class="soft">Junta todas las canciones que han pasado por tu Me gusta (el historial) con las de ahora, y mete cada una en su casa con la misma lógica de siempre. Las que ya viven en una casa no se mueven ni se repiten. <b>Me gusta no se toca.</b></p>';
+  if (!P || !P.por || (P.fin && Date.now() - P.fin > ARCH_VIDA) || (!P.empezado && !P.fin && Date.now() - P.at > ARCH_VIDA)) {
+    hoja(intro + '<div class="aviso"><b>Primero, una prueba</b>Calcula el reparto y te lo enseña. No cambia nada en Spotify. Si hay canciones que solo traen el nombre, se piden sus datos a Spotify (de 50 en 50, con las pausas de siempre).</div>' +
+      '<div class="btnrow"><button class="btn pri" id="arCalc">' + ic('casa') + 'Calcular el reparto (prueba)</button></div>', h => { h.querySelector('#arCalc').onclick = () => { cerrarHoja(true); archivoCalcular(); }; });
+    return;
+  }
+  const nombres = Object.keys(P.por), nCanc = nombres.reduce((a, k) => a + P.por[k].length, 0), hechas = nombres.filter(n => P.hechas[n]).length;
+  let estado;
+  if (P.fin) estado = '<div class="aviso"><b>Hecho el ' + fechaLarga(P.fin) + '</b>' + n$(nCanc) + ' canciones del historial repartidas en ' + nombres.length + ' playlists. Me gusta sigue igual.</div>';
+  else if (P.empezado) estado = '<div class="aviso"><b>A medias</b>' + hechas + ' de ' + nombres.length + ' playlists hechas. Pulsa «Seguir» y continúa por donde iba (no repite nada).</div>';
+  else estado = '<div class="aviso"><b>Prueba: aún no ha cambiado nada en Spotify</b>Calculado el ' + fechaLarga(P.at) + ' a las ' + new Date(P.at).toTimeString().slice(0, 5) + '.</div>';
+  const fila = (t, v) => '<div class="ep-a"><span class="tx"><b>' + t + '</b></span><span class="ep-n">' + v + '</span></div>';
+  let html = estado +
+    fila('Canciones en total (historial + Me gusta, sin repetidas ni locales)', n$(P.total)) +
+    fila('Ya estaban en alguna casa: se quedan donde están', n$(P.ya)) +
+    fila('Se añaden a sus casas', n$(nCanc)) +
+    fila('Playlists que reciben canciones', n$(nombres.length)) +
+    fila('Playlists nuevas que se crean', n$(P.nuevasPl.length)) +
+    (P.sinDatos ? fila('Repartidas solo por nombre y artista (Spotify no dio sus datos)', n$(P.sinDatos)) : '');
+  if (P.cerrado) html += '<div class="aviso"><b>Ojo</b>Spotify no deja a esta app pedir canciones en lote. Las que solo traían el nombre se han repartido con el nombre, el artista y las etiquetas que ya tenías (sin el año de Spotify). Revisa sobre todo las casas partidas por años.</div>';
+  /* cada casa, en el orden de siempre; se abre para ver qué canciones recibe */
+  const orden = [];
+  for (const [g, l] of CASAS) { const ns = nombres.filter(n => l.indexOf(casaBase(n)) >= 0).sort((a, b) => l.indexOf(casaBase(a)) - l.indexOf(casaBase(b)) || (a < b ? -1 : 1)); if (ns.length) orden.push([g, ns]); }
+  const otras = nombres.filter(n => !orden.some(([, ns]) => ns.indexOf(n) >= 0)); if (otras.length) orden.push(['Otras', otras]);
+  for (const [g, ns] of orden) {
+    html += '<h3 class="ca-g">' + esc(g) + '</h3>';
+    for (const n of ns) html += '<div class="ep-g' + (P.hechas[n] ? ' hecho' : '') + '" data-c="' + esc(n) + '"><div class="ep-cab"><span class="tx"><b>' + esc(n) + '</b><small>' + (P.nuevasPl.indexOf(n) >= 0 ? 'nueva' : 'ya existe · ' + n$(P.dentro[n] || 0) + ' dentro') + '</small></span><span class="ep-n">+' + n$(P.por[n].length) + '</span>' + ic('chev', ' class="i flecha"') + '</div><div class="ep-cs"></div></div>';
+  }
+  const botones = P.fin ? '<button class="btn" id="arCalc">' + ic('recargar') + 'Volver a calcular</button>'
+    : P.empezado ? '<button class="btn pri" id="arHacer">' + ic('play') + 'Seguir</button>'
+    : '<button class="btn pri" id="arHacer">' + ic('check') + 'Hacer el reparto en Spotify</button><button class="btn" id="arCalc">' + ic('recargar') + 'Volver a calcular</button>';
+  hoja(intro + html + '<div class="btnrow ca-pie">' + botones + '</div>', h => {
+    h.addEventListener('click', e => {
+      const cab = e.target.closest('.ep-cab'); if (!cab) return;
+      const g = cab.parentNode, n = g.dataset.c, cs = g.querySelector('.ep-cs');
+      if (g.classList.toggle('abierto') && !cs.innerHTML) {
+        const l = P.por[n] || [];
+        cs.innerHTML = l.slice(0, 300).map(u => { const x = P.inf[u] || [u, '', 0, 0]; return '<div class="ep-c"><span class="t">' + esc(x[0]) + ' <span class="mute">· ' + esc(x[1]) + (x[2] ? ' · ' + x[2] : '') + (x[3] ? ' · sin datos de Spotify' : '') + '</span></span></div>'; }).join('') + (l.length > 300 ? '<p class="tiny mute">… y ' + n$(l.length - 300) + ' más</p>' : '');
+      }
+    });
+    const bc = h.querySelector('#arCalc'); if (bc) bc.onclick = () => { cerrarHoja(true); archivoCalcular(); };
+    const bh = h.querySelector('#arHacer'); if (bh) bh.onclick = () => { cerrarHoja(true); archivoLlenar(); };
+  });
 }
 /* por si te arrepientes: vuelve a dar ♥ a todo, en el orden de antes */
 async function restaurarMeGusta() {
@@ -11848,6 +12044,8 @@ window.addEventListener('unhandledrejection', e => apuntarFallo(e.reason, 'sin c
   if (pideHistoria) setTimeout(() => crearDesdeHistoria(pideHistoria), 400);
   if (esperaPendiente() === 0) leerReproductor();
   setTimeout(procesarCola, 4000);
+  /* el archivo del historial, si se quedó a medias, sigue solo */
+  setTimeout(() => archivoAlAbrir().catch(e => apuntarFallo(e, 'archivo al abrir')), 9000);
   /* al abrir, se trae lo de otros aparatos en segundo plano */
   etqAsegurar().then(() => { if (S.fuente && $('#vlist')) pintarFilas(true); });
   cacheLeer('seguidos').then(l => { if (l && !S.segCache) S.segCache = l; });
