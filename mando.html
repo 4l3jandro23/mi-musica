@@ -1825,7 +1825,7 @@ const K_CREDS = 'musicvault_spotify_creds_v1';
 const K_HIST = 'mando_historial_v1';
 const K_PREFS = 'mando_prefs_v1';
 const API = 'https://api.spotify.com/v1';
-const VERSION = '2026-11-10a';
+const VERSION = '2026-11-20a';
 const CONECTAR = 'mando.html?conectar=mando';
 
 /* ---------------- iconos (trazo, estilo Lucide) ---------------- */
@@ -2912,12 +2912,13 @@ $('#bnav').onclick = e => {
   const b = e.target.closest('[data-t]'); if (!b) return;
   if (b.dataset.t !== '_mas') return irATab(b.dataset.t);
   hoja('<h2>Más</h2><div class="opc">' + TABS.filter(t => PRINCIPALES.indexOf(t.id) < 0).map(t => '<button data-t="' + t.id + '">' + ic(t.ic) + '<span>' + t.txt + (SUB_TAB[t.id] ? '<span class="sub">' + SUB_TAB[t.id] + '</span>' : '') + '</span></button>').join('') +
-    '<div class="sec">Herramientas</div><button data-x="ira">' + ic('buscar') + '<span>Ir a…<span class="sub">busca cualquier playlist, disco, artista o herramienta</span></span></button>' +
+    '<div class="sec">Herramientas</div><button data-x="explorar">' + ic('buscar') + '<span>Explorar tu biblioteca<span class="sub">por artista, año y género, con fotos y biografías</span></span></button><button data-x="ira">' + ic('buscar') + '<span>Ir a…<span class="sub">busca cualquier playlist, disco, artista o herramienta</span></span></button>' +
     '<button data-x="comparar">' + ic('unir') + '<span>Comparar dos listas<span class="sub">qué comparten y qué no</span></span></button>' +
     '<div class="sec">Ajustes</div><button data-x="cupo">' + ic('grafica') + 'Tu cupo de Spotify</button><button data-x="aj">' + ic('ajustes') + 'Conexión, copias y tema</button></div>', h => {
       h.querySelector('.opc').onclick = ev => {
         const x = ev.target.closest('[data-t],[data-x]'); if (!x) return;
         cerrarHoja(true);
+        if (x.dataset.x === 'explorar') { location.href = 'biblioteca.html'; return; }
         if (x.dataset.t) irATab(x.dataset.t); else if (x.dataset.x === 'cupo') hojaCupo(); else if (x.dataset.x === 'ira') hojaIrA(); else if (x.dataset.x === 'sorpresa') sorprendeme(); else if (x.dataset.x === 'triaje') abrirTriaje(); else if (x.dataset.x === 'partir') partirMeGusta(); else if (x.dataset.x === 'portadas') hojaPortadas(); else if (x.dataset.x === 'rulgen') misCasasYMoods().then(C => ruletaCasas(C.casas)).catch(e => toast(explicarError(e))); else if (x.dataset.x === 'juego') hojaJuego(); else if (x.dataset.x === 'etq') etiquetarTodo(); else if (x.dataset.x === 'comparar') hojaComparar(); else if (x.dataset.x === 'imagen') hojaCompartir(); else hojaAjustes();
       };
     });
@@ -10226,6 +10227,8 @@ function hojaAjustes() {
     '<label class="lbl">Token de GitHub</label><input class="field" id="gTok" type="password" placeholder="' + (ghCfg() ? 'guardado (déjalo vacío para no cambiarlo)' : 'github_pat_…') + '">' +
     '<div class="btnrow" style="margin-top:8px"><button class="btn" id="gOk">Guardar y sincronizar</button></div>' +
     '<p class="tiny mute">' + esc(misSync.msg || (ghCfg() ? 'Configurado' : 'Sin configurar: solo se guarda en este aparato')) + '</p>' +
+    '<h3>Explorar tu biblioteca</h3><p class="soft tiny">Sube a GitHub tus Me gusta con su disco, portada y año (biblioteca.json), para la vista Explorar y el script de datos. Hazlo de vez en cuando para que salga lo nuevo. ' + (leer('fonoteca_bib_subida', 0) ? 'Última vez: ' + new Date(+leer('fonoteca_bib_subida', 0)).toLocaleDateString('es-ES') + '.' : 'Aún no se ha subido.') + '</p>' +
+    '<div class="btnrow"><button class="btn" id="aBib"' + (ghCfg() ? '' : ' disabled') + '>' + ic('subir') + 'Exportar biblioteca</button><a class="btn" href="biblioteca.html">Abrir Explorar</a></div>' +
     '<h3>Last.fm (géneros de las canciones)</h3><input class="field" id="aLf" placeholder="' + (lfCfg() ? 'guardada (déjalo vacío para no cambiarla)' : 'clave de API de last.fm/api') + '">' +
     '<h3>Spotify</h3><div class="btnrow"><button class="btn sm pri" id="aDiag">' + ic('check') + 'Diagnóstico</button><button class="btn sm" id="aCid">Cambiar el Client ID</button><button class="btn sm" id="aCache">Borrar lo guardado en este aparato</button></div>' +
     (() => { const l = leer(K_ERR, []); return '<h3>Fallos recientes</h3>' + (l.length ? '<p class="soft tiny">Si algo falla, pulsa «Copiar» y pégaselo a Claude: así se ve exactamente qué ha pasado.</p><div class="tiny" style="max-height:170px;overflow:auto;background:var(--surface);border-radius:10px;padding:8px 10px">' +
@@ -10236,6 +10239,7 @@ function hojaAjustes() {
     '<p class="mute tiny" style="margin-top:16px">Versión ' + VERSION + '</p>', h => {
       h.querySelector('#aCopia').onclick = () => { cerrarHoja(); copiaDeTodo(); };
       h.querySelector('#aRest').onclick = () => { cerrarHoja(); restaurarCopia(); };
+      h.querySelector('#aBib').onclick = () => { cerrarHoja(); exportarBiblioteca(); };
       const gp = h.querySelector('#gPasar'); if (gp) gp.onclick = () => { cerrarHoja(true); hojaPasarConexion(); };
       h.querySelector('#gVinc').onclick = async () => { if (await vincular(h.querySelector('#gCod').value)) cerrarHoja(); };
       h.querySelector('#gOk').onclick = async () => {
@@ -10314,6 +10318,43 @@ async function copiaDeTodo() {
     descargar('spotify-copia-' + new Date().toISOString().slice(0, 10) + '.json', JSON.stringify(out));
     toast('Copia descargada: ' + out.playlists.length + ' playlists, ' + out.meGusta.length + ' Me gusta');
   }, 'Haciendo la copia');
+}
+/* EXPLORAR (fase 1): sube biblioteca.json con tus Me gusta y su disco.
+   Usa lo ya guardado en el aparato; solo pide a Spotify lo nuevo.
+   Fila: [id, título, [[idArtista, nombre]…], idDisco, disco, tipoDisco, año, portada, añadida, ms]
+   La portada se guarda sin «https://i.scdn.co/image/» para que pese menos. */
+async function exportarBiblioteca() {
+  if (!ghCfg()) { toast('Primero configura GitHub en Ajustes'); return; }
+  await trabajo(async () => {
+    progreso('Leyendo tus Me gusta');
+    const ps = (await pistasMeGusta()) || [];
+    if (ps._parcial) throw new Error('Aún estoy cargando tus Me gusta (' + n$(ps.length) + ' de momento). Exporta cuando termine.');
+    const corta = u => String(u || '').replace('https://i.scdn.co/image/', '');
+    const l = ps.filter(p => p && p.id && !p.local).map(p => [p.id, p.title, p.artists.map(a => [a.id || '', a.name]), p.albumId, p.album, p.albumType, p.year, corta(p.coverG), p.added || 0, p.ms || 0]);
+    if (!l.length) throw new Error('No hay Me gusta guardados en este aparato');
+    progreso('Subiendo a GitHub (' + n$(l.length) + ' canciones)');
+    const api = 'https://api.github.com/repos/' + ghCfg().repo + '/contents/biblioteca.json';
+    /* lo que hay ahora en GitHub: si la lista nueva es bastante más corta, se pregunta antes de pisarla */
+    let antes = 0;
+    try { const r0 = await ghLeer('biblioteca.json'); antes = ((r0.datos || {}).l || []).length; } catch (e) {}
+    if (antes && l.length < antes * 0.9) {
+      progreso(null);
+      if (!confirm('En GitHub hay ' + n$(antes) + ' canciones y este aparato solo tiene ' + n$(l.length) + '. ¿Subo igualmente la lista más corta?')) return;
+      progreso('Subiendo a GitHub (' + n$(l.length) + ' canciones)');
+    }
+    for (let i = 0; i < 3; i++) {
+      /* solo hace falta el sha (sin descargar el archivo entero) */
+      const m = await ghFetch(api + '?ref=main&t=' + Date.now(), { headers: { Accept: 'application/vnd.github.object' } });
+      if (m.status === 401 || m.status === 403) throw new Error('el token de GitHub no tiene permiso para guardar');
+      const sha = m.ok ? (await m.json()).sha : undefined;
+      const r = { api, sha };
+      const put = await ghFetch(r.api, { method: 'PUT', body: JSON.stringify({ message: 'biblioteca: ' + l.length + ' canciones', content: b64enc(JSON.stringify({ at: Date.now(), v: 1, l })), branch: 'main', sha: r.sha || undefined }) });
+      if (put.ok) { escribir('fonoteca_bib_subida', Date.now()); toast('Biblioteca subida: ' + n$(l.length) + ' canciones'); return; }
+      if (put.status !== 409 && put.status !== 422) throw new Error('GitHub respondió ' + put.status + ' al subir la biblioteca');
+      await sleep(1500);
+    }
+    throw new Error('GitHub no deja subir la biblioteca ahora; prueba en un rato');
+  }, 'Exportando la biblioteca');
 }
 function restaurarCopia() {
   const inp = document.createElement('input');

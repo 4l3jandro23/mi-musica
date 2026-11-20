@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#14100d">
+<link sizes="180x180" rel="apple-touch-icon" href="icon-180.png?v=20261111">
+<link rel="icon" href="favicon-32.png?v=20261111" sizes="32x32">
+<title>Explorar · Fonoteca</title>
+<!-- EXPLORAR (fase 1): tu biblioteca por artista, año y género.
+     Lee biblioteca.json (lo sube la Fonoteca › Ajustes › Exportar biblioteca),
+     artistas-info.json (lo genera enriquecer/enriquecer.py), etiquetas-canciones.json
+     (años reales y géneros que ya tenía la Fonoteca) y taxonomia.js.
+     Solo lee: no escribe nada en ningún sitio. -->
+<style>
+:root {
+  --bg: #14100d; --bg2: #1b1511; --surface: #231b15; --surface2: #2c231b; --line: rgba(243,234,217,.10);
+  --text: #f3ead9; --soft: #cdbfa4; --mute: #8f8270; --acc: #e0a03a; --acc2: #f2c071;
+  --spot: #1ed760; --r: 14px; --safeB: env(safe-area-inset-bottom, 0px); --safeT: env(safe-area-inset-top, 0px);
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; padding: 0; }
+img { display: block; }
+h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -.01em; }
+h1, h2 { font-family: var(--serif); }
+
+/* ---------- cabecera ---------- */
+.top { position: sticky; top: 0; z-index: 20; background: rgba(20,16,13,.86); -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4); border-bottom: 1px solid var(--line); padding: calc(var(--safeT) + 10px) 16px 10px; }
+.top-in { max-width: 1180px; margin: 0 auto; display: flex; gap: 12px; align-items: center; }
+.marca { font-family: var(--serif); font-size: 21px; font-weight: 700; white-space: nowrap; display: flex; align-items: center; gap: 8px; }
+.marca small { font-family: system-ui, sans-serif; font-size: 12px; font-weight: 500; color: var(--mute); }
+.buscar { flex: 1; position: relative; min-width: 0; }
+.buscar input { width: 100%; height: 40px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--text); padding: 0 36px 0 38px; font-size: 16px; outline: none; }
+.buscar input::-webkit-search-cancel-button { -webkit-appearance: none; display: none; }
+.buscar input:focus { border-color: rgba(224,160,58,.6); background: var(--surface2); }
+.buscar svg { position: absolute; left: 12px; top: 11px; width: 18px; height: 18px; color: var(--mute); }
+.buscar .x { position: absolute; right: 6px; top: 6px; width: 28px; height: 28px; border-radius: 8px; color: var(--mute); display: none; font-size: 18px; }
+.buscar.con .x { display: block; }
+.tabs { display: flex; gap: 4px; background: var(--surface); border-radius: 12px; padding: 4px; }
+.tabs a { padding: 7px 14px; border-radius: 9px; font-size: 14px; font-weight: 600; color: var(--soft); display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.tabs a.on { background: var(--surface2); color: var(--text); box-shadow: 0 1px 0 rgba(255,255,255,.04) inset; }
+.tabs svg { width: 18px; height: 18px; }
+.volver { color: var(--mute); font-size: 13px; white-space: nowrap; }
+.volver:hover { color: var(--text); }
+
+main { max-width: 1180px; margin: 0 auto; padding: 18px 16px calc(40px + var(--safeB)); min-height: 70vh; }
+.aviso { background: linear-gradient(135deg, rgba(224,160,58,.16), rgba(224,160,58,.05)); border: 1px solid rgba(224,160,58,.3); border-radius: var(--r); padding: 12px 14px; font-size: 14px; color: var(--soft); margin-bottom: 16px; }
+.aviso b { color: var(--text); }
+
+/* ---------- bloques comunes ---------- */
+.cab { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 6px 0 14px; }
+.cab h2 { font-size: 28px; line-height: 1.1; }
+.cab p { margin: 4px 0 0; color: var(--mute); font-size: 14px; }
+.sec { margin: 28px 0 12px; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--mute); font-weight: 700; display: flex; justify-content: space-between; align-items: baseline; }
+.sec span { text-transform: none; letter-spacing: 0; font-weight: 500; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { padding: 6px 12px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); font-size: 13px; color: var(--soft); white-space: nowrap; }
+.chip.on { background: var(--text); color: var(--bg); border-color: var(--text); }
+.chip i { font-style: normal; color: var(--mute); margin-left: 4px; }
+.chip.on i { color: rgba(20,16,13,.6); }
+.chip .pt { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 999px; background: var(--surface2); font-weight: 600; font-size: 14px; white-space: nowrap; }
+.btn.spot { background: var(--spot); color: #0b1a10; }
+.btn svg { width: 18px; height: 18px; }
+.mute { color: var(--mute); }
+
+/* ---------- rejillas ---------- */
+.rej { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 18px 14px; }
+.carta { min-width: 0; }
+.carta .img { aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: var(--surface); position: relative; box-shadow: 0 8px 24px rgba(0,0,0,.35); transition: transform .18s ease; }
+.carta:hover .img { transform: translateY(-2px); }
+.carta.art .img { border-radius: 50%; }
+.carta img { width: 100%; height: 100%; object-fit: cover; }
+.carta .t { margin-top: 8px; font-weight: 600; font-size: 14px; line-height: 1.25; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.carta.art .t { text-align: center; }
+.carta .s { font-size: 12.5px; color: var(--mute); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.carta.art .s { text-align: center; }
+.mono { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 44px; font-weight: 700; color: rgba(255,255,255,.88); }
+
+/* ---------- lista de canciones ---------- */
+.canc { display: flex; flex-direction: column; }
+.fila { display: grid; grid-template-columns: 44px 1fr auto 36px; gap: 12px; align-items: center; padding: 8px 6px; border-radius: 10px; }
+.fila:hover { background: var(--surface); }
+.fila img, .fila .ph { width: 44px; height: 44px; border-radius: 6px; object-fit: cover; background: var(--surface2); }
+.fila .tt { min-width: 0; }
+.fila .tt b { display: block; font-weight: 600; font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fila .tt span { display: block; font-size: 13px; color: var(--mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fila .tt span a:hover { color: var(--text); text-decoration: underline; }
+.fila .y { font-size: 13px; color: var(--mute); font-variant-numeric: tabular-nums; }
+.play { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--mute); }
+.play:hover { color: var(--spot); background: var(--surface2); }
+.play svg { width: 20px; height: 20px; }
+.mas { display: block; margin: 14px auto 0; }
+.centinela { height: 1px; }
+
+/* ---------- ficha ---------- */
+.heroe { position: relative; margin: -18px -16px 0; padding: 36px 16px 26px; overflow: hidden; }
+.heroe .fondo { position: absolute; inset: -40px; background-size: cover; background-position: center; filter: blur(48px) saturate(1.3) brightness(.45); transform: scale(1.1); }
+.heroe::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,16,13,.1), var(--bg) 96%); }
+.heroe-in { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; display: flex; gap: 26px; align-items: flex-end; }
+.heroe .foto { width: 220px; height: 220px; flex: none; border-radius: 50%; overflow: hidden; box-shadow: 0 18px 50px rgba(0,0,0,.55); background: var(--surface); }
+.heroe .foto.cuad { border-radius: 12px; }
+.heroe .foto img { width: 100%; height: 100%; object-fit: cover; }
+.heroe .datos { min-width: 0; }
+.heroe .tipo { font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: var(--acc2); font-weight: 700; }
+.heroe h1 { font-size: clamp(32px, 6vw, 60px); line-height: 1.02; margin: 6px 0 10px; overflow-wrap: anywhere; }
+.heroe .meta { color: var(--soft); font-size: 14.5px; }
+.heroe .meta b { color: var(--text); }
+.heroe .acc { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+.dos { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 28px; margin-top: 8px; }
+.bio { color: var(--soft); font-size: 15.5px; line-height: 1.6; margin: 0; }
+.bio + .fuente { font-size: 12px; color: var(--mute); margin-top: 6px; }
+.fuente a { text-decoration: underline; }
+.caja { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; }
+.caja h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--mute); margin-bottom: 8px; }
+.caja + .caja { margin-top: 12px; }
+.prox textarea, .prox .vacio { width: 100%; border: 1px dashed rgba(243,234,217,.18); border-radius: 10px; background: transparent; color: var(--mute); padding: 10px 12px; font: inherit; font-size: 13.5px; resize: none; }
+.prox textarea { min-height: 64px; }
+
+/* ---------- años ---------- */
+.decadas { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; margin: 0 -16px; padding-left: 16px; padding-right: 16px; }
+.decadas::-webkit-scrollbar { display: none; }
+.dec { flex: none; width: 92px; padding: 10px 10px 8px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); text-align: left; }
+.dec.on { border-color: var(--acc); background: linear-gradient(180deg, rgba(224,160,58,.18), var(--surface)); }
+.dec b { font-family: var(--serif); font-size: 20px; display: block; }
+.dec span { font-size: 12px; color: var(--mute); }
+.dec .br { height: 4px; border-radius: 2px; background: var(--surface2); margin-top: 8px; overflow: hidden; }
+.dec .br i { display: block; height: 100%; background: var(--acc); }
+.barras { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; align-items: end; height: 150px; margin: 20px 0 6px; }
+.barra { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 6px; }
+.barra i { display: block; width: 100%; max-width: 54px; border-radius: 6px 6px 2px 2px; background: linear-gradient(180deg, var(--acc2), var(--acc)); opacity: .55; min-height: 3px; transition: opacity .15s; }
+.barra.on i, .barra:hover i { opacity: 1; }
+.barra.vacia i { background: var(--surface2); opacity: 1; }
+.barra span { font-size: 12px; color: var(--mute); font-variant-numeric: tabular-nums; }
+.barra.on span { color: var(--text); font-weight: 700; }
+.barra em { font-style: normal; font-size: 11px; color: var(--mute); }
+
+/* ---------- géneros ---------- */
+.gens { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+.gen { position: relative; border-radius: var(--r); padding: 16px 16px 14px; background: var(--surface); border: 1px solid var(--line); overflow: hidden; min-height: 132px; display: flex; flex-direction: column; }
+.gen::before { content: ""; position: absolute; inset: 0; background: radial-gradient(120% 90% at 100% 0%, var(--c) 0%, transparent 60%); opacity: .32; }
+.gen > * { position: relative; }
+.gen h3 { font-family: var(--serif); font-size: 22px; padding-right: 96px; line-height: 1.15; }
+.gen .n { font-size: 13px; color: var(--soft); margin-top: 2px; }
+.gen .subs { font-size: 12.5px; color: var(--mute); margin-top: auto; padding-top: 10px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.gen .covs { position: absolute; right: 10px; top: 12px; display: flex; }
+.gen .covs img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--surface); margin-left: -10px; }
+
+.vacio-g { color: var(--mute); padding: 30px 0; text-align: center; }
+.cargando { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; min-height: 50vh; color: var(--mute); }
+.cargando i { width: 34px; height: 34px; border-radius: 50%; border: 3px solid var(--surface2); border-top-color: var(--acc); animation: g 0.9s linear infinite; }
+@keyframes g { to { transform: rotate(360deg); } }
+
+/* ---------- móvil ---------- */
+@media (max-width: 760px) {
+  .top { padding: calc(var(--safeT) + 8px) 12px 8px; -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--bg); } /* con blur, la barra de abajo quedaría atrapada dentro */
+  .top-in { gap: 8px; }
+  .marca small, .volver.ancho { display: none; }
+  .marca { font-size: 19px; }
+  .tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; border-radius: 0; padding: 6px 8px calc(6px + var(--safeB)); background: rgba(27,21,17,.94); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border-top: 1px solid var(--line); justify-content: space-around; }
+  .tabs a { flex: 1; flex-direction: column; gap: 2px; font-size: 11px; padding: 6px 4px; justify-content: center; }
+  .tabs a.on { background: none; box-shadow: none; color: var(--acc2); }
+  .tabs svg { width: 22px; height: 22px; }
+  main { padding: 14px 12px calc(86px + var(--safeB)); }
+  .rej { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 14px 10px; }
+  .carta .t { font-size: 13px; }
+  .heroe { margin: -14px -12px 0; padding: 26px 12px 18px; }
+  .heroe-in { flex-direction: column; align-items: center; text-align: center; gap: 16px; }
+  .heroe .foto { width: 190px; height: 190px; }
+  .heroe .acc { justify-content: center; }
+  .heroe .meta { font-size: 14px; }
+  .dos { grid-template-columns: 1fr; gap: 18px; }
+  .cab h2 { font-size: 24px; }
+  .fila { grid-template-columns: 44px 1fr auto 32px; gap: 10px; padding: 7px 2px; }
+  .barras { height: 120px; gap: 4px; }
+  .barra em { display: none; }
+  .decadas { margin: 0 -12px; padding-left: 12px; padding-right: 12px; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <a class="marca" href="#artistas">Explorar <small>tu biblioteca</small></a>
+    <label class="buscar" id="bq">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Buscar artista, disco o canción" autocomplete="off" enterkeyhint="search" aria-label="Buscar">
+      <button class="x" id="qx" type="button" aria-label="Borrar búsqueda">×</button>
+    </label>
+    <nav class="tabs" id="tabs">
+      <a href="#artistas" data-v="artistas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Artistas</a>
+      <a href="#anios" data-v="anios"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M9.3 20V4M14.6 20v-7M20 20V7"/></svg>Años</a>
+      <a href="#generos" data-v="generos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg>Géneros</a>
+    </nav>
+    <a class="volver ancho" href="mando.html">Fonoteca ›</a>
+  </div>
+</header>
+<main id="m"><div class="cargando"><i></i>Cargando tu biblioteca…</div></main>
+
+<script>
+/* fold igual que en la Fonoteca: taxonomia.js lo necesita */
+const fold = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+</script>
+<script src="taxonomia.js"></script>
+<script>
+'use strict';
+/* ============================================================
+   DATOS
+   ============================================================ */
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const n$ = x => (x || 0).toLocaleString('es-ES');
+const pl = (n, uno, varios) => n$(n) + ' ' + (n === 1 ? uno : varios);
+const $m = document.getElementById('m');
+const COV = h => !h ? '' : /^https?:/.test(h) ? h : 'https://i.scdn.co/image/' + h;
+/* Spotify sirve la misma foto en varios tamaños cambiando un trozo del nombre */
+const TAM = (u, g) => !u ? u : u.replace(/ab6761610000(f178|5174|e5eb)/, 'ab6761610000' + (g ? 'e5eb' : '5174')).replace(/ab67616d0000(4851|1e02|b273)/, 'ab67616d0000' + (g ? 'b273' : '1e02'));
+const SPOT = (tipo, id, q) => id ? 'https://open.spotify.com/' + tipo + '/' + id : 'https://open.spotify.com/search/' + encodeURIComponent(q);
+let PAIS = null; try { PAIS = new Intl.DisplayNames(['es'], { type: 'region' }); } catch (e) {}
+const nomPais = c => { try { return PAIS ? PAIS.of(c) : c; } catch (e) { return c; } };
+const TIPO = { Person: 'Solista', Group: 'Grupo', Orchestra: 'Orquesta', Choir: 'Coro', Character: 'Personaje' };
+
+const D = { tracks: [], art: new Map(), alb: new Map(), gen: new Map(), sinGen: { arts: new Set(), tr: 0 }, avisos: [], info: null };
+
+async function bajar(n) { try { const r = await fetch(n, { cache: 'no-cache' }); return r.ok ? await r.json() : null; } catch (e) { return null; } }
+
+async function cargar() {
+  const [bib, info, etq, reg, hist] = await Promise.all([bajar('biblioteca.json'), bajar('artistas-info.json'), bajar('etiquetas-canciones.json'), bajar('artistas-registro.json'), null]);
+  D.info = info;
+  const INFO = (info && info.a) || {}, CAA = (info && info.caa) || {};
+  const Y = (etq && etq.y) || {}, LFA = (etq && etq.lfa) || {};
+  const fotos = new Map();
+  for (const x of (reg && reg.l) || []) if (x[1] && x[2]) fotos.set(x[1], x[2]);
+  let filas;
+  if (bib && bib.l) {
+    filas = bib.l.map(f => ({ id: f[0], t: f[1] || '', a: (f[2] || []).map(x => ({ id: x[0] || '', n: x[1] || '' })), alId: f[3] || '', al: f[4] || '', alT: f[5] || '', ys: +f[6] || 0, cov: COV(f[7]) || CAA[f[3]] || '', add: f[8] || 0, ms: f[9] || 0 }));
+  } else {
+    D.avisos.push('<b>Faltan tus discos y portadas.</b> En la Fonoteca ve a Ajustes › <b>Exportar biblioteca</b>. Mientras, ves solo canciones y artistas.');
+    const h = await bajar('historial-me-gusta.json');
+    filas = ((h && h.l) || []).map(f => ({ id: String(f[0] || '').split(':').pop(), t: f[2] || '', a: (f[3] || []).map(n => ({ id: '', n })), alId: '', al: f[4] || '', alT: '', ys: +f[5] || 0, cov: '', add: f[1] || 0, ms: 0 }));
+  }
+  if (!info) D.avisos.push('<b>Aún no hay fichas de artistas</b> (foto, bio, años). Ejecuta <b>Enriquecer.bat</b> en tu PC.');
+
+  /* canciones, artistas y discos */
+  for (const t of filas) {
+    if (!t.a.length) t.a = [{ id: '', n: 'Desconocido' }];
+    const e = Y[obraDe(t.t) + '|' + obraDe(t.a[0].n)];
+    t.y = e && +e.y ? +e.y : t.ys;
+    t.arts = t.a.map(a => {
+      const k = a.id || 'n:' + fold(a.n);
+      let A = D.art.get(k);
+      if (!A) {
+        const inf = INFO[k] || INFO['n:' + fold(a.n)] || null;
+        A = { k, n: a.n, sp: a.id || (inf && inf.sp) || '', info: inf, foto: (inf && inf.img) || fotos.get(a.id) || '', tr: [], alb: new Set(), gen: new Set(), sub: new Set(), etiquetas: [], notas: '' };
+        A.f = fold(A.n);
+        A.tags = (inf && inf.g) || (LFA[A.f] || {}).g || [];
+        D.art.set(k, A);
+      }
+      A.tr.push(t);
+      return A;
+    });
+    t.f = fold(t.t + ' ' + t.a.map(a => a.n).join(' ') + ' ' + t.al);
+    if (t.al) {
+      const ka = t.alId || 'x:' + fold(t.al) + '|' + t.arts[0].k;
+      let B = D.alb.get(ka);
+      if (!B) { B = { k: ka, id: t.alId, n: t.al, tipo: t.alT, cov: t.cov, y: 0, arts: t.arts.slice(0, 1), tr: [], etiquetas: [], notas: '' }; B.f = fold(B.n + ' ' + B.arts[0].n); D.alb.set(ka, B); }
+      B.tr.push(t); if (!B.cov && t.cov) B.cov = t.cov;
+      if (t.y && (!B.y || t.y < B.y)) B.y = t.y;
+      t.B = B;
+      for (const A of t.arts) A.alb.add(B);
+    }
+    D.tracks.push(t);
+  }
+  /* géneros con la taxonomía de la Fonoteca */
+  for (const A of D.art.values()) {
+    A.trN = A.tr.length; A.addMax = A.tr.reduce((m, t) => Math.max(m, t.add || 0), 0);
+    if (!A.foto) { const b = [...A.alb].sort((x, y) => y.tr.length - x.tr.length)[0]; A.portada = b && b.cov; }
+    const ys = A.tr.map(t => t.y).filter(Boolean); A.yMin = ys.length ? Math.min(...ys) : 0; A.yMax = ys.length ? Math.max(...ys) : 0;
+    if (A.tags.length) for (const x of tagsCoherentes(A.tags)) { if (x.g === 'genero') A.gen.add(x.n); else if (x.g === 'sub') A.sub.add(x.n); }
+    for (const s of A.sub) { const p = SUB_PADRE.get(s); if (p) A.gen.add(p); }
+    if (!A.gen.size) { D.sinGen.arts.add(A); continue; }
+    for (const g of A.gen) {
+      let G = D.gen.get(g);
+      if (!G) { const tx = TAXONOMIA.find(x => x.g === 'genero' && x.n === g) || {}; G = { n: g, c: tx.c || '#8f8270', arts: new Set(), tr: new Set(), subs: new Map() }; D.gen.set(g, G); }
+      G.arts.add(A);
+    }
+    for (const s of A.sub) { const G = D.gen.get(SUB_PADRE.get(s)); if (G) { const S = G.subs.get(s) || G.subs.set(s, { n: s, arts: new Set(), tr: new Set() }).get(s); S.arts.add(A); } }
+  }
+  /* canciones por género: las de cualquiera de sus artistas */
+  for (const t of D.tracks) {
+    let alguna = false;
+    for (const A of t.arts) {
+      for (const g of A.gen) { D.gen.get(g).tr.add(t); alguna = true; }
+      for (const s of A.sub) { const G = D.gen.get(SUB_PADRE.get(s)); const S = G && G.subs.get(s); if (S) S.tr.add(t); }
+    }
+    if (!alguna) D.sinGen.tr++;
+  }
+  D.artLista = [...D.art.values()];
+  D.albLista = [...D.alb.values()];
+}
+
+/* ============================================================
+   PIEZAS DE INTERFAZ
+   ============================================================ */
+const IC = {
+  spot: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm4.6 14.4a.62.62 0 0 1-.86.2c-2.35-1.43-5.3-1.76-8.79-.96a.62.62 0 1 1-.28-1.21c3.81-.87 7.08-.5 9.72 1.11.3.18.39.57.2.86Zm1.22-2.73a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 1 1-.45-1.49c3.63-1.1 8.15-.57 11.24 1.33.36.22.48.7.25 1.07Zm.1-2.83C14.7 8.93 9.38 8.75 6.3 9.69a.94.94 0 1 1-.54-1.8c3.53-1.07 9.4-.86 13.1 1.34a.94.94 0 0 1-.95 1.61Z"/></svg>',
+};
+const iniciales = n => (String(n || '?').replace(/^(the|los|las|el|la)\s+/i, '').match(/[\p{L}\p{N}]/u) || ['?'])[0].toUpperCase();
+const tono = s => { let h = 0; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) % 360; return h; };
+function imgArt(A, g) {
+  const u = TAM(A.foto || A.portada, g);
+  return u ? '<img loading="lazy" decoding="async" src="' + esc(u) + '" alt="" onerror="this.replaceWith(monoDe(this))" data-n="' + esc(A.n) + '">'
+    : monoHTML(A.n);
+}
+const monoHTML = n => '<div class="mono" style="background:linear-gradient(135deg,hsl(' + tono(n) + ' 45% 32%),hsl(' + ((tono(n) + 40) % 360) + ' 50% 18%))">' + esc(iniciales(n)) + '</div>';
+window.monoDe = el => { const d = document.createElement('div'); d.innerHTML = monoHTML(el.dataset.n || '?'); return d.firstChild; };
+const imgAlb = (B, g) => B.cov ? '<img loading="lazy" decoding="async" src="' + esc(TAM(B.cov, g)) + '" alt="" onerror="this.replaceWith(monoDe(this))" data-n="' + esc(B.n) + '">' : monoHTML(B.n);
+
+const hrefArt = A => '#artista/' + encodeURIComponent(A.k);
+const hrefAlb = B => '#album/' + encodeURIComponent(B.k);
+const cartaArt = A => '<a class="carta art" href="' + hrefArt(A) + '"><div class="img">' + imgArt(A) + '</div><div class="t">' + esc(A.n) + '</div><div class="s">' + pl(A.trN, 'canción', 'canciones') + '</div></a>';
+const cartaAlb = (B, conArt) => '<a class="carta" href="' + hrefAlb(B) + '"><div class="img">' + imgAlb(B) + '</div><div class="t">' + esc(B.n) + '</div><div class="s">' + (conArt ? esc(B.arts[0].n) + ' · ' : '') + (B.y || '') + (B.y ? ' · ' : '') + pl(B.tr.length, 'canción', 'canc.') + '</div></a>';
+const durac = ms => ms ? Math.floor(ms / 60000) + ':' + String(Math.round(ms / 1000) % 60).padStart(2, '0') : '';
+function filaCanc(t) {
+  return '<div class="fila">' + (t.cov ? '<img loading="lazy" decoding="async" src="' + esc(t.cov) + '" alt="" onerror="this.style.opacity=0">' : '<div class="ph"></div>') +
+    '<div class="tt"><b>' + esc(t.t) + '</b><span>' + t.arts.map(A => '<a href="' + hrefArt(A) + '">' + esc(A.n) + '</a>').join(', ') +
+    (t.B ? ' · <a href="' + hrefAlb(t.B) + '">' + esc(t.al) + '</a>' : '') + '</span></div>' +
+    '<div class="y">' + (t.y || '') + '</div>' +
+    '<a class="play" target="_blank" rel="noopener" href="' + SPOT('track', t.id, t.t + ' ' + t.a[0].n) + '" title="Abrir en Spotify" aria-label="Abrir en Spotify">' + IC.spot + '</a></div>';
+}
+
+/* Carga progresiva: pinta de 60 en 60 a medida que bajas */
+let _obs = null, _alBajar = () => {};
+addEventListener('scroll', () => _alBajar(), { passive: true });
+function progresiva(cont, items, pinta, tanda) {
+  tanda = tanda || 60;
+  let i = 0;
+  if (_obs) _obs.disconnect();
+  const cent = document.createElement('div'); cent.className = 'centinela';
+  cont.after(cent);
+  const cerca = () => cent.getBoundingClientRect().top < innerHeight + 900;
+  const mas = () => {
+    /* pinta tandas hasta que el final quede lejos (en pantallas grandes, varias de golpe) */
+    do {
+      cont.insertAdjacentHTML('beforeend', items.slice(i, i + tanda).map(pinta).join('')); i += tanda;
+    } while (i < items.length && cerca());
+    if (i >= items.length) { _obs.disconnect(); cent.remove(); }
+  };
+  _obs = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) mas(); }, { rootMargin: '900px' });
+  _alBajar = () => { if (i < items.length && cent.isConnected && cerca()) mas(); };   // por si el observador no avisa
+  mas();
+  if (i < items.length) _obs.observe(cent);
+}
+/* listas cortas con botón «ver más» (varias por página) */
+function conMas(cont, items, pinta, tanda) {
+  let i = 0;
+  const btn = document.createElement('button'); btn.className = 'btn mas'; btn.textContent = 'Ver más';
+  const mas = () => { cont.insertAdjacentHTML('beforeend', items.slice(i, i + tanda).map(pinta).join('')); i += tanda; if (i >= items.length) btn.remove(); else btn.textContent = 'Ver más (' + n$(items.length - i) + ')'; };
+  btn.onclick = mas; cont.after(btn); mas();
+}
+const prox = () => '<div class="caja prox"><h3>Etiquetas</h3><div class="vacio">Aquí irán tus etiquetas (fase 2)</div></div><div class="caja prox"><h3>Notas</h3><textarea disabled placeholder="Tus notas (fase 2)"></textarea></div>';
+
+/* ============================================================
+   VISTAS
+   ============================================================ */
+const V = {};
+let ordenArt = 'n';
+V.artistas = () => {
+  const L = D.artLista.slice();
+  if (ordenArt === 'n') L.sort((a, b) => b.trN - a.trN || a.f.localeCompare(b.f));
+  else if (ordenArt === 'az') L.sort((a, b) => a.f.localeCompare(b.f, 'es'));
+  else L.sort((a, b) => b.addMax - a.addMax);
+  $m.innerHTML = avisos() + '<div class="cab"><div><h2>Artistas</h2><p>' + pl(D.artLista.length, 'artista', 'artistas') + ' · ' + pl(D.albLista.length, 'disco', 'discos') + ' · ' + pl(D.tracks.length, 'canción', 'canciones') + '</p></div>' +
+    '<div class="chips" id="ord">' + [['n', 'Más canciones'], ['az', 'A–Z'], ['rec', 'Recientes']].map(o => '<button class="chip' + (ordenArt === o[0] ? ' on' : '') + '" data-o="' + o[0] + '">' + o[1] + '</button>').join('') + '</div></div><div class="rej" id="g"></div>';
+  document.getElementById('ord').onclick = e => { const b = e.target.closest('[data-o]'); if (b) { ordenArt = b.dataset.o; V.artistas(); } };
+  progresiva(document.getElementById('g'), L, cartaArt);
+};
+
+V.artista = k => {
+  const A = D.art.get(k);
+  if (!A) return noEsta();
+  const I = A.info || {};
+  const tipo = TIPO[I.tipo] || 'Artista';
+  const anos = I.ini ? (I.fin ? I.ini + '–' + I.fin : 'desde ' + I.ini) : '';
+  const lugar = I.pais ? nomPais(I.pais) : (I.zona || '');
+  const albs = [...A.alb].sort((a, b) => (a.y || 9999) - (b.y || 9999));
+  const trs = A.tr.slice().sort((a, b) => (a.y || 9999) - (b.y || 9999) || a.t.localeCompare(b.t));
+  const fondo = A.foto || A.portada;
+  const gens = [...A.gen].map(g => { const G = D.gen.get(g); return '<a class="chip" href="#genero/' + encodeURIComponent(g) + '"><span class="pt" style="background:' + G.c + '"></span>' + esc(g) + '</a>'; }).join('') +
+    [...A.sub].map(s => '<a class="chip" href="#genero/' + encodeURIComponent(SUB_PADRE.get(s) || '') + '/' + encodeURIComponent(s) + '">' + esc(s) + '</a>').join('');
+  const crudos = !A.gen.size && A.tags.length ? A.tags.slice(0, 6).map(t => '<span class="chip">' + esc(t) + '</span>').join('') : '';
+  $m.innerHTML = '<section class="heroe">' + (fondo ? '<div class="fondo" style="background-image:url(&quot;' + esc(fondo) + '&quot;)"></div>' : '') +
+    '<div class="heroe-in"><div class="foto">' + imgArt(A, true) + '</div><div class="datos"><div class="tipo">' + esc(tipo) + (lugar ? ' · ' + esc(lugar) : '') + '</div><h1>' + esc(A.n) + '</h1>' +
+    '<div class="meta">' + (anos ? 'En activo <b>' + esc(anos) + '</b> · ' : '') + 'Tienes <b>' + pl(A.trN, 'canción', 'canciones') + '</b>' + (albs.length ? ' de <b>' + pl(albs.length, 'disco', 'discos') + '</b>' : '') + (A.yMin ? ' · ' + (A.yMin === A.yMax ? A.yMin : A.yMin + '–' + A.yMax) : '') + '</div>' +
+    '<div class="acc"><a class="btn spot" target="_blank" rel="noopener" href="' + SPOT('artist', A.sp, A.n) + '">' + IC.spot + 'Abrir en Spotify</a></div></div></div></section>' +
+    '<div class="dos"><div>' + (gens || crudos ? '<div class="chips" style="margin-bottom:16px">' + gens + crudos + '</div>' : '') +
+    (I.bio ? '<p class="bio">' + esc(I.bio) + '</p><div class="fuente">Fuente: ' + (I.bioU ? '<a target="_blank" rel="noopener" href="' + esc(I.bioU) + '">' + esc(I.bioF || 'enlace') + '</a>' : esc(I.bioF || '')) + '</div>'
+      : '<p class="bio mute">' + (A.info ? 'Sin resumen en Wikipedia ni Last.fm.' : 'Aún sin ficha: se rellena al ejecutar Enriquecer.bat.') + '</p>') +
+    '</div><div>' + prox() + '</div></div>' +
+    (albs.length ? '<h3 class="sec">Discos <span>' + albs.length + '</span></h3><div class="rej" id="ga"></div>' : '') +
+    '<h3 class="sec">Canciones <span>' + n$(trs.length) + '</span></h3><div class="canc" id="gc"></div>';
+  if (albs.length) conMas(document.getElementById('ga'), albs, b => cartaAlb(b, b.arts[0] !== A), 24);
+  conMas(document.getElementById('gc'), trs, filaCanc, 50);
+};
+
+V.album = k => {
+  const B = D.alb.get(k);
+  if (!B) return noEsta();
+  const trs = B.tr.slice().sort((a, b) => a.t.localeCompare(b.t));
+  const tipo = { album: 'Álbum', single: 'Sencillo', compilation: 'Recopilatorio' }[B.tipo] || 'Disco';
+  $m.innerHTML = '<section class="heroe">' + (B.cov ? '<div class="fondo" style="background-image:url(&quot;' + esc(B.cov) + '&quot;)"></div>' : '') +
+    '<div class="heroe-in"><div class="foto cuad">' + imgAlb(B, true) + '</div><div class="datos"><div class="tipo">' + tipo + (B.y ? ' · ' + B.y : '') + '</div><h1>' + esc(B.n) + '</h1>' +
+    '<div class="meta">' + B.arts.map(A => '<a href="' + hrefArt(A) + '"><b>' + esc(A.n) + '</b></a>').join(', ') + ' · tienes ' + pl(trs.length, 'canción', 'canciones') + '</div>' +
+    '<div class="acc"><a class="btn spot" target="_blank" rel="noopener" href="' + SPOT('album', B.id, B.n + ' ' + B.arts[0].n) + '">' + IC.spot + 'Abrir en Spotify</a></div></div></div></section>' +
+    '<div class="dos"><div><h3 class="sec" style="margin-top:8px">Tus canciones de este disco</h3><div class="canc" id="gc"></div></div><div>' + prox() + '</div></div>';
+  document.getElementById('gc').innerHTML = trs.map(filaCanc).join('');
+};
+
+/* ---- Años: décadas → años → discos y canciones ---- */
+V.anios = sel => {
+  const porAno = new Map(); let sinAno = 0;
+  for (const t of D.tracks) { if (!t.y) { sinAno++; continue; } porAno.set(t.y, (porAno.get(t.y) || 0) + 1); }
+  const decs = new Map();
+  for (const [y, n] of porAno) { const d = Math.floor(y / 10) * 10; decs.set(d, (decs.get(d) || 0) + n); }
+  const lista = [...decs.keys()].sort((a, b) => a - b);
+  if (!lista.length) { $m.innerHTML = avisos() + '<p class="vacio-g">Aún no hay años en tus canciones.</p>'; return; }
+  let dec, ano = 0;
+  if (/^\d{4}s$/.test(sel || '')) dec = +sel.slice(0, 4);
+  else if (/^\d{4}$/.test(sel || '')) { ano = +sel; dec = Math.floor(ano / 10) * 10; }
+  if (!decs.has(dec)) dec = lista.reduce((a, b) => decs.get(b) > decs.get(a) ? b : a, lista[0]);
+  const maxD = Math.max(...decs.values());
+  const nomDec = d => d >= 2000 ? 'Años ' + d : 'Años ' + String(d).slice(2);
+  const corto = d => d >= 2000 ? String(d) + 's' : "'" + String(d).slice(2);
+  const anos = Array.from({ length: 10 }, (_, i) => dec + i), maxA = Math.max(1, ...anos.map(y => porAno.get(y) || 0));
+  const enRango = y => ano ? y === ano : y >= dec && y < dec + 10;
+  const trs = D.tracks.filter(t => t.y && enRango(t.y)).sort((a, b) => a.y - b.y || a.t.localeCompare(b.t));
+  const albs = D.albLista.filter(b => b.y && enRango(b.y)).sort((a, b) => b.tr.length - a.tr.length || a.y - b.y);
+  const artsN = new Set(trs.flatMap(t => t.arts)).size;
+  $m.innerHTML = avisos() + '<div class="cab"><div><h2>Línea del tiempo</h2><p>Por el año real de cada canción cuando se sabe (si no, el del disco)' + (sinAno ? ' · ' + n$(sinAno) + ' sin año' : '') + '</p></div></div>' +
+    '<div class="decadas" id="dc">' + lista.map(d => '<a class="dec' + (d === dec ? ' on' : '') + '" href="#anios/' + d + 's"><b>' + corto(d) + '</b><span>' + n$(decs.get(d)) + '</span><div class="br"><i style="width:' + Math.max(4, decs.get(d) / maxD * 100) + '%"></i></div></a>').join('') + '</div>' +
+    '<div class="barras">' + anos.map(y => { const n = porAno.get(y) || 0; return '<a class="barra' + (y === ano ? ' on' : '') + (n ? '' : ' vacia') + '" href="#anios/' + (y === ano ? dec + 's' : y) + '"><em>' + (n || '') + '</em><i style="height:' + (n ? Math.max(4, n / maxA * 100) : 2) + '%"></i><span>' + String(y).slice(2) + '</span></a>'; }).join('') + '</div>' +
+    '<div class="cab" style="margin-top:22px"><div><h2>' + (ano || nomDec(dec)) + '</h2><p>' + pl(trs.length, 'canción', 'canciones') + ' · ' + pl(artsN, 'artista', 'artistas') + ' · ' + pl(albs.length, 'disco', 'discos') + (ano ? '' : ' · toca un año para verlo solo') + '</p></div></div>' +
+    (albs.length ? '<h3 class="sec">Discos</h3><div class="rej" id="ga"></div>' : '') + '<h3 class="sec">Canciones</h3><div class="canc" id="gc"></div>';
+  const dc = document.querySelector('.dec.on'); if (dc) dc.scrollIntoView({ inline: 'center', block: 'nearest' });
+  if (albs.length) conMas(document.getElementById('ga'), albs, b => cartaAlb(b, true), 24);
+  progresiva(document.getElementById('gc'), trs, filaCanc, 60);
+};
+
+/* ---- Géneros: familias → subgéneros → artistas ---- */
+V.generos = () => {
+  const L = [...D.gen.values()].sort((a, b) => b.tr.size - a.tr.size);
+  const fotos = G => [...G.arts].filter(A => A.foto).sort((a, b) => b.trN - a.trN).slice(0, 3);
+  $m.innerHTML = avisos() + '<div class="cab"><div><h2>Géneros</h2><p>' + pl(L.length, 'familia', 'familias') + ' · un artista puede estar en varias' + (D.sinGen.arts.size ? ' · ' + pl(D.sinGen.arts.size, 'artista', 'artistas') + ' sin género aún' : '') + '</p></div></div>' +
+    '<div class="gens">' + L.map(G => '<a class="gen" href="#genero/' + encodeURIComponent(G.n) + '" style="--c:' + G.c + '"><div class="covs">' + fotos(G).map(A => '<img loading="lazy" src="' + esc(TAM(A.foto)) + '" alt="" onerror="this.remove()">').join('') + '</div><h3>' + esc(G.n) + '</h3><div class="n">' + pl(G.arts.size, 'artista', 'artistas') + ' · ' + pl(G.tr.size, 'canción', 'canciones') + '</div><div class="subs">' +
+      [...G.subs.values()].sort((a, b) => b.tr.size - a.tr.size).slice(0, 6).map(s => esc(s.n)).join(' · ') + '</div></a>').join('') +
+    (D.sinGen.arts.size ? '<a class="gen" href="#genero/' + encodeURIComponent('Sin género') + '" style="--c:#555"><h3>Sin género</h3><div class="n">' + pl(D.sinGen.arts.size, 'artista', 'artistas') + ' · ' + pl(D.sinGen.tr, 'canción', 'canciones') + '</div><div class="subs">Se rellenan al ejecutar el script con la clave de Last.fm</div></a>' : '') + '</div>';
+};
+V.genero = (g, sub) => {
+  let arts, titulo = g, color = '#555', subs = [], n = 0;
+  if (g === 'Sin género') { arts = [...D.sinGen.arts]; n = D.sinGen.tr; }
+  else {
+    const G = D.gen.get(g); if (!G) return noEsta();
+    color = G.c; subs = [...G.subs.values()].sort((a, b) => b.tr.size - a.tr.size);
+    const S = sub && G.subs.get(sub);
+    arts = [...(S ? S.arts : G.arts)]; n = (S ? S.tr : G.tr).size;
+  }
+  arts.sort((a, b) => b.trN - a.trN);
+  $m.innerHTML = '<div class="cab"><div><h2 style="display:flex;align-items:center;gap:10px"><span class="pt" style="width:14px;height:14px;border-radius:50%;background:' + color + ';display:inline-block"></span>' + esc(sub || titulo) + '</h2><p>' + (sub ? '<a href="#genero/' + encodeURIComponent(g) + '" style="text-decoration:underline">' + esc(g) + '</a> · ' : '') + pl(arts.length, 'artista', 'artistas') + ' · ' + pl(n, 'canción', 'canciones') + '</p></div></div>' +
+    (subs.length ? '<div class="chips" style="margin-bottom:20px"><a class="chip' + (sub ? '' : ' on') + '" href="#genero/' + encodeURIComponent(g) + '">Todo</a>' + subs.map(s => '<a class="chip' + (s.n === sub ? ' on' : '') + '" href="#genero/' + encodeURIComponent(g) + '/' + encodeURIComponent(s.n) + '">' + esc(s.n) + '<i>' + n$(s.arts.size) + '</i></a>').join('') + '</div>' : '') +
+    '<div class="rej" id="g"></div>';
+  progresiva(document.getElementById('g'), arts, cartaArt);
+};
+
+/* ---- Buscador: artistas, discos y canciones a la vez ---- */
+V.buscar = q => {
+  const ps = fold(q).split(/\s+/).filter(Boolean);
+  const ok = f => ps.every(p => f.includes(p));
+  const arts = D.artLista.filter(A => ok(A.f)).sort((a, b) => (b.f.startsWith(ps[0]) - a.f.startsWith(ps[0])) || b.trN - a.trN);
+  const albs = D.albLista.filter(B => ok(B.f)).sort((a, b) => b.tr.length - a.tr.length);
+  const trs = D.tracks.filter(t => ok(t.f));
+  $m.innerHTML = '<div class="cab"><div><h2>«' + esc(q) + '»</h2><p>' + pl(arts.length, 'artista', 'artistas') + ' · ' + pl(albs.length, 'disco', 'discos') + ' · ' + pl(trs.length, 'canción', 'canciones') + '</p></div></div>' +
+    (arts.length ? '<h3 class="sec">Artistas</h3><div class="rej" id="ba"></div>' : '') +
+    (albs.length ? '<h3 class="sec">Discos</h3><div class="rej" id="bb"></div>' : '') +
+    (trs.length ? '<h3 class="sec">Canciones</h3><div class="canc" id="bc"></div>' : '') +
+    (!arts.length && !albs.length && !trs.length ? '<p class="vacio-g">Nada con esas palabras en tu biblioteca.</p>' : '');
+  if (arts.length) conMas(document.getElementById('ba'), arts, cartaArt, 12);
+  if (albs.length) conMas(document.getElementById('bb'), albs, b => cartaAlb(b, true), 12);
+  if (trs.length) conMas(document.getElementById('bc'), trs, filaCanc, 30);
+};
+
+const avisos = () => D.avisos.map(a => '<div class="aviso">' + a + '</div>').join('');
+const noEsta = () => { $m.innerHTML = '<p class="vacio-g">No lo encuentro en tu biblioteca. <a href="#artistas" style="text-decoration:underline">Volver</a></p>'; };
+
+/* ============================================================
+   NAVEGACIÓN (con el botón atrás del móvil)
+   ============================================================ */
+const $q = document.getElementById('q'), $bq = document.getElementById('bq');
+const _scroll = {};
+let _hashPrev = '';
+function ir() {
+  _scroll[_hashPrev] = scrollY;
+  const h = location.hash.slice(1) || 'artistas';
+  const [v, a, b] = h.split('/').map(x => { try { return decodeURIComponent(x); } catch (e) { return x; } });
+  const tab = { artista: 'artistas', album: 'artistas', genero: 'generos' }[v] || v;
+  document.querySelectorAll('#tabs a').forEach(x => x.classList.toggle('on', x.dataset.v === tab));
+  if ($q.value.trim()) { $q.value = ''; $bq.classList.remove('con'); }
+  (V[v] || V.artistas)(a, b);
+  _hashPrev = h;
+  requestAnimationFrame(() => scrollTo(0, _scroll[h] && _volviendo ? _scroll[h] : 0));
+  _volviendo = false;
+}
+let _volviendo = false;
+addEventListener('popstate', () => { _volviendo = true; });
+addEventListener('hashchange', ir);
+let _tq = null;
+$q.addEventListener('input', () => {
+  const q = $q.value.trim(); $bq.classList.toggle('con', !!q);
+  clearTimeout(_tq);
+  _tq = setTimeout(() => { if (q) { V.buscar(q); scrollTo(0, 0); } else ir(); }, 140);
+});
+$q.addEventListener('keydown', e => { if (e.key === 'Escape') { $q.value = ''; $bq.classList.remove('con'); ir(); } if (e.key === 'Enter') $q.blur(); });
+document.getElementById('qx').onclick = e => { e.preventDefault(); $q.value = ''; $bq.classList.remove('con'); ir(); };
+addEventListener('keydown', e => { if (e.key === '/' && document.activeElement !== $q) { e.preventDefault(); $q.focus(); } });
+
+cargar().then(ir).catch(e => { $m.innerHTML = '<p class="vacio-g">No he podido cargar tu biblioteca: ' + esc(e.message) + '</p>'; console.error(e); });
+</script>
+</body>
+</html>
