@@ -1,0 +1,5 @@
+artista;musicbrainz
+# Si el script se equivoca de artista o no lo encuentra, pon aquí su nombre (igual que en Spotify)
+# y el enlace de su página en musicbrainz.org. Escribe «ninguno» para que deje de buscarlo.
+# Ejemplo:
+# Nirvana;https://musicbrainz.org/artist/5b11f4ce-a62d-471e-81fc-a69a8278c7da

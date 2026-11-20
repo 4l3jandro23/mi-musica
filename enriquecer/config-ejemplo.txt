@@ -1,0 +1,8 @@
+# Copia este archivo, llama a la copia config.txt y pon aquí tu clave.
+# config.txt no se sube nunca a GitHub.
+
+# Clave de API de Last.fm (32 letras y números)
+LASTFM_API_KEY=
+
+# Opcional: un correo o web de contacto para MusicBrainz. Si lo dejas vacío, funciona igual.
+CONTACTO=

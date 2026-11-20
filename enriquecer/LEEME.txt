@@ -1,0 +1,30 @@
+DATOS DE ARTISTAS PARA «EXPLORAR»
+=================================
+
+Qué hace: busca la foto, una biografía corta, los géneros, el país y los años
+de actividad de cada artista de tu biblioteca, y los deja en artistas-info.json.
+También crea no-identificados.csv con los que no ha sabido encontrar.
+
+PRIMERA VEZ
+1. En la Fonoteca: Ajustes › «Exportar biblioteca». Sube tus canciones con su disco.
+2. Copia config-ejemplo.txt, llama a la copia config.txt y pega tu clave de Last.fm
+   detrás de LASTFM_API_KEY=
+3. Doble clic en «Prueba 20 artistas.bat». Tarda un minuto. Al final pregunta si
+   lo sube a GitHub: pulsa S.
+4. Si te gusta cómo queda, doble clic en «Enriquecer.bat». La primera vez tarda
+   unas 3-4 horas. Puedes cerrarlo cuando quieras: la próxima vez sigue donde lo dejó.
+   (Si lo paras con Ctrl+C, Windows pregunta «¿Desea terminar el trabajo por lotes?»:
+   responde S.)
+
+DESPUÉS
+Cuando tengas canciones nuevas: «Exportar biblioteca» en la Fonoteca y luego
+«Enriquecer.bat». Solo procesa los artistas nuevos (minutos).
+
+SI SE EQUIVOCA DE ARTISTA
+Abre no-identificados.csv. Para corregir uno, apúntalo en correcciones.csv con el
+enlace de su página en musicbrainz.org (o «ninguno»), y vuelve a ejecutar.
+Para que vuelva a intentar los no encontrados: doble clic en «Reintentar no encontrados.bat».
+
+La caché (todo lo descargado) está en %LOCALAPPDATA%\Fonoteca\cache, fuera de OneDrive.
+Si la borras, vuelve a empezar de cero.
+Los .bat solo funcionan si el repo está en la rama main (te avisan si no).
