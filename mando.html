@@ -4952,6 +4952,8 @@ async function hojaPortadas() {
    ============================================================ */
 function hojaIrA() {
   const acciones = [
+    ['Archivo: meter todo el historial en sus casas', 'casa', () => hojaArchivo()],
+    ['Una casa para cada canción', 'casa', () => hojaCasas()],
     ['Repasar Me gusta una a una', 'play', () => { irATab('likes'); let n = 0; const t = setInterval(() => { if (S.fuente && S.fuente.kind === 'likes' && S.fuente.pistas) { clearInterval(t); repasar(S.fuente); } else if (++n > 120) clearInterval(t); }, 250); }],
     ['Toda mi música', 'buscar', () => abrirTodaMiMusica()],
     ['¿Qué se queda? Me gusta, Archivo o Pendientes', 'check', () => abrirTriaje()],
