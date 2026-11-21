@@ -4438,19 +4438,33 @@ async function aplicarTriaje(V) {
    gusta. Si se corta, al volver a darle sigue por la playlist en la que
    iba (cada una se reescribe entera, así que nunca salen repetidas).
    ============================================================ */
-const K_PARTIR = 'fonoteca_partir_v1';
+const K_PARTIR = 'fonoteca_partir_v2';
+const PARTIR_EN = 50;
 function planPartir(ps) {
   const cmp = (a, b) => a < b ? -1 : a > b ? 1 : 0;
   const l = ps.filter(p => !p.local && /^spotify:track:/.test(p.uri)).slice()
     .sort((a, b) => cmp(fold(artPpal(a)), fold(artPpal(b))) || cmp(a.year, b.year) || cmp(fold(a.album), fold(b.album)) || cmp(fold(a.title), fold(b.title)));
   const vistas = new Set(), uris = [], arts = [];
   for (const p of l) if (!vistas.has(p.uri)) { vistas.add(p.uri); uris.push(p.uri); arts.push(artPpal(p) || '?'); }
-  const n = Math.max(1, Math.round(uris.length / 1000)), tam = Math.ceil(uris.length / n), corto = s => s.length > 22 ? s.slice(0, 21) + '…' : s;
-  const partes = [];
-  for (let i = 0; i < n; i++) {
-    const a = i * tam, b = Math.min(uris.length, a + tam);
-    if (a >= b) break;
-    partes.push({ nombre: 'Me gusta ' + String(i + 1).padStart(2, '0') + ' · ' + corto(arts[a]) + ' – ' + corto(arts[b - 1]), uris: uris.slice(a, b) });
+  /* 50 playlists (o menos si hay pocas canciones). Solo se corta donde
+     cambia el artista, así ningún artista queda partido entre dos listas:
+     cada corte va al cambio de artista más cercano a su sitio ideal. */
+  const corto = s => s.length > 22 ? s.slice(0, 21) + '…' : s;
+  const cambios = [];
+  for (let i = 1; i < uris.length; i++) if (fold(arts[i]) !== fold(arts[i - 1])) cambios.push(i);
+  const n = Math.max(1, Math.min(PARTIR_EN, Math.round(uris.length / 100))), cortes = [0];
+  let j = 0;
+  for (let k = 1; k < n && j < cambios.length; k++) {
+    const ideal = k * uris.length / n;
+    while (j + 1 < cambios.length && Math.abs(cambios[j + 1] - ideal) <= Math.abs(cambios[j] - ideal)) j++;
+    if (cambios[j] > cortes[cortes.length - 1]) cortes.push(cambios[j]);
+    j++;
+  }
+  cortes.push(uris.length);
+  const partes = [], ancho = String(cortes.length - 1).length < 2 ? 2 : String(cortes.length - 1).length;
+  for (let i = 0; i + 1 < cortes.length; i++) {
+    const a = cortes[i], b = cortes[i + 1];
+    partes.push({ nombre: 'Me gusta ' + String(i + 1).padStart(ancho, '0') + ' · ' + corto(arts[a]) + ' – ' + corto(arts[b - 1]), uris: uris.slice(a, b) });
   }
   return { at: Date.now(), total: uris.length, partes: partes, ids: [], listas: 0, hecho: 0 };
 }
@@ -4957,7 +4971,7 @@ function hojaIrA() {
     ['Repasar Me gusta una a una', 'play', () => { irATab('likes'); let n = 0; const t = setInterval(() => { if (S.fuente && S.fuente.kind === 'likes' && S.fuente.pistas) { clearInterval(t); repasar(S.fuente); } else if (++n > 120) clearInterval(t); }, 250); }],
     ['Toda mi música', 'buscar', () => abrirTodaMiMusica()],
     ['¿Qué se queda? Me gusta, Archivo o Pendientes', 'check', () => abrirTriaje()],
-    ['Partir Me gusta en playlists de 1.000 (para quitar ♥ desde el móvil)', 'unir', () => partirMeGusta()],
+    ['Partir Me gusta en 50 playlists por artista (A–Z)', 'unir', () => partirMeGusta()],
     ['Portadas: crear la portada de una playlist', 'imagen', () => hojaPortadas()],
     ['Ruleta de géneros: que decida el azar', 'aleat', () => misCasasYMoods().then(C => ruletaCasas(C.casas)).catch(e => toast(explicarError(e)))],
     ['Viaje por el rock: de los 50 a hoy', 'reloj', () => { irATab('casas'); let n = 0; const t = setInterval(() => { const b = $('#tmRock'); if (b) { clearInterval(t); b.click(); } else if (++n > 40) clearInterval(t); }, 250); }],
