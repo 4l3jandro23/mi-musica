@@ -1,12 +1,26 @@
 {
  "version": "2026-11-20a",
- "at": "2026-11-22T18:47:09.076Z",
+ "at": "2026-11-22T19:04:04.398Z",
  "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36",
- "pantalla": "1368x617",
- "pausaSeg": 885,
+ "pantalla": "1368x673",
+ "pausaSeg": 859,
  "cola": 0,
  "permisosQueFaltan": [],
  "fallos": [
+  {
+   "at": 1795374229378,
+   "donde": "Añadiendo",
+   "msg": "Spotify ha pedido parar un rato. La Fonoteca vuelve a intentarlo solo dentro de unos 15 minutos (si insistiera antes, Spotify alargaría el castigo). Mientras, lo guardado funciona y los cambios van a la cola.",
+   "st": 429,
+   "ruta": ""
+  },
+  {
+   "at": 1795374202990,
+   "donde": "freno",
+   "msg": "Spotify ha frenado: pausa de 15 min (nivel 3)",
+   "st": 429,
+   "ruta": "GET /me/tracks"
+  },
   {
    "at": 1795373214066,
    "donde": "freno",
@@ -202,20 +216,6 @@
    "msg": "Spotify ha frenado: pausa de 5 min (nivel 2)",
    "st": 429,
    "ruta": "GET /playlists/2yn3odgovcVZyGF2uszzug"
-  },
-  {
-   "at": 1795275947461,
-   "donde": "freno",
-   "msg": "Spotify ha frenado: pausa de 1 min (nivel 1)",
-   "st": 429,
-   "ruta": "GET /playlists/7gEyxshDuSqGBqNoIaKiky"
-  },
-  {
-   "at": 1793378919593,
-   "donde": "Añadiendo a Mis discos",
-   "msg": "No encuentro tu playlist de discos entre tus playlists. Elige cuál es con «Cambiar de playlist».",
-   "st": 0,
-   "ruta": ""
   }
  ],
  "diagnostico": null
