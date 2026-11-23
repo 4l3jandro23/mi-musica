@@ -1,12 +1,26 @@
 {
  "version": "2026-11-20a",
- "at": "2026-11-23T20:31:01.067Z",
+ "at": "2026-11-23T20:43:58.266Z",
  "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36",
- "pantalla": "1368x617",
+ "pantalla": "1368x673",
  "pausaSeg": 0,
  "cola": 0,
  "permisosQueFaltan": [],
  "fallos": [
+  {
+   "at": 1795466623251,
+   "donde": "sin capturar",
+   "msg": "Cannot set properties of null (setting 'hidden')",
+   "st": 0,
+   "ruta": ""
+  },
+  {
+   "at": 1795465944050,
+   "donde": "sin capturar",
+   "msg": "Cannot set properties of null (setting 'hidden')",
+   "st": 0,
+   "ruta": ""
+  },
   {
    "at": 1795465845338,
    "donde": "sin capturar",
@@ -202,20 +216,6 @@
    "msg": "Spotify ha frenado: pausa de 60 min (nivel 5)",
    "st": 429,
    "ruta": "GET /playlists/2yvY4OCP8yQxMVzKIhJuaE"
-  },
-  {
-   "at": 1795275950192,
-   "donde": "freno",
-   "msg": "Spotify ha frenado: pausa de 60 min (nivel 5)",
-   "st": 429,
-   "ruta": "GET /playlists/1CGvLmPXV3FGvm2onWpX8E"
-  },
-  {
-   "at": 1795275949785,
-   "donde": "freno",
-   "msg": "Spotify ha frenado: pausa de 60 min (nivel 5)",
-   "st": 429,
-   "ruta": "GET /playlists/33uthowiKmaPff0ZF9ix9n"
   }
  ],
  "diagnostico": null
