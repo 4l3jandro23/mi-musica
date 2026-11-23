@@ -1,12 +1,26 @@
 {
  "version": "2026-11-20a",
- "at": "2026-11-23T22:33:55.394Z",
+ "at": "2026-11-23T22:38:01.923Z",
  "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36",
- "pantalla": "1368x673",
- "pausaSeg": 232,
+ "pantalla": "1368x617",
+ "pausaSeg": 885,
  "cola": 0,
  "permisosQueFaltan": [],
  "fallos": [
+  {
+   "at": 1795473466903,
+   "donde": "Poniendo la portada",
+   "msg": "Spotify ha pedido parar un rato. La Fonoteca vuelve a intentarlo solo dentro de unos 15 minutos (si insistiera antes, Spotify alargaría el castigo). Mientras, lo guardado funciona y los cambios van a la cola.",
+   "st": 429,
+   "ruta": ""
+  },
+  {
+   "at": 1795473466891,
+   "donde": "freno",
+   "msg": "Spotify ha frenado: pausa de 15 min (nivel 3)",
+   "st": 429,
+   "ruta": "PUT /playlists/0okUSkLvqx2DzHRX2Ifv3B/images"
+  },
   {
    "at": 1795473166620,
    "donde": "freno",
@@ -202,20 +216,6 @@
    "msg": "Spotify ha frenado: pausa de 60 min (nivel 5)",
    "st": 429,
    "ruta": "GET /playlists/7n15pJxo1ZuxPC6mAwPlYs"
-  },
-  {
-   "at": 1795275950849,
-   "donde": "freno",
-   "msg": "Spotify ha frenado: pausa de 60 min (nivel 5)",
-   "st": 429,
-   "ruta": "GET /playlists/3hl9eLWZX6qptvWlhjMZgK"
-  },
-  {
-   "at": 1795275950681,
-   "donde": "freno",
-   "msg": "Spotify ha frenado: pausa de 60 min (nivel 5)",
-   "st": 429,
-   "ruta": "GET /playlists/3rJMUzZ3OVpni4zY3LtuQv"
   }
  ],
  "diagnostico": null
