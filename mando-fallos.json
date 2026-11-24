@@ -1,12 +1,19 @@
 {
  "version": "2026-11-20a",
- "at": "2026-11-24T18:36:48.738Z",
+ "at": "2026-11-24T20:54:06.575Z",
  "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36",
  "pantalla": "1368x617",
- "pausaSeg": 1785,
- "cola": 0,
+ "pausaSeg": 45,
+ "cola": 11,
  "permisosQueFaltan": [],
  "fallos": [
+  {
+   "at": 1795553631559,
+   "donde": "freno",
+   "msg": "Spotify ha frenado: pausa de 1 min (nivel 1)",
+   "st": 429,
+   "ruta": "POST /playlists/7npdn5QZU0K1h4r4N5PNOU/items"
+  },
   {
    "at": 1795545393722,
    "donde": "freno",
@@ -209,13 +216,6 @@
    "msg": "Spotify ha frenado: pausa de 60 min (nivel 5)",
    "st": 429,
    "ruta": "GET /playlists/6KiBzB2UD0B1gqejodRgRU"
-  },
-  {
-   "at": 1795275952160,
-   "donde": "freno",
-   "msg": "Spotify ha frenado: pausa de 60 min (nivel 5)",
-   "st": 429,
-   "ruta": "GET /playlists/6dQkGXkDF7OzM2gNsCbW8i"
   }
  ],
  "diagnostico": null
