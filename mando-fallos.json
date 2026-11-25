@@ -1,12 +1,19 @@
 {
  "version": "2026-11-20a",
- "at": "2026-11-25T14:14:14.950Z",
- "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36",
+ "at": "2026-11-25T15:32:58.582Z",
+ "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/158.0.0.0 Safari/537.36",
  "pantalla": "655x615",
- "pausaSeg": 3585,
+ "pausaSeg": 1785,
  "cola": 0,
  "permisosQueFaltan": [],
  "fallos": [
+  {
+   "at": 1795620763575,
+   "donde": "freno",
+   "msg": "Spotify ha frenado: pausa de 30 min (nivel 4)",
+   "st": 429,
+   "ruta": "GET /me/playlists"
+  },
   {
    "at": 1795616039941,
    "donde": "freno",
@@ -207,13 +214,6 @@
    "at": 1795464504403,
    "donde": "sin capturar",
    "msg": "Cannot set properties of null (setting 'hidden')",
-   "st": 0,
-   "ruta": ""
-  },
-  {
-   "at": 1795462222300,
-   "donde": "sincronizar etiquetas",
-   "msg": "GitHub respondió 500",
    "st": 0,
    "ruta": ""
   }
