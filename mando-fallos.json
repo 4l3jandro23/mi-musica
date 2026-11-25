@@ -1,12 +1,19 @@
 {
  "version": "2026-11-20a",
- "at": "2026-11-25T12:02:46.170Z",
+ "at": "2026-11-25T12:10:18.017Z",
  "aparato": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36",
  "pantalla": "1368x617",
- "pausaSeg": 285,
+ "pausaSeg": 885,
  "cola": 0,
  "permisosQueFaltan": [],
  "fallos": [
+  {
+   "at": 1795608603013,
+   "donde": "freno",
+   "msg": "Spotify ha frenado: pausa de 15 min (nivel 3)",
+   "st": 429,
+   "ruta": "GET /me/playlists"
+  },
   {
    "at": 1795608151164,
    "donde": "freno",
@@ -205,13 +212,6 @@
   },
   {
    "at": 1795461749057,
-   "donde": "sin capturar",
-   "msg": "Cannot set properties of null (setting 'hidden')",
-   "st": 0,
-   "ruta": ""
-  },
-  {
-   "at": 1795460704213,
    "donde": "sin capturar",
    "msg": "Cannot set properties of null (setting 'hidden')",
    "st": 0,
